@@ -1,0 +1,2 @@
+目录内zip: ['月蚀弹幕_Windows免安装版_v0.2.zip', '月蚀弹幕_Windows免安装版_v3.7.zip', '月蚀弹幕_Windows免安装版.zip', '月蚀弹幕_Windows免安装版_v3.8.zip']
+找不到 v3.15 zip

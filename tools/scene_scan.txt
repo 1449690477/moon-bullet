@@ -1,0 +1,909 @@
+
+==== prefab_land ====
+  p_smoke/yan01__Texture2D.png                            128x128
+  m2_nightingale_castle/Shu_01_col__Texture2D.png         512x512
+  m2_nightingale_castle/chegnqiang_01_col__Texture2D.png  1024x1024 <BIG>
+  m2_nightingale_castle/chegnqiang_01_mos__Texture2D.png  1024x1024 <BIG>
+  m2_nightingale_castle/chegnqiang_01_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_nightingale_castle/diaoxiang_col__Texture2D.png      1024x1024 <BIG>
+  m2_nightingale_castle/diaoxiang_mos__Texture2D.png      1024x1024 <BIG>
+  m2_nightingale_castle/diaoxiang_nrm__Texture2D.png      1024x1024 <BIG>
+  m2_nightingale_castle/dixing_01_col__Texture2D.png      512x1024 <PORTRAIT>
+  m2_nightingale_castle/dixing_01_mos__Texture2D.png      512x1024 <PORTRAIT>
+  m2_nightingale_castle/dixing_01_nrm__Texture2D.png      512x1024 <PORTRAIT>
+  m2_nightingale_castle/jiaotang_01_col__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_castle/jiaotang_01_mos__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_castle/jiaotang_01_nrm__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_castle/minju_01_col__Texture2D.png       1024x1024 <BIG>
+  m2_nightingale_castle/minju_01_mos__Texture2D.png       1024x1024 <BIG>
+  m2_nightingale_castle/minju_01_nrm__Texture2D.png       1024x1024 <BIG>
+  m2_holycity02/Shu_01_col__Texture2D.png                 512x512
+  m2_holycity02/dixing_02_col__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity02/dixing_02_mos__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity02/dixing_02_nrm__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity02/minju_02_col__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/minju_02_mos__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/minju_02_nrm__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/posun_01_col__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/posun_01_mos__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/posun_01_nrm__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/posun_02_col__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/posun_02_mos__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/posun_02_nrm__Texture2D.png               1024x1024 <BIG>
+  m2_holycity02/shuzhi_col__Texture2D.png                 512x512
+  m2_jidu01_shenting/M2_Jidu01_ground02_col__Texture2D.png 1024x1024 <BIG>
+  m2_jidu01_shenting/M2_Jidu01_sichou_col__Texture2D.png  1024x1024 <BIG>
+  m2_jidu01_shenting/M2_Jidu01_sichou_mos__Texture2D.png  1024x1024 <BIG>
+  m2_jidu01_shenting/M2_Jidu01_sichou_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_jidu01_shenting/M2_Jidu01_tiemen_col__Texture2D.png  1024x1024 <BIG>
+  m2_jidu01_shenting/M2_Jidu01_tiemen_mos__Texture2D.png  1024x1024 <BIG>
+  m2_jidu01_shenting/M2_Jidu01_tiemen_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_jidu01_shenting/Z_st03__Texture2D.png                256x128 <WIDE>
+  m2_limbo01_seyu01/Dixing_1_col__Texture2D.png           512x1024 <PORTRAIT>
+  m2_limbo01_seyu01/Dixing_1_mos__Texture2D.png           512x1024 <PORTRAIT>
+  m2_limbo01_seyu01/Dixing_1_nrm__Texture2D.png           512x1024 <PORTRAIT>
+  m2_limbo01_seyu01/M2_limbo_ground_col__Texture2D.png    1024x1024 <BIG>
+  m2_limbo01_seyu01/M2_limbo_ground_mos__Texture2D.png    512x512
+  m2_limbo01_seyu01/M2_limbo_ground_nrm__Texture2D.png    512x512
+  m2_limbo01_seyu01/Rock_01_col__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_seyu01/Rock_01_mos__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_seyu01/Rock_01_nrm__Texture2D.png            2048x2048 <BIG>
+  m2_limbo01_seyu01/Rock_02_col__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_seyu01/Rock_02_mos__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_seyu01/Rock_02_nrm__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_seyu01/yanjing_03_col__Texture2D.png         1024x1024 <BIG>
+  m2_holycity03/Dixing_03_col__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity03/Dixing_03_mos__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity03/Dixing_03_nrm__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity03/Shu_01_col__Texture2D.png                 512x512
+  m2_holycity03/chegnqiang_03_col__Texture2D.png          1024x1024 <BIG>
+  m2_holycity03/chegnqiang_03_mos__Texture2D.png          1024x1024 <BIG>
+  m2_holycity03/chegnqiang_03_nrm__Texture2D.png          1024x1024 <BIG>
+  m2_holycity03/jiaotang_03_col__Texture2D.png            1024x1024 <BIG>
+  m2_holycity03/jiaotang_03_mos__Texture2D.png            1024x1024 <BIG>
+  m2_holycity03/jiaotang_03_nrm__Texture2D.png            1024x1024 <BIG>
+  m2_holycity03/lou_03_col__Texture2D.png                 1024x1024 <BIG>
+  m2_holycity03/lou_03_mos__Texture2D.png                 1024x1024 <BIG>
+  m2_holycity03/lou_03_nrm__Texture2D.png                 1024x1024 <BIG>
+  m2_holycity03/minju_03_col__Texture2D.png               1024x1024 <BIG>
+  m2_holycity03/minju_03_mos__Texture2D.png               1024x1024 <BIG>
+  m2_holycity03/minju_03_nrm__Texture2D.png               1024x1024 <BIG>
+  m2_holycity03/shuzhi_col__Texture2D.png                 512x512
+  m2_loadingscene_sky/VFX_Nostop026_01__Texture2D.png     128x128
+  m2_loadingscene_sky/VFX_Nostop026_03__Texture2D.png     128x128
+  m2_loadingscene_sky/Z_xl06__Texture2D.png               512x256 <WIDE>
+  m2_loadingscene_sky/circle_g__Texture2D.png             256x256
+  m2_loadingscene_sky/dist_N__Texture2D.png               1024x1024 <BIG>
+  m2_loadingscene_sky/guanghuan01__Texture2D.png          256x256
+  m2_loadingscene_sky/z_disyuan_f__Texture2D.png          256x256
+  m2_loadingscene_sky/z_lt02__Texture2D.png               256x256
+  m2_loadingscene_sky/z_lt02_c__Texture2D.png             256x256
+  m2_loadingscene_sky/z_xk01_b__Texture2D.png             256x256
+  talklandprefab3_2/Eff_xian_034__Texture2D.png           128x128
+  ruchangheimu_cloud01/M2_LoginPNG3_MoonMask__Texture2D.png 512x512
+  ruchangheimu_cloud01/M2_LoginScene_BL2__Texture2D.png   64x64
+  ruchangheimu_cloud01/M2_LoginScene_Cloud_LUT__Texture2D.png 64x2 <WIDE>
+  ruchangheimu_cloud01/M2_LoginScene_Moon1024__Texture2D.png 1024x1024 <BIG>
+  ruchangheimu_cloud01/Noise41__Texture2D.png             1024x1024 <BIG>
+  ruchangheimu_cloud01/circle_g__Texture2D.png            256x256
+  ruchangheimu_cloud01/ruchangheimu_cloud_light__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/Eff_Repeat_18__Texture2D.png       128x128
+  m2_nightingalewarp02/M2_nightingalewarp01_Rock_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp01_Rock_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp01_Rock_nrm__Texture2D.png 2048x2048 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp01_Tree_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp01_Tree_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp01_Tree_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp02_Rock02_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp02_Rock02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp02_Rock02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp02/M2_nightingalewarp02_moon_col__Texture2D.png 512x512
+  m2_nightingalewarp02/M2_nightingalewarp02_moon_mos__Texture2D.png 512x512
+  m2_nightingalewarp02/M2_nightingalewarp02_moon_nrm__Texture2D.png 512x512
+  m2_nightingalewarp02/M2_scene_shuijing_col__Texture2D.png 512x512
+  m2_nightingalewarp02/M2_scene_shuijing_nrm__Texture2D.png 512x512
+  m2_nightingalewarp02/M2_scene_shuijing_smo__Texture2D.png 512x512
+  m2_nightingalewarp02/VFX_Nostop044_b__Texture2D.png     128x128
+  m2_nightingalewarp02/guangwenli_02_g_h__Texture2D.png   256x256
+  m2_nightingalewarp02/t_wenli_03__Texture2D.png          256x256
+  m2_nightingalewarp02/wenli002_b__Texture2D.png          128x128
+  m2_nightsea01_baozang/M2_Demo_SmallWaves__Texture2D.png 128x128
+  m2_nightsea01_baozang/M2_Water Foam Round__Texture2D.png 512x512
+  m2_nightsea01_baozang/M2_nightsea_01_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_02_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_ground_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_ground_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_jiaoshi_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_jiaoshi_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightsea01_baozang/M2_nightsea_jiaoshi_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/Eff_Repeat_18__Texture2D.png          128x128
+  m2_beholdersnow01/M2_BeholderSnow02_altar_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholderSnow02_altar_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholderSnow02_altar_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholderSnow_ground_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholderSnow_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholderSnow_ground_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholdercommonSnow_botany_ah01_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholdercommonSnow_botany_ah_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholdercommonSnow_botany_ah_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/M2_BeholdercommonSnow_botany_ah_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow01/VFX_Nostop026__Texture2D.png          128x128
+  m2_beholdersnow01/VFX_Nostop044_b__Texture2D.png        128x128
+  m2_beholdersnow01/guangwenli_02_g_h__Texture2D.png      256x256
+  m2_beholdersnow01/t_wenli_03__Texture2D.png             256x256
+  m2_beholdersnow01/t_wenli_08__Texture2D.png             256x128 <WIDE>
+  m2_beholdersnow01/wenli002_b__Texture2D.png             128x128
+  m2_cloister01_carpet/M2_cloister01_carpet_col__Texture2D.png 512x512
+  m2_cloister01_carpet/M2_cloister01_carpet_mos__Texture2D.png 512x512
+  m2_cloister01_carpet/M2_cloister01_carpet_nrm__Texture2D.png 512x512
+  m2_cloister01_carpet/M2_cloisterBroken01_carpet_col__Texture2D.png 512x512
+  m2_cloister01_carpet/M2_cloisterBroken01_carpet_mos__Texture2D.png 512x512
+  m2_cloister01_carpet/M2_cloisterBroken01_carpet_nrm__Texture2D.png 512x512
+  m2_cloister01_carpet/M2_cloister_ground_01_col__Texture2D.png 2048x2048 <BIG>
+  m2_cloister01_carpet/M2_cloister_ground_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_ground_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_props_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_props_mos__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_props_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_tengman_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_tengman_mos__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01_carpet/M2_cloister_tengman_nrm__Texture2D.png 1024x1024 <BIG>
+  test/test/test__Texture2D.png                           560x910 <PORTRAIT>
+  m2_desert01/M2_desert01_ground_d__Texture2D.png         2048x2048 <BIG>
+  m2_desert01/M2_desert01_ground_mos__Texture2D.png       1024x1024 <BIG>
+  m2_desert01/M2_desert01_ground_n__Texture2D.png         1024x1024 <BIG>
+  m2_desert01/M2_desert01_rock_d__Texture2D.png           1024x1024 <BIG>
+  m2_desert01/M2_desert01_rock_mos__Texture2D.png         1024x1024 <BIG>
+  m2_desert01/M2_desert01_rock_n__Texture2D.png           1024x1024 <BIG>
+  m2_desert01/M2_desertcommon_botany_d__Texture2D.png     1024x1024 <BIG>
+  m2_desert01/M2_desertcommon_botany_mos__Texture2D.png   1024x1024 <BIG>
+  m2_desert01/M2_desertcommon_botany_n__Texture2D.png     1024x1024 <BIG>
+  m2_desert01/h_ronjie_wuf__Texture2D.png                 128x128
+  m2_desert01/t_wenli_06__Texture2D.png                   256x256
+  m2_desert01/yan02__Texture2D.png                        256x256
+  m2_desert01/z_lt02_b__Texture2D.png                     128x128
+  m2_castle01/M2_castle01_dixing_col__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle01/M2_castle01_dixing_mos__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle01/M2_castle01_dixing_nrm__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle01/M2_castle01_mushi_col__Texture2D.png        1024x1024 <BIG>
+  m2_castle01/M2_castle01_mushi_mos__Texture2D.png        1024x1024 <BIG>
+  m2_castle01/M2_castle01_mushi_nrm__Texture2D.png        1024x1024 <BIG>
+  m2_castle01/M2_castleommon_cao_col__Texture2D.png       1024x1024 <BIG>
+  m2_castle01/M2_castleommon_shitou_col__Texture2D.png    1024x1024 <BIG>
+  m2_castle01/M2_castleommon_shitou_mos__Texture2D.png    512x512
+  m2_castle01/M2_castleommon_shitou_nrm__Texture2D.png    512x512
+  m2_castle01/M2_castleommon_shu_col__Texture2D.png       512x512
+  m2_castle01/M2_castleommon_shu_mos__Texture2D.png       512x512
+  m2_castle01/M2_castleommon_shu_nrm__Texture2D.png       512x512
+  m2_castle01/M2_castleommon_tengman_col__Texture2D.png   512x512
+  m2_limbo02/M2_limbo_ground_col__Texture2D.png           1024x1024 <BIG>
+  m2_limbo02/M2_limbo_ground_mos__Texture2D.png           512x512
+  m2_limbo02/M2_limbo_ground_nrm__Texture2D.png           512x512
+  m2_limbo02/Rock_01_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo02/Rock_01_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo02/Rock_01_nrm__Texture2D.png                   2048x2048 <BIG>
+  m2_limbo02/Rock_02_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo02/Rock_02_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo02/Rock_02_nrm__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo02/yanjing_02_col__Texture2D.png                1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_chunjiewujian_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_chunjiewujian_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_chunjiewujian_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_chunjiewujian_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_chunjiewujian_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_chunjiewujian_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_ground_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_ground_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian01_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian01_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian01_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian01_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian02_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian02_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian02_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian02_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian03_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian03_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian03_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian04_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian04_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/M2_Anximaxituan_yuanbanwujian04_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan03/Z_st03__Texture2D.png                 256x128 <WIDE>
+  m2_nightingale_evernightcastle/Shu_01_col__Texture2D.png 512x512
+  m2_nightingale_evernightcastle/chegnqiang_01_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/chegnqiang_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/chegnqiang_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/diaoxiang_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/diaoxiang_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/diaoxiang_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/dixing_01_col__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_evernightcastle/dixing_01_mos__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_evernightcastle/dixing_01_nrm__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_evernightcastle/jiaotang_01_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/jiaotang_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/jiaotang_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/minju_01_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/minju_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernightcastle/minju_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_heimamenni_scene/M2_LoginScene_BL2__Texture2D.png    64x64
+  m2_heimamenni_scene/M2_LoginScene_Cloud_Groud02__Texture2D.png 1024x1024 <BIG>
+  m2_heimamenni_scene/M2_LoginScene_Cloud_LUT__Texture2D.png 64x2 <WIDE>
+  m2_heimamenni_scene/M2_LoginScene_Moon1024__Texture2D.png 1024x1024 <BIG>
+  m2_heimamenni_scene/VFX_Nostop026_01__Texture2D.png     128x128
+  m2_heimamenni_scene/Z_xl06__Texture2D.png               512x256 <WIDE>
+  m2_heimamenni_scene/circle_g__Texture2D.png             256x256
+  m2_heimamenni_scene/ruchangheimu_cloud_light__Texture2D.png 1024x1024 <BIG>
+  m2_heimamenni_scene/z_lt02_c__Texture2D.png             256x256
+  m2_jidu01/M2_Jidu01_ground02_col__Texture2D.png         1024x1024 <BIG>
+  m2_jidu01/M2_Jidu01_sichou_col__Texture2D.png           1024x1024 <BIG>
+  m2_jidu01/M2_Jidu01_sichou_mos__Texture2D.png           1024x1024 <BIG>
+  m2_jidu01/M2_Jidu01_sichou_nrm__Texture2D.png           1024x1024 <BIG>
+  m2_jidu01/M2_Jidu01_tiemen_col__Texture2D.png           1024x1024 <BIG>
+  m2_jidu01/M2_Jidu01_tiemen_mos__Texture2D.png           1024x1024 <BIG>
+  m2_jidu01/M2_Jidu01_tiemen_nrm__Texture2D.png           1024x1024 <BIG>
+  m2_jidu01/Z_st03__Texture2D.png                         256x128 <WIDE>
+  m2_limbo03/Dixing_3_col__Texture2D.png                  512x1024 <PORTRAIT>
+  m2_limbo03/Dixing_3_mos__Texture2D.png                  512x1024 <PORTRAIT>
+  m2_limbo03/Dixing_3_nrm__Texture2D.png                  512x1024 <PORTRAIT>
+  m2_limbo03/M2_limbo_ground_col__Texture2D.png           1024x1024 <BIG>
+  m2_limbo03/M2_limbo_ground_mos__Texture2D.png           512x512
+  m2_limbo03/M2_limbo_ground_nrm__Texture2D.png           512x512
+  m2_limbo03/Rock_01_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo03/Rock_01_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo03/Rock_01_nrm__Texture2D.png                   2048x2048 <BIG>
+  m2_limbo03/Rock_02_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo03/Rock_02_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo03/Rock_02_nrm__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo03/yanjing_02_col__Texture2D.png                1024x1024 <BIG>
+  m2_limbo03/yanjing_03_col__Texture2D.png                1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_chunjiewujian_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_chunjiewujian_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_chunjiewujian_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_chunjiewujian_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_chunjiewujian_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_chunjiewujian_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_ground_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_ground_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian01_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian01_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian01_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian01_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian02_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian02_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian02_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian02_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian03_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian03_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian03_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian04_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian04_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/M2_Anximaxituan_yuanbanwujian04_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan02/Z_st03__Texture2D.png                 256x128 <WIDE>
+  m2_limbo04/Dixing_04_col__Texture2D.png                 512x1024 <PORTRAIT>
+  m2_limbo04/Dixing_04_mos__Texture2D.png                 512x1024 <PORTRAIT>
+  m2_limbo04/Dixing_04_nrm__Texture2D.png                 512x1024 <PORTRAIT>
+  m2_limbo04/M2_limbo_ground_col__Texture2D.png           1024x1024 <BIG>
+  m2_limbo04/M2_limbo_ground_mos__Texture2D.png           512x512
+  m2_limbo04/M2_limbo_ground_nrm__Texture2D.png           512x512
+  m2_limbo04/Rock_01_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo04/Rock_01_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo04/Rock_01_nrm__Texture2D.png                   2048x2048 <BIG>
+  m2_limbo04/Rock_02_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo04/Rock_02_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo04/Rock_02_nrm__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo04/yanjing_03_col__Texture2D.png                1024x1024 <BIG>
+  m2_cloud01/M2_Demo_SmallWaves__Texture2D.png            128x128
+  m2_cloud01/M2_Water Foam Round__Texture2D.png           512x512
+  m2_castlesnow02/M2_castle02_cao_col__Texture2D.png      256x256
+  m2_castlesnow02/M2_castle02_chengbao_01_col__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_02_col__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_03_col__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_03_mos__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_chengbao_03_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castle02_dixing_col__Texture2D.png   512x1024 <PORTRAIT>
+  m2_castlesnow02/M2_castle02_dixing_mos__Texture2D.png   512x1024 <PORTRAIT>
+  m2_castlesnow02/M2_castle02_dixing_nrm__Texture2D.png   512x1024 <PORTRAIT>
+  m2_castlesnow02/M2_castle02_mos__Texture2D.png          512x1024 <PORTRAIT>
+  m2_castlesnow02/M2_castle02_penquan_col__Texture2D.png  512x1024 <PORTRAIT>
+  m2_castlesnow02/M2_castle02_penquan_nrm__Texture2D.png  512x1024 <PORTRAIT>
+  m2_castlesnow02/M2_castleommon_cao_col__Texture2D.png   1024x1024 <BIG>
+  m2_castlesnow02/M2_castleommon_shitou_col__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow02/M2_castleommon_shitou_mos__Texture2D.png 512x512
+  m2_castlesnow02/M2_castleommon_shitou_nrm__Texture2D.png 512x512
+  m2_castlesnow02/M2_castleommon_shu_col__Texture2D.png   512x512
+  m2_castlesnow02/M2_castleommon_shu_mos__Texture2D.png   512x512
+  m2_castlesnow02/M2_castleommon_shu_nrm__Texture2D.png   512x512
+  m2_castlesnow02/M2_castleommon_tengman_col__Texture2D.png 256x256
+  m2_castlesnow02/Snow__Texture2D.png                     512x512
+  m2_nightsea01_night/M2_Demo_SmallWaves__Texture2D.png   128x128
+  m2_nightsea01_night/M2_Water Foam Round__Texture2D.png  512x512
+  m2_cloister03/M2_cloister_ground_03_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister03/M2_cloister_ground_03_mos__Texture2D.png  1024x1024 <BIG>
+  m2_cloister03/M2_cloister_ground_03_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_cloister03/M2_cloister_props_col_occ__Texture2D.png  1024x1024 <BIG>
+  m2_cloister03/M2_cloister_props_mos__Texture2D.png      1024x1024 <BIG>
+  m2_cloister03/M2_cloister_props_nrm__Texture2D.png      1024x1024 <BIG>
+  m2_cloister03/M2_cloister_tengman_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister03/M2_cloister_tengman_mos__Texture2D.png    1024x1024 <BIG>
+  m2_cloister03/M2_cloister_tengman_nrm__Texture2D.png    1024x1024 <BIG>
+  m2_desert02_daytime/M2_desert01_rock_d__Texture2D.png   1024x1024 <BIG>
+  m2_desert02_daytime/M2_desert01_rock_mos__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desert01_rock_n__Texture2D.png   1024x1024 <BIG>
+  m2_desert02_daytime/M2_desert02_ground_d__Texture2D.png 2048x2048 <BIG>
+  m2_desert02_daytime/M2_desert02_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desert02_ground_n__Texture2D.png 2048x2048 <BIG>
+  m2_desert02_daytime/M2_desertcommon_botany_d__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desertcommon_botany_mos__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desertcommon_botany_n__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desertcommon_relic_d__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desertcommon_relic_mos__Texture2D.png 1024x1024 <BIG>
+  m2_desert02_daytime/M2_desertcommon_relic_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholder01/Eff_Repeat_18__Texture2D.png              128x128
+  m2_beholder01/M2_Beholder02_altar_d__Texture2D.png      1024x1024 <BIG>
+  m2_beholder01/M2_Beholder02_altar_mos__Texture2D.png    1024x1024 <BIG>
+  m2_beholder01/M2_Beholder02_altar_n__Texture2D.png      1024x1024 <BIG>
+  m2_beholder01/M2_Beholder_ground_d__Texture2D.png       1024x1024 <BIG>
+  m2_beholder01/M2_Beholder_ground_mos__Texture2D.png     1024x1024 <BIG>
+  m2_beholder01/M2_Beholder_ground_n__Texture2D.png       1024x1024 <BIG>
+  m2_beholder01/M2_Beholdercommon_botany_ah01_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholder01/M2_Beholdercommon_botany_ah_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholder01/M2_Beholdercommon_botany_ah_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholder01/M2_Beholdercommon_botany_ah_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholder01/VFX_Nostop026__Texture2D.png              128x128
+  m2_beholder01/VFX_Nostop044_b__Texture2D.png            128x128
+  m2_beholder01/guangwenli_02_g_h__Texture2D.png          256x256
+  m2_beholder01/t_wenli_03__Texture2D.png                 256x256
+  m2_beholder01/t_wenli_08__Texture2D.png                 256x128 <WIDE>
+  m2_beholder01/wenli002_b__Texture2D.png                 128x128
+  m2_daily03_prison/VFX_Nostop026_03__Texture2D.png       128x128
+  m2_daily03_prison/Z_xl06__Texture2D.png                 512x256 <WIDE>
+  m2_daily03_prison/z_xk01_b__Texture2D.png               256x256
+  m2_nightsea01_xueyue/M2_Demo_SmallWaves__Texture2D.png  128x128
+  m2_nightsea01_xueyue/M2_Water Foam Round__Texture2D.png 512x512
+  m2_cloister02/M2_cloister_ground_02_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02/M2_cloister_ground_02_mos__Texture2D.png  1024x1024 <BIG>
+  m2_cloister02/M2_cloister_ground_02_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_cloister02/M2_cloister_props_col_occ__Texture2D.png  1024x1024 <BIG>
+  m2_cloister02/M2_cloister_props_mos__Texture2D.png      1024x1024 <BIG>
+  m2_cloister02/M2_cloister_props_nrm__Texture2D.png      1024x1024 <BIG>
+  m2_cloister02/M2_cloister_tengman_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02/M2_cloister_tengman_mos__Texture2D.png    1024x1024 <BIG>
+  m2_cloister02/M2_cloister_tengman_nrm__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_town/Dixing_03_col__Texture2D.png        512x1024 <PORTRAIT>
+  m2_nightingale_town/Dixing_03_mos__Texture2D.png        512x1024 <PORTRAIT>
+  m2_nightingale_town/Dixing_03_nrm__Texture2D.png        512x1024 <PORTRAIT>
+  m2_nightingale_town/Shu_01_col__Texture2D.png           512x512
+  m2_nightingale_town/chegnqiang_03_col__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_town/chegnqiang_03_mos__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_town/chegnqiang_03_nrm__Texture2D.png    1024x1024 <BIG>
+  m2_nightingale_town/jiaotang_03_col__Texture2D.png      1024x1024 <BIG>
+  m2_nightingale_town/jiaotang_03_mos__Texture2D.png      1024x1024 <BIG>
+  m2_nightingale_town/jiaotang_03_nrm__Texture2D.png      1024x1024 <BIG>
+  m2_nightingale_town/lou_03_col__Texture2D.png           1024x1024 <BIG>
+  m2_nightingale_town/lou_03_mos__Texture2D.png           1024x1024 <BIG>
+  m2_nightingale_town/lou_03_nrm__Texture2D.png           1024x1024 <BIG>
+  m2_nightingale_town/minju_03_col__Texture2D.png         1024x1024 <BIG>
+  m2_nightingale_town/minju_03_mos__Texture2D.png         1024x1024 <BIG>
+  m2_nightingale_town/minju_03_nrm__Texture2D.png         1024x1024 <BIG>
+  m2_nightingale_town/shuzhi_col__Texture2D.png           512x512
+  talklandprefab_first_2/Eff_xian_034__Texture2D.png      128x128
+  m2_dungeon01/M2_dungeon01_col__Texture2D.png            1024x1024 <BIG>
+  m2_dungeon01/M2_dungeon01_mos__Texture2D.png            1024x1024 <BIG>
+  m2_dungeon01/M2_dungeon01_nrm__Texture2D.png            1024x1024 <BIG>
+  m2_dungeon01/M2_dungeon02_col__Texture2D.png            1024x1024 <BIG>
+  m2_dungeon01/M2_dungeon02_mos__Texture2D.png            1024x1024 <BIG>
+  m2_dungeon01/M2_dungeon02_nrm__Texture2D.png            1024x1024 <BIG>
+  m2_dungeon01/t_wenli_09__Texture2D.png                  256x256
+  m2_dungeon01/z-yanjiangliu01__Texture2D.png             128x128
+  m2_holycity01/Shu_01_col__Texture2D.png                 512x512
+  m2_holycity01/chegnqiang_01_col__Texture2D.png          1024x1024 <BIG>
+  m2_holycity01/chegnqiang_01_mos__Texture2D.png          1024x1024 <BIG>
+  m2_holycity01/chegnqiang_01_nrm__Texture2D.png          1024x1024 <BIG>
+  m2_holycity01/diaoxiang_col__Texture2D.png              1024x1024 <BIG>
+  m2_holycity01/diaoxiang_mos__Texture2D.png              1024x1024 <BIG>
+  m2_holycity01/diaoxiang_nrm__Texture2D.png              1024x1024 <BIG>
+  m2_holycity01/dixing_01_col__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity01/dixing_01_mos__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity01/dixing_01_nrm__Texture2D.png              512x1024 <PORTRAIT>
+  m2_holycity01/jiaotang_01_col__Texture2D.png            1024x1024 <BIG>
+  m2_holycity01/jiaotang_01_mos__Texture2D.png            1024x1024 <BIG>
+  m2_holycity01/jiaotang_01_nrm__Texture2D.png            1024x1024 <BIG>
+  m2_holycity01/minju_01_col__Texture2D.png               1024x1024 <BIG>
+  m2_holycity01/minju_01_mos__Texture2D.png               1024x1024 <BIG>
+  m2_holycity01/minju_01_nrm__Texture2D.png               1024x1024 <BIG>
+  ruchangheimu_cloud/M2_LoginPNG3_MoonMask__Texture2D.png 512x512
+  ruchangheimu_cloud/M2_LoginScene_BL2__Texture2D.png     64x64
+  ruchangheimu_cloud/M2_LoginScene_Cloud_LUT__Texture2D.png 64x2 <WIDE>
+  ruchangheimu_cloud/M2_LoginScene_Moon1024__Texture2D.png 1024x1024 <BIG>
+  ruchangheimu_cloud/M2_LoginScene_Moon__Texture2D.png    1024x1024 <BIG>
+  ruchangheimu_cloud/Noise41__Texture2D.png               1024x1024 <BIG>
+  ruchangheimu_cloud/VFX_Nostop026_01__Texture2D.png      128x128
+  ruchangheimu_cloud/VFX_Nostop026_03__Texture2D.png      128x128
+  ruchangheimu_cloud/VFX_Nostop026__Texture2D.png         128x128
+  ruchangheimu_cloud/Z_xl06__Texture2D.png                512x256 <WIDE>
+  ruchangheimu_cloud/atlas_login_room__Texture2D.png      256x256
+  ruchangheimu_cloud/circle_g__Texture2D.png              256x256
+  ruchangheimu_cloud/guanghuan01__Texture2D.png           256x256
+  ruchangheimu_cloud/ruchangheimu_cloud_light__Texture2D.png 1024x1024 <BIG>
+  ruchangheimu_cloud/z_xk01_b__Texture2D.png              256x256
+  m2_shuangguan01/M2_Demo_SmallWaves__Texture2D.png       128x128
+  m2_shuangguan01/M2_Water Foam Round__Texture2D.png      512x512
+  m2_nightingalewarp01/M2_nightingalewarp01_Ground_col__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingalewarp01/M2_nightingalewarp01_Ground_mos__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingalewarp01/M2_nightingalewarp01_Ground_nrm__Texture2D.png 1024x2048 <BIG> <PORTRAIT>
+  m2_nightingalewarp01/M2_nightingalewarp01_Rock_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp01/M2_nightingalewarp01_Rock_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp01/M2_nightingalewarp01_Rock_nrm__Texture2D.png 2048x2048 <BIG>
+  m2_nightingalewarp01/M2_nightingalewarp01_Tree_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp01/M2_nightingalewarp01_Tree_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp01/M2_nightingalewarp01_Tree_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingalewarp01/M2_scene_shuijing_col__Texture2D.png 512x512
+  m2_nightingalewarp01/M2_scene_shuijing_nrm__Texture2D.png 512x512
+  m2_nightingalewarp01/M2_scene_shuijing_smo__Texture2D.png 512x512
+  m2_nightingalewarp01/VFX_Nostop026__Texture2D.png       128x128
+  m2_nightingalewarp01/t_wenli_08__Texture2D.png          256x128 <WIDE>
+  m2_nightingalewarp01/wenli002_b__Texture2D.png          128x128
+  m2_limbo01_yanshi/Dixing_1_col__Texture2D.png           512x1024 <PORTRAIT>
+  m2_limbo01_yanshi/Dixing_1_mos__Texture2D.png           512x1024 <PORTRAIT>
+  m2_limbo01_yanshi/Dixing_1_nrm__Texture2D.png           512x1024 <PORTRAIT>
+  m2_limbo01_yanshi/M2_limbo_ground_col__Texture2D.png    1024x1024 <BIG>
+  m2_limbo01_yanshi/M2_limbo_ground_mos__Texture2D.png    512x512
+  m2_limbo01_yanshi/M2_limbo_ground_nrm__Texture2D.png    512x512
+  m2_limbo01_yanshi/Rock_01_col__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_yanshi/Rock_01_mos__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_yanshi/Rock_01_nrm__Texture2D.png            2048x2048 <BIG>
+  m2_limbo01_yanshi/Rock_02_col__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_yanshi/Rock_02_mos__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_yanshi/Rock_02_nrm__Texture2D.png            1024x1024 <BIG>
+  m2_limbo01_yanshi/yanjing_03_col__Texture2D.png         1024x1024 <BIG>
+  m2_desert04/Cloud_Map_03a__Texture2D.png                256x512 <PORTRAIT>
+  m2_desert04/M2_desert03_altar01_d__Texture2D.png        1024x1024 <BIG>
+  m2_desert04/M2_desert03_altar01_mos__Texture2D.png      1024x1024 <BIG>
+  m2_desert04/M2_desert03_altar01_n__Texture2D.png        1024x1024 <BIG>
+  m2_desert04/M2_desert03_altar02_d__Texture2D.png        1024x1024 <BIG>
+  m2_desert04/M2_desert03_altar02_mos__Texture2D.png      1024x1024 <BIG>
+  m2_desert04/M2_desert03_altar02_n__Texture2D.png        1024x1024 <BIG>
+  m2_desert04/M2_desert03_ground_d__Texture2D.png         2048x2048 <BIG>
+  m2_desert04/M2_desert03_ground_mos__Texture2D.png       1024x1024 <BIG>
+  m2_desert04/M2_desert03_ground_n__Texture2D.png         2048x2048 <BIG>
+  m2_desert04/M2_desertcommon_botany_d__Texture2D.png     1024x1024 <BIG>
+  m2_desert04/M2_desertcommon_botany_mos__Texture2D.png   1024x1024 <BIG>
+  m2_desert04/M2_desertcommon_botany_n__Texture2D.png     1024x1024 <BIG>
+  m2_desert04/M2_desertcommon_relic_d__Texture2D.png      1024x1024 <BIG>
+  m2_desert04/M2_desertcommon_relic_mos__Texture2D.png    1024x1024 <BIG>
+  m2_desert04/M2_desertcommon_relic_n__Texture2D.png      1024x1024 <BIG>
+  m2_desert04/VFX_Nostop026__Texture2D.png                128x128
+  m2_desert04/circle_g__Texture2D.png                     256x256
+  m2_desert04/cloud01__Texture2D.png                      256x256
+  m2_desert04/gaungci__Texture2D.png                      128x128
+  m2_desert04/h_ronjie_wuf__Texture2D.png                 128x128
+  m2_desert04/yanjing_02_col__Texture2D.png               1024x1024 <BIG>
+  m2_desert04/z_huowei__Texture2D.png                     256x128 <WIDE>
+  talklandprefab3_1/Eff_xian_034__Texture2D.png           128x128
+  m2_desert03/M2_desert03_altar01_d__Texture2D.png        1024x1024 <BIG>
+  m2_desert03/M2_desert03_altar01_mos__Texture2D.png      1024x1024 <BIG>
+  m2_desert03/M2_desert03_altar01_n__Texture2D.png        1024x1024 <BIG>
+  m2_desert03/M2_desert03_altar02_d__Texture2D.png        1024x1024 <BIG>
+  m2_desert03/M2_desert03_altar02_mos__Texture2D.png      1024x1024 <BIG>
+  m2_desert03/M2_desert03_altar02_n__Texture2D.png        1024x1024 <BIG>
+  m2_desert03/M2_desert03_ground_d__Texture2D.png         2048x2048 <BIG>
+  m2_desert03/M2_desert03_ground_mos__Texture2D.png       1024x1024 <BIG>
+  m2_desert03/M2_desert03_ground_n__Texture2D.png         2048x2048 <BIG>
+  m2_desert03/M2_desertcommon_botany_d__Texture2D.png     1024x1024 <BIG>
+  m2_desert03/M2_desertcommon_botany_mos__Texture2D.png   1024x1024 <BIG>
+  m2_desert03/M2_desertcommon_botany_n__Texture2D.png     1024x1024 <BIG>
+  m2_desert03/M2_desertcommon_relic_d__Texture2D.png      1024x1024 <BIG>
+  m2_desert03/M2_desertcommon_relic_mos__Texture2D.png    1024x1024 <BIG>
+  m2_desert03/M2_desertcommon_relic_n__Texture2D.png      1024x1024 <BIG>
+  ruchangheimu_cloud02/M2_LoginPNG3_MoonMask__Texture2D.png 512x512
+  ruchangheimu_cloud02/M2_LoginScene_BL2__Texture2D.png   64x64
+  ruchangheimu_cloud02/M2_LoginScene_Cloud_LUT__Texture2D.png 64x2 <WIDE>
+  ruchangheimu_cloud02/M2_LoginScene_Moon1024__Texture2D.png 1024x1024 <BIG>
+  ruchangheimu_cloud02/Noise41__Texture2D.png             1024x1024 <BIG>
+  ruchangheimu_cloud02/circle_g__Texture2D.png            256x256
+  ruchangheimu_cloud02/ruchangheimu_cloud_light__Texture2D.png 1024x1024 <BIG>
+  m2_loadingscene_xingkong/VFX_Nostop026_01__Texture2D.png 128x128
+  m2_loadingscene_xingkong/VFX_Nostop026_03__Texture2D.png 128x128
+  m2_loadingscene_xingkong/Z_xl06__Texture2D.png          512x256 <WIDE>
+  m2_loadingscene_xingkong/circle_g__Texture2D.png        256x256
+  m2_loadingscene_xingkong/dist_N__Texture2D.png          1024x1024 <BIG>
+  m2_loadingscene_xingkong/guanghuan01__Texture2D.png     256x256
+  m2_loadingscene_xingkong/z_disyuan_f__Texture2D.png     256x256
+  m2_loadingscene_xingkong/z_lt02__Texture2D.png          256x256
+  m2_loadingscene_xingkong/z_lt02_c__Texture2D.png        256x256
+  m2_loadingscene_xingkong/z_xk01_b__Texture2D.png        256x256
+  m2_beholdersnow02/Eff_Repeat_18__Texture2D.png          128x128
+  m2_beholdersnow02/M2_BeholderSnow02_altar_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholderSnow02_altar_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholderSnow02_altar_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholderSnow_ground_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholderSnow_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholderSnow_ground_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholdercommonSnow_botany_ah01_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholdercommonSnow_botany_ah_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholdercommonSnow_botany_ah_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_BeholdercommonSnow_botany_ah_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_Beholdercommon_botany_ah_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_Beholdercommon_botany_ah_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/M2_Beholdercommon_botany_ah_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholdersnow02/VFX_Nostop026__Texture2D.png          128x128
+  m2_beholdersnow02/VFX_Nostop044_b__Texture2D.png        128x128
+  m2_beholdersnow02/guangwenli_02_g_h__Texture2D.png      256x256
+  m2_beholdersnow02/t_wenli_03__Texture2D.png             256x256
+  m2_beholdersnow02/t_wenli_08__Texture2D.png             256x128 <WIDE>
+  m2_beholdersnow02/wenli002_b__Texture2D.png             128x128
+  m2_desert02/M2_desert01_rock_d__Texture2D.png           1024x1024 <BIG>
+  m2_desert02/M2_desert01_rock_mos__Texture2D.png         1024x1024 <BIG>
+  m2_desert02/M2_desert01_rock_n__Texture2D.png           1024x1024 <BIG>
+  m2_desert02/M2_desert02_ground_d__Texture2D.png         2048x2048 <BIG>
+  m2_desert02/M2_desert02_ground_mos__Texture2D.png       1024x1024 <BIG>
+  m2_desert02/M2_desert02_ground_n__Texture2D.png         2048x2048 <BIG>
+  m2_desert02/M2_desertcommon_botany_d__Texture2D.png     1024x1024 <BIG>
+  m2_desert02/M2_desertcommon_botany_mos__Texture2D.png   1024x1024 <BIG>
+  m2_desert02/M2_desertcommon_botany_n__Texture2D.png     1024x1024 <BIG>
+  m2_desert02/M2_desertcommon_relic_d__Texture2D.png      1024x1024 <BIG>
+  m2_desert02/M2_desertcommon_relic_mos__Texture2D.png    1024x1024 <BIG>
+  m2_desert02/M2_desertcommon_relic_n__Texture2D.png      1024x1024 <BIG>
+  m2_desert02/h_ronjie_wuf__Texture2D.png                 128x128
+  m2_desert02/t_wenli_06__Texture2D.png                   256x256
+  m2_desert02/yan02__Texture2D.png                        256x256
+  m2_desert02/z_lt02_b__Texture2D.png                     128x128
+  m2_desert05/M2_desert05_ground _01_d__Texture2D.png     1024x1024 <BIG>
+  m2_desert05/M2_desert05_ground _01_n__Texture2D.png     1024x1024 <BIG>
+  m2_desert05/M2_desert05_ground _02_d__Texture2D.png     1024x1024 <BIG>
+  m2_desert05/M2_desert05_ground _02_mos__Texture2D.png   1024x1024 <BIG>
+  m2_desert05/M2_desert05_ground _02_n__Texture2D.png     1024x1024 <BIG>
+  m2_desert05/M2_desert05_zhuzi_d__Texture2D.png          1024x1024 <BIG>
+  m2_desert05/M2_desert05_zhuzi_mos__Texture2D.png        1024x1024 <BIG>
+  m2_desert05/M2_desert05_zhuzi_n__Texture2D.png          1024x1024 <BIG>
+  m2_desert05/M2_desert05common_botany_d__Texture2D.png   512x512
+  m2_desert05/Z_st03__Texture2D.png                       256x128 <WIDE>
+  m2_desert05/h_ronjie_wuf__Texture2D.png                 128x128
+  m2_desert05/t_wenli_06__Texture2D.png                   256x256
+  m2_desert05/t_yanwu__Texture2D.png                      256x256
+  m2_desert05/yan02__Texture2D.png                        256x256
+  m2_desert05/z_lt02_b__Texture2D.png                     128x128
+  m2_limbo01/Dixing_1_col__Texture2D.png                  512x1024 <PORTRAIT>
+  m2_limbo01/Dixing_1_mos__Texture2D.png                  512x1024 <PORTRAIT>
+  m2_limbo01/Dixing_1_nrm__Texture2D.png                  512x1024 <PORTRAIT>
+  m2_limbo01/M2_limbo_ground_col__Texture2D.png           1024x1024 <BIG>
+  m2_limbo01/M2_limbo_ground_mos__Texture2D.png           512x512
+  m2_limbo01/M2_limbo_ground_nrm__Texture2D.png           512x512
+  m2_limbo01/Rock_01_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo01/Rock_01_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo01/Rock_01_nrm__Texture2D.png                   2048x2048 <BIG>
+  m2_limbo01/Rock_02_col__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo01/Rock_02_mos__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo01/Rock_02_nrm__Texture2D.png                   1024x1024 <BIG>
+  m2_limbo01/yanjing_03_col__Texture2D.png                1024x1024 <BIG>
+  m2_nightingale_evernighttown/Dixing_03_col__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_evernighttown/Dixing_03_mos__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_evernighttown/Dixing_03_nrm__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_evernighttown/Shu_01_col__Texture2D.png  512x512
+  m2_nightingale_evernighttown/chegnqiang_03_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/chegnqiang_03_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/chegnqiang_03_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/jiaotang_01_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/jiaotang_01_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/jiaotang_01_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/lou_03_col__Texture2D.png  1024x1024 <BIG>
+  m2_nightingale_evernighttown/lou_03_mos__Texture2D.png  1024x1024 <BIG>
+  m2_nightingale_evernighttown/lou_03_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_nightingale_evernighttown/minju_03_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/minju_03_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/minju_03_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_evernighttown/shuzhi_col__Texture2D.png  512x512
+  m2_castle02/M2_castle01_dixing_col__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle02/M2_castle01_dixing_mos__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle02/M2_castle01_dixing_nrm__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle02/M2_castle02_cao_col__Texture2D.png          256x256
+  m2_castle02/M2_castle02_chengbao_01_col__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_01_mos__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_01_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_02_col__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_02_mos__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_02_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_03_col__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_03_mos__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_chengbao_03_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_castle02/M2_castle02_dixing_col__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle02/M2_castle02_dixing_mos__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle02/M2_castle02_dixing_nrm__Texture2D.png       512x1024 <PORTRAIT>
+  m2_castle02/M2_castle02_mos__Texture2D.png              512x1024 <PORTRAIT>
+  m2_castle02/M2_castle02_penquan_col__Texture2D.png      512x1024 <PORTRAIT>
+  m2_castle02/M2_castle02_penquan_nrm__Texture2D.png      512x1024 <PORTRAIT>
+  m2_castle02/M2_castleommon_cao_col__Texture2D.png       1024x1024 <BIG>
+  m2_castle02/M2_castleommon_shitou_col__Texture2D.png    1024x1024 <BIG>
+  m2_castle02/M2_castleommon_shitou_mos__Texture2D.png    512x512
+  m2_castle02/M2_castleommon_shitou_nrm__Texture2D.png    512x512
+  m2_castle02/M2_castleommon_shu_col__Texture2D.png       512x512
+  m2_castle02/M2_castleommon_shu_mos__Texture2D.png       512x512
+  m2_castle02/M2_castleommon_shu_nrm__Texture2D.png       512x512
+  m2_castle02/M2_castleommon_tengman_col__Texture2D.png   512x512
+  m2_loginscene_scene/M2_LoginScene_BL2__Texture2D.png    64x64
+  m2_wszhiyuan/M2_Wangshengzhiyuan_rentou_col__Texture2D.png 512x512
+  m2_wszhiyuan/M2_Wangshengzhiyuan_rentou_nrm__Texture2D.png 512x512
+  m2_wszhiyuan/M2_Wangshengzhiyuan_rentou_smo__Texture2D.png 512x512
+  m2_wszhiyuan/M2_Wangshengzhiyuan_zhizhuwang_col__Texture2D.png 1024x1024 <BIG>
+  m2_wszhiyuan/M2_Wangshengzhiyuan_zhizhuwang_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_wszhiyuan/M2_Wangshengzhiyuan_zhizhuwang_smo__Texture2D.png 1024x1024 <BIG>
+  m2_daily01/Eff_Beam_02__Texture2D.png                   256x256
+  m2_daily01/Eff_Obj_03__Texture2D.png                    256x256
+  m2_daily01/Eff_Repeat_18__Texture2D.png                 128x128
+  m2_daily01/M2_daily01_Ground_col_occ__Texture2D.png     1024x1024 <BIG>
+  m2_daily01/M2_daily01_Ground_mos__Texture2D.png         1024x1024 <BIG>
+  m2_daily01/M2_daily01_Ground_nrm__Texture2D.png         1024x1024 <BIG>
+  m2_daily01/M2_daily01_yabi_col_occ__Texture2D.png       1024x1024 <BIG>
+  m2_daily01/M2_daily01_yabi_mos__Texture2D.png           1024x1024 <BIG>
+  m2_daily01/M2_daily01_yabi_nrm__Texture2D.png           1024x1024 <BIG>
+  m2_daily01/M2_daily01_zhuzi_col_occ__Texture2D.png      1024x1024 <BIG>
+  m2_daily01/M2_daily01_zhuzi_mos__Texture2D.png          1024x1024 <BIG>
+  m2_daily01/t_mask_03__Texture2D.png                     256x256
+  m2_daily01/t_wenli_09__Texture2D.png                    256x256
+  m2_daily01/wenli002_b__Texture2D.png                    128x128
+  m2_daily01/z_lt02__Texture2D.png                        256x256
+  m2_anximaxituan01/M2_Anximaxituan_ground_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_ground_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_ground_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian01_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian01_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian01_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian02_alpha_col__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian02_alpha_mos__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian02_alpha_nrm__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian02_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian03_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian03_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian03_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian04_col__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian04_mos__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian04_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian05_col__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian05_mos__Texture2D.png 512x512
+  m2_anximaxituan01/M2_Anximaxituan_yuanbanwujian05_nrm__Texture2D.png 512x512
+  m2_anximaxituan01/Z_st03__Texture2D.png                 256x128 <WIDE>
+  m2_nightingale_warp01/M2_nightingale_Ground_col_occ__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_warp01/M2_nightingale_Ground_mos__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_warp01/M2_nightingale_Ground_nrm__Texture2D.png 1024x2048 <BIG> <PORTRAIT>
+  m2_nightingale_warp01/M2_nightingale_Rock_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_warp01/M2_nightingale_Rock_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_warp01/M2_nightingale_Rock_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_warp01/M2_nightingale_Tree_col_occ__Texture2D.png 512x512
+  m2_nightingale_warp01/M2_nightingale_Tree_mos__Texture2D.png 512x512
+  m2_nightingale_warp01/M2_nightingale_Tree_nrm__Texture2D.png 512x512
+  m2_limbo01_baoshi01/Dixing_1_col__Texture2D.png         512x1024 <PORTRAIT>
+  m2_limbo01_baoshi01/Dixing_1_mos__Texture2D.png         512x1024 <PORTRAIT>
+  m2_limbo01_baoshi01/Dixing_1_nrm__Texture2D.png         512x1024 <PORTRAIT>
+  m2_limbo01_baoshi01/M2_limbo_ground_col__Texture2D.png  1024x1024 <BIG>
+  m2_limbo01_baoshi01/M2_limbo_ground_mos__Texture2D.png  512x512
+  m2_limbo01_baoshi01/M2_limbo_ground_nrm__Texture2D.png  512x512
+  m2_limbo01_baoshi01/Rock_01_col__Texture2D.png          1024x1024 <BIG>
+  m2_limbo01_baoshi01/Rock_01_mos__Texture2D.png          1024x1024 <BIG>
+  m2_limbo01_baoshi01/Rock_01_nrm__Texture2D.png          2048x2048 <BIG>
+  m2_limbo01_baoshi01/Rock_02_col__Texture2D.png          1024x1024 <BIG>
+  m2_limbo01_baoshi01/Rock_02_mos__Texture2D.png          1024x1024 <BIG>
+  m2_limbo01_baoshi01/Rock_02_nrm__Texture2D.png          1024x1024 <BIG>
+  m2_limbo01_baoshi01/yanjing_03_col__Texture2D.png       1024x1024 <BIG>
+  m2_nightingale_snow/M2_nightingale_Ground_col__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_snow/M2_nightingale_Ground_mos__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale_snow/M2_nightingale_Ground_nrm__Texture2D.png 1024x2048 <BIG> <PORTRAIT>
+  m2_nightingale_snow/M2_nightingale_Rock_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_snow/M2_nightingale_Rock_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_snow/M2_nightingale_Rock_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_snow/M2_nightingale_Tree_col__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_snow/M2_nightingale_Tree_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_snow/M2_nightingale_Tree_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_beholder02/Eff_Repeat_18__Texture2D.png              128x128
+  m2_beholder02/M2_Beholder02_altar_d__Texture2D.png      1024x1024 <BIG>
+  m2_beholder02/M2_Beholder02_altar_mos__Texture2D.png    1024x1024 <BIG>
+  m2_beholder02/M2_Beholder02_altar_n__Texture2D.png      1024x1024 <BIG>
+  m2_beholder02/M2_Beholder_ground_d__Texture2D.png       1024x1024 <BIG>
+  m2_beholder02/M2_Beholder_ground_mos__Texture2D.png     1024x1024 <BIG>
+  m2_beholder02/M2_Beholder_ground_n__Texture2D.png       1024x1024 <BIG>
+  m2_beholder02/M2_Beholdercommon_botany_ah01_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholder02/M2_Beholdercommon_botany_ah_d__Texture2D.png 1024x1024 <BIG>
+  m2_beholder02/M2_Beholdercommon_botany_ah_mos__Texture2D.png 1024x1024 <BIG>
+  m2_beholder02/M2_Beholdercommon_botany_ah_n__Texture2D.png 1024x1024 <BIG>
+  m2_beholder02/VFX_Nostop026__Texture2D.png              128x128
+  m2_beholder02/VFX_Nostop044_b__Texture2D.png            128x128
+  m2_beholder02/guangwenli_02_g_h__Texture2D.png          256x256
+  m2_beholder02/t_wenli_03__Texture2D.png                 256x256
+  m2_beholder02/t_wenli_08__Texture2D.png                 256x128 <WIDE>
+  m2_beholder02/wenli002_b__Texture2D.png                 128x128
+  m2_nightsea01/M2_Demo_SmallWaves__Texture2D.png         128x128
+  m2_nightsea01/M2_Water Foam Round__Texture2D.png        512x512
+  m2_tujian01/M2_Gangqin_col__Texture2D.png               512x512
+  m2_tujian01/M2_Gangqin_mask__Texture2D.png              512x512
+  m2_tujian01/M2_Gangqin_nrm__Texture2D.png               512x512
+  m2_tujian01/M2_Gangqin_smo__Texture2D.png               512x512
+  m2_tujian01/M2_HomeScene_bilu_col__Texture2D.png        512x512
+  m2_tujian01/M2_HomeScene_bilu_mos__Texture2D.png        512x512
+  m2_tujian01/M2_HomeScene_bilu_nrm__Texture2D.png        512x512
+  m2_tujian01/M2_HomeScene_chuanglian_col__Texture2D.png  256x512 <PORTRAIT>
+  m2_tujian01/M2_HomeScene_chuanglian_nrm__Texture2D.png  256x512 <PORTRAIT>
+  m2_tujian01/M2_HomeScene_dengzhu_col__Texture2D.png     512x512
+  m2_tujian01/M2_HomeScene_dengzhu_mos__Texture2D.png     512x512
+  m2_tujian01/M2_HomeScene_dengzhu_nrm__Texture2D.png     512x512
+  m2_tujian01/M2_HomeScene_diaodeng_col__Texture2D.png    512x512
+  m2_tujian01/M2_HomeScene_diaodeng_mos__Texture2D.png    512x512
+  m2_tujian01/M2_HomeScene_dizhuan_col__Texture2D.png     512x512
+  m2_tujian01/M2_HomeScene_dizhuan_mos__Texture2D.png     512x512
+  m2_tujian01/M2_HomeScene_dizhuan_nrm__Texture2D.png     512x512
+  m2_tujian01/M2_HomeScene_louti_col__Texture2D.png       512x512
+  m2_tujian01/M2_HomeScene_louti_mos__Texture2D.png       512x512
+  m2_tujian01/M2_HomeScene_louti_nrm__Texture2D.png       512x512
+  m2_tujian01/M2_HomeScene_tiemen_col__Texture2D.png      512x512
+  m2_tujian01/M2_HomeScene_tiemen_mos__Texture2D.png      512x512
+  m2_tujian01/M2_HomeScene_tiemen_nrm__Texture2D.png      512x512
+  m2_tujian01/VFX_Nostop026_01__Texture2D.png             128x128
+  m2_tujian01/VFX_Nostop026_03__Texture2D.png             128x128
+  m2_tujian01/VFX_Nostop026__Texture2D.png                128x128
+  m2_tujian01/Z_xl06__Texture2D.png                       512x256 <WIDE>
+  m2_tujian01/atlas_login_room__Texture2D.png             256x256
+  m2_tujian01/circle_g__Texture2D.png                     256x256
+  m2_tujian01/dist_N__Texture2D.png                       1024x1024 <BIG>
+  m2_tujian01/guanghuan01__Texture2D.png                  256x256
+  m2_tujian01/wuxianpu02__Texture2D.png                   256x64 <WIDE>
+  m2_tujian01/wuxianpu__Texture2D.png                     128x32 <WIDE>
+  m2_tujian01/z_disyuan_f__Texture2D.png                  256x256
+  m2_tujian01/z_lt02__Texture2D.png                       256x256
+  m2_tujian01/z_lt02_c__Texture2D.png                     256x256
+  m2_tujian01/z_xk01_b__Texture2D.png                     256x256
+  scene_bk/scenebk1/VFX_Nostop026_01__Texture2D.png       128x128
+  m2_castlesnow01/M2_castle01_dixing_col__Texture2D.png   512x1024 <PORTRAIT>
+  m2_castlesnow01/M2_castle01_dixing_mos__Texture2D.png   512x1024 <PORTRAIT>
+  m2_castlesnow01/M2_castle01_dixing_nrm__Texture2D.png   512x1024 <PORTRAIT>
+  m2_castlesnow01/M2_castle01_mushi_col__Texture2D.png    1024x1024 <BIG>
+  m2_castlesnow01/M2_castle01_mushi_col__Texture2D_2.png  1024x1024 <BIG>
+  m2_castlesnow01/M2_castle01_mushi_mos__Texture2D.png    1024x1024 <BIG>
+  m2_castlesnow01/M2_castle01_mushi_nrm__Texture2D.png    1024x1024 <BIG>
+  m2_castlesnow01/M2_castleommon_cao_col__Texture2D.png   1024x1024 <BIG>
+  m2_castlesnow01/M2_castleommon_shitou_col__Texture2D.png 1024x1024 <BIG>
+  m2_castlesnow01/M2_castleommon_shitou_mos__Texture2D.png 512x512
+  m2_castlesnow01/M2_castleommon_shitou_nrm__Texture2D.png 512x512
+  m2_castlesnow01/M2_castleommon_shu_col__Texture2D.png   512x512
+  m2_castlesnow01/M2_castleommon_shu_mos__Texture2D.png   512x512
+  m2_castlesnow01/M2_castleommon_shu_nrm__Texture2D.png   512x512
+  m2_castlesnow01/M2_castleommon_tengman_col__Texture2D.png 256x256
+  m2_cloister02_fire/M2_cloister_ground_02_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_ground_02_mos__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_ground_02_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_props_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_props_mos__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_props_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_tengman_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_tengman_mos__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/M2_cloister_tengman_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_cloister02_fire/t_wenli_09__Texture2D.png            256x256
+  m2_cloister02_fire/z-yanjiangliu01__Texture2D.png       128x128
+  m2_nightingale/M2_nightingale_Ground_col_occ__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale/M2_nightingale_Ground_mos__Texture2D.png 512x1024 <PORTRAIT>
+  m2_nightingale/M2_nightingale_Ground_nrm__Texture2D.png 1024x2048 <BIG> <PORTRAIT>
+  m2_nightingale/M2_nightingale_Rock_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale/M2_nightingale_Rock_mos__Texture2D.png   1024x1024 <BIG>
+  m2_nightingale/M2_nightingale_Rock_nrm__Texture2D.png   1024x1024 <BIG>
+  m2_nightingale/M2_nightingale_Tree_col_occ__Texture2D.png 512x512
+  m2_nightingale/M2_nightingale_Tree_mos__Texture2D.png   512x512
+  m2_nightingale/M2_nightingale_Tree_nrm__Texture2D.png   512x512
+  m2_loginscene_common/M2_LoginScene_BL2__Texture2D.png   64x64
+  m2_loginscene_common/M2_LoginScene_Moon__Texture2D.png  1024x1024 <BIG>
+  talklandprefab_first_1/Eff_xian_034__Texture2D.png      128x128
+  m2_nightingale_warp_rock/M2_nightingale_Rock_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_warp_rock/M2_nightingale_Rock_mos__Texture2D.png 1024x1024 <BIG>
+  m2_nightingale_warp_rock/M2_nightingale_Rock_nrm__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01/M2_cloister_ground_01_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01/M2_cloister_ground_01_mos__Texture2D.png  1024x1024 <BIG>
+  m2_cloister01/M2_cloister_ground_01_nrm__Texture2D.png  1024x1024 <BIG>
+  m2_cloister01/M2_cloister_props_col_occ__Texture2D.png  1024x1024 <BIG>
+  m2_cloister01/M2_cloister_props_mos__Texture2D.png      1024x1024 <BIG>
+  m2_cloister01/M2_cloister_props_nrm__Texture2D.png      1024x1024 <BIG>
+  m2_cloister01/M2_cloister_tengman_col_occ__Texture2D.png 1024x1024 <BIG>
+  m2_cloister01/M2_cloister_tengman_mos__Texture2D.png    1024x1024 <BIG>
+  m2_cloister01/M2_cloister_tengman_nrm__Texture2D.png    1024x1024 <BIG>
+
+==== source_home/img_bg_youanmijing ====
+  Img_BG_YouAnMiJing__Texture2D.png                       1080x1920 <BIG> <PORTRAIT>
+
+==== source_home/img_guanqia_bg_1 ====
+  Img_GuanQia_Bg_1__Texture2D.png                         540x324 <WIDE>
+
+==== source_common/bg ====
+  img_shenyuan_boss_bg/Img_shenyuan_boss_bg__Texture2D.png 512x512
+  bg_baiyue_bj/bg_baiyue_bj__Texture2D.png                512x512
+  img_diliufengying_bg/img_diliufengying_bg__Texture2D.png 512x512
+  bg_qiyin_bj/bg_qiyin_bj__Texture2D.png                  1080x1920 <BIG> <PORTRAIT>
+  img_myj_beijing/img_myj_beijing__Texture2D.png          1080x1920 <BIG> <PORTRAIT>
+  bg_xinian_erjijiemian_bj/bg_xinian_erjijiemian_bj__Texture2D.png 1080x1920 <BIG> <PORTRAIT>
+  89/89__Texture2D.png                                    1024x2048 <BIG> <PORTRAIT>
+  bg_renxiaoguida_mengyan/bg_renxiaoguida_mengyan__Texture2D.png 1080x1920 <BIG> <PORTRAIT>
+  bg_baiyue_erjijiemianzhezhao/bg_baiyue_erjijiemianzhezhao__Texture2D.png 512x512
+
+==== source_hud/ui_main ====
+  ui_main__Texture2D.png                                  256x512 <PORTRAIT>
+
+==== source_hud/ui_main_alpha ====
+  ui_main_alpha__Texture2D.png                            256x512 <PORTRAIT>
+
+==== source_uifight/ui_fightsource ====
+  img_monvtupo_tupodi/Img_MoNvTuPo_TuPoDi__Texture2D.png  1080x132 <WIDE>
+  img_zhandou_huoyaneffect/Img_ZhanDou_HuoYanEffect__Texture2D.png 16x32 <PORTRAIT>
+  img_zhandou_huoyaneffect/h_ronjie__Texture2D.png        256x256
+  img_zhandou_huoyan/Img_ZhanDou_HuoYan__Texture2D.png    20x32 <PORTRAIT>
+
+==== prefab_uifight/ui_fightinfo ====
+  randomlayer/Img_ZhanDou_SaiZiDi__Texture2D.png          85x85
+  changeplayerinfo/Eff_Core_02__Texture2D.png             128x128
+  changeplayerinfo/Eff_Line_97__Texture2D.png             256x256
+  changeplayerinfo/Eff_Mask_01__Texture2D.png             128x128
+  changeplayerinfo/Eff_Repeat_18__Texture2D.png           128x128
+  changeplayerinfo/Eff_Ring_60__Texture2D.png             256x256
+  changeplayerinfo/Eff_kuang_02__Texture2D.png            256x256
+  changeplayerinfo/Eff_ring_006__Texture2D.png            128x128
+  changeplayerinfo/Eff_shanguang_104__Texture2D.png       256x256
+  changeplayerinfo/UI_k04__Texture2D.png                  128x128
+  changeplayerinfo/Z_xl06__Texture2D.png                  512x256 <WIDE>
+  changeplayerinfo/circle_g__Texture2D.png                256x256
+  changeplayerinfo/circle_h__Texture2D.png                128x128
+  changeplayerinfo/circle_s__Texture2D.png                128x128
+  changeplayerinfo/eff_m_ring_16__Texture2D.png           256x256
+  changeplayerinfo/fangk_g0__Texture2D.png                64x64
+  changeplayerinfo/fangk_g__Texture2D.png                 64x64
+  changeplayerinfo/h_ronjie__Texture2D.png                256x256
+  changeplayerinfo/h_ronjie_wuf__Texture2D.png            128x128
+  changeplayerinfo/l_bai__Texture2D.png                   16x16
+  changeplayerinfo/wenli002_b__Texture2D.png              128x128
+  changeplayerinfo/z_g04_x__Texture2D.png                 256x256
+  ui_roguefightlayer/Eff_Mask_01__Texture2D.png           128x128
+  ui_roguefightlayer/Eff_Repeat_18__Texture2D.png         128x128
+  ui_roguefightlayer/Eff_Ring_60__Texture2D.png           256x256
+  ui_roguefightlayer/UI_k04__Texture2D.png                128x128
+  ui_roguefightlayer/Z_xl06__Texture2D.png                512x256 <WIDE>
+  ui_roguefightlayer/circle_h__Texture2D.png              128x128
+  ui_roguefightlayer/circle_s__Texture2D.png              128x128
+  ui_roguefightlayer/eff_m_ring_16__Texture2D.png         256x256
+  ui_roguefightlayer/fangk_g0__Texture2D.png              64x64
+  ui_roguefightlayer/fangk_g__Texture2D.png               64x64
+  ui_roguefightlayer/h_ronjie__Texture2D.png              256x256
+  ui_roguefightlayer/h_ronjie_wuf__Texture2D.png          128x128
+  ui_roguefightlayer/l_bai__Texture2D.png                 16x16
+  ui_roguefightlayer/wenli002_b__Texture2D.png            128x128
+  ui_startnamelayer/UI_mask05__Texture2D.png              256x256
+  ui_startnamelayer/UI_mask06__Texture2D.png              256x256
+  ui_startnamelayer/Z_xl06__Texture2D.png                 512x256 <WIDE>
+  ui_startnamelayer/cloud01__Texture2D.png                256x256
+  ui_startnamelayer/z_hengtiao_g__Texture2D.png           128x32 <WIDE>
+  ui_startnamelayer/z_huan01__Texture2D.png               128x128
+  ui_startnamelayer/z_lt02_b__Texture2D.png               128x128
+
+==== prefab_scene/fightsceneprefab ====
+  scene1/LYH_Sky__Texture2D.png                           512x512
+  scene1/P_Hill_01__Texture2D.png                         512x512
+  scene1/P_Hill_02__Texture2D.png                         512x512
+  scene1/P_cloud_01__Texture2D.png                        512x512
+  scene1/SKY_04__Texture2D.png                            1024x1024 <BIG>
+  scene1/SunGlare__Texture2D.png                          256x256
+  scene3/Parkour_Castle_06__Texture2D.png                 512x512
+  scene3/SKY_04__Texture2D.png                            1024x1024 <BIG>
+  scene2/Parkour_Castle_06__Texture2D.png                 512x512
+  scene2/SKY_04__Texture2D.png                            1024x1024 <BIG>

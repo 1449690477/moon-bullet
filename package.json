@@ -1,0 +1,19 @@
+{
+  "name": "moon_bullet_demo_v3_6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "_deskcheck.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^23.11.1"
+  }
+}

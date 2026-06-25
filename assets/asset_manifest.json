@@ -1,0 +1,681 @@
+{
+  "version": "v3.6-next-assets",
+  "project": "Moon Bullet Demo / 月蚀弹幕：苍夜契约",
+  "style": "dark gothic sci-fi anime bullet hell",
+  "notes": "V3.6 visual asset pack with user-provided AI-generated assets, local validation, and retained procedural fallbacks where no new file was supplied.",
+  "characters": {
+    "player_witch_avatar.png": {
+      "type": "character/player asset",
+      "size": "256x256",
+      "transparent_background": false,
+      "source": "user generated AI sheet import, locally cropped and background-cleaned",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "player_witch_focus.png": {
+      "type": "character/player asset",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "player_witch_hit.png": {
+      "type": "character/player asset",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "player_witch_idle.png": {
+      "type": "character/player asset",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "player_witch_move_left.png": {
+      "type": "character/player asset",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "player_witch_move_right.png": {
+      "type": "character/player asset",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "player_witch_skill_cutin.png": {
+      "type": "character/player asset",
+      "size": "720x420",
+      "transparent_background": false,
+      "source": "user generated AI asset batch 2, locally cleaned and imported",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "enemies": {
+    "bat_familiar_attack.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bat_familiar_death.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bat_familiar_hit.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bat_familiar_idle.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "nun_spirit_attack.png": {
+      "type": "enemy sprite",
+      "size": "224x224",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "nun_spirit_death.png": {
+      "type": "enemy sprite",
+      "size": "224x224",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "nun_spirit_hit.png": {
+      "type": "enemy sprite",
+      "size": "224x224",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "nun_spirit_idle.png": {
+      "type": "enemy sprite",
+      "size": "224x224",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "orb_drone_attack.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "orb_drone_death.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "orb_drone_hit.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "orb_drone_idle.png": {
+      "type": "enemy sprite",
+      "size": "192x192",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "bosses": {
+    "eclipse_boss_break.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_death.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_hit.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_idle.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_nameplate.png": {
+      "type": "boss sprite/ui",
+      "size": "720x180",
+      "transparent_background": true,
+      "source": "v3.6 procedural clean asset",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_phase1.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_phase2.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_phase3.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_portrait.png": {
+      "type": "boss sprite/ui",
+      "size": "720x900",
+      "transparent_background": true,
+      "source": "user generated AI asset batch 2, locally cleaned and imported",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "eclipse_boss_rage.png": {
+      "type": "boss sprite",
+      "size": "768x768",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "backgrounds": {
+    "bg_boss_eclipse_overlay.png": {
+      "type": "layered background",
+      "size": "720x1280",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bg_fog_layer.png": {
+      "type": "layered background",
+      "size": "720x1280",
+      "transparent_background": true,
+      "source": "v3.6 procedural clean asset",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bg_particles_subtle.png": {
+      "type": "layered background",
+      "size": "720x1280",
+      "transparent_background": true,
+      "source": "v3.6 procedural clean asset",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bg_stage_base.png": {
+      "type": "layered background",
+      "size": "720x1280",
+      "transparent_background": false,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bg_stage_depth.png": {
+      "type": "layered background",
+      "size": "720x1280",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "ui": {
+    "ui_boss_warning.png": {
+      "type": "interface asset",
+      "size": "720x180",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_combo_number_style.png": {
+      "type": "interface asset",
+      "size": "512x128",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_energy_bar.png": {
+      "type": "interface asset",
+      "size": "512x128",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_gameover_panel.png": {
+      "type": "interface asset",
+      "size": "720x420",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_hp_bar_boss.png": {
+      "type": "interface asset",
+      "size": "512x128",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_hp_bar_player.png": {
+      "type": "interface asset",
+      "size": "512x128",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_pause_panel.png": {
+      "type": "interface asset",
+      "size": "720x420",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_skill_beam.png": {
+      "type": "interface asset",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_skill_bomb.png": {
+      "type": "interface asset",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_skill_frame.png": {
+      "type": "interface asset",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_stage_clear.png": {
+      "type": "interface asset",
+      "size": "720x180",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_victory_panel.png": {
+      "type": "interface asset",
+      "size": "720x420",
+      "transparent_background": false,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_side_party_card.png": {
+      "type": "interface side party card",
+      "size": "160x96",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_timer_panel.png": {
+      "type": "interface timer panel",
+      "size": "220x72",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "ui_damage_number_style.png": {
+      "type": "interface number style reference",
+      "size": "512x128",
+      "transparent_background": true,
+      "source": "user provided next batch ZIP, locally validated and normalized",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "bullets": {
+    "bullet_gold_orb.png": {
+      "type": "bullet sprite",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bullet_laser_core.png": {
+      "type": "bullet sprite",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bullet_laser_glow.png": {
+      "type": "bullet sprite",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bullet_purple_moon.png": {
+      "type": "bullet sprite",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bullet_red_warning.png": {
+      "type": "bullet sprite",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "bullet_white_needle.png": {
+      "type": "bullet sprite",
+      "size": "128x128",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "vfx": {
+    "vfx_boss_break.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_boss_hit.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_clear_bullets.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_enemy_hit.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_explosion_large.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_explosion_small.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_graze.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_player_beam.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_player_shot.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    },
+    "vfx_player_ultimate_circle.png": {
+      "type": "effect sprite",
+      "size": "256x256",
+      "transparent_background": true,
+      "source": "user provided ZIP batch, curated import with duplicate filtering",
+      "license": "user-provided AI-generated project asset",
+      "commercial_use": true
+    }
+  },
+  "audio": {
+    "bgm_boss_loop.ogg": {
+      "type": "original synthesized audio",
+      "format": "ogg",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bgm_boss_loop.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bgm_boss_rage_loop.ogg": {
+      "type": "original synthesized audio",
+      "format": "ogg",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bgm_boss_rage_loop.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bgm_stage_loop.ogg": {
+      "type": "original synthesized audio",
+      "format": "ogg",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bgm_stage_loop.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "bgm_techno_loop.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_boss_intro.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_boss_phase.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_enemy_death.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_enemy_hit.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_gameover.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_laser.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_player_hit.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_player_shot.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_skill_beam.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_skill_bomb.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_victory.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    },
+    "se_warning.wav": {
+      "type": "original synthesized audio",
+      "format": "wav",
+      "source": "programmatically synthesized for this demo",
+      "license": "original project asset",
+      "commercial_use": true
+    }
+  },
+  "generation_tasks": {
+    "guide": "RESOURCE_GENERATION_GUIDE_V3_6.md",
+    "json": "asset_generation_tasks_v3_6.json",
+    "required_after_external_generation": "Run tools/qa_v36_assets.py before replacing packaged assets.",
+    "task_count": 62
+  }
+}

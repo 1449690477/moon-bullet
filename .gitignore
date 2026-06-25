@@ -1,0 +1,71 @@
+# 月蚀弹幕 · Git 忽略规则
+
+# ─── macOS 系统文件 ──────────────────────────────
+.DS_Store
+._*
+
+# ─── IDE / 编辑器配置 ────────────────────────────
+.vscode/
+.cursor/
+.kiro/
+
+# ─── Node.js（Electron 打包依赖）────────────────
+node_modules/
+package-lock.json
+
+# ─── Electron 打包输出（每次重新生成）────────────
+electron-build/dist/
+
+# ─── 备份文件（旧版本，不需要入库）───────────────
+assets/_backup_before_user_import/
+index.html.bak_*
+index_backup_*.html
+assets_backup*/
+*_backup_*
+
+# ─── 重复副本目录（和 assets/ 内容相同）──────────
+月蚀弹幕_Windows免安装版/
+electron-build/game/
+桌面版/
+
+# ─── Electron 打包输出（每次重新生成）────────────
+electron-build/dist/
+
+# ─── 大型打包产物（单独分发，不入 git）──────────
+*.zip
+ziOm1rxb
+zivQpMys
+ziz5lB3T
+
+# ─── WorkBuddy 工作区数据（本地使用）───────────
+.workbuddy/
+
+# ─── 测试脚本 / 检查工具（开发辅助）─────────────
+_nccheck.js
+_ncshot.js
+_phasecheck.js
+_simcheck.js
+_deskcheck.js
+
+# ─── 文档 / 日记（可选，保留在仓库里方便查阅）───
+# *.md 不忽略，这些文档有参考价值
+
+# ─── 存档版本目录（历史归档，体积大）───────────
+存档版本/
+
+# ─── 素材源文件夹（原始素材，不用于运行时）──────
+浮游炮僚机素材/
+僚机素材和文档/
+圣冕圣械_绿幕素材_按抠图内容命名打包/
+七神舞/
+天使降临技能素材/
+幽灵暗刃素材/
+魔物刀锋素材/
+魔王刀锋僚机素材/
+素材文件夹/
+
+# ─── 技能图标大图（已复制到 assets/ui/）────────
+夜棺技能图标.png
+圣冕技能图标.png
+暴走.png
+绿色HP.png

@@ -1,0 +1,560 @@
+[
+  {
+    "folder": "characters",
+    "filename": "player_witch_idle.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Silver-haired moon witch player sprite, idle front-facing combat pose, dark purple black gothic outfit, crescent hair ornament, small staff or magic firearm, blue-white moonlight accents, centered full body, 18-24 px safe transparent padding, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; subject fits 65-80% of canvas; feet/body anchor stable near x=128 y=145; readable at 80 px."
+  },
+  {
+    "folder": "characters",
+    "filename": "player_witch_move_left.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Silver-haired moon witch player sprite, leaning left movement pose, same character design, dark purple black gothic outfit, crescent hair ornament, small staff or magic firearm, blue-white moonlight accents, centered full body, 18-24 px safe transparent padding, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; subject fits 65-80% of canvas; feet/body anchor stable near x=128 y=145; readable at 80 px."
+  },
+  {
+    "folder": "characters",
+    "filename": "player_witch_move_right.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Silver-haired moon witch player sprite, leaning right movement pose, same character design, dark purple black gothic outfit, crescent hair ornament, small staff or magic firearm, blue-white moonlight accents, centered full body, 18-24 px safe transparent padding, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; subject fits 65-80% of canvas; feet/body anchor stable near x=128 y=145; readable at 80 px."
+  },
+  {
+    "folder": "characters",
+    "filename": "player_witch_focus.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Silver-haired moon witch player sprite, focused precision movement pose, compact aura, dark purple black gothic outfit, crescent hair ornament, small staff or magic firearm, blue-white moonlight accents, centered full body, 18-24 px safe transparent padding, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; subject fits 65-80% of canvas; feet/body anchor stable near x=128 y=145; readable at 80 px."
+  },
+  {
+    "folder": "characters",
+    "filename": "player_witch_hit.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Silver-haired moon witch player sprite, damage recoil pose, compact hit sparks, dark purple black gothic outfit, crescent hair ornament, small staff or magic firearm, blue-white moonlight accents, centered full body, 18-24 px safe transparent padding, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; subject fits 65-80% of canvas; feet/body anchor stable near x=128 y=145; readable at 80 px."
+  },
+  {
+    "folder": "characters",
+    "filename": "player_witch_avatar.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": false,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Close-up portrait avatar of the same silver-haired moon witch, dark UI-friendly background allowed, no text.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Face readable at 58 px UI size; no watermark or text."
+  },
+  {
+    "folder": "characters",
+    "filename": "player_witch_skill_cutin.png",
+    "recommended_size": "720x420 PNG",
+    "transparent_required": false,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Wide cinematic skill cut-in of the same moon witch casting moonlight power, left-weighted composition, empty space on right for game overlay.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No text; no watermark; important face and hand details not cropped."
+  },
+  {
+    "folder": "enemies",
+    "filename": "bat_familiar_idle.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. small black-purple bat familiar, compact readable wings, glowing eyes, idle state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "bat_familiar_attack.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. small black-purple bat familiar, compact readable wings, glowing eyes, attack state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "bat_familiar_hit.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. small black-purple bat familiar, compact readable wings, glowing eyes, hit state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "bat_familiar_death.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. small black-purple bat familiar, compact readable wings, glowing eyes, death state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "orb_drone_idle.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. magic-tech orb drone, circular core, dark metal shell, blue-purple energy, idle state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "orb_drone_attack.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. magic-tech orb drone, circular core, dark metal shell, blue-purple energy, attack state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "orb_drone_hit.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. magic-tech orb drone, circular core, dark metal shell, blue-purple energy, hit state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "orb_drone_death.png",
+    "recommended_size": "192x192 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. magic-tech orb drone, circular core, dark metal shell, blue-purple energy, death state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "nun_spirit_idle.png",
+    "recommended_size": "224x224 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. ghost nun elite enemy, dark robe, pale face, small golden halo, purple spirit aura, idle state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "nun_spirit_attack.png",
+    "recommended_size": "224x224 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. ghost nun elite enemy, dark robe, pale face, small golden halo, purple spirit aura, attack state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "nun_spirit_hit.png",
+    "recommended_size": "224x224 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. ghost nun elite enemy, dark robe, pale face, small golden halo, purple spirit aura, hit state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "enemies",
+    "filename": "nun_spirit_death.png",
+    "recommended_size": "224x224 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. ghost nun elite enemy, dark robe, pale face, small golden halo, purple spirit aura, death state, centered icon-like enemy sprite, no background.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; silhouette readable at 64 px; no black rectangle."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_idle.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, idle state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_phase1.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, phase1 state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_phase2.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, phase2 state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_phase3.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, phase3 state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_rage.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, rage state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_hit.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, hit state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_break.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, break state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_death.png",
+    "recommended_size": "768x768 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Fallen moon judge boss, corrupted gothic nun with soft eclipse halo, death state, strong but uncluttered silhouette, no full-screen thin magic lines.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Four corners alpha 0; boss body clear at 420 px runtime size; no dense radial linework."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_portrait.png",
+    "recommended_size": "720x900 PNG",
+    "transparent_required": false,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Boss upper-body portrait, cold elegant expression, eclipse halo, dark gothic sci-fi costume, UI intro use.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No text; no watermark; readable face."
+  },
+  {
+    "folder": "bosses",
+    "filename": "eclipse_boss_nameplate.png",
+    "recommended_size": "720x180 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Transparent boss nameplate frame, dark semi-transparent base, thin gold trim, empty center for Canvas text.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No embedded text; alpha corners 0."
+  },
+  {
+    "folder": "backgrounds",
+    "filename": "bg_stage_base.png",
+    "recommended_size": "720x1280 PNG",
+    "transparent_required": false,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Opaque dark ruined moon cathedral stage base, low frequency painterly shapes, distant moon and towers, no characters, no UI, no bright line art.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Background stays darker than bullets; no text; no diagonal scan lines; no high-frequency residual strokes."
+  },
+  {
+    "folder": "backgrounds",
+    "filename": "bg_stage_depth.png",
+    "recommended_size": "720x1280 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Transparent depth layer with large soft silhouettes and atmospheric arches only, no fine window bars.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Background stays darker than bullets; no text; no diagonal scan lines; no high-frequency residual strokes."
+  },
+  {
+    "folder": "backgrounds",
+    "filename": "bg_boss_eclipse_overlay.png",
+    "recommended_size": "720x1280 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Transparent boss-phase purple-red eclipse atmosphere overlay, soft glow only.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Background stays darker than bullets; no text; no diagonal scan lines; no high-frequency residual strokes."
+  },
+  {
+    "folder": "backgrounds",
+    "filename": "bg_fog_layer.png",
+    "recommended_size": "720x1280 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Transparent soft fog layer, very subtle, no hard edges.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Background stays darker than bullets; no text; no diagonal scan lines; no high-frequency residual strokes."
+  },
+  {
+    "folder": "backgrounds",
+    "filename": "bg_particles_subtle.png",
+    "recommended_size": "720x1280 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. Transparent tiny dust particle layer, sparse and dim.",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Background stays darker than bullets; no text; no diagonal scan lines; no high-frequency residual strokes."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_hp_bar_player.png",
+    "recommended_size": "512x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. player HP bar frame, dark transparent base, thin gold trim, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_hp_bar_boss.png",
+    "recommended_size": "512x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. boss HP bar frame, dark transparent base, thin gold trim, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_energy_bar.png",
+    "recommended_size": "512x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. energy bar frame, dark transparent base, blue-white accent, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_skill_frame.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. skill icon frame, dark purple base, thin gold trim, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_skill_beam.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. moonlight beam skill icon, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_skill_bomb.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. eclipse ultimate skill icon, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_pause_panel.png",
+    "recommended_size": "720x420 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. pause panel frame, empty center, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_victory_panel.png",
+    "recommended_size": "720x420 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. victory panel frame, empty center, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_gameover_panel.png",
+    "recommended_size": "720x420 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. gameover panel frame, empty center, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_boss_warning.png",
+    "recommended_size": "720x180 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. boss warning panel frame, empty center, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_stage_clear.png",
+    "recommended_size": "720x180 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. stage clear panel frame, empty center, no text",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "ui",
+    "filename": "ui_combo_number_style.png",
+    "recommended_size": "512x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. digit style reference, numbers only if required by model, no logo",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No watermark; no embedded Chinese/English labels except digit reference; readable over dark gameplay."
+  },
+  {
+    "folder": "bullets",
+    "filename": "bullet_gold_orb.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. gold enemy orb bullet, bright core, crisp edge",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Readable at runtime scale; alpha corners 0; no fuzzy blob that hides hitbox."
+  },
+  {
+    "folder": "bullets",
+    "filename": "bullet_white_needle.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. white needle bullet, slender but not too thin",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Readable at runtime scale; alpha corners 0; no fuzzy blob that hides hitbox."
+  },
+  {
+    "folder": "bullets",
+    "filename": "bullet_purple_moon.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. purple crescent moon bullet, simple silhouette",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Readable at runtime scale; alpha corners 0; no fuzzy blob that hides hitbox."
+  },
+  {
+    "folder": "bullets",
+    "filename": "bullet_red_warning.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. red warning marker, clearly telegraph not damage bullet",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Readable at runtime scale; alpha corners 0; no fuzzy blob that hides hitbox."
+  },
+  {
+    "folder": "bullets",
+    "filename": "bullet_laser_core.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. straight laser core segment, white-purple center",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Readable at runtime scale; alpha corners 0; no fuzzy blob that hides hitbox."
+  },
+  {
+    "folder": "bullets",
+    "filename": "bullet_laser_glow.png",
+    "recommended_size": "128x128 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. soft laser outer glow segment",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "Readable at runtime scale; alpha corners 0; no fuzzy blob that hides hitbox."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_player_shot.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. small blue-white muzzle burst, compact",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_player_beam.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. vertical moonlight beam tile, soft glow and clear core",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_player_ultimate_circle.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. soft expanding eclipse pulse, no hard radial spokes",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_enemy_hit.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. compact purple enemy hit burst",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_boss_hit.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. larger gold-blue boss hit burst",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_boss_break.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. soft barrier break particles, no long rays",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_explosion_small.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. small magical explosion, round particles",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_explosion_large.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. large magical explosion, round particles",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_graze.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. tiny graze shimmer",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  },
+  {
+    "folder": "vfx",
+    "filename": "vfx_clear_bullets.png",
+    "recommended_size": "256x256 PNG",
+    "transparent_required": true,
+    "prompt": "Original dark gothic sci-fi anime vertical bullet hell game asset, moon eclipse fantasy, polished 2D game illustration, high contrast, clean silhouette, not copied from any existing game. soft bullet clear wave, no hard rings",
+    "negative_prompt": "lowres, blurry, watermark, text, logo, signature, cropped subject, cut off, black background, fake transparency, residual lines, stray outlines, extraction artifacts, muddy colors, oversaturated, copyrighted game character, copied design, messy unreadable silhouette, duplicate limbs, bad hands",
+    "qa_acceptance": "No long ray lines; transparent corners; effect does not look like background residue."
+  }
+]

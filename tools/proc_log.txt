@@ -1,0 +1,60 @@
+
+=== 处理敌人 ===
+  ✓ wraith (来自 body_10100007)  4个状态
+  ✓ shade (来自 body_10100009)  4个状态
+  ✓ specter (来自 body_10101008)  4个状态
+  ✓ reaper (来自 body_10102002)  4个状态
+  ✓ phantom (来自 body_10102009)  4个状态
+  ✓ banshee (来自 body_10103003)  4个状态
+  ✓ cultist (来自 body_10103008)  4个状态
+  ✓ fiend (来自 body_10104010)  4个状态
+  ✓ warlock (来自 body_10105008)  4个状态
+  ✓ archfiend (来自 body_10105020)  4个状态
+
+=== 处理Boss ===
+  ✓ voidlord (来自 body_10103030)  6个状态
+  ✓ abysswalker (来自 body_10104020)  6个状态
+  ✓ voidtitan (来自 body_10105020)  6个状态
+  ✓ ancientone (来自 body_11003001)  6个状态
+  ✓ darkqueen (来自 body_10125020)  6个状态
+
+=== 处理背景 ===
+  ✓ bg_void_realm (来自 background/1)
+  ✓ bg_shadow_depths (来自 background/3)
+  ✓ bg_abyss_core (来自 background/5)
+  ✓ bg_chaos_rift (来自 background/6)
+  ✓ bg_dark_sanctum (来自 background/8)
+
+=== 处理弹幕 ===
+  ✓ bullet_orb_basic (40px)
+  ✓ bullet_needle_blue (40px)
+  ✓ bullet_diamond_gold (40px)
+  ✓ bullet_crescent_silver (44px)
+  ✓ bullet_star_purple (44px)
+  ✓ bullet_heart_pink (44px)
+  ✓ bullet_pentagon_cyan (42px)
+  ✓ bullet_hexagon_yellow (42px)
+  ✓ bullet_snowflake (44px)
+  ✓ bullet_petal_pink (44px)
+  ✓ bullet_flower_bloom (46px)
+  ✗ 未找到 z_bing03__Sprite.png
+  ✓ bullet_fireball (46px)
+  ✓ bullet_lightning_orb (44px)
+  ✓ bullet_light_orb (44px)
+  ✓ bullet_crystal_blue (44px)
+  ✓ bullet_crystal_purple (44px)
+  ✓ bullet_energy_red (44px)
+  ✓ bullet_energy_blue (44px)
+  ✓ bullet_energy_gold (44px)
+  ✓ bullet_candy_blue (42px)
+  ✓ bullet_candy_pink (42px)
+  ✓ bullet_music_note (44px)
+  ✓ bullet_feather_dark (46px)
+  ✓ bullet_flower_single (44px)
+  ✓ bullet_boss_slash_1 (60px)
+  ✓ bullet_boss_slash_2 (60px)
+  ✓ bullet_boss_triangle (44px)
+  ✓ bullet_boss_pentagon (44px)
+  ✓ bullet_soul_orb (46px)
+
+全部处理完成！

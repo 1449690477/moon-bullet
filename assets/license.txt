@@ -1,0 +1,7 @@
+Moon Bullet Demo V3.6 asset license
+
+All packaged PNG assets are original procedural assets generated for this demo, cleaned local project reference placeholders, or user-provided AI-generated sheet assets that were locally cropped and background-cleaned for this project.
+All WAV/OGG audio files are original programmatically synthesized audio generated for this demo.
+Reference videos/images are used only for quality direction and are not copied into the package.
+No commercial game artwork, UI, names, logos, music, or sound effects are included.
+License: original project assets, usable with this demo and derivative builds by the project owner.

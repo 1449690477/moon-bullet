@@ -1,0 +1,17 @@
+{
+  "name": "moon-eclipse-danmaku",
+  "productName": "月蚀弹幕",
+  "version": "0.9.0",
+  "description": "月蚀弹幕 Moon Eclipse Danmaku",
+  "main": "main.js",
+  "author": "Moon Eclipse",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "electron-packager . 月蚀弹幕 --platform=win32 --arch=x64 --out=dist --overwrite --asar"
+  },
+  "devDependencies": {
+    "electron": "31.7.7",
+    "@electron/packager": "18.3.6"
+  }
+}
