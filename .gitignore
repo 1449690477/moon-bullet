@@ -46,6 +46,7 @@ _ncshot.js
 _phasecheck.js
 _simcheck.js
 _deskcheck.js
+_mlcheck.js
 
 # ─── 文档 / 日记（可选，保留在仓库里方便查阅）───
 # *.md 不忽略，这些文档有参考价值

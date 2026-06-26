@@ -59,7 +59,7 @@
   <audio id="bgm" src="assets/audio/bgm_stage_loop.ogg" preload="auto" loop></audio>
   <div id="wrap"><canvas id="game" width="720" height="1280"></canvas></div>
   <div id="tip">
-    操作：WASD/方向键移动　Shift低速　Space月光束　X月蚀大招　P暂停　R重开<br/>
+    操作：WASD/方向键移动　Shift低速　Space角色技能　X角色大招　1–5换将　P暂停　R重开<br/>
     鼠标/手机：按住拖动角色移动。点击开始后会启用BGM与音效。按 M 可开关音乐。
   </div>
   <div id="musicStatus">BGM：点击开始后播放</div>
@@ -142,6 +142,61 @@
     nrWmOverdrive: 'assets/vfx/nr_wm_overdrive.png',
     nrWmBlade: 'assets/vfx/nr_wm_blade.png',
     nrWmCrescent: 'assets/vfx/nr_wm_crescent.png',
+    // ===== 5号战机 生命之母 =====
+    motherlifeIdle: 'assets/player/mother_life/ship/ship_main.png',
+    motherlifeMoveLeft: 'assets/player/mother_life/ship/ship_main.png',
+    motherlifeMoveRight: 'assets/player/mother_life/ship/ship_main.png',
+    motherlifeFocus: 'assets/player/mother_life/ship/ship_main.png',
+    motherlifeHit: 'assets/player/mother_life/ship/ship_main.png',
+    motherlifeAvatar: 'assets/player/mother_life/ship/avatar.png',
+    motherlifeCutin: 'assets/player/mother_life/ship/cutin.png',
+    mlHeart: 'assets/player/mother_life/ship/ship_heart.png',
+    mlHalo: 'assets/player/mother_life/ship/ship_halo.png',
+    mlCrown: 'assets/player/mother_life/ship/ship_crown.png',
+    mlHeartDetail: 'assets/player/mother_life/ship/ship_heart_detail.png',
+    mlRibbonTip: 'assets/player/mother_life/ribbons/ribbon_tip.png',
+    mlRibbonOrigin: 'assets/player/mother_life/ribbons/ribbon_origin.png',
+    mlRibbonImpact: 'assets/player/mother_life/ribbons/ribbon_impact.png',
+    mlRibbonBody1: 'assets/player/mother_life/ribbons/ribbon_body_01.png',
+    mlRibbonBody2: 'assets/player/mother_life/ribbons/ribbon_body_02.png',
+    mlRibbonBody3: 'assets/player/mother_life/ribbons/ribbon_body_03.png',
+    mlRibbonOrbit: 'assets/player/mother_life/ribbons/ribbon_orbit.png',
+    mlRibbonFigure8: 'assets/player/mother_life/ribbons/ribbon_figure8.png',
+    mlRibbonSpiral: 'assets/player/mother_life/ribbons/ribbon_spiral.png',
+    mlRibbonOverdriveWrap: 'assets/player/mother_life/ribbons/ribbon_overdrive_wrap.png',
+    mlRibbonOverdriveCocoon: 'assets/player/mother_life/ribbons/ribbon_overdrive_cocoon.png',
+    mlSideRibbon: 'assets/player/mother_life/ribbons/ship_side_ribbon.png',
+    mlLifeNode: 'assets/player/mother_life/skill/life_node.png',
+    mlMainTarget: 'assets/player/mother_life/skill/main_target.png',
+    mlResonanceCore: 'assets/player/mother_life/skill/resonance_core.png',
+    mlIconResonance: 'assets/player/mother_life/icons/icon_resonance.png',
+    mlIconUltimate: 'assets/player/mother_life/icons/icon_ultimate.png',
+    mlIconReverse: 'assets/player/mother_life/icons/icon_reverse.png',
+    mlDomainLotus: 'assets/player/mother_life/ultimate/domain_lotus.png',
+    mlDomainCircle: 'assets/player/mother_life/ultimate/domain_circle.png',
+    mlDomainHalo: 'assets/player/mother_life/ultimate/domain_halo.png',
+    mlDomainSanctuary: 'assets/player/mother_life/ultimate/domain_sanctuary.png',
+    mlDomainInnerCircle: 'assets/player/mother_life/ultimate/domain_inner_circle.png',
+    mlAfterglowLotus: 'assets/player/mother_life/ultimate/afterglow_lotus.png',
+    mlStartBud: 'assets/player/mother_life/ultimate/start_bud.png',
+    mlStartHalfBloom: 'assets/player/mother_life/ultimate/start_half_bloom.png',
+    mlStartBloom: 'assets/player/mother_life/ultimate/start_bloom.png',
+    mlV4StartBud: 'assets/player/mother_life/ultimate/v4_start_bud.png',
+    mlV4StartHalfBloom: 'assets/player/mother_life/ultimate/v4_start_half_bloom.png',
+    mlV4StartOpenBloom: 'assets/player/mother_life/ultimate/v4_start_open_bloom.png',
+    mlV4FinalBloom: 'assets/player/mother_life/ultimate/v4_final_bloom.png',
+    mlV4FinalBurst: 'assets/player/mother_life/ultimate/v4_final_burst.png',
+    mlFinalBloom: 'assets/player/mother_life/ultimate/final_bloom.png',
+    mlFinalAfterglow: 'assets/player/mother_life/ultimate/final_afterglow.png',
+    mlFinalPetalBurst: 'assets/player/mother_life/ultimate/final_petal_burst.png',
+    mlFinalHeart: 'assets/player/mother_life/ultimate/final_heart.png',
+    mlFinalShockwave: 'assets/player/mother_life/ultimate/final_shockwave.png',
+    mlCrystalShard: 'assets/player/mother_life/ultimate/crystal_shard.png',
+    mlPetal: 'assets/player/mother_life/particles/petal.png',
+    mlButterfly: 'assets/player/mother_life/particles/butterfly.png',
+    mlHealOrb: 'assets/player/mother_life/particles/heal_orb.png',
+    mlV4PetalCluster: 'assets/player/mother_life/particles/v4_petal_cluster.png',
+    mlV4Star: 'assets/player/mother_life/particles/v4_star.png',
     // ===== 圣冕圣械 可装备僚机 =====
     scBody: 'assets/saintcrown/sc_body.png',
     scBodyOver: 'assets/saintcrown/sc_body_over.png',
@@ -742,7 +797,7 @@
   let bossPhase = -1;
   let segment = 'stage1';   // stage1..stage6 with random bosses
   let bossKind = 'eclipseboss';    // 'midboss' | 'eclipseboss' | 'seraph' | 'finalboss'
-  let selectedChar = 'witch'; // 'witch' | 'yanuxiya'
+  let selectedChar = 'witch'; // witch | yanuxiya | anna | reaver | motherlife
   let bossesCleared = 0;    // how many bosses defeated this run (for chapter flow)
   // —— 肉鸽难度系统：随时间与轮回增长的强度 ——
   let elapsed = 0;          // 本局有效游戏时间（秒）
@@ -840,6 +895,7 @@
     { key: 'nightcoffin', name: '夜棺·八芒浮骸', short: '夜棺' },
   ];
   let wingCards = [];                         // 标题界面四僚机多选卡命中区
+  let characterCards = [];                    // 标题界面五角色卡命中区
   function wingEnabled(key) { return !!equippedWings[key]; }
   function activeFollowWingCount() {
     return (wingEnabled('moonfeather') ? 1 : 0) + (wingEnabled('saintcrown') ? 1 : 0) + (wingEnabled('reaverwing') ? 1 : 0);
@@ -1406,6 +1462,16 @@
       blades: true,                 // 浮游刀锋阵列（环绕机体）
       laserColor: '#cfe0ff', laserCore: '#eafaff', laserGlow: '170,205,255',
       shoot(lv) {}                  // 射线逻辑见 updateReaver / updateReaverRays
+    },
+    motherlife: {
+      name: '生命圣母 · 生命之母',
+      title: '生命飘带 · 濒死反哺 · 众生胎宫',
+      weapon: 'lifeRibbon',
+      ultKind: 'wombOfAll',
+      prefix: 'motherlife', avatar: 'motherlifeAvatar', cutin: 'motherlifeCutin',
+      maxHp: 160, speed: 400, slowSpeed: 238, auraColor: '255,166,222',
+      shootCd: 0.1,
+      shoot(lv) {}
     }
   };
   function curChar() { return CHARACTERS[selectedChar] || CHARACTERS.witch; }
@@ -1425,6 +1491,1405 @@
     if (!c.skins) { setMessage('该主角暂无可换皮肤', 1.2); return; }
     applySkin(c, (c.skinIndex || 0) + 1);
     setMessage('皮肤 · ' + c.skins[c.skinIndex].id, 1.4);
+  }
+
+  // ===================================================================
+  // 5号战机「生命之母」：自损、低血量增伤、反转回血、生命网络和胎宫领域
+  // ===================================================================
+  const MOTHER_LIFE = {
+    ribbonDefault: 4,
+    ribbonMax: 8,
+    ribbonGrowInterval: 6,
+    selfDamageRate: 0.015,
+    reverseThreshold: 0.10,
+    normalTick: 0.12,
+    overTick: 0.06,
+    resonanceDuration: 6,
+    resonanceCooldown: 14,
+    resonanceShare: 0.45,
+    visualTargetMax: 8,
+    resonanceRefresh: 0.25,
+    ultimateRefresh: 0.15,
+    ultimateDrainBoost: 1.5,
+    ultimateDuration: 6,
+  };
+  const motherLifeFx = [];
+  const motherLifeState = {
+    ribbonCount: MOTHER_LIFE.ribbonDefault,
+    ribbonTimer: 0,
+    reverse: false,
+    damageTick: 0,
+    targets: [],
+    pulse: 0,
+    petalT: 0,
+    resonance: { active: false, t: 0, cd: 0, tick: 0, refresh: 0, main: null, network: [], visual: [] },
+    ultimate: { active: false, t: 0, phase: 'none', tick: 0, refresh: 0, fxTick: 0, afterglow: 0, burstDone: false, targets: [] },
+  };
+  function motherLifeActive() { return selectedChar === 'motherlife'; }
+  function motherLifeHpMultiplier(rate, reverse = false) {
+    if (reverse || rate <= 0.10) return 3.0;
+    if (rate > 0.70) return 1.0;
+    if (rate > 0.40) return 1.6;
+    if (rate > 0.20) return 2.5;
+    return 4.0;
+  }
+  function motherLifeTargetScore(target, px = player.x, py = player.y) {
+    if (!target) return -Infinity;
+    const bossScore = (target === boss || target.isBoss) ? 1000000 : 0;
+    const tierScore = (target.tier || 0) * 100000;
+    const d = Math.hypot((target.x || 0) - px, (target.y || 0) - py);
+    return bossScore + tierScore - d * 20 + Math.max(0, target.hp || 0);
+  }
+  function motherLifeAdvanceRibbonCount(count, timer, dt) {
+    let nextCount = clamp(count, MOTHER_LIFE.ribbonDefault, MOTHER_LIFE.ribbonMax);
+    let nextTimer = Math.max(0, timer + Math.max(0, dt));
+    while (nextCount < MOTHER_LIFE.ribbonMax && nextTimer >= MOTHER_LIFE.ribbonGrowInterval) {
+      nextTimer -= MOTHER_LIFE.ribbonGrowInterval;
+      nextCount++;
+    }
+    if (nextCount >= MOTHER_LIFE.ribbonMax) nextTimer = 0;
+    return { count: nextCount, timer: nextTimer };
+  }
+  function motherLifeUltimatePhase(t) {
+    if (t < 0.6) return 'expand';
+    if (t < 4.5) return 'drain';
+    if (t < 5.3) return 'gather';
+    if (t < MOTHER_LIFE.ultimateDuration) return 'burst';
+    return 'done';
+  }
+  function motherLifePerfBudget(level) {
+    return level >= 2
+      ? { particles: 60, samples: 9, textureStep: 2, pulses: 1 }
+      : level === 1
+        ? { particles: 110, samples: 14, textureStep: 3, pulses: 2 }
+        : { particles: 180, samples: 20, textureStep: 4, pulses: 4 };
+  }
+  function motherLifeRibbonWidth(kind, t = 0.5) {
+    const base = kind === 'resonanceMain' ? 32
+      : kind === 'ultimate' ? 22
+        : kind === 'resonanceBranch' ? 16
+          : 16;
+    const envelope = 0.72 + Math.sin(clamp(t, 0, 1) * Math.PI) * 0.28;
+    return base * envelope;
+  }
+  function motherLifeTopTargets(list, limit = MOTHER_LIFE.visualTargetMax, px = player.x, py = player.y) {
+    return [...list]
+      .filter(target => target && target.hp > 0)
+      .sort((a, b) => motherLifeTargetScore(b, px, py) - motherLifeTargetScore(a, px, py))
+      .slice(0, Math.max(0, limit));
+  }
+  function motherLifeRefillTargets(current, candidates, limit = MOTHER_LIFE.visualTargetMax, px = player.x, py = player.y) {
+    const alive = [];
+    for (const target of current || []) {
+      if (target && target.hp > 0 && !alive.includes(target)) alive.push(target);
+    }
+    const ranked = motherLifeTopTargets(candidates || [], limit, px, py);
+    const priorityBoss = ranked.find(target => target && target.isBoss);
+    if (priorityBoss && !alive.includes(priorityBoss)) {
+      if (alive.length >= limit) alive.pop();
+      alive.unshift(priorityBoss);
+    }
+    for (const target of ranked) {
+      if (alive.length >= limit) break;
+      if (!alive.includes(target)) alive.push(target);
+    }
+    return alive.slice(0, limit);
+  }
+  function motherLifeHealCap(kind, maxHp, over = false) {
+    const rates = {
+      reverse: over ? 0.22 : 0.12,
+      resonance: over ? 0.18 : 0.11,
+      ultimate: 0.36,
+    };
+    return maxHp * (rates[kind] || 0);
+  }
+  if (typeof window !== 'undefined') {
+    window.__motherLifeInternals__ = {
+      hpMultiplier: motherLifeHpMultiplier,
+      targetScore: motherLifeTargetScore,
+      advanceRibbonCount: motherLifeAdvanceRibbonCount,
+      ultimatePhase: motherLifeUltimatePhase,
+      healCap: motherLifeHealCap,
+      perfBudget: motherLifePerfBudget,
+      ribbonWidth: motherLifeRibbonWidth,
+      topTargets: motherLifeTopTargets,
+      refillTargets: motherLifeRefillTargets,
+      config: { ...MOTHER_LIFE },
+    };
+  }
+  function resetMotherLifeState() {
+    motherLifeState.ribbonCount = MOTHER_LIFE.ribbonDefault;
+    motherLifeState.ribbonTimer = 0;
+    motherLifeState.reverse = false;
+    motherLifeState.damageTick = 0;
+    motherLifeState.targets.length = 0;
+    motherLifeState.pulse = 0;
+    motherLifeState.petalT = 0;
+    Object.assign(motherLifeState.resonance, { active: false, t: 0, cd: 0, tick: 0, refresh: 0, main: null });
+    motherLifeState.resonance.network.length = 0;
+    motherLifeState.resonance.visual.length = 0;
+    Object.assign(motherLifeState.ultimate, { active: false, t: 0, phase: 'none', tick: 0, refresh: 0, fxTick: 0, afterglow: 0, burstDone: false });
+    motherLifeState.ultimate.targets.length = 0;
+    motherLifeFx.length = 0;
+  }
+  function motherLifeValidTarget(target) {
+    if (!target || target.hp <= 0) return false;
+    if (target === boss) return state === 'boss' && !boss.dead && boss.inv <= 0;
+    return enemies.includes(target) && target.y > -90 && target.y < H + 80;
+  }
+  function motherLifeAliveTargets() {
+    const list = enemies.filter(motherLifeValidTarget);
+    if (boss && motherLifeValidTarget(boss)) list.push(boss);
+    return list;
+  }
+  function motherLifeSelectTargets(count) {
+    const alive = motherLifeAliveTargets().sort((a, b) => motherLifeTargetScore(b) - motherLifeTargetScore(a));
+    if (!alive.length) return [];
+    const out = [];
+    for (let i = 0; i < count; i++) out.push(alive[i % alive.length]);
+    return out;
+  }
+  function motherLifeHighestHpTarget() {
+    const alive = motherLifeAliveTargets();
+    let best = null;
+    for (const target of alive) if (!best || target.hp > best.hp || (target.hp === best.hp && target === boss)) best = target;
+    return best;
+  }
+  function motherLifeDamageTarget(target, amount, big = false) {
+    if (!motherLifeValidTarget(target) || amount <= 0) return 0;
+    const before = Math.max(0, target.hp);
+    if (target === boss) hitBoss(amount, target.x, target.y, big);
+    else {
+      target.hp = Math.max(0, target.hp - amount * grindDmg());
+      target.hitFlash = Math.max(target.hitFlash || 0, big ? 0.18 : 0.09);
+    }
+    return Math.max(0, before - Math.max(0, target.hp));
+  }
+  function motherLifeHealFromDrain(actualDamage, ratio, kind, dt) {
+    if (actualDamage <= 0 || ratio <= 0) return 0;
+    const cap = motherLifeHealCap(kind, player.maxHp, player.berserk > 0) * Math.max(0, dt);
+    const heal = Math.min(actualDamage * ratio, cap, player.maxHp - player.hp);
+    if (heal > 0) player.hp += heal;
+    return heal;
+  }
+  function motherLifeSpawnFx(kind, x, y, vx, vy, life, size, inward = false) {
+    const budget = motherLifePerfBudget(perfLevel).particles;
+    if (motherLifeFx.length >= budget) motherLifeFx.splice(0, motherLifeFx.length - budget + 1);
+    motherLifeFx.push({
+      kind, x, y, vx, vy, life, maxLife: life, size,
+      rot: rand(0, TAU), spin: rand(-2.2, 2.2), inward,
+    });
+  }
+  function motherLifeSpawnRadial(count, speedMin, speedMax, kinds = ['petal', 'crystal']) {
+    const density = perfLevel >= 2 ? 0.4 : perfLevel === 1 ? 0.68 : 1;
+    const n = Math.max(1, Math.round(count * density));
+    for (let i = 0; i < n; i++) {
+      const a = rand(0, TAU), speed = rand(speedMin, speedMax);
+      motherLifeSpawnFx(
+        kinds[i % kinds.length],
+        player.x + Math.cos(a) * rand(4, 24),
+        player.y - 20 + Math.sin(a) * rand(4, 18),
+        Math.cos(a) * speed,
+        Math.sin(a) * speed,
+        rand(0.45, 1.15),
+        rand(10, 25),
+      );
+    }
+  }
+  function motherLifeUpdateFx(dt) {
+    for (let i = motherLifeFx.length - 1; i >= 0; i--) {
+      const fx = motherLifeFx[i];
+      fx.life -= dt;
+      if (fx.inward) {
+        const dx = player.x - fx.x, dy = player.y - 26 - fx.y;
+        const len = Math.max(1, Math.hypot(dx, dy));
+        fx.vx += dx / len * 520 * dt;
+        fx.vy += dy / len * 520 * dt;
+      }
+      fx.x += fx.vx * dt; fx.y += fx.vy * dt;
+      fx.vx *= Math.pow(fx.inward ? 0.72 : 0.12, dt);
+      fx.vy *= Math.pow(fx.inward ? 0.72 : 0.12, dt);
+      fx.rot += fx.spin * dt;
+      if (fx.life <= 0) motherLifeFx.splice(i, 1);
+    }
+  }
+  function drawMotherLifeFx() {
+    if (!motherLifeFx.length) return;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (const fx of motherLifeFx) {
+      const p = clamp(fx.life / fx.maxLife, 0, 1);
+      const alpha = Math.sin(p * Math.PI) * 0.82;
+      const key = fx.kind === 'crystal' ? 'mlCrystalShard' : fx.kind === 'orb' ? 'mlHealOrb' : 'mlPetal';
+      ctx.save(); ctx.translate(fx.x, fx.y); ctx.rotate(fx.rot); ctx.globalAlpha = alpha;
+      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, fx.size * 1.25);
+      glow.addColorStop(0, fx.kind === 'crystal' ? 'rgba(255,248,211,0.72)' : 'rgba(255,190,229,0.62)');
+      glow.addColorStop(1, 'rgba(255,120,205,0)');
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, 0, fx.size * 1.25, 0, TAU); ctx.fill();
+      if (assetReady(key)) {
+        const img = assets[key], w = fx.size, h = w * img.height / img.width;
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+      } else {
+        ctx.fillStyle = fx.kind === 'crystal' ? '#fff3cf' : '#ffc4e7';
+        ctx.beginPath(); ctx.ellipse(0, 0, fx.size * 0.22, fx.size * 0.5, 0, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  function motherLifeEnterReverse() {
+    if (motherLifeState.reverse) return;
+    motherLifeState.reverse = true;
+    addRingFx(player.x, player.y, 18, 150, 0.72, 'rgba(255,220,242,', 5, 0.62);
+    setFlash(0.12, '255,190,225');
+    setMessage('生命反哺 · 汲取逆转', 1.8);
+    if (assetReady('mlIconReverse')) addSpriteFx('mlIconReverse', player.x, player.y - 42, 92, 0.75, 0, 0.35, 0.72);
+  }
+  function motherLifeCompleteReverse() {
+    motherLifeState.reverse = false;
+    motherLifeState.ribbonTimer = 0;
+    addRingFx(player.x, player.y, 28, 190, 0.8, 'rgba(255,240,205,', 5, 0.55);
+    setMessage('反哺完成 · 生命循环重启', 1.6);
+  }
+  function castLifeResonance() {
+    const r = motherLifeState.resonance;
+    if (!motherLifeActive() || r.active || r.cd > 0 || motherLifeState.ultimate.active) return;
+    if (!(state === 'mobs' || state === 'boss')) return;
+    r.active = true; r.t = 0; r.tick = 0; r.cd = MOTHER_LIFE.resonanceCooldown;
+    r.main = motherLifeHighestHpTarget();
+    r.network = motherLifeAliveTargets();
+    r.visual = motherLifeTopTargets(r.network.filter(target => target !== r.main), MOTHER_LIFE.visualTargetMax - 1);
+    r.refresh = MOTHER_LIFE.resonanceRefresh;
+    setFlash(0.08, '255,180,225');
+    addRingFx(player.x, player.y, 24, 210, 0.7, 'rgba(255,180,225,', 4, 0.62);
+    setMessage('生命共鸣 · 全场链接', 1.5);
+    playSfx('skillBeam', 0.48, 0.08);
+  }
+  function castWombOfAll() {
+    const u = motherLifeState.ultimate;
+    if (!motherLifeActive() || u.active) return false;
+    u.active = true; u.t = 0; u.tick = 0; u.refresh = 0; u.fxTick = 0; u.phase = 'expand'; u.burstDone = false;
+    u.targets = motherLifeTopTargets(motherLifeAliveTargets(), MOTHER_LIFE.visualTargetMax);
+    motherLifeState.resonance.active = false;
+    motherLifeState.resonance.main = null;
+    motherLifeState.resonance.network.length = 0;
+    motherLifeState.resonance.visual.length = 0;
+    enemyBullets.length = 0; warnings.length = 0; lasers.length = 0;
+    player.inv = Math.max(player.inv, 0.5);
+    setFlash(0.22, '255,220,242'); screenShake = Math.max(screenShake, 8);
+    addRingFx(player.x, player.y, 40, W * 0.72, 0.9, 'rgba(255,190,228,', 7, 0.55);
+    motherLifeSpawnRadial(34, 70, 260, ['petal', 'crystal']);
+    playSfx('skillBomb', 0.72, 0.1);
+    return true;
+  }
+  function motherLifeFinalBurst() {
+    const critical = player.hp / player.maxHp < 0.10;
+    const mul = critical ? 2 : 1;
+    for (const target of motherLifeAliveTargets()) {
+      motherLifeDamageTarget(target, target === boss ? 3000 * mul : 1800 * mul, true);
+    }
+    if (critical) player.hp = Math.max(player.hp, player.maxHp * 0.5);
+    enemyBullets.length = 0; warnings.length = 0; lasers.length = 0;
+    addRingFx(player.x, player.y, 60, W * 0.9, 0.72, 'rgba(255,245,220,', 9, 0.64);
+    setFlash(0.5, '255,230,245'); screenShake = Math.max(screenShake, 18);
+    triggerHitStop(0.12);
+    motherLifeState.ultimate.afterglow = 0.65;
+    const count = perfLevel >= 2 ? 30 : perfLevel === 1 ? 60 : 110;
+    for (let i = 0; i < count; i++) {
+      const a = rand(0, TAU), s = rand(80, 520);
+      addParticle(player.x, player.y, Math.cos(a) * s, Math.sin(a) * s, rand(0.45, 1.15), rand(2, 7), i % 3 ? '#ffd0eb' : '#fff5d2', true);
+    }
+    motherLifeSpawnRadial(perfLevel >= 2 ? 42 : perfLevel === 1 ? 76 : 128, 150, 720, ['crystal', 'petal', 'petal']);
+  }
+  function updateMotherLifeUltimate(dt) {
+    const u = motherLifeState.ultimate;
+    if (!u.active) return;
+    const previousPhase = u.phase;
+    u.t += dt; u.phase = motherLifeUltimatePhase(u.t);
+    player.inv = Math.max(player.inv, 0.18);
+    if (u.phase !== previousPhase) {
+      if (u.phase === 'drain') {
+        setMessage('众生胎宫 · 生命汲取', 1.2);
+        addRingFx(player.x, player.y, 42, W * 0.58, 0.72, 'rgba(255,180,230,', 5, 0.55);
+      } else if (u.phase === 'gather') {
+        setMessage('众生胎宫 · 万灵归心', 1.0);
+        setFlash(0.12, '255,205,235');
+      }
+    }
+    if (u.phase === 'drain' || u.phase === 'gather') {
+      u.refresh -= dt;
+      if (u.refresh <= 0 || u.targets.some(target => !motherLifeValidTarget(target))) {
+        u.targets = motherLifeRefillTargets(
+          u.targets.filter(motherLifeValidTarget),
+          motherLifeAliveTargets(),
+          MOTHER_LIFE.visualTargetMax,
+        );
+        u.refresh = MOTHER_LIFE.ultimateRefresh;
+      }
+    }
+    if (u.phase === 'drain') {
+      u.tick -= dt;
+      if (u.tick <= 0) {
+        const step = 0.12; u.tick += step;
+        const low = player.hp / player.maxHp < 0.30;
+        const dps = (220 + powerLevel() * 55) * MOTHER_LIFE.ultimateDrainBoost * (low ? 3.5 : 1) * (player.berserk > 0 ? 1.8 : 1);
+        let actual = 0;
+        for (const target of u.targets) {
+          actual += motherLifeDamageTarget(target, dps * step);
+          if (target !== boss) { target._mlSlowT = 0.25; target._mlSlow = 0.48; }
+        }
+        motherLifeHealFromDrain(actual, low ? 0.45 : 0.25, 'ultimate', step);
+      }
+      u.fxTick -= dt;
+      if (u.fxTick <= 0) {
+        u.fxTick = perfLevel >= 2 ? 0.18 : perfLevel === 1 ? 0.11 : 0.065;
+        motherLifeSpawnFx('petal', player.x + rand(-W * 0.42, W * 0.42), player.y + rand(-H * 0.54, H * 0.18), rand(-18, 18), rand(24, 70), rand(0.55, 1.0), rand(9, 18));
+      }
+    } else if (u.phase === 'gather') {
+      u.fxTick -= dt;
+      if (u.fxTick <= 0) {
+        u.fxTick = perfLevel >= 2 ? 0.12 : perfLevel === 1 ? 0.075 : 0.045;
+        const edge = Math.random() < 0.5;
+        const x = edge ? (Math.random() < 0.5 ? -20 : W + 20) : rand(0, W);
+        const y = edge ? rand(0, H) : (Math.random() < 0.5 ? -20 : H + 20);
+        motherLifeSpawnFx(Math.random() < 0.45 ? 'crystal' : 'petal', x, y, rand(-20, 20), rand(-20, 20), rand(0.55, 0.95), rand(10, 22), true);
+      }
+    }
+    if (u.phase === 'burst' && !u.burstDone) {
+      u.burstDone = true;
+      motherLifeFinalBurst();
+    }
+    if (u.phase === 'done') {
+      u.active = false; u.phase = 'none'; u.targets.length = 0;
+      setMessage('众生胎宫 · 圣花归寂', 1.4);
+    }
+  }
+  function updateLifeResonance(dt) {
+    const r = motherLifeState.resonance;
+    if (!r.active) return;
+    r.t += dt;
+    if (!motherLifeValidTarget(r.main)) r.main = motherLifeHighestHpTarget();
+    r.refresh -= dt;
+    if (r.refresh <= 0) {
+      r.network = motherLifeAliveTargets();
+      r.visual = motherLifeTopTargets(r.network.filter(target => target !== r.main), MOTHER_LIFE.visualTargetMax - 1);
+      r.refresh = MOTHER_LIFE.resonanceRefresh;
+    }
+    r.tick -= dt;
+    if (r.tick <= 0 && r.main) {
+      const step = 0.12; r.tick += step;
+      const hpMul = motherLifeHpMultiplier(player.hp / player.maxHp, motherLifeState.reverse);
+      const dps = (180 + powerLevel() * 35) * hpMul * (player.berserk > 0 ? 1.8 : 1);
+      const mainDamage = dps * step;
+      let actual = motherLifeDamageTarget(r.main, mainDamage);
+      for (const target of r.network) {
+        if (target === r.main) continue;
+        actual += motherLifeDamageTarget(target, mainDamage * MOTHER_LIFE.resonanceShare);
+      }
+      const hidden = r.network.filter(target => target !== r.main && !r.visual.includes(target));
+      if (hidden.length) {
+        const pulseTarget = hidden[Math.floor(r.t / 0.24) % hidden.length];
+        addSpriteFx('mlLifeNode', pulseTarget.x, pulseTarget.y, 32, 0.22, rand(0, TAU), 0.18, 0.34);
+      }
+      motherLifeHealFromDrain(actual, 0.20, 'resonance', step);
+    }
+    if (r.t >= MOTHER_LIFE.resonanceDuration) {
+      r.active = false; r.main = null; r.network.length = 0; r.visual.length = 0;
+      addRingFx(player.x, player.y, 20, 120, 0.5, 'rgba(255,205,235,', 3, 0.62);
+    }
+  }
+  function updateMotherLife(dt) {
+    if (!motherLifeActive()) return; // 换将后所有生命之母状态暂停并保留
+    motherLifeUpdateFx(dt);
+    if (!motherLifeState.ultimate.active) {
+      motherLifeState.ultimate.afterglow = Math.max(0, motherLifeState.ultimate.afterglow - dt);
+    }
+    if (!(state === 'mobs' || state === 'boss')) return;
+    motherLifeState.pulse += dt;
+    motherLifeState.resonance.cd = Math.max(0, motherLifeState.resonance.cd - dt);
+    if (motherLifeState.ultimate.active) {
+      updateMotherLifeUltimate(dt);
+      return;
+    }
+
+    const growth = motherLifeAdvanceRibbonCount(motherLifeState.ribbonCount, motherLifeState.ribbonTimer, dt);
+    if (growth.count > motherLifeState.ribbonCount) {
+      motherLifeState.ribbonCount = growth.count;
+      setMessage(`生命飘带展开 · ${growth.count}/8`, 1.2);
+      addRingFx(player.x, player.y, 16, 92, 0.45, 'rgba(255,190,225,', 3, 0.55);
+    }
+    motherLifeState.ribbonTimer = growth.timer;
+
+    if (motherLifeState.reverse && player.hp >= player.maxHp - 0.01) motherLifeCompleteReverse();
+    if (!motherLifeState.reverse) {
+      player.hp = Math.max(1, player.hp - player.maxHp * MOTHER_LIFE.selfDamageRate * dt);
+      if (player.hp / player.maxHp <= MOTHER_LIFE.reverseThreshold) motherLifeEnterReverse();
+    }
+
+    if (motherLifeState.resonance.active) {
+      updateLifeResonance(dt);
+    } else {
+      motherLifeState.damageTick -= dt;
+      if (motherLifeState.damageTick <= 0) {
+        const over = player.berserk > 0;
+        const step = over ? MOTHER_LIFE.overTick : MOTHER_LIFE.normalTick;
+        motherLifeState.damageTick += step;
+        const count = over ? MOTHER_LIFE.ribbonMax : motherLifeState.ribbonCount;
+        motherLifeState.targets = motherLifeSelectTargets(count);
+        const hpMul = motherLifeHpMultiplier(player.hp / player.maxHp, motherLifeState.reverse);
+        const dps = (62 + powerLevel() * 14) * hpMul * (over ? 1.8 : 1);
+        let actual = 0;
+        for (const target of motherLifeState.targets) actual += motherLifeDamageTarget(target, dps * step);
+        if (motherLifeState.reverse) motherLifeHealFromDrain(actual, 0.8, 'reverse', step);
+      }
+    }
+
+    motherLifeState.petalT -= dt;
+    if (motherLifeState.petalT <= 0) {
+      motherLifeState.petalT = player.berserk > 0 ? 0.07 : (perfLevel >= 2 ? 0.3 : 0.16);
+      addParticle(player.x + rand(-42, 42), player.y + rand(-44, 32), rand(-34, 34), rand(24, 78), rand(0.45, 0.9), rand(1.4, 3.2), motherLifeState.reverse ? '#fff0bf' : '#ffc4e6', true);
+      if (perfLevel < 2 && Math.random() < (player.berserk > 0 ? 0.55 : 0.22)) {
+        addSpriteFx(Math.random() < 0.18 ? 'mlButterfly' : 'mlPetal', player.x + rand(-54, 54), player.y + rand(-62, 34), rand(16, 28), rand(0.45, 0.8), rand(-0.8, 0.8), 0.18, 0.66);
+      }
+    }
+  }
+
+  function motherLifeRibbonGeom(target, index, total, fromX = player.x, fromY = player.y - 51) {
+    const over = player.berserk > 0;
+    const lane = total <= 1 ? 0 : index / (total - 1) - 0.5;
+    const sx = fromX + lane * Math.min(42, total * 5.5);
+    const sy = fromY + Math.abs(lane) * 6;
+    const tx = target.x, ty = target.y;
+    const dx = tx - sx, dy = ty - sy, len = Math.max(1, Math.hypot(dx, dy));
+    const nx = -dy / len, ny = dx / len;
+    const wave = Math.sin(time * (over ? 5.4 : 2.8) + index * 1.83)
+      * (20 + Math.min(48, len * 0.08)) * (over ? 1.32 : 1);
+    return {
+      p0: { x: sx, y: sy },
+      p1: { x: sx + dx * 0.32 + nx * (wave + lane * 34), y: sy + dy * 0.32 + ny * (wave + lane * 34) },
+      p2: { x: sx + dx * 0.68 - nx * (wave * 0.62 - lane * 26), y: sy + dy * 0.68 - ny * (wave * 0.62 - lane * 26) },
+      p3: { x: tx, y: ty },
+    };
+  }
+  function motherLifeBezierPoint(g, t) {
+    const u = 1 - t, u2 = u * u, t2 = t * t;
+    return {
+      x: u2 * u * g.p0.x + 3 * u2 * t * g.p1.x + 3 * u * t2 * g.p2.x + t2 * t * g.p3.x,
+      y: u2 * u * g.p0.y + 3 * u2 * t * g.p1.y + 3 * u * t2 * g.p2.y + t2 * t * g.p3.y,
+    };
+  }
+  function motherLifeBezierTangent(g, t) {
+    const u = 1 - t;
+    return {
+      x: 3 * u * u * (g.p1.x - g.p0.x) + 6 * u * t * (g.p2.x - g.p1.x) + 3 * t * t * (g.p3.x - g.p2.x),
+      y: 3 * u * u * (g.p1.y - g.p0.y) + 6 * u * t * (g.p2.y - g.p1.y) + 3 * t * t * (g.p3.y - g.p2.y),
+    };
+  }
+  function motherLifeRibbonSamples(g, width, phase) {
+    const count = motherLifePerfBudget(perfLevel).samples;
+    const over = player.berserk > 0;
+    const strong = width === 'resonanceMain' || width === 'ultimate';
+    const flowSpeed = (strong ? 1.08 : 0.72) * (over ? 2.0 : 1);
+    const flowA = 1 - ((time * flowSpeed + phase * 0.037) % 1);
+    const flowB = 1 - ((time * flowSpeed + phase * 0.037 + 0.52) % 1);
+    const samples = [];
+    for (let i = 0; i <= count; i++) {
+      const t = i / count;
+      const p = motherLifeBezierPoint(g, t);
+      const tangent = motherLifeBezierTangent(g, t);
+      const len = Math.max(0.001, Math.hypot(tangent.x, tangent.y));
+      const nx = -tangent.y / len, ny = tangent.x / len;
+      const breathe = 1 + Math.sin(time * (over ? 7.2 : 3.4) + phase + t * TAU * (over ? 3.3 : 2.2)) * (over ? 0.17 : 0.09);
+      const packetWidth = over ? 0.006 : 0.009;
+      const packetBulge = Math.exp(-((t - flowA) ** 2) / packetWidth)
+        + Math.exp(-((t - flowB) ** 2) / packetWidth);
+      const half = motherLifeRibbonWidth(width, t) * 0.5 * breathe * (over ? 1.18 : 1)
+        * (1 + packetBulge * (strong ? 0.26 : over ? 0.23 : 0.15));
+      samples.push({
+        t, x: p.x, y: p.y, nx, ny, half,
+        lx: p.x + nx * half, ly: p.y + ny * half,
+        rx: p.x - nx * half, ry: p.y - ny * half,
+      });
+    }
+    return samples;
+  }
+  function motherLifeRibbonPolygon(samples, scale = 1) {
+    ctx.beginPath();
+    ctx.moveTo(samples[0].x + samples[0].nx * samples[0].half * scale, samples[0].y + samples[0].ny * samples[0].half * scale);
+    for (let i = 1; i < samples.length; i++) {
+      const p = samples[i];
+      ctx.lineTo(p.x + p.nx * p.half * scale, p.y + p.ny * p.half * scale);
+    }
+    for (let i = samples.length - 1; i >= 0; i--) {
+      const p = samples[i];
+      ctx.lineTo(p.x - p.nx * p.half * scale, p.y - p.ny * p.half * scale);
+    }
+    ctx.closePath();
+  }
+  function motherLifeRibbonEdge(samples, side) {
+    ctx.beginPath();
+    for (let i = 0; i < samples.length; i++) {
+      const p = samples[i], x = p.x + p.nx * p.half * side, y = p.y + p.ny * p.half * side;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  function drawMotherLifeRibbonTexture(samples, index, intensity) {
+    const budget = motherLifePerfBudget(perfLevel);
+    const keys = ['mlRibbonBody1', 'mlRibbonBody2', 'mlRibbonBody3'];
+    const key = keys[index % keys.length];
+    if (!assetReady(key)) return;
+    const img = assets[key];
+    for (let i = 0; i < samples.length - 1; i += budget.textureStep) {
+      const a = samples[i], b = samples[Math.min(samples.length - 1, i + budget.textureStep)];
+      const dx = b.x - a.x, dy = b.y - a.y, len = Math.max(3, Math.hypot(dx, dy));
+      const mid = { x: (a.x + b.x) * 0.5, y: (a.y + b.y) * 0.5 };
+      const h = (a.half + b.half) * 2.15;
+      const pathT = (a.t + b.t) * 0.5;
+      const endFade = Math.pow(Math.sin(pathT * Math.PI), 1.45);
+      ctx.save(); ctx.translate(mid.x, mid.y); ctx.rotate(Math.atan2(dy, dx));
+      ctx.globalAlpha = endFade * (0.34 + endFade * 0.22) * intensity;
+      ctx.drawImage(img, -len * 0.64, -h / 2, len * 1.28, h);
+      ctx.restore();
+    }
+  }
+  function drawMotherLifeRootBlend(g, samples, kind, intensity) {
+    const over = player.berserk > 0;
+    const strong = kind === 'resonanceMain' || kind === 'ultimate';
+    const root = samples[0];
+    const reach = motherLifeBezierPoint(g, 0.17);
+    const width = motherLifeRibbonWidth(kind, 0.16) * (over ? 1.75 : 1.42);
+    const bridge = ctx.createLinearGradient(root.x, root.y, reach.x, reach.y);
+    bridge.addColorStop(0, over ? 'rgba(255,55,185,0.96)' : 'rgba(255,220,242,0.94)');
+    bridge.addColorStop(0.28, over ? 'rgba(255,95,204,0.72)' : 'rgba(255,151,211,0.68)');
+    bridge.addColorStop(1, 'rgba(255,120,210,0)');
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = intensity * (strong ? 0.72 : over ? 0.58 : 0.46); ctx.strokeStyle = bridge; ctx.lineWidth = width;
+    ctx.lineCap = 'round'; ctx.shadowColor = over ? '#ff42b8' : '#ff9cd5'; ctx.shadowBlur = perfLevel >= 2 ? 0 : over ? 18 : 12;
+    ctx.beginPath(); ctx.moveTo(root.x, root.y);
+    ctx.bezierCurveTo(
+      g.p0.x + (g.p1.x - g.p0.x) * 0.46,
+      g.p0.y + (g.p1.y - g.p0.y) * 0.46,
+      g.p1.x,
+      g.p1.y,
+      reach.x,
+      reach.y,
+    );
+    ctx.stroke();
+    const radius = strong ? (over ? 37 : 33) : (over ? 29 : 23);
+    const glow = ctx.createRadialGradient(root.x, root.y, 0, root.x, root.y, radius);
+    glow.addColorStop(0, over ? 'rgba(255,255,245,0.96)' : 'rgba(255,248,252,0.92)');
+    glow.addColorStop(0.22, over ? 'rgba(255,64,185,0.68)' : 'rgba(255,155,218,0.52)');
+    glow.addColorStop(1, 'rgba(255,110,205,0)');
+    ctx.globalAlpha = (strong ? 0.42 : over ? 0.28 : 0.18) * intensity; ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(root.x, root.y, radius, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function drawMotherLifeRootGrowth(samples, index, intensity) {
+    if (!samples.length) return;
+    const root = samples[0];
+    const next = samples[Math.min(samples.length - 1, Math.max(2, Math.floor(samples.length * 0.16)))];
+    const angle = Math.atan2(next.y - root.y, next.x - root.x);
+    const pulse = 0.84 + Math.sin(time * 6.2 + index * 1.7) * 0.12;
+    ctx.save(); ctx.translate(root.x, root.y); ctx.rotate(angle);
+    ctx.globalCompositeOperation = 'lighter';
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, 24 * pulse);
+    glow.addColorStop(0, 'rgba(255,255,245,0.94)');
+    glow.addColorStop(0.3, 'rgba(255,116,207,0.62)');
+    glow.addColorStop(1, 'rgba(255,80,185,0)');
+    ctx.globalAlpha = 0.42 * intensity; ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(0, 0, 24 * pulse, 0, TAU); ctx.fill();
+    for (let side of [-1, 1]) {
+      const petal = ctx.createLinearGradient(-4, 0, 28, 0);
+      petal.addColorStop(0, 'rgba(255,245,250,0.08)');
+      petal.addColorStop(0.35, 'rgba(255,154,219,0.58)');
+      petal.addColorStop(1, 'rgba(255,87,188,0)');
+      ctx.globalAlpha = 0.58 * intensity; ctx.fillStyle = petal;
+      ctx.beginPath(); ctx.moveTo(-3, 0);
+      ctx.bezierCurveTo(5, side * 2, 12, side * 9, 30, side * 4);
+      ctx.bezierCurveTo(15, side * 2, 7, side * 0.5, -3, 0);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+  function drawMotherLifeEnergyPackets(g, index, kind, reverseFlow, intensity) {
+    const over = player.berserk > 0;
+    const budget = motherLifePerfBudget(perfLevel);
+    const strong = kind === 'resonanceMain' || kind === 'ultimate';
+    const count = Math.max(2, budget.pulses + (strong ? 2 : 1) + (over ? 2 : 0));
+    const speed = (kind === 'ultimate' ? 1.12 : kind === 'resonanceMain' ? 1.0 : 0.72) * (over ? 2.05 : 1);
+    for (let q = 0; q < count; q++) {
+      let progress = (time * speed + q / count + index * 0.137) % 1;
+      let p = reverseFlow ? 1 - progress : progress;
+      const point = motherLifeBezierPoint(g, p);
+      const tangent = motherLifeBezierTangent(g, p);
+      const angle = Math.atan2(tangent.y, tangent.x) + (reverseFlow ? Math.PI : 0);
+      const packetPulse = 0.72 + Math.sin(time * (over ? 15 : 9) + q * 2.1) * 0.22;
+      const packetW = (strong ? 22 : 15) * packetPulse * (over ? 1.3 : 1);
+      const packetH = (strong ? 7.5 : 5.2) * (over ? 1.25 : 1);
+      ctx.save(); ctx.translate(point.x, point.y); ctx.rotate(angle); ctx.globalCompositeOperation = 'lighter';
+      const tail = ctx.createLinearGradient(-packetW * 2.4, 0, packetW * 0.7, 0);
+      tail.addColorStop(0, 'rgba(255,90,202,0)');
+      tail.addColorStop(0.55, over ? 'rgba(255,45,170,0.42)' : 'rgba(255,139,214,0.34)');
+      tail.addColorStop(1, 'rgba(255,249,255,0.94)');
+      ctx.globalAlpha = 0.92 * intensity; ctx.fillStyle = tail;
+      ctx.beginPath(); ctx.ellipse(-packetW * 0.55, 0, packetW * 1.85, packetH * 1.35, 0, 0, TAU); ctx.fill();
+      const core = ctx.createRadialGradient(0, 0, 0, 0, 0, packetW);
+      core.addColorStop(0, 'rgba(255,255,255,1)');
+      core.addColorStop(0.28, over ? 'rgba(255,80,190,0.96)' : 'rgba(255,207,240,0.94)');
+      core.addColorStop(1, 'rgba(255,100,205,0)');
+      ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0, 0, packetW, 0, TAU); ctx.fill();
+      ctx.restore();
+      if (reverseFlow && p < 0.075) {
+        const arrive = (0.075 - p) / 0.075;
+        const rr = 18 + arrive * (over ? 46 : 30);
+        const arrivalGlow = ctx.createRadialGradient(g.p0.x, g.p0.y, 0, g.p0.x, g.p0.y, rr);
+        arrivalGlow.addColorStop(0, 'rgba(255,255,248,0.9)');
+        arrivalGlow.addColorStop(0.35, over ? 'rgba(255,56,176,0.48)' : 'rgba(255,162,220,0.42)');
+        arrivalGlow.addColorStop(1, 'rgba(255,120,210,0)');
+        ctx.globalAlpha = arrive * 0.38 * intensity; ctx.fillStyle = arrivalGlow;
+        ctx.beginPath(); ctx.arc(g.p0.x, g.p0.y, rr, 0, TAU); ctx.fill();
+      }
+    }
+  }
+  function drawMotherLifeLink(g, index, total, layer, kind = 'normal', reverseFlow = true, intensity = 1) {
+    const hpRate = player.hp / player.maxHp;
+    const danger = clamp((0.45 - hpRate) / 0.35, 0, 1);
+    const reverse = motherLifeState.reverse;
+    const over = player.berserk > 0;
+    const samples = motherLifeRibbonSamples(g, kind, index * 1.83);
+    const strong = kind === 'resonanceMain';
+    if (layer === 'under') {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      ctx.shadowColor = reverse ? '#ffe6a0' : over ? '#ff36b4' : '#ff77c9';
+      ctx.shadowBlur = perfLevel === 0 ? (strong ? 22 : over ? 22 : 14) : perfLevel === 1 ? (over ? 12 : 8) : 0;
+      ctx.fillStyle = reverse ? 'rgba(255,228,150,0.20)' : over ? 'rgba(255,36,160,0.27)' : 'rgba(255,92,194,0.18)';
+      ctx.globalAlpha = (0.52 + danger * 0.16 + (over ? 0.14 : 0)) * intensity;
+      motherLifeRibbonPolygon(samples, strong ? 2.35 : over ? 2.28 : 2.05); ctx.fill();
+      ctx.shadowBlur = 0; ctx.fillStyle = reverse ? 'rgba(255,244,196,0.18)' : over ? 'rgba(255,101,196,0.24)' : 'rgba(255,166,220,0.18)';
+      motherLifeRibbonPolygon(samples, over ? 1.62 : 1.45); ctx.fill(); ctx.restore();
+      return;
+    }
+    const rootTaper = strong ? 0.13 : 0.18;
+    const bodySamples = samples.map(sample => {
+      const raw = clamp(sample.t / rootTaper, 0, 1);
+      const taper = raw * raw * (3 - 2 * raw);
+      return { ...sample, half: sample.half * taper };
+    });
+    ctx.save();
+    const grad = ctx.createLinearGradient(g.p0.x, g.p0.y, g.p3.x, g.p3.y);
+    grad.addColorStop(0, reverse ? 'rgba(255,245,194,0.78)' : over ? 'rgba(255,112,204,0.92)' : 'rgba(255,202,234,0.76)');
+    grad.addColorStop(0.45, reverse ? 'rgba(255,218,137,0.88)' : over ? 'rgba(242,48,169,0.96)' : 'rgba(255,137,207,0.88)');
+    grad.addColorStop(1, reverse ? 'rgba(255,250,212,0.76)' : over ? 'rgba(255,130,229,0.88)' : 'rgba(244,184,255,0.74)');
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = (0.72 + danger * 0.16 + (over ? 0.14 : 0)) * intensity;
+    ctx.fillStyle = grad; motherLifeRibbonPolygon(bodySamples, 1); ctx.fill();
+    ctx.globalCompositeOperation = 'lighter';
+    drawMotherLifeRootGrowth(bodySamples, index, intensity);
+    drawMotherLifeRibbonTexture(bodySamples, index, intensity);
+    ctx.globalAlpha = (0.72 + danger * 0.18 + (over ? 0.16 : 0)) * intensity;
+    ctx.strokeStyle = reverse ? '#fff1b3' : over ? '#ff9cdd' : '#ffd4ef'; ctx.lineWidth = strong ? 2.1 : over ? 2.1 : 1.25; ctx.lineCap = 'round';
+    motherLifeRibbonEdge(bodySamples, 1); motherLifeRibbonEdge(bodySamples, -1);
+    ctx.globalAlpha = (over ? 0.96 : 0.82) * intensity; ctx.strokeStyle = '#fffaf6'; ctx.lineWidth = strong ? 2.6 : over ? 2.2 : 1.4;
+    ctx.beginPath();
+    bodySamples.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+    ctx.stroke();
+    const stackScale = 1 / Math.sqrt(Math.max(1, total));
+    drawMotherLifeEnergyPackets(g, index, kind, reverseFlow, intensity * (0.72 + stackScale * 0.28));
+    drawMotherLifeRootBlend(g, samples, kind, intensity * stackScale);
+    ctx.restore();
+  }
+  function drawMotherLifeRibbons(layer = 'under') {
+    if (!motherLifeActive() || state === 'title') return;
+    if (layer === 'under' && motherLifeState.resonance.active) {
+      ctx.save(); ctx.fillStyle = 'rgba(35,8,38,0.14)'; ctx.fillRect(0, 0, W, H); ctx.restore();
+    }
+    ctx.save(); ctx.globalCompositeOperation = layer === 'under' ? 'source-over' : 'lighter';
+    const resonance = motherLifeState.resonance;
+    const ultimate = motherLifeState.ultimate;
+    if (ultimate.active) {
+      if (ultimate.phase === 'drain' || ultimate.phase === 'gather') {
+        const targets = ultimate.targets.filter(motherLifeValidTarget).slice(0, ultimate.phase === 'gather' ? 3 : MOTHER_LIFE.visualTargetMax);
+        targets.forEach((target, i) => {
+          const g = motherLifeRibbonGeom(target, i, Math.max(1, targets.length));
+          drawMotherLifeLink(g, i, targets.length, layer, 'ultimate', ultimate.phase !== 'gather', ultimate.phase === 'gather' ? 1 : 0.82);
+        });
+      }
+    } else if (resonance.active && motherLifeValidTarget(resonance.main)) {
+      const main = resonance.main;
+      const mainG = motherLifeRibbonGeom(main, 0, 1);
+      drawMotherLifeLink(mainG, 0, 1, layer, 'resonanceMain', true);
+      const others = resonance.visual.filter(t => motherLifeValidTarget(t) && t !== main).slice(0, MOTHER_LIFE.visualTargetMax - 1);
+      others.forEach((target, i) => {
+        const g = motherLifeRibbonGeom(target, i, Math.max(1, others.length), main.x, main.y);
+        drawMotherLifeLink(g, i, others.length, layer, 'resonanceBranch', false, 0.7);
+      });
+    } else {
+      const targets = motherLifeState.targets.filter(motherLifeValidTarget);
+      targets.forEach((target, i) => {
+        const g = motherLifeRibbonGeom(target, i, Math.max(1, targets.length));
+        drawMotherLifeLink(g, i, targets.length, layer, 'normal', true);
+      });
+    }
+
+    if (layer === 'over') {
+      const targets = ultimate.active
+        ? (ultimate.phase === 'drain' || ultimate.phase === 'gather'
+          ? ultimate.targets.slice(0, ultimate.phase === 'gather' ? 3 : MOTHER_LIFE.visualTargetMax)
+          : [])
+        : resonance.active ? [resonance.main, ...resonance.visual] : motherLifeState.targets;
+      const unique = [...new Set(targets.filter(motherLifeValidTarget))];
+      for (const target of unique) {
+        const key = resonance.active && target === resonance.main ? 'mlMainTarget' : 'mlLifeNode';
+        if (assetReady(key)) {
+          const s = key === 'mlMainTarget' ? 70 : 38;
+          const img = assets[key], h = s * img.height / img.width;
+          ctx.save(); ctx.translate(target.x, target.y); ctx.rotate(time * (key === 'mlMainTarget' ? 0.7 : -0.9));
+          ctx.globalAlpha = key === 'mlMainTarget' ? 0.88 : 0.68;
+          ctx.drawImage(img, -s / 2, -h / 2, s, h); ctx.restore();
+        }
+        if (assetReady('mlRibbonTip')) {
+          const s = 25;
+          const img = assets.mlRibbonTip, h = s * img.height / img.width;
+          ctx.save(); ctx.translate(target.x, target.y); ctx.rotate(angleTo(player.x, player.y, target.x, target.y) + Math.PI / 2);
+          ctx.globalAlpha = 0.72; ctx.drawImage(img, -s / 2, -h / 2, s, h); ctx.restore();
+        }
+      }
+      if (assetReady('mlRibbonOrigin')) {
+        const s = motherLifeState.resonance.active ? 62 : 42;
+        const img = assets.mlRibbonOrigin, h = s * img.height / img.width;
+        ctx.save(); ctx.translate(player.x, player.y - 24); ctx.rotate(time * 0.6);
+        ctx.globalAlpha = 0.68; ctx.drawImage(img, -s / 2, -h / 2, s, h); ctx.restore();
+      }
+    }
+    ctx.restore();
+  }
+
+  function motherLifeStageSeed(index, salt = 0) {
+    const value = Math.sin(index * 91.731 + salt * 47.219) * 43758.5453;
+    return value - Math.floor(value);
+  }
+
+  function drawMotherLifePetalShape(x, y, size, rotation, alpha, color = '#ff9ed4') {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rotation);
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = alpha;
+    ctx.shadowColor = color; ctx.shadowBlur = perfLevel >= 2 ? 0 : size * 0.8;
+    const grad = ctx.createLinearGradient(-size, 0, size, 0);
+    grad.addColorStop(0, 'rgba(255,104,192,0)');
+    grad.addColorStop(0.45, color);
+    grad.addColorStop(1, 'rgba(255,250,244,0.92)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(-size, 0);
+    ctx.quadraticCurveTo(-size * 0.12, -size * 0.44, size, 0);
+    ctx.quadraticCurveTo(-size * 0.12, size * 0.44, -size, 0);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawMotherLifeBloomSprite(key, x, y, width, alpha, rotation = 0, glow = 18) {
+    if (!assetReady(key) || alpha <= 0) return;
+    const img = assets[key], height = width * img.height / img.width;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rotation);
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = alpha;
+    ctx.shadowColor = '#ff5db9'; ctx.shadowBlur = perfLevel >= 2 ? 0 : glow;
+    ctx.drawImage(img, -width / 2, -height / 2, width, height);
+    ctx.shadowBlur = 0; ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha * 0.14;
+    ctx.drawImage(img, -width * 0.515, -height * 0.515, width * 1.03, height * 1.03);
+    ctx.restore();
+  }
+
+  function drawMotherLifeBloomEdge(x, y, radius, progress, intensity = 1) {
+    const count = perfLevel >= 2 ? 8 : perfLevel === 1 ? 12 : 18;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < count; i++) {
+      const a = i / count * TAU + time * 0.28;
+      const pulse = 0.76 + 0.24 * Math.sin(time * 7.5 + i * 1.9);
+      const inner = radius * (0.66 + progress * 0.10);
+      const outer = radius * (0.96 + progress * 0.22 + pulse * 0.04);
+      const x0 = x + Math.cos(a) * inner, y0 = y + Math.sin(a) * inner * 0.56;
+      const x1 = x + Math.cos(a) * outer, y1 = y + Math.sin(a) * outer * 0.56;
+      const grad = ctx.createLinearGradient(x0, y0, x1, y1);
+      grad.addColorStop(0, 'rgba(255,80,185,0)');
+      grad.addColorStop(0.55, 'rgba(255,126,207,0.44)');
+      grad.addColorStop(1, 'rgba(255,249,229,0.92)');
+      ctx.globalAlpha = intensity * (0.38 + pulse * 0.34);
+      ctx.strokeStyle = grad; ctx.lineWidth = 1.1 + pulse * 1.5;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(
+        x + Math.cos(a + 0.08) * radius * 0.86,
+        y + Math.sin(a + 0.08) * radius * 0.52,
+        x1, y1,
+      ); ctx.stroke();
+      if (i % 3 === 0) {
+        const r = 2.3 + pulse * 2.2;
+        const glow = ctx.createRadialGradient(x1, y1, 0, x1, y1, r * 3.2);
+        glow.addColorStop(0, 'rgba(255,255,244,0.98)');
+        glow.addColorStop(0.28, 'rgba(255,112,206,0.88)');
+        glow.addColorStop(1, 'rgba(255,90,190,0)');
+        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(x1, y1, r * 3.2, 0, TAU); ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawMotherLifeUltimateParticles(stage, progress, x, y) {
+    const high = perfLevel >= 2 ? 12 : perfLevel === 1 ? 22 : 34;
+    const burst = stage === 'burst';
+    const gather = stage === 'gather';
+    for (let i = 0; i < high; i++) {
+      const seedA = motherLifeStageSeed(i, burst ? 4 : gather ? 3 : 2);
+      const seedB = motherLifeStageSeed(i, burst ? 8 : gather ? 7 : 6);
+      const delayed = clamp(progress * (burst ? 1.45 : 1.25) - seedA * 0.34, 0, 1);
+      if (delayed <= 0) continue;
+      const eased = 1 - Math.pow(1 - delayed, 3);
+      const angle = i / high * TAU + seedB * 0.52 + time * (burst ? 0.12 : 0.05);
+      const distance = burst
+        ? 22 + eased * (120 + seedA * 270)
+        : gather ? 185 * (1 - eased) + seedA * 55
+          : 20 + eased * (72 + seedA * 115);
+      const px = x + Math.cos(angle) * distance;
+      const py = y + Math.sin(angle) * distance * (burst ? 0.62 : 0.54);
+      const alpha = burst
+        ? Math.pow(1 - delayed, 0.35) * 0.92
+        : gather ? eased * 0.72 : Math.sin(delayed * Math.PI) * 0.78;
+      const size = (burst ? 5.5 : 3.8) + seedB * (burst ? 8 : 5);
+      drawMotherLifePetalShape(px, py, size, angle + (burst ? 0 : Math.PI), alpha, i % 4 ? '#ff9fd5' : '#fff0bf');
+    }
+  }
+
+  function drawMotherLifeDomainEnergy(cx, cy, scale, phase, expandP, gatherP, burstP) {
+    const phaseAlpha = phase === 'expand'
+      ? 0.48 + expandP * 0.42
+      : phase === 'gather' ? 0.82 + gatherP * 0.18
+        : phase === 'burst' ? Math.max(0, 0.82 * (1 - burstP))
+          : 0.72 + Math.sin(time * 2.4) * 0.08;
+    if (phaseAlpha <= 0.01) return;
+    const rings = [
+      { rx: W * 0.438 * scale, ry: W * 0.196 * scale, rot: -time * 0.052, speed: 0.42, width: 4.8 },
+      { rx: W * 0.354 * scale, ry: W * 0.148 * scale, rot: time * 0.078, speed: -0.58, width: 3.4 },
+      { rx: W * 0.265 * scale, ry: W * 0.106 * scale, rot: -time * 0.105, speed: 0.76, width: 2.2 },
+    ];
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+
+    const baseGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.45 * scale);
+    baseGlow.addColorStop(0, `rgba(255,102,194,${0.10 * phaseAlpha})`);
+    baseGlow.addColorStop(0.58, `rgba(255,73,174,${0.055 * phaseAlpha})`);
+    baseGlow.addColorStop(1, 'rgba(255,65,170,0)');
+    ctx.fillStyle = baseGlow;
+    ctx.beginPath(); ctx.ellipse(cx, cy, W * 0.47 * scale, W * 0.21 * scale, 0, 0, TAU); ctx.fill();
+
+    for (let ringIndex = 0; ringIndex < rings.length; ringIndex++) {
+      const ring = rings[ringIndex];
+      const segmentCount = perfLevel >= 2 ? 4 : perfLevel === 1 ? 6 : 8;
+      ctx.shadowColor = ringIndex === 1 ? '#fff0be' : '#ff61bd';
+      ctx.shadowBlur = perfLevel >= 2 ? 0 : 11 - ringIndex * 2;
+      for (let i = 0; i < segmentCount; i++) {
+        const seed = motherLifeStageSeed(i + ringIndex * 11, 12);
+        const start = time * ring.speed + i / segmentCount * TAU + seed * 0.22;
+        const length = 0.22 + seed * 0.32;
+        const gradient = ctx.createLinearGradient(
+          cx + Math.cos(start) * ring.rx,
+          cy + Math.sin(start) * ring.ry,
+          cx + Math.cos(start + length) * ring.rx,
+          cy + Math.sin(start + length) * ring.ry,
+        );
+        gradient.addColorStop(0, 'rgba(255,74,182,0)');
+        gradient.addColorStop(0.42, ringIndex === 1 ? 'rgba(255,236,188,0.88)' : 'rgba(255,104,207,0.82)');
+        gradient.addColorStop(1, 'rgba(255,255,247,0.96)');
+        ctx.globalAlpha = phaseAlpha * (0.42 + seed * 0.28);
+        ctx.strokeStyle = gradient; ctx.lineWidth = ring.width;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, ring.rx, ring.ry, ring.rot, start, start + length);
+        ctx.stroke();
+      }
+    }
+    ctx.shadowBlur = 0;
+
+    const nodeCount = perfLevel >= 2 ? 10 : perfLevel === 1 ? 18 : 28;
+    for (let i = 0; i < nodeCount; i++) {
+      const ring = rings[i % rings.length];
+      const seed = motherLifeStageSeed(i, 15);
+      const a = time * ring.speed * (1.35 + seed * 0.35) + i / nodeCount * TAU * 2.7;
+      const cosA = Math.cos(a), sinA = Math.sin(a);
+      const cosR = Math.cos(ring.rot), sinR = Math.sin(ring.rot);
+      const localX = cosA * ring.rx, localY = sinA * ring.ry;
+      const x = cx + localX * cosR - localY * sinR;
+      const y = cy + localX * sinR + localY * cosR;
+      const pulse = 0.68 + 0.32 * Math.sin(time * 8.5 + i * 1.73);
+      const r = (2.2 + seed * 2.8) * pulse;
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 4.2);
+      glow.addColorStop(0, 'rgba(255,255,246,0.98)');
+      glow.addColorStop(0.22, i % 4 ? 'rgba(255,103,202,0.90)' : 'rgba(255,229,170,0.92)');
+      glow.addColorStop(1, 'rgba(255,75,185,0)');
+      ctx.globalAlpha = phaseAlpha * (0.58 + pulse * 0.26);
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(x, y, r * 4.2, 0, TAU); ctx.fill();
+      if (i % 4 === 0) {
+        ctx.globalAlpha = phaseAlpha * 0.72;
+        ctx.strokeStyle = i % 8 ? '#ffb5df' : '#fff0c3'; ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.moveTo(x - r * 3.5, y); ctx.lineTo(x + r * 3.5, y);
+        ctx.moveTo(x, y - r * 3.5); ctx.lineTo(x, y + r * 3.5); ctx.stroke();
+      }
+    }
+
+    const rayCount = perfLevel >= 2 ? 8 : perfLevel === 1 ? 12 : 18;
+    for (let i = 0; i < rayCount; i++) {
+      const a = i / rayCount * TAU + time * (i % 2 ? -0.13 : 0.16);
+      const pulse = 0.5 + 0.5 * Math.sin(time * 4.8 + i * 2.1);
+      const innerX = Math.cos(a) * W * 0.30 * scale;
+      const innerY = Math.sin(a) * W * 0.125 * scale;
+      const outerX = Math.cos(a) * W * (0.39 + pulse * 0.045) * scale;
+      const outerY = Math.sin(a) * W * (0.17 + pulse * 0.018) * scale;
+      const ray = ctx.createLinearGradient(cx + innerX, cy + innerY, cx + outerX, cy + outerY);
+      ray.addColorStop(0, 'rgba(255,83,190,0)');
+      ray.addColorStop(0.62, 'rgba(255,121,207,0.42)');
+      ray.addColorStop(1, i % 3 ? 'rgba(255,225,238,0.78)' : 'rgba(255,240,188,0.82)');
+      ctx.globalAlpha = phaseAlpha * (0.24 + pulse * 0.32);
+      ctx.strokeStyle = ray; ctx.lineWidth = 1.1 + pulse * 1.4;
+      ctx.beginPath(); ctx.moveTo(cx + innerX, cy + innerY); ctx.lineTo(cx + outerX, cy + outerY); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawMotherLifeUltimate(layer = 'domain') {
+    const u = motherLifeState.ultimate;
+    if (!motherLifeActive()) return;
+    const fieldY = Math.min(player.y + 10, H - 168);
+    const drawAsset = (key, x, y, width, alpha, rotation = 0, heightOverride = 0, blend = 'source-over') => {
+      if (!assetReady(key)) return;
+      const img = assets[key], height = heightOverride || width * img.height / img.width;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(rotation); ctx.globalAlpha = alpha; ctx.globalCompositeOperation = blend;
+      ctx.drawImage(img, -width / 2, -height / 2, width, height); ctx.restore();
+    };
+    if (!u.active) {
+      const after = clamp(u.afterglow / 0.65, 0, 1);
+      if (after > 0) {
+        if (layer === 'domain') {
+          ctx.save(); ctx.globalCompositeOperation = 'source-over';
+          drawAsset('mlDomainSanctuary', player.x, fieldY, W * 0.76, 0.13 * after, -time * 0.04, W * 0.33);
+          drawAsset('mlDomainInnerCircle', player.x, fieldY, W * 0.63, 0.11 * after, time * 0.05, W * 0.30);
+          ctx.restore();
+        } else {
+          ctx.save(); ctx.globalCompositeOperation = 'lighter';
+          drawAsset('mlFinalAfterglow', player.x, player.y - 18, 190 + (1 - after) * 45, 0.34 * after, time * 0.07);
+          ctx.restore();
+          drawMotherLifeFx();
+        }
+      } else if (layer === 'overlay') drawMotherLifeFx();
+      return;
+    }
+    const expandP = clamp(u.t / 0.6, 0, 1);
+    const gatherP = clamp((u.t - 4.5) / 0.8, 0, 1);
+    const burstP = clamp((u.t - 5.3) / 0.7, 0, 1);
+    const easeExpand = 1 - Math.pow(1 - expandP, 3);
+    if (layer === 'domain') {
+      ctx.save(); ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = `rgba(30,5,38,${0.08 + easeExpand * 0.08})`; ctx.fillRect(0, 0, W, H);
+      const tint = ctx.createRadialGradient(player.x, player.y - 30, 0, player.x, player.y - 30, W * 0.72);
+      tint.addColorStop(0, `rgba(255,164,220,${0.11 + easeExpand * 0.09})`);
+      tint.addColorStop(0.55, 'rgba(167,73,155,0.065)');
+      tint.addColorStop(1, 'rgba(35,8,45,0)');
+      ctx.fillStyle = tint; ctx.fillRect(0, 0, W, H);
+      const floorScale = 0.38 + easeExpand * 0.62;
+      const fieldAlpha = u.phase === 'expand'
+        ? 0.22 + easeExpand * 0.26
+        : u.phase === 'gather' ? 0.44 + gatherP * 0.09
+          : u.phase === 'burst' ? 0.36 * (1 - burstP)
+            : 0.37 + Math.sin(time * 2.0) * 0.04;
+      drawAsset('mlDomainSanctuary', player.x, fieldY, W * 0.92 * floorScale, fieldAlpha, -time * 0.055, W * 0.43 * floorScale);
+      drawAsset('mlDomainInnerCircle', player.x, fieldY, W * 0.70 * floorScale, 0.27 + Math.sin(time * 2.8) * 0.05, time * 0.09, W * 0.32 * floorScale);
+      drawAsset('mlStartBloom', player.x, fieldY - 4, W * 0.46 * floorScale, 0.16 + easeExpand * 0.09, time * 0.025, W * 0.24 * floorScale);
+      drawMotherLifeDomainEnergy(player.x, fieldY, floorScale, u.phase, expandP, gatherP, burstP);
+      ctx.translate(player.x, fieldY);
+      ctx.save(); ctx.rotate(time * 0.13); drawAsset('mlDomainHalo', 0, 0, W * 0.72 * floorScale, 0.16 + Math.sin(time * 2.1) * 0.03, 0, W * 0.28 * floorScale); ctx.restore();
+      ctx.save(); ctx.rotate(-time * 0.09);
+      ctx.strokeStyle = 'rgba(255,198,231,0.27)'; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.ellipse(0, 0, W * 0.34 * floorScale, W * 0.13 * floorScale, 0, 0, TAU); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,242,215,0.18)'; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.ellipse(0, 0, W * 0.27 * floorScale, W * 0.10 * floorScale, 0, 0, TAU); ctx.stroke(); ctx.restore();
+      ctx.restore();
+      return;
+    }
+    drawMotherLifeFx();
+    ctx.save(); ctx.globalCompositeOperation = 'source-over';
+    const haloW = 255 + Math.sin(time * 3.2) * 14;
+    drawAsset('mlDomainHalo', player.x, player.y - 152, haloW, u.phase === 'burst' ? 0.18 : 0.54, time * 0.24, 0, 'lighter');
+    if (u.phase === 'expand') {
+      const budAlpha = clamp(1 - expandP / 0.42, 0, 1);
+      const halfOpen = clamp(1 - Math.abs(expandP - 0.43) / 0.34, 0, 1);
+      const fullOpen = clamp((expandP - 0.48) / 0.40, 0, 1);
+      const bloomY = player.y - 28;
+      drawMotherLifeBloomSprite('mlV4StartBud', player.x, bloomY - 20, 126 + easeExpand * 44, budAlpha, Math.sin(time * 1.8) * 0.025, 17);
+      drawMotherLifeBloomSprite('mlV4StartHalfBloom', player.x, bloomY, 174 + easeExpand * 108, halfOpen, -time * 0.055, 22);
+      drawMotherLifeBloomSprite('mlV4StartOpenBloom', player.x, bloomY + 7, 218 + fullOpen * 132, fullOpen * 0.98, time * 0.045, 26);
+      drawAsset('mlFinalHeart', player.x, player.y - 38, 46 + easeExpand * 58, 0.22 + easeExpand * 0.44, -time * 0.2, 0, 'lighter');
+      drawMotherLifeBloomEdge(player.x, bloomY + 4, 96 + easeExpand * 90, expandP, 0.88);
+      drawMotherLifeUltimateParticles('expand', expandP, player.x, bloomY + 2);
+      if (assetReady('mlV4PetalCluster') && expandP > 0.18) {
+        const clusterP = clamp((expandP - 0.18) / 0.82, 0, 1);
+        for (let side of [-1, 1]) {
+          drawAsset(
+            'mlV4PetalCluster',
+            player.x + side * (54 + clusterP * 52),
+            bloomY + 8 + Math.sin(time * 2.2 + side) * 7,
+            62 + clusterP * 32,
+            Math.sin(clusterP * Math.PI) * 0.28,
+            side * (0.55 + clusterP * 0.28),
+            0,
+            'lighter',
+          );
+        }
+      }
+      const ringR = 30 + easeExpand * W * 0.34;
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 2; i++) {
+        ctx.globalAlpha = (1 - expandP * 0.42) * (0.58 - i * 0.14);
+        ctx.strokeStyle = i ? '#fff0cb' : '#ff9bd5'; ctx.lineWidth = 4 - i;
+        ctx.beginPath(); ctx.ellipse(player.x, player.y - 18, ringR * (1 + i * 0.18), ringR * (0.34 + i * 0.04), 0, 0, TAU); ctx.stroke();
+      }
+      const rayN = perfLevel >= 2 ? 8 : 14;
+      for (let i = 0; i < rayN; i++) {
+        const a = i / rayN * TAU + time * 0.25;
+        const r0 = 42 + easeExpand * 46, r1 = r0 + 32 + easeExpand * 85;
+        ctx.globalAlpha = (1 - expandP) * 0.38 + 0.08;
+        ctx.strokeStyle = i % 3 ? '#ffc3e6' : '#fff4d3'; ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(player.x + Math.cos(a) * r0, player.y - 35 + Math.sin(a) * r0 * 0.48);
+        ctx.lineTo(player.x + Math.cos(a) * r1, player.y - 35 + Math.sin(a) * r1 * 0.48);
+        ctx.stroke();
+      }
+      const coreR = 22 + easeExpand * 54;
+      const coreGlow = ctx.createRadialGradient(player.x, bloomY, 0, player.x, bloomY, coreR);
+      coreGlow.addColorStop(0, 'rgba(255,255,244,0.96)');
+      coreGlow.addColorStop(0.28, 'rgba(255,136,211,0.64)');
+      coreGlow.addColorStop(1, 'rgba(255,90,190,0)');
+      ctx.globalAlpha = 0.48 + easeExpand * 0.22; ctx.fillStyle = coreGlow;
+      ctx.beginPath(); ctx.arc(player.x, bloomY, coreR, 0, TAU); ctx.fill();
+      ctx.restore();
+    } else if (u.phase === 'drain') {
+      const charge = 0.65 + (u.t - 0.6) / 3.9 * 0.35;
+      const coreR = 82 + Math.sin(time * 6.5) * 9 + charge * 22;
+      const core = ctx.createRadialGradient(player.x, player.y - 34, 0, player.x, player.y - 34, coreR);
+      core.addColorStop(0, 'rgba(255,255,244,0.88)'); core.addColorStop(0.18, 'rgba(255,190,231,0.58)');
+      core.addColorStop(0.55, 'rgba(255,92,198,0.18)'); core.addColorStop(1, 'rgba(255,120,210,0)');
+      ctx.globalAlpha = 0.82; ctx.fillStyle = core; ctx.beginPath(); ctx.arc(player.x, player.y - 34, coreR, 0, TAU); ctx.fill();
+      drawMotherLifeBloomSprite('mlV4StartOpenBloom', player.x, player.y - 19, 190 + Math.sin(time * 1.7) * 8, 0.34, -time * 0.035, 12);
+      drawMotherLifeBloomEdge(player.x, player.y - 22, 106, charge, 0.34);
+      drawAsset('mlFinalHeart', player.x, player.y - 34, 58 + charge * 24, 0.46 + charge * 0.24, time * 0.12, 0, 'lighter');
+    } else if (u.phase === 'gather') {
+      const s = 94 + gatherP * 126;
+      const budAlpha = clamp((gatherP - 0.18) / 0.54, 0, 1);
+      drawMotherLifeBloomSprite('mlV4StartBud', player.x, player.y - 53, 72 + gatherP * 72, budAlpha * 0.92, -time * 0.08, 20);
+      drawAsset('mlFinalHeart', player.x, player.y - 54, s, 0.42 + gatherP * 0.42, time * 0.15, 0, 'lighter');
+      drawMotherLifeUltimateParticles('gather', gatherP, player.x, player.y - 42);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 4; i++) {
+        const rr = 220 - gatherP * 145 + i * 32;
+        ctx.globalAlpha = (0.2 + gatherP * 0.45) * (1 - i * 0.14);
+        ctx.strokeStyle = i % 2 ? '#fff1cf' : '#ff9cd7'; ctx.lineWidth = 2.6 - i * 0.3;
+        ctx.beginPath(); ctx.ellipse(player.x, player.y - 38, rr, rr * 0.35, time * (i % 2 ? -0.18 : 0.22), 0, TAU); ctx.stroke();
+      }
+      const rayN = perfLevel >= 2 ? 6 : perfLevel === 1 ? 10 : 16;
+      for (let i = 0; i < rayN; i++) {
+        const a = i / rayN * TAU + time * 0.18, outer = 190 - gatherP * 80;
+        ctx.globalAlpha = 0.18 + gatherP * 0.3; ctx.strokeStyle = i % 3 ? '#ffb4de' : '#fff4d5'; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(player.x + Math.cos(a) * outer, player.y - 38 + Math.sin(a) * outer * 0.5);
+        ctx.lineTo(player.x, player.y - 38); ctx.stroke();
+      }
+      ctx.restore();
+    } else if (u.phase === 'burst') {
+      const eased = 1 - Math.pow(1 - burstP, 3);
+      const bloomY = player.y - 42;
+      const halfP = clamp(burstP / 0.22, 0, 1);
+      const openP = clamp((burstP - 0.10) / 0.30, 0, 1);
+      const flowerP = clamp((burstP - 0.26) / 0.38, 0, 1);
+      const blastP = clamp((burstP - 0.40) / 0.38, 0, 1);
+      drawMotherLifeBloomSprite('mlV4StartHalfBloom', player.x, bloomY, 120 + halfP * 90, (1 - openP) * 0.98, -time * 0.08, 22);
+      drawMotherLifeBloomSprite('mlV4StartOpenBloom', player.x, bloomY + 3, 168 + openP * 126, openP * (1 - flowerP * 0.72), time * 0.06, 26);
+      drawMotherLifeBloomSprite('mlV4FinalBloom', player.x, bloomY + 5, 196 + flowerP * W * 0.34, flowerP * Math.pow(1 - burstP, 0.18), -burstP * 0.16, 30);
+      drawMotherLifeBloomSprite('mlV4FinalBurst', player.x, bloomY + 5, 230 + blastP * W * 0.36, blastP * Math.pow(1 - burstP, 0.38) * 0.92, burstP * 0.12, 34);
+      drawMotherLifeBloomEdge(player.x, bloomY + 4, 92 + eased * W * 0.27, burstP, Math.pow(1 - burstP, 0.28));
+      drawMotherLifeUltimateParticles('burst', burstP, player.x, bloomY);
+      if (assetReady('mlV4PetalCluster')) {
+        const clusterAlpha = Math.sin(clamp((burstP - 0.18) / 0.72, 0, 1) * Math.PI) * 0.44;
+        for (let i = 0; i < 4; i++) {
+          const a = i / 4 * TAU + burstP * 0.7;
+          drawAsset(
+            'mlV4PetalCluster',
+            player.x + Math.cos(a) * (72 + eased * 128),
+            bloomY + Math.sin(a) * (46 + eased * 76),
+            74 + eased * 48,
+            clusterAlpha,
+            a,
+            0,
+            'lighter',
+          );
+        }
+      }
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      const flashP = clamp(1 - burstP / 0.18, 0, 1);
+      ctx.globalAlpha = flashP * 0.36; ctx.fillStyle = '#fff8fd'; ctx.fillRect(0, 0, W, H);
+      const coreR = 42 + eased * 148;
+      const core = ctx.createRadialGradient(player.x, bloomY, 0, player.x, bloomY, coreR);
+      core.addColorStop(0, `rgba(255,255,255,${0.98 * Math.pow(1 - burstP, 0.45)})`);
+      core.addColorStop(0.22, `rgba(255,199,235,${0.72 * Math.pow(1 - burstP, 0.45)})`);
+      core.addColorStop(1, 'rgba(255,90,190,0)');
+      ctx.globalAlpha = 1; ctx.fillStyle = core; ctx.beginPath(); ctx.arc(player.x, bloomY, coreR, 0, TAU); ctx.fill();
+      drawAsset('mlFinalShockwave', player.x, player.y - 40, 150 + eased * W * 0.82, Math.pow(1 - burstP, 1.3) * 0.48, -burstP * 0.22, 0, 'lighter');
+      for (let i = 0; i < 2; i++) {
+        const rr = 80 + eased * W * (0.42 + i * 0.18);
+        ctx.globalAlpha = Math.pow(1 - burstP, 1.45) * (0.46 - i * 0.12);
+        ctx.strokeStyle = i ? '#ffb6df' : '#fff7df'; ctx.lineWidth = 4.2 - i * 1.5;
+        ctx.beginPath(); ctx.arc(player.x, player.y - 40, rr, 0, TAU); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  function motherLifeBodyOrbitSamples(loopIndex, front) {
+    const configs = [
+      { rx: 82, ry: 25, cy: -22, width: 9.2, wave: 4.8, phase: 0.2 },
+      { rx: 68, ry: 21, cy: -51, width: 7.8, wave: 4.0, phase: 2.4 },
+      { rx: 91, ry: 30, cy: -72, width: 6.5, wave: 3.3, phase: 4.5 },
+    ];
+    const cfg = configs[loopIndex];
+    const count = perfLevel >= 2 ? 10 : perfLevel === 1 ? 16 : 22;
+    const overlap = 0.08;
+    const start = front ? -overlap : Math.PI - overlap;
+    const end = front ? Math.PI + overlap : TAU + overlap;
+    const samples = [];
+    for (let i = 0; i <= count; i++) {
+      const t = i / count;
+      const a = start + (end - start) * t;
+      const ripple = Math.sin(a * 3 + time * 2.2 + cfg.phase) * cfg.wave;
+      const x = Math.cos(a) * (cfg.rx + ripple)
+        + Math.sin(time * 1.15 + cfg.phase) * (loopIndex - 1) * 2.2;
+      const y = cfg.cy + Math.sin(a) * cfg.ry
+        + Math.cos(a * 2.15 - time * 1.7 + cfg.phase) * 2.6;
+      const da = 0.012;
+      const a2 = a + da;
+      const ripple2 = Math.sin(a2 * 3 + time * 2.2 + cfg.phase) * cfg.wave;
+      const x2 = Math.cos(a2) * (cfg.rx + ripple2)
+        + Math.sin(time * 1.15 + cfg.phase) * (loopIndex - 1) * 2.2;
+      const y2 = cfg.cy + Math.sin(a2) * cfg.ry
+        + Math.cos(a2 * 2.15 - time * 1.7 + cfg.phase) * 2.6;
+      const dx = x2 - x, dy = y2 - y, len = Math.max(0.001, Math.hypot(dx, dy));
+      const nx = -dy / len, ny = dx / len;
+      const pulse = 1 + Math.sin(time * 7.4 + a * 2.6 + cfg.phase) * 0.12;
+      samples.push({ t, x, y, nx, ny, half: cfg.width * 0.5 * pulse });
+    }
+    return samples;
+  }
+
+  function motherLifeBodyOrbitPoint(loopIndex, a) {
+    const configs = [
+      { rx: 82, ry: 25, cy: -24, wave: 4.8, phase: 0.2 },
+      { rx: 68, ry: 21, cy: -52, wave: 4.0, phase: 2.4 },
+      { rx: 91, ry: 30, cy: -69, wave: 3.3, phase: 4.5 },
+    ];
+    const cfg = configs[loopIndex];
+    const ripple = Math.sin(a * 3 + time * 2.2 + cfg.phase) * cfg.wave;
+    return {
+      x: Math.cos(a) * (cfg.rx + ripple)
+        + Math.sin(time * 1.15 + cfg.phase) * (loopIndex - 1) * 2.2,
+      y: cfg.cy + Math.sin(a) * cfg.ry
+        + Math.cos(a * 2.15 - time * 1.7 + cfg.phase) * 2.6,
+    };
+  }
+
+  function drawMotherLifeBodyOrbit(front) {
+    if (!motherLifeActive() || player.berserk <= 0) return;
+    const loopCount = perfLevel >= 2 ? 2 : 3;
+    for (let loop = loopCount - 1; loop >= 0; loop--) {
+      const samples = motherLifeBodyOrbitSamples(loop, front);
+      const first = samples[0], last = samples[samples.length - 1];
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.shadowColor = '#ff38b4';
+      ctx.shadowBlur = perfLevel >= 2 ? 0 : 16;
+      ctx.globalAlpha = front ? 0.18 : 0.17;
+      ctx.fillStyle = front ? 'rgba(255,50,174,0.34)' : 'rgba(255,80,190,0.23)';
+      motherLifeRibbonPolygon(samples, front ? 2.15 : 1.82); ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalCompositeOperation = 'source-over';
+      const body = ctx.createLinearGradient(first.x, first.y, last.x, last.y);
+      body.addColorStop(0, front ? 'rgba(255,218,241,0.88)' : 'rgba(218,94,174,0.54)');
+      body.addColorStop(0.42, front ? 'rgba(244,88,187,0.94)' : 'rgba(211,61,158,0.62)');
+      body.addColorStop(0.72, front ? 'rgba(255,151,218,0.92)' : 'rgba(235,95,184,0.58)');
+      body.addColorStop(1, front ? 'rgba(255,232,244,0.86)' : 'rgba(231,127,194,0.52)');
+      ctx.globalAlpha = front ? 0.62 : 0.57;
+      ctx.fillStyle = body; motherLifeRibbonPolygon(samples, 1); ctx.fill();
+      ctx.globalCompositeOperation = 'lighter';
+      drawMotherLifeRibbonTexture(samples, loop + 1, front ? 0.74 : 0.62);
+      ctx.strokeStyle = front ? '#ffd8f0' : '#ff9bd2';
+      ctx.lineWidth = front ? 1.45 : 0.85;
+      ctx.globalAlpha = front ? 0.46 : 0.30;
+      motherLifeRibbonEdge(samples, 1); motherLifeRibbonEdge(samples, -1);
+      ctx.strokeStyle = '#fff8ee'; ctx.lineWidth = front ? 1.7 : 0.8;
+      ctx.globalAlpha = front ? 0.34 : 0.24;
+      ctx.beginPath();
+      samples.forEach((p, i) => { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+      ctx.stroke();
+      ctx.restore();
+
+      const packetCount = perfLevel >= 2 ? 2 : perfLevel === 1 ? 4 : 6;
+      for (let i = 0; i < packetCount; i++) {
+        const a = (time * (2.2 + loop * 0.18) + i / packetCount * TAU + loop * 1.37) % TAU;
+        if ((Math.sin(a) >= 0) !== front) continue;
+        const p = motherLifeBodyOrbitPoint(loop, a);
+        const pulse = 0.72 + 0.28 * Math.sin(time * 13 + i * 2.4 + loop);
+        const r = (front ? 3.6 : 2.8) * pulse;
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.6);
+        glow.addColorStop(0, 'rgba(255,255,245,0.98)');
+        glow.addColorStop(0.24, 'rgba(255,91,191,0.92)');
+        glow.addColorStop(0.58, 'rgba(255,44,166,0.46)');
+        glow.addColorStop(1, 'rgba(255,44,166,0)');
+        ctx.globalAlpha = front ? 0.82 : 0.46; ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(p.x, p.y, r * 3.6, 0, TAU); ctx.fill();
+        ctx.restore();
+      }
+    }
+  }
+
+  function drawMotherLifeBodyBackFx() {
+    if (!motherLifeActive()) return;
+    const over = player.berserk > 0;
+    ctx.save();
+    const bodyShade = ctx.createRadialGradient(0, -36, 8, 0, -36, over ? 96 : 78);
+    bodyShade.addColorStop(0, over ? 'rgba(110,8,74,0.42)' : 'rgba(80,12,60,0.30)');
+    bodyShade.addColorStop(0.58, over ? 'rgba(255,42,164,0.13)' : 'rgba(234,71,164,0.09)');
+    bodyShade.addColorStop(1, 'rgba(255,80,180,0)');
+    ctx.fillStyle = bodyShade; ctx.beginPath(); ctx.arc(0, -36, over ? 96 : 78, 0, TAU); ctx.fill();
+
+    if (assetReady('mlSideRibbon')) {
+      const img = assets.mlSideRibbon;
+      for (let side of [-1, 1]) {
+        for (let i = 0; i < 1; i++) {
+          const phase = time * (over ? 2.15 : 1.12) + side * 1.4;
+          const w = over ? 69 : 58;
+          const h = w * img.height / img.width;
+          const x = side * (64 + Math.sin(phase) * (over ? 8 : 5));
+          const y = -42 + Math.cos(phase * 0.72) * 5;
+          ctx.save(); ctx.translate(x, y); ctx.scale(side, 1);
+          ctx.rotate(side * (0.08 + Math.sin(phase * 0.55) * 0.07));
+          ctx.globalAlpha = over ? 0.90 : 0.76;
+          ctx.shadowColor = over ? '#ff42b0' : '#ff8dcc';
+          ctx.shadowBlur = perfLevel >= 2 ? 0 : over ? 18 : 11;
+          ctx.drawImage(img, -w / 2, -h * 0.43, w, h);
+          ctx.restore();
+        }
+      }
+    }
+
+    drawMotherLifeBodyOrbit(false);
+
+    ctx.globalCompositeOperation = 'lighter';
+    const packetCount = perfLevel >= 2 ? 4 : over ? 10 : 7;
+    for (let side of [-1, 1]) {
+      for (let i = 0; i < packetCount; i++) {
+        const p = (time * (over ? 1.85 : 0.92) + i / packetCount + (side > 0 ? 0.31 : 0)) % 1;
+        const y = 46 - p * 142;
+        const x = side * (57 + Math.sin(p * TAU * 1.35 + time * (over ? 3.4 : 1.7)) * (16 + p * 10));
+        const r = (over ? 4.2 : 3.1) * (0.7 + Math.sin(time * 8 + i) * 0.22);
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 3.2);
+        glow.addColorStop(0, 'rgba(255,255,248,0.96)');
+        glow.addColorStop(0.28, over ? 'rgba(255,65,178,0.86)' : 'rgba(255,145,211,0.72)');
+        glow.addColorStop(1, 'rgba(255,105,199,0)');
+        ctx.globalAlpha = over ? 0.92 : 0.68; ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(x, y, r * 3.2, 0, TAU); ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawMotherLifeBodyFx() {
+    if (!motherLifeActive()) return;
+    const reverse = motherLifeState.reverse, over = player.berserk > 0;
+    const ultimate = motherLifeState.ultimate;
+    const ultCharge = ultimate.active
+      ? ultimate.phase === 'gather' ? 1
+        : ultimate.phase === 'drain' ? 0.45 + clamp((ultimate.t - 0.6) / 3.9, 0, 1) * 0.45
+          : ultimate.phase === 'burst' ? 1 : clamp(ultimate.t / 0.6, 0, 1) * 0.55
+      : 0;
+    ctx.save();
+    drawMotherLifeBodyOrbit(true);
+    const corePulse = 1 + Math.sin(time * (reverse ? 9 : over ? 7 : 4) + ultCharge * time * 4) * 0.07;
+    const coreR = (reverse ? 27 : over ? 23 : 18) * (1 + ultCharge * 0.24) * corePulse;
+    const coreGlow = ctx.createRadialGradient(0, -51, 0, 0, -51, coreR);
+    coreGlow.addColorStop(0, 'rgba(255,255,245,0.68)');
+    coreGlow.addColorStop(0.22, reverse ? 'rgba(255,228,132,0.58)' : 'rgba(255,76,177,0.54)');
+    coreGlow.addColorStop(1, 'rgba(255,90,190,0)');
+    ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.46 + ultCharge * 0.16;
+    ctx.fillStyle = coreGlow; ctx.beginPath(); ctx.arc(0, -51, coreR, 0, TAU); ctx.fill();
+
+    if (assetReady('mlHalo') || assetReady('mlCrown')) {
+      const crownPulse = 1 + Math.sin(time * (over ? 5.2 : 2.8)) * 0.035;
+      const w = (over ? 108 : 96) * (1 + ultCharge * 0.1) * crownPulse;
+      const h = over ? 49 : 44;
+      ctx.save(); ctx.translate(0, -115 + Math.sin(time * 1.25) * 1.6);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 0.72;
+      ctx.strokeStyle = 'rgba(90,22,68,0.72)'; ctx.lineWidth = 5.5;
+      ctx.beginPath(); ctx.ellipse(0, 3.8, w * 0.43, h * 0.24, 0, 0, TAU); ctx.stroke();
+      if (assetReady('mlCrown')) {
+        const rim = assets.mlCrown;
+        ctx.globalAlpha = 0.72; ctx.shadowColor = '#8e285f'; ctx.shadowBlur = perfLevel >= 2 ? 0 : 5;
+        ctx.drawImage(rim, -w * 0.46, -h * 0.21, w * 0.92, h * 0.42);
+      }
+      if (assetReady('mlHalo')) {
+        const img = assets.mlHalo;
+        ctx.globalAlpha = reverse ? 1 : 0.97;
+        ctx.shadowColor = over ? '#ff4daf' : '#ff9dcd'; ctx.shadowBlur = perfLevel >= 2 ? 0 : over ? 17 : 10;
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = over ? 0.22 : 0.11;
+        ctx.drawImage(img, -w * 0.515, -h * 0.515, w * 1.03, h * 1.03);
+      }
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = '#fff4dc'; ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.68;
+      ctx.beginPath(); ctx.ellipse(0, -3.2, w * 0.42, h * 0.2, 0, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+      const crownSparks = perfLevel >= 2 ? 3 : over ? 8 : 5;
+      for (let i = 0; i < crownSparks; i++) {
+        const a = time * (over ? 1.9 : 0.85) + i / crownSparks * TAU;
+        const x = Math.cos(a) * w * 0.46, y = Math.sin(a) * h * 0.22;
+        const r = over ? 2.1 + (i % 2) : 1.5 + (i % 2) * 0.5;
+        ctx.globalAlpha = over ? 0.82 : 0.54;
+        ctx.fillStyle = i % 3 ? '#ffb7dc' : '#fff2c4';
+        ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+    if (assetReady('mlHeartDetail')) {
+      const img = assets.mlHeartDetail;
+      const w = (reverse ? 50 : over ? 47 : 43) * (1 + ultCharge * 0.34) * corePulse;
+      const h = w * img.height / img.width;
+      ctx.save(); ctx.translate(0, -51);
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 0.96;
+      ctx.shadowColor = reverse ? '#ffe998' : '#ff5eb5'; ctx.shadowBlur = perfLevel >= 2 ? 0 : over ? 14 : 9;
+      ctx.drawImage(img, -w / 2, -h / 2, w, h);
+      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = over ? 0.28 : 0.16;
+      ctx.drawImage(img, -w * 0.53, -h * 0.53, w * 1.06, h * 1.06); ctx.restore();
+    }
+
+    ctx.globalCompositeOperation = 'lighter';
+    const sparkleCount = perfLevel >= 2 ? 5 : over ? 15 : 10;
+    for (let i = 0; i < sparkleCount; i++) {
+      const side = i % 2 ? 1 : -1;
+      const phase = time * (over ? 2.8 : 1.35) + i * 1.73;
+      const x = side * (20 + (i * 13 % 48)) + Math.sin(phase) * 5;
+      const y = -100 + (i * 29 % 126) + Math.cos(phase * 1.2) * 5;
+      const alpha = (0.28 + 0.28 * (0.5 + 0.5 * Math.sin(phase * 3.2))) * (over ? 1.3 : 1);
+      const r = over ? 2.2 + i % 3 : 1.5 + i % 2;
+      ctx.globalAlpha = alpha; ctx.fillStyle = i % 3 ? '#ffb6de' : '#fff4cf';
+      ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+      if (i % 4 === 0) {
+        ctx.strokeStyle = '#fff8e8'; ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.moveTo(x - r * 3, y); ctx.lineTo(x + r * 3, y);
+        ctx.moveTo(x, y - r * 3); ctx.lineTo(x, y + r * 3); ctx.stroke();
+      }
+    }
+    ctx.restore();
   }
 
   for (let i = 0; i < 150; i++) {
@@ -1706,6 +3171,7 @@
     nrWingmen.length = 0; nrWmCrossCd = 0; nrWmFx.length = 0;
     scField.active = false; scField.cd = 0; scField.beams.length = 0; scField.impacts.length = 0; scFx.length = 0; if (saintActive()) syncScWing();
     ncDrones.length = 0; ncFx.length = 0; if (ncActive()) syncNcDrones();   // 夜棺浮游炮：开局召唤 8 枚
+    resetMotherLifeState();
     if (wingmanActive()) syncWingmen();
     if (reaverWingActive()) syncNrWingmen();
     damageTexts.length = 0;
@@ -2432,7 +3898,12 @@
   }
 
   function useBeam() {
-    if (player.beamCd > 0 || state === 'title' || state === 'win' || state === 'lose') return;
+    if (state === 'title' || state === 'win' || state === 'lose') return;
+    if (motherLifeActive()) {
+      castLifeResonance();
+      return;
+    }
+    if (player.beamCd > 0) return;
     // 夜裁专属小技能：浮游长剑·六连射（角色周围浮现长剑，锋利快速发射、穿透）
     if (reaverActive()) {
       player.beamCd = 6.5;
@@ -2455,7 +3926,16 @@
     if (player.energy < player.maxEnergy || player.bombCd > 0 || state === 'title' || state === 'win' || state === 'lose') return;
     player.energy = 0;
     player.bombCd = 1.3;
-    skillCutin = { life: 0.95, maxLife: 0.95, key: curChar().cutin, name: curChar().name, aura: curChar().auraColor };
+    skillCutin = { life: 0.95, maxLife: 0.95, key: curChar().cutin, name: curChar().name, aura: curChar().auraColor, title: '月 蚀 · 终 章' };
+
+    if (curChar().ultKind === 'wombOfAll') {
+      player.bombCd = MOTHER_LIFE.ultimateDuration;
+      skillCutin.title = '众 生 胎 宫';
+      skillCutin.life = skillCutin.maxLife = 0.32;
+      skillCutin.compact = true;
+      if (!castWombOfAll()) { player.energy = player.maxEnergy; player.bombCd = 0; }
+      return;
+    }
 
     // —— 伊丽莎白「血蚀」：向前发射巨大赤红冲击波（全屏多列激光） ——
     if (curChar().ultKind === 'crimsonBeam') {
@@ -2675,6 +4155,8 @@
 
   function damagePlayer(amount) {
     if (player.inv > 0 || state === 'win') return;
+    if (motherLifeActive() && motherLifeState.ultimate.active) return;
+    if (motherLifeActive() && player.berserk > 0) amount *= 0.8;
     player.hp = Math.max(0, player.hp - amount);
     player.inv = 1.3;   // 受击后短暂无敌，防止连续掉血
     player.combo = 0;
@@ -2690,6 +4172,7 @@
         // 复活：清空来袭弹幕、给一段无敌、保留大部分火力
         player.lives--;
         player.hp = player.maxHp;
+        if (motherLifeActive()) resetMotherLifeState();
         player.inv = 2.6;
         player.power = clamp(player.power - 12, 0, MAX_POWER);
         flash = 0.6;
@@ -6915,7 +8398,9 @@
     const cc = curChar();
     // 飞羽增伤已弃用（雅努西娅改回激光）；保留 fireRamp 衰减以防残留
     player.fireRamp = Math.max(0, player.fireRamp - dt * 1.4);
-    if (cc.weapon === 'laser') {
+    if (cc.weapon === 'lifeRibbon') {
+      pLasers.length = 0; pBeams.length = 0;
+    } else if (cc.weapon === 'laser') {
       // 激光束角色（雅努西娅）：持续激光，开火逻辑独立（暴走变粗+分裂锁敌）
       updatePlayerLaser(dt, firing);
     } else if (cc.weapon === 'bladeray') {
@@ -6942,6 +8427,7 @@
         }
       }
     }
+    updateMotherLife(dt);
     // 夜裁系统：浮游刀锋 / 暴走倾泻 / 裂界回环 / 黑洞大招
     updateReaver(dt);
     // 夜裁之影已与角色解绑，作为独立可装备僚机更新
@@ -8249,6 +9735,7 @@
       // 夜棺浮游炮冲撞减速：缩放本帧移动 dt
       let mdt = dt;
       if (e._ncSlowT > 0) { e._ncSlowT -= dt; mdt = dt * (1 - (e._ncSlow || 0)); }
+      if (e._mlSlowT > 0) { e._mlSlowT -= dt; mdt *= (1 - (e._mlSlow || 0)); }
       moveEnemy(e, mdt);
       e.fireTimer -= dt;
       if (e.fireTimer <= 0 && e.y > 40 && e.y < H * 0.65 && state !== 'win' && state !== 'lose') {
@@ -8969,10 +10456,12 @@
     ctx.translate(sx, sy);
     drawBackground();
     drawStageObjects();
+    drawMotherLifeUltimate('domain');
     drawSaintField('domain'); // 领域底纹、范围圈位于敌人下层，避免遮挡目标
     drawSaintFieldRangeOverlay();
     drawEnemies();
     if (boss) drawBoss();
+    drawMotherLifeRibbons('under'); // 飘带底光位于敌人上方，领域底纹仍留在敌人下方
     drawSaintField('actor');  // 天使本体保留在战斗单位上层
     drawPlayerFireStream();
     drawNrRays();        // 夜裁瞄准射线（在敌人之上、弹幕之下）
@@ -8987,6 +10476,7 @@
     drawWarnings();
     drawLasers();
     drawParticles();
+    drawMotherLifeUltimate('overlay');
     drawSaintFieldMeteorOverlay(); // 天空圣环、斜角流星、落地爆炸与圣痕
     drawSaintCrownOverlay(); // 皇冠金属前景层，避免被流星爆光冲掉轮廓
     drawNrVoid();        // 夜裁黑洞（吞噬中心，盖在弹幕/粒子之上）
@@ -9001,6 +10491,7 @@
     drawNrBigBlades();   // 夜裁暴走大刀刃（环绕自身）
     drawWingmen();
     drawPlayer();
+    drawMotherLifeRibbons('over');
     drawWmSkills();
     drawNrRings();       // 夜裁裂界回环
     drawNrUltSwords();   // 夜裁大招编舞飞剑群
@@ -9157,7 +10648,7 @@
     ctx.beginPath(); ctx.arc(0, 0, 88, 0, TAU); ctx.fill();
 
     // 暴走光环（脉冲旋转）—— 夜裁为紫白刀刃能量，其余为金色
-    if (player.berserk > 0) {
+    if (player.berserk > 0 && !motherLifeActive()) {
       const nr = reaverActive();
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
@@ -9190,6 +10681,7 @@
     else if (slow) spriteKey = P + 'Focus';
     else if (player.moveVX < -80 || keys.ArrowLeft || keys.KeyA) spriteKey = P + 'MoveLeft';
     else if (player.moveVX > 80 || keys.ArrowRight || keys.KeyD) spriteKey = P + 'MoveRight';
+    drawMotherLifeBodyBackFx();
     if (assetReady(spriteKey)) {
       // Full-body portrait art: draw with the sprite's natural aspect ratio,
       // feet just below the hitbox, head reaching up.
@@ -9197,7 +10689,7 @@
       const baseW = slow ? 96 : 108;
       const nrBerserkForm = reaverActive() && player.berserk > 0 && spriteKey === 'reaverBurst';
       // 夜裁立绘整体缩小，且让命中判定点落在人物身体中心（躯干）
-      const pw = nrBerserkForm ? baseW * 1.18 : (reaverActive() ? baseW * 0.94 : baseW);
+      const pw = motherLifeActive() ? baseW * 1.28 : (nrBerserkForm ? baseW * 1.18 : (reaverActive() ? baseW * 0.94 : baseW));
       const ph = pw * (img0.height / img0.width);
       const topY = reaverActive() ? -ph * 0.6 : (-ph + 28);   // 夜裁：躯干对齐判定点
       if (nrBerserkForm) {
@@ -9205,17 +10697,26 @@
         ctx.drawImage(img0, -pw * 1.07 / 2, topY * 1.07, pw * 1.07, ph * 1.07);
         ctx.restore();
       }
-      ctx.drawImage(img0, -pw / 2, topY, pw, ph);
+      if (motherLifeActive()) {
+        ctx.save();
+        ctx.shadowColor = player.berserk > 0 ? 'rgba(255,42,164,0.72)' : 'rgba(194,46,139,0.56)';
+        ctx.shadowBlur = perfLevel >= 2 ? 4 : player.berserk > 0 ? 16 : 10;
+        ctx.drawImage(img0, -pw / 2, topY, pw, ph);
+        ctx.restore();
+      } else {
+        ctx.drawImage(img0, -pw / 2, topY, pw, ph);
+      }
     } else {
       ctx.fillStyle = '#dfefff'; ctx.beginPath(); ctx.arc(0, -38, 18, 0, TAU); ctx.fill();
       ctx.fillStyle = '#2f1e58'; ctx.beginPath(); ctx.moveTo(0, -22); ctx.lineTo(-26, 48); ctx.lineTo(26,48); ctx.closePath(); ctx.fill();
     }
+    drawMotherLifeBodyFx();
 
     // Movement engine trail.
     ctx.globalAlpha *= 0.7;
     const trail = ctx.createLinearGradient(0, 20, 0, 86);
-    trail.addColorStop(0, 'rgba(91,242,255,.45)');
-    trail.addColorStop(1, 'rgba(91,242,255,0)');
+    trail.addColorStop(0, motherLifeActive() ? 'rgba(255,155,220,.45)' : 'rgba(91,242,255,.45)');
+    trail.addColorStop(1, motherLifeActive() ? 'rgba(255,155,220,0)' : 'rgba(91,242,255,0)');
     ctx.fillStyle = trail;
     ctx.beginPath();
     ctx.moveTo(-18, 22); ctx.quadraticCurveTo(0, 95 + Math.sin(time*14)*8, 18, 22); ctx.closePath(); ctx.fill();
@@ -11332,7 +12833,11 @@
         ctx.beginPath(); ctx.arc(65, H - 79, 29, 0, TAU); ctx.stroke();
       }
       ctx.fillText((ccUi.name.split(' · ')[1]) || ccUi.name, 104, H - 88);
-      drawBar(138, H - 101, 250, 12, player.hp / player.maxHp, '#ff7896');
+      const hpRateUi = player.hp / player.maxHp;
+      const hpColorUi = motherLifeActive()
+        ? (motherLifeState.reverse ? '#fff0a8' : hpRateUi <= 0.4 ? '#db56b7' : '#ffb1da')
+        : '#ff7896';
+      drawBar(138, H - 101, 250, 12, hpRateUi, hpColorUi);
       drawBar(138, H - 76, 250, 12, player.energy / player.maxEnergy, player.energy >= 100 ? '#fff1a3' : '#83dfff');
       ctx.fillStyle = 'rgba(255,255,255,.72)'; ctx.font = '13px Arial';
       ctx.fillText(`HP ${Math.ceil(player.hp)}/${player.maxHp}`, 400, H - 91);
@@ -11352,8 +12857,15 @@
       ctx.fillText('剩余复活 ' + '♥'.repeat(player.lives), 470, H - 64);
 
       // Skills
-      drawSkill(W - 180, H - 94, 'Space', '月光束', player.beamCd / 5.0);
-      drawSkill(W - 92, H - 94, 'X', '大招', player.energy >= 100 ? 0 : 1 - player.energy / player.maxEnergy, player.energy >= 100);
+      if (motherLifeActive()) {
+        const resonance = motherLifeState.resonance;
+        drawSkill(W - 180, H - 94, 'Space', resonance.active ? '共鸣中' : '生命共鸣', resonance.cd / MOTHER_LIFE.resonanceCooldown, resonance.cd <= 0 && !resonance.active, 'mlIconResonance');
+        drawSkill(W - 92, H - 94, 'X', motherLifeState.ultimate.active ? '胎宫展开' : '众生胎宫', player.energy >= 100 ? 0 : 1 - player.energy / player.maxEnergy, player.energy >= 100, 'mlIconUltimate');
+        drawMotherLifeStatus();
+      } else {
+        drawSkill(W - 180, H - 94, 'Space', '月光束', player.beamCd / 5.0);
+        drawSkill(W - 92, H - 94, 'X', '大招', player.energy >= 100 ? 0 : 1 - player.energy / player.maxEnergy, player.energy >= 100);
+      }
       drawCompanionSkillHud();
 
       ctx.fillStyle = 'rgba(255,255,255,.86)'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'right';
@@ -11400,6 +12912,7 @@
       { y: 326, key: 'yanuxiya', tag: '2' },
       { y: 396, key: 'anna', tag: '3' },
       { y: 466, key: 'reaver', tag: '4' },
+      { y: 536, key: 'motherlife', tag: '5' },
     ];
     for (const card of party) {
       const ch = CHARACTERS[card.key];
@@ -11425,7 +12938,7 @@
     ctx.restore();
   }
 
-  function drawSkill(x, y, key, name, cdRate, ready = false) {
+  function drawSkill(x, y, key, name, cdRate, ready = false, iconOverride = null) {
     ctx.save();
     const cx = x + 36, cy = y + 26, R = 30;
     // 爆裂魔女风格：圆形技能按钮 + 金色外环
@@ -11433,7 +12946,7 @@
     ctx.fillStyle = ready ? 'rgba(40,28,16,.78)' : 'rgba(18,16,28,.72)';
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.fill();
     // 技能图标（素材库爆裂魔女图标）
-    const iconKey = key === 'X' ? 'uiSkillBombIcon' : 'uiSkillBeamIcon';
+    const iconKey = iconOverride || (key === 'X' ? 'uiSkillBombIcon' : 'uiSkillBeamIcon');
     const fb = key === 'X' ? 'skillBomb' : 'skillBeam';
     const useKey = assetReady(iconKey) ? iconKey : (assetReady(fb) ? fb : null);
     if (useKey) {
@@ -11479,6 +12992,34 @@
     ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(0,0,0,.55)';
     ctx.strokeText(name, cx, cy + R + 16);
     ctx.fillStyle = ready ? '#fff1a3' : '#cfc2ec'; ctx.fillText(name, cx, cy + R + 16);
+    ctx.restore();
+  }
+
+  function drawMotherLifeStatus() {
+    const x = 160, y = H - 137;
+    const effective = player.berserk > 0 ? MOTHER_LIFE.ribbonMax : motherLifeState.ribbonCount;
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 13px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.72)';
+    const stateText = motherLifeState.ultimate.active
+      ? `众生胎宫 · ${({ expand: '圣域展开', drain: '持续吸血', gather: '能量回流', burst: '圣花爆发' })[motherLifeState.ultimate.phase] || ''}`
+      : motherLifeState.resonance.active ? '生命共鸣 · 全场联网'
+      : motherLifeState.reverse ? '生命反哺 · 回血逆转'
+      : `生命飘带 ${effective}/8`;
+    ctx.strokeText(stateText, x, y);
+    ctx.fillStyle = motherLifeState.reverse ? '#fff0a8' : '#ffc4e6';
+    ctx.fillText(stateText, x, y);
+    if (!motherLifeState.ultimate.active && !motherLifeState.resonance.active) {
+      const petals = effective;
+      for (let i = 0; i < MOTHER_LIFE.ribbonMax; i++) {
+        ctx.globalAlpha = i < petals ? 0.95 : 0.22;
+        ctx.fillStyle = i < petals ? '#ffc0e2' : '#8d7895';
+        ctx.beginPath();
+        ctx.ellipse(x + 8 + i * 15, y + 10, 4.4, 2.7, -0.45, 0, TAU);
+        ctx.fill();
+      }
+    }
     ctx.restore();
   }
 
@@ -11700,17 +13241,19 @@
     ctx.font = '23px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.84)';
     ctx.fillText('苍夜契约 · 第一章', W/2, H*0.345);
 
-    // Character select cards (3 主角).
-    ctx.font = 'bold 20px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = '#cfe6ff';
-    ctx.fillText('选择主角 · 数字键 1 / 2 / 3 / 4 切换 · C 换皮肤', W/2, H*0.515);
-    const order = ['witch', 'yanuxiya', 'anna', 'reaver'];
-    const cardW = 165, cardH = 188, gap = 9;
+    // Character select cards (5 主角).
+    ctx.font = 'bold 18px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = '#cfe6ff';
+    ctx.fillText('选择主角 · 数字键 1 / 2 / 3 / 4 / 5 切换 · C 换皮肤', W/2, H*0.515);
+    const order = ['witch', 'yanuxiya', 'anna', 'reaver', 'motherlife'];
+    const cardW = 132, cardH = 178, gap = 6;
     const totalW = cardW * order.length + gap * (order.length - 1);
     const x0 = (W - totalW) / 2, cy = H * 0.535;
     const wKey = { shot: '集火 / 扇形', laser: '激光 + 飞鸟' };
+    characterCards = [];
     order.forEach((key, i) => {
       const ch = CHARACTERS[key];
       const cx = x0 + i * (cardW + gap);
+      characterCards.push({ key, x: cx, y: cy, w: cardW, h: cardH });
       const sel = key === selectedChar;
       ctx.save();
       roundRect(cx, cy, cardW, cardH, 16);
@@ -11722,32 +13265,32 @@
       // 立绘头像
       const av = ch.avatar;
       if (assetReady(av)) {
-        ctx.save(); roundRect(cx + 14, cy + 14, cardW - 28, 96, 12); ctx.clip();
-        ctx.drawImage(assets[av], cx + (cardW - 96) / 2, cy + 14, 96, 96); ctx.restore();
+        ctx.save(); roundRect(cx + 10, cy + 12, cardW - 20, 84, 10); ctx.clip();
+        ctx.drawImage(assets[av], cx + (cardW - 82) / 2, cy + 13, 82, 82); ctx.restore();
       }
       ctx.textAlign = 'left';
-      ctx.font = 'bold 22px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.font = 'bold 19px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillStyle = sel ? '#fff' : 'rgba(225,235,255,.7)';
       ctx.fillText(String(i + 1), cx + 14, cy + 36);
       ctx.textAlign = 'center';
-      ctx.font = 'bold 19px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.font = 'bold 16px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillStyle = sel ? '#fff2c0' : 'rgba(225,235,255,.75)';
       const nm = ch.name.split(' · ');
-      ctx.fillText(nm[1] || ch.name, cx + cardW / 2, cy + 134);
-      ctx.font = '13px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.fillText(nm[1] || ch.name, cx + cardW / 2, cy + 119);
+      ctx.font = '11px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillStyle = `rgba(${ch.auraColor},.95)`;
-      const wLabel = key === 'witch' ? '赤红血刃' : (key === 'yanuxiya' ? '飞羽 + 飞鸟' : (key === 'reaver' ? '刀锋 + 黑洞' : '镰刀扇形'));
-      ctx.fillText(wLabel + ' · HP' + ch.maxHp, cx + cardW / 2, cy + 156);
+      const wLabel = key === 'witch' ? '赤红血刃' : (key === 'yanuxiya' ? '飞羽 + 飞鸟' : (key === 'reaver' ? '刀锋 + 黑洞' : (key === 'motherlife' ? '飘带 + 反哺' : '镰刀扇形')));
+      ctx.fillText(wLabel + ' · HP' + ch.maxHp, cx + cardW / 2, cy + 142);
       // 皮肤角标（哑奴西亚 / 安娜）
       if (ch.skins) {
         const skin = ch.skins[ch.skinIndex || 0];
-        ctx.font = '12px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.font = '10px PingFang SC, Microsoft YaHei, sans-serif';
         ctx.fillStyle = sel ? '#bfe8ff' : 'rgba(180,205,240,.6)';
-        ctx.fillText(`皮肤 ${skin.id} · C切换(${ch.skins.length})`, cx + cardW / 2, cy + 177);
+        ctx.fillText(`皮肤 ${skin.id} · C切换(${ch.skins.length})`, cx + cardW / 2, cy + 164);
       } else {
-        ctx.font = '12px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.font = '10px PingFang SC, Microsoft YaHei, sans-serif';
         ctx.fillStyle = 'rgba(180,205,240,.5)';
-        ctx.fillText('经典造型', cx + cardW / 2, cy + 177);
+        ctx.fillText(key === 'motherlife' ? '水晶鳞片尾翼' : '经典造型', cx + cardW / 2, cy + 164);
       }
       ctx.restore();
     });
@@ -11786,7 +13329,7 @@
     ctx.fillText('点击 / 按 Enter 开始', W/2, H*0.815);
     ctx.globalAlpha = 0.7;
     ctx.font = '15px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.8)';
-    ctx.fillText('方向键移动 · Shift 精准 · 空格 波束 · X 大招 · 1/2/3/4 换将 · C 换皮肤', W/2, H*0.855);
+    ctx.fillText('方向键移动 · Shift 精准 · 空格 技能 · X 大招 · 1/2/3/4/5 换将 · C 换皮肤', W/2, H*0.855);
     ctx.fillText('Q 圣冕天使降临 · E 夜棺模式切换 · 四套僚机可同时完整出战', W/2, H*0.885);
     ctx.globalAlpha = 1;
     ctx.restore();
@@ -11833,8 +13376,8 @@
     ctx.save();
     // diagonal slash band
     let bandA = p < 0.18 ? p / 0.18 : (p > 0.78 ? Math.max(0, 1 - (p - 0.78) / 0.22) : 1);
-    const bandH = 300;
-    const cy = H * 0.46;
+    const bandH = sc.compact ? 170 : 300;
+    const cy = sc.compact ? H * 0.27 : H * 0.46;
     ctx.save();
     ctx.globalAlpha = bandA * 0.9;
     const g = ctx.createLinearGradient(0, cy - bandH / 2, 0, cy + bandH / 2);
@@ -11862,7 +13405,7 @@
       const dx = -W * 0.55 * slide + W * 0.5 * outSlide;
       const ca = bandA;
       const img = assets[sc.key];
-      const dh = 360, dw = dh * img.width / img.height;
+      const dh = sc.compact ? 210 : 360, dw = dh * img.width / img.height;
       ctx.globalAlpha = ca;
       ctx.drawImage(img, W * 0.04 + dx, cy - dh * 0.56, dw, dh);
     }
@@ -11870,13 +13413,14 @@
     const txtA = p < 0.2 ? p / 0.2 : (p > 0.82 ? Math.max(0, 1 - (p - 0.82) / 0.18) : 1);
     ctx.globalAlpha = txtA;
     ctx.textAlign = 'right';
-    ctx.font = 'bold 30px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.font = `bold ${sc.compact ? 22 : 30}px PingFang SC, Microsoft YaHei, sans-serif`;
     ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(0,0,0,.7)';
     ctx.strokeText(sc.name, W - 30, cy - 8);
     ctx.fillStyle = '#fff4d1'; ctx.fillText(sc.name, W - 30, cy - 8);
-    ctx.font = 'bold 44px PingFang SC, Microsoft YaHei, sans-serif';
-    ctx.strokeText('月 蚀 · 终 章', W - 30, cy + 40);
-    ctx.fillStyle = `rgba(${sc.aura},1)`; ctx.fillText('月 蚀 · 终 章', W - 30, cy + 40);
+    ctx.font = `bold ${sc.compact ? 32 : 44}px PingFang SC, Microsoft YaHei, sans-serif`;
+    const skillTitle = sc.title || '月 蚀 · 终 章';
+    ctx.strokeText(skillTitle, W - 30, cy + 40);
+    ctx.fillStyle = `rgba(${sc.aura},1)`; ctx.fillText(skillTitle, W - 30, cy + 40);
     ctx.restore();
   }
 
@@ -11975,6 +13519,7 @@
     if (e.code === 'Digit2' || e.code === 'Numpad2') selectChar('yanuxiya');
     if (e.code === 'Digit3' || e.code === 'Numpad3') selectChar('anna');
     if (e.code === 'Digit4' || e.code === 'Numpad4') selectChar('reaver');
+    if (e.code === 'Digit5' || e.code === 'Numpad5') selectChar('motherlife');
     if (e.code === 'KeyC') cycleSkin();
     if (e.code === 'Enter' && state === 'title') startGame();
     if (e.code === 'KeyP') paused = !paused;
@@ -11990,8 +13535,9 @@
     unlockAudio();   // 首个点击即解锁音频
     const wasTitle = state === 'title';
     if (wasTitle) {
-      // 点击僚机选择卡 → 独立勾选/取消，不开始游戏
+      // 点击角色/僚机卡只改变选择，不立即开始游戏。
       const pt = pointerPos(e);
+      for (const c of characterCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { selectChar(c.key); return; } }
       for (const c of wingCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { toggleWingSelection(c.key); return; } }
       startGame();
     }
