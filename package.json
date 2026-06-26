@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build:pages": "python3 tools/build_pages.py",
+    "smoke:pages": "node tools/smoke_pages.js",
     "syntax": "node tests/saint-wing-berserk/syntax-check.js",
     "test": "cd tests/saint-wing-berserk && npm test"
   },
