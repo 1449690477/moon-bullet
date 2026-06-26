@@ -1507,10 +1507,17 @@
     resonanceDuration: 6,
     resonanceCooldown: 14,
     resonanceShare: 0.45,
+    resonanceAllInDrainRate: 0.30,
+    resonanceAllInDamageBoost: 3.0,
+    resonanceAllInHealRatio: 0.52,
     visualTargetMax: 8,
     resonanceRefresh: 0.25,
     ultimateRefresh: 0.15,
     ultimateDrainBoost: 1.5,
+    ultimateAllInDamageBoost: 2.4,
+    ultimateLockHpRate: 0.01,
+    ultimateRecoveryRate: 0.62,
+    ultimateRecoveryTarget: 0.76,
     ultimateDuration: 6,
   };
   const motherLifeFx = [];
@@ -1522,8 +1529,9 @@
     targets: [],
     pulse: 0,
     petalT: 0,
-    resonance: { active: false, t: 0, cd: 0, tick: 0, refresh: 0, main: null, network: [], visual: [] },
-    ultimate: { active: false, t: 0, phase: 'none', tick: 0, refresh: 0, fxTick: 0, afterglow: 0, burstDone: false, targets: [] },
+    ultimateRecovery: 0,
+    resonance: { active: false, t: 0, cd: 0, tick: 0, refresh: 0, main: null, network: [], visual: [], allIn: false, drainDone: false },
+    ultimate: { active: false, t: 0, phase: 'none', tick: 0, refresh: 0, fxTick: 0, afterglow: 0, burstDone: false, storedHeal: 0, targets: [] },
   };
   function motherLifeActive() { return selectedChar === 'motherlife'; }
   function motherLifeHpMultiplier(rate, reverse = false) {
@@ -1599,7 +1607,9 @@
     const rates = {
       reverse: over ? 0.22 : 0.12,
       resonance: over ? 0.18 : 0.11,
+      resonanceAllIn: over ? 0.42 : 0.30,
       ultimate: 0.36,
+      ultimateRecovery: 0.62,
     };
     return maxHp * (rates[kind] || 0);
   }
@@ -1625,10 +1635,11 @@
     motherLifeState.targets.length = 0;
     motherLifeState.pulse = 0;
     motherLifeState.petalT = 0;
-    Object.assign(motherLifeState.resonance, { active: false, t: 0, cd: 0, tick: 0, refresh: 0, main: null });
+    motherLifeState.ultimateRecovery = 0;
+    Object.assign(motherLifeState.resonance, { active: false, t: 0, cd: 0, tick: 0, refresh: 0, main: null, allIn: false, drainDone: false });
     motherLifeState.resonance.network.length = 0;
     motherLifeState.resonance.visual.length = 0;
-    Object.assign(motherLifeState.ultimate, { active: false, t: 0, phase: 'none', tick: 0, refresh: 0, fxTick: 0, afterglow: 0, burstDone: false });
+    Object.assign(motherLifeState.ultimate, { active: false, t: 0, phase: 'none', tick: 0, refresh: 0, fxTick: 0, afterglow: 0, burstDone: false, storedHeal: 0 });
     motherLifeState.ultimate.targets.length = 0;
     motherLifeFx.length = 0;
   }
@@ -1755,27 +1766,35 @@
     if (!motherLifeActive() || r.active || r.cd > 0 || motherLifeState.ultimate.active) return;
     if (!(state === 'mobs' || state === 'boss')) return;
     r.active = true; r.t = 0; r.tick = 0; r.cd = MOTHER_LIFE.resonanceCooldown;
+    r.allIn = true;
+    r.drainDone = player.hp / player.maxHp <= MOTHER_LIFE.reverseThreshold;
     r.main = motherLifeHighestHpTarget();
     r.network = motherLifeAliveTargets();
     r.visual = motherLifeTopTargets(r.network.filter(target => target !== r.main), MOTHER_LIFE.visualTargetMax - 1);
     r.refresh = MOTHER_LIFE.resonanceRefresh;
-    setFlash(0.08, '255,180,225');
-    addRingFx(player.x, player.y, 24, 210, 0.7, 'rgba(255,180,225,', 4, 0.62);
-    setMessage('生命共鸣 · 全场链接', 1.5);
+    if (r.drainDone) motherLifeEnterReverse();
+    setFlash(0.14, '255,155,225');
+    addRingFx(player.x, player.y, 24, 240, 0.78, 'rgba(255,155,225,', 5, 0.62);
+    setMessage('生命共鸣 · 梭哈汲取', 1.5);
     playSfx('skillBeam', 0.48, 0.08);
   }
   function castWombOfAll() {
     const u = motherLifeState.ultimate;
     if (!motherLifeActive() || u.active) return false;
-    u.active = true; u.t = 0; u.tick = 0; u.refresh = 0; u.fxTick = 0; u.phase = 'expand'; u.burstDone = false;
+    u.active = true; u.t = 0; u.tick = 0; u.refresh = 0; u.fxTick = 0; u.phase = 'expand'; u.burstDone = false; u.storedHeal = 0;
     u.targets = motherLifeTopTargets(motherLifeAliveTargets(), MOTHER_LIFE.visualTargetMax);
+    motherLifeState.reverse = false;
+    motherLifeState.ultimateRecovery = 0;
     motherLifeState.resonance.active = false;
     motherLifeState.resonance.main = null;
+    motherLifeState.resonance.allIn = false;
+    motherLifeState.resonance.drainDone = false;
     motherLifeState.resonance.network.length = 0;
     motherLifeState.resonance.visual.length = 0;
     enemyBullets.length = 0; warnings.length = 0; lasers.length = 0;
-    player.inv = Math.max(player.inv, 0.5);
-    setFlash(0.22, '255,220,242'); screenShake = Math.max(screenShake, 8);
+    player.hp = Math.max(1, player.maxHp * MOTHER_LIFE.ultimateLockHpRate);
+    player.inv = Math.max(player.inv, MOTHER_LIFE.ultimateDuration + 0.35);
+    setFlash(0.32, '255,190,235'); screenShake = Math.max(screenShake, 12);
     addRingFx(player.x, player.y, 40, W * 0.72, 0.9, 'rgba(255,190,228,', 7, 0.55);
     motherLifeSpawnRadial(34, 70, 260, ['petal', 'crystal']);
     playSfx('skillBomb', 0.72, 0.1);
@@ -1806,6 +1825,7 @@
     const previousPhase = u.phase;
     u.t += dt; u.phase = motherLifeUltimatePhase(u.t);
     player.inv = Math.max(player.inv, 0.18);
+    player.hp = Math.max(player.hp, Math.max(1, player.maxHp * MOTHER_LIFE.ultimateLockHpRate));
     if (u.phase !== previousPhase) {
       if (u.phase === 'drain') {
         setMessage('众生胎宫 · 生命汲取', 1.2);
@@ -1831,13 +1851,17 @@
       if (u.tick <= 0) {
         const step = 0.12; u.tick += step;
         const low = player.hp / player.maxHp < 0.30;
-        const dps = (220 + powerLevel() * 55) * MOTHER_LIFE.ultimateDrainBoost * (low ? 3.5 : 1) * (player.berserk > 0 ? 1.8 : 1);
+        const dps = (220 + powerLevel() * 55)
+          * MOTHER_LIFE.ultimateDrainBoost
+          * MOTHER_LIFE.ultimateAllInDamageBoost
+          * (low ? 3.5 : 1)
+          * (player.berserk > 0 ? 1.8 : 1);
         let actual = 0;
         for (const target of u.targets) {
           actual += motherLifeDamageTarget(target, dps * step);
           if (target !== boss) { target._mlSlowT = 0.25; target._mlSlow = 0.48; }
         }
-        motherLifeHealFromDrain(actual, low ? 0.45 : 0.25, 'ultimate', step);
+        u.storedHeal += actual * (low ? 0.66 : 0.38);
       }
       u.fxTick -= dt;
       if (u.fxTick <= 0) {
@@ -1860,6 +1884,10 @@
     }
     if (u.phase === 'done') {
       u.active = false; u.phase = 'none'; u.targets.length = 0;
+      const storedReturn = Math.min(player.maxHp * 0.22, (u.storedHeal || 0) * 0.04);
+      player.hp = Math.max(player.hp, Math.min(player.maxHp * MOTHER_LIFE.ultimateRecoveryTarget, player.maxHp * 0.50 + storedReturn));
+      motherLifeState.ultimateRecovery = 2.1;
+      u.storedHeal = 0;
       setMessage('众生胎宫 · 圣花归寂', 1.4);
     }
   }
@@ -1878,7 +1906,8 @@
     if (r.tick <= 0 && r.main) {
       const step = 0.12; r.tick += step;
       const hpMul = motherLifeHpMultiplier(player.hp / player.maxHp, motherLifeState.reverse);
-      const dps = (180 + powerLevel() * 35) * hpMul * (player.berserk > 0 ? 1.8 : 1);
+      const allInMul = r.allIn ? MOTHER_LIFE.resonanceAllInDamageBoost : 1;
+      const dps = (180 + powerLevel() * 35) * hpMul * allInMul * (player.berserk > 0 ? 1.8 : 1);
       const mainDamage = dps * step;
       let actual = motherLifeDamageTarget(r.main, mainDamage);
       for (const target of r.network) {
@@ -1890,10 +1919,13 @@
         const pulseTarget = hidden[Math.floor(r.t / 0.24) % hidden.length];
         addSpriteFx('mlLifeNode', pulseTarget.x, pulseTarget.y, 32, 0.22, rand(0, TAU), 0.18, 0.34);
       }
-      motherLifeHealFromDrain(actual, 0.20, 'resonance', step);
+      if (!r.allIn || r.drainDone || motherLifeState.reverse) {
+        motherLifeHealFromDrain(actual, r.allIn ? MOTHER_LIFE.resonanceAllInHealRatio : 0.20, r.allIn ? 'resonanceAllIn' : 'resonance', step);
+      }
     }
     if (r.t >= MOTHER_LIFE.resonanceDuration) {
       r.active = false; r.main = null; r.network.length = 0; r.visual.length = 0;
+      r.allIn = false; r.drainDone = false;
       addRingFx(player.x, player.y, 20, 120, 0.5, 'rgba(255,205,235,', 3, 0.62);
     }
   }
@@ -1911,6 +1943,17 @@
       return;
     }
 
+    if (motherLifeState.ultimateRecovery > 0) {
+      motherLifeState.ultimateRecovery = Math.max(0, motherLifeState.ultimateRecovery - dt);
+      const targetHp = player.maxHp * MOTHER_LIFE.ultimateRecoveryTarget;
+      const before = player.hp;
+      player.hp = Math.min(targetHp, player.hp + player.maxHp * MOTHER_LIFE.ultimateRecoveryRate * dt);
+      if (player.hp > before && Math.random() < (perfLevel >= 2 ? 0.20 : 0.42)) {
+        addParticle(player.x + rand(-36, 36), player.y + rand(-48, 20), rand(-24, 24), rand(-70, -20), rand(0.25, 0.55), rand(2, 5), '#ffd2ec', true);
+      }
+      if (player.hp >= targetHp - 0.2) motherLifeState.ultimateRecovery = 0;
+    }
+
     const growth = motherLifeAdvanceRibbonCount(motherLifeState.ribbonCount, motherLifeState.ribbonTimer, dt);
     if (growth.count > motherLifeState.ribbonCount) {
       motherLifeState.ribbonCount = growth.count;
@@ -1921,8 +1964,15 @@
 
     if (motherLifeState.reverse && player.hp >= player.maxHp - 0.01) motherLifeCompleteReverse();
     if (!motherLifeState.reverse) {
-      player.hp = Math.max(1, player.hp - player.maxHp * MOTHER_LIFE.selfDamageRate * dt);
-      if (player.hp / player.maxHp <= MOTHER_LIFE.reverseThreshold) motherLifeEnterReverse();
+      const resonance = motherLifeState.resonance;
+      const riskDrain = resonance.active && resonance.allIn && !resonance.drainDone;
+      const drainRate = riskDrain ? MOTHER_LIFE.resonanceAllInDrainRate : MOTHER_LIFE.selfDamageRate;
+      const floorHp = riskDrain ? player.maxHp * MOTHER_LIFE.reverseThreshold : 1;
+      player.hp = Math.max(floorHp, player.hp - player.maxHp * drainRate * dt);
+      if (player.hp / player.maxHp <= MOTHER_LIFE.reverseThreshold) {
+        if (riskDrain) resonance.drainDone = true;
+        motherLifeEnterReverse();
+      }
     }
 
     if (motherLifeState.resonance.active) {
@@ -2356,6 +2406,220 @@
     }
   }
 
+  function motherLifeSmoothStep(edge0, edge1, value) {
+    const t = clamp((value - edge0) / Math.max(0.0001, edge1 - edge0), 0, 1);
+    return t * t * (3 - 2 * t);
+  }
+
+  function drawMotherLifeOpeningFieldFx(cx, cy, px, py, progress, scale) {
+    const p = clamp(progress, 0, 1);
+    const e = easeOutCubic(p);
+    const fade = 1 - motherLifeSmoothStep(0.82, 1.0, p) * 0.22;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+
+    const aura = ctx.createRadialGradient(px, py - 24, 0, px, py - 24, W * (0.18 + e * 0.20));
+    aura.addColorStop(0, `rgba(255,255,245,${0.24 * fade})`);
+    aura.addColorStop(0.26, `rgba(255,118,206,${0.18 * fade})`);
+    aura.addColorStop(0.70, `rgba(255,120,216,${0.055 * fade})`);
+    aura.addColorStop(1, 'rgba(255,100,205,0)');
+    ctx.fillStyle = aura;
+    ctx.beginPath();
+    ctx.ellipse(px, py - 18, W * (0.16 + e * 0.18), W * (0.080 + e * 0.075), -0.08, 0, TAU);
+    ctx.fill();
+
+    const floor = ctx.createRadialGradient(cx, cy, W * 0.03, cx, cy, W * 0.34 * scale);
+    floor.addColorStop(0, `rgba(255,220,236,${0.10 * fade})`);
+    floor.addColorStop(0.52, `rgba(255,116,202,${0.060 * fade})`);
+    floor.addColorStop(1, 'rgba(255,95,198,0)');
+    ctx.fillStyle = floor;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, W * 0.35 * scale, W * 0.15 * scale, 0, 0, TAU);
+    ctx.fill();
+
+    const waveCount = 2;
+    for (let i = 0; i < waveCount; i++) {
+      const waveP = clamp((p - i * 0.18) / 0.72, 0, 1);
+      if (waveP <= 0 || waveP >= 1) continue;
+      const arcN = perfLevel >= 2 ? 4 : 7;
+      for (let k = 0; k < arcN; k++) {
+        const seed = motherLifeStageSeed(k + i * 9, 25);
+        const start = k / arcN * TAU + time * (i ? -0.18 : 0.22) + seed * 0.42;
+        const len = 0.12 + seed * 0.18;
+        const grad = ctx.createLinearGradient(
+          cx + Math.cos(start) * W * 0.18 * scale,
+          cy + Math.sin(start) * W * 0.075 * scale,
+          cx + Math.cos(start + len) * W * 0.30 * scale,
+          cy + Math.sin(start + len) * W * 0.12 * scale,
+        );
+        grad.addColorStop(0, 'rgba(255,120,210,0)');
+        grad.addColorStop(0.68, i ? 'rgba(255,230,184,0.35)' : 'rgba(255,124,211,0.42)');
+        grad.addColorStop(1, 'rgba(255,255,248,0.72)');
+        ctx.globalAlpha = Math.sin(waveP * Math.PI) * (0.13 + seed * 0.09) * fade;
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 3.2 + seed * 4.2;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, W * (0.075 + waveP * 0.255) * scale, W * (0.032 + waveP * 0.100) * scale, -0.08, start, start + len);
+        ctx.stroke();
+      }
+    }
+
+    const sparkCount = perfLevel >= 2 ? 16 : perfLevel === 1 ? 28 : 42;
+    for (let i = 0; i < sparkCount; i++) {
+      const seedA = motherLifeStageSeed(i, 21);
+      const seedB = motherLifeStageSeed(i, 22);
+      const delayed = clamp(p * 1.35 - seedA * 0.34, 0, 1);
+      if (delayed <= 0) continue;
+      const out = 1 - Math.pow(1 - delayed, 3);
+      const angle = seedB * TAU + time * (0.05 + seedA * 0.05);
+      const radius = W * (0.035 + out * (0.14 + seedA * 0.22)) * scale;
+      const sx = cx + Math.cos(angle) * radius;
+      const sy = cy + Math.sin(angle) * radius * 0.43 - out * 18;
+      const pulse = 0.65 + 0.35 * Math.sin(time * 7.5 + i);
+      const alpha = Math.sin(delayed * Math.PI) * (0.40 + seedB * 0.34) * fade;
+      if (i % 4 === 0) {
+        drawMotherLifePetalShape(sx, sy, 4.5 + seedA * 6.5, angle + Math.PI / 2, alpha * 0.62, i % 8 ? '#ff97d2' : '#fff2bd');
+      } else {
+        const r = (1.8 + seedB * 3.8) * pulse;
+        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, r * 4.8);
+        glow.addColorStop(0, 'rgba(255,255,246,0.95)');
+        glow.addColorStop(0.28, i % 5 ? 'rgba(255,111,204,0.74)' : 'rgba(255,234,176,0.76)');
+        glow.addColorStop(1, 'rgba(255,78,188,0)');
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = glow;
+        ctx.beginPath(); ctx.arc(sx, sy, r * 4.8, 0, TAU); ctx.fill();
+      }
+    }
+
+    const cometCount = perfLevel >= 2 ? 6 : perfLevel === 1 ? 9 : 13;
+    for (let i = 0; i < cometCount; i++) {
+      const seed = motherLifeStageSeed(i, 24);
+      const travel = (p * 1.25 + seed * 0.55 + time * 0.035) % 1;
+      const angle = i / cometCount * TAU + seed * 0.8;
+      const r0 = W * (0.07 + travel * 0.21) * scale;
+      const r1 = r0 + W * (0.018 + seed * 0.028) * scale;
+      const x0 = cx + Math.cos(angle) * r0;
+      const y0 = cy + Math.sin(angle) * r0 * 0.42;
+      const x1 = cx + Math.cos(angle) * r1;
+      const y1 = cy + Math.sin(angle) * r1 * 0.42;
+      const grad = ctx.createLinearGradient(x0, y0, x1, y1);
+      grad.addColorStop(0, 'rgba(255,96,199,0)');
+      grad.addColorStop(0.72, i % 3 ? 'rgba(255,157,220,0.54)' : 'rgba(255,239,188,0.58)');
+      grad.addColorStop(1, 'rgba(255,255,248,0.82)');
+      ctx.globalAlpha = Math.sin(travel * Math.PI) * 0.48 * fade;
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.8 + seed * 2.3;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+    }
+
+    const flowCount = perfLevel >= 2 ? 7 : perfLevel === 1 ? 11 : 16;
+    for (let i = 0; i < flowCount; i++) {
+      const seedA = motherLifeStageSeed(i, 35);
+      const seedB = motherLifeStageSeed(i, 36);
+      const track = i % 3;
+      const rx = W * (0.115 + track * 0.062 + e * 0.050) * scale;
+      const ry = W * (0.048 + track * 0.026 + e * 0.018) * scale;
+      const speed = (0.30 + seedA * 0.18) * (track === 1 ? -1 : 1);
+      const head = (time * speed + p * (0.26 + seedB * 0.28) + seedA) * TAU;
+      const tail = head - Math.sign(speed) * (0.07 + seedB * 0.06);
+      const rot = -0.08 + Math.sin(time * 0.7 + track) * 0.035;
+      const cosR = Math.cos(rot), sinR = Math.sin(rot);
+      const point = (a) => {
+        const lx = Math.cos(a) * rx, ly = Math.sin(a) * ry;
+        return { x: cx + lx * cosR - ly * sinR, y: cy + lx * sinR + ly * cosR };
+      };
+      const h = point(head), t = point(tail);
+      const pulse = 0.56 + 0.44 * Math.sin(time * 6.2 + i * 1.7);
+      const alpha = (0.11 + pulse * 0.18) * fade * motherLifeSmoothStep(0.10, 0.45, p);
+      const trail = ctx.createLinearGradient(t.x, t.y, h.x, h.y);
+      trail.addColorStop(0, 'rgba(255,105,205,0)');
+      trail.addColorStop(0.54, track === 2 ? 'rgba(255,232,180,0.36)' : 'rgba(255,134,217,0.42)');
+      trail.addColorStop(1, 'rgba(255,255,248,0.88)');
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = trail;
+      ctx.lineWidth = 1.0 + pulse * 1.55;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(t.x, t.y);
+      const mid = point((head + tail) * 0.5 + Math.sin(time + seedA * 4) * 0.05);
+      ctx.quadraticCurveTo(mid.x, mid.y, h.x, h.y);
+      ctx.stroke();
+
+      const orbR = 1.6 + seedB * 2.4 + pulse * 1.0;
+      const orb = ctx.createRadialGradient(h.x, h.y, 0, h.x, h.y, orbR * 4.8);
+      orb.addColorStop(0, 'rgba(255,255,255,0.98)');
+      orb.addColorStop(0.24, track === 2 ? 'rgba(255,238,184,0.88)' : 'rgba(255,118,211,0.86)');
+      orb.addColorStop(1, 'rgba(255,88,195,0)');
+      ctx.globalAlpha = alpha * 1.15;
+      ctx.fillStyle = orb;
+      ctx.beginPath(); ctx.arc(h.x, h.y, orbR * 4.8, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawMotherLifeOpeningCoreFx(x, y, progress) {
+    const p = clamp(progress, 0, 1);
+    const e = easeOutCubic(p);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+
+    const coreR = 28 + e * 70;
+    const coreGlow = ctx.createRadialGradient(x, y, 0, x, y, coreR);
+    coreGlow.addColorStop(0, 'rgba(255,255,250,0.98)');
+    coreGlow.addColorStop(0.22, 'rgba(255,184,229,0.76)');
+    coreGlow.addColorStop(0.58, 'rgba(255,91,198,0.26)');
+    coreGlow.addColorStop(1, 'rgba(255,82,190,0)');
+    ctx.globalAlpha = 0.58 + e * 0.18;
+    ctx.fillStyle = coreGlow;
+    ctx.beginPath(); ctx.arc(x, y, coreR, 0, TAU); ctx.fill();
+
+    const haloY = y - 44 + Math.sin(time * 2.7) * 3;
+    for (let i = 0; i < 2; i++) {
+      const wave = clamp((p - i * 0.22) / 0.74, 0, 1);
+      if (wave <= 0) continue;
+      ctx.globalAlpha = Math.sin(wave * Math.PI) * (0.36 - i * 0.09);
+      ctx.strokeStyle = i ? '#fff1c8' : '#ff9cd9';
+      ctx.lineWidth = 2.8 - i * 0.7;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.ellipse(x, haloY, 48 + wave * 76, 12 + wave * 18, time * (i ? -0.13 : 0.16), Math.PI * 0.08, Math.PI * 1.92);
+      ctx.stroke();
+    }
+
+    const starCount = perfLevel >= 2 ? 8 : perfLevel === 1 ? 13 : 20;
+    for (let i = 0; i < starCount; i++) {
+      const seedA = motherLifeStageSeed(i, 31);
+      const seedB = motherLifeStageSeed(i, 32);
+      const local = clamp(p * 1.35 - seedA * 0.42, 0, 1);
+      if (local <= 0) continue;
+      const angle = seedB * TAU + time * (0.10 + seedA * 0.08);
+      const radius = 26 + local * (54 + seedA * 74);
+      const sx = x + Math.cos(angle) * radius;
+      const sy = y + Math.sin(angle) * radius * 0.58 - local * 12;
+      const alpha = Math.sin(local * Math.PI) * (0.48 + seedB * 0.24);
+      const size = 2.4 + seedA * 4.2;
+      const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, size * 5.2);
+      glow.addColorStop(0, 'rgba(255,255,246,0.96)');
+      glow.addColorStop(0.28, i % 4 ? 'rgba(255,121,211,0.82)' : 'rgba(255,234,178,0.86)');
+      glow.addColorStop(1, 'rgba(255,80,190,0)');
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(sx, sy, size * 5.2, 0, TAU); ctx.fill();
+      if (i % 3 === 0) {
+        ctx.globalAlpha = alpha * 0.72;
+        ctx.strokeStyle = i % 2 ? '#ffb5de' : '#fff0c6';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(sx - size * 4, sy); ctx.lineTo(sx + size * 4, sy);
+        ctx.moveTo(sx, sy - size * 4); ctx.lineTo(sx, sy + size * 4);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
   function drawMotherLifeDomainEnergy(cx, cy, scale, phase, expandP, gatherP, burstP) {
     const phaseAlpha = phase === 'expand'
       ? 0.48 + expandP * 0.42
@@ -2489,6 +2753,13 @@
       tint.addColorStop(1, 'rgba(35,8,45,0)');
       ctx.fillStyle = tint; ctx.fillRect(0, 0, W, H);
       const floorScale = 0.38 + easeExpand * 0.62;
+      if (u.phase === 'expand') {
+        const baseW = W * (0.40 + easeExpand * 0.18);
+        drawAsset('mlDomainSanctuary', player.x, fieldY, baseW, 0.045 + easeExpand * 0.055, -time * 0.018, baseW * 0.48);
+        drawMotherLifeOpeningFieldFx(player.x, fieldY, player.x, player.y, expandP, 0.82 + easeExpand * 0.10);
+        ctx.restore();
+        return;
+      }
       const fieldAlpha = u.phase === 'expand'
         ? 0.22 + easeExpand * 0.26
         : u.phase === 'gather' ? 0.44 + gatherP * 0.09
@@ -2510,18 +2781,20 @@
     }
     drawMotherLifeFx();
     ctx.save(); ctx.globalCompositeOperation = 'source-over';
-    const haloW = 255 + Math.sin(time * 3.2) * 14;
-    drawAsset('mlDomainHalo', player.x, player.y - 152, haloW, u.phase === 'burst' ? 0.18 : 0.54, time * 0.24, 0, 'lighter');
+    const haloW = (u.phase === 'expand' ? 210 : 255) + Math.sin(time * 3.2) * 14;
+    const haloAlpha = u.phase === 'expand' ? 0.24 + expandP * 0.10 : (u.phase === 'burst' ? 0.18 : 0.54);
+    drawAsset('mlDomainHalo', player.x, player.y - 152, haloW, haloAlpha, time * 0.24, 0, 'lighter');
     if (u.phase === 'expand') {
-      const budAlpha = clamp(1 - expandP / 0.42, 0, 1);
-      const halfOpen = clamp(1 - Math.abs(expandP - 0.43) / 0.34, 0, 1);
-      const fullOpen = clamp((expandP - 0.48) / 0.40, 0, 1);
+      const budAlpha = (1 - motherLifeSmoothStep(0.18, 0.54, expandP)) * 0.88;
+      const halfOpen = motherLifeSmoothStep(0.20, 0.45, expandP) * (1 - motherLifeSmoothStep(0.66, 0.90, expandP)) * 0.74;
+      const fullOpen = motherLifeSmoothStep(0.56, 0.96, expandP) * 0.54;
       const bloomY = player.y - 28;
-      drawMotherLifeBloomSprite('mlV4StartBud', player.x, bloomY - 20, 126 + easeExpand * 44, budAlpha, Math.sin(time * 1.8) * 0.025, 17);
-      drawMotherLifeBloomSprite('mlV4StartHalfBloom', player.x, bloomY, 174 + easeExpand * 108, halfOpen, -time * 0.055, 22);
-      drawMotherLifeBloomSprite('mlV4StartOpenBloom', player.x, bloomY + 7, 218 + fullOpen * 132, fullOpen * 0.98, time * 0.045, 26);
-      drawAsset('mlFinalHeart', player.x, player.y - 38, 46 + easeExpand * 58, 0.22 + easeExpand * 0.44, -time * 0.2, 0, 'lighter');
-      drawMotherLifeBloomEdge(player.x, bloomY + 4, 96 + easeExpand * 90, expandP, 0.88);
+      drawMotherLifeBloomSprite('mlV4StartBud', player.x, bloomY - 18, 116 + easeExpand * 34, budAlpha, Math.sin(time * 1.8) * 0.02, 18);
+      drawMotherLifeBloomSprite('mlV4StartHalfBloom', player.x, bloomY, 156 + easeExpand * 74, halfOpen, -time * 0.04, 20);
+      drawMotherLifeBloomSprite('mlV4StartOpenBloom', player.x, bloomY + 6, 190 + fullOpen * 82, fullOpen, time * 0.035, 24);
+      drawAsset('mlFinalHeart', player.x, player.y - 38, 42 + easeExpand * 48, 0.30 + easeExpand * 0.34, -time * 0.16, 0, 'lighter');
+      drawMotherLifeOpeningCoreFx(player.x, bloomY + 2, expandP);
+      drawMotherLifeBloomEdge(player.x, bloomY + 4, 72 + easeExpand * 78, expandP, 0.46);
       drawMotherLifeUltimateParticles('expand', expandP, player.x, bloomY + 2);
       if (assetReady('mlV4PetalCluster') && expandP > 0.18) {
         const clusterP = clamp((expandP - 0.18) / 0.82, 0, 1);
@@ -2530,40 +2803,14 @@
             'mlV4PetalCluster',
             player.x + side * (54 + clusterP * 52),
             bloomY + 8 + Math.sin(time * 2.2 + side) * 7,
-            62 + clusterP * 32,
-            Math.sin(clusterP * Math.PI) * 0.28,
+            46 + clusterP * 24,
+            Math.sin(clusterP * Math.PI) * 0.16,
             side * (0.55 + clusterP * 0.28),
             0,
             'lighter',
           );
         }
       }
-      const ringR = 30 + easeExpand * W * 0.34;
-      ctx.save(); ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 2; i++) {
-        ctx.globalAlpha = (1 - expandP * 0.42) * (0.58 - i * 0.14);
-        ctx.strokeStyle = i ? '#fff0cb' : '#ff9bd5'; ctx.lineWidth = 4 - i;
-        ctx.beginPath(); ctx.ellipse(player.x, player.y - 18, ringR * (1 + i * 0.18), ringR * (0.34 + i * 0.04), 0, 0, TAU); ctx.stroke();
-      }
-      const rayN = perfLevel >= 2 ? 8 : 14;
-      for (let i = 0; i < rayN; i++) {
-        const a = i / rayN * TAU + time * 0.25;
-        const r0 = 42 + easeExpand * 46, r1 = r0 + 32 + easeExpand * 85;
-        ctx.globalAlpha = (1 - expandP) * 0.38 + 0.08;
-        ctx.strokeStyle = i % 3 ? '#ffc3e6' : '#fff4d3'; ctx.lineWidth = 1.3;
-        ctx.beginPath();
-        ctx.moveTo(player.x + Math.cos(a) * r0, player.y - 35 + Math.sin(a) * r0 * 0.48);
-        ctx.lineTo(player.x + Math.cos(a) * r1, player.y - 35 + Math.sin(a) * r1 * 0.48);
-        ctx.stroke();
-      }
-      const coreR = 22 + easeExpand * 54;
-      const coreGlow = ctx.createRadialGradient(player.x, bloomY, 0, player.x, bloomY, coreR);
-      coreGlow.addColorStop(0, 'rgba(255,255,244,0.96)');
-      coreGlow.addColorStop(0.28, 'rgba(255,136,211,0.64)');
-      coreGlow.addColorStop(1, 'rgba(255,90,190,0)');
-      ctx.globalAlpha = 0.48 + easeExpand * 0.22; ctx.fillStyle = coreGlow;
-      ctx.beginPath(); ctx.arc(player.x, bloomY, coreR, 0, TAU); ctx.fill();
-      ctx.restore();
     } else if (u.phase === 'drain') {
       const charge = 0.65 + (u.t - 0.6) / 3.9 * 0.35;
       const coreR = 82 + Math.sin(time * 6.5) * 9 + charge * 22;
@@ -13004,7 +13251,8 @@
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.72)';
     const stateText = motherLifeState.ultimate.active
       ? `众生胎宫 · ${({ expand: '圣域展开', drain: '持续吸血', gather: '能量回流', burst: '圣花爆发' })[motherLifeState.ultimate.phase] || ''}`
-      : motherLifeState.resonance.active ? '生命共鸣 · 全场联网'
+      : motherLifeState.ultimateRecovery > 0 ? '众生胎宫 · 生命回流'
+      : motherLifeState.resonance.active ? (motherLifeState.resonance.allIn && !motherLifeState.resonance.drainDone ? '生命共鸣 · 梭哈燃血' : '生命共鸣 · 全场联网')
       : motherLifeState.reverse ? '生命反哺 · 回血逆转'
       : `生命飘带 ${effective}/8`;
     ctx.strokeText(stateText, x, y);
