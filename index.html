@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" href="data:," />
   <title>月蚀弹幕 Demo V0.9 - 硬件自适应流畅版</title>
   <style>
     * { box-sizing: border-box; }
@@ -56,7 +57,7 @@
   </style>
 </head>
 <body>
-  <audio id="bgm" src="assets/audio/bgm_stage_loop.ogg" preload="auto" loop></audio>
+  <audio id="bgm" src="assets/audio/bgm_stage_loop.ogg" preload="none" loop></audio>
   <div id="wrap"><canvas id="game" width="720" height="1280"></canvas></div>
   <div id="tip">
     操作：WASD/方向键移动　Shift低速　Space角色技能　X角色大招　1–5换将　P暂停　R重开<br/>
@@ -73,6 +74,12 @@
   const W = canvas.width;
   const H = canvas.height;
   const TAU = Math.PI * 2;
+  const UA = navigator.userAgent || '';
+  const HAS_COARSE_POINTER = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  const NARROW_VIEWPORT = Math.min(window.innerWidth || 9999, window.innerHeight || 9999) <= 760;
+  const IS_MOBILE_RUNTIME = !!(navigator.userAgentData && navigator.userAgentData.mobile) || HAS_COARSE_POINTER || NARROW_VIEWPORT || /Android|iPhone|iPad|iPod|Mobile/i.test(UA);
+  const MOBILE_BEST_PERF_LEVEL = IS_MOBILE_RUNTIME ? 1 : 0; // perfLevel: 0=full, 1=medium, 2=minimal.
+  const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 2 : 0;
 
   const bgmEl = document.getElementById('bgm');
   const musicStatusEl = document.getElementById('musicStatus');
@@ -572,29 +579,114 @@
     victory: 'assets/audio/se_victory.wav',
     gameover: 'assets/audio/se_gameover.wav'
   };
+  const MOBILE_ASSET_PATHS = window.__MOBILE_ASSET_PATHS__ || Object.create(null);
+  const AVAILABLE_ASSETS = window.__AVAILABLE_ASSETS__ || null;
   const assets = Object.create(null);
-  for (const [key, src] of Object.entries(ASSET_PATHS)) {
+  function resolveAssetSrc(key, src) {
+    return (IS_MOBILE_RUNTIME && MOBILE_ASSET_PATHS[key]) ? MOBILE_ASSET_PATHS[key] : src;
+  }
+  function createAssetSlot(key, src) {
     const img = new Image();
-    img.src = src;
-    img.onload = () => img.ready = true;
-    img.onerror = () => img.failed = true;
+    img.ready = false;
+    img.failed = false;
+    img.requested = false;
+    img.rawSrc = src;
+    img.resolvedSrc = '';
+    img.decoding = 'async';
     assets[key] = img;
   }
+  function loadAsset(key) {
+    const img = assets[key];
+    if (!img || img.ready || img.requested || img.failed) return img;
+    if (AVAILABLE_ASSETS && !AVAILABLE_ASSETS[key]) {
+      img.failed = true;
+      return img;
+    }
+    const src = resolveAssetSrc(key, img.rawSrc || ASSET_PATHS[key]);
+    img.requested = true;
+    img.resolvedSrc = src;
+    img.onload = () => { img.ready = true; };
+    img.onerror = () => {
+      if (src !== img.rawSrc) {
+        img.requested = false;
+        img.failed = false;
+        img.onload = () => { img.ready = true; };
+        img.onerror = () => { img.failed = true; };
+        img.resolvedSrc = img.rawSrc;
+        img.src = img.rawSrc;
+        return;
+      }
+      img.failed = true;
+    };
+    img.src = src;
+    return img;
+  }
+  function loadAssetGroup(keys) {
+    for (const key of keys) loadAsset(key);
+  }
+  for (const [key, src] of Object.entries(ASSET_PATHS)) createAssetSlot(key, src);
+  const CORE_ASSET_KEYS = [
+    'bgStageBase', 'bgStage1', 'bgStageDepth',
+    'uiEmblemLoop', 'uiMoonSilver', 'uiBannerOrnate',
+    'uiTimerPanel', 'uiSidePartyCard', 'uiCircleFrame',
+    'uiSkillBeamIcon', 'uiSkillBombIcon', 'uiSaintSkillIcon', 'uiNightCoffinSkillIcon',
+    'playerAvatar', 'yanuxiyaBAvatar', 'annaAvatar', 'reaverAvatar', 'motherlifeAvatar',
+    'playerCutin', 'yanuxiyaBCutin', 'annaCutin', 'reaverCutin', 'motherlifeCutin',
+  ];
+  const COMMON_GAMEPLAY_ASSET_KEYS = [
+    'bgStageBase', 'bgStageDepth', 'bgStage1', 'bgStage2', 'bgStage3', 'bgEclipse', 'bgBloodmoon',
+    'vfxEnemyHit', 'vfxBossHit', 'vfxExplosionSmall', 'vfxExplosionLarge', 'vfxClearBullets',
+    'bulletAuroraA', 'bulletAuroraB', 'bulletAuroraC',
+    'seraphPhase1', 'seraphPhase2', 'seraphRage',
+  ];
+  const CHARACTER_ASSET_GROUPS = {
+    witch: ['playerIdle', 'playerMoveLeft', 'playerMoveRight', 'playerFocus', 'playerHit', 'playerAvatar', 'playerCutin', 'vfxUltimate'],
+    yanuxiya: ['yanuxiyaBIdle', 'yanuxiyaBMoveLeft', 'yanuxiyaBMoveRight', 'yanuxiyaBFocus', 'yanuxiyaBHit', 'yanuxiyaBAvatar', 'yanuxiyaBCutin', 'yMoon', 'yMoonGlow', 'yCloud', 'yLightning', 'yRing', 'yRadial'],
+    anna: ['annaIdle', 'annaMoveLeft', 'annaMoveRight', 'annaFocus', 'annaHit', 'annaAvatar', 'annaCutin'],
+    reaver: ['reaverIdle', 'reaverMoveLeft', 'reaverMoveRight', 'reaverFocus', 'reaverHit', 'reaverAvatar', 'reaverCutin', 'reaverBurst', 'nrBlade', 'nrSword', 'nrSwordLong', 'nrArc', 'nrSlashBurst'],
+    motherlife: ['motherlifeIdle', 'motherlifeAvatar', 'motherlifeCutin', 'mlHeart', 'mlHalo', 'mlCrown', 'mlHeartDetail', 'mlRibbonBody1', 'mlRibbonBody2', 'mlRibbonBody3', 'mlRibbonTip', 'mlRibbonOrigin', 'mlLifeNode', 'mlMainTarget', 'mlResonanceCore', 'mlIconResonance', 'mlIconUltimate'],
+  };
+  const WING_ASSET_GROUPS = {
+    moonfeather: ['wmBody', 'wmBodyBerserk', 'wmBodyT', 'wmBodyTB', 'wmFeather', 'wmFeatherBerserk', 'wmBurst', 'wmCircle', 'wmImpact', 'wmShield'],
+    reaverwing: ['nrWmIdle', 'nrWmOverdrive', 'nrWmBlade', 'nrWmCrescent', 'nrSlashBurst'],
+    saintcrown: ['scBody', 'scBodyOver', 'scRingLarge', 'scCore', 'scAngelBodyNew', 'scAngelCrown3d', 'scMeteorBeam', 'scMeteorBeamHeavy', 'scMeteorImpactBurst', 'scDomainOuterOrnament', 'scDomainOrbitOrnament'],
+    nightcoffin: ['ncBody', 'ncTrailNormal', 'ncTrailOverdrive', 'ncLaserNormal', 'ncLaserOverdrive', 'ncOrbitRing', 'ncStarFlash', 'ncImpactBurst', 'ncSlowField'],
+  };
+  function prefetchCharacterAssets(key) {
+    loadAssetGroup(CHARACTER_ASSET_GROUPS[key] || []);
+  }
+  function prefetchEquippedWingAssets() {
+    for (const key of Object.keys(equippedWings || {})) {
+      if (wingEnabled(key)) loadAssetGroup(WING_ASSET_GROUPS[key] || []);
+    }
+  }
+  function prefetchGameplayAssets() {
+    loadAssetGroup(COMMON_GAMEPLAY_ASSET_KEYS);
+    prefetchCharacterAssets(selectedChar);
+    prefetchEquippedWingAssets();
+  }
+  if (IS_MOBILE_RUNTIME) loadAssetGroup(CORE_ASSET_KEYS);
+  else loadAssetGroup(Object.keys(ASSET_PATHS));
   // —— 音效：每个音效一个可复用的元素池（避免 cloneNode 在部分浏览器/file:// 下被静音）——
   const sfx = Object.create(null);       // key -> [Audio,...] 池
   const sfxIdx = Object.create(null);    // key -> 轮询索引
   const lastSfx = Object.create(null);
   const SFX_POOL = 5;
   let audioUnlocked = false;
-  for (const [key, src] of Object.entries(SFX_PATHS)) {
+  function ensureSfxPool(key) {
+    if (sfx[key]) return sfx[key];
+    const src = SFX_PATHS[key];
+    if (!src) return null;
     const pool = [];
-    for (let i = 0; i < SFX_POOL; i++) {
+    const poolSize = IS_MOBILE_RUNTIME ? 2 : SFX_POOL;
+    for (let i = 0; i < poolSize; i++) {
       const a = new Audio(src);
-      a.preload = 'auto';
+      a.preload = IS_MOBILE_RUNTIME ? 'none' : 'auto';
       pool.push(a);
     }
     sfx[key] = pool;
     sfxIdx[key] = 0;
+    return pool;
   }
   // 首个用户手势时解锁所有音频（满足浏览器自动播放策略）
   function unlockAudio() {
@@ -602,12 +694,6 @@
     audioUnlocked = true;
     try { audio.start(); } catch (e) {}
     try { if (audio.ctx && audio.ctx.state === 'suspended') audio.ctx.resume(); } catch (e) {}
-    // 静音播放一次每个音效元素，把它们在手势内“解锁”
-    for (const key of Object.keys(sfx)) {
-      for (const a of sfx[key]) {
-        try { a.muted = true; const p = a.play(); if (p && p.then) p.then(() => { a.pause(); a.currentTime = 0; a.muted = false; }).catch(() => { a.muted = false; }); else { a.pause(); a.currentTime = 0; a.muted = false; } } catch (e) { a.muted = false; }
-      }
-    }
   }
 
   function drawSprite(key, x, y, w, h, alpha = 1, rot = 0) {
@@ -623,7 +709,10 @@
   }
 
   function assetReady(key) {
-    return assets[key] && assets[key].ready;
+    const img = assets[key];
+    if (!img) return false;
+    if (!img.ready && !img.requested && !img.failed) loadAsset(key);
+    return !!img.ready;
   }
 
   function desiredBgmPath() {
@@ -673,7 +762,7 @@
     // 优先走 WebAudio 缓冲（与 BGM 解耦，杜绝并发音效挤停背景音乐）
     if (audio.playBuffer(key, volume)) return;
     // 回退：WebAudio 未就绪时用 HTML5 元素池
-    const pool = sfx[key];
+    const pool = ensureSfxPool(key);
     if (!pool) return;
     const a = pool[sfxIdx[key]];
     sfxIdx[key] = (sfxIdx[key] + 1) % pool.length;  // 轮询，支持重叠播放
@@ -712,6 +801,8 @@
   const keys = Object.create(null);
   let pointerDown = false;
   let pointerTarget = null;
+  let activeTouchButtonPointer = null;
+  const touchSkillButtons = [];
   let last = performance.now();
   let time = 0;
   let screenShake = 0;
@@ -768,7 +859,8 @@
       // Electron 桌面环境轻微加成（独占 GPU，无移动端节流）
       if (/electron/i.test(navigator.userAgent)) score -= 1;
 
-      perfLevel = score <= -1 ? 0 : (score <= 1 ? 0 : (score <= 3 ? 1 : 2));
+      perfLevel = IS_MOBILE_RUNTIME ? MOBILE_DEFAULT_PERF_LEVEL : (score <= -1 ? 0 : (score <= 1 ? 0 : (score <= 3 ? 1 : 2)));
+      perfLevel = Math.max(perfLevel, MOBILE_BEST_PERF_LEVEL);
       // 暴露给主进程/调试
       window.__perfProbe = { cpu, mem, dpr, gpu: gpuName, score, perfLevel };
       console.log('[perf] hardware probe:', window.__perfProbe);
@@ -3184,6 +3276,7 @@
     // 与 BGM 的 <audio> 元素彻底解耦，避免大量并发音效抢占音频焦点把 BGM 挤停。
     loadSfxBuffers() {
       if (!this.ctx || typeof fetch !== 'function') return;
+      if (IS_MOBILE_RUNTIME) return;
       for (const [key, src] of Object.entries(SFX_PATHS)) {
         try {
           fetch(src).then(r => r.arrayBuffer()).then(buf => {
@@ -3366,6 +3459,7 @@
 
   function startGame() {
     audio.start();
+    prefetchGameplayAssets();
     reset();
     state = 'mobs';
     syncBgmTrack(true);
@@ -3455,6 +3549,7 @@
   function toggleWingSelection(key) {
     if (!(key in equippedWings)) return;
     equippedWings[key] = !equippedWings[key];
+    if (equippedWings[key]) loadAssetGroup(WING_ASSET_GROUPS[key] || []);
     const opt = WING_OPTIONS.find(o => o.key === key);
     setMessage((equippedWings[key] ? '已装备：' : '已卸下：') + (opt ? opt.name : key), 1.6);
     if (key === 'moonfeather') { wingmen.length = 0; wmBeam.active = false; wmShield.active = false; if (wingmanActive()) syncWingmen(); }
@@ -3464,6 +3559,7 @@
   }
   function selectChar(which) {
     if (!CHARACTERS[which] || which === selectedChar) return;
+    prefetchCharacterAssets(which);
     if (state === 'title') {
       selectedChar = which;
       player.maxHp = curChar().maxHp;
@@ -10694,6 +10790,7 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
+    touchSkillButtons.length = 0;
     const sx = screenShake > 0 ? rand(-screenShake, screenShake) : 0;
     const sy = screenShake > 0 ? rand(-screenShake, screenShake) : 0;
     // alpha:false 上下文要求每帧铺满不透明像素，先打底防残影
@@ -13188,6 +13285,7 @@
   function drawSkill(x, y, key, name, cdRate, ready = false, iconOverride = null) {
     ctx.save();
     const cx = x + 36, cy = y + 26, R = 30;
+    registerTouchSkill(cx, cy, R + 20, key, name);
     // 爆裂魔女风格：圆形技能按钮 + 金色外环
     // 底盘
     ctx.fillStyle = ready ? 'rgba(40,28,16,.78)' : 'rgba(18,16,28,.72)';
@@ -13307,6 +13405,7 @@
     const R = 31;
     const cdRate = skill.cdMax > 0 ? clamp(skill.cd / skill.cdMax, 0, 1) : 0;
     const pulse = 0.5 + Math.sin(time * 5.5) * 0.5;
+    registerTouchSkill(cx, cy, R + 19, skill.key, skill.name);
     ctx.save();
 
     if (skill.ready || skill.active) {
@@ -13726,7 +13825,8 @@
       else if (perfHoldT > 0.8) {
         perfHoldT = 0;
         if (smoothFrameMs > 27 && perfLevel < 2) perfLevel++;
-        else if (smoothFrameMs < 18 && perfLevel > 0) perfLevel--;
+        else if (smoothFrameMs < 18 && perfLevel > MOBILE_BEST_PERF_LEVEL) perfLevel--;
+        if (perfLevel < MOBILE_BEST_PERF_LEVEL) perfLevel = MOBILE_BEST_PERF_LEVEL;
       }
       // hit-stop：短暂冻结战斗推进（仍持续绘制），增强终结/重击打击感
       if (hitStop > 0) { hitStop -= dt; draw(); requestAnimationFrame(loop); return; }
@@ -13739,13 +13839,45 @@
     requestAnimationFrame(loop);
   }
 
-  function pointerPos(e) {
+  function rawCanvasPos(e) {
     const rect = canvas.getBoundingClientRect();
     const p = e.touches ? e.touches[0] : e;
     return {
-      x: clamp((p.clientX - rect.left) / rect.width * W, 36, W - 36),
-      y: clamp((p.clientY - rect.top) / rect.height * H, 260, H - 58)
+      x: (p.clientX - rect.left) / rect.width * W,
+      y: (p.clientY - rect.top) / rect.height * H
     };
+  }
+
+  function pointerPos(e) {
+    const p = rawCanvasPos(e);
+    return {
+      x: clamp(p.x, 36, W - 36),
+      y: clamp(p.y, 260, H - 58)
+    };
+  }
+
+  function registerTouchSkill(cx, cy, r, key, name) {
+    if (!IS_MOBILE_RUNTIME || state === 'title') return;
+    touchSkillButtons.push({ cx, cy, r, key, name });
+  }
+
+  function hitTouchSkill(pt) {
+    if (!IS_MOBILE_RUNTIME || state === 'title') return null;
+    for (let i = touchSkillButtons.length - 1; i >= 0; i--) {
+      const b = touchSkillButtons[i];
+      if (dist2(pt.x, pt.y, b.cx, b.cy) <= b.r * b.r) return b;
+    }
+    return null;
+  }
+
+  function triggerVirtualSkill(key) {
+    if (state === 'title') return false;
+    unlockAudio();
+    if (key === 'Space') { useBeam(); return true; }
+    if (key === 'X') { useBomb(); return true; }
+    if (key === 'Q') { castSaintField(); return true; }
+    if (key === 'E') { ncToggleMode(); return true; }
+    return false;
   }
 
   function setPointerTarget(e, snap = false) {
@@ -13789,16 +13921,42 @@
       for (const c of wingCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { toggleWingSelection(c.key); return; } }
       startGame();
     }
+    const rawPt = rawCanvasPos(e);
+    const touchedSkill = hitTouchSkill(rawPt);
+    if (touchedSkill) {
+      activeTouchButtonPointer = e.pointerId;
+      triggerVirtualSkill(touchedSkill.key);
+      canvas.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+      return;
+    }
     pointerDown = true;
     setPointerTarget(e, !wasTitle);
     canvas.setPointerCapture?.(e.pointerId);
   });
-  canvas.addEventListener('pointermove', (e) => { if (pointerDown) setPointerTarget(e, true); });
-  canvas.addEventListener('pointerup', () => { pointerDown = false; pointerTarget = null; });
-  canvas.addEventListener('pointercancel', () => { pointerDown = false; pointerTarget = null; });
+  canvas.addEventListener('pointermove', (e) => {
+    if (activeTouchButtonPointer === e.pointerId) return;
+    if (pointerDown) setPointerTarget(e, true);
+  });
+  canvas.addEventListener('pointerup', (e) => { if (activeTouchButtonPointer === e.pointerId) activeTouchButtonPointer = null; pointerDown = false; pointerTarget = null; });
+  canvas.addEventListener('pointercancel', (e) => { if (activeTouchButtonPointer === e.pointerId) activeTouchButtonPointer = null; pointerDown = false; pointerTarget = null; });
 
   // Prevent mobile scrolling while playing.
   document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+  if (window.__PAGE_BUILD_VERSION__ && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+
+  window.__mobileRuntimeInfo__ = {
+    isMobile: IS_MOBILE_RUNTIME,
+    narrowViewport: NARROW_VIEWPORT,
+    coarsePointer: HAS_COARSE_POINTER,
+    bestPerfLevel: MOBILE_BEST_PERF_LEVEL,
+    mobileAssets: !!Object.keys(MOBILE_ASSET_PATHS).length,
+  };
 
   requestAnimationFrame(loop);
 })();

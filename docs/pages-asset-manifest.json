@@ -1,0 +1,13 @@
+{
+  "version": "cad63726bb50",
+  "builtAt": 1782455233,
+  "referencedMedia": 460,
+  "mobileVariants": 444,
+  "copiedBytes": 75352138,
+  "excluded": [
+    "assets/_backup_before_user_import/**",
+    "assets_backup_*/**",
+    "unreferenced bgm_*_loop.wav",
+    "asset preview sheets not referenced by index.html"
+  ]
+}

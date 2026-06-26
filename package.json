@@ -7,7 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:pages": "python3 tools/build_pages.py",
+    "syntax": "node tests/saint-wing-berserk/syntax-check.js",
+    "test": "cd tests/saint-wing-berserk && npm test"
   },
   "keywords": [],
   "author": "",
