@@ -27,7 +27,7 @@ const path = require('path');
 // ─── 配置 ───────────────────────────────────────────
 const DOCS_DIR = path.resolve(process.argv[2] || path.join(__dirname, '..', 'docs'));
 const PORT = 18765;
-const TIMEOUT = 60000; // 每个场景超时 ms（V1.2 资源量增大，提高到 60s）
+const TIMEOUT = 45000; // 每个场景超时 ms
 
 function browserExecutablePath() {
   const candidates = [
@@ -191,8 +191,7 @@ async function runScenario(browser, scenario, baseUrl) {
 
   try {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
-    // 给游戏初始化一些时间（不等待所有资源加载完）
-    await new Promise(r => setTimeout(r, 3000));
+    await page.waitForFunction(() => !!window.__mobileRuntimeInfo__, { timeout: 15000 }).catch(() => {});
 
     // 提取运行时信息
     const runtimeInfo = await page.evaluate(() => {
@@ -312,6 +311,7 @@ async function main() {
       console.log('\n  🎉 全部通过！docs/ 可以安全发布。');
     } else {
       console.log(`\n  ⚠️  有 ${totalFailed} 项失败，请修复后再发布。`);
+      process.exitCode = 1;
     }
 
   } catch (e) {

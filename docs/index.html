@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" href="data:," />
-  <title>月蚀弹幕 V1.2.1 - 移动端体验优化</title>
+  <title>月蚀弹幕 V1.3 - 随意降临版</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; background:#020208; overflow: hidden; }
@@ -21,11 +21,8 @@
         radial-gradient(circle at 20% 80%, rgba(255,196,77,.08), transparent 28%),
         #020208;
       padding:8px;
-      overflow:hidden;
     }
     canvas {
-      /* ★ V1.2.1: 长屏手机适配 - 用 contain 模式，保证完整显示不被裁切 */
-      /* 9:16 = 0.5625，长屏手机（如 iPhone 17 Pro Max 约 0.46）会上下留黑边 */
       width: min(100vw, calc(100vh * 0.5625));
       height: min(100vh, calc(100vw / 0.5625));
       max-width:720px; max-height:1280px;
@@ -34,7 +31,6 @@
       border-radius:18px;
       box-shadow:0 0 60px rgba(132,78,255,.32), inset 0 0 52px rgba(255,255,255,.04);
       touch-action:none;
-      object-fit:contain;
     }
     #tip {
       position: fixed; left: 12px; bottom: 10px;
@@ -68,7 +64,7 @@
     鼠标/手机：按住拖动角色移动。点击开始后会启用BGM与音效。按 M 可开关音乐。
   </div>
   <div id="musicStatus">BGM：点击开始后播放</div>
-  <div id="badge">V1.2.1 移动端体验优化 / Mobile UX</div>
+  <div id="badge">V1.3 随意降临 / Suiyi Update</div>
   <script src="./asset-mobile-manifest.js"></script>
   <script>
 (() => {
@@ -89,7 +85,7 @@
     /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(UA);
   const IS_VERY_NARROW = (window.innerWidth || 9999) <= 500;
   const IS_MOBILE_RUNTIME = IS_TOUCH_DEVICE || IS_VERY_NARROW;
-  const MOBILE_BEST_PERF_LEVEL = IS_MOBILE_RUNTIME ? 1 : 0; // perfLevel: 0=full, 1=medium, 2=minimal.
+  const MOBILE_BEST_PERF_LEVEL = 0; // perfLevel: 0=high, 1=medium, 2=low. Mobile auto usually starts lower, but manual high is allowed.
   const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 2 : 0;
   let perfHudEnabled = /(?:[?&])perf(?:=1|=true|&|$)/.test((typeof location !== 'undefined' && location.search) || '');
 
@@ -442,6 +438,19 @@
     bvCandyblue: 'assets/bullets_v2/candyblue.png',
     bvFlowerbloom2: 'assets/bullets_v2/flowerbloom2.png',
     bvMusicnote2: 'assets/bullets_v2/musicnote2.png',
+    // ===== 随意科技小怪与专属弹幕 =====
+    enSuiyiCodeBug: 'assets/enemies/suiyi_tech/code_bug.png',
+    enSuiyiCoreDrone: 'assets/enemies/suiyi_tech/core_drone.png',
+    enSuiyiServerNode: 'assets/enemies/suiyi_tech/server_node.png',
+    enSuiyiCrystalCompiler: 'assets/enemies/suiyi_tech/crystal_compiler.png',
+    suiyiMobCodeBolt: 'assets/bullets/suiyi_tech/code_bolt.png',
+    suiyiMobBinaryOrb: 'assets/bullets/suiyi_tech/binary_orb.png',
+    suiyiMobCursorShard: 'assets/bullets/suiyi_tech/cursor_shard.png',
+    suiyiMobCrystalShard: 'assets/bullets/suiyi_tech/crystal_shard.png',
+    suiyiMobCrystalRing: 'assets/vfx/suiyi_tech/crystal_ring.png',
+    suiyiMobCompileBurst: 'assets/vfx/suiyi_tech/compile_burst.png',
+    suiyiMobCompilePlatform: 'assets/vfx/suiyi_tech/compile_platform.png',
+    suiyiMobOrbitRing: 'assets/vfx/suiyi_tech/orbit_ring.png',
     annaBIdle: 'assets/characters/player_anna_b_idle.png',
     annaBMoveLeft: 'assets/characters/player_anna_b_move_left.png',
     annaBMoveRight: 'assets/characters/player_anna_b_move_right.png',
@@ -700,8 +709,93 @@
     vfxExplosionSmall: 'assets/vfx/vfx_explosion_small.png',
     vfxExplosionLarge: 'assets/vfx/vfx_explosion_large.png',
     vfxGraze: 'assets/vfx/vfx_graze.png',
-    vfxClearBullets: 'assets/vfx/vfx_clear_bullets.png'
+    vfxClearBullets: 'assets/vfx/vfx_clear_bullets.png',
+    // ===== 随意 Boss：代码工程师 / 系统崩溃主题 =====
+    suiyiMapVirtualCore: 'assets/backgrounds/suiyi/map_virtual_cathedral_core.png',
+    suiyiMapControlHall: 'assets/backgrounds/suiyi/map_future_control_hall.png',
+    suiyiMapDigitalRuins: 'assets/backgrounds/suiyi/map_digital_ruins_city.png',
+    suiyiMapCrystalSanctum: 'assets/backgrounds/suiyi/map_crystal_code_sanctum.png',
+    suiyiIdle: 'assets/bosses/suiyi/idle.png',
+    suiyiPhase1: 'assets/bosses/suiyi/phase1.png',
+    suiyiPhase2: 'assets/bosses/suiyi/phase2.png',
+    suiyiOverclock: 'assets/bosses/suiyi/overclock.png',
+    suiyiCrash: 'assets/bosses/suiyi/crash.png',
+    suiyiDeath: 'assets/bosses/suiyi/death.png',
+    suiyiDrone: 'assets/bosses/suiyi/drone.png',
+    suiyiCubeSummon: 'assets/bosses/suiyi/cube_summon.png',
+    suiyiBulletCodeArrow: 'assets/bullets/suiyi/code_arrow.png',
+    suiyiBulletCrystalNeedle: 'assets/bullets/suiyi/crystal_needle.png',
+    suiyiBulletBinaryDiamond: 'assets/bullets/suiyi/binary_diamond.png',
+    suiyiBulletDataCube: 'assets/bullets/suiyi/data_cube.png',
+    suiyiBulletCursor: 'assets/bullets/suiyi/cursor_bullet.png',
+    suiyiBulletCrashFragment: 'assets/bullets/suiyi/crash_fragment.png',
+    suiyiWarningTriangle: 'assets/vfx/suiyi/warning_triangle.png',
+    suiyiWarningMarker: 'assets/vfx/suiyi/warning_marker.png',
+    suiyiErrorWindowLarge: 'assets/vfx/suiyi/error_window_large.png',
+    suiyiErrorWindowSmall: 'assets/vfx/suiyi/error_window_small.png',
+    suiyiRecursiveVortexPink: 'assets/vfx/suiyi/recursive_vortex_pink.png',
+    suiyiRecursiveVortexCyan: 'assets/vfx/suiyi/recursive_vortex_cyan.png',
+    suiyiCodeRing: 'assets/vfx/suiyi/code_ring.png',
+    suiyiUpdateBadge: 'assets/vfx/suiyi/update_badge.png',
+    suiyiTargetLock: 'assets/vfx/suiyi/target_lock.png',
+    suiyiCodePanelWide: 'assets/vfx/suiyi/code_panel_wide.png',
+    suiyiCodePanelTall: 'assets/vfx/suiyi/code_panel_tall.png',
+    suiyiDeadlockChain: 'assets/vfx/suiyi/deadlock_chain.png',
+    suiyiMemoryBlock: 'assets/vfx/suiyi/memory_block.png',
+    suiyiCodeWall: 'assets/vfx/suiyi/code_wall.png',
+    suiyiCrashCore: 'assets/vfx/suiyi/crash_core.png',
+    suiyiCodeWallCone: 'assets/vfx/suiyi/code_wall_cone.png',
+    suiyiHitSparkPink: 'assets/vfx/suiyi/hit_spark_pink.png',
+    suiyiHitSparkCyan: 'assets/vfx/suiyi/hit_spark_cyan.png',
+    suiyiImpactBurst: 'assets/vfx/suiyi/impact_burst.png',
+    suiyiParticleStar: 'assets/vfx/suiyi/particle_star.png',
+    suiyiCodeRainStrip: 'assets/vfx/suiyi/code_rain_strip.png'
   };
+	  const SUIYI_ASSET_KEYS = Object.freeze([
+	    'suiyiMapVirtualCore', 'suiyiMapControlHall', 'suiyiMapDigitalRuins', 'suiyiMapCrystalSanctum',
+	    'suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash', 'suiyiDeath', 'suiyiDrone', 'suiyiCubeSummon',
+	    'suiyiBulletCodeArrow', 'suiyiBulletCrystalNeedle', 'suiyiBulletBinaryDiamond', 'suiyiBulletDataCube', 'suiyiBulletCursor', 'suiyiBulletCrashFragment',
+	    'suiyiWarningTriangle', 'suiyiWarningMarker', 'suiyiErrorWindowLarge', 'suiyiErrorWindowSmall',
+	    'suiyiRecursiveVortexPink', 'suiyiRecursiveVortexCyan', 'suiyiCodeRing', 'suiyiUpdateBadge', 'suiyiTargetLock',
+	    'suiyiCodePanelWide', 'suiyiCodePanelTall', 'suiyiDeadlockChain', 'suiyiMemoryBlock', 'suiyiCodeWall', 'suiyiCrashCore',
+	    'suiyiCodeWallCone', 'suiyiHitSparkPink', 'suiyiHitSparkCyan', 'suiyiImpactBurst', 'suiyiParticleStar', 'suiyiCodeRainStrip',
+	  ]);
+  const SUIYI_TECH_ASSET_KEYS = Object.freeze([
+    'enSuiyiCodeBug', 'enSuiyiCoreDrone', 'enSuiyiServerNode', 'enSuiyiCrystalCompiler',
+    'suiyiMobCodeBolt', 'suiyiMobBinaryOrb', 'suiyiMobCursorShard', 'suiyiMobCrystalShard',
+    'suiyiMobCrystalRing', 'suiyiMobCompileBurst', 'suiyiMobCompilePlatform', 'suiyiMobOrbitRing',
+  ]);
+  const SUIYI_TECH_MOB_TYPES = Object.freeze(['codebug', 'coredrone', 'servernode', 'crystalcompiler']);
+  const SUIYI_TECH_MOB_MOVES = Object.freeze(['techSwarm', 'techHover', 'techAnchor', 'techPhase']);
+  const SUIYI_TECH_MOB_FORMATIONS = Object.freeze(['codeGrid', 'compilerChevron', 'terminalColumn', 'techPincer']);
+  const SUIYI_TECH_MOB_PATTERNS = Object.freeze(['techBitFan', 'techCompileRing', 'techCodeRain', 'techCrystalBloom']);
+  const SUIYI_TECH_MOB_CROPS = Object.freeze({
+    suiyiCodeBug: { src: '小怪02.png', box: [63, 110, 276, 306] },
+    suiyiCoreDrone: { src: '小怪和弹幕01.png', box: [38, 38, 388, 371] },
+    suiyiServerNode: { src: '小怪03.png', box: [174, 416, 524, 737] },
+    suiyiCrystalCompiler: { src: '小怪和弹幕04.png', box: [891, 113, 1216, 393] },
+    suiyiMobCodeBolt: { src: '小怪和弹幕01.png', box: [847, 453, 963, 517] },
+    suiyiMobBinaryOrb: { src: '小怪和弹幕01.png', box: [858, 563, 948, 652] },
+    suiyiMobCursorShard: { src: '小怪和弹幕01.png', box: [1105, 711, 1197, 772] },
+    suiyiMobCrystalShard: { src: '小怪和弹幕04.png', box: [664, 660, 870, 790] },
+    suiyiMobCrystalRing: { src: '小怪和弹幕04.png', box: [286, 435, 437, 579] },
+    suiyiMobCompileBurst: { src: '小怪和弹幕04.png', box: [273, 1049, 466, 1208] },
+    suiyiMobCompilePlatform: { src: '小怪和弹幕04.png', box: [44, 839, 223, 1003] },
+    suiyiMobOrbitRing: { src: '小怪和弹幕04.png', box: [975, 439, 1145, 597] },
+  });
+  const SUIYI_TECH_MOB_DIFFICULTY = Object.freeze({
+    poolMode: 'global-random-high-tier-pool',
+    pressure: 'high-readable',
+    joinsFromStage: 'stage5',
+    directWavesFromStage: 'stage7',
+  });
+  const SUIYI_TECH_MAP_FLOW = Object.freeze({
+    glyphs: ['0101', '1010', '</>', '{}'],
+    colors: ['rgba(92,245,255,', 'rgba(255,92,210,'],
+    particleCount: { perf0: 58, perf1: 34, perf2: 20 },
+    bossAlpha: 0.46,
+    mobAlpha: 0.72,
+  });
   const MHR_BLACKHOLE_SEQUENCE_PHASES = Object.freeze({ deploy: 16, loop: 32, overload: 16, collapse: 12 });
   const MHR_BLACKHOLE_SEQUENCE_KEYS = Object.create(null);
   const MHR_BLACKHOLE_SEQUENCE_ALL_KEYS = [];
@@ -801,7 +895,7 @@
     'vfxEnemyHit', 'vfxBossHit', 'vfxExplosionSmall', 'vfxExplosionLarge', 'vfxClearBullets',
     'bulletAuroraA', 'bulletAuroraB', 'bulletAuroraC',
     'seraphPhase1', 'seraphPhase2', 'seraphRage',
-  ];
+	  ].concat(SUIYI_ASSET_KEYS, SUIYI_TECH_ASSET_KEYS);
   const CHARACTER_ASSET_GROUPS = {
     witch: ['playerIdle', 'playerMoveLeft', 'playerMoveRight', 'playerFocus', 'playerHit', 'playerAvatar', 'playerCutin', 'vfxUltimate'],
     yanuxiya: ['yanuxiyaBIdle', 'yanuxiyaBMoveLeft', 'yanuxiyaBMoveRight', 'yanuxiyaBFocus', 'yanuxiyaBHit', 'yanuxiyaBAvatar', 'yanuxiyaBCutin', 'yMoon', 'yMoonGlow', 'yCloud', 'yLightning', 'yRing', 'yRadial'],
@@ -965,13 +1059,6 @@
   const keys = Object.create(null);
   let pointerDown = false;
   let pointerTarget = null;
-  // ★ V1.2.1: 触屏相对移动模式（类似雷霆战机/东方弹幕手游）
-  // 按住屏幕任意位置拖动，人物相对移动（不是闪现到手指位置）
-  let touchDragActive = false;        // 是否正在拖拽移动
-  let touchDragLastX = 0;             // 上一帧手指位置（逻辑坐标）
-  let touchDragLastY = 0;
-  let touchDragDeltaX = 0;            // 本帧累计位移（每帧 update 消费后清零）
-  let touchDragDeltaY = 0;
   let activeTouchButtonPointer = null;
   let activeTouchControl = null;
   const touchControls = [];
@@ -991,16 +1078,54 @@
     lastDrawMs: 0,
     slowT: 0,
   };
+  const QUALITY_STORAGE_KEY = 'moonBulletQualityPreset';
+  const QUALITY_PRESETS = Object.freeze({
+    high:   { label: '高', perfLevel: 0, desc: '完整光效' },
+    medium: { label: '中', perfLevel: 1, desc: '均衡流畅' },
+    low:    { label: '低', perfLevel: 2, desc: '低配优先' },
+  });
+  let qualityPreset = 'medium';
+  let qualityAutoSelected = true;
+  let qualityProbePerfLevel = 1;
+  let qualityCards = [];
+
+  function safeLocalStorageGet(key) {
+    try { return window.localStorage && window.localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function safeLocalStorageSet(key, value) {
+    try { if (window.localStorage) window.localStorage.setItem(key, value); } catch (e) { /* ignore private-mode storage errors */ }
+  }
+  function normalizeQualityPreset(preset) {
+    return Object.prototype.hasOwnProperty.call(QUALITY_PRESETS, preset) ? preset : 'medium';
+  }
+  function qualityPresetFromPerfLevel(level) {
+    return level <= 0 ? 'high' : (level === 1 ? 'medium' : 'low');
+  }
+  function qualityTargetPerfLevel() {
+    return QUALITY_PRESETS[normalizeQualityPreset(qualityPreset)].perfLevel;
+  }
+  function applyQualityPreset(preset, manual = false) {
+    qualityPreset = normalizeQualityPreset(preset);
+    qualityAutoSelected = !manual;
+    perfLevel = qualityTargetPerfLevel();
+    if (manual) safeLocalStorageSet(QUALITY_STORAGE_KEY, qualityPreset);
+    return qualityPreset;
+  }
+  function selectQualityPreset(preset) {
+    const next = applyQualityPreset(preset, true);
+    setMessage(`画质：${QUALITY_PRESETS[next].label} · ${QUALITY_PRESETS[next].desc}`, 1.6);
+  }
+
   const PERF_BUDGETS = {
     desktop: [
-      { enemyBulletMax: 880, mobSoftCap: 170, bossSoftCap: 330, particleCap: 360, spriteFxCap: 54, ringCap: 44, bulletGlow: true, killBurstMul: 1.0 },
-      { enemyBulletMax: 620, mobSoftCap: 125, bossSoftCap: 230, particleCap: 260, spriteFxCap: 38, ringCap: 30, bulletGlow: false, killBurstMul: 0.66 },
-      { enemyBulletMax: 420, mobSoftCap: 92, bossSoftCap: 160, particleCap: 170, spriteFxCap: 26, ringCap: 18, bulletGlow: false, killBurstMul: 0.40 },
+      { enemyBulletMax: 760, mobSoftCap: 145, bossSoftCap: 280, particleCap: 300, spriteFxCap: 42, ringCap: 34, enemyCap: 42, bulletGlow: true, killBurstMul: 0.92 },
+      { enemyBulletMax: 520, mobSoftCap: 105, bossSoftCap: 190, particleCap: 190, spriteFxCap: 28, ringCap: 20, enemyCap: 34, bulletGlow: false, killBurstMul: 0.60 },
+      { enemyBulletMax: 320, mobSoftCap: 68, bossSoftCap: 120, particleCap: 90, spriteFxCap: 14, ringCap: 10, enemyCap: 26, bulletGlow: false, killBurstMul: 0.32 },
     ],
     mobile: [
-      { enemyBulletMax: 620, mobSoftCap: 125, bossSoftCap: 230, particleCap: 260, spriteFxCap: 38, ringCap: 30, bulletGlow: false, killBurstMul: 0.66 },
-      { enemyBulletMax: 500, mobSoftCap: 105, bossSoftCap: 190, particleCap: 210, spriteFxCap: 32, ringCap: 24, bulletGlow: false, killBurstMul: 0.52 },
-      { enemyBulletMax: 340, mobSoftCap: 78, bossSoftCap: 135, particleCap: 140, spriteFxCap: 22, ringCap: 16, bulletGlow: false, killBurstMul: 0.32 },
+      { enemyBulletMax: 420, mobSoftCap: 84, bossSoftCap: 150, particleCap: 130, spriteFxCap: 20, ringCap: 12, enemyCap: 30, bulletGlow: false, killBurstMul: 0.50 },
+      { enemyBulletMax: 300, mobSoftCap: 64, bossSoftCap: 110, particleCap: 85, spriteFxCap: 14, ringCap: 8, enemyCap: 24, bulletGlow: false, killBurstMul: 0.38 },
+      { enemyBulletMax: 220, mobSoftCap: 48, bossSoftCap: 82, particleCap: 45, spriteFxCap: 8, ringCap: 5, enemyCap: 18, bulletGlow: false, killBurstMul: 0.24 },
     ],
   };
   function perfBudget() {
@@ -1060,13 +1185,17 @@
       // Electron 桌面环境轻微加成（独占 GPU，无移动端节流）
       if (/electron/i.test(navigator.userAgent)) score -= 1;
 
-      perfLevel = IS_MOBILE_RUNTIME ? MOBILE_DEFAULT_PERF_LEVEL : (score <= -1 ? 0 : (score <= 1 ? 0 : (score <= 3 ? 1 : 2)));
-      perfLevel = Math.max(perfLevel, MOBILE_BEST_PERF_LEVEL);
+      const recommendedPerf = IS_MOBILE_RUNTIME ? MOBILE_DEFAULT_PERF_LEVEL : (score <= -1 ? 0 : (score <= 1 ? 0 : (score <= 3 ? 1 : 2)));
+      qualityProbePerfLevel = Math.max(recommendedPerf, MOBILE_BEST_PERF_LEVEL);
+      const storedPreset = normalizeQualityPreset(safeLocalStorageGet(QUALITY_STORAGE_KEY));
+      if (safeLocalStorageGet(QUALITY_STORAGE_KEY)) applyQualityPreset(storedPreset, true);
+      else applyQualityPreset(qualityPresetFromPerfLevel(qualityProbePerfLevel), false);
       // 暴露给主进程/调试
-      window.__perfProbe = { cpu, mem, dpr, gpu: gpuName, score, perfLevel };
+      window.__perfProbe = { cpu, mem, dpr, gpu: gpuName, score, perfLevel, qualityPreset, qualityAutoSelected };
       console.log('[perf] hardware probe:', window.__perfProbe);
     } catch (e) {
-      perfLevel = 1; // 探测失败：保守走中档
+      qualityProbePerfLevel = 1;
+      applyQualityPreset(normalizeQualityPreset(safeLocalStorageGet(QUALITY_STORAGE_KEY)), !!safeLocalStorageGet(QUALITY_STORAGE_KEY));
       console.warn('[perf] probe failed, default to perfLevel=1', e);
     }
   })();
@@ -1096,22 +1225,42 @@
   let elapsed = 0;          // 本局有效游戏时间（秒）
   let loopCount = 0;        // 轮回次数（通关后循环，强度递增）
   let extraSpawned = 0;     // 当前关卡已额外刷出的肉鸽波次
-  // 整体强度倍率：随时间上升 + 每轮回大幅提升（略快，提升整体挑战）
-  function diffMul() { return 1 + elapsed / 80 + loopCount * 0.7; }
-  // 敌人血量倍率：封顶上调（小怪关卡大幅加强，配合主力浮游炮仍可通关）
-  function hpMul() { return Math.min(8.5, 3.6 + elapsed / 75 + loopCount * 0.8); }
-  // 小怪额外血量成长：同样封顶上调（让小怪更耐打，不会"没入场就被秒"）
-  function smallHpMul() { return Math.min(7.5, 3.8 + elapsed / 60 + loopCount * 0.8); }
-  const SMALL_TYPES = { bat: 1, familiar: 1, wisp: 1, cherub: 1, shade: 1, phantom: 1, specter: 1, wraith: 1,
-    swordfish: 1, starfish: 1, jelly: 1, tideelf: 1, puffer: 1 };
-  // 弹幕密度（雪量）倍率：基准与上限上调，前中期更有压力
-  function densMul() { return Math.min(4.6, 1.8 + elapsed / 110 + loopCount * 0.5); }
-  // 敌人射速倍率
-  function fireMul() { return Math.min(2.9, 1.35 + elapsed / 170 + loopCount * 0.32); }
-  // 击杀刷怪带来的伤害成长（爽游刷刷刷）：封顶 +85%，越刷越能割草；轮回额外加成
-  function grindDmg() { return 1 + Math.min(killCount, 1200) / 1200 * 0.85 + loopCount * 0.15; }
-  // 关卡额外波次数量（让单关更长、敌人更多）
-  function extraWavesForStage() { return 9 + loopCount + Math.floor(elapsed / 42); }
+  function runPressureAt(t = elapsed) { return Math.max(0, Math.min(1, t / 600)); }
+  function extraWavesAt(t = elapsed, loops = loopCount, level = perfLevel) {
+    const base = Math.max(0, Math.floor((t - 75) / 75) + loops);
+    const cap = Math.max(1, 4 + loops * 2 + (level === 0 ? 2 : level === 1 ? 1 : 0));
+    return Math.min(cap, base);
+  }
+  function growthCurveAt(t = elapsed, loops = loopCount, kills = killCount, level = perfLevel) {
+    const p = runPressureAt(t);
+    return {
+      pressure: p,
+      diffMul: 1 + p * 1.6 + loops * 0.28,
+      hpMul: Math.min(6.0, 1 + p * 1.9 + loops * 0.45),
+      smallHpMul: Math.min(4.8, 1 + p * 1.25 + loops * 0.35),
+      densMul: Math.min(2.8, 1 + p * 1.05 + loops * 0.18),
+      fireMul: Math.min(2.1, 1 + p * 0.55 + loops * 0.12),
+      grindDmg: 1 + Math.min(kills, 1600) / 1600 * 1.2 + loops * 0.18,
+      extraWaves: extraWavesAt(t, loops, level),
+    };
+  }
+  // 整体强度倍率：开局温和，10 分钟抵达第一软上限；轮回只小幅叠压。
+  function diffMul() { return growthCurveAt().diffMul; }
+  // 敌人血量倍率：从 1.0 起步，避免随机高阶池把开局变成满屏硬怪。
+  function hpMul() { return growthCurveAt().hpMul; }
+  // 小怪血量成长低于精英/Boss，保留割草感。
+	  function smallHpMul() { return growthCurveAt().smallHpMul; }
+	  const SMALL_TYPES = { bat: 1, familiar: 1, wisp: 1, cherub: 1, shade: 1, phantom: 1, specter: 1, wraith: 1,
+	    swordfish: 1, starfish: 1, jelly: 1, tideelf: 1, puffer: 1, codebug: 1 };
+  // 弹幕密度与射速：密度先涨、射速后涨，后期高压但不突然糊满屏。
+  function densMul() { return growthCurveAt().densMul; }
+  function fireMul() { return growthCurveAt().fireMul; }
+  // 击杀成长略强于旧版，抵消随机高阶池和 loop 带来的耐久，维持肉鸽割草手感。
+  function grindDmg() { return growthCurveAt().grindDmg; }
+  // 75 秒前不追加额外波；之后逐步加压，并受画质/性能档封顶。
+  function extraWavesForStage() {
+    return extraWavesAt();
+  }
   let patternTimer = 0;
   let titlePulse = 0;
   let playerBeam = null;
@@ -7441,9 +7590,11 @@
     time = 0;
     screenShake = 0;
     flash = 0;
-    paused = false;
-    segment = 'stage1';
-    bossKind = 'eclipseboss';
+	    paused = false;
+	    segment = 'stage1';
+	    chooseRandomFieldBackground();
+	    chooseRandomBossBackground();
+	    bossKind = 'eclipseboss';
     bossesCleared = 0;
     elapsed = 0;
     loopCount = 0;
@@ -7722,10 +7873,15 @@
     frostelf:   { hp: 560, r: 26, score: 320, color: '#9fe8ff', fire: 1.9, sprite: 'enFrostelf',  size: 92, pattern: 'snowring',    tier: 3 },
     goldelf:    { hp: 540, r: 26, score: 330, color: '#ffd66b', fire: 1.9, sprite: 'enGoldelf',   size: 92, pattern: 'starspiral',  tier: 3 },
     lavacrab:   { hp: 660, r: 28, score: 340, color: '#ff7a4c', fire: 1.9, sprite: 'enLavacrab',  size: 98, pattern: 'crescentwall',tier: 3 },
-    voltray:    { hp: 1150, r: 31, score: 500, color: '#c9a0ff', fire: 1.7, sprite: 'enVoltray',   size: 104, pattern: 'knifefan',   tier: 4 },
-    abysscryst: { hp: 1300, r: 33, score: 560, color: '#ff6b9c', fire: 1.6, sprite: 'enAbysscryst',size: 110, pattern: 'galaxyspin', tier: 4 },
-    dreadeye:   { hp: 1550, r: 34, score: 640, color: '#ff5a7a', fire: 1.5, sprite: 'enDreadeye',  size: 112, pattern: 'eyebarrage', tier: 4 },
-  };
+	    voltray:    { hp: 1150, r: 31, score: 500, color: '#c9a0ff', fire: 1.7, sprite: 'enVoltray',   size: 104, pattern: 'knifefan',   tier: 4 },
+	    abysscryst: { hp: 1300, r: 33, score: 560, color: '#ff6b9c', fire: 1.6, sprite: 'enAbysscryst',size: 110, pattern: 'galaxyspin', tier: 4 },
+	    dreadeye:   { hp: 1550, r: 34, score: 640, color: '#ff5a7a', fire: 1.5, sprite: 'enDreadeye',  size: 112, pattern: 'eyebarrage', tier: 4 },
+	    // ===== 随意科技小怪：4 张科技地图专属高压可读单位 =====
+	    codebug:    { hp: 360,  r: 22, score: 210, color: '#7df6ff', fire: 1.75, sprite: 'enSuiyiCodeBug',          size: 86,  pattern: 'techBitFan',       tier: 2, move: 'techSwarm' },
+	    coredrone:  { hp: 780,  r: 29, score: 390, color: '#ff7bd5', fire: 1.55, sprite: 'enSuiyiCoreDrone',        size: 104, pattern: 'techCompileRing',  tier: 3, move: 'techHover' },
+	    servernode: { hp: 1420, r: 32, score: 610, color: '#8af7ff', fire: 1.42, sprite: 'enSuiyiServerNode',       size: 114, pattern: 'techCodeRain',     tier: 4, move: 'techAnchor' },
+	    crystalcompiler: { hp: 1680, r: 35, score: 720, color: '#ff92df', fire: 1.34, sprite: 'enSuiyiCrystalCompiler', size: 126, pattern: 'techCrystalBloom', tier: 4, move: 'techPhase' },
+	  };
 
   // 每关的"节奏脚本"画风：专属编队形状 + 入场移动轨迹（让 8 关手感分明）
   const STAGE_PROFILE = {
@@ -7741,9 +7897,10 @@
     stage10:{ forms: ['diamond', 'wings', 'vshape', 'pincer', 'bottomRise'], moves: ['orbit', 'dive', 'strafe', 'weave', 'rise'] },
   };
   let moveAssignN = 0;
+  const RANDOM_STAGE_MODE = 'unlocked-random-wave-and-formation-pool';
   function pickStageMove() {
-    const prof = STAGE_PROFILE[segment]; if (!prof) return 'descend';
-    return prof.moves[(moveAssignN++) % prof.moves.length];
+    const moves = GLOBAL_STAGE_MOVES.length ? GLOBAL_STAGE_MOVES : ['descend'];
+    return moves[(moveAssignN++) % moves.length];
   }
   // 全屏多高度层悬停带：不再全部挤在上半屏（配合浮游炮全屏绞杀/穿梭）
   const ENEMY_LANES = [0.20, 0.30, 0.40, 0.50, 0.58]; // 占屏高比例
@@ -7758,31 +7915,45 @@
     if (e.hoverY > 0) return e.hoverY;
     return Math.max(110, Math.min(e.baseY > 0 ? e.baseY : pickHoverY(e.tier, e.x | 0), H * 0.62));
   }
-  function spawnEnemy(type, x, y, move, hoverY) {
-    const data = ENEMY_DEFS[type] || ENEMY_DEFS.bat;
-    const hp = Math.round(data.hp * (SMALL_TYPES[type] ? smallHpMul() : hpMul()));
-    const fb = data.fire / fireMul();
-    const hy = hoverY !== undefined ? hoverY : pickHoverY(data.tier, enemies.length + (x | 0));
-    enemies.push({
-      type, x, y, baseY: y, hoverY: hy, hp, maxHp: hp, r: data.r,
-      vx: 0, vy: 320, t: (x / W) * Math.PI,   // 快速突入（~320 冲入再急刹，杜绝没入场就被秒）
-      fireTimer: 1.1 + (x / W) * 1.3 + (enemies.length % 5) * 0.22, // 错开首发，避免齐射
-      fireBase: fb,
-      shotN: 0, spiralAngle: 0, spinAng: 0,
-      move: move || pickStageMove(), homeX: x, orbA: 0, strafe: 0,
-      score: data.score, color: data.color, attackFlash: 0, hitFlash: 0,
-      sprite: data.sprite, size: data.size, pattern: data.pattern, tier: data.tier,
-    });
+  function enemyScreenCap(level = perfLevel) {
+    const list = IS_MOBILE_RUNTIME ? PERF_BUDGETS.mobile : PERF_BUDGETS.desktop;
+    const budget = list[Math.max(0, Math.min(2, level | 0))] || perfBudget();
+    return budget.enemyCap || 34;
   }
+  function hasEnemySpawnRoom(extra = 1) {
+    return enemies.length + extra <= enemyScreenCap();
+  }
+	  function spawnEnemy(type, x, y, move, hoverY) {
+	    if (!hasEnemySpawnRoom(1)) return null;
+	    const data = ENEMY_DEFS[type] || ENEMY_DEFS.bat;
+	    const hp = Math.round(data.hp * (SMALL_TYPES[type] ? smallHpMul() : hpMul()));
+	    const fb = data.fire / fireMul();
+	    const hy = hoverY !== undefined ? hoverY : pickHoverY(data.tier, enemies.length + (x | 0));
+	    const enemy = {
+	      type, x, y, baseY: y, hoverY: hy, hp, maxHp: hp, r: data.r,
+	      vx: 0, vy: 320, t: (x / W) * Math.PI,   // 快速突入（~320 冲入再急刹，杜绝没入场就被秒）
+	      fireTimer: 1.1 + (x / W) * 1.3 + (enemies.length % 5) * 0.22, // 错开首发，避免齐射
+	      fireBase: fb,
+	      shotN: 0, spiralAngle: 0, spinAng: 0,
+	      move: move || data.move || pickStageMove(), homeX: x, orbA: 0, strafe: 0,
+	      score: data.score, color: data.color, attackFlash: 0, hitFlash: 0,
+	      sprite: data.sprite, size: data.size, pattern: data.pattern, tier: data.tier,
+	      techSeed: Math.random() * 999,
+	    };
+	    enemies.push(enemy);
+	    return enemy;
+	  }
   // 自下而上突入：从屏底快速升起，落到指定悬停层
   function spawnEnemyRise(type, x, hoverY) {
     const hy = hoverY !== undefined ? hoverY : pickHoverY(ENEMY_DEFS[type]?.tier || 2, x | 0);
-    spawnEnemy(type, x, H + 70, 'rise', hy);
-    const e = enemies[enemies.length - 1];
+    const e = spawnEnemy(type, x, H + 70, 'rise', hy);
     if (e) { e.homeX = x; e.vy = -300; e.vx = 0; }
   }
 
   // Chapter 1 wave book. Two stages, each a sequence of spawn functions.
+  const STAGE_ORDER = Object.freeze(['stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6', 'stage7', 'stage8', 'stage9', 'stage10']);
+  const BASE_FORMATIONS = Object.freeze(['row', 'vshape', 'wings', 'arc', 'diamond', 'pincer', 'leftSweep', 'rightSweep', 'bottomRise']);
+
   const STAGE_WAVES = {
     stage1: [
       () => { for (let i = 0; i < 5; i++) spawnEnemy('bat', 120 + i * 120, -70 - i * 20); },
@@ -7851,9 +8022,10 @@
       () => { for (let i = 0; i < 3; i++) spawnEnemy('archfiend', 140 + i * 200, -80); for (let i = 0; i < 6; i++) spawnEnemy('fiend', 110 + i * 108, -240); },
       () => { for (let i = 0; i < 5; i++) spawnEnemy('warlock', 100 + i * 140, -80 - i * 45); for (let i = 0; i < 5; i++) spawnEnemy('reaper', 120 + i * 130, -280); },
       () => { for (let i = 0; i < 4; i++) spawnEnemy('archfiend', 120 + i * 170, -80 - i * 40); for (let i = 0; i < 6; i++) spawnEnemy('warlock', 100 + i * 108, -260); for (let i = 0; i < 4; i++) spawnEnemy('reaper', 140 + i * 130, -420); spawnFormation('pincer', 'abysscryst', 4); },
-      () => { spawnFormation('wings', 'reaper', 8); spawnFormation('arc', 'archfiend', 5); },
-      () => { spawnFormation('diamond', 'warlock', 9); spawnFormation('bottomRise', 'dreadeye', 3); spawnEnemy('archfiend', 230, -240); spawnEnemy('archfiend', 490, -240); },
-    ],
+	      () => { spawnFormation('wings', 'reaper', 8); spawnFormation('arc', 'archfiend', 5); },
+	      () => { spawnFormation('diamond', 'warlock', 9); spawnFormation('bottomRise', 'dreadeye', 3); spawnEnemy('archfiend', 230, -240); spawnEnemy('archfiend', 490, -240); },
+	      () => { spawnFormation('codeGrid', 'codebug', 8); spawnFormation('compilerChevron', 'coredrone', 4); },
+	    ],
     stage8: [
       () => { for (let i = 0; i < 10; i++) spawnEnemy('archfiend', 55 + i * 64, -70 - (i % 3) * 70); spawnFormation('rightSweep', 'abysscryst', 4); },
       () => { for (let i = 0; i < 6; i++) spawnEnemy('warlock', 90 + i * 110, -80 - i * 30); for (let i = 0; i < 5; i++) spawnEnemy('reaper', 120 + i * 130, -250); },
@@ -7861,9 +8033,10 @@
       () => { for (let i = 0; i < 4; i++) spawnEnemy('archfiend', 110 + i * 170, -80); for (let i = 0; i < 8; i++) spawnEnemy('warlock', 80 + i * 80, -230 - (i % 2) * 70); },
       () => { for (let i = 0; i < 6; i++) spawnEnemy('reaper', 90 + i * 116, -80 - i * 35); for (let i = 0; i < 6; i++) spawnEnemy('archfiend', 100 + i * 110, -300); spawnFormation('pincer', 'voltray', 5); },
       () => { for (let i = 0; i < 5; i++) spawnEnemy('archfiend', 100 + i * 140, -80 - i * 45); for (let i = 0; i < 5; i++) spawnEnemy('warlock', 120 + i * 120, -260); for (let i = 0; i < 5; i++) spawnEnemy('reaper', 110 + i * 130, -440); },
-      () => { spawnFormation('vshape', 'archfiend', 7); spawnFormation('wings', 'fiend', 6); },
-      () => { spawnFormation('diamond', 'archfiend', 9); spawnFormation('arc', 'warlock', 5); spawnEnemy('dreadeye', 220, -280); spawnEnemy('dreadeye', 500, -280); },
-    ],
+	      () => { spawnFormation('vshape', 'archfiend', 7); spawnFormation('wings', 'fiend', 6); },
+	      () => { spawnFormation('diamond', 'archfiend', 9); spawnFormation('arc', 'warlock', 5); spawnEnemy('dreadeye', 220, -280); spawnEnemy('dreadeye', 500, -280); },
+	      () => { spawnFormation('terminalColumn', 'servernode', 3); spawnFormation('techPincer', 'codebug', 8); spawnEnemy('coredrone', W * 0.5, -180); },
+	    ],
     // 第九幕：血月回廊 —— 重型混编、密度更高
     stage9: [
       () => { for (let i = 0; i < 11; i++) spawnEnemy(i % 2 ? 'archfiend' : 'reaper', 50 + i * 58, -70 - (i % 3) * 70); spawnFormation('leftSweep', 'dreadeye', 4); },
@@ -7872,9 +8045,10 @@
       () => { for (let i = 0; i < 4; i++) spawnEnemy('warden', 110 + i * 170, -80); for (let i = 0; i < 8; i++) spawnEnemy('reaper', 80 + i * 80, -240 - (i % 2) * 70); },
       () => { for (let i = 0; i < 6; i++) spawnEnemy('archfiend', 90 + i * 116, -80 - i * 36); for (let i = 0; i < 6; i++) spawnEnemy('warlock', 100 + i * 110, -300); spawnFormation('pincer', 'voltray', 5); },
       () => { for (let i = 0; i < 4; i++) spawnEnemy('warden', 100 + i * 175, -80 - i * 40); for (let i = 0; i < 6; i++) spawnEnemy('archfiend', 110 + i * 105, -260); for (let i = 0; i < 5; i++) spawnEnemy('reaper', 120 + i * 120, -440); },
-      () => { spawnFormation('diamond', 'archfiend', 11); spawnFormation('wings', 'warlock', 6); },
-      () => { spawnFormation('arc', 'reaper', 8); spawnFormation('vshape', 'archfiend', 7); spawnEnemy('warden', W * 0.5, -260); spawnEnemy('dreadeye', 180, -340); spawnEnemy('dreadeye', 540, -340); },
-    ],
+	      () => { spawnFormation('diamond', 'archfiend', 11); spawnFormation('wings', 'warlock', 6); },
+	      () => { spawnFormation('arc', 'reaper', 8); spawnFormation('vshape', 'archfiend', 7); spawnEnemy('warden', W * 0.5, -260); spawnEnemy('dreadeye', 180, -340); spawnEnemy('dreadeye', 540, -340); },
+	      () => { spawnFormation('compilerChevron', 'crystalcompiler', 3); spawnFormation('codeGrid', 'coredrone', 5); },
+	    ],
     // 第十幕：终焉月蚀 —— 全程精英压制
     stage10: [
       () => { for (let i = 0; i < 12; i++) spawnEnemy('archfiend', 48 + i * 53, -70 - (i % 3) * 70); spawnFormation('pincer', 'dreadeye', 5); },
@@ -7883,14 +8057,50 @@
       () => { for (let i = 0; i < 5; i++) spawnEnemy('warden', 90 + i * 140, -80); for (let i = 0; i < 8; i++) spawnEnemy('warlock', 80 + i * 80, -250 - (i % 2) * 70); },
       () => { for (let i = 0; i < 7; i++) spawnEnemy('archfiend', 80 + i * 100, -80 - i * 34); for (let i = 0; i < 7; i++) spawnEnemy('reaper', 95 + i * 96, -320); spawnFormation('leftSweep', 'voltray', 5); },
       () => { for (let i = 0; i < 5; i++) spawnEnemy('warden', 95 + i * 135, -80 - i * 42); for (let i = 0; i < 7; i++) spawnEnemy('archfiend', 95 + i * 92, -270); for (let i = 0; i < 6; i++) spawnEnemy('warlock', 100 + i * 105, -460); },
-      () => { spawnFormation('diamond', 'archfiend', 13); spawnFormation('wings', 'warden', 6); },
-      () => { spawnFormation('vshape', 'archfiend', 9); spawnFormation('arc', 'warlock', 7); spawnEnemy('warden', 220, -280); spawnEnemy('warden', 500, -280); spawnEnemy('dreadeye', W * 0.5, -360); },
-    ],
+	      () => { spawnFormation('diamond', 'archfiend', 13); spawnFormation('wings', 'warden', 6); },
+	      () => { spawnFormation('vshape', 'archfiend', 9); spawnFormation('arc', 'warlock', 7); spawnEnemy('warden', 220, -280); spawnEnemy('warden', 500, -280); spawnEnemy('dreadeye', W * 0.5, -360); },
+	      () => { spawnFormation('terminalColumn', 'servernode', 4); spawnFormation('techPincer', 'crystalcompiler', 4); spawnFormation('codeGrid', 'codebug', 10); },
+	    ],
   };
 
+  function allStageWaves() {
+    return Object.values(STAGE_WAVES).flat();
+  }
+
+  function stageNumber(stageKey) {
+    const idx = STAGE_ORDER.indexOf(stageKey);
+    return idx >= 0 ? idx + 1 : 1;
+  }
+  function waveUnlockStageAt(t = elapsed, loops = loopCount) {
+    const base = t < 60 ? 2
+      : t < 135 ? 3
+      : t < 210 ? 4
+      : t < 300 ? 5
+      : t < 390 ? 6
+      : t < 480 ? 7
+      : t < 600 ? 8
+      : t < 720 ? 9
+      : 10;
+    return Math.max(1, Math.min(10, base + loops));
+  }
+  function eligibleStageKeys(t = elapsed, loops = loopCount) {
+    const maxStage = waveUnlockStageAt(t, loops);
+    return STAGE_ORDER.filter(stage => stageNumber(stage) <= maxStage);
+  }
+  function eligibleStageWaves(t = elapsed, loops = loopCount) {
+    const keys = eligibleStageKeys(t, loops);
+    const waves = keys.flatMap(stage => STAGE_WAVES[stage] || []);
+    return waves.length ? waves : (STAGE_WAVES.stage1 || []);
+  }
+  function selectRandomStageWave(index = 0) {
+    const waves = eligibleStageWaves();
+    if (!waves.length) return null;
+    return waves[Math.floor(Math.random() * waves.length)] || waves[index % waves.length];
+  }
+
   function spawnWave(index) {
-    const waves = STAGE_WAVES[segment] || STAGE_WAVES.stage1;
-    if (waves[index]) waves[index]();
+    const wave = selectRandomStageWave(index);
+    if (wave) wave();
   }
 
   // 各关卡的敌人池（用于肉鸽附加波次随机增援）
@@ -7899,27 +8109,36 @@
     stage2: ['familiar', 'shade', 'starfish', 'tideelf', 'phantom', 'nun'],
     stage3: ['wisp', 'specter', 'jelly', 'puffer', 'octopus', 'cultist'],
     stage4: ['cherub', 'specter', 'frostelf', 'octopus', 'wraith', 'seraphguard'],
-    stage5: ['wraith', 'fiend', 'anemone', 'goldelf', 'warden'],
-    stage6: ['fiend', 'reaper', 'lavacrab', 'voltray', 'seraphguard'],
-    stage7: ['reaper', 'warlock', 'voltray', 'archfiend', 'warden'],
-    stage8: ['warlock', 'archfiend', 'abysscryst', 'reaper', 'voltray'],
-    stage9: ['archfiend', 'dreadeye', 'voltray', 'warlock', 'warden'],
-    stage10: ['archfiend', 'dreadeye', 'abysscryst', 'warden', 'voltray'],
-  };
+	    stage5: ['wraith', 'fiend', 'anemone', 'goldelf', 'warden', 'codebug', 'coredrone'],
+	    stage6: ['fiend', 'reaper', 'lavacrab', 'voltray', 'seraphguard', 'codebug', 'coredrone', 'servernode'],
+	    stage7: ['reaper', 'warlock', 'voltray', 'archfiend', 'warden', 'codebug', 'coredrone', 'servernode', 'crystalcompiler'],
+	    stage8: ['warlock', 'archfiend', 'abysscryst', 'reaper', 'voltray', 'coredrone', 'servernode', 'crystalcompiler'],
+	    stage9: ['archfiend', 'dreadeye', 'voltray', 'warlock', 'warden', 'servernode', 'crystalcompiler'],
+	    stage10: ['archfiend', 'dreadeye', 'abysscryst', 'warden', 'voltray', 'servernode', 'crystalcompiler'],
+	  };
+  const GLOBAL_STAGE_POOL = Object.freeze([...new Set(Object.values(STAGE_POOL).flat())]);
+  const GLOBAL_STAGE_MOVES = Object.freeze([...new Set(Object.values(STAGE_PROFILE).flatMap(p => p.moves || []))]);
+  function eligibleStagePool(t = elapsed, loops = loopCount) {
+    const keys = eligibleStageKeys(t, loops);
+    const pool = [...new Set(keys.flatMap(stage => STAGE_POOL[stage] || []))];
+    return pool.length ? pool : (STAGE_POOL.stage1 || ['bat', 'familiar']);
+  }
+  function eligibleFormations(t = elapsed, loops = loopCount) {
+    return waveUnlockStageAt(t, loops) >= 5 ? FORMATIONS : BASE_FORMATIONS;
+  }
   // —— 编队入场系统：多种规律阵型，让每一波小怪入场都整齐又多变 ——
   function spawnEnemyV(type, x, y, vx, hoverY) {
-    spawnEnemy(type, x, y, undefined, hoverY);
-    if (vx) { const e = enemies[enemies.length - 1]; if (e) e.vx = vx; }
+    const e = spawnEnemy(type, x, y, undefined, hoverY);
+    if (vx && e) e.vx = vx;
   }
   // 侧边入场：从左/右屏外快速突入到目标 x、目标 y
   function spawnEnemySide(type, side, homeX, baseY) {
     const startX = side < 0 ? -70 : W + 70;
     const hy = baseY > 0 ? baseY : pickHoverY(ENEMY_DEFS[type]?.tier || 2, homeX | 0);
-    spawnEnemy(type, startX, baseY > 0 ? baseY : -80, side < 0 ? 'sideL' : 'sideR', hy);
-    const e = enemies[enemies.length - 1];
+    const e = spawnEnemy(type, startX, baseY > 0 ? baseY : -80, side < 0 ? 'sideL' : 'sideR', hy);
     if (e) { e.homeX = homeX; e.baseY = hy; e.vx = 0; e.vy = 0; }
   }
-  const FORMATIONS = ['row', 'vshape', 'wings', 'arc', 'diamond', 'pincer', 'leftSweep', 'rightSweep', 'bottomRise'];
+	  const FORMATIONS = ['row', 'vshape', 'wings', 'arc', 'diamond', 'pincer', 'leftSweep', 'rightSweep', 'bottomRise', 'codeGrid', 'compilerChevron', 'terminalColumn', 'techPincer'];
   function spawnFormation(shape, type, n) {
     const margin = 66, span = W - margin * 2, cx = W * 0.5;
     const tier = ENEMY_DEFS[type]?.tier || 2;
@@ -7932,12 +8151,39 @@
       for (let i = 0; i < n; i++) spawnEnemySide(type, -1, margin + 30 + i * 64, pickHoverY(tier, i + 1));
     } else if (shape === 'rightSweep') {            // 右侧斜列扫入
       for (let i = 0; i < n; i++) spawnEnemySide(type, 1, W - margin - 30 - i * 64, pickHoverY(tier, i + 2));
-    } else if (shape === 'bottomRise') {            // 底部多列升起，铺满中下屏
-      for (let i = 0; i < n; i++) {
-        const x = margin + (n === 1 ? span / 2 : span * i / (n - 1));
-        spawnEnemyRise(type, x, pickHoverY(tier, i + 5));
-      }
-    } else if (shape === 'vshape') {                // 倒 V：中央低、两翼高
+	    } else if (shape === 'bottomRise') {            // 底部多列升起，铺满中下屏
+	      for (let i = 0; i < n; i++) {
+	        const x = margin + (n === 1 ? span / 2 : span * i / (n - 1));
+	        spawnEnemyRise(type, x, pickHoverY(tier, i + 5));
+	      }
+	    } else if (shape === 'codeGrid') {              // 科技矩阵：两行错位网格，像代码节点阵列
+	      const cols = Math.ceil(n / 2);
+	      for (let i = 0; i < n; i++) {
+	        const row = i % 2;
+	        const col = (i / 2) | 0;
+	        const x = margin + span * ((col + 0.5 + row * 0.36) / Math.max(1, cols));
+	        spawnEnemyV(type, clamp(x, margin, W - margin), -70 - row * 72 - col * 10, 0, pickHoverY(tier, row + col));
+	      }
+	    } else if (shape === 'compilerChevron') {       // 编译器 V 字：中央重型，左右护卫
+	      for (let i = 0; i < n; i++) {
+	        const t = n === 1 ? 0 : i / (n - 1) - 0.5;
+	        const x = cx + t * span * 0.72;
+	        const y = -80 - (0.5 - Math.abs(t)) * 190;
+	        spawnEnemyV(type, x, y, 0, pickHoverY(tier, Math.abs(t) < 0.18 ? 1 : 3));
+	      }
+	    } else if (shape === 'terminalColumn') {        // 服务器列：纵向终端堆栈，下压感强
+	      const columns = Math.max(1, Math.min(3, Math.ceil(n / 2)));
+	      for (let i = 0; i < n; i++) {
+	        const col = i % columns;
+	        const row = (i / columns) | 0;
+	        const x = cx + (col - (columns - 1) / 2) * 145;
+	        spawnEnemyV(type, x, -90 - row * 116, 0, pickHoverY(tier, row + col));
+	      }
+	    } else if (shape === 'techPincer') {            // 科技夹击：左右端口同步入场
+	      const half = Math.ceil(n / 2);
+	      for (let i = 0; i < half; i++) spawnEnemySide(type, -1, margin + 42 + i * 58, pickHoverY(tier, i + 2));
+	      for (let i = 0; i < n - half; i++) spawnEnemySide(type, 1, W - margin - 42 - i * 58, pickHoverY(tier, i + half + 2));
+	    } else if (shape === 'vshape') {                // 倒 V：中央低、两翼高
       for (let i = 0; i < n; i++) {
         const t = n === 1 ? 0 : i / (n - 1) - 0.5;
         const lane = Math.abs(t) < 0.2 ? 3 : Math.abs(t) < 0.45 ? 2 : (t < 0 ? 1 : 4);
@@ -7969,34 +8215,163 @@
         spawnEnemyV(type, x, -70 - (i % 2) * 46, 0, pickHoverY(tier, i));
       }
     }
+	  }
+	  let bonusFormN = 0;
+  function bonusEnemyCountAt(t = elapsed, loops = loopCount, level = perfLevel) {
+    if (t < 45 && loops === 0) return 0;
+    const p = runPressureAt(t);
+    const base = 3 + Math.floor(p * 5) + Math.min(4, loops);
+    const qualityTrim = level >= 2 ? 2 : (level === 1 ? 1 : 0);
+    return Math.max(0, base - qualityTrim);
   }
-  let bonusFormN = 0;
-  function spawnBonusEnemies() {
-    const n = 5 + Math.floor((diffMul() - 1) * 6);   // 数量大幅上调
-    const pool = STAGE_POOL[segment] || ['bat', 'familiar'];
-    const prof = STAGE_PROFILE[segment];
-    const forms = (prof && prof.forms) ? prof.forms : FORMATIONS;   // 用本关专属阵型
-    const shape = forms[bonusFormN % forms.length];
-    const type = pool[bonusFormN % pool.length];
-    bonusFormN++;
-    spawnFormation(shape, type, n);
-    // 偶尔混编一小队精英/异类，增加层次（每 3 波一次）
-    if (bonusFormN % 3 === 0) {
-      const type2 = pool[(bonusFormN + 2) % pool.length];
-      for (let i = 0; i < 3; i++) spawnEnemy(type2, W * (0.26 + i * 0.24), -150 - i * 40);
-    }
-    // 每 2 波追加一支侧向突入小队（左右轮换），增加多方向压力
-    if (bonusFormN % 2 === 0) {
-      const sideShape = (bonusFormN % 4 === 0) ? 'pincer' : (bonusFormN % 4 === 2 ? 'leftSweep' : 'rightSweep');
-      const stype = pool[(bonusFormN + 1) % pool.length];
-      spawnFormation(sideShape, stype, Math.max(3, Math.floor(n * 0.6)));
-    }
-    // 每 4 波追加一支底部升起小队，铺满中下屏
-    if (bonusFormN % 4 === 1) {
-      const btype = pool[(bonusFormN + 3) % pool.length];
-      spawnFormation('bottomRise', btype, Math.max(3, Math.floor(n * 0.55)));
-    }
+	  function spawnBonusEnemies() {
+	    const cap = enemyScreenCap();
+	    const room = cap - enemies.length;
+	    if (room < 3) return false;
+	    const n = Math.min(room, bonusEnemyCountAt());
+	    if (n < 2) return false;
+	    const pool = eligibleStagePool();
+	    const forms = eligibleFormations();   // 随机但按肉鸽进度解锁，避免开局抽到终局阵型
+	    const shape = forms[Math.floor(Math.random() * forms.length)];
+	    const type = pool[Math.floor(Math.random() * pool.length)];
+	    bonusFormN++;
+	    spawnFormation(shape, type, n);
+	    // 偶尔混编一小队精英/异类，增加层次（每 3 波一次）
+	    if (elapsed >= 120 && bonusFormN % 3 === 0 && hasEnemySpawnRoom(2)) {
+	      const type2 = pool[Math.floor(Math.random() * pool.length)];
+	      for (let i = 0; i < 2 && hasEnemySpawnRoom(1); i++) spawnEnemy(type2, W * (0.34 + i * 0.32), -150 - i * 40);
+	    }
+	    // 每 2 波追加一支侧向突入小队（左右轮换），增加多方向压力
+	    if (elapsed >= 180 && bonusFormN % 2 === 0 && hasEnemySpawnRoom(3)) {
+	      const sideShape = ['pincer', 'leftSweep', 'rightSweep'][Math.floor(Math.random() * 3)];
+	      const stype = pool[Math.floor(Math.random() * pool.length)];
+	      spawnFormation(sideShape, stype, Math.min(Math.max(3, Math.floor(n * 0.45)), enemyScreenCap() - enemies.length));
+	    }
+	    // 每 4 波追加一支底部升起小队，铺满中下屏
+	    if (elapsed >= 260 && bonusFormN % 4 === 1 && hasEnemySpawnRoom(3)) {
+	      const btype = pool[Math.floor(Math.random() * pool.length)];
+	      spawnFormation('bottomRise', btype, Math.min(Math.max(3, Math.floor(n * 0.4)), enemyScreenCap() - enemies.length));
+	    }
+	    return true;
+	  }
+
+  const SUIYI_PHASE_HP = Object.freeze({
+    intro: 1.00,
+    phase1: 0.85,
+    phase2: 0.68,
+    phase3: 0.50,
+    phase4: 0.28,
+    final: 0.12,
+    defeated: 0.00,
+  });
+  const SUIYI_PHASE_FORMS = Object.freeze(['idle', 'attack_prepare', 'skill_cast', 'error_stack', 'overclock', 'system_crash']);
+	  const SUIYI_PHASE_FORM_KEYS = Object.freeze(['suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash']);
+	  const SUIYI_PHASE_NAMES = Object.freeze(['编译启动', '基础代码编译', '递归展开', '错误堆栈', '热更新·多线程', 'System Crash']);
+	  const SUIYI_MAP_KEYS = Object.freeze(['suiyiMapVirtualCore', 'suiyiMapControlHall', 'suiyiMapDigitalRuins', 'suiyiMapCrystalSanctum']);
+  const FIELD_BACKGROUND_KEYS = Object.freeze([
+    'bgStage1', 'bgStage2', 'bgStage3', 'bgShadowDepths', 'bgAbyssCore',
+    'bgVoidRealm', 'bgChaosRift', 'bgDarkSanctum', 'bgBloodmoon', 'bgEclipse',
+  ]);
+  const GLOBAL_BACKGROUND_POOL = Object.freeze([...FIELD_BACKGROUND_KEYS, ...SUIYI_MAP_KEYS]);
+  const randomBackgroundState = {
+    field: 'bgStage1',
+    boss: 'bgEclipse',
+  };
+  function selectRandomFromPool(pool = GLOBAL_BACKGROUND_POOL, randomValue = Math.random()) {
+    const list = (pool && pool.length ? pool : GLOBAL_BACKGROUND_POOL).filter(Boolean);
+    if (!list.length) return 'bgStageBase';
+    const t = Math.max(0, Math.min(0.999999, Number.isFinite(randomValue) ? randomValue : Math.random()));
+    return list[Math.floor(t * list.length)] || list[0];
   }
+  function chooseRandomFieldBackground() {
+    randomBackgroundState.field = selectRandomFromPool(GLOBAL_BACKGROUND_POOL);
+    return randomBackgroundState.field;
+  }
+  function chooseRandomBossBackground() {
+    randomBackgroundState.boss = selectRandomFromPool(GLOBAL_BACKGROUND_POOL);
+    return randomBackgroundState.boss;
+  }
+	  const SUIYI_POINTS = Object.freeze({
+    topCenter: { x: 0.5, y: 0.15 },
+    topLeft:   { x: 0.25, y: 0.20 },
+    topRight:  { x: 0.75, y: 0.20 },
+    midLeft:   { x: 0.28, y: 0.34 },
+    midRight:  { x: 0.72, y: 0.34 },
+    center:    { x: 0.5, y: 0.30 },
+    highTop:   { x: 0.5, y: 0.09 },
+  });
+  const SUIYI_BULLET_TYPES = Object.freeze([
+    'code_arrow', 'binary_digit', 'cursor_bullet', 'bracket_bullet', 'data_cube',
+    'error_window', 'warning_triangle', 'chain_thread', 'crash_fragment',
+    'debug_bit', 'virus_node', 'logic_gate', 'scan_shard',
+  ]);
+  const SUIYI_BULLET_BEHAVIORS = Object.freeze({
+    code_arrow: 'straight',
+    binary_digit: 'slow_then_fast',
+    cursor_bullet: 'homing_weak',
+    bracket_bullet: 'curve',
+    data_cube: 'screen_wrap',
+    error_window: 'fake_to_real',
+    warning_triangle: 'delayed_burst',
+    chain_thread: 'orbit_then_release',
+    crash_fragment: 'spiral',
+    debug_bit: 'screen_wrap',
+    virus_node: 'homing_weak',
+    logic_gate: 'slow_then_fast',
+    scan_shard: 'curve',
+  });
+  const SUIYI_BULLET_SPRITES = Object.freeze({
+    code_arrow: 'suiyiBulletCodeArrow',
+    binary_digit: 'suiyiBulletBinaryDiamond',
+    cursor_bullet: 'suiyiBulletCursor',
+    bracket_bullet: 'suiyiBulletCrystalNeedle',
+    data_cube: 'suiyiBulletDataCube',
+    error_window: 'suiyiErrorWindowSmall',
+    warning_triangle: 'suiyiWarningTriangle',
+    chain_thread: 'suiyiDeadlockChain',
+    crash_fragment: 'suiyiBulletCrashFragment',
+    debug_bit: 'suiyiCodeRainStrip',
+    virus_node: 'suiyiParticleStar',
+    logic_gate: 'suiyiWarningMarker',
+    scan_shard: 'suiyiHitSparkPink',
+  });
+  const SUIYI_PHASE_TIMELINE = Object.freeze({
+    0: ['代码箭雨', '二进制瀑布', 'Compile Fan'],
+    1: ['代码箭雨', '函数调用环', 'Syntax Error', 'Binary Gate'],
+    2: ['Recursive Spiral', 'Memory Leak', 'Code Snake', 'Debug Grid'],
+    3: ['Syntax Error', 'Merge Conflict', 'Stack Overflow', 'Virus Bloom'],
+    4: ['Deadlock Threads', 'Hotfix Rewrite', 'Memory Leak', 'Target Lock Fork'],
+    5: ['System Crash', 'Crash Fragment', '代码墙崩溃', 'Overclock Cross Lanes'],
+  });
+  const SUIYI_LIMITS = Object.freeze({
+    maxBullets: 420,
+    maxFx: 90,
+    maxHazards: 24,
+    maxCodeRain: 70,
+  });
+  const SUIYI_CODE_TRAIL_GLYPHS = Object.freeze(['0101', '1010', '{}', '</>', 'if', 'fn']);
+	  const HOSTILE_BULLET_RED_EDGE = Object.freeze({
+	    fill: 'rgba(255,28,54,.24)',
+	    stroke: 'rgba(255,28,48,.92)',
+	    hot: 'rgba(255,220,226,.58)',
+	    rim: 'rgba(255,42,62,.86)',
+	  });
+  const suiyiHazards = [];
+  const suiyiFx = [];
+  const suiyiMapState = {
+    current: 'suiyiMapVirtualCore',
+    previous: null,
+    transition: 0,
+    lastPhase: -1,
+  };
+  const suiyiTechMobMapState = {
+    current: 'suiyiMapVirtualCore',
+    previous: null,
+    transition: 0,
+    activeTimer: 0,
+    lastSwap: -999,
+  };
+  const SUIYI_BOSS_SIGNATURE = 'SUIYI / CODE ARCHITECT';
 
   // Boss roster. bossKind selects which one spawns.
   // Boss types now randomized - not fixed per stage
@@ -8015,6 +8390,7 @@
     voidtitan:   { hp: 12500, r: 76, scale: 1.05, sprite: 'voidtitan',   name: '虚空泰坦 · 奥古斯', intro: '巨影压顶：虚空泰坦苏醒', y: 222, theme: 'titan' },
     ancientone:  { hp: 13500, r: 74, scale: 1.0,  sprite: 'ancientone',  name: '古神 · 阿撒托斯', intro: '亘古邪神睁眼：古神降临', y: 220, theme: 'ancient' },
     darkqueen:   { hp: 11800, r: 72, scale: 1.0,  sprite: 'darkqueen',   name: '暗夜女王 · 莉莉丝', intro: '暗夜加冕：女王莅临战场', y: 218, theme: 'queen' },
+    suiyi:       { hp: 15600, r: 72, scale: 1.0,  sprite: 'suiyi',       name: '随意 · 代码工程师', intro: '系统接入：随意开始重写战场', y: 206, theme: 'suiyi' },
   };
   
   // Boss pools for randomization - each stage has available bosses
@@ -8031,16 +8407,18 @@
     stage10: ['finalboss', 'ancientone'],
   };
   
-  // Select random boss for current stage
+  const GLOBAL_BOSS_POOL = Object.freeze(Object.keys(BOSS_DEFS));
+
+  // Select random boss from the full roster; stage no longer limits the pool.
   function selectRandomBoss(stageName) {
-    const pool = BOSS_POOLS[stageName] || ['eclipseboss'];
+    const pool = GLOBAL_BOSS_POOL;
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function spawnBoss() {
     const def = BOSS_DEFS[bossKind] || BOSS_DEFS.eclipseboss;
     // Boss 血量随击杀成长与轮回放大，保持后期挑战（整体上调，延长对战时长）
-    const bhp = Math.round(def.hp * (0.82 + grindDmg() * 0.85 + loopCount * 0.7));
+	    const bhp = Math.round(def.hp * (0.95 + grindDmg() * 0.45 + loopCount * 0.28));
     boss = {
       x: W * 0.5, y: def.y, targetY: def.y,
       hp: bhp, maxHp: bhp, r: def.r, t: 0,
@@ -8053,6 +8431,7 @@
     };
     bossPhase = -1;
     patternTimer = 0;
+    if (boss.kind === 'suiyi') resetSuiyiState();
     setMessage(def.intro, 2.8);
     screenShake = 10;
     playSfx('bossIntro', 0.58, 0.8);
@@ -8078,6 +8457,7 @@
       titan:       ['巨影地雷', '碾压弹墙', '泰坦回旋', '镇压重幕', '终焉·崩坏'],
       ancient:     ['疯狂低语', '混沌旋臂', '邪能爆发', '雷暴狂涌', '终焉·癫狂'],
       queen:       ['玫瑰之吻', '双翼华舞', '魅惑追踪', '蔷薇缺环', '终焉·夜葬'],
+      suiyi:       SUIYI_PHASE_NAMES,
     };
     const key = (boss && (boss.theme || boss.kind)) || 'eclipseboss';
     const names = PHASE_NAMES[key] || PHASE_NAMES.eclipseboss;
@@ -8343,8 +8723,11 @@
     addItem(boss.x, boss.y, (bossKind === 'finalboss' || bossKind === 'seraph') ? 'plugin_qishenwu' : randPlugin());
     addItem(boss.x - 40, boss.y, 'heal');
     addItem(boss.x + 40, boss.y, Math.random() < 0.5 ? 'life' : 'bomb');
-    if (bossKind === 'finalboss') {
+    if (bossKind === 'finalboss' && segment === 'stage10') {
       setMessage('Victory · 第一章 · 月蚀终幕', 999);
+    } else if (bossKind === 'suiyi') {
+      setMessage('随意断开连接……系统恢复控制', 2.2);
+      playSfx('bossPhase', 0.55, 0.72);
     } else if (bossKind === 'midboss') {
       setMessage('守卫被击破！', 2.2);
       playSfx('bossPhase', 0.5, 0.6);
@@ -8398,11 +8781,12 @@
         'stage10': '第十幕：终焉月蚀',
       };
       
-      if (bossKind === 'finalboss') {
-        // Final boss defeated - loop to stage1 with increased difficulty
-        loopCount++;
-        segment = 'stage1';
-        state = 'mobs';
+	      if (segment === 'stage10') {
+        // Only the stage10 clear advances the loop; finalboss may appear earlier through the global random pool.
+	        loopCount++;
+	        segment = 'stage1';
+	        chooseRandomFieldBackground();
+	        state = 'mobs';
         waveIndex = 0;
         extraSpawned = 0;
         stateTimer = 0;
@@ -8416,9 +8800,10 @@
       } else {
         // Progress to next stage
         const nextStage = stageProgression[segment];
-        if (nextStage) {
-          segment = nextStage;
-          state = 'mobs';
+	        if (nextStage) {
+	          segment = nextStage;
+	          chooseRandomFieldBackground();
+	          state = 'mobs';
           waveIndex = 0;
           extraSpawned = 0;
           stateTimer = 0;
@@ -8428,9 +8813,10 @@
           setMessage(stageMessages[nextStage] || '下一幕开始', 2.6);
         } else {
           // Reached end of stage6 without finalboss - loop anyway
-          loopCount++;
-          segment = 'stage1';
-          state = 'mobs';
+	          loopCount++;
+	          segment = 'stage1';
+	          chooseRandomFieldBackground();
+	          state = 'mobs';
           waveIndex = 0;
           extraSpawned = 0;
           stateTimer = 0;
@@ -12668,16 +13054,8 @@
     }
 
     if (pointerDown && pointerTarget) {
-      // 桌面鼠标模式保留绝对定位（鼠标拖拽跟随）
       player.x = pointerTarget.x;
       player.y = pointerTarget.y;
-    } else if (touchDragActive && IS_MOBILE_RUNTIME) {
-      // ★ V1.2.1: 移动端相对移动 - 手指位移直接叠加到人物位置
-      const speed = 1.0; // 1:1 跟手，可调
-      player.x = clamp(player.x + touchDragDeltaX * speed, 36, W - 36);
-      player.y = clamp(player.y + touchDragDeltaY * speed, 260, H - 58);
-      touchDragDeltaX = 0;
-      touchDragDeltaY = 0;
     } else {
       let dx = 0, dy = 0;
       if (keys.ArrowLeft || keys.KeyA) dx -= 1;
@@ -13828,6 +14206,113 @@
     else patStarBurst(e, 'v2starred', 12);
   }
 
+  function suiyiTechDensity(base, max) {
+    return Math.min(max, Math.max(1, Math.round(base * clamp(densMul() * 0.72, 1, 1.5))));
+  }
+
+  function addSuiyiTechBullet(x, y, vx, vy, r = 7, color = '#ff7bd5', damage = 8, life = 7, kind = 'suiyicodebolt', opts = {}) {
+    const b = addEnemyBullet(x, y, vx, vy, r, color, damage, life, kind);
+    b.suiyiTech = true;
+    b.techAge = 0;
+    b.techTrail = opts.trail !== false;
+    b.techTurn = opts.turn || 0;
+    b.techGlyph = opts.glyph || SUIYI_CODE_TRAIL_GLYPHS[((Math.random() * SUIYI_CODE_TRAIL_GLYPHS.length) | 0)];
+    b.hist = [];
+    if (opts.wave) { b.wavePhase = rand(0, TAU); b.waveAmp = opts.wave; }
+    if (opts.brake) {
+      b.brake = true;
+      b.ax = -vx * 1.15;
+      b.ay = -vy * 1.15;
+    }
+    return b;
+  }
+
+  function patTechBitFan(e) {
+    const base = angleTo(e.x, e.y, player.x, player.y);
+    const count = suiyiTechDensity(5 + (e.shotN % 2), 8);
+    const spread = 0.78;
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+      const a = base + t * spread + Math.sin(e.t * 2.4 + i) * 0.035;
+      const kind = i % 3 === 1 ? 'suiyibinaryorb' : 'suiyicodebolt';
+      const speed = 230 + Math.abs(t) * 34 + (e.tier >= 3 ? 24 : 0);
+      addSuiyiTechBullet(e.x, e.y + 6, Math.cos(a) * speed, Math.sin(a) * speed, kind === 'suiyibinaryorb' ? 7.8 : 6.2, i % 2 ? '#ff86d8' : '#7df6ff', 7, 7.2, kind, {
+        wave: kind === 'suiyicodebolt' ? 42 : 24,
+        glyph: i % 2 ? '1010' : '0101',
+      });
+    }
+  }
+
+  function patTechCompileRing(e) {
+    const count = suiyiTechDensity(e.tier >= 4 ? 14 : 12, 18);
+    const off = (e.spiralAngle || 0) + e.shotN * 0.18;
+    addSpriteFx(assetReady('suiyiMobOrbitRing') ? 'suiyiMobOrbitRing' : 'suiyiMobCompileBurst', e.x, e.y, 118, 0.34, off, 0.25, 0.64);
+    for (let layer = 0; layer < 2; layer++) {
+      const speed = layer ? 128 : 168;
+      for (let i = 0; i < count; i++) {
+        if (layer && i % 2 === 1) continue;
+        const a = off * (layer ? -1 : 1) + i * TAU / count + layer * TAU / count * 0.5;
+        const kind = layer ? 'suiyicrystalring' : 'suiyibinaryorb';
+        addSuiyiTechBullet(e.x, e.y, Math.cos(a) * speed, Math.sin(a) * speed, layer ? 8.2 : 7.2, layer ? '#ff9fe4' : '#7df7ff', 8, 8.2, kind, {
+          turn: layer ? -0.18 : 0.14,
+          glyph: layer ? '{}': '</>',
+        });
+      }
+    }
+    if (e.shotN % 2 === 0) {
+      const base = angleTo(e.x, e.y, player.x, player.y);
+      for (const offA of [-0.18, 0.18]) {
+        const a = base + offA;
+        addSuiyiTechBullet(e.x, e.y, Math.cos(a) * 255, Math.sin(a) * 255, 6.4, '#ffe8ff', 8, 6.4, 'suiyicodebolt', { glyph: 'if' });
+      }
+    }
+    e.spiralAngle = (e.spiralAngle || 0) + 0.22;
+  }
+
+  function patTechCodeRain(e) {
+    const columns = suiyiTechDensity(11, 15);
+    const gap = clamp(player.x + Math.sin(e.t * 1.7 + e.techSeed) * 60, 90, W - 90);
+    addSpriteFx(assetReady('suiyiCodeRainStrip') ? 'suiyiCodeRainStrip' : 'suiyiMobCompileBurst', e.x, e.y + 20, 146, 0.38, 0, 0.24, 0.54);
+    for (let i = 0; i < columns; i++) {
+      const x = 36 + i * ((W - 72) / Math.max(1, columns - 1));
+      if (Math.abs(x - gap) < 78) continue;
+      const lane = Math.sin(i * 1.4 + e.shotN * 0.75);
+      const kind = i % 4 === 0 ? 'suiyicursorshard' : (i % 2 ? 'suiyicodebolt' : 'suiyibinaryorb');
+      addSuiyiTechBullet(x, e.y - 28, lane * 28, 178 + i % 3 * 18, kind === 'suiyicursorshard' ? 6.0 : 7.0, i % 2 ? '#ff8bd9' : '#86f7ff', 8, 8.4, kind, {
+        wave: i % 3 === 0 ? 36 : 18,
+        glyph: i % 2 ? '1010' : '0101',
+      });
+    }
+    if (e.shotN % 3 === 0) addSpriteFx('suiyiMobCompileBurst', gap, H * 0.58, 104, 0.42, 0, 0.28, 0.62);
+  }
+
+  function patTechCrystalBloom(e) {
+    const count = suiyiTechDensity(12 + (e.tier >= 4 ? 2 : 0), 18);
+    const off = (e.spiralAngle || 0) + e.shotN * 0.28;
+    addSpriteFx('suiyiMobCompileBurst', e.x, e.y, 132, 0.42, off, 0.34, 0.72);
+    addRingFx(e.x, e.y, 8, 82, 0.34, 'rgba(255,110,220,', 3);
+    for (let i = 0; i < count; i++) {
+      const a = off + i * TAU / count;
+      const speed = 138 + (i % 3) * 32;
+      const kind = i % 3 === 0 ? 'suiyicrystalring' : 'suiyicrystalshard';
+      addSuiyiTechBullet(e.x + Math.cos(a) * 12, e.y + Math.sin(a) * 9, Math.cos(a) * speed, Math.sin(a) * speed, kind === 'suiyicrystalring' ? 8.4 : 6.8, i % 2 ? '#ffb4ea' : '#89f8ff', 9, 8.6, kind, {
+        turn: i % 2 ? 0.16 : -0.16,
+        glyph: i % 2 ? '</>' : '{}',
+      });
+    }
+    if (e.shotN % 2 === 0) {
+      const base = angleTo(e.x, e.y, player.x, player.y);
+      for (const offA of [-0.28, 0, 0.28]) {
+        const a = base + offA;
+        addSuiyiTechBullet(e.x, e.y, Math.cos(a) * 286, Math.sin(a) * 286, 6.5, '#fff0fb', 8, 6.6, 'suiyicodebolt', { trail: true, glyph: 'fn' });
+      }
+    }
+    if (e.shotN % 3 === 1) {
+      addCircleWarning(clamp(player.x + rand(-80, 80), 80, W - 80), clamp(player.y - 95, H * 0.45, H - 150), 78, 0.82);
+    }
+    e.spiralAngle = (e.spiralAngle || 0) + 0.18;
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // 扩充弹幕库（参考东方/雷电经典弹型）——每种有清晰逻辑、可读、可躲
   // ═══════════════════════════════════════════════════════════════
@@ -14108,6 +14593,11 @@
       case 'crescentwall': patCrescentWall(e); break;
       case 'galaxyspin': patGalaxySpin(e); break;
       case 'eyebarrage': patEyeBarrage(e); break;
+      // —— 随意科技小怪：代码/编译器主题高阶弹幕 ——
+      case 'techBitFan': patTechBitFan(e); break;
+      case 'techCompileRing': patTechCompileRing(e); break;
+      case 'techCodeRain': patTechCodeRain(e); break;
+      case 'techCrystalBloom': patTechCrystalBloom(e); break;
       default:
         patSnipe(e, 240, c, 6, 'orbbasic');
     }
@@ -14118,7 +14608,28 @@
   function moveEnemy(e, dt) {
     const hoverY = enemyHoverY(e);
     const m = e.move;
-    if (m === 'sideL' || m === 'sideR') {       // 侧边快速突入：横向飞入到 homeX，再降到悬停层
+    if (m === 'techSwarm') {                    // 科技虫群：快速贴近阵位后横向数据抖动
+      const tx = e.homeX + Math.sin(e.t * 3.1 + e.techSeed) * 46 + Math.sin(e.t * 6.2) * 10;
+      e.x += (tx - e.x) * Math.min(1, dt * 3.2);
+      e.y += (hoverY - e.y) * Math.min(1, dt * 4.1);
+    } else if (m === 'techHover') {             // 核心无人机：悬停 + 小范围轨道偏移
+      e.orbA += dt * 1.55;
+      const tx = e.homeX + Math.cos(e.orbA + e.techSeed) * 54;
+      const ty = hoverY + Math.sin(e.orbA * 1.3) * 28;
+      e.x += (tx - e.x) * Math.min(1, dt * 2.4);
+      e.y += (ty - e.y) * Math.min(1, dt * 2.7);
+    } else if (m === 'techAnchor') {            // 服务器塔台：慢速定点下压，形成阵地炮台
+      const tx = e.homeX + Math.sin(e.t * 0.9 + e.techSeed) * 16;
+      e.x += (tx - e.x) * Math.min(1, dt * 1.55);
+      e.y += (hoverY - e.y) * Math.min(1, dt * 2.1);
+    } else if (m === 'techPhase') {             // 水晶编译器：相位漂移，横向换位但仍留可读间隙
+      e.orbA += dt * 0.92;
+      const phaseLane = Math.sin(e.t * 0.46 + e.techSeed) > 0 ? 1 : -1;
+      const tx = clamp(e.homeX + phaseLane * 58 + Math.cos(e.orbA) * 32, 70, W - 70);
+      const ty = hoverY + Math.sin(e.orbA * 1.6) * 34;
+      e.x += (tx - e.x) * Math.min(1, dt * 1.85);
+      e.y += (ty - e.y) * Math.min(1, dt * 2.25);
+    } else if (m === 'sideL' || m === 'sideR') {       // 侧边快速突入：横向飞入到 homeX，再降到悬停层
       e.x += (e.homeX - e.x) * Math.min(1, dt * 4.0);
       e.y += (hoverY - e.y) * Math.min(1, dt * 3.2);
       e.x += Math.sin(e.t * 1.7) * 12 * dt;
@@ -14209,6 +14720,8 @@
       if (!b) continue;
       b.vx += b.ax * dt;
       b.vy += b.ay * dt;
+      const suiyiCustomMove = updateSuiyiEnemyBullet(b, dt);
+      updateSuiyiTechEnemyBullet(b, dt);
       // 追踪魂弹：缓慢转向玩家后加速（暗夜女王专属）
       if (b.homingSoul) {
         b.homeT = (b.homeT || 0) + dt;
@@ -14237,8 +14750,17 @@
         b.x += Math.cos(perpAngle) * waveDelta;
         b.y += Math.sin(perpAngle) * waveDelta;
       }
-      b.x += b.vx * dt;
-      b.y += b.vy * dt;
+      if (!suiyiCustomMove) {
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+      }
+      if (b.suiyi && b.suiyiBehavior === 'screen_wrap') {
+        const wm = (b.suiyiParams && b.suiyiParams.wrapMargin) || 48;
+        if (b.x < -wm) b.x = W + wm;
+        else if (b.x > W + wm) b.x = -wm;
+        if (b.y < -wm) b.y = H + wm;
+        else if (b.y > H + wm) b.y = -wm;
+      }
       b.rot += b.spin * dt;
       b.life -= dt;
       if (b.life <= 0 || b.x < -80 || b.x > W + 80 || b.y < -100 || b.y > H + 100) {
@@ -14248,6 +14770,7 @@
       const d2 = dist2(b.x, b.y, player.x, player.y);
       const hitR = b.r + player.hitR;
       if (d2 < hitR * hitR) {
+        if (b.suiyiFake || b.damage <= 0) continue;
         removeUnordered(enemyBullets, i);
         damagePlayer(b.damage);
         continue;
@@ -14337,6 +14860,7 @@
   }
 
   function updateMobStage(dt) {
+    updateSuiyiTechMobMap(dt);
     const waves = STAGE_WAVES[segment] || STAGE_WAVES.stage1;
     const total = waves.length;
     const extraTotal = extraWavesForStage();
@@ -14363,10 +14887,11 @@
         if (e.t > 4 && (e.y < 0 || e.y > H + 40)) enemies.splice(i, 1);
       }
     }
-    if (waveIndex >= total && extraSpawned >= extraTotal && enemies.length === 0 && stateTimer > 4) {
-      // Boss randomization system - select random boss from stage pool
-      bossKind = selectRandomBoss(segment);
-      boss = null;
+	    if (waveIndex >= total && extraSpawned >= extraTotal && enemies.length === 0 && stateTimer > 4) {
+	      // Boss randomization system - select random boss from stage pool
+	      bossKind = selectRandomBoss(segment);
+	      chooseRandomBossBackground();
+	      boss = null;
       bossPhase = -1;
       state = 'bossIntro';
       stateTimer = 0;
@@ -14398,6 +14923,7 @@
     boss.hitFlash = Math.max(0, (boss.hitFlash || 0) - dt);
     // 回充伤害信用（DPS 上限的核心）
     if (boss.dmgCredit !== undefined) boss.dmgCredit = Math.min(boss.dmgCreditMax, boss.dmgCredit + boss.dpsCap * dt);
+    if (boss.kind === 'suiyi') { updateSuiyiBoss(dt); return; }
     boss.x = W * 0.5 + Math.sin(boss.t * 0.7) * 80 + Math.sin(boss.t * 1.53) * 26;
     boss.y = 210 + Math.sin(boss.t * 0.95) * 18;
 
@@ -14868,8 +15394,1204 @@
     }
   }
 
+  function isSuiyiArena() {
+    return bossKind === 'suiyi' && (state === 'boss' || state === 'bossIntro' || state === 'bossOutro');
+  }
+
+  function selectSuiyiRandomMap(previous, seedList = SUIYI_MAP_KEYS) {
+    const pool = (seedList || SUIYI_MAP_KEYS).filter(k => k && k !== previous);
+    const candidates = pool.length ? pool : (seedList || SUIYI_MAP_KEYS);
+    if (!candidates.length) return 'suiyiMapVirtualCore';
+    if (seedList !== SUIYI_MAP_KEYS) return candidates[0];
+    return candidates[Math.floor(Math.random() * candidates.length)];
+  }
+
+	  function rotateSuiyiMap(phase = bossPhase) {
+	    suiyiMapState.previous = null;
+	    suiyiMapState.transition = 1;
+	    suiyiMapState.lastPhase = phase;
+	  }
+
+  function isSuiyiTechMobType(type) {
+    return SUIYI_TECH_MOB_TYPES.indexOf(type) >= 0;
+  }
+
+  function anySuiyiTechMobAlive() {
+    return enemies.some(e => e && isSuiyiTechMobType(e.type));
+  }
+
+	  function activateSuiyiTechMobMap(force = false) {
+	    if (!force && state !== 'mobs') return;
+	    suiyiTechMobMapState.previous = null;
+	    suiyiTechMobMapState.transition = 1;
+	    suiyiTechMobMapState.activeTimer = Math.max(suiyiTechMobMapState.activeTimer, 9.0);
+	    suiyiTechMobMapState.lastSwap = time;
+  }
+
+  function isSuiyiTechMobMapActive() {
+    return state === 'mobs' && (suiyiTechMobMapState.activeTimer > 0 || anySuiyiTechMobAlive());
+  }
+
+  function updateSuiyiTechMobMap(dt) {
+    suiyiTechMobMapState.transition = Math.max(0, suiyiTechMobMapState.transition - dt * 1.18);
+    const alive = anySuiyiTechMobAlive();
+	    if (alive) {
+	      suiyiTechMobMapState.activeTimer = Math.max(suiyiTechMobMapState.activeTimer, 2.6);
+	    } else {
+	      suiyiTechMobMapState.activeTimer = Math.max(0, suiyiTechMobMapState.activeTimer - dt);
+	    }
+  }
+
+  function resetSuiyiState() {
+	    suiyiHazards.length = 0;
+	    suiyiFx.length = 0;
+	    suiyiMapState.previous = null;
+	    suiyiMapState.current = randomBackgroundState.boss;
+	    suiyiMapState.transition = 1;
+    suiyiMapState.lastPhase = -1;
+    if (boss && boss.kind === 'suiyi') {
+      boss.form = 'idle';
+      boss.suiyiPhaseTimer = 0;
+      boss.hologramIntensity = 0.45;
+      boss.codeRainSeed = Math.random() * 999;
+      boss.attackRateMul = 1;
+      boss.bulletSpeedMul = 1;
+    }
+  }
+
+  function suiyiPhaseForHpRate(rate) {
+    if (rate > SUIYI_PHASE_HP.phase1) return 0;
+    if (rate > SUIYI_PHASE_HP.phase2) return 1;
+    if (rate > SUIYI_PHASE_HP.phase3) return 2;
+    if (rate > SUIYI_PHASE_HP.phase4) return 3;
+    if (rate > SUIYI_PHASE_HP.final) return 4;
+    return 5;
+  }
+
+  function suiyiSystemCrashStep(t) {
+    const p = ((t % 60) + 60) % 60;
+    if (p < 8) return 'crash_warning';
+    if (p < 18) return 'error_binary';
+    if (p < 34) return 'code_walls';
+    if (p < 48) return 'core_burst';
+    return 'overload';
+  }
+
+  function suiyiDensityCount(base, max) {
+    return Math.min(max, Math.max(1, Math.round(base * clamp(densMul() * 0.54, 1, 1.62))));
+  }
+
+  function suiyiBulletBudget(room = 1) {
+    return enemyBullets.length + room < Math.min(perfBudget().enemyBulletMax, SUIYI_LIMITS.maxBullets);
+  }
+
+  function spawnSuiyiBullet(config) {
+    if (!suiyiBulletBudget()) return null;
+    const type = config.type || 'code_arrow';
+    const behavior = config.behavior || SUIYI_BULLET_BEHAVIORS[type] || 'straight';
+    const angle = config.angle || 0;
+    const speed = config.speed || 180;
+    const b = addEnemyBullet(
+      config.x, config.y,
+      Math.cos(angle) * speed, Math.sin(angle) * speed,
+      config.r || 7,
+      config.color || '#ff7bd5',
+      config.damage ?? 8,
+      config.life || 7.5,
+      type
+    );
+    b.suiyi = true;
+    b.suiyiType = type;
+    b.suiyiBehavior = behavior;
+    b.suiyiParams = config.params || {};
+    b.suiyiAge = 0;
+    b.suiyiInitialDamage = b.damage;
+    b.suiyiSprite = config.sprite || SUIYI_BULLET_SPRITES[type] || null;
+    b.suiyiAlpha = config.alpha ?? 1;
+    b.suiyiScale = config.scale || 1;
+    b.suiyiTrail = config.trail !== false;
+    b.suiyiGlyph = config.glyph || SUIYI_CODE_TRAIL_GLYPHS[(Math.random() * SUIYI_CODE_TRAIL_GLYPHS.length) | 0];
+    b.hist = [];
+    b.rot = angle;
+    b.spin = config.spin ?? rand(-2.5, 2.5);
+    if (behavior === 'fake_to_real') {
+      b.damage = 0;
+      b.suiyiFake = true;
+      b.suiyiAlpha = 0.34;
+    }
+    if (behavior === 'orbit_then_release') {
+      const p = b.suiyiParams;
+      p.originX = p.originX ?? config.x;
+      p.originY = p.originY ?? config.y;
+      p.radius = p.radius || 84;
+      p.orbitAngle = p.orbitAngle ?? angle;
+      p.orbitSpeed = p.orbitSpeed || 2.4;
+      p.release = p.release || 1.15;
+      p.releaseSpeed = p.releaseSpeed || speed;
+    }
+    return b;
+  }
+
+  function addSuiyiFx(type, x, y, life = 0.8, extra = {}) {
+    suiyiFx.push({ type, x, y, life, maxLife: life, rot: rand(0, TAU), seed: rand(0, 999), ...extra });
+    if (suiyiFx.length > SUIYI_LIMITS.maxFx) suiyiFx.splice(0, suiyiFx.length - SUIYI_LIMITS.maxFx);
+  }
+
+  function addSuiyiHazard(type, x, y, life = 1.4, extra = {}) {
+    suiyiHazards.push({ type, x, y, life, maxLife: life, rot: rand(-0.12, 0.12), seed: rand(0, 999), ...extra });
+    if (suiyiHazards.length > SUIYI_LIMITS.maxHazards) suiyiHazards.splice(0, suiyiHazards.length - SUIYI_LIMITS.maxHazards);
+  }
+
+  function updateSuiyiHazards(dt) {
+    suiyiMapState.transition = Math.max(0, suiyiMapState.transition - dt * 1.35);
+    for (let i = suiyiHazards.length - 1; i >= 0; i--) {
+      const h = suiyiHazards[i];
+      h.life -= dt;
+      h.t = (h.t || 0) + dt;
+      if (h.type === 'error_window' && !h.spawned && h.life < h.maxLife * 0.46) {
+        h.spawned = true;
+        const count = suiyiDensityCount(6 + bossPhase, 13);
+        for (let k = 0; k < count; k++) {
+          const a = -Math.PI / 2 + (k / Math.max(1, count - 1) - 0.5) * 1.15 + rand(-0.05, 0.05);
+          spawnSuiyiBullet({
+            type: 'error_window', x: h.x, y: h.y + 8, angle: a, speed: 145 + bossPhase * 16,
+            r: 9, color: '#ff5cb9', life: 6.8, behavior: 'fake_to_real',
+            params: { delay: 0.48, flashColor: '#ffe5fb' },
+          });
+        }
+      }
+      if (h.type === 'code_wall' && !h.spawned && h.life < h.maxLife * 0.5) {
+        h.spawned = true;
+        const gap = h.gap ?? rand(160, W - 160);
+        for (let x = 38; x < W - 20; x += 38) {
+          if (Math.abs(x - gap) < 86) continue;
+          spawnSuiyiBullet({
+            type: 'data_cube', x, y: h.y, angle: Math.PI / 2 + Math.sin(x * 0.027 + h.seed) * 0.16,
+            speed: 130 + bossPhase * 18, r: 8.5, color: '#66f4ff', life: 8.4, behavior: 'screen_wrap',
+          });
+        }
+      }
+      if (h.type === 'binary_gate' && !h.spawned && h.life < h.maxLife * 0.48) {
+        h.spawned = true;
+        const phase = h.phase ?? bossPhase;
+        const gap = clamp(h.gap ?? player.x, 120, W - 120);
+        const rows = phase >= 4 ? 3 : 2;
+        for (let row = 0; row < rows; row++) {
+          const y = h.y - row * 42;
+          for (let x = 34; x <= W - 34; x += 34) {
+            const laneBias = Math.sin(x * 0.031 + row * 1.7 + h.seed) * 20;
+            if (Math.abs(x + laneBias - gap) < 78 + row * 12) continue;
+            const type = (row + ((x / 34) | 0)) % 3 === 0 ? 'logic_gate' : 'debug_bit';
+            spawnSuiyiBullet({
+              type, x, y, angle: Math.PI / 2 + laneBias * 0.004,
+              speed: 118 + phase * 16 + row * 18, r: type === 'logic_gate' ? 8.2 : 6.4,
+              color: type === 'logic_gate' ? '#ffd166' : '#7df6ff', life: 8.0,
+              behavior: type === 'logic_gate' ? 'slow_then_fast' : 'screen_wrap',
+              params: type === 'logic_gate'
+                ? { delay: 0.34 + row * 0.08, accel: 1.42 + phase * 0.05 }
+                : { wrapMargin: 50 },
+              glyph: row % 2 ? '1010' : '0101',
+            });
+          }
+        }
+        addSuiyiFx('binary_gate_open', gap, h.y + 30, 0.52, { phase });
+      }
+      if (h.type === 'debug_grid' && !h.spawned && h.life < h.maxLife * 0.5) {
+        h.spawned = true;
+        const phase = h.phase ?? bossPhase;
+        const columns = phase >= 4 ? 7 : 6;
+        const rows = phase >= 4 ? 4 : 3;
+        const gapX = clamp(h.gapX ?? player.x, 92, W - 92);
+        const gapY = clamp(h.gapY ?? player.y, H * 0.42, H - 110);
+        for (let c = 0; c < columns; c++) {
+          const x = 66 + c * ((W - 132) / Math.max(1, columns - 1));
+          for (let r = 0; r < rows; r++) {
+            const y = 72 + r * 44;
+            if (Math.abs(x - gapX) < 72 && Math.abs(gapY - (H * 0.64 + r * 28)) < 180) continue;
+            spawnSuiyiBullet({
+              type: c % 2 ? 'logic_gate' : 'data_cube',
+              x, y,
+              angle: Math.PI / 2 + Math.sin(c * 1.3 + r + time) * 0.18,
+              speed: 112 + phase * 15 + r * 12,
+              r: c % 2 ? 7.2 : 8.6,
+              color: c % 2 ? '#fff0a6' : '#73f4ff',
+              life: 8.4,
+              behavior: c % 2 ? 'slow_then_fast' : 'screen_wrap',
+              params: c % 2 ? { delay: 0.46 + r * 0.08, accel: 1.38 + phase * 0.05 } : { wrapMargin: 44 },
+              glyph: c % 2 ? '{}' : '0101',
+            });
+          }
+        }
+        addSuiyiFx('debug_grid_fire', h.x, h.y, 0.58, { phase });
+      }
+      if (h.type === 'target_lock' && !h.spawned && h.life < h.maxLife * 0.43) {
+        h.spawned = true;
+        const phase = h.phase ?? bossPhase;
+        const sx = boss ? boss.x : W * 0.5;
+        const sy = boss ? boss.y + 28 : 110;
+        const aimX = h.aimX ?? h.x;
+        const aimY = h.aimY ?? h.y;
+        const base = angleTo(sx, sy, aimX, aimY);
+        const forks = phase >= 4 ? 5 : 3;
+        for (let i = 0; i < forks; i++) {
+          const off = (i - (forks - 1) / 2) * (0.13 + phase * 0.008);
+          spawnSuiyiBullet({
+            type: i % 2 ? 'scan_shard' : 'cursor_bullet',
+            x: sx + (i - (forks - 1) / 2) * 18,
+            y: sy + rand(-8, 12),
+            angle: base + off,
+            speed: 220 + phase * 24 + Math.abs(i - (forks - 1) / 2) * 12,
+            r: i % 2 ? 6.2 : 7.2,
+            color: i % 2 ? '#ff9be4' : '#f8fdff',
+            life: 7.2,
+            behavior: i % 2 ? 'curve' : 'homing_weak',
+            params: i % 2 ? { turn: off * 0.72 } : { turnRate: 0.5 + phase * 0.05, maxSpeed: 300 + phase * 18 },
+            glyph: i % 2 ? '</>' : 'if',
+          });
+        }
+        addSuiyiFx('target_lock_fire', aimX, aimY, 0.46, { phase });
+      }
+      if (h.life <= 0) suiyiHazards.splice(i, 1);
+    }
+    for (let i = suiyiFx.length - 1; i >= 0; i--) {
+      suiyiFx[i].life -= dt;
+      if (suiyiFx[i].life <= 0) suiyiFx.splice(i, 1);
+    }
+  }
+
+  function updateSuiyiBoss(dt) {
+    if (!boss || boss.kind !== 'suiyi') return;
+    const hpRate = boss.hp / boss.maxHp;
+    const nextPhase = suiyiPhaseForHpRate(hpRate);
+    if (nextPhase !== bossPhase) {
+      changeBossPhase(nextPhase);
+      boss.form = SUIYI_PHASE_FORMS[nextPhase] || 'idle';
+      boss.suiyiPhaseTimer = 0;
+      boss.hologramIntensity = 0.45 + nextPhase * 0.12;
+      boss.attackRateMul = nextPhase >= 5 ? 1.6 : (nextPhase >= 4 ? 1.35 : 1 + nextPhase * 0.05);
+      boss.bulletSpeedMul = nextPhase >= 5 ? 1.25 : (nextPhase >= 4 ? 1.15 : 1 + nextPhase * 0.04);
+      rotateSuiyiMap(nextPhase);
+      addSuiyiFx(nextPhase >= 5 ? 'crash_pulse' : 'phase_refresh', boss.x, boss.y, nextPhase >= 5 ? 1.2 : 0.8, { phase: nextPhase });
+    }
+    boss.suiyiPhaseTimer = (boss.suiyiPhaseTimer || 0) + dt;
+    const target = nextPhase >= 5 ? SUIYI_POINTS.highTop
+      : nextPhase >= 4 ? (Math.sin(boss.t * 0.7) > 0 ? SUIYI_POINTS.midRight : SUIYI_POINTS.midLeft)
+      : [SUIYI_POINTS.center, SUIYI_POINTS.topLeft, SUIYI_POINTS.topRight, SUIYI_POINTS.topCenter][Math.floor((boss.t * 0.28 + nextPhase) % 4)];
+    const txRaw = target.x * W + Math.sin(boss.t * (0.8 + nextPhase * 0.08)) * (nextPhase >= 4 ? 42 : 24);
+    const tyRaw = target.y * H + Math.sin(boss.t * 1.35) * (nextPhase >= 5 ? 8 : 16);
+    const tx = clamp(txRaw, 238, W - 238);
+    const ty = clamp(tyRaw, nextPhase >= 5 ? 150 : 170, nextPhase >= 5 ? 270 : 360);
+    boss.x = lerp(boss.x, tx, nextPhase >= 5 ? 0.065 : 0.038);
+    boss.y = lerp(boss.y, ty, nextPhase >= 5 ? 0.06 : 0.04);
+    updateSuiyiHazards(dt);
+    const rate = (1.04 + nextPhase * 0.07) * (boss.attackRateMul || 1) * (1 + loopCount * 0.06);
+    patternTimer += dt * rate;
+    suiyiPatterns(patternTimer, dt);
+  }
+
+  function suiyiPatterns(t, dt) {
+    if (!boss || boss.kind !== 'suiyi') return;
+    if (bossPhase === 0) {
+      if (tickEvery(t, dt, 0.52)) suiyiCodeArrowRain(0);
+      if (tickEvery(t, dt, 1.10)) suiyiBinaryWaterfall(0);
+      if (tickEvery(t, dt, 1.85)) suiyiCompileFan(0);
+    } else if (bossPhase === 1) {
+      if (tickEvery(t, dt, 0.43)) suiyiCodeArrowRain(1);
+      if (tickEvery(t, dt, 1.35)) suiyiFunctionCallRing(1);
+      if (tickEvery(t, dt, 3.80)) suiyiSyntaxError(1);
+      if (tickEvery(t, dt, 2.18)) suiyiBinaryGateSweep(1);
+      if (tickEvery(t, dt, 2.65)) suiyiCompileFan(1);
+    } else if (bossPhase === 2) {
+      if (tickEvery(t, dt, 0.19)) suiyiRecursiveSpiral(2);
+      if (tickEvery(t, dt, 1.18)) suiyiMemoryLeak(2);
+      if (tickEvery(t, dt, 0.92)) suiyiBinaryWaterfall(2);
+      if (tickEvery(t, dt, 0.78)) suiyiCodeSnakeWeave(2);
+      if (tickEvery(t, dt, 2.55)) suiyiDebugGridWeave(2);
+    } else if (bossPhase === 3) {
+      if (tickEvery(t, dt, 2.00)) suiyiSyntaxError(3);
+      if (tickEvery(t, dt, 1.45)) suiyiMergeConflict(3);
+      if (tickEvery(t, dt, 2.55)) suiyiStackOverflow(3);
+      if (tickEvery(t, dt, 1.72)) suiyiVirusBloom(3);
+      if (tickEvery(t, dt, 2.35)) suiyiTargetLockFork(3);
+    } else if (bossPhase === 4) {
+      if (tickEvery(t, dt, 1.95)) suiyiDeadlockThreads(4);
+      if (tickEvery(t, dt, 3.25)) suiyiHotfixRewrite(4);
+      if (tickEvery(t, dt, 0.92)) suiyiMemoryLeak(4);
+      if (tickEvery(t, dt, 0.34)) suiyiRecursiveSpiral(4);
+      if (tickEvery(t, dt, 1.55)) suiyiTargetLockFork(4);
+      if (tickEvery(t, dt, 2.05)) suiyiBinaryGateSweep(4);
+      if (tickEvery(t, dt, 2.45)) suiyiOverclockCrossLanes(4);
+      if (tickEvery(t, dt, 2.75)) suiyiVirusBloom(4);
+    } else {
+      suiyiSystemCrash(t, dt);
+    }
+  }
+
+  function suiyiCodeArrowRain(phase) {
+    const count = suiyiDensityCount(10 + phase * 3, 24);
+    const speed = (230 + phase * 24) * (boss.bulletSpeedMul || 1);
+    for (let i = 0; i < count; i++) {
+      const x = 54 + i * ((W - 108) / Math.max(1, count - 1));
+      const angle = Math.PI / 2 + Math.sin(i * 1.7 + boss.t) * 0.18 + rand(-0.055, 0.055);
+      spawnSuiyiBullet({
+        type: 'code_arrow', x, y: boss.y + rand(-8, 26), angle, speed,
+        r: 6.5, color: i % 2 ? '#ff8bd9' : '#87f9ff', life: 6.4,
+        behavior: 'straight', spin: 0,
+      });
+    }
+    addSuiyiFx('code_arrow_cast', boss.x, boss.y + 32, 0.34, { phase });
+  }
+
+  function suiyiBinaryWaterfall(phase) {
+    const count = suiyiDensityCount(7 + phase * 2, 16);
+    for (let i = 0; i < count; i++) {
+      const x = rand(50, W - 50);
+      spawnSuiyiBullet({
+        type: 'binary_digit', x, y: -26 - rand(0, 70), angle: Math.PI / 2 + rand(-0.1, 0.1),
+        speed: 110 + phase * 26 + rand(0, 45), r: 7.8, color: i % 2 ? '#58eaff' : '#ff78ca',
+        life: 9.5, behavior: 'slow_then_fast', params: { delay: 0.68, accel: 1.45 + phase * 0.12 },
+      });
+    }
+  }
+
+  function suiyiCompileFan(phase) {
+    const count = suiyiDensityCount(7 + phase * 2, 16);
+    const layers = phase >= 4 ? 3 : 2;
+    const base = angleTo(boss.x, boss.y + 22, player.x, player.y);
+    const spread = 0.72 + phase * 0.055;
+    for (let layer = 0; layer < layers; layer++) {
+      for (let i = 0; i < count; i++) {
+        const u = count <= 1 ? 0 : (i / (count - 1) - 0.5);
+        const a = base + u * spread + (layer - (layers - 1) / 2) * 0.08 + Math.sin(time * 2.1 + i) * 0.018;
+        const type = layer % 2 ? 'scan_shard' : 'code_arrow';
+        spawnSuiyiBullet({
+          type,
+          x: boss.x + Math.cos(a + Math.PI / 2) * (layer * 16 - 8),
+          y: boss.y + 30 + Math.sin(i + layer) * 5,
+          angle: a,
+          speed: (172 + phase * 20 + layer * 28) * (boss.bulletSpeedMul || 1),
+          r: type === 'scan_shard' ? 5.8 : 6.4,
+          color: layer % 2 ? '#ff9ee4' : '#84f6ff',
+          life: 7.0,
+          behavior: type === 'scan_shard' ? 'curve' : 'straight',
+          params: type === 'scan_shard' ? { turn: u * 0.28 } : {},
+          glyph: layer % 2 ? '</>' : '0101',
+        });
+      }
+    }
+    addSuiyiFx('compile_fan', boss.x, boss.y + 40, 0.46, { phase });
+  }
+
+  function suiyiBinaryGateSweep(phase) {
+    const y = 122 + rand(0, 90) + phase * 6;
+    const gap = clamp(player.x + rand(-95, 95), 120, W - 120);
+    addSuiyiHazard('binary_gate', W * 0.5, y, 1.18, { phase, gap });
+    addCircleWarning(gap, y + 114, 62, 0.72);
+  }
+
+  function suiyiCodeSnakeWeave(phase) {
+    const lanes = phase >= 4 ? 4 : 3;
+    const length = phase >= 4 ? 7 : 6;
+    for (let lane = 0; lane < lanes; lane++) {
+      const side = lane % 2 ? -1 : 1;
+      const anchorX = boss.x + side * (50 + lane * 22);
+      const anchorY = boss.y + 24 + lane * 10;
+      for (let i = 0; i < length; i++) {
+        const wave = Math.sin(time * 2.8 + i * 0.72 + lane * 1.3);
+        const a = Math.PI / 2 + side * (0.28 + wave * 0.18) + (i - length / 2) * 0.012;
+        const type = i % 3 === 0 ? 'debug_bit' : 'bracket_bullet';
+        spawnSuiyiBullet({
+          type,
+          x: anchorX - side * i * 10,
+          y: anchorY - i * 13,
+          angle: a,
+          speed: 126 + phase * 17 + i * 4,
+          r: type === 'debug_bit' ? 5.8 : 6.6,
+          color: type === 'debug_bit' ? '#76f6ff' : '#ff8fdd',
+          life: 8.2,
+          behavior: type === 'debug_bit' ? 'screen_wrap' : 'curve',
+          params: type === 'debug_bit' ? { wrapMargin: 46 } : { turn: side * (0.34 + lane * 0.025) },
+          glyph: i % 2 ? '{}' : '0101',
+        });
+      }
+    }
+    addSuiyiFx('code_snake', boss.x, boss.y + 70, 0.62, { phase });
+  }
+
+  function suiyiDebugGridWeave(phase) {
+    const y = H * 0.30 + rand(-30, 34);
+    addSuiyiHazard('debug_grid', W * 0.5, y, 1.16, {
+      phase,
+      gapX: player.x,
+      gapY: player.y,
+    });
+  }
+
+  function suiyiVirusBloom(phase) {
+    const count = suiyiDensityCount(16 + phase * 3, 34);
+    const base = -Math.PI / 2 + Math.sin(time * 1.5) * 0.18;
+    addSuiyiFx('virus_bloom', boss.x, boss.y + 18, 0.86, { phase });
+    for (let i = 0; i < count; i++) {
+      const a = base + i * TAU / count + Math.sin(i * 1.9 + time) * 0.04;
+      const ring = i % 2;
+      spawnSuiyiBullet({
+        type: ring ? 'virus_node' : 'debug_bit',
+        x: boss.x + Math.cos(a) * (28 + ring * 18),
+        y: boss.y + 18 + Math.sin(a) * (18 + ring * 12),
+        angle: a,
+        speed: 104 + phase * 15 + ring * 24,
+        r: ring ? 6.5 : 5.6,
+        color: ring ? '#ff72c5' : '#8ffaff',
+        life: 8.0,
+        behavior: ring ? 'homing_weak' : 'curve',
+        params: ring ? { turnRate: 0.32 + phase * 0.035, maxSpeed: 238 + phase * 16 } : { turn: i % 2 ? 0.22 : -0.22 },
+        glyph: ring ? 'fn' : '1010',
+      });
+    }
+  }
+
+  function suiyiTargetLockFork(phase) {
+    const aimX = clamp(player.x + rand(-70, 70), 84, W - 84);
+    const aimY = clamp(player.y + rand(-50, 36), H * 0.38, H - 92);
+    addSuiyiHazard('target_lock', aimX, aimY, 0.98, { phase, aimX, aimY });
+    addCircleWarning(aimX, aimY, 72, 0.64);
+  }
+
+  function suiyiOverclockCrossLanes(phase) {
+    const lanes = phase >= 5 ? 4 : 3;
+    for (let i = 0; i < lanes; i++) {
+      const left = i % 2 === 0;
+      const x1 = left ? -30 : W + 30;
+      const y1 = 108 + i * (H * 0.15);
+      const x2 = left ? W + 30 : -30;
+      const y2 = H * 0.50 + i * 70 + Math.sin(time + i) * 34;
+      addLaserWarning(x1, y1, x2, y2, 18 + phase * 2, 0.54, 0.34);
+      const shots = suiyiDensityCount(4 + phase, 10);
+      const a = angleTo(x1, y1, x2, y2);
+      for (let k = 0; k < shots; k++) {
+        spawnSuiyiBullet({
+          type: k % 2 ? 'scan_shard' : 'code_arrow',
+          x: x1 + Math.cos(a) * k * 34,
+          y: y1 + Math.sin(a) * k * 34,
+          angle: a + Math.sin(k + i) * 0.04,
+          speed: 210 + phase * 24 + k * 5,
+          r: k % 2 ? 5.8 : 6.2,
+          color: k % 2 ? '#ffb2e8' : '#7df5ff',
+          life: 6.8,
+          behavior: k % 2 ? 'curve' : 'straight',
+          params: k % 2 ? { turn: (left ? 1 : -1) * 0.12 } : {},
+          glyph: k % 2 ? '</>' : '0101',
+        });
+      }
+    }
+    addSuiyiFx('overclock_cross', boss.x, boss.y + 60, 0.56, { phase });
+  }
+
+  function suiyiFunctionCallRing(phase) {
+    const count = suiyiDensityCount(18 + phase * 3, 34);
+    const base = boss.t * (0.78 + phase * 0.08);
+    addSuiyiFx('function_ring', boss.x, boss.y, 0.72, { radius: 190 });
+    for (let i = 0; i < count; i++) {
+      const a = base + i * TAU / count;
+      const b = spawnSuiyiBullet({
+        type: 'bracket_bullet', x: boss.x, y: boss.y + 12, angle: a,
+        speed: (142 + phase * 18) * (boss.bulletSpeedMul || 1), r: 7.2,
+        color: i % 3 ? '#f9a3ff' : '#b5f7ff', life: 7.8, behavior: 'curve',
+        params: { turn: (i % 2 ? 0.34 : -0.34) + phase * 0.02 },
+      });
+      if (b) b.rot = a;
+    }
+  }
+
+  function suiyiSyntaxError(phase) {
+    const x = clamp(player.x + rand(-150, 150), 110, W - 110);
+    const y = clamp(player.y - rand(160, 320), 140, H * 0.58);
+    addSuiyiHazard('error_window', x, y, 1.36, { phase, label: 'Syntax Error' });
+    addCircleWarning(x, y, 86, 0.82);
+  }
+
+  function suiyiRecursiveSpiral(phase) {
+    const arms = phase >= 4 ? 4 : 3;
+    const base = boss.t * (2.2 + phase * 0.22);
+    for (let k = 0; k < arms; k++) {
+      const a = base + k * TAU / arms;
+      spawnSuiyiBullet({
+        type: 'crash_fragment', x: boss.x, y: boss.y + 10, angle: a,
+        speed: (130 + phase * 17) * (boss.bulletSpeedMul || 1), r: 6.2,
+        color: k % 2 ? '#ff68c4' : '#8ffbff', life: 7.7, behavior: 'spiral',
+        params: { turn: k % 2 ? 0.72 : -0.72, accel: 4 + phase },
+      });
+    }
+  }
+
+  function suiyiMemoryLeak(phase) {
+    const count = suiyiDensityCount(4 + phase, 11);
+    for (let i = 0; i < count; i++) {
+      const side = i % 2 ? -1 : 1;
+      const x = side < 0 ? -28 : W + 28;
+      const y = rand(150, H * 0.64);
+      const a = angleTo(x, y, W * rand(0.28, 0.72), H * rand(0.58, 0.86));
+      spawnSuiyiBullet({
+        type: 'data_cube', x, y, angle: a, speed: 126 + phase * 18,
+        r: 10, color: '#86f3ff', life: 10, behavior: 'screen_wrap',
+        params: { wrapMargin: 42 },
+      });
+    }
+    addSuiyiFx('memory_leak', boss.x + rand(-170, 170), boss.y + rand(20, 120), 0.8);
+  }
+
+  function suiyiDeadlockThreads(phase) {
+    for (let i = 0; i < 3; i++) {
+      const x1 = i === 1 ? 40 : rand(40, W - 40);
+      const x2 = i === 1 ? W - 40 : rand(40, W - 40);
+      addLaserWarning(x1, 70, x2, H + 20, 22 + phase * 2, 0.74, 0.46);
+      addSuiyiHazard('deadlock_chain', (x1 + x2) / 2, H * 0.46, 1.24, { x1, x2 });
+    }
+  }
+
+  function suiyiMergeConflict(phase) {
+    const y = rand(160, H * 0.55);
+    const gap = player.x + rand(-70, 70);
+    addSuiyiHazard('code_wall', W * 0.5, y, 1.16, { gap, phase });
+  }
+
+  function suiyiStackOverflow(phase) {
+    const columns = phase >= 4 ? 5 : 4;
+    for (let c = 0; c < columns; c++) {
+      const x = 70 + c * ((W - 140) / Math.max(1, columns - 1));
+      for (let i = 0; i < 4; i++) {
+        spawnSuiyiBullet({
+          type: 'warning_triangle', x, y: -60 - i * 42, angle: Math.PI / 2 + Math.sin(c + i) * 0.11,
+          speed: 118 + i * 18 + phase * 10, r: 9, color: '#ffd36e', life: 8.2,
+          behavior: 'delayed_burst', params: { delay: 1.05 + i * 0.18, burstCount: 7, burstSpeed: 138 + phase * 15 },
+        });
+      }
+    }
+  }
+
+	  function suiyiHotfixRewrite(phase) {
+	    suiyiMapState.previous = null;
+	    suiyiMapState.transition = 1;
+	    addSuiyiFx('hotfix_rewrite', boss.x, boss.y, 1.0);
+    const count = suiyiDensityCount(10 + phase * 2, 24);
+    for (let i = 0; i < count; i++) {
+      const a = rand(-Math.PI * 0.86, -Math.PI * 0.14);
+      spawnSuiyiBullet({
+        type: i % 2 ? 'cursor_bullet' : 'code_arrow', x: boss.x + rand(-80, 80), y: boss.y + rand(0, 70),
+        angle: a, speed: 190 + rand(0, 90), r: 7, color: i % 2 ? '#ffffff' : '#ff85d6',
+        life: 7.8, behavior: i % 2 ? 'homing_weak' : 'straight', params: { turnRate: 0.72, maxSpeed: 290 },
+      });
+    }
+  }
+
+  function suiyiSystemCrash(t, dt) {
+    const step = suiyiSystemCrashStep(t);
+    if (tickEvery(t, dt, 0.15)) suiyiRecursiveSpiral(5);
+    if (tickEvery(t, dt, 0.84)) suiyiStackOverflow(5);
+    if (tickEvery(t, dt, 1.15)) suiyiMergeConflict(5);
+    if (step === 'crash_warning' && tickEvery(t, dt, 1.6)) suiyiSyntaxError(5);
+    if (step === 'crash_warning' && tickEvery(t, dt, 1.15)) suiyiTargetLockFork(5);
+    if (step === 'error_binary' && tickEvery(t, dt, 0.48)) suiyiBinaryWaterfall(5);
+    if (step === 'error_binary' && tickEvery(t, dt, 1.05)) suiyiBinaryGateSweep(5);
+    if (step === 'code_walls' && tickEvery(t, dt, 1.35)) suiyiDeadlockThreads(5);
+    if (step === 'code_walls' && tickEvery(t, dt, 0.78)) suiyiCodeSnakeWeave(5);
+    if (step === 'core_burst' && tickEvery(t, dt, 0.72)) suiyiFunctionCallRing(5);
+    if (step === 'core_burst' && tickEvery(t, dt, 1.05)) suiyiVirusBloom(5);
+    if (step === 'overload' && tickEvery(t, dt, 0.62)) suiyiHotfixRewrite(5);
+    if (step === 'overload' && tickEvery(t, dt, 0.92)) suiyiOverclockCrossLanes(5);
+    if (tickEvery(t, dt, 2.2)) addSuiyiFx('crash_core', boss.x, boss.y + 8, 1.2);
+  }
+
+  function updateSuiyiEnemyBullet(b, dt) {
+    if (!b || !b.suiyi) return false;
+    b.suiyiAge = (b.suiyiAge || 0) + dt;
+    b.hist = b.hist || [];
+    if (b.suiyiTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > 10 * 10)) {
+      b.hist.unshift({ x: b.x, y: b.y, a: b.suiyiAlpha ?? 1 });
+      if (b.hist.length > 11) b.hist.pop();
+    }
+    const p = b.suiyiParams || {};
+    const sp = Math.hypot(b.vx, b.vy) || 1;
+    if (b.suiyiBehavior === 'slow_then_fast') {
+      if (b.suiyiAge < (p.delay || 0.6)) {
+        b.vx *= Math.pow(0.55, dt);
+        b.vy *= Math.pow(0.55, dt);
+      } else {
+        const max = p.maxSpeed || sp * (p.accel || 1.55);
+        const ns = Math.min(max, sp + (p.accel || 1.5) * 120 * dt);
+        const a = Math.atan2(b.vy, b.vx);
+        b.vx = Math.cos(a) * ns;
+        b.vy = Math.sin(a) * ns;
+      }
+    } else if (b.suiyiBehavior === 'curve' || b.suiyiBehavior === 'spiral') {
+      const turn = (p.turn || 0.45) * dt;
+      const a = Math.atan2(b.vy, b.vx) + turn;
+      const ns = sp + (p.accel || 0) * dt;
+      b.vx = Math.cos(a) * ns;
+      b.vy = Math.sin(a) * ns;
+    } else if (b.suiyiBehavior === 'fake_to_real') {
+      if (b.suiyiAge >= (p.delay || 0.45) && b.suiyiFake) {
+        b.suiyiFake = false;
+        b.damage = b.suiyiInitialDamage;
+        b.suiyiAlpha = 1;
+        b.r *= 1.08;
+        addSuiyiFx('error_real', b.x, b.y, 0.32);
+      } else if (b.suiyiFake) {
+        b.damage = 0;
+        b.suiyiAlpha = 0.28 + Math.sin(time * 16) * 0.08;
+      }
+    } else if (b.suiyiBehavior === 'delayed_burst') {
+      if (!b.suiyiBurstDone && b.suiyiAge >= (p.delay || 1)) {
+        b.suiyiBurstDone = true;
+        const count = p.burstCount || 8;
+        for (let k = 0; k < count; k++) {
+          const a = k * TAU / count + (b.rot || 0);
+          spawnSuiyiBullet({
+            type: 'bracket_bullet', x: b.x, y: b.y, angle: a, speed: p.burstSpeed || 145,
+            r: 5.8, color: '#fff0a8', life: 5.4, behavior: 'curve', params: { turn: k % 2 ? 0.12 : -0.12 },
+          });
+        }
+        addSuiyiFx('warning_burst', b.x, b.y, 0.36);
+        b.life = 0;
+      }
+    } else if (b.suiyiBehavior === 'orbit_then_release') {
+      if (b.suiyiAge < (p.release || 1.15)) {
+        p.orbitAngle += (p.orbitSpeed || 2.4) * dt;
+        b.x = (p.originX || boss.x) + Math.cos(p.orbitAngle) * (p.radius || 84);
+        b.y = (p.originY || boss.y) + Math.sin(p.orbitAngle) * (p.radius || 84) * 0.72;
+        b.vx = 0; b.vy = 0;
+        return true;
+      }
+      if (!b.suiyiReleased) {
+        b.suiyiReleased = true;
+        const a = angleTo(b.x, b.y, player.x, player.y);
+        const rs = p.releaseSpeed || 230;
+        b.vx = Math.cos(a) * rs;
+        b.vy = Math.sin(a) * rs;
+      }
+    } else if (b.suiyiBehavior === 'homing_weak') {
+      const desired = angleTo(b.x, b.y, player.x, player.y);
+      const cur = Math.atan2(b.vy, b.vx);
+      const diff = ((desired - cur + Math.PI) % TAU) - Math.PI;
+      const na = cur + clamp(diff, -(p.turnRate || 0.55) * dt, (p.turnRate || 0.55) * dt);
+      const ns = Math.min(p.maxSpeed || 280, sp + 24 * dt);
+      b.vx = Math.cos(na) * ns;
+      b.vy = Math.sin(na) * ns;
+    }
+    return false;
+  }
+
+  function updateSuiyiTechEnemyBullet(b, dt) {
+    if (!b || !b.suiyiTech) return;
+    b.techAge = (b.techAge || 0) + dt;
+    if (b.techTrail) {
+      b.hist = b.hist || [];
+      if (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > 9 * 9) {
+        b.hist.unshift({ x: b.x, y: b.y });
+        const maxHist = perfLevel >= 2 ? 7 : (perfLevel === 1 ? 9 : 12);
+        if (b.hist.length > maxHist) b.hist.pop();
+      }
+    }
+    if (b.techTurn) {
+      const sp = Math.hypot(b.vx, b.vy) || 1;
+      const a = Math.atan2(b.vy, b.vx) + b.techTurn * dt;
+      b.vx = Math.cos(a) * sp;
+      b.vy = Math.sin(a) * sp;
+    }
+  }
+
   function tickEvery(timer, dt, interval) {
     return Math.floor(timer / interval) !== Math.floor((timer - dt) / interval);
+  }
+
+  function drawSuiyiCoverImage(key, alpha = 1) {
+    if (!assetReady(key)) return false;
+    const img = assets[key];
+    const scale = Math.max(W / img.width, H / img.height);
+    const iw = img.width * scale;
+    const ih = img.height * scale;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(img, (W - iw) / 2, (H - ih) / 2, iw, ih);
+    ctx.restore();
+    return true;
+  }
+
+	  function drawSuiyiBackgroundOverlay() {
+	    if (!isSuiyiArena()) return;
+	    const phase = Math.max(0, bossPhase);
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    const dark = ctx.createLinearGradient(0, 0, 0, H);
+    dark.addColorStop(0, `rgba(0,10,24,${0.30 + phase * 0.025})`);
+    dark.addColorStop(0.55, `rgba(3,0,14,${0.44 + phase * 0.035})`);
+    dark.addColorStop(1, `rgba(0,0,0,${0.62 + phase * 0.025})`);
+    ctx.fillStyle = dark;
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    const rainCount = perfLevel >= 2 ? 18 : SUIYI_LIMITS.maxCodeRain;
+    ctx.font = '13px Menlo, Consolas, monospace';
+    for (let i = 0; i < rainCount; i++) {
+      const x = (i * 53 + (boss ? boss.codeRainSeed || 0 : 0)) % W;
+      const y = ((time * (80 + phase * 24) + i * 91) % (H + 160)) - 80;
+      const a = 0.08 + ((i * 17) % 9) / 100 + phase * 0.012;
+      ctx.fillStyle = i % 3 ? `rgba(110,245,255,${a})` : `rgba(255,88,188,${a + 0.04})`;
+      ctx.fillText(i % 2 ? '0101' : '</>', x, y);
+    }
+    if (suiyiMapState.transition > 0.02) {
+      const t = 1 - suiyiMapState.transition;
+      ctx.globalAlpha = 0.46 * (1 - Math.abs(t - 0.5) * 1.7);
+      ctx.fillStyle = '#77f4ff';
+      for (let y = 0; y < H; y += 42) ctx.fillRect(0, y + Math.sin(y * 0.04 + time * 28) * 8, W, 2);
+    }
+    if (phase >= 5) {
+      ctx.globalAlpha = 0.24 + Math.sin(time * 17) * 0.08;
+      ctx.fillStyle = '#ff2f88';
+      for (let i = 0; i < 8; i++) ctx.fillRect(rand(0, W - 80), rand(60, H - 60), rand(34, 130), 2);
+    }
+    ctx.restore();
+  }
+
+	  function drawSuiyiTechMapFlowOverlay(baseKey) {
+	    const bossArena = isSuiyiArena();
+	    const mobMap = isSuiyiTechMobMapActive();
+	    const isTechMap = SUIYI_MAP_KEYS.indexOf(baseKey) >= 0;
+	    if (!isTechMap && !bossArena && !mobMap) return;
+	    const intensity = mobMap ? SUIYI_TECH_MAP_FLOW.mobAlpha : SUIYI_TECH_MAP_FLOW.bossAlpha;
+    const countKey = perfLevel >= 2 ? 'perf2' : (perfLevel === 1 ? 'perf1' : 'perf0');
+    const glyphCount = SUIYI_TECH_MAP_FLOW.particleCount[countKey] || 24;
+    const seed = mobMap ? 37 : 11;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgba(2,8,20,${mobMap ? 0.18 : 0.08})`;
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.font = 'bold 12px Menlo, Consolas, monospace';
+    ctx.textAlign = 'left';
+    for (let i = 0; i < glyphCount; i++) {
+      const speed = 34 + (i % 7) * 9 + (mobMap ? 18 : 0);
+      const lane = (i * 61 + seed * 13) % (W + 120);
+      const drift = Math.sin(time * 0.9 + i * 1.7) * (18 + (i % 4) * 5);
+      const x = (lane + drift + (i % 2 ? time * 12 : -time * 8)) % (W + 100) - 50;
+      const y = ((time * speed + i * 83 + seed * 19) % (H + 160)) - 80;
+      const glyph = SUIYI_TECH_MAP_FLOW.glyphs[i % SUIYI_TECH_MAP_FLOW.glyphs.length];
+      const prefix = SUIYI_TECH_MAP_FLOW.colors[i % SUIYI_TECH_MAP_FLOW.colors.length];
+      const a = intensity * (0.055 + (i % 6) * 0.012);
+      ctx.fillStyle = `${prefix}${a})`;
+      ctx.fillText(glyph, x, y);
+    }
+    const lines = perfLevel >= 2 ? 6 : (perfLevel === 1 ? 9 : 13);
+    ctx.lineCap = 'round';
+    for (let i = 0; i < lines; i++) {
+      const y = ((time * (22 + i * 2) + i * 117) % (H + 220)) - 110;
+      const x0 = -80 + Math.sin(time * 0.7 + i) * 42;
+      const x1 = W + 80;
+      const grad = ctx.createLinearGradient(x0, y, x1, y + 80);
+      grad.addColorStop(0, 'rgba(74,236,255,0)');
+      grad.addColorStop(0.45, `rgba(95,246,255,${0.10 * intensity})`);
+      grad.addColorStop(0.72, `rgba(255,92,210,${0.13 * intensity})`);
+      grad.addColorStop(1, 'rgba(255,92,210,0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = i % 3 === 0 ? 2.2 : 1.1;
+      ctx.beginPath();
+      ctx.moveTo(x0, y);
+      ctx.bezierCurveTo(W * 0.28, y + Math.sin(time + i) * 38, W * 0.64, y + 70 + Math.cos(time * 0.8 + i) * 28, x1, y + 80);
+      ctx.stroke();
+    }
+    const dots = perfLevel >= 2 ? 18 : (perfLevel === 1 ? 28 : 44);
+    for (let i = 0; i < dots; i++) {
+      const x = (i * 89 + time * (24 + (i % 5) * 7)) % (W + 40) - 20;
+      const y = (i * 137 + time * (18 + (i % 3) * 5)) % (H + 70) - 35;
+      const r = 1.1 + (i % 4) * 0.45;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r * 6);
+      g.addColorStop(0, i % 2 ? `rgba(255,160,230,${0.46 * intensity})` : `rgba(128,248,255,${0.48 * intensity})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, r * 5, 0, TAU);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawSuiyiPanel(x, y, w, h, label, alpha = 0.68, rot = 0) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.globalAlpha = alpha;
+    if (assetReady('suiyiCodePanelWide')) {
+      ctx.drawImage(assets.suiyiCodePanelWide, -w / 2, -h / 2, w, h);
+    } else {
+      ctx.fillStyle = 'rgba(12,32,52,.55)';
+      roundRect(-w / 2, -h / 2, w, h, 8); ctx.fill();
+      ctx.strokeStyle = 'rgba(120,244,255,.55)'; ctx.lineWidth = 1.4; ctx.stroke();
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.font = '10px Menlo, Consolas, monospace';
+    ctx.fillStyle = 'rgba(190,255,255,.74)';
+    ctx.fillText(label, -w * 0.42, -h * 0.15);
+    ctx.fillStyle = 'rgba(255,126,214,.50)';
+    ctx.fillText('PATCH ' + ((time * 100) | 0).toString(16).toUpperCase(), -w * 0.42, h * 0.12);
+    ctx.restore();
+  }
+
+  function suiyiBossSpriteKey() {
+    if (!boss) return 'suiyiIdle';
+    if (boss.dead) return assetReady('suiyiDeath') ? 'suiyiDeath' : 'suiyiCrash';
+    if ((boss.hitFlash || 0) > 0 && bossPhase >= 4) return 'suiyiOverclock';
+    return SUIYI_PHASE_FORM_KEYS[Math.max(0, Math.min(5, bossPhase))] || 'suiyiIdle';
+  }
+
+  function drawSuiyiBoss() {
+    if (!boss) return;
+    ctx.save();
+    ctx.translate(boss.x, boss.y);
+    const phase = Math.max(0, bossPhase);
+    const deadAlpha = boss.dead ? Math.max(0, 1 - stateTimer * 0.7) : 1;
+    ctx.globalAlpha = deadAlpha;
+    const pulse = 0.5 + 0.5 * Math.sin(time * (5.5 + phase));
+    const aura = ctx.createRadialGradient(0, 0, 12, 0, 0, phase >= 5 ? 320 : 250);
+    aura.addColorStop(0, phase >= 5 ? 'rgba(255,55,150,.48)' : 'rgba(112,246,255,.36)');
+    aura.addColorStop(0.44, phase >= 4 ? 'rgba(255,110,215,.20)' : 'rgba(255,110,205,.14)');
+    aura.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = aura;
+    ctx.beginPath(); ctx.arc(0, 0, phase >= 5 ? 320 : 250, 0, TAU); ctx.fill();
+    if (perfLevel < 2) {
+      drawSuiyiPanel(-170, -34 + Math.sin(time * 2.1) * 5, 150, 72, 'if (boss) cast();', 0.56 + pulse * 0.16, -0.08);
+      drawSuiyiPanel(172, -42 + Math.cos(time * 1.9) * 5, 150, 72, 'while(true) fix();', 0.54 + pulse * 0.16, 0.08);
+      if (phase >= 3) drawSuiyiPanel(0, -128, 178, 66, phase >= 5 ? 'SYSTEM CRASH' : 'ERROR STACK', 0.52 + pulse * 0.24, 0);
+    }
+    const key = suiyiBossSpriteKey();
+    if (assetReady(key)) {
+      const img = assets[key];
+      const size = (phase >= 5 ? 390 : phase >= 4 ? 370 : 350) * (boss.scale || 1) * (1 + Math.sin(time * 3.2) * 0.012);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = (phase >= 5 ? 0.34 : 0.22) + pulse * 0.08;
+      ctx.drawImage(img, -size * 0.54, -size * 0.54, size * 1.08, size * 1.08);
+      ctx.restore();
+      ctx.drawImage(img, -size / 2, -size / 2, size, size);
+    } else {
+      ctx.fillStyle = '#f0f8ff'; ctx.beginPath(); ctx.arc(0, -22, 42, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#121a28'; roundRect(-76, 12, 152, 78, 8); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    if (phase >= 4) {
+      for (let i = 0; i < 4; i++) {
+        const a = time * (1.3 + phase * 0.12) + i * TAU / 4;
+        const x = Math.cos(a) * 122, y = Math.sin(a) * 58 - 8;
+        const keyDrone = assetReady('suiyiDrone') ? 'suiyiDrone' : 'suiyiCubeSummon';
+        if (assetReady(keyDrone)) {
+          ctx.save(); ctx.translate(x, y); ctx.rotate(a + Math.PI / 2); ctx.globalAlpha = 0.68; ctx.drawImage(assets[keyDrone], -26, -26, 52, 52); ctx.restore();
+        } else {
+          ctx.fillStyle = 'rgba(120,245,255,.72)'; ctx.beginPath(); ctx.arc(x, y, 10, 0, TAU); ctx.fill();
+        }
+      }
+    }
+    ctx.font = 'bold 12px Menlo, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = phase >= 5 ? 'rgba(255,110,190,.92)' : 'rgba(160,250,255,.86)';
+    ctx.fillText(SUIYI_BOSS_SIGNATURE, 0, 146);
+    ctx.restore();
+  }
+
+  function drawSuiyiHazards() {
+    if (!isSuiyiArena() && suiyiHazards.length === 0 && suiyiFx.length === 0) return;
+    ctx.save();
+    for (const h of suiyiHazards) {
+      const p = 1 - h.life / h.maxLife;
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.rotate(h.rot || 0);
+      ctx.globalAlpha = clamp(Math.sin(p * Math.PI) * 1.15, 0, 1);
+      if (h.type === 'error_window') {
+        const w = 210, hh = 120;
+        if (assetReady('suiyiErrorWindowLarge')) ctx.drawImage(assets.suiyiErrorWindowLarge, -w / 2, -hh / 2, w, hh);
+        else { ctx.fillStyle = 'rgba(42,10,34,.82)'; roundRect(-w / 2, -hh / 2, w, hh, 8); ctx.fill(); }
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.font = 'bold 14px Menlo, Consolas, monospace'; ctx.fillStyle = '#ffe8fa'; ctx.textAlign = 'center';
+        ctx.fillText(h.label || 'Syntax Error', 0, 5);
+      } else if (h.type === 'code_wall') {
+        const w = W * 0.82, hh = 82;
+        if (assetReady('suiyiCodeWall')) ctx.drawImage(assets.suiyiCodeWall, -w / 2, -hh / 2, w, hh);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.strokeStyle = 'rgba(104,244,255,.62)'; ctx.lineWidth = 3;
+        for (let x = -w / 2; x < w / 2; x += 34) {
+          if (Math.abs(h.x + x - h.gap) < 88) continue;
+          ctx.beginPath(); ctx.moveTo(x, -hh * 0.45); ctx.lineTo(x + Math.sin(time * 5 + x) * 14, hh * 0.45); ctx.stroke();
+        }
+      } else if (h.type === 'deadlock_chain') {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.strokeStyle = 'rgba(255,118,210,.68)'; ctx.lineWidth = 6;
+        ctx.beginPath(); ctx.moveTo((h.x1 || 0) - h.x, 70 - h.y); ctx.lineTo((h.x2 || W) - h.x, H + 20 - h.y); ctx.stroke();
+        if (assetReady('suiyiDeadlockChain')) ctx.drawImage(assets.suiyiDeadlockChain, -90, -22, 180, 44);
+      } else if (h.type === 'binary_gate') {
+        const w = W * 0.92, hh = 120;
+        ctx.globalCompositeOperation = 'lighter';
+        if (assetReady('suiyiCodeWallCone')) ctx.drawImage(assets.suiyiCodeWallCone, -w / 2, -hh / 2, w, hh);
+        ctx.strokeStyle = 'rgba(255,42,62,.74)';
+        ctx.lineWidth = 2.2;
+        for (let x = -w / 2; x <= w / 2; x += 38) {
+          const wx = h.x + x;
+          if (Math.abs(wx - h.gap) < 82) continue;
+          ctx.beginPath();
+          ctx.moveTo(x, -hh * 0.42);
+          ctx.lineTo(x + Math.sin(time * 6 + x * 0.04) * 10, hh * 0.42);
+          ctx.stroke();
+        }
+        ctx.font = 'bold 13px Menlo, Consolas, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(255,238,246,.88)';
+        ctx.fillText('0101 GATE', (h.gap || W * 0.5) - h.x, hh * 0.54);
+      } else if (h.type === 'debug_grid') {
+        const w = W * 0.76, hh = 250;
+        ctx.globalCompositeOperation = 'lighter';
+        if (assetReady('suiyiCodePanelTall')) ctx.drawImage(assets.suiyiCodePanelTall, -w / 2, -hh / 2, w, hh);
+        ctx.strokeStyle = 'rgba(121,247,255,.42)';
+        ctx.lineWidth = 1.5;
+        for (let x = -w / 2; x <= w / 2; x += 54) { ctx.beginPath(); ctx.moveTo(x, -hh / 2); ctx.lineTo(x, hh / 2); ctx.stroke(); }
+        for (let y = -hh / 2; y <= hh / 2; y += 42) { ctx.beginPath(); ctx.moveTo(-w / 2, y); ctx.lineTo(w / 2, y); ctx.stroke(); }
+        if (assetReady('suiyiWarningMarker')) ctx.drawImage(assets.suiyiWarningMarker, (h.gapX || player.x) - h.x - 34, (h.gapY || player.y) - h.y - 34, 68, 68);
+      } else if (h.type === 'target_lock') {
+        const s = 106 + Math.sin(time * 16) * 6 + p * 18;
+        ctx.globalCompositeOperation = 'lighter';
+        if (assetReady('suiyiTargetLock')) ctx.drawImage(assets.suiyiTargetLock, -s / 2, -s / 2, s, s);
+        ctx.strokeStyle = 'rgba(255,34,56,.92)';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.arc(0, 0, s * 0.38, 0, TAU); ctx.stroke();
+        ctx.font = 'bold 12px Menlo, Consolas, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(255,240,246,.9)';
+        ctx.fillText('LOCK 01', 0, -s * 0.46);
+      }
+      ctx.restore();
+    }
+    for (const f of suiyiFx) {
+      const p = 1 - f.life / f.maxLife;
+      const a = clamp(Math.sin(p * Math.PI) * 1.2, 0, 1);
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate(f.rot + time * 0.5);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = a;
+      if (f.type === 'function_ring' && assetReady('suiyiCodeRing')) {
+        const s = (f.radius || 170) * (0.78 + p * 0.45);
+        ctx.drawImage(assets.suiyiCodeRing, -s / 2, -s / 2, s, s);
+      } else if (f.type === 'compile_fan' && assetReady('suiyiCodeRing')) {
+        const s = 130 + p * 90;
+        ctx.drawImage(assets.suiyiCodeRing, -s / 2, -s / 2, s, s);
+        if (assetReady('suiyiHitSparkCyan')) ctx.drawImage(assets.suiyiHitSparkCyan, -s * 0.35, -s * 0.35, s * 0.7, s * 0.7);
+      } else if ((f.type === 'code_snake' || f.type === 'binary_gate_open') && assetReady('suiyiCodeRainStrip')) {
+        const s = 120 + p * 90;
+        for (let i = -1; i <= 1; i++) {
+          ctx.save();
+          ctx.rotate(i * 0.36 + Math.sin(time * 3 + i) * 0.08);
+          ctx.drawImage(assets.suiyiCodeRainStrip, -s * 0.18 + i * 26, -s * 0.62, s * 0.36, s * 1.24);
+          ctx.restore();
+        }
+      } else if (f.type === 'virus_bloom' && assetReady('suiyiRecursiveVortexPink')) {
+        const s = 120 + p * 160;
+        ctx.drawImage(assets.suiyiRecursiveVortexPink, -s / 2, -s / 2, s, s);
+        if (assetReady('suiyiParticleStar')) ctx.drawImage(assets.suiyiParticleStar, -s * 0.28, -s * 0.28, s * 0.56, s * 0.56);
+      } else if ((f.type === 'target_lock_fire' || f.type === 'debug_grid_fire') && assetReady('suiyiImpactBurst')) {
+        const s = 96 + p * 130;
+        ctx.drawImage(assets.suiyiImpactBurst, -s / 2, -s / 2, s, s);
+        if (assetReady('suiyiTargetLock') && f.type === 'target_lock_fire') ctx.drawImage(assets.suiyiTargetLock, -s * 0.34, -s * 0.34, s * 0.68, s * 0.68);
+      } else if (f.type === 'overclock_cross' && assetReady('suiyiRecursiveVortexCyan')) {
+        const s = 140 + p * 150;
+        ctx.drawImage(assets.suiyiRecursiveVortexCyan, -s / 2, -s / 2, s, s);
+      } else if ((f.type === 'phase_refresh' || f.type === 'hotfix_rewrite') && assetReady('suiyiUpdateBadge')) {
+        const s = 130 + p * 120;
+        ctx.drawImage(assets.suiyiUpdateBadge, -s / 2, -s / 2, s, s);
+      } else if ((f.type === 'crash_core' || f.type === 'crash_pulse') && assetReady('suiyiCrashCore')) {
+        const s = 190 + p * 210;
+        ctx.drawImage(assets.suiyiCrashCore, -s / 2, -s / 2, s, s);
+      } else if (f.type === 'memory_leak' && assetReady('suiyiMemoryBlock')) {
+        const s = 76 + p * 34;
+        ctx.drawImage(assets.suiyiMemoryBlock, -s / 2, -s / 2, s, s);
+      } else {
+        const r = 40 + p * 120;
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+        g.addColorStop(0, 'rgba(255,255,255,.8)');
+        g.addColorStop(0.45, 'rgba(255,80,190,.28)');
+        g.addColorStop(1, 'rgba(80,245,255,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+	  function drawHostileBulletRedEdge(b, scale = 1.45, alpha = 0.72) {
+	    const r = Math.max(3, b.r || 6);
+    const speed = Math.hypot(b.vx || 0, b.vy || 0);
+    const ang = speed > 0.01 ? Math.atan2(b.vy, b.vx) : (b.rot || 0);
+    const long = r * scale * (speed > 80 ? 1.25 : 1.05);
+    const wide = r * scale * 0.72;
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate(ang);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = HOSTILE_BULLET_RED_EDGE.fill;
+    ctx.beginPath(); ctx.ellipse(0, 0, long, wide, 0, 0, TAU); ctx.fill();
+    ctx.strokeStyle = HOSTILE_BULLET_RED_EDGE.stroke;
+    ctx.lineWidth = Math.max(1.2, r * 0.2);
+    ctx.beginPath(); ctx.ellipse(0, 0, long * 0.64, wide * 0.68, 0, 0, TAU); ctx.stroke();
+    ctx.globalAlpha = alpha * 0.62;
+    ctx.strokeStyle = HOSTILE_BULLET_RED_EDGE.hot;
+    ctx.lineWidth = Math.max(0.8, r * 0.1);
+	    ctx.beginPath(); ctx.moveTo(long * 0.45, 0); ctx.lineTo(long * 0.86, 0); ctx.stroke();
+	    ctx.restore();
+	  }
+
+  function drawHostileBulletRimOverlay(b, scale = 1.18, alpha = 0.78) {
+    const r = Math.max(3, b.r || 6);
+    const speed = Math.hypot(b.vx || 0, b.vy || 0);
+    const ang = speed > 0.01 ? Math.atan2(b.vy, b.vx) : (b.rot || 0);
+    const long = r * scale * (speed > 80 ? 1.22 : 1.02);
+    const wide = r * scale * 0.66;
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate(ang);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = HOSTILE_BULLET_RED_EDGE.rim;
+    ctx.lineWidth = Math.max(1.1, r * 0.14);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, long, wide, 0, 0, TAU);
+    ctx.stroke();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha * 0.45;
+    ctx.strokeStyle = HOSTILE_BULLET_RED_EDGE.hot;
+    ctx.lineWidth = Math.max(0.8, r * 0.08);
+    ctx.beginPath();
+    ctx.moveTo(long * 0.35, 0);
+    ctx.lineTo(long * 0.82, 0);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawSuiyiTechBulletTrail(b) {
+    if (!b.hist || b.hist.length < 2) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    const colors = [
+      { w: b.r * 1.45, c: 'rgba(74,236,255,.16)' },
+      { w: b.r * 0.72, c: 'rgba(255,112,220,.24)' },
+      { w: Math.max(1.0, b.r * 0.20), c: 'rgba(255,235,248,.58)' },
+    ];
+    for (const layer of colors) {
+      ctx.lineWidth = layer.w;
+      ctx.strokeStyle = layer.c;
+      ctx.beginPath();
+      for (let i = 0; i < b.hist.length; i++) {
+        const p = b.hist[i];
+        if (i === 0) ctx.moveTo(p.x, p.y);
+        else {
+          const prev = b.hist[i - 1];
+          ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + p.x) * 0.5, (prev.y + p.y) * 0.5);
+        }
+      }
+      ctx.stroke();
+    }
+    if (perfLevel < 2) {
+      ctx.font = 'bold 10px Menlo, Consolas, monospace';
+      ctx.textAlign = 'center';
+      for (let i = 1; i < b.hist.length; i += 3) {
+        const p = b.hist[i];
+        ctx.globalAlpha = clamp((1 - i / b.hist.length) * 0.52, 0.08, 0.36);
+        ctx.fillStyle = i % 2 ? 'rgba(255,70,94,.80)' : 'rgba(138,252,255,.70)';
+        ctx.fillText(b.techGlyph || '0101', p.x, p.y + 3);
+      }
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+  }
+
+  function drawSuiyiEnemyBullet(b) {
+    drawHostileBulletRedEdge(b, b.suiyiType === 'error_window' ? 2.15 : 1.78, (b.suiyiAlpha ?? 1) * 0.85);
+    if (b.hist && b.hist.length > 1) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (let layer = 0; layer < 3; layer++) {
+        ctx.lineWidth = layer === 2 ? Math.max(1.2, b.r * 0.28) : (layer ? Math.max(1.6, b.r * 0.48) : b.r * 1.32);
+        ctx.strokeStyle = layer === 2 ? 'rgba(255,34,60,.52)' : (layer ? 'rgba(255,232,250,.70)' : 'rgba(255,80,195,.28)');
+        ctx.beginPath();
+        for (let i = 0; i < b.hist.length; i++) {
+          const p = b.hist[i];
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+      }
+      if (perfLevel < 2 && b.hist.length > 3) {
+        ctx.font = 'bold 10px Menlo, Consolas, monospace';
+        ctx.textAlign = 'center';
+        for (let i = 1; i < b.hist.length; i += 3) {
+          const p = b.hist[i];
+          ctx.globalAlpha = clamp((1 - i / b.hist.length) * 0.62, 0.08, 0.46);
+          ctx.fillStyle = i % 2 ? 'rgba(255,230,242,.82)' : 'rgba(255,48,72,.78)';
+          ctx.fillText(b.suiyiGlyph || '0101', p.x, p.y + 3);
+        }
+        ctx.globalAlpha = 1;
+      }
+      ctx.restore();
+    }
+    const key = b.suiyiSprite;
+    const alpha = b.suiyiAlpha ?? 1;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(b.x, b.y);
+    const ang = Math.atan2(b.vy, b.vx || 0.001);
+    ctx.rotate(ang + (b.suiyiType === 'binary_digit' ? time * 1.3 : 0));
+    const sizeMul = b.suiyiType === 'error_window' ? 5.7
+      : b.suiyiType === 'chain_thread' ? 6.2
+      : b.suiyiType === 'code_arrow' ? 5.4
+      : b.suiyiType === 'data_cube' ? 4.7
+      : b.suiyiType === 'debug_bit' ? 3.2
+      : b.suiyiType === 'virus_node' ? 4.5
+      : b.suiyiType === 'logic_gate' ? 3.9
+      : b.suiyiType === 'scan_shard' ? 3.7
+      : 4.4;
+    let drawW = b.r * sizeMul * (b.suiyiScale || 1);
+    let drawH = drawW;
+    if (assetReady(key)) {
+      const img = assets[key];
+      const w = drawW;
+      const h = w * (img.height / img.width);
+      drawW = w;
+      drawH = h;
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * 0.48;
+      ctx.drawImage(img, -w * 0.62, -h * 0.62, w * 1.24, h * 1.24);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(img, -w / 2, -h / 2, w, h);
+    } else {
+      const col = b.suiyiType === 'binary_digit' ? '#74f9ff' : (b.color || '#ff79cf');
+      ctx.fillStyle = col;
+      ctx.beginPath();
+      ctx.moveTo(b.r * 2.2, 0); ctx.lineTo(-b.r, -b.r); ctx.lineTo(-b.r * 0.4, 0); ctx.lineTo(-b.r, b.r); ctx.closePath();
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha * 0.92;
+    ctx.strokeStyle = 'rgba(255,30,52,.92)';
+    ctx.lineWidth = Math.max(1.3, b.r * 0.18);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, drawW * 0.42, drawH * 0.42, 0, 0, TAU);
+    ctx.stroke();
+    if (b.suiyiType === 'binary_digit') {
+      ctx.rotate(-ang);
+      ctx.font = 'bold 13px Menlo, Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(((b.suiyiAge * 10 + b.x) | 0) % 2 ? '1' : '0', 0, 5);
+    }
+    ctx.restore();
   }
 
   function draw() {
@@ -14907,6 +16629,7 @@
     drawUltimateEffect();
     drawSpriteFx();
     drawProcRings();
+    drawSuiyiHazards();
     drawEnemyBullets();
     drawWarnings();
     drawLasers();
@@ -14941,22 +16664,23 @@
     drawPerfHud();
   }
 
-  function bgBaseKey() {
-    // Boss arenas glow with the eclipse; the final/rage fight burns blood-red.
-    if (state === 'boss' || state === 'bossIntro' || state === 'bossOutro') {
-      if (bossKind === 'finalboss' || bossPhase >= 4) return assetReady('bgBloodmoon') ? 'bgBloodmoon' : 'bgEclipse';
-      return assetReady('bgEclipse') ? 'bgEclipse' : 'bgStageBase';
-    }
-    // Field stages each have their own animated sky.
-    const STAGE_BG = {
-      stage1: 'bgStage1', stage2: 'bgStage2', stage3: 'bgStage3',
+	  function bgBaseKey() {
+	    // 每个小怪段 / Boss 入场段只抽一次全局底图；科技怪和随意 phase 只加 overlay，不再抢底图。
+	    if (state === 'boss' || state === 'bossIntro' || state === 'bossOutro') {
+	      const bossBg = randomBackgroundState.boss || 'bgEclipse';
+	      return assetReady(bossBg) ? bossBg : (assetReady('bgEclipse') ? 'bgEclipse' : 'bgStageBase');
+	    }
+	    const STAGE_BG = {
+	      stage1: 'bgStage1', stage2: 'bgStage2', stage3: 'bgStage3',
       stage4: 'bgShadowDepths', stage5: 'bgAbyssCore', stage6: 'bgVoidRealm',
       stage7: 'bgChaosRift', stage8: 'bgDarkSanctum',
-      stage9: 'bgBloodmoon', stage10: 'bgEclipse',
-    };
-    const perStage = STAGE_BG[segment] || 'bgStage1';
-    return assetReady(perStage) ? perStage : 'bgStageBase';
-  }
+	      stage9: 'bgBloodmoon', stage10: 'bgEclipse',
+	    };
+	    const picked = randomBackgroundState.field || STAGE_BG[segment] || 'bgStage1';
+	    if (assetReady(picked)) return picked;
+	    const perStage = STAGE_BG[segment] || 'bgStage1';
+	    return assetReady(perStage) ? perStage : 'bgStageBase';
+	  }
 
   function drawBackground() {
     const baseKey = bgBaseKey();
@@ -14972,6 +16696,8 @@
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
     }
+    drawSuiyiBackgroundOverlay();
+    drawSuiyiTechMapFlowOverlay(baseKey);
 
     if (assetReady('bgStageDepth') && perfLevel < 2) {
       ctx.save();
@@ -15209,17 +16935,83 @@
     ctx.restore();
   }
 
+  function drawSuiyiTechEnemyAura(e, bob, size, hpRate) {
+    const pulse = 0.5 + Math.sin(time * 6.2 + e.techSeed) * 0.5;
+    ctx.save();
+    ctx.translate(0, bob);
+    ctx.globalCompositeOperation = 'lighter';
+    const aura = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.82);
+    aura.addColorStop(0, `rgba(255,255,255,${0.10 + pulse * 0.08})`);
+    aura.addColorStop(0.38, `rgba(92,245,255,${0.18 + pulse * 0.08})`);
+    aura.addColorStop(0.72, `rgba(255,92,210,${0.12 + pulse * 0.05})`);
+    aura.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = aura;
+    ctx.beginPath();
+    ctx.arc(0, 0, size * 0.78, 0, TAU);
+    ctx.fill();
+    const ringKey = e.type === 'crystalcompiler' ? 'suiyiMobOrbitRing' : (e.type === 'coredrone' ? 'suiyiMobCrystalRing' : null);
+    if (ringKey && assetReady(ringKey)) {
+      const s = size * (e.type === 'crystalcompiler' ? 1.24 : 0.98) * (0.94 + pulse * 0.12);
+      ctx.save();
+      ctx.rotate(time * (e.type === 'crystalcompiler' ? 0.8 : 1.4));
+      ctx.globalAlpha = 0.42 + pulse * 0.18;
+      ctx.drawImage(assets[ringKey], -s / 2, -s / 2, s, s);
+      ctx.restore();
+    }
+    if (e.type === 'servernode' && assetReady('suiyiCodePanelTall')) {
+      const s = size * 1.16;
+      ctx.globalAlpha = 0.34;
+      ctx.drawImage(assets.suiyiCodePanelTall, -s * 0.52, -s * 0.6, s * 1.04, s * 1.2);
+    }
+    const particles = perfLevel >= 2 ? 3 : (perfLevel === 1 ? 5 : 8);
+    ctx.font = 'bold 9px Menlo, Consolas, monospace';
+    ctx.textAlign = 'center';
+    for (let i = 0; i < particles; i++) {
+      const a = time * (1.1 + i * 0.07) + e.techSeed + i * TAU / particles;
+      const rx = size * (0.34 + (i % 3) * 0.07);
+      const ry = size * (0.24 + (i % 2) * 0.06);
+      const x = Math.cos(a) * rx;
+      const y = Math.sin(a * 1.3) * ry;
+      ctx.globalAlpha = 0.26 + (i % 3) * 0.08;
+      ctx.fillStyle = i % 2 ? 'rgba(255,142,226,.82)' : 'rgba(126,248,255,.78)';
+      if (i % 3 === 0) ctx.fillText(i % 2 ? '01' : '10', x, y + 3);
+      else {
+        ctx.beginPath();
+        ctx.arc(x, y, 1.6 + (i % 2), 0, TAU);
+        ctx.fill();
+      }
+    }
+    if (e.fireTimer > 0 && e.fireTimer < 0.58 && e.y > 40 && e.y < H * 0.65) {
+      const cp = 1 - e.fireTimer / 0.58;
+      const r = size * (0.58 - cp * 0.28);
+      ctx.globalAlpha = 0.42 + cp * 0.46;
+      ctx.strokeStyle = cp > 0.72 ? 'rgba(255,48,72,.98)' : 'rgba(118,248,255,.86)';
+      ctx.lineWidth = 1.6 + cp * 2.2;
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, TAU);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-r * 0.72, 0); ctx.lineTo(r * 0.72, 0);
+      ctx.moveTo(0, -r * 0.72); ctx.lineTo(0, r * 0.72);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
   function drawEnemies() {
     for (const e of enemies) {
       ctx.save();
       ctx.translate(e.x, e.y);
       const hpRate = clamp(e.hp / e.maxHp, 0, 1);
       const bob = Math.sin(time * 6 + e.t) * 4;
+      const size = e.size || 86;
       const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, e.r * 3.0);
       const glowCol = e.tier >= 4 ? 'rgba(255,120,160,.28)' : (e.tier === 3 ? 'rgba(255,210,120,.26)' : 'rgba(170,130,255,.24)');
       glow.addColorStop(0, glowCol);
       glow.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, bob, e.r * 3.0, 0, TAU); ctx.fill();
+      if (isSuiyiTechMobType(e.type)) drawSuiyiTechEnemyAura(e, bob, size, hpRate);
 
       // —— 开火预警（telegraph）：临近开火时显示收缩蓄力环，让玩家预判 ——
       if (e.fireTimer > 0 && e.fireTimer < 0.5 && e.y > 40 && e.y < H * 0.65) {
@@ -15245,7 +17037,6 @@
       let key = `${baseKey}${stateKey}`;
       if (!assetReady(key)) key = `${baseKey}Idle`;  // 回退到idle
       if (!assetReady(key) && assetReady(baseKey)) key = baseKey;  // 单图小怪(无状态帧)直接用基础图
-      const size = e.size || 86;
       if (!assetReady(key)) {
         ctx.fillStyle = e.tier >= 4 ? '#3a1430' : (e.tier === 3 ? '#33184b' : '#24142f');
         ctx.beginPath(); ctx.arc(0, bob, e.r, 0, TAU); ctx.fill();
@@ -15262,6 +17053,7 @@
 
   function drawBoss() {
     if (!boss) return;
+    if (boss.kind === 'suiyi') { drawSuiyiBoss(); return; }
     ctx.save();
     ctx.translate(boss.x, boss.y);
     const a = boss.dead ? Math.max(0, 1 - stateTimer * 0.7) : 1;
@@ -16967,14 +18759,17 @@
     v2galaxy: 'bvGalaxy', v2crescent: 'bvCrescentblue', v2starred: 'bvStarred', v2staryellow: 'bvStaryellow',
     v2starpurple: 'bvStarpurple2', v2knife: 'bvDiamondknife', v2triangle: 'bvTrianglepurple',
     v2reddiamond: 'bvReddiamond', v2ring: 'bvRinggreen', v2redorb: 'bvRedorb',
-    v2candyy: 'bvCandyyellow', v2candyb: 'bvCandyblue', v2flower: 'bvFlowerbloom2', v2note: 'bvMusicnote2'
+    v2candyy: 'bvCandyyellow', v2candyb: 'bvCandyblue', v2flower: 'bvFlowerbloom2', v2note: 'bvMusicnote2',
+    suiyicodebolt: 'suiyiMobCodeBolt', suiyibinaryorb: 'suiyiMobBinaryOrb', suiyicursorshard: 'suiyiMobCursorShard',
+    suiyicrystalring: 'suiyiMobCrystalRing', suiyicrystalshard: 'suiyiMobCrystalShard', suiyicompileburst: 'suiyiMobCompileBurst'
   };
   // V2 贴图弹：整套用 drawImage 渲染；DIR 集合内按速度方向旋转（刃/月牙/三角），其余自旋
   const SPRITE_BULLETS_V2 = new Set([
     'v2tri', 'v2snow', 'v2blossom', 'v2sun', 'v2galaxy', 'v2crescent', 'v2starred', 'v2staryellow',
-    'v2starpurple', 'v2knife', 'v2triangle', 'v2reddiamond', 'v2ring', 'v2redorb', 'v2candyy', 'v2candyb', 'v2flower', 'v2note'
+    'v2starpurple', 'v2knife', 'v2triangle', 'v2reddiamond', 'v2ring', 'v2redorb', 'v2candyy', 'v2candyb', 'v2flower', 'v2note',
+    'suiyicodebolt', 'suiyibinaryorb', 'suiyicursorshard', 'suiyicrystalring', 'suiyicrystalshard', 'suiyicompileburst'
   ]);
-  const SPRITE_BULLETS_V2_DIR = new Set(['v2crescent', 'v2knife', 'v2triangle', 'v2candyy', 'v2candyb']);
+  const SPRITE_BULLETS_V2_DIR = new Set(['v2crescent', 'v2knife', 'v2triangle', 'v2candyy', 'v2candyb', 'suiyicodebolt', 'suiyicursorshard', 'suiyicrystalshard']);
   // 解析子弹颜色为 {r,g,b}（支持 #rgb/#rrggbb/rgba()）
   function parseColor(c) {
     if (!c) return { r: 255, g: 210, b: 110 };
@@ -17088,7 +18883,14 @@
     const budget = perfBudget();
     const drawExtraGlow = budget.bulletGlow && enemyBullets.length < budget.enemyBulletMax * 0.72;
     for (const b of enemyBullets) {
-      const r = b.r;
+	      const r = b.r;
+	      if (b.suiyi) {
+	        drawSuiyiEnemyBullet(b);
+	        drawHostileBulletRimOverlay(b, b.suiyiType === 'error_window' ? 1.48 : 1.26, (b.suiyiAlpha ?? 1) * 0.82);
+	        continue;
+	      }
+	      if (b.suiyiTech) drawSuiyiTechBulletTrail(b);
+	      drawHostileBulletRedEdge(b, b.suiyiTech ? 1.92 : (DIRECTIONAL_BULLETS.has(b.kind) ? 1.66 : 1.48), b.suiyiTech ? 0.86 : (drawExtraGlow ? 0.74 : 0.58));
       // —— V2 海洋贴图弹：整套 drawImage（方向性按速度旋转，其余自旋）+ 加法底光 ——
       if (SPRITE_BULLETS_V2.has(b.kind)) {
         const key = BULLET_KEY[b.kind];
@@ -17101,12 +18903,13 @@
           ctx.translate(b.x, b.y);
           if (SPRITE_BULLETS_V2_DIR.has(b.kind)) ctx.rotate(Math.atan2(b.vy, b.vx) + Math.PI / 2);
           else ctx.rotate((b.rot || 0) + time * 1.8);
-          if (drawExtraGlow) { ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.4; const gs = size * 1.2; ctx.drawImage(img, -gs / 2, -gs * ar / 2, gs, gs * ar); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
-          ctx.drawImage(img, -size / 2, -h / 2, size, h);
-          ctx.restore();
-          continue;
-        }
-      }
+	          if (drawExtraGlow) { ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.4; const gs = size * 1.2; ctx.drawImage(img, -gs / 2, -gs * ar / 2, gs, gs * ar); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
+	          ctx.drawImage(img, -size / 2, -h / 2, size, h);
+	          ctx.restore();
+	          drawHostileBulletRimOverlay(b, b.suiyiTech ? 1.28 : 1.18, b.suiyiTech ? 0.84 : 0.72);
+	          continue;
+	        }
+	      }
       // —— 大型刃/贴图弹：沿速度朝向 + 叠加亮核 ——
       if (SPRITE_BULLETS.has(b.kind)) {
         const key = BULLET_KEY[b.kind];
@@ -17124,12 +18927,13 @@
             ctx.drawImage(assets[key], -size / 2, -size / 2, size, size);
             ctx.globalAlpha = 1;
             ctx.globalCompositeOperation = 'source-over';
-          }
-          ctx.drawImage(assets[key], -size / 2, -size / 2, size, size);
-          ctx.restore();
-          continue;
-        }
-      }
+	          }
+	          ctx.drawImage(assets[key], -size / 2, -size / 2, size, size);
+	          ctx.restore();
+	          drawHostileBulletRimOverlay(b, 1.22, 0.76);
+	          continue;
+	        }
+	      }
 
       const col = b._c || (b._c = parseColor(b.color));
 
@@ -17139,27 +18943,29 @@
         const spr = getDirSprite(col, r);
         ctx.save();
         ctx.translate(b.x, b.y);
-        ctx.rotate(ang);
-        ctx.drawImage(spr.canvas, -spr.pad, -spr.pad);
-        ctx.restore();
-        continue;
-      }
+	        ctx.rotate(ang);
+	        ctx.drawImage(spr.canvas, -spr.pad, -spr.pad);
+	        ctx.restore();
+	        drawHostileBulletRimOverlay(b, 1.20, 0.74);
+	        continue;
+	      }
 
       // —— 圆形/异形"糖果弹"：用缓存精灵 ——
       const shape = BULLET_SHAPE[b.kind] || 'orb';
       const rEff = b.grazed ? r * 1.15 : r;
       const spr = getBulletSprite(shape, col, rEff);
-      if (shape === 'orb') {
-        // 圆形无需旋转，直接贴图（最快路径）
-        ctx.drawImage(spr.canvas, b.x - spr.pad, b.y - spr.pad);
-      } else {
+	      if (shape === 'orb') {
+	        // 圆形无需旋转，直接贴图（最快路径）
+	        ctx.drawImage(spr.canvas, b.x - spr.pad, b.y - spr.pad);
+	      } else {
         ctx.save();
         ctx.translate(b.x, b.y);
         ctx.rotate(b.rot || 0);
-        ctx.drawImage(spr.canvas, -spr.pad, -spr.pad);
-        ctx.restore();
-      }
-    }
+	        ctx.drawImage(spr.canvas, -spr.pad, -spr.pad);
+	        ctx.restore();
+	      }
+	      drawHostileBulletRimOverlay(b, 1.14, 0.68);
+	    }
     ctx.restore();
   }
 
@@ -17198,11 +19004,11 @@
     }
   }
 
-  function drawPlayerHitbox() {
-    if (state === 'title' || state === 'win' || state === 'lose') return;
-    const slow = !!(keys.ShiftLeft || keys.ShiftRight);
-    ctx.save();
-    ctx.translate(player.x, player.y);
+	  function drawPlayerHitbox() {
+	    if (state === 'title' || state === 'win' || state === 'lose') return;
+	    const slow = !!(keys.ShiftLeft || keys.ShiftRight);
+	    ctx.save();
+	    ctx.translate(player.x, player.y);
     // 精准移动时显示判定环贴图（素材 ui_focus_ring）
     if (slow && assetReady('uiFocusRing')) {
       ctx.save();
@@ -17210,25 +19016,42 @@
       ctx.globalCompositeOperation = 'lighter';
       ctx.rotate(time * 1.6);
       const fr = 46;
-      ctx.drawImage(assets.uiFocusRing, -fr, -fr, fr * 2, fr * 2);
-      ctx.restore();
-    }
-    // 真实判定点：极小的核心点，精确显示受伤范围（便于擦弹）
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = '#ff5a78';
-    // 外圈柔光（仅辅助看清，非判定）
-    ctx.globalAlpha = slow ? 0.9 : 0.5;
-    ctx.strokeStyle = 'rgba(120,230,255,0.7)';
-    ctx.lineWidth = 1.4;
-    ctx.beginPath(); ctx.arc(0, 0, 6, 0, TAU); ctx.stroke();
-    // 判定核心（红白点，半径≈hitR）
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = '#ff3b5c';
-    ctx.beginPath(); ctx.arc(0, 0, player.hitR + 1.4, 0, TAU); ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath(); ctx.arc(0, 0, player.hitR, 0, TAU); ctx.fill();
-    ctx.restore();
-  }
+	        ctx.drawImage(assets.uiFocusRing, -fr, -fr, fr * 2, fr * 2);
+	        ctx.restore();
+	      }
+	    const pulse = 0.5 + 0.5 * Math.sin(time * 8.0);
+	    ctx.globalCompositeOperation = 'lighter';
+	    ctx.shadowColor = '#6ff6ff';
+	    ctx.shadowBlur = perfLevel >= 2 ? 0 : 12;
+	    ctx.globalAlpha = slow ? 0.72 : 0.52;
+	    ctx.strokeStyle = 'rgba(110,244,255,0.86)';
+	    ctx.lineWidth = slow ? 2.1 : 1.6;
+	    ctx.beginPath(); ctx.arc(0, 0, slow ? 16 : 11 + pulse * 1.5, 0, TAU); ctx.stroke();
+	    ctx.globalAlpha = slow ? 0.58 : 0.42;
+	    ctx.strokeStyle = 'rgba(255,112,205,0.84)';
+	    ctx.lineWidth = 1.2;
+	    ctx.beginPath(); ctx.arc(0, 0, slow ? 27 : 17 + pulse * 2.2, 0, TAU); ctx.stroke();
+	    ctx.globalAlpha = 0.72;
+	    ctx.strokeStyle = 'rgba(255,248,255,0.82)';
+	    ctx.lineWidth = 1.1;
+	    const arm = slow ? 13 : 9;
+	    ctx.beginPath();
+	    ctx.moveTo(-arm, 0); ctx.lineTo(-player.hitR - 1, 0);
+	    ctx.moveTo(player.hitR + 1, 0); ctx.lineTo(arm, 0);
+	    ctx.moveTo(0, -arm); ctx.lineTo(0, -player.hitR - 1);
+	    ctx.moveTo(0, player.hitR + 1); ctx.lineTo(0, arm);
+	    ctx.stroke();
+	    // 真实判定核心：红色外沿 + 白色中心，半径贴近 player.hitR。
+	    ctx.globalCompositeOperation = 'source-over';
+	    ctx.shadowColor = '#ff365c';
+	    ctx.shadowBlur = perfLevel >= 2 ? 4 : 10;
+	    ctx.globalAlpha = 1;
+	    ctx.fillStyle = '#ff294d';
+	    ctx.beginPath(); ctx.arc(0, 0, player.hitR + 2.1, 0, TAU); ctx.fill();
+	    ctx.fillStyle = '#ffffff';
+	    ctx.beginPath(); ctx.arc(0, 0, Math.max(2.2, player.hitR * 0.82), 0, TAU); ctx.fill();
+	    ctx.restore();
+	  }
 
   function drawWarnings() {
     for (const w of warnings) {
@@ -17551,7 +19374,7 @@
       ctx.fillStyle = '#ffe2ec'; ctx.fillText(boss.name, W / 2, by + 18);
       // 血条
       drawBar(bx + 24, by + 26, bw - 48, 9, boss.hp / boss.maxHp, '#ff4d7f', 'rgba(255,255,255,.14)');
-      const phTotal = boss.kind === 'midboss' ? 3 : 5;
+      const phTotal = boss.kind === 'suiyi' ? 6 : (boss.kind === 'midboss' ? 3 : 5);
       ctx.font = '11px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 2.2; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
       const binfo = `Phase ${Math.min(bossPhase + 1, phTotal)}/${phTotal}   轮回 ${loopCount + 1}`;
@@ -18107,7 +19930,7 @@
     const lines = [
       `FPS ${perfStats.fps.toFixed(1)}  frame ${perfStats.frameMs.toFixed(1)}ms`,
       `upd ${perfStats.updateMs.toFixed(2)}ms  draw ${perfStats.drawMs.toFixed(2)}ms`,
-      `perf ${perfLevel}  mobile ${IS_MOBILE_RUNTIME ? 'Y' : 'N'}`,
+	      `perf ${perfLevel}  quality ${qualityPreset}${qualityAutoSelected ? '/auto' : ''}  mobile ${IS_MOBILE_RUNTIME ? 'Y' : 'N'}`,
       `enemy ${enemies.length}  eBul ${enemyBullets.length}/${budget.enemyBulletMax}`,
       `shot ${playerShots.length}  p ${particles.length}/${budget.particleCap}  fx ${spriteFx.length}/${budget.spriteFxCap}`,
     ];
@@ -18120,7 +19943,7 @@
     ctx.restore();
   }
 
-  function drawOverlay() {
+	  function drawOverlay() {
     if (flash > 0) {
       const hiveLinkFlashCap = motherHiveActive() && motherHive.linkV3.active;
       const flashAlpha = hiveLinkFlashCap ? Math.min(0.10, flash * 0.45) : Math.min(0.72, flash);
@@ -18174,7 +19997,7 @@
 
     if (skillCutin) drawSkillCutin();
     if (pluginToast) drawPluginToast();
-    if (state === 'title') drawTitle();
+	    if (state === 'title') drawTitle();
     if (state === 'win') drawResult('VICTORY', '第一章 · 月蚀终幕已通关，按 R 再来一局', '#fff2a8');
     if (state === 'lose') drawResult('GAME OVER', '按 R 重开', '#ff9cb0');
     if (paused) {
@@ -18182,13 +20005,50 @@
       if (assetReady('uiPausePanel')) ctx.drawImage(assets.uiPausePanel, 92, H * 0.35, W - 184, 280);
       ctx.fillStyle = '#fff4d1'; ctx.font = 'bold 48px Arial'; ctx.textAlign = 'center'; ctx.fillText('PAUSED', W/2, H/2); ctx.restore();
     }
+	  }
+
+  function drawQualitySelector(cx, y, compact = false) {
+    const presets = ['high', 'medium', 'low'];
+    const bw = compact ? 92 : 116;
+    const bh = compact ? 34 : 38;
+    const gap = compact ? 8 : 10;
+    const total = bw * presets.length + gap * (presets.length - 1);
+    const x0 = cx - total / 2;
+    qualityCards = [];
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.font = `bold ${compact ? 13 : 14}px PingFang SC, Microsoft YaHei, sans-serif`;
+    ctx.fillStyle = 'rgba(225,235,255,.72)';
+    ctx.fillText(`画质${qualityAutoSelected ? ' · 自动推荐' : ''}`, cx, y - 10);
+    for (let i = 0; i < presets.length; i++) {
+      const key = presets[i];
+      const q = QUALITY_PRESETS[key];
+      const x = x0 + i * (bw + gap);
+      const on = key === qualityPreset;
+      qualityCards.push({ key, x, y, w: bw, h: bh });
+      if (IS_MOBILE_RUNTIME) registerTouchRect('titleQuality', x - 5, y - 5, bw + 10, bh + 10, key);
+      roundRect(x, y, bw, bh, 10);
+      const g = ctx.createLinearGradient(0, y, 0, y + bh);
+      g.addColorStop(0, on ? 'rgba(120,230,255,.34)' : 'rgba(18,22,38,.78)');
+      g.addColorStop(1, on ? 'rgba(255,104,202,.26)' : 'rgba(8,10,22,.82)');
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.lineWidth = on ? 2.4 : 1.2;
+      ctx.strokeStyle = on ? 'rgba(255,232,255,.86)' : 'rgba(150,180,220,.32)';
+      ctx.stroke();
+      ctx.fillStyle = on ? '#fff6d7' : 'rgba(226,236,255,.72)';
+      ctx.font = `bold ${compact ? 16 : 17}px PingFang SC, Microsoft YaHei, sans-serif`;
+      ctx.fillText(q.label, x + bw * 0.5, y + bh * 0.64);
+    }
+    ctx.restore();
   }
 
-  function drawMobileTitle() {
-    ctx.save();
-    const p = 0.5 + Math.sin(titlePulse * 2.2) * 0.5;
-    characterCards = [];
-    wingCards = [];
+	  function drawMobileTitle() {
+	    ctx.save();
+	    const p = 0.5 + Math.sin(titlePulse * 2.2) * 0.5;
+	    characterCards = [];
+	    wingCards = [];
+	    qualityCards = [];
     ctx.fillStyle = 'rgba(0,0,0,.34)';
     ctx.fillRect(0, 0, W, H);
     const cc = curChar();
@@ -18284,7 +20144,9 @@
       }
     });
 
-    const bx = 92, by = 850, bw = W - 184, bh = 82;
+	    drawQualitySelector(W / 2, 806, true);
+
+	    const bx = 92, by = 856, bw = W - 184, bh = 82;
     registerTouchRect('startGame', bx - 10, by - 10, bw + 20, bh + 20);
     roundRect(bx, by, bw, bh, 22);
     const sg = ctx.createLinearGradient(0, by, 0, by + bh);
@@ -18301,13 +20163,14 @@
     ctx.restore();
   }
 
-  function drawTitle() {
+	  function drawTitle() {
     if (IS_MOBILE_RUNTIME) {
       drawMobileTitle();
       return;
     }
-    ctx.save();
-    const p = 0.5 + Math.sin(titlePulse * 2.2) * 0.5;
+	    ctx.save();
+	    const p = 0.5 + Math.sin(titlePulse * 2.2) * 0.5;
+	    qualityCards = [];
     ctx.fillStyle = 'rgba(0,0,0,.26)'; ctx.fillRect(0,0,W,H);
     const cc = curChar();
     if (assetReady(cc.cutin)) {
@@ -18429,13 +20292,15 @@
     ctx.globalAlpha = 0.5 + p * 0.5;
     ctx.font = 'bold 26px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = '#fff6d7';
     ctx.fillText('点击 / 按 Enter 开始', W/2, H*0.815);
-    ctx.globalAlpha = 0.7;
-    ctx.font = '15px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.8)';
-    ctx.fillText('方向键移动 · Shift 精准 · 空格 技能 · X 大招 · 1/2/3/4/5 换将 · C 换皮肤', W/2, H*0.855);
-    ctx.fillText('Q 圣冕天使降临 · E 夜棺模式切换 · 母巢蝶环仅生命之母出战', W/2, H*0.885);
-    ctx.globalAlpha = 1;
-    ctx.restore();
-  }
+	    ctx.globalAlpha = 0.7;
+	    ctx.font = '15px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.8)';
+	    ctx.fillText('方向键移动 · Shift 精准 · 空格 技能 · X 大招 · 1/2/3/4/5 换将 · C 换皮肤', W/2, H*0.855);
+	    ctx.fillText('Q 圣冕天使降临 · E 夜棺模式切换 · 母巢蝶环仅生命之母出战', W/2, H*0.885);
+	    ctx.globalAlpha = 1;
+	    drawQualitySelector(W / 2, H * 0.925, false);
+	    ctx.globalAlpha = 1;
+	    ctx.restore();
+	  }
 
   // 拾取弹幕插件时弹出的卡片提示（滑入 + 停留 + 淡出）
   function drawPluginToast() {
@@ -18575,13 +20440,14 @@
       // 平滑帧时 + 自适应降级（连续偏慢降一级，连续流畅回升一级）
       if (rawMs > 0 && rawMs < 200) smoothFrameMs += (rawMs - smoothFrameMs) * 0.1;
       perfHoldT += dt;
-      if (smoothFrameMs > (IS_MOBILE_RUNTIME ? 40 : 48) && perfLevel < 2) { perfLevel++; perfHoldT = 0; }
-      else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
-        perfHoldT = 0;
-        if (smoothFrameMs > (IS_MOBILE_RUNTIME ? 27 : 31) && perfLevel < 2) perfLevel++;
-        else if (smoothFrameMs < (IS_MOBILE_RUNTIME ? 18 : 17.2) && perfLevel > MOBILE_BEST_PERF_LEVEL) perfLevel--;
-        if (perfLevel < MOBILE_BEST_PERF_LEVEL) perfLevel = MOBILE_BEST_PERF_LEVEL;
-      }
+	      const targetPerf = qualityTargetPerfLevel();
+	      if (smoothFrameMs > (IS_MOBILE_RUNTIME ? 40 : 48) && perfLevel < 2) { perfLevel++; perfHoldT = 0; }
+	      else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
+	        perfHoldT = 0;
+	        if (smoothFrameMs > (IS_MOBILE_RUNTIME ? 27 : 31) && perfLevel < 2) perfLevel++;
+	        else if (smoothFrameMs < (IS_MOBILE_RUNTIME ? 18 : 17.2) && perfLevel > targetPerf) perfLevel--;
+	        if (perfLevel < targetPerf) perfLevel = targetPerf;
+	      }
       // hit-stop：短暂冻结战斗推进（仍持续绘制），增强终结/重击打击感
       if (hitStop > 0) {
         hitStop -= dt;
@@ -18675,11 +20541,12 @@
 
   function triggerTouchControl(ctrl) {
     if (!ctrl) return false;
-    if (ctrl.type === 'skill') return triggerVirtualSkill(ctrl.key);
-    if (ctrl.type === 'character') { selectChar(ctrl.key); return true; }
-    if (ctrl.type === 'titleCharacter') { selectChar(ctrl.key); return true; }
-    if (ctrl.type === 'titleWing') { toggleWingSelection(ctrl.key); return true; }
-    if (ctrl.type === 'startGame') { startGame(); return true; }
+	    if (ctrl.type === 'skill') return triggerVirtualSkill(ctrl.key);
+	    if (ctrl.type === 'character') { selectChar(ctrl.key); return true; }
+	    if (ctrl.type === 'titleCharacter') { selectChar(ctrl.key); return true; }
+	    if (ctrl.type === 'titleWing') { toggleWingSelection(ctrl.key); return true; }
+	    if (ctrl.type === 'titleQuality') { selectQualityPreset(ctrl.key); return true; }
+	    if (ctrl.type === 'startGame') { startGame(); return true; }
     return false;
   }
 
@@ -18693,31 +20560,6 @@
       player.moveVX = player.x - player.prevX;
       player.moveVY = player.y - player.prevY;
     }
-  }
-
-  // ★ V1.2.1: 移动端相对移动 - 手指按下记录起点，移动时计算位移增量
-  function startTouchDrag(e) {
-    const p = rawCanvasPos(e);
-    touchDragActive = true;
-    touchDragLastX = p.x;
-    touchDragLastY = p.y;
-    touchDragDeltaX = 0;
-    touchDragDeltaY = 0;
-  }
-
-  function updateTouchDrag(e) {
-    if (!touchDragActive) return;
-    const p = rawCanvasPos(e);
-    touchDragDeltaX += (p.x - touchDragLastX);
-    touchDragDeltaY += (p.y - touchDragLastY);
-    touchDragLastX = p.x;
-    touchDragLastY = p.y;
-  }
-
-  function endTouchDrag() {
-    touchDragActive = false;
-    touchDragDeltaX = 0;
-    touchDragDeltaY = 0;
   }
 
   window.addEventListener('keydown', (e) => {
@@ -18756,42 +20598,437 @@
     }
     if (wasTitle) {
       // 点击角色/僚机卡只改变选择，不立即开始游戏。
-      const pt = rawPt;
-      for (const c of characterCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { selectChar(c.key); return; } }
-      for (const c of wingCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { toggleWingSelection(c.key); return; } }
-      if (!IS_MOBILE_RUNTIME) startGame();
+	      const pt = rawPt;
+	      for (const c of characterCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { selectChar(c.key); return; } }
+	      for (const c of wingCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { toggleWingSelection(c.key); return; } }
+	      for (const c of qualityCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { selectQualityPreset(c.key); return; } }
+	      if (!IS_MOBILE_RUNTIME) startGame();
       return;
     }
-    // ★ V1.2.1: 移动端用相对拖拽模式，桌面端用绝对定位模式
-    if (IS_MOBILE_RUNTIME) {
-      startTouchDrag(e);
-    } else {
-      pointerDown = true;
-      setPointerTarget(e, !wasTitle);
-    }
+    pointerDown = true;
+    setPointerTarget(e, !wasTitle);
     canvas.setPointerCapture?.(e.pointerId);
   });
   canvas.addEventListener('pointermove', (e) => {
     if (activeTouchButtonPointer === e.pointerId) return;
-    if (IS_MOBILE_RUNTIME) {
-      updateTouchDrag(e);
-    } else if (pointerDown) {
-      setPointerTarget(e, true);
-    }
+    if (pointerDown) setPointerTarget(e, true);
   });
   canvas.addEventListener('pointerup', (e) => {
     if (activeTouchButtonPointer === e.pointerId) { activeTouchButtonPointer = null; activeTouchControl = null; }
     pointerDown = false; pointerTarget = null;
-    endTouchDrag();
   });
   canvas.addEventListener('pointercancel', (e) => {
     if (activeTouchButtonPointer === e.pointerId) { activeTouchButtonPointer = null; activeTouchControl = null; }
     pointerDown = false; pointerTarget = null;
-    endTouchDrag();
   });
 
   // Prevent mobile scrolling while playing.
   document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+  if (typeof window !== 'undefined') {
+    window.__suiyiBossInternals__ = {
+      phaseSpec: () => ({
+        thresholds: { ...SUIYI_PHASE_HP },
+        forms: [...SUIYI_PHASE_FORMS],
+        names: [...SUIYI_PHASE_NAMES],
+      }),
+      assetSpec: () => ({
+	        maps: [...SUIYI_MAP_KEYS],
+	        boss: ['suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash', 'suiyiDeath'],
+	        bullets: [...SUIYI_BULLET_TYPES],
+	        vfx: ['suiyiErrorWindowLarge', 'suiyiCodeRing', 'suiyiDeadlockChain', 'suiyiCrashCore', 'suiyiCodeRainStrip', 'suiyiTargetLock', 'suiyiCodeWallCone', 'suiyiCodePanelTall', 'suiyiImpactBurst', 'suiyiRecursiveVortexPink', 'suiyiRecursiveVortexCyan'],
+	      }),
+	      mapRotationSpec: () => ({
+	        maps: [...SUIYI_MAP_KEYS],
+	        usesAllFour: SUIYI_MAP_KEYS.length === 4,
+	        avoidImmediateRepeat: false,
+	        baseMapPolicy: 'global-background-pool-selected-on-boss-entry',
+	      }),
+	      randomStageSpec: () => ({
+	        mode: RANDOM_STAGE_MODE,
+	        difficultyCurves: 'smooth-run-pressure-with-loop-soft-add',
+	        waves: 'eligibleStageWaves',
+	        reinforcements: 'eligibleStagePool + enemyCap',
+	        loopsOnStage: 'stage10',
+	      }),
+      bossPoolSpec: () => ({
+        mode: 'global-random-boss-pool',
+        pool: [...GLOBAL_BOSS_POOL],
+        includesSuiyi: GLOBAL_BOSS_POOL.includes('suiyi'),
+        finalBossDoesNotEndRunBeforeStage10: true,
+      }),
+      bulletBehaviorSpec: () => ({
+        types: [...SUIYI_BULLET_TYPES],
+        behaviors: { ...SUIYI_BULLET_BEHAVIORS },
+      }),
+      patternTimelineForTest: (phase) => [...(SUIYI_PHASE_TIMELINE[phase] || [])],
+      systemCrashStepForTest: suiyiSystemCrashStep,
+      selectRandomMapForTest: (previous, seedList) => selectSuiyiRandomMap(previous, seedList),
+    };
+
+    window.__suiyiTechMobInternals__ = {
+      assetSpec: () => ({
+        enemies: ['enSuiyiCodeBug', 'enSuiyiCoreDrone', 'enSuiyiServerNode', 'enSuiyiCrystalCompiler'],
+        bullets: ['suiyiMobCodeBolt', 'suiyiMobBinaryOrb', 'suiyiMobCursorShard', 'suiyiMobCrystalRing', 'suiyiMobCrystalShard', 'suiyiMobCompileBurst'],
+        vfx: ['suiyiMobCompilePlatform', 'suiyiMobOrbitRing', 'suiyiCodeRainStrip', 'suiyiTargetLock', 'suiyiImpactBurst'],
+        maps: [...SUIYI_MAP_KEYS],
+      }),
+      enemySpec: () => SUIYI_TECH_MOB_TYPES.map(type => {
+        const def = ENEMY_DEFS[type];
+        return { type, hp: def.hp, tier: def.tier, fire: def.fire, pattern: def.pattern, move: def.move, sprite: def.sprite, size: def.size };
+      }),
+      cropSpec: () => JSON.parse(JSON.stringify(SUIYI_TECH_MOB_CROPS)),
+      patternSpec: () => [...SUIYI_TECH_MOB_PATTERNS],
+      formationSpec: () => ({
+        formations: [...SUIYI_TECH_MOB_FORMATIONS],
+        moves: [...SUIYI_TECH_MOB_MOVES],
+      }),
+      mapFlowSpec: () => ({
+        maps: [...SUIYI_MAP_KEYS],
+        glyphs: [...SUIYI_TECH_MAP_FLOW.glyphs],
+        colors: [...SUIYI_TECH_MAP_FLOW.colors],
+        particleCount: { ...SUIYI_TECH_MAP_FLOW.particleCount },
+        bossAlpha: SUIYI_TECH_MAP_FLOW.bossAlpha,
+        mobAlpha: SUIYI_TECH_MAP_FLOW.mobAlpha,
+      }),
+      difficultySpec: () => ({
+        ...SUIYI_TECH_MOB_DIFFICULTY,
+        stagePools: Object.fromEntries(Object.entries(STAGE_POOL)
+          .filter(([stage]) => ['stage5', 'stage6', 'stage7', 'stage8', 'stage9', 'stage10'].includes(stage))
+          .map(([stage, pool]) => [stage, pool.filter(type => isSuiyiTechMobType(type))])),
+        globalPoolIncludesAll: SUIYI_TECH_MOB_TYPES.every(type => GLOBAL_STAGE_POOL.includes(type)),
+      }),
+	      selectTechMapForTest: (previous, seedList) => selectSuiyiRandomMap(previous, seedList),
+	    };
+
+    window.__randomBalanceInternals__ = {
+      backgroundPoolSpec: () => ({
+        mode: 'global-equal-random-background-pool',
+        pool: [...GLOBAL_BACKGROUND_POOL],
+        fieldBackgrounds: [...FIELD_BACKGROUND_KEYS],
+        suiyiMaps: [...SUIYI_MAP_KEYS],
+        selectedAt: ['run_start', 'mob_stage_entry', 'boss_entry'],
+        techMobDoesNotReplaceBaseMap: true,
+        selectForTest: (value, pool = GLOBAL_BACKGROUND_POOL) => selectRandomFromPool(pool, value),
+      }),
+      bossPoolSpec: () => ({
+        mode: 'global-equal-random-boss-pool',
+        pool: [...GLOBAL_BOSS_POOL],
+        includesFinalboss: GLOBAL_BOSS_POOL.includes('finalboss'),
+        includesSuiyi: GLOBAL_BOSS_POOL.includes('suiyi'),
+        loopsOnlyOnStage10: true,
+      }),
+      growthCurveSpec: () => ({
+        mode: 'smooth-survivorlike-pressure',
+        samples: {
+          start: growthCurveAt(0, 0, 0, 1),
+          thirtySeconds: growthCurveAt(30, 0, 60, 1),
+          sixMinutes: growthCurveAt(360, 0, 800, 1),
+          tenMinutes: growthCurveAt(600, 0, 1400, 1),
+          loopTwo: growthCurveAt(600, 2, 1600, 1),
+        },
+        formulas: {
+          runPressure: 'clamp(elapsed / 600, 0, 1)',
+          extraWaves: 'max(0, floor((elapsed - 75) / 75) + loopCount), capped by quality',
+        },
+      }),
+      waveUnlockSpec: () => ({
+        mode: RANDOM_STAGE_MODE,
+        at0: eligibleStageKeys(0, 0),
+        at60: eligibleStageKeys(60, 0),
+        at210: eligibleStageKeys(210, 0),
+        at480: eligibleStageKeys(480, 0),
+        at720: eligibleStageKeys(720, 0),
+        loopOneAt0: eligibleStageKeys(0, 1),
+        bonusCounts: {
+          start: bonusEnemyCountAt(0, 0, 1),
+          thirtySeconds: bonusEnemyCountAt(30, 0, 1),
+          twoMinutes: bonusEnemyCountAt(120, 0, 1),
+          tenMinutesLow: bonusEnemyCountAt(600, 0, 2),
+        },
+        earlyPool: eligibleStagePool(0, 0),
+        latePoolIncludesTech: SUIYI_TECH_MOB_TYPES.every(type => eligibleStagePool(480, 0).includes(type)),
+      }),
+      qualityBudgetSpec: () => ({
+        presets: JSON.parse(JSON.stringify(QUALITY_PRESETS)),
+        current: { qualityPreset, qualityAutoSelected, perfLevel, probePerfLevel: qualityProbePerfLevel },
+        desktop: PERF_BUDGETS.desktop.map(b => ({ ...b })),
+        mobile: PERF_BUDGETS.mobile.map(b => ({ ...b })),
+      }),
+      claritySpec: () => ({
+        hostileBullet: {
+          redEdge: { ...HOSTILE_BULLET_RED_EDGE },
+          baseLayer: 'drawHostileBulletRedEdge',
+          topRimLayer: 'drawHostileBulletRimOverlay',
+          lowQualityKeepsRim: true,
+        },
+        playerHitbox: {
+          alwaysVisible: true,
+          core: 'white-center-red-real-hit-radius',
+          outerRing: 'cyan-pink-pulse',
+          focusRingWhenSlow: true,
+        },
+      }),
+      techMobBaseMapIsolationForTest: () => {
+        const prevState = state;
+        const prevField = randomBackgroundState.field;
+        const prevTimer = suiyiTechMobMapState.activeTimer;
+        const prevEnemies = enemies.slice();
+        state = 'mobs';
+        randomBackgroundState.field = 'bgStage1';
+        suiyiTechMobMapState.current = 'suiyiMapVirtualCore';
+        suiyiTechMobMapState.activeTimer = 9;
+        enemies.length = 0;
+        enemies.push({ type: 'codebug' });
+        const before = 'bgStage1';
+        const after = bgBaseKey();
+        const overlay = isSuiyiTechMobMapActive();
+        enemies.length = 0;
+        for (const e of prevEnemies) enemies.push(e);
+        suiyiTechMobMapState.activeTimer = prevTimer;
+        randomBackgroundState.field = prevField;
+        state = prevState;
+        return { before, after, overlay };
+      },
+    };
+
+	    window.__suiyiBossCapture__ = {
+      prepare(scene = 'idle') {
+        bossKind = 'suiyi';
+        boss = null;
+        state = 'boss';
+        stateTimer = 0;
+        patternTimer = 0;
+        enemyBullets.length = 0;
+        warnings.length = 0;
+        lasers.length = 0;
+        suiyiHazards.length = 0;
+        suiyiFx.length = 0;
+        player.x = W * 0.5;
+        player.y = H - 180;
+        spawnBoss();
+        boss.inv = 0;
+	        const phaseByScene = {
+	          idle: 0, maps: 0, rain: 1, ring: 1, syntax: 3,
+	          recursive: 2, deadlock: 4, hotfix: 4, crash: 5,
+	          snake: 2, virus: 4,
+	        };
+        const phase = phaseByScene[scene] ?? 0;
+        const rates = [0.95, 0.76, 0.58, 0.38, 0.20, 0.08];
+        boss.hp = boss.maxHp * rates[phase];
+        updateSuiyiBoss(1 / 60);
+        if (scene === 'maps') rotateSuiyiMap(phase);
+        if (scene === 'rain') { suiyiCodeArrowRain(phase); suiyiBinaryWaterfall(phase); }
+        if (scene === 'ring') suiyiFunctionCallRing(phase);
+        if (scene === 'syntax') suiyiSyntaxError(phase);
+	        if (scene === 'recursive') { for (let i = 0; i < 12; i++) suiyiRecursiveSpiral(phase); }
+	        if (scene === 'deadlock') { suiyiDeadlockThreads(phase); suiyiMemoryLeak(phase); }
+	        if (scene === 'hotfix') suiyiHotfixRewrite(phase);
+	        if (scene === 'snake') { suiyiCodeSnakeWeave(phase); suiyiBinaryGateSweep(phase); suiyiDebugGridWeave(phase); }
+	        if (scene === 'virus') { suiyiVirusBloom(phase); suiyiTargetLockFork(phase); suiyiOverclockCrossLanes(phase); }
+	        if (scene === 'crash') { suiyiSystemCrash(45, 1 / 60); addSuiyiFx('crash_core', boss.x, boss.y, 1.2); }
+        messageTimer = 0;
+        screenShake = 0;
+        flash = 0;
+        draw();
+        return { bossPhase, map: suiyiMapState.current, bullets: enemyBullets.length, hazards: suiyiHazards.length };
+      },
+      step(frames = 30, dt = 1 / 60) {
+        for (let i = 0; i < frames; i++) {
+          time += dt;
+          stateTimer += dt;
+          updateSuiyiBoss(dt);
+          updateEnemyBullets(dt);
+          updateWarnings(dt);
+          updateLasers(dt);
+          updateSpriteFx(dt);
+          updateParticles(dt);
+          updateDamageTexts(dt);
+        }
+        draw();
+        return { bossPhase, map: suiyiMapState.current, bullets: enemyBullets.length, hazards: suiyiHazards.length };
+      },
+    };
+
+	    window.__suiyiTechMobCapture__ = {
+	      prepare(scene = 'mixed') {
+        state = 'mobs';
+        stateTimer = 0;
+        segment = 'stage8';
+        boss = null;
+        bossKind = '';
+        enemies.length = 0;
+        enemyBullets.length = 0;
+        warnings.length = 0;
+        lasers.length = 0;
+        suiyiHazards.length = 0;
+        suiyiFx.length = 0;
+        particles.length = 0;
+        spriteFx.length = 0;
+        message = '';
+        messageTimer = 0;
+        flash = 0;
+        screenShake = 0;
+        player.x = W * 0.5;
+        player.y = H - 170;
+        const sceneMaps = {
+          map: 'suiyiMapVirtualCore',
+          codebug: 'suiyiMapControlHall',
+          coredrone: 'suiyiMapDigitalRuins',
+          servernode: 'suiyiMapCrystalSanctum',
+          crystalcompiler: 'suiyiMapVirtualCore',
+          mixed: 'suiyiMapControlHall',
+        };
+        suiyiTechMobMapState.previous = null;
+        suiyiTechMobMapState.current = sceneMaps[scene] || 'suiyiMapVirtualCore';
+        suiyiTechMobMapState.transition = 1;
+        suiyiTechMobMapState.activeTimer = 12;
+        suiyiTechMobMapState.lastSwap = time;
+        if (scene === 'codebug') spawnFormation('codeGrid', 'codebug', 9);
+        else if (scene === 'coredrone') spawnFormation('compilerChevron', 'coredrone', 5);
+        else if (scene === 'servernode') spawnFormation('terminalColumn', 'servernode', 4);
+        else if (scene === 'crystalcompiler') spawnFormation('compilerChevron', 'crystalcompiler', 4);
+        else if (scene === 'mixed') {
+          spawnFormation('codeGrid', 'codebug', 8);
+          spawnFormation('compilerChevron', 'coredrone', 3);
+          spawnFormation('terminalColumn', 'servernode', 2);
+          spawnFormation('techPincer', 'crystalcompiler', 3);
+        }
+        suiyiTechMobMapState.previous = null;
+        suiyiTechMobMapState.current = sceneMaps[scene] || 'suiyiMapVirtualCore';
+        suiyiTechMobMapState.transition = 1;
+        suiyiTechMobMapState.activeTimer = 12;
+        suiyiTechMobMapState.lastSwap = time;
+        for (let i = 0; i < enemies.length; i++) {
+          const e = enemies[i];
+          e.y = clamp(enemyHoverY(e) + (i % 3 - 1) * 26, 118, H * 0.55);
+          e.x = clamp(e.homeX || e.x, 70, W - 70);
+          e.homeX = e.x;
+          e.vx = 0;
+          e.vy = 0;
+          e.t = 1.2 + i * 0.08;
+          e.fireTimer = 0.04 + (i % 3) * 0.03;
+        }
+        for (const e of enemies) {
+          if (enemyBullets.length < perfBudget().mobSoftCap * 0.72) {
+            enemyFire(e);
+            e.fireTimer = e.fireBase * (0.82 + (e.techSeed % 0.4));
+          }
+        }
+        updateSuiyiTechMobMap(1 / 60);
+        draw();
+        return { scene, map: suiyiTechMobMapState.current, enemies: enemies.length, bullets: enemyBullets.length };
+      },
+      step(frames = 42, dt = 1 / 60) {
+        for (let i = 0; i < frames; i++) {
+          time += dt;
+          stateTimer += dt;
+          updateSuiyiTechMobMap(dt);
+          updateEnemies(dt);
+          updateEnemyBullets(dt);
+          updateWarnings(dt);
+          updateLasers(dt);
+          updateSpriteFx(dt);
+          updateParticles(dt);
+          updateDamageTexts(dt);
+        }
+        draw();
+	        return { map: suiyiTechMobMapState.current, enemies: enemies.length, bullets: enemyBullets.length, warnings: warnings.length };
+	      },
+	    };
+
+    window.__randomBalanceCapture__ = {
+      prepare(scene = 'early') {
+        reset();
+        state = 'mobs';
+        stateTimer = 6;
+        message = '';
+        messageTimer = 0;
+        boss = null;
+        bossKind = '';
+        enemies.length = 0;
+        enemyBullets.length = 0;
+        warnings.length = 0;
+        lasers.length = 0;
+        particles.length = 0;
+        spriteFx.length = 0;
+        suiyiTechMobMapState.activeTimer = 0;
+        suiyiTechMobMapState.previous = null;
+        suiyiTechMobMapState.transition = 0;
+        player.x = W * 0.5;
+        player.y = H - 170;
+        if (scene === 'normal_map_tech_mob') {
+          elapsed = 260;
+          randomBackgroundState.field = 'bgStage1';
+          spawnFormation('codeGrid', 'codebug', 7);
+        } else if (scene === 'tech_map_normal_mob') {
+          elapsed = 120;
+          randomBackgroundState.field = 'suiyiMapVirtualCore';
+          spawnFormation('vshape', 'familiar', 5);
+          spawnFormation('arc', 'jelly', 3);
+        } else if (scene === 'late') {
+          elapsed = 360;
+          randomBackgroundState.field = 'bgDarkSanctum';
+          spawnFormation('diamond', 'warlock', 7);
+          spawnFormation('pincer', 'coredrone', 4);
+          spawnBonusEnemies();
+        } else if (scene === 'mobile_low') {
+          elapsed = 520;
+          perfLevel = 2;
+          qualityPreset = 'low';
+          qualityAutoSelected = false;
+          randomBackgroundState.field = 'suiyiMapDigitalRuins';
+          spawnFormation('codeGrid', 'codebug', 8);
+          spawnFormation('compilerChevron', 'coredrone', 4);
+          spawnFormation('terminalColumn', 'servernode', 2);
+        } else if (scene === 'clarity') {
+          elapsed = 300;
+          randomBackgroundState.field = 'bgBloodmoon';
+          spawnFormation('arc', 'familiar', 5);
+          for (let i = 0; i < 30; i++) {
+            const a = -Math.PI * 0.88 + i * (Math.PI * 0.76 / 29);
+            const x = W * 0.5 + Math.cos(a) * 220;
+            const y = H * 0.48 + Math.sin(a) * 120;
+            addEnemyBullet(x, y, Math.cos(a + Math.PI * 0.5) * 70, Math.sin(a + Math.PI * 0.5) * 70, i % 3 ? 7 : 9, i % 2 ? '#9fe8ff' : '#ffcf7a', 7, 6, i % 2 ? 'needleblue' : 'orb');
+          }
+        } else {
+          elapsed = 30;
+          randomBackgroundState.field = 'bgStage2';
+          spawnFormation('row', 'bat', 5);
+          spawnFormation('vshape', 'familiar', 4);
+        }
+        for (const e of enemies) {
+          e.y = clamp(enemyHoverY(e), 120, H * 0.58);
+          e.homeX = clamp(e.homeX || e.x, 70, W - 70);
+          e.x = e.homeX;
+          e.vx = 0;
+          e.vy = 0;
+          e.fireTimer = 0.05 + (e.techSeed % 0.12);
+        }
+        for (const e of enemies) {
+          if (enemyBullets.length < perfBudget().mobSoftCap * 0.65) enemyFire(e);
+        }
+        draw();
+        return { scene, map: bgBaseKey(), enemies: enemies.length, bullets: enemyBullets.length, perfLevel, qualityPreset };
+      },
+      step(frames = 36, dt = 1 / 60) {
+        for (let i = 0; i < frames; i++) {
+          time += dt;
+          stateTimer += dt;
+          updateSuiyiTechMobMap(dt);
+          updateEnemies(dt);
+          updateEnemyBullets(dt);
+          updateWarnings(dt);
+          updateLasers(dt);
+          updateSpriteFx(dt);
+          updateParticles(dt);
+          updateDamageTexts(dt);
+        }
+        draw();
+        return { map: bgBaseKey(), enemies: enemies.length, bullets: enemyBullets.length, perfLevel, qualityPreset };
+      },
+    };
+	  }
 
   if (window.__PAGE_BUILD_VERSION__ && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', () => {
