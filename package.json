@@ -7,10 +7,13 @@
     "test": "tests"
   },
   "scripts": {
-    "build:pages": "python3 tools/build_pages.py",
+    "build:pages": "node tools/run_python.js tools/build_pages.py",
     "smoke:pages": "node tools/smoke_pages.js",
     "syntax": "node tests/saint-wing-berserk/syntax-check.js",
-    "test": "cd tests/saint-wing-berserk && npm test"
+    "regression": "cd tests/saint-wing-berserk && npm run regression",
+    "test": "cd tests/saint-wing-berserk && npm test",
+    "capture:mhr-v3": "node tools/capture_mother_hive_v3_acceptance.js",
+    "capture:mhr-crystal": "node tools/capture_mother_hive_crystal_acceptance.js"
   },
   "keywords": [],
   "author": "",

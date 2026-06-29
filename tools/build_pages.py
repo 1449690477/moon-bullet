@@ -24,6 +24,7 @@ DIST = ROOT / "docs"
 MOBILE_DIR = DIST / "assets_mobile"
 IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 AUDIO_EXTS = {".ogg", ".wav", ".mp3", ".m4a"}
+MHR_BLACKHOLE_SEQUENCE_PHASES = {"deploy": 16, "loop": 32, "overload": 16, "collapse": 12}
 
 
 def read_index() -> str:
@@ -52,6 +53,16 @@ def extract_const_object(source: str, name: str) -> dict[str, str]:
     body = source[start + 1 : end]
     pairs = re.findall(r"\n\s*([A-Za-z0-9_]+):\s*['\"]([^'\"]+)['\"]", body)
     return dict(pairs)
+
+
+def augment_mother_hive_sequence_assets(asset_paths: dict[str, str]) -> None:
+    base = "assets/companions/mother_hive_ring/ultimate_link/blackhole_sequence"
+    for phase, count in MHR_BLACKHOLE_SEQUENCE_PHASES.items():
+        cap = phase[:1].upper() + phase[1:]
+        for i in range(count):
+            idx = f"{i:03d}"
+            key = f"mhrBhSeq{cap}{idx}"
+            asset_paths[key] = f"{base}/{phase}/bh_{phase}_{idx}.png"
 
 
 def clean_dist() -> None:
@@ -156,6 +167,7 @@ self.addEventListener('fetch', event => {{
 def main() -> None:
     source = read_index()
     asset_paths = extract_const_object(source, "ASSET_PATHS")
+    augment_mother_hive_sequence_assets(asset_paths)
     bgm_paths = extract_const_object(source, "BGM_PATHS")
     sfx_paths = extract_const_object(source, "SFX_PATHS")
 

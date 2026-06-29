@@ -27,7 +27,33 @@ const path = require('path');
 // ─── 配置 ───────────────────────────────────────────
 const DOCS_DIR = path.resolve(process.argv[2] || path.join(__dirname, '..', 'docs'));
 const PORT = 18765;
-const TIMEOUT = 25000; // 每个场景超时 ms
+const TIMEOUT = 60000; // 每个场景超时 ms（V1.2 资源量增大，提高到 60s）
+
+function browserExecutablePath() {
+  const candidates = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
+    process.env.CHROME_PATH,
+  ].filter(Boolean);
+
+  if (process.platform === 'win32') {
+    const pf = process.env.ProgramFiles || 'C:\\Program Files';
+    const pf86 = process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)';
+    const local = process.env.LOCALAPPDATA || '';
+    candidates.push(
+      path.join(pf, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+      path.join(pf86, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+      local && path.join(local, 'Google', 'Chrome', 'Application', 'chrome.exe'),
+      path.join(pf, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+      path.join(pf86, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+    );
+  } else if (process.platform === 'darwin') {
+    candidates.push('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
+  } else {
+    candidates.push('/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser');
+  }
+
+  return candidates.find((p) => p && fs.existsSync(p));
+}
 
 // 三种测试场景
 const SCENARIOS = [
@@ -164,7 +190,9 @@ async function runScenario(browser, scenario, baseUrl) {
   });
 
   try {
-    await page.goto(baseUrl, { waitUntil: 'networkidle0', timeout: TIMEOUT });
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
+    // 给游戏初始化一些时间（不等待所有资源加载完）
+    await new Promise(r => setTimeout(r, 3000));
 
     // 提取运行时信息
     const runtimeInfo = await page.evaluate(() => {
@@ -241,12 +269,16 @@ async function main() {
 
     // 启动 Chrome
     console.log('[2/4] 启动 Chrome...');
+    const executablePath = browserExecutablePath();
+    if (!executablePath) {
+      throw new Error('找不到 Chrome/Edge。可设置 PUPPETEER_EXECUTABLE_PATH 指向浏览器可执行文件。');
+    }
     browser = await puppeteer.launch({
       headless: 'new',
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+      executablePath,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
     });
-    console.log('       → Chrome 已启动');
+    console.log(`       → Chrome/Edge 已启动: ${executablePath}`);
 
     // 运行各场景
     console.log('[3/4] 运行烟测场景...\n');

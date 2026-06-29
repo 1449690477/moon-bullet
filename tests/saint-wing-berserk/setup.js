@@ -4,6 +4,7 @@ import vm from 'node:vm';
 const indexUrl = new URL('../../index.html', import.meta.url);
 let cachedInternals = null;
 let cachedMotherLifeInternals = null;
+let cachedMotherHiveInternals = null;
 
 function makeGradient() {
   return { addColorStop() {} };
@@ -124,6 +125,7 @@ export function loadInternals() {
   vm.runInContext(script, context, { filename: 'index.html', timeout: 5000 });
   cachedInternals = context.window.__saintWingBerserkInternals__;
   cachedMotherLifeInternals = context.window.__motherLifeInternals__;
+  cachedMotherHiveInternals = context.window.__motherHiveInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
   return cachedInternals;
 }
@@ -133,6 +135,13 @@ export function loadMotherLifeInternals() {
   loadInternals();
   if (!cachedMotherLifeInternals) throw new Error('window.__motherLifeInternals__ was not exposed');
   return cachedMotherLifeInternals;
+}
+
+export function loadMotherHiveInternals() {
+  if (cachedMotherHiveInternals) return cachedMotherHiveInternals;
+  loadInternals();
+  if (!cachedMotherHiveInternals) throw new Error('window.__motherHiveInternals__ was not exposed');
+  return cachedMotherHiveInternals;
 }
 
 export function makeCtxIn(opts = {}) {
