@@ -14,7 +14,8 @@ const SCENES = [
   ['panel', '02_top50_leaderboard_panel.png', 26],
   ['result', '03_result_upload_status.png', 20],
   ['name', '04_name_avatar_dialog.png', 12],
-  ['hell_prompt', '05_hell_mode_prompt.png', 12],
+  ['guestbook', '05_guestbook_message_dialog.png', 12],
+  ['hell_prompt', '06_hell_mode_prompt.png', 12],
 ];
 
 function browserExecutablePath() {

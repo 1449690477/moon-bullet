@@ -8,6 +8,9 @@ const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: 
 
 const TOKEN_TTL_MS = 2 * 60 * 60 * 1000;
 const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife"]);
+const GUESTBOOK_ID_MAX = 16;
+const GUESTBOOK_NAME_MAX = 12;
+const GUESTBOOK_MESSAGE_MAX = 96;
 const ALLOWED_ORIGINS = new Set([
   "https://1449690477.github.io",
   "http://localhost:18765",
@@ -63,6 +66,18 @@ function normalizedAvatar(value: unknown) {
   if (value.length > 22000) return null;
   if (!value.startsWith("data:image/")) return null;
   return value;
+}
+
+function cleanDisplayText(value: unknown, maxChars: number) {
+  const cleaned = String(value ?? "")
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return [...cleaned].slice(0, maxChars).join("");
+}
+
+function charLength(value: string) {
+  return [...String(value || "")].length;
 }
 
 Deno.serve(async (req) => {
@@ -203,9 +218,34 @@ Deno.serve(async (req) => {
       return json(req, { ok: true, status: "accepted" });
     }
 
+    if (action === "message") {
+      const p = await req.json();
+      const player_id = cleanDisplayText(p.player_id, GUESTBOOK_ID_MAX);
+      const player_name = cleanDisplayText(p.player_name, GUESTBOOK_NAME_MAX) || "匿名玩家";
+      const message = cleanDisplayText(p.message, GUESTBOOK_MESSAGE_MAX);
+      const reject: string[] = [];
+
+      if (charLength(player_id) < 1 || charLength(player_id) > GUESTBOOK_ID_MAX) reject.push("invalid id");
+      if (charLength(player_name) < 1 || charLength(player_name) > GUESTBOOK_NAME_MAX) reject.push("invalid name");
+      if (charLength(message) < 1 || charLength(message) > GUESTBOOK_MESSAGE_MAX) reject.push("invalid message");
+
+      if (reject.length) {
+        return json(req, { ok: false, status: "rejected", reasons: reject }, 400);
+      }
+
+      const { error } = await admin.from("guestbook_messages").insert({
+        player_id,
+        player_name,
+        message,
+        avatar_data: normalizedAvatar(p.avatar_data),
+      });
+
+      if (error) return json(req, { ok: false, error: error.message }, 500);
+      return json(req, { ok: true, status: "accepted" });
+    }
+
     return json(req, { ok: false, error: "unknown action" }, 404);
   } catch (e) {
     return json(req, { ok: false, error: String((e as Error)?.message ?? e) }, 500);
   }
 });
-

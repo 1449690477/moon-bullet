@@ -85,8 +85,19 @@ describe('online leaderboard and avatar upload spec', () => {
     const ui = board.uiSpec();
     expect(ui.mode).toBe('moon-eclipse-glass-panel-with-avatar-ranking');
     expect(ui.avatarUpload).toBe(true);
+    expect(ui.pagination).toBe(true);
+    expect(ui.companionGuestbook).toBe(true);
     expect(ui.backgroundAssets).toEqual(expect.arrayContaining(['suiyiMapVirtualCore', 'bgEclipse', 'uiEmblemLoop']));
-    expect(ui.buttons).toEqual(expect.arrayContaining(['titleOpen', 'resultRetry', 'resultProfile']));
+    expect(ui.buttons).toEqual(expect.arrayContaining(['titleOpen', 'resultRetry', 'resultProfile', 'leaderboardPrev', 'leaderboardNext', 'guestbookCompose']));
+    expect(ui.panels).toEqual(expect.arrayContaining(['top50LeaderboardPanel', 'guestbookSidePanel', 'guestbookMessageDialog']));
+  });
+
+  it('paginates Top 50 rows instead of capping the board at one visible screen', () => {
+    const page = board.leaderboardPaginationSpecForTest(1080, 50);
+    expect(page.enabled).toBe(true);
+    expect(page.topLimit).toBe(50);
+    expect(page.rowsPerPage).toBeGreaterThanOrEqual(17);
+    expect(page.pageCount).toBeGreaterThan(1);
   });
 
   it('requires hell mode for leaderboard eligibility and defaults it on', () => {
@@ -120,5 +131,32 @@ describe('online leaderboard and avatar upload spec', () => {
     const rows = board.sampleRowsForTest();
     expect(board.rankForTest(rows, rows[0].player_name)).toBe(1);
     expect(board.rankForTest(rows, 'not-on-board')).toBe(null);
+  });
+
+  it('defines a blue-pink guestbook with avatar upload and function-backed writes', () => {
+    const guestbook = board.guestbookSpec();
+    expect(guestbook.mode).toBe('blue-pink-fresh-cute-side-guestbook');
+    expect(guestbook.table).toBe('guestbook_messages');
+    expect(guestbook.limit).toBe(20);
+    expect(guestbook.avatarUpload).toBe(true);
+    expect(guestbook.directClientWrites).toBe(false);
+    expect(guestbook.publicReadFunctionWrite).toBe(true);
+    expect(guestbook.writeEndpoint).toBe(`${board.writeEndpointForTest()}/message`);
+
+    const payload = board.buildGuestbookPayloadForTest({
+      player_id: '  ID  01  ',
+      player_name: '苏苏呀',
+      message: '  你好   月蚀  ',
+      avatar_data: 'data:image/webp;base64,abc',
+    });
+    expect(payload).toEqual({
+      player_id: 'ID 01',
+      player_name: '苏苏呀',
+      message: '你好 月蚀',
+      avatar_data: 'data:image/webp;base64,abc',
+    });
+    expect(board.validateGuestbookPayloadForTest(payload).ok).toBe(true);
+    expect(board.validateGuestbookPayloadForTest({ ...payload, message: '' }).ok).toBe(false);
+    expect(board.normalizeGuestbookMessageForTest('x'.repeat(140))).toHaveLength(96);
   });
 });
