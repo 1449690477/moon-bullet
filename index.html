@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" href="data:," />
-  <title>月蚀弹幕 V1.3 - 随意降临版</title>
+  <title>月蚀弹幕 V1.3.1 - 随意降临优化版</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; background:#020208; overflow: hidden; }
@@ -64,7 +64,7 @@
     鼠标/手机：按住拖动角色移动。点击开始后会启用BGM与音效。按 M 可开关音乐。
   </div>
   <div id="musicStatus">BGM：点击开始后播放</div>
-  <div id="badge">V1.3 随意降临 / Suiyi Update</div>
+  <div id="badge">V1.3.1 随意降临优化 / Suiyi Hotfix</div>
   <script>
 (() => {
   'use strict';
@@ -783,10 +783,10 @@
     suiyiMobOrbitRing: { src: '小怪和弹幕04.png', box: [975, 439, 1145, 597] },
   });
   const SUIYI_TECH_MOB_DIFFICULTY = Object.freeze({
-    poolMode: 'global-random-high-tier-pool',
-    pressure: 'high-readable',
-    joinsFromStage: 'stage5',
-    directWavesFromStage: 'stage7',
+    poolMode: 'exclusive-tech-theme-pool',
+    pressure: 'high-readable-dedicated-theme',
+    joinsFromStage: 'tech-map-only',
+    directWavesFromStage: 'tech-map-only',
   });
   const SUIYI_TECH_MAP_FLOW = Object.freeze({
     glyphs: ['0101', '1010', '</>', '{}'],
@@ -1117,14 +1117,14 @@
 
   const PERF_BUDGETS = {
     desktop: [
-      { enemyBulletMax: 760, mobSoftCap: 145, bossSoftCap: 280, particleCap: 300, spriteFxCap: 42, ringCap: 34, enemyCap: 42, bulletGlow: true, killBurstMul: 0.92 },
-      { enemyBulletMax: 520, mobSoftCap: 105, bossSoftCap: 190, particleCap: 190, spriteFxCap: 28, ringCap: 20, enemyCap: 34, bulletGlow: false, killBurstMul: 0.60 },
-      { enemyBulletMax: 320, mobSoftCap: 68, bossSoftCap: 120, particleCap: 90, spriteFxCap: 14, ringCap: 10, enemyCap: 26, bulletGlow: false, killBurstMul: 0.32 },
+      { enemyBulletMax: 820, mobSoftCap: 170, bossSoftCap: 320, particleCap: 300, spriteFxCap: 42, ringCap: 34, enemyCap: 52, bulletGlow: true, killBurstMul: 0.92 },
+      { enemyBulletMax: 560, mobSoftCap: 125, bossSoftCap: 220, particleCap: 190, spriteFxCap: 28, ringCap: 20, enemyCap: 42, bulletGlow: false, killBurstMul: 0.60 },
+      { enemyBulletMax: 340, mobSoftCap: 82, bossSoftCap: 140, particleCap: 90, spriteFxCap: 14, ringCap: 10, enemyCap: 32, bulletGlow: false, killBurstMul: 0.32 },
     ],
     mobile: [
-      { enemyBulletMax: 420, mobSoftCap: 84, bossSoftCap: 150, particleCap: 130, spriteFxCap: 20, ringCap: 12, enemyCap: 30, bulletGlow: false, killBurstMul: 0.50 },
-      { enemyBulletMax: 300, mobSoftCap: 64, bossSoftCap: 110, particleCap: 85, spriteFxCap: 14, ringCap: 8, enemyCap: 24, bulletGlow: false, killBurstMul: 0.38 },
-      { enemyBulletMax: 220, mobSoftCap: 48, bossSoftCap: 82, particleCap: 45, spriteFxCap: 8, ringCap: 5, enemyCap: 18, bulletGlow: false, killBurstMul: 0.24 },
+      { enemyBulletMax: 440, mobSoftCap: 96, bossSoftCap: 168, particleCap: 130, spriteFxCap: 20, ringCap: 12, enemyCap: 36, bulletGlow: false, killBurstMul: 0.50 },
+      { enemyBulletMax: 320, mobSoftCap: 72, bossSoftCap: 124, particleCap: 85, spriteFxCap: 14, ringCap: 8, enemyCap: 30, bulletGlow: false, killBurstMul: 0.38 },
+      { enemyBulletMax: 240, mobSoftCap: 54, bossSoftCap: 92, particleCap: 45, spriteFxCap: 8, ringCap: 5, enemyCap: 24, bulletGlow: false, killBurstMul: 0.24 },
     ],
   };
   function perfBudget() {
@@ -1226,19 +1226,19 @@
   let extraSpawned = 0;     // 当前关卡已额外刷出的肉鸽波次
   function runPressureAt(t = elapsed) { return Math.max(0, Math.min(1, t / 600)); }
   function extraWavesAt(t = elapsed, loops = loopCount, level = perfLevel) {
-    const base = Math.max(0, Math.floor((t - 75) / 75) + loops);
-    const cap = Math.max(1, 4 + loops * 2 + (level === 0 ? 2 : level === 1 ? 1 : 0));
+    const base = Math.max(0, Math.floor((t - 50) / 55) + loops);
+    const cap = Math.max(2, 6 + loops * 2 + (level === 0 ? 3 : level === 1 ? 1 : 0));
     return Math.min(cap, base);
   }
   function growthCurveAt(t = elapsed, loops = loopCount, kills = killCount, level = perfLevel) {
     const p = runPressureAt(t);
     return {
       pressure: p,
-      diffMul: 1 + p * 1.6 + loops * 0.28,
-      hpMul: Math.min(6.0, 1 + p * 1.9 + loops * 0.45),
-      smallHpMul: Math.min(4.8, 1 + p * 1.25 + loops * 0.35),
-      densMul: Math.min(2.8, 1 + p * 1.05 + loops * 0.18),
-      fireMul: Math.min(2.1, 1 + p * 0.55 + loops * 0.12),
+      diffMul: 1.15 + p * 1.85 + loops * 0.34,
+      hpMul: Math.min(7.5, 1.35 + p * 2.3 + loops * 0.55),
+      smallHpMul: Math.min(5.8, 1.18 + p * 1.65 + loops * 0.42),
+      densMul: Math.min(3.4, 1.15 + p * 1.3 + loops * 0.22),
+      fireMul: Math.min(2.45, 1.08 + p * 0.7 + loops * 0.15),
       grindDmg: 1 + Math.min(kills, 1600) / 1600 * 1.2 + loops * 0.18,
       extraWaves: extraWavesAt(t, loops, level),
     };
@@ -1259,6 +1259,21 @@
   // 75 秒前不追加额外波；之后逐步加压，并受画质/性能档封顶。
   function extraWavesForStage() {
     return extraWavesAt();
+  }
+  function mobStageWaveTarget(theme = stageTheme, level = perfLevel, loops = loopCount) {
+    const qualityTrim = level >= 2 ? 2 : (level === 1 ? 1 : 0);
+    const base = theme === STAGE_THEME_TECH ? 16 : 14;
+    return Math.max(11, base + Math.min(4, loops * 2) - qualityTrim);
+  }
+  function mobStageMinDuration(theme = stageTheme, loops = loopCount, level = perfLevel) {
+    const qualityTrim = level >= 2 ? 8 : (level === 1 ? 4 : 0);
+    const base = theme === STAGE_THEME_TECH ? 78 : 68;
+    return Math.max(52, base + loops * 10 - qualityTrim);
+  }
+  function bossDamageMul(kind = bossKind, t = elapsed, loops = loopCount) {
+    const pressure = runPressureAt(t);
+    const themeBonus = kind === 'suiyi' ? 0.18 : 0;
+    return 1.65 + pressure * 0.28 + Math.min(0.45, loops * 0.18) + themeBonus;
   }
   let patternTimer = 0;
   let titlePulse = 0;
@@ -8059,11 +8074,24 @@
 	      () => { spawnFormation('diamond', 'archfiend', 13); spawnFormation('wings', 'warden', 6); },
 	      () => { spawnFormation('vshape', 'archfiend', 9); spawnFormation('arc', 'warlock', 7); spawnEnemy('warden', 220, -280); spawnEnemy('warden', 500, -280); spawnEnemy('dreadeye', W * 0.5, -360); },
 	      () => { spawnFormation('terminalColumn', 'servernode', 4); spawnFormation('techPincer', 'crystalcompiler', 4); spawnFormation('codeGrid', 'codebug', 10); },
-	    ],
+    ],
   };
 
+  const TECH_STAGE_WAVES = Object.freeze([
+    () => { spawnFormation('codeGrid', 'codebug', 7); spawnFormation('techPincer', 'codebug', 5); },
+    () => { spawnFormation('compilerChevron', 'codebug', 8); spawnEnemy('coredrone', W * 0.5, -160); },
+    () => { spawnFormation('codeGrid', 'coredrone', 5); spawnFormation('techPincer', 'codebug', 6); },
+    () => { spawnFormation('terminalColumn', 'servernode', 2); spawnFormation('compilerChevron', 'codebug', 7); },
+    () => { spawnFormation('compilerChevron', 'coredrone', 5); spawnFormation('codeGrid', 'codebug', 8); },
+    () => { spawnFormation('terminalColumn', 'servernode', 3); spawnFormation('techPincer', 'coredrone', 4); },
+    () => { spawnFormation('compilerChevron', 'crystalcompiler', 2); spawnFormation('codeGrid', 'coredrone', 5); },
+    () => { spawnFormation('terminalColumn', 'servernode', 3); spawnFormation('techPincer', 'crystalcompiler', 3); },
+    () => { spawnFormation('compilerChevron', 'crystalcompiler', 3); spawnFormation('codeGrid', 'codebug', 10); spawnEnemy('servernode', W * 0.5, -260); },
+    () => { spawnFormation('terminalColumn', 'servernode', 4); spawnFormation('techPincer', 'crystalcompiler', 4); spawnFormation('codeGrid', 'coredrone', 6); },
+  ]);
+
   function allStageWaves() {
-    return Object.values(STAGE_WAVES).flat();
+    return Object.values(STAGE_WAVES).flat().concat([...TECH_STAGE_WAVES]);
   }
 
   function stageNumber(stageKey) {
@@ -8086,9 +8114,22 @@
     const maxStage = waveUnlockStageAt(t, loops);
     return STAGE_ORDER.filter(stage => stageNumber(stage) <= maxStage);
   }
-  function eligibleStageWaves(t = elapsed, loops = loopCount) {
+  function isTechStageTheme(theme = stageTheme) {
+    return theme === STAGE_THEME_TECH;
+  }
+  function waveLooksTech(wave) {
+    const src = Function.prototype.toString.call(wave);
+    return SUIYI_TECH_MOB_TYPES.some(type => src.includes(`'${type}'`))
+      || SUIYI_TECH_MOB_FORMATIONS.some(shape => src.includes(`'${shape}'`));
+  }
+  function eligibleTechWaves(t = elapsed, loops = loopCount) {
+    const max = Math.max(3, Math.min(TECH_STAGE_WAVES.length, Math.ceil((waveUnlockStageAt(t, loops) / 10) * TECH_STAGE_WAVES.length)));
+    return TECH_STAGE_WAVES.slice(0, max);
+  }
+  function eligibleStageWaves(t = elapsed, loops = loopCount, theme = stageTheme) {
+    if (isTechStageTheme(theme)) return eligibleTechWaves(t, loops);
     const keys = eligibleStageKeys(t, loops);
-    const waves = keys.flatMap(stage => STAGE_WAVES[stage] || []);
+    const waves = keys.flatMap(stage => (STAGE_WAVES[stage] || []).filter(wave => !waveLooksTech(wave)));
     return waves.length ? waves : (STAGE_WAVES.stage1 || []);
   }
   function selectRandomStageWave(index = 0) {
@@ -8108,22 +8149,32 @@
     stage2: ['familiar', 'shade', 'starfish', 'tideelf', 'phantom', 'nun'],
     stage3: ['wisp', 'specter', 'jelly', 'puffer', 'octopus', 'cultist'],
     stage4: ['cherub', 'specter', 'frostelf', 'octopus', 'wraith', 'seraphguard'],
-	    stage5: ['wraith', 'fiend', 'anemone', 'goldelf', 'warden', 'codebug', 'coredrone'],
-	    stage6: ['fiend', 'reaper', 'lavacrab', 'voltray', 'seraphguard', 'codebug', 'coredrone', 'servernode'],
-	    stage7: ['reaper', 'warlock', 'voltray', 'archfiend', 'warden', 'codebug', 'coredrone', 'servernode', 'crystalcompiler'],
-	    stage8: ['warlock', 'archfiend', 'abysscryst', 'reaper', 'voltray', 'coredrone', 'servernode', 'crystalcompiler'],
-	    stage9: ['archfiend', 'dreadeye', 'voltray', 'warlock', 'warden', 'servernode', 'crystalcompiler'],
-	    stage10: ['archfiend', 'dreadeye', 'abysscryst', 'warden', 'voltray', 'servernode', 'crystalcompiler'],
+	    stage5: ['wraith', 'fiend', 'anemone', 'goldelf', 'warden'],
+	    stage6: ['fiend', 'reaper', 'lavacrab', 'voltray', 'seraphguard'],
+	    stage7: ['reaper', 'warlock', 'voltray', 'archfiend', 'warden'],
+	    stage8: ['warlock', 'archfiend', 'abysscryst', 'reaper', 'voltray'],
+	    stage9: ['archfiend', 'dreadeye', 'voltray', 'warlock', 'warden'],
+	    stage10: ['archfiend', 'dreadeye', 'abysscryst', 'warden', 'voltray'],
 	  };
   const GLOBAL_STAGE_POOL = Object.freeze([...new Set(Object.values(STAGE_POOL).flat())]);
+  const TECH_STAGE_POOL = Object.freeze([...SUIYI_TECH_MOB_TYPES]);
   const GLOBAL_STAGE_MOVES = Object.freeze([...new Set(Object.values(STAGE_PROFILE).flatMap(p => p.moves || []))]);
-  function eligibleStagePool(t = elapsed, loops = loopCount) {
+  function eligibleTechStagePool(t = elapsed, loops = loopCount) {
+    const unlock = waveUnlockStageAt(t, loops);
+    if (unlock < 4) return ['codebug', 'coredrone'];
+    if (unlock < 7) return ['codebug', 'coredrone', 'servernode'];
+    return [...TECH_STAGE_POOL];
+  }
+  function eligibleStagePool(t = elapsed, loops = loopCount, theme = stageTheme) {
+    if (isTechStageTheme(theme)) return eligibleTechStagePool(t, loops);
     const keys = eligibleStageKeys(t, loops);
     const pool = [...new Set(keys.flatMap(stage => STAGE_POOL[stage] || []))];
     return pool.length ? pool : (STAGE_POOL.stage1 || ['bat', 'familiar']);
   }
-  function eligibleFormations(t = elapsed, loops = loopCount) {
-    return waveUnlockStageAt(t, loops) >= 5 ? FORMATIONS : BASE_FORMATIONS;
+  function eligibleFormations(t = elapsed, loops = loopCount, theme = stageTheme) {
+    if (isTechStageTheme(theme)) return [...SUIYI_TECH_MOB_FORMATIONS];
+    const normalForms = FORMATIONS.filter(shape => !SUIYI_TECH_MOB_FORMATIONS.includes(shape));
+    return waveUnlockStageAt(t, loops) >= 5 ? normalForms : BASE_FORMATIONS;
   }
   // —— 编队入场系统：多种规律阵型，让每一波小怪入场都整齐又多变 ——
   function spawnEnemyV(type, x, y, vx, hoverY) {
@@ -8217,9 +8268,10 @@
 	  }
 	  let bonusFormN = 0;
   function bonusEnemyCountAt(t = elapsed, loops = loopCount, level = perfLevel) {
-    if (t < 45 && loops === 0) return 0;
+    if (t < 25 && loops === 0) return 0;
     const p = runPressureAt(t);
-    const base = 3 + Math.floor(p * 5) + Math.min(4, loops);
+    const themeBoost = isTechStageTheme() ? 1 : 0;
+    const base = 4 + Math.floor(p * 7) + Math.min(5, loops) + themeBoost;
     const qualityTrim = level >= 2 ? 2 : (level === 1 ? 1 : 0);
     return Math.max(0, base - qualityTrim);
   }
@@ -8267,6 +8319,8 @@
 	  const SUIYI_PHASE_FORM_KEYS = Object.freeze(['suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash']);
 	  const SUIYI_PHASE_NAMES = Object.freeze(['编译启动', '基础代码编译', '递归展开', '错误堆栈', '热更新·多线程', 'System Crash']);
 	  const SUIYI_MAP_KEYS = Object.freeze(['suiyiMapVirtualCore', 'suiyiMapControlHall', 'suiyiMapDigitalRuins', 'suiyiMapCrystalSanctum']);
+	  const STAGE_THEME_NORMAL = 'normal';
+	  const STAGE_THEME_TECH = 'suiyiTech';
   const FIELD_BACKGROUND_KEYS = Object.freeze([
     'bgStage1', 'bgStage2', 'bgStage3', 'bgShadowDepths', 'bgAbyssCore',
     'bgVoidRealm', 'bgChaosRift', 'bgDarkSanctum', 'bgBloodmoon', 'bgEclipse',
@@ -8276,6 +8330,13 @@
     field: 'bgStage1',
     boss: 'bgEclipse',
   };
+	  let stageTheme = STAGE_THEME_NORMAL;
+	  function themeForBackgroundKey(key) {
+	    return SUIYI_MAP_KEYS.includes(key) ? STAGE_THEME_TECH : STAGE_THEME_NORMAL;
+	  }
+	  function backgroundPoolForTheme(theme = stageTheme) {
+	    return theme === STAGE_THEME_TECH ? SUIYI_MAP_KEYS : FIELD_BACKGROUND_KEYS;
+	  }
   function selectRandomFromPool(pool = GLOBAL_BACKGROUND_POOL, randomValue = Math.random()) {
     const list = (pool && pool.length ? pool : GLOBAL_BACKGROUND_POOL).filter(Boolean);
     if (!list.length) return 'bgStageBase';
@@ -8284,10 +8345,11 @@
   }
   function chooseRandomFieldBackground() {
     randomBackgroundState.field = selectRandomFromPool(GLOBAL_BACKGROUND_POOL);
+	    stageTheme = themeForBackgroundKey(randomBackgroundState.field);
     return randomBackgroundState.field;
   }
-  function chooseRandomBossBackground() {
-    randomBackgroundState.boss = selectRandomFromPool(GLOBAL_BACKGROUND_POOL);
+  function chooseRandomBossBackground(theme = stageTheme) {
+    randomBackgroundState.boss = selectRandomFromPool(backgroundPoolForTheme(theme));
     return randomBackgroundState.boss;
   }
 	  const SUIYI_POINTS = Object.freeze({
@@ -8407,17 +8469,20 @@
   };
   
   const GLOBAL_BOSS_POOL = Object.freeze(Object.keys(BOSS_DEFS));
+  const NORMAL_BOSS_POOL = Object.freeze(GLOBAL_BOSS_POOL.filter(kind => kind !== 'suiyi'));
+  const TECH_BOSS_POOL = Object.freeze(['suiyi']);
 
-  // Select random boss from the full roster; stage no longer limits the pool.
+  // Select boss by the current stage theme: tech maps are exclusive to Suiyi.
   function selectRandomBoss(stageName) {
-    const pool = GLOBAL_BOSS_POOL;
+    const pool = stageTheme === STAGE_THEME_TECH ? TECH_BOSS_POOL : NORMAL_BOSS_POOL;
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function spawnBoss() {
     const def = BOSS_DEFS[bossKind] || BOSS_DEFS.eclipseboss;
     // Boss 血量随击杀成长与轮回放大，保持后期挑战（整体上调，延长对战时长）
-	    const bhp = Math.round(def.hp * (0.95 + grindDmg() * 0.45 + loopCount * 0.28));
+	    const themeBonus = bossKind === 'suiyi' ? 1.16 : 1;
+	    const bhp = Math.round(def.hp * themeBonus * (1.65 + grindDmg() * 0.85 + loopCount * 0.55));
     boss = {
       x: W * 0.5, y: def.y, targetY: def.y,
       hp: bhp, maxHp: bhp, r: def.r, t: 0,
@@ -8425,8 +8490,8 @@
       spritePrefix: def.sprite || 'boss',
       theme: def.theme || null,
       inv: 1.2, dead: false,
-      // 防秒杀 DPS 上限：持续输出最短约 36 秒清完，允许一次 ~6% 爆发窗口
-      dpsCap: bhp / 36, dmgCreditMax: bhp * 0.06, dmgCredit: bhp * 0.06,
+      // 防秒杀 DPS 上限：更厚的 Boss 至少能撑住一段完整招式循环。
+      dpsCap: bhp / 54, dmgCreditMax: bhp * 0.05, dmgCredit: bhp * 0.05,
     };
     bossPhase = -1;
     patternTimer = 0;
@@ -8836,7 +8901,9 @@
   function damagePlayer(amount) {
     if (player.inv > 0 || state === 'win') return;
     if (motherLifeActive() && motherLifeState.ultimate.active) return;
+    if (state === 'boss' || state === 'bossIntro') amount *= bossDamageMul();
     if (motherLifeActive() && player.berserk > 0) amount *= 0.8;
+	    amount = Math.max(1, Math.round(amount));
     player.hp = Math.max(0, player.hp - amount);
     player.inv = 1.3;   // 受击后短暂无敌，防止连续掉血
     player.combo = 0;
@@ -14681,7 +14748,7 @@
       if (e.fireTimer <= 0 && e.y > 40 && e.y < H * 0.65 && state !== 'win' && state !== 'lose') {
         // —— V3.14 弹幕节流：人群越多整体降频；弹幕软上限杜绝满屏 ——
         const crowd = enemies.length;
-        const crowdMul = crowd > 5 ? 1 + (crowd - 5) * 0.14 : 1;   // 拥挤时拉长开火间隔
+        const crowdMul = crowd > 6 ? 1 + (crowd - 6) * 0.10 : 1;   // 拥挤时拉长开火间隔
         const budget = perfBudget();
         const softCap = (state === 'boss') ? budget.bossSoftCap : budget.mobSoftCap;
         e.fireTimer += e.fireBase * crowdMul;                      // 固定节奏(含人群因子)
@@ -14860,33 +14927,35 @@
 
   function updateMobStage(dt) {
     updateSuiyiTechMobMap(dt);
-    const waves = STAGE_WAVES[segment] || STAGE_WAVES.stage1;
-    const total = waves.length;
+    const waves = eligibleStageWaves();
+    const sourceTotal = Math.max(1, waves.length);
+    const total = mobStageWaveTarget();
     const extraTotal = extraWavesForStage();
+    const minDuration = mobStageMinDuration();
     spawnTimer -= dt;
     const actLabel = ({stage1:'第一幕',stage2:'第二幕',stage3:'第三幕',stage4:'第四幕',stage5:'第五幕',stage6:'第六幕',stage7:'第七幕',stage8:'第八幕',stage9:'第九幕',stage10:'第十幕'})[segment] || '第一幕';
     if (spawnTimer <= 0 && waveIndex < total) {
       spawnWave(waveIndex);
       spawnBonusEnemies();
       waveIndex++;
-      spawnTimer = Math.max(0.95, 1.7 - elapsed / 200);
+      spawnTimer = Math.max(0.82, 1.42 - elapsed / 260);
       setMessage(`${actLabel} · 波次 ${waveIndex}/${total}`, 1.0);
-    } else if (spawnTimer <= 0 && waveIndex >= total && extraSpawned < extraTotal) {
+    } else if (spawnTimer <= 0 && waveIndex >= total && (extraSpawned < extraTotal || stateTimer < minDuration)) {
       // 肉鸽附加波次：复用本关刷怪并叠加增援，随时间越来越猛
-      spawnWave((extraSpawned + 1) % total);
+      spawnWave((extraSpawned + 1) % sourceTotal);
       spawnBonusEnemies();
       extraSpawned++;
-      spawnTimer = Math.max(0.85, 1.45 - elapsed / 220);
-      setMessage(`${actLabel} · 增援 ${extraSpawned}/${extraTotal}`, 1.0);
+      spawnTimer = Math.max(0.78, 1.24 - elapsed / 320);
+      setMessage(`${actLabel} · 增援 ${extraSpawned}/${Math.max(extraTotal, extraSpawned)}`, 1.0);
     }
     // 安全网：波次全部结束后，清除卡在画面外上方、存活过久的残留怪（防止永久卡关）
-    if (waveIndex >= total && extraSpawned >= extraTotal && enemies.length > 0) {
+    if (waveIndex >= total && extraSpawned >= extraTotal && stateTimer >= minDuration && enemies.length > 0) {
       for (let i = enemies.length - 1; i >= 0; i--) {
         const e = enemies[i];
         if (e.t > 4 && (e.y < 0 || e.y > H + 40)) enemies.splice(i, 1);
       }
     }
-	    if (waveIndex >= total && extraSpawned >= extraTotal && enemies.length === 0 && stateTimer > 4) {
+	    if (waveIndex >= total && extraSpawned >= extraTotal && stateTimer >= minDuration && enemies.length === 0) {
 	      // Boss randomization system - select random boss from stage pool
 	      bossKind = selectRandomBoss(segment);
 	      chooseRandomBossBackground();
@@ -19040,15 +19109,24 @@
 	    ctx.moveTo(0, -arm); ctx.lineTo(0, -player.hitR - 1);
 	    ctx.moveTo(0, player.hitR + 1); ctx.lineTo(0, arm);
 	    ctx.stroke();
-	    // 真实判定核心：红色外沿 + 白色中心，半径贴近 player.hitR。
+	    // 真实判定核心：红圈标出 player.hitR，红点标出几何中心，白色只保留小高光。
 	    ctx.globalCompositeOperation = 'source-over';
 	    ctx.shadowColor = '#ff365c';
-	    ctx.shadowBlur = perfLevel >= 2 ? 4 : 10;
+	    ctx.shadowBlur = perfLevel >= 2 ? 5 : 14;
 	    ctx.globalAlpha = 1;
-	    ctx.fillStyle = '#ff294d';
-	    ctx.beginPath(); ctx.arc(0, 0, player.hitR + 2.1, 0, TAU); ctx.fill();
-	    ctx.fillStyle = '#ffffff';
-	    ctx.beginPath(); ctx.arc(0, 0, Math.max(2.2, player.hitR * 0.82), 0, TAU); ctx.fill();
+	    ctx.fillStyle = 'rgba(255,20,55,0.22)';
+	    ctx.beginPath(); ctx.arc(0, 0, player.hitR + 2.8, 0, TAU); ctx.fill();
+	    ctx.strokeStyle = '#ff1638';
+	    ctx.lineWidth = 2.6;
+	    ctx.beginPath(); ctx.arc(0, 0, player.hitR + 2.4, 0, TAU); ctx.stroke();
+	    ctx.strokeStyle = 'rgba(255,235,235,0.95)';
+	    ctx.lineWidth = 1.1;
+	    ctx.beginPath(); ctx.arc(0, 0, player.hitR - 0.6, 0, TAU); ctx.stroke();
+	    ctx.fillStyle = '#ff002d';
+	    ctx.beginPath(); ctx.arc(0, 0, Math.max(3.2, player.hitR * 0.45), 0, TAU); ctx.fill();
+	    ctx.shadowBlur = perfLevel >= 2 ? 0 : 6;
+	    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+	    ctx.beginPath(); ctx.arc(-1.1, -1.2, 1.45, 0, TAU); ctx.fill();
 	    ctx.restore();
 	  }
 
@@ -19380,9 +19458,9 @@
       ctx.strokeText(binfo, W / 2, by + bh + 12);
       ctx.fillStyle = '#ffc7d8'; ctx.fillText(binfo, W / 2, by + bh + 12);
     } else if (state === 'mobs') {
-      const total = (STAGE_WAVES[segment] || STAGE_WAVES.stage1).length;
+      const total = mobStageWaveTarget();
       const actName = ({stage1:'第一幕',stage2:'第二幕',stage3:'第三幕',stage4:'第四幕',stage5:'第五幕',stage6:'第六幕',stage7:'第七幕',stage8:'第八幕',stage9:'第九幕',stage10:'第十幕'})[segment] || '第一幕';
-      const waveLabel = waveIndex < total ? `Wave ${Math.min(waveIndex, total)}/${total}` : `增援 ${extraSpawned}/${extraWavesForStage()}`;
+      const waveLabel = waveIndex < total ? `Wave ${Math.min(waveIndex, total)}/${total}` : `增援 ${extraSpawned}/${Math.max(extraWavesForStage(), extraSpawned)}`;
       ctx.textAlign = 'center';
       // 极简顶栏：贴顶、半透明磨砂条，不遮挡视野
       const barW = 360, barH = 28, barX = W / 2 - barW / 2, barY = 8;
@@ -19664,10 +19742,10 @@
     ctx.fillText(`弹数 ${enemyBullets.length}`, 40, 198);
     ctx.fillText(`连击 ${player.combo}`, 40, 220);
     if (state === 'boss') {
-      const phTotal = (boss && boss.kind === 'midboss') ? 3 : 5;
+      const phTotal = (boss && boss.kind === 'suiyi') ? 6 : ((boss && boss.kind === 'midboss') ? 3 : 5);
       ctx.fillText(`阶段 ${Math.min(bossPhase + 1, phTotal)}/${phTotal}`, 40, 242);
     } else {
-      const total = (STAGE_WAVES[segment] || STAGE_WAVES.stage1).length;
+      const total = mobStageWaveTarget();
       ctx.fillText(`Wave ${Math.min(waveIndex, total)}/${total}`, 40, 242);
     }
 
@@ -20641,19 +20719,20 @@
 	        maps: [...SUIYI_MAP_KEYS],
 	        usesAllFour: SUIYI_MAP_KEYS.length === 4,
 	        avoidImmediateRepeat: false,
-	        baseMapPolicy: 'global-background-pool-selected-on-boss-entry',
+	        baseMapPolicy: 'exclusive-tech-theme-selected-on-suiyi-entry',
 	      }),
 	      randomStageSpec: () => ({
 	        mode: RANDOM_STAGE_MODE,
-	        difficultyCurves: 'smooth-run-pressure-with-loop-soft-add',
-	        waves: 'eligibleStageWaves',
-	        reinforcements: 'eligibleStagePool + enemyCap',
+	        difficultyCurves: 'longer-stronger-stage-pressure-with-loop-soft-add',
+	        waves: 'eligibleStageWaves by current theme',
+	        reinforcements: 'theme-bound eligibleStagePool + enemyCap',
 	        loopsOnStage: 'stage10',
 	      }),
       bossPoolSpec: () => ({
-        mode: 'global-random-boss-pool',
-        pool: [...GLOBAL_BOSS_POOL],
-        includesSuiyi: GLOBAL_BOSS_POOL.includes('suiyi'),
+        mode: 'theme-bound-boss-pool',
+        normalPool: [...NORMAL_BOSS_POOL],
+        techPool: [...TECH_BOSS_POOL],
+        includesSuiyiOnlyInTechPool: TECH_BOSS_POOL.includes('suiyi') && !NORMAL_BOSS_POOL.includes('suiyi'),
         finalBossDoesNotEndRunBeforeStage10: true,
       }),
       bulletBehaviorSpec: () => ({
@@ -20692,33 +20771,38 @@
       }),
       difficultySpec: () => ({
         ...SUIYI_TECH_MOB_DIFFICULTY,
-        stagePools: Object.fromEntries(Object.entries(STAGE_POOL)
-          .filter(([stage]) => ['stage5', 'stage6', 'stage7', 'stage8', 'stage9', 'stage10'].includes(stage))
-          .map(([stage, pool]) => [stage, pool.filter(type => isSuiyiTechMobType(type))])),
-        globalPoolIncludesAll: SUIYI_TECH_MOB_TYPES.every(type => GLOBAL_STAGE_POOL.includes(type)),
+        techPool: [...TECH_STAGE_POOL],
+        normalPoolContainsTech: GLOBAL_STAGE_POOL.some(type => isSuiyiTechMobType(type)),
+        techWaves: TECH_STAGE_WAVES.length,
       }),
 	      selectTechMapForTest: (previous, seedList) => selectSuiyiRandomMap(previous, seedList),
 	    };
 
     window.__randomBalanceInternals__ = {
       backgroundPoolSpec: () => ({
-        mode: 'global-equal-random-background-pool',
+        mode: 'equal-random-map-then-theme-bound-content',
         pool: [...GLOBAL_BACKGROUND_POOL],
         fieldBackgrounds: [...FIELD_BACKGROUND_KEYS],
         suiyiMaps: [...SUIYI_MAP_KEYS],
-        selectedAt: ['run_start', 'mob_stage_entry', 'boss_entry'],
-        techMobDoesNotReplaceBaseMap: true,
+        normalThemeMaps: [...FIELD_BACKGROUND_KEYS],
+        techThemeMaps: [...SUIYI_MAP_KEYS],
+        selectedAt: ['run_start', 'mob_stage_entry'],
+        techThemeOnlySpawnsTechMobsAndSuiyi: true,
+        normalThemeExcludesTechMobsAndSuiyi: true,
         selectForTest: (value, pool = GLOBAL_BACKGROUND_POOL) => selectRandomFromPool(pool, value),
+        themeForMapForTest: themeForBackgroundKey,
       }),
       bossPoolSpec: () => ({
-        mode: 'global-equal-random-boss-pool',
-        pool: [...GLOBAL_BOSS_POOL],
-        includesFinalboss: GLOBAL_BOSS_POOL.includes('finalboss'),
-        includesSuiyi: GLOBAL_BOSS_POOL.includes('suiyi'),
+        mode: 'theme-bound-random-boss-pool',
+        allBosses: [...GLOBAL_BOSS_POOL],
+        normalPool: [...NORMAL_BOSS_POOL],
+        techPool: [...TECH_BOSS_POOL],
+        includesFinalbossInNormalPool: NORMAL_BOSS_POOL.includes('finalboss'),
+        suiyiExclusiveToTechPool: TECH_BOSS_POOL.includes('suiyi') && !NORMAL_BOSS_POOL.includes('suiyi'),
         loopsOnlyOnStage10: true,
       }),
       growthCurveSpec: () => ({
-        mode: 'smooth-survivorlike-pressure',
+        mode: 'longer-stronger-survivorlike-pressure',
         samples: {
           start: growthCurveAt(0, 0, 0, 1),
           thirtySeconds: growthCurveAt(30, 0, 60, 1),
@@ -20728,7 +20812,15 @@
         },
         formulas: {
           runPressure: 'clamp(elapsed / 600, 0, 1)',
-          extraWaves: 'max(0, floor((elapsed - 75) / 75) + loopCount), capped by quality',
+          extraWaves: 'max(0, floor((elapsed - 50) / 55) + loopCount), capped by quality',
+          mobStageWaveTarget: 'normal 14 / tech 16 before quality trim',
+          mobStageMinDuration: 'normal 68s / tech 78s before quality trim',
+        },
+        stageFlow: {
+          normalTarget: mobStageWaveTarget(STAGE_THEME_NORMAL, 0, 0),
+          techTarget: mobStageWaveTarget(STAGE_THEME_TECH, 0, 0),
+          normalMinDuration: mobStageMinDuration(STAGE_THEME_NORMAL, 0, 0),
+          techMinDuration: mobStageMinDuration(STAGE_THEME_TECH, 0, 0),
         },
       }),
       waveUnlockSpec: () => ({
@@ -20745,8 +20837,10 @@
           twoMinutes: bonusEnemyCountAt(120, 0, 1),
           tenMinutesLow: bonusEnemyCountAt(600, 0, 2),
         },
-        earlyPool: eligibleStagePool(0, 0),
-        latePoolIncludesTech: SUIYI_TECH_MOB_TYPES.every(type => eligibleStagePool(480, 0).includes(type)),
+        normalEarlyPool: eligibleStagePool(0, 0, STAGE_THEME_NORMAL),
+        normalLatePoolIncludesTech: SUIYI_TECH_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_NORMAL).includes(type)),
+        techEarlyPool: eligibleStagePool(0, 0, STAGE_THEME_TECH),
+        techLatePoolIncludesAllTech: SUIYI_TECH_MOB_TYPES.every(type => eligibleStagePool(480, 0, STAGE_THEME_TECH).includes(type)),
       }),
       qualityBudgetSpec: () => ({
         presets: JSON.parse(JSON.stringify(QUALITY_PRESETS)),
@@ -20763,37 +20857,47 @@
         },
         playerHitbox: {
           alwaysVisible: true,
-          core: 'white-center-red-real-hit-radius',
+          core: 'red-dot-red-ring-real-hit-radius',
           outerRing: 'cyan-pink-pulse',
           focusRingWhenSlow: true,
         },
       }),
-      techMobBaseMapIsolationForTest: () => {
+      themeBindingForTest: () => {
         const prevState = state;
         const prevField = randomBackgroundState.field;
+        const prevTheme = stageTheme;
         const prevTimer = suiyiTechMobMapState.activeTimer;
         const prevEnemies = enemies.slice();
         state = 'mobs';
         randomBackgroundState.field = 'bgStage1';
+        stageTheme = STAGE_THEME_NORMAL;
         suiyiTechMobMapState.current = 'suiyiMapVirtualCore';
         suiyiTechMobMapState.activeTimer = 9;
         enemies.length = 0;
-        enemies.push({ type: 'codebug' });
-        const before = 'bgStage1';
-        const after = bgBaseKey();
-        const overlay = isSuiyiTechMobMapActive();
+        const normalPool = eligibleStagePool(480, 0, STAGE_THEME_NORMAL);
+        const techPool = eligibleStagePool(480, 0, STAGE_THEME_TECH);
+        const normalBossOk = NORMAL_BOSS_POOL.every(kind => kind !== 'suiyi');
+        const techBossOk = TECH_BOSS_POOL.length === 1 && TECH_BOSS_POOL[0] === 'suiyi';
         enemies.length = 0;
         for (const e of prevEnemies) enemies.push(e);
         suiyiTechMobMapState.activeTimer = prevTimer;
         randomBackgroundState.field = prevField;
+        stageTheme = prevTheme;
         state = prevState;
-        return { before, after, overlay };
+        return {
+          normalPoolHasTech: normalPool.some(type => isSuiyiTechMobType(type)),
+          techPoolOnlyTech: techPool.every(type => isSuiyiTechMobType(type)),
+          normalBossOk,
+          techBossOk,
+        };
       },
     };
 
 	    window.__suiyiBossCapture__ = {
       prepare(scene = 'idle') {
         bossKind = 'suiyi';
+        stageTheme = STAGE_THEME_TECH;
+        randomBackgroundState.boss = 'suiyiMapVirtualCore';
         boss = null;
         state = 'boss';
         stateTimer = 0;
@@ -20852,6 +20956,7 @@
 	    window.__suiyiTechMobCapture__ = {
 	      prepare(scene = 'mixed') {
         state = 'mobs';
+        stageTheme = STAGE_THEME_TECH;
         stateTimer = 0;
         segment = 'stage8';
         boss = null;
@@ -20880,6 +20985,7 @@
         };
         suiyiTechMobMapState.previous = null;
         suiyiTechMobMapState.current = sceneMaps[scene] || 'suiyiMapVirtualCore';
+        randomBackgroundState.field = suiyiTechMobMapState.current;
         suiyiTechMobMapState.transition = 1;
         suiyiTechMobMapState.activeTimer = 12;
         suiyiTechMobMapState.lastSwap = time;
@@ -20923,7 +21029,8 @@
           time += dt;
           stateTimer += dt;
           updateSuiyiTechMobMap(dt);
-          updateEnemies(dt);
+          if (state === 'boss') updateBoss(dt);
+          else updateEnemies(dt);
           updateEnemyBullets(dt);
           updateWarnings(dt);
           updateLasers(dt);
@@ -20956,32 +21063,59 @@
         suiyiTechMobMapState.transition = 0;
         player.x = W * 0.5;
         player.y = H - 170;
-        if (scene === 'normal_map_tech_mob') {
-          elapsed = 260;
+        if (scene === 'normal_map_normal_mobs') {
+          elapsed = 180;
+          stageTheme = STAGE_THEME_NORMAL;
           randomBackgroundState.field = 'bgStage1';
-          spawnFormation('codeGrid', 'codebug', 7);
-        } else if (scene === 'tech_map_normal_mob') {
-          elapsed = 120;
+          spawnFormation('vshape', 'familiar', 6);
+          spawnFormation('arc', 'jelly', 5);
+          spawnFormation('pincer', 'wraith', 4);
+        } else if (scene === 'tech_map_tech_mobs') {
+          elapsed = 210;
+          stageTheme = STAGE_THEME_TECH;
           randomBackgroundState.field = 'suiyiMapVirtualCore';
-          spawnFormation('vshape', 'familiar', 5);
-          spawnFormation('arc', 'jelly', 3);
+          spawnFormation('codeGrid', 'codebug', 8);
+          spawnFormation('compilerChevron', 'coredrone', 5);
+          spawnFormation('terminalColumn', 'servernode', 2);
         } else if (scene === 'late') {
           elapsed = 360;
+          stageTheme = STAGE_THEME_NORMAL;
           randomBackgroundState.field = 'bgDarkSanctum';
           spawnFormation('diamond', 'warlock', 7);
-          spawnFormation('pincer', 'coredrone', 4);
+          spawnFormation('pincer', 'reaper', 5);
+          spawnFormation('arc', 'voltray', 4);
           spawnBonusEnemies();
+        } else if (scene === 'suiyi_boss_tech_binding') {
+          elapsed = 420;
+          stageTheme = STAGE_THEME_TECH;
+          state = 'boss';
+          bossKind = 'suiyi';
+          randomBackgroundState.boss = 'suiyiMapCrystalSanctum';
+          spawnBoss();
+          boss.inv = 0;
+          boss.hp = boss.maxHp * 0.42;
+          bossPhase = 3;
+          suiyiMapState.current = randomBackgroundState.boss;
+          suiyiMapState.transition = 1;
+          suiyiSyntaxError(3);
+          suiyiMergeConflict(3);
+          suiyiMemoryLeak(3);
+          suiyiFunctionCallRing(3);
+          message = '';
+          messageTimer = 0;
         } else if (scene === 'mobile_low') {
           elapsed = 520;
           perfLevel = 2;
           qualityPreset = 'low';
           qualityAutoSelected = false;
+          stageTheme = STAGE_THEME_TECH;
           randomBackgroundState.field = 'suiyiMapDigitalRuins';
           spawnFormation('codeGrid', 'codebug', 8);
           spawnFormation('compilerChevron', 'coredrone', 4);
           spawnFormation('terminalColumn', 'servernode', 2);
         } else if (scene === 'clarity') {
           elapsed = 300;
+          stageTheme = STAGE_THEME_NORMAL;
           randomBackgroundState.field = 'bgBloodmoon';
           spawnFormation('arc', 'familiar', 5);
           for (let i = 0; i < 30; i++) {
@@ -20992,9 +21126,10 @@
           }
         } else {
           elapsed = 30;
+          stageTheme = STAGE_THEME_NORMAL;
           randomBackgroundState.field = 'bgStage2';
-          spawnFormation('row', 'bat', 5);
-          spawnFormation('vshape', 'familiar', 4);
+          spawnFormation('row', 'bat', 7);
+          spawnFormation('vshape', 'familiar', 5);
         }
         for (const e of enemies) {
           e.y = clamp(enemyHoverY(e), 120, H * 0.58);
