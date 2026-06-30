@@ -50,12 +50,23 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(board.shouldSubmitForTest(900, 1000)).toBe(false);
   });
 
+  it('keeps avatar data bounded and can locally fallback the current player avatar', () => {
+    expect(board.payloadHasAvatarForTest({ avatar_data: 'data:image/webp;base64,abc' })).toBe(true);
+    expect(board.payloadHasAvatarForTest({ avatar_data: 'x'.repeat(23000) })).toBe(false);
+    expect(board.avatarForRowForTest({ player_name: 'WANG HAN' }, 'WANG HAN')).toBe('local-avatar-for-current-player');
+    expect(board.avatarForRowForTest({ player_name: 'WANG HAN', avatar_data: 'remote-avatar' }, 'WANG HAN')).toBe('remote-avatar');
+    expect(board.avatarForRowForTest({ player_name: 'OTHER' }, 'WANG HAN')).toBe('');
+  });
+
   it('defines compressed avatar and themed UI surfaces', () => {
     const avatar = board.avatarSpec();
     expect(avatar.mode).toBe('client-compressed-data-url');
     expect(avatar.size).toBe(96);
     expect(avatar.maxDataUrlLength).toBeLessThanOrEqual(22000);
     expect(avatar.fallbackWhenColumnMissing).toBe(true);
+    expect(avatar.localCurrentPlayerFallback).toBe(true);
+    expect(avatar.updateExistingBestWhenScoreNotBeaten).toBe(true);
+    expect(avatar.requiresDatabaseColumnForGlobalAvatar).toBe(true);
 
     const ui = board.uiSpec();
     expect(ui.mode).toBe('moon-eclipse-glass-panel-with-avatar-ranking');

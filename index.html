@@ -1323,6 +1323,9 @@
     delete clone[LEADERBOARD_AVATAR_COLUMN];
     return clone;
   }
+  function leaderboardPayloadHasAvatar(payload) {
+    return !!(payload && payload[LEADERBOARD_AVATAR_COLUMN] && String(payload[LEADERBOARD_AVATAR_COLUMN]).length <= LEADERBOARD_AVATAR_SPEC.maxDataUrlLength);
+  }
   function shouldSubmitLeaderboardScore(localScore, remoteBestScore) {
     const local = Math.max(0, Math.floor(Number(localScore) || 0));
     const remote = Math.max(0, Math.floor(Number(remoteBestScore) || 0));
@@ -1348,6 +1351,34 @@
       }),
       body: JSON.stringify(body),
     });
+  }
+  async function updateLeaderboardAvatarForBest(payload, remoteBestScore) {
+    if (!leaderboardSupportsAvatarData || !leaderboardPayloadHasAvatar(payload)) return false;
+    const best = Math.max(0, Math.floor(Number(remoteBestScore) || 0));
+    if (!best) return false;
+    const safeName = encodeURIComponent(normalizeLeaderboardName(payload.player_name));
+    const body = {
+      [LEADERBOARD_AVATAR_COLUMN]: payload[LEADERBOARD_AVATAR_COLUMN],
+      character: payload.character,
+    };
+    try {
+      await leaderboardFetchJson(supabaseLeaderboardUrl(`?player_name=eq.${safeName}&score=eq.${best}`), {
+        method: 'PATCH',
+        headers: leaderboardHeaders({
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        }),
+        body: JSON.stringify(body),
+      });
+      return true;
+    } catch (err) {
+      if (isMissingAvatarColumnError(err)) {
+        leaderboardSupportsAvatarData = false;
+        return false;
+      }
+      console.warn('[leaderboard] avatar update failed:', err);
+      return false;
+    }
   }
   async function fetchLeaderboard(limit = LEADERBOARD_TOP_LIMIT) {
     leaderboardFetchStatus = 'loading';
@@ -1401,13 +1432,14 @@
     try {
       const remoteBest = await getRemoteBestForName(payload.player_name);
       if (!shouldSubmitLeaderboardScore(payload.score, remoteBest)) {
+        const avatarUpdated = await updateLeaderboardAvatarForBest(payload, remoteBest);
         leaderboardUploadStatus = 'skipped';
         leaderboardLastWasRecord = false;
-        leaderboardStatusMessage = `未破纪录：当前最高 ${remoteBest}`;
+        leaderboardStatusMessage = avatarUpdated ? `头像已更新；未破纪录：当前最高 ${remoteBest}` : `未破纪录：当前最高 ${remoteBest}`;
         setBestScore(payload.score);
         await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
         leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
-        return { ok: true, skipped: true, remoteBest };
+        return { ok: true, skipped: true, remoteBest, avatarUpdated };
       }
       try {
         await insertLeaderboardPayload(payload, true);
@@ -20998,6 +21030,12 @@
     ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke();
     ctx.restore();
   }
+  function leaderboardAvatarForRow(row, currentName = getPlayerName()) {
+    if (row && row[LEADERBOARD_AVATAR_COLUMN]) return row[LEADERBOARD_AVATAR_COLUMN];
+    const rowName = normalizeLeaderboardName(row && row.player_name);
+    if (rowName && currentName && rowName === normalizeLeaderboardName(currentName)) return getPlayerAvatarData();
+    return '';
+  }
 
   function drawLeaderboardPanelFrame(x, y, w, h, title) {
     ctx.save();
@@ -21081,7 +21119,7 @@
       ctx.font = `bold ${i < 3 ? 20 : 16}px Arial`;
       ctx.fillStyle = i === 0 ? '#fff1a3' : i === 1 ? '#d8e5ff' : i === 2 ? '#ffc7a8' : 'rgba(235,240,255,.76)';
       ctx.fillText(`#${i + 1}`, x + 44, ry + 22);
-      drawLeaderboardAvatar(row[LEADERBOARD_AVATAR_COLUMN], x + 92, ry + 16, 18, row.player_name);
+      drawLeaderboardAvatar(leaderboardAvatarForRow(row, playerName), x + 92, ry + 16, 18, row.player_name);
       ctx.textAlign = 'left';
       ctx.font = 'bold 15px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillStyle = mine ? '#fff8c8' : '#fff3ff';
@@ -21888,6 +21926,9 @@
         ...LEADERBOARD_AVATAR_SPEC,
         storageKey: LEADERBOARD_STORAGE_KEYS.avatar,
         fallbackWhenColumnMissing: true,
+        localCurrentPlayerFallback: true,
+        updateExistingBestWhenScoreNotBeaten: true,
+        requiresDatabaseColumnForGlobalAvatar: true,
       }),
       uiSpec: () => ({
         ...LEADERBOARD_UI_SPEC,
@@ -21928,6 +21969,14 @@
       normalizeNameForTest: normalizeLeaderboardName,
       validateNameForTest: validateLeaderboardName,
       buildPayloadForTest: (source) => buildLeaderboardPayload(source),
+      payloadHasAvatarForTest: leaderboardPayloadHasAvatar,
+      avatarForRowForTest: (row, currentName = 'WANG HAN') => {
+        const localAvatar = 'local-avatar-for-current-player';
+        const remote = row && row[LEADERBOARD_AVATAR_COLUMN];
+        if (remote) return remote;
+        const rowName = normalizeLeaderboardName(row && row.player_name);
+        return rowName && normalizeLeaderboardName(currentName) === rowName ? localAvatar : '';
+      },
       shouldSubmitForTest: shouldSubmitLeaderboardScore,
       rankForTest: rankForLeaderboardRows,
       sampleRowsForTest: sampleLeaderboardRows,
