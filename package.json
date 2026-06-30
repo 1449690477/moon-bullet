@@ -13,7 +13,8 @@
     "regression": "cd tests/saint-wing-berserk && npm run regression",
     "test": "cd tests/saint-wing-berserk && npm test",
     "capture:mhr-v3": "node tools/capture_mother_hive_v3_acceptance.js",
-    "capture:mhr-crystal": "node tools/capture_mother_hive_crystal_acceptance.js"
+    "capture:mhr-crystal": "node tools/capture_mother_hive_crystal_acceptance.js",
+    "capture:leaderboard": "node tools/capture_leaderboard_acceptance.js"
   },
   "keywords": [],
   "author": "",

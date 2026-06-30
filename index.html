@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" href="data:," />
-  <title>月蚀弹幕 V1.3.1 - 随意降临优化版</title>
+  <title>月蚀弹幕 V1.0 - 移动端自适应版</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; background:#020208; overflow: hidden; }
@@ -49,6 +49,45 @@
       padding: 7px 10px; border-radius: 999px; pointer-events:none;
       text-shadow: 0 1px 4px #000;
     }
+    .leaderboard-dialog-backdrop {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      z-index: 20; padding: 18px; background: rgba(2, 1, 8, .66);
+      backdrop-filter: blur(8px);
+    }
+    .leaderboard-dialog {
+      width: min(92vw, 420px); color: #fff4ff; border-radius: 22px; padding: 22px;
+      border: 1px solid rgba(255, 204, 236, .42);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 116, 207, .30), transparent 32%),
+        radial-gradient(circle at 82% 18%, rgba(120, 230, 255, .20), transparent 34%),
+        linear-gradient(180deg, rgba(35, 18, 48, .96), rgba(8, 7, 20, .96));
+      box-shadow: 0 18px 70px rgba(0, 0, 0, .58), inset 0 0 34px rgba(255, 255, 255, .07);
+    }
+    .leaderboard-dialog h2 { margin: 0 0 8px; font-size: 22px; letter-spacing: 0; }
+    .leaderboard-dialog p { margin: 0 0 14px; color: rgba(244, 232, 255, .74); font-size: 13px; line-height: 1.55; }
+    .leaderboard-dialog input[type="text"] {
+      width: 100%; height: 44px; border-radius: 14px; border: 1px solid rgba(255, 220, 246, .34);
+      background: rgba(5, 4, 14, .76); color: #fff; font: 700 17px "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      padding: 0 13px; outline: none; box-shadow: inset 0 0 18px rgba(255, 130, 220, .08);
+    }
+    .leaderboard-dialog-row { display: flex; gap: 12px; align-items: center; margin: 14px 0; }
+    .leaderboard-avatar-preview {
+      width: 64px; height: 64px; border-radius: 50%; flex: 0 0 auto;
+      border: 2px solid rgba(255, 210, 245, .82);
+      background: radial-gradient(circle, rgba(255, 127, 215, .44), rgba(30, 20, 50, .92));
+      box-shadow: 0 0 22px rgba(255, 91, 205, .34); background-size: cover; background-position: center;
+    }
+    .leaderboard-dialog button {
+      border: 0; border-radius: 14px; padding: 11px 14px; color: #fff7ff;
+      background: linear-gradient(180deg, rgba(255, 122, 214, .92), rgba(121, 66, 210, .90));
+      font: 800 14px "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .28); cursor: pointer;
+    }
+    .leaderboard-dialog button.secondary {
+      background: linear-gradient(180deg, rgba(82, 99, 142, .92), rgba(30, 28, 50, .92));
+    }
+    .leaderboard-dialog .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+    .leaderboard-dialog .error { min-height: 18px; margin-top: 10px; color: #ff9fbd; font-size: 12px; }
     @media (max-width: 720px) {
       #wrap { padding:0; }
       canvas { border:none; border-radius:0; }
@@ -64,7 +103,7 @@
     鼠标/手机：按住拖动角色移动。点击开始后会启用BGM与音效。按 M 可开关音乐。
   </div>
   <div id="musicStatus">BGM：点击开始后播放</div>
-  <div id="badge">V1.3.1 随意降临优化 / Suiyi Hotfix</div>
+  <div id="badge">V1.0 移动端自适应 / Mobile Ready</div>
   <script>
 (() => {
   'use strict';
@@ -881,6 +920,18 @@
     for (const key of keys) loadAsset(key);
   }
   for (const [key, src] of Object.entries(ASSET_PATHS)) createAssetSlot(key, src);
+  function bossAssetKeys(kindOrDef) {
+    const def = typeof kindOrDef === 'string' ? BOSS_DEFS[kindOrDef] : kindOrDef;
+    if (!def) return [];
+    if (def.sprite === 'suiyi') return [...SUIYI_PHASE_FORM_KEYS, 'suiyiDeath', 'suiyiDrone', 'suiyiCubeSummon'];
+    const pfx = def.sprite || 'boss';
+    const keys = [pfx + 'Idle', pfx + 'Phase1', pfx + 'Phase2', pfx + 'Rage', pfx + 'Hit', pfx + 'Death'];
+    if (pfx === 'boss') keys.push('bossPhase3');
+    return keys.filter(key => ASSET_PATHS[key]);
+  }
+  function prefetchBossAssets(kind) {
+    loadAssetGroup(bossAssetKeys(kind));
+  }
   const CORE_ASSET_KEYS = [
     'bgStageBase', 'bgStage1', 'bgStageDepth',
     'uiEmblemLoop', 'uiMoonSilver', 'uiBannerOrnate',
@@ -894,6 +945,7 @@
     'vfxEnemyHit', 'vfxBossHit', 'vfxExplosionSmall', 'vfxExplosionLarge', 'vfxClearBullets',
     'bulletAuroraA', 'bulletAuroraB', 'bulletAuroraC',
     'seraphPhase1', 'seraphPhase2', 'seraphRage',
+    'voidlordIdle', 'abysswalkerIdle', 'voidtitanIdle', 'ancientoneIdle', 'darkqueenIdle',
 	  ].concat(SUIYI_ASSET_KEYS, SUIYI_TECH_ASSET_KEYS);
   const CHARACTER_ASSET_GROUPS = {
     witch: ['playerIdle', 'playerMoveLeft', 'playerMoveRight', 'playerFocus', 'playerHit', 'playerAvatar', 'playerCutin', 'vfxUltimate'],
@@ -1058,9 +1110,62 @@
   const keys = Object.create(null);
   let pointerDown = false;
   let pointerTarget = null;
+  let pointerMovePointerId = null;
+  let relativeTouchMove = null;
   let activeTouchButtonPointer = null;
   let activeTouchControl = null;
   const touchControls = [];
+  const TOUCH_RELATIVE_MOVE = Object.freeze({
+    mode: 'relative-drag-no-snap',
+    sensitivity: 1.0,
+    appliesTo: 'mobile-combat-pointer',
+  });
+  const ENEMY_ATTACK_LAYER_SPEC = Object.freeze({
+    mode: 'enemy-attacks-over-player-under-ui',
+    afterPlayerLayer: true,
+    belowUiLayer: true,
+    drawCalls: ['drawSuiyiHazards', 'drawEnemyBullets', 'drawWarnings', 'drawLasers'],
+  });
+  const SUPABASE_URL = 'https://tdlqugkkojwysqnsunqt.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_3z85P8qcxCMc9wweII4oDw_BeXUoGmE';
+  const LEADERBOARD_TABLE = 'leaderboard';
+  const LEADERBOARD_TOP_LIMIT = 50;
+  const LEADERBOARD_AVATAR_COLUMN = 'avatar_data';
+  const LEADERBOARD_SELECT_BASE = 'player_name,character,score,kill_count,loop_count,elapsed,bosses_cleared,created_at';
+  const LEADERBOARD_SELECT_WITH_AVATAR = `${LEADERBOARD_SELECT_BASE},${LEADERBOARD_AVATAR_COLUMN}`;
+  const LEADERBOARD_STORAGE_KEYS = Object.freeze({
+    name: 'moonBulletPlayerName',
+    best: 'moonBulletBestScore',
+    avatar: 'moonBulletPlayerAvatarData',
+    avatarColumn: 'moonBulletLeaderboardAvatarColumn',
+  });
+  const LEADERBOARD_AVATAR_SPEC = Object.freeze({
+    mode: 'client-compressed-data-url',
+    column: LEADERBOARD_AVATAR_COLUMN,
+    size: 96,
+    previewSize: 64,
+    maxDataUrlLength: 22000,
+    preferredMime: 'image/webp',
+    fallbackMime: 'image/jpeg',
+    quality: 0.72,
+  });
+  const LEADERBOARD_UI_SPEC = Object.freeze({
+    mode: 'moon-eclipse-glass-panel-with-avatar-ranking',
+    topLimit: LEADERBOARD_TOP_LIMIT,
+    titleEntry: true,
+    resultEntry: true,
+    avatarUpload: true,
+    backgroundAssets: ['suiyiMapVirtualCore', 'bgEclipse', 'uiEmblemLoop'],
+  });
+  const HELL_MODE_SPEC = Object.freeze({
+    defaultEnabled: true,
+    leaderboardRequiresHellMode: true,
+    promptOnStart: true,
+    oneHostileHitKills: true,
+    ignoresInvulnerability: true,
+    disablesExtraLives: true,
+    uploadOnlyWhenEligible: true,
+  });
   let last = performance.now();
   let time = 0;
   let screenShake = 0;
@@ -1087,12 +1192,554 @@
   let qualityAutoSelected = true;
   let qualityProbePerfLevel = 1;
   let qualityCards = [];
+  let leaderboardHitCards = [];
+  let leaderboardView = false;
+  let leaderboardData = [];
+  let leaderboardFetchStatus = 'idle'; // idle|loading|ok|fail
+  let leaderboardUploadStatus = 'idle'; // idle|needsName|pending|ok|fail|skipped
+  let leaderboardStatusMessage = '';
+  let leaderboardLastRank = null;
+  let leaderboardLastWasRecord = false;
+  let leaderboardRunUploadStarted = false;
+  let leaderboardNameDialogOpen = false;
+  let leaderboardNameDialogEl = null;
+  let leaderboardAvatarInputEl = null;
+  let leaderboardAvatarPreviewEl = null;
+  let leaderboardNameInputEl = null;
+  let leaderboardDialogErrorEl = null;
+  let leaderboardSupportsAvatarData = safeLocalStorageGet(LEADERBOARD_STORAGE_KEYS.avatarColumn) !== '0';
+  const leaderboardAvatarCache = new Map();
+  let hellModeActive = HELL_MODE_SPEC.defaultEnabled;
+  let leaderboardEligibleRun = HELL_MODE_SPEC.defaultEnabled;
+  let hellModeDialogOpen = false;
+  let hellModeDialogEl = null;
 
   function safeLocalStorageGet(key) {
     try { return window.localStorage && window.localStorage.getItem(key); } catch (e) { return null; }
   }
   function safeLocalStorageSet(key, value) {
     try { if (window.localStorage) window.localStorage.setItem(key, value); } catch (e) { /* ignore private-mode storage errors */ }
+  }
+  function safeLocalStorageRemove(key) {
+    try { if (window.localStorage) window.localStorage.removeItem(key); } catch (e) { /* ignore private-mode storage errors */ }
+  }
+
+  function charCount(text) {
+    return Array.from(String(text || '')).length;
+  }
+  function truncateChars(text, maxLen) {
+    return Array.from(String(text || '')).slice(0, maxLen).join('');
+  }
+  function normalizeLeaderboardName(name) {
+    return truncateChars(String(name || '').replace(/[\u0000-\u001f\u007f]/g, '').replace(/\s+/g, ' ').trim(), 12);
+  }
+  function validateLeaderboardName(name) {
+    const n = normalizeLeaderboardName(name);
+    const len = charCount(n);
+    return { ok: len >= 3 && len <= 12, name: n, reason: len < 3 ? '昵称至少 3 个字符' : (len > 12 ? '昵称最多 12 个字符' : '') };
+  }
+  function getPlayerName() {
+    return normalizeLeaderboardName(safeLocalStorageGet(LEADERBOARD_STORAGE_KEYS.name) || '');
+  }
+  function setPlayerName(name) {
+    const valid = validateLeaderboardName(name);
+    if (!valid.ok) return valid;
+    safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.name, valid.name);
+    return valid;
+  }
+  function getBestScore() {
+    const n = Number.parseInt(safeLocalStorageGet(LEADERBOARD_STORAGE_KEYS.best) || '0', 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+  function setBestScore(value) {
+    const next = Math.max(0, Math.floor(Number(value) || 0));
+    if (next > getBestScore()) safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.best, String(next));
+    return getBestScore();
+  }
+  function getPlayerAvatarData() {
+    const data = safeLocalStorageGet(LEADERBOARD_STORAGE_KEYS.avatar) || '';
+    return /^data:image\/(?:webp|jpeg|jpg|png);base64,/i.test(data) ? data : '';
+  }
+  function setPlayerAvatarData(dataUrl) {
+    if (!dataUrl) {
+      safeLocalStorageRemove(LEADERBOARD_STORAGE_KEYS.avatar);
+      return '';
+    }
+    if (String(dataUrl).length > LEADERBOARD_AVATAR_SPEC.maxDataUrlLength) {
+      throw new Error('头像压缩后仍然过大，请换一张更小的图片');
+    }
+    safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.avatar, dataUrl);
+    return dataUrl;
+  }
+  function supabaseLeaderboardUrl(query = '') {
+    return `${SUPABASE_URL}/rest/v1/${LEADERBOARD_TABLE}${query}`;
+  }
+  function leaderboardHeaders(extra = {}) {
+    return {
+      apikey: SUPABASE_PUBLISHABLE_KEY,
+      Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+      ...extra,
+    };
+  }
+  function isMissingAvatarColumnError(err) {
+    const text = String((err && (err.message || err.details || err.hint || err.code)) || err || '');
+    return text.includes(LEADERBOARD_AVATAR_COLUMN) || text.includes('PGRST204') || text.includes('schema cache');
+  }
+  async function leaderboardFetchJson(url, options = {}, timeoutMs = 8500) {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+      const res = await fetch(url, { ...options, signal: controller ? controller.signal : options.signal });
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : null;
+      if (!res.ok) {
+        const err = new Error((data && (data.message || data.details || data.hint)) || `HTTP ${res.status}`);
+        if (data && typeof data === 'object') Object.assign(err, data);
+        err.status = res.status;
+        throw err;
+      }
+      return data;
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+  function buildLeaderboardPayload(source = {}) {
+    const name = normalizeLeaderboardName(source.player_name ?? source.name ?? getPlayerName());
+    const avatar = source.avatar_data !== undefined ? source.avatar_data : getPlayerAvatarData();
+    const payload = {
+      player_name: name,
+      character: source.character || selectedChar,
+      score: Math.max(0, Math.floor(Number(source.score ?? score) || 0)),
+      kill_count: Math.max(0, Math.floor(Number(source.kill_count ?? killCount) || 0)),
+      loop_count: Math.max(1, Math.floor(Number(source.loop_count ?? (loopCount + 1)) || 1)),
+      elapsed: Math.max(0, Math.floor(Number(source.elapsed ?? elapsed) || 0)),
+      bosses_cleared: Math.max(0, Math.floor(Number(source.bosses_cleared ?? bossesCleared) || 0)),
+    };
+    if (avatar && String(avatar).length <= LEADERBOARD_AVATAR_SPEC.maxDataUrlLength) payload[LEADERBOARD_AVATAR_COLUMN] = avatar;
+    return payload;
+  }
+  function payloadWithoutAvatar(payload) {
+    const clone = { ...payload };
+    delete clone[LEADERBOARD_AVATAR_COLUMN];
+    return clone;
+  }
+  function shouldSubmitLeaderboardScore(localScore, remoteBestScore) {
+    const local = Math.max(0, Math.floor(Number(localScore) || 0));
+    const remote = Math.max(0, Math.floor(Number(remoteBestScore) || 0));
+    return local > remote;
+  }
+  function isLeaderboardEligibleRun() {
+    return !!(leaderboardEligibleRun && hellModeActive);
+  }
+  async function getRemoteBestForName(name) {
+    const safeName = encodeURIComponent(normalizeLeaderboardName(name));
+    const rows = await leaderboardFetchJson(supabaseLeaderboardUrl(`?select=score&player_name=eq.${safeName}&order=score.desc&limit=1`), {
+      headers: leaderboardHeaders(),
+    });
+    return Array.isArray(rows) && rows[0] ? Math.floor(Number(rows[0].score) || 0) : 0;
+  }
+  async function insertLeaderboardPayload(payload, includeAvatar = true) {
+    const body = includeAvatar && leaderboardSupportsAvatarData ? payload : payloadWithoutAvatar(payload);
+    return leaderboardFetchJson(supabaseLeaderboardUrl(), {
+      method: 'POST',
+      headers: leaderboardHeaders({
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      }),
+      body: JSON.stringify(body),
+    });
+  }
+  async function fetchLeaderboard(limit = LEADERBOARD_TOP_LIMIT) {
+    leaderboardFetchStatus = 'loading';
+    const n = Math.max(1, Math.min(LEADERBOARD_TOP_LIMIT, Math.floor(Number(limit) || LEADERBOARD_TOP_LIMIT)));
+    const select = leaderboardSupportsAvatarData ? LEADERBOARD_SELECT_WITH_AVATAR : LEADERBOARD_SELECT_BASE;
+    const query = `?select=${encodeURIComponent(select)}&order=score.desc&limit=${n}`;
+    try {
+      const rows = await leaderboardFetchJson(supabaseLeaderboardUrl(query), { headers: leaderboardHeaders() });
+      leaderboardData = Array.isArray(rows) ? rows : [];
+      leaderboardFetchStatus = 'ok';
+      leaderboardStatusMessage = leaderboardData.length ? `已加载 Top ${leaderboardData.length}` : '排行榜暂时为空';
+      return leaderboardData;
+    } catch (err) {
+      if (leaderboardSupportsAvatarData && isMissingAvatarColumnError(err)) {
+        leaderboardSupportsAvatarData = false;
+        safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.avatarColumn, '0');
+        return fetchLeaderboard(n);
+      }
+      leaderboardFetchStatus = 'fail';
+      leaderboardStatusMessage = '排行榜读取失败，请稍后重试';
+      console.warn('[leaderboard] fetch failed:', err);
+      return [];
+    }
+  }
+  function rankForLeaderboardRows(rows, name) {
+    const n = normalizeLeaderboardName(name);
+    if (!n || !Array.isArray(rows)) return null;
+    const idx = rows.findIndex(row => normalizeLeaderboardName(row.player_name) === n);
+    return idx >= 0 ? idx + 1 : null;
+  }
+  async function submitLeaderboardScore(payloadInput = null, opts = {}) {
+    if (!isLeaderboardEligibleRun() && !opts.force) {
+      leaderboardUploadStatus = 'skipped';
+      leaderboardStatusMessage = '普通模式不参与排行榜；开启地狱模式后才可上传';
+      return { ok: false, reason: 'notEligible' };
+    }
+    const payload = buildLeaderboardPayload(payloadInput || {});
+    const valid = validateLeaderboardName(payload.player_name);
+    if (!valid.ok) {
+      leaderboardUploadStatus = 'needsName';
+      leaderboardStatusMessage = valid.reason;
+      if (opts.prompt !== false) showLeaderboardNameDialog('submit');
+      return { ok: false, reason: 'needsName' };
+    }
+    if (payload.score <= 0) {
+      leaderboardUploadStatus = 'skipped';
+      leaderboardStatusMessage = '本局暂无分数，不上传';
+      return { ok: false, reason: 'emptyScore' };
+    }
+    leaderboardUploadStatus = 'pending';
+    leaderboardStatusMessage = '正在上传排行榜...';
+    try {
+      const remoteBest = await getRemoteBestForName(payload.player_name);
+      if (!shouldSubmitLeaderboardScore(payload.score, remoteBest)) {
+        leaderboardUploadStatus = 'skipped';
+        leaderboardLastWasRecord = false;
+        leaderboardStatusMessage = `未破纪录：当前最高 ${remoteBest}`;
+        setBestScore(payload.score);
+        await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
+        leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
+        return { ok: true, skipped: true, remoteBest };
+      }
+      try {
+        await insertLeaderboardPayload(payload, true);
+      } catch (err) {
+        if (leaderboardSupportsAvatarData && isMissingAvatarColumnError(err)) {
+          leaderboardSupportsAvatarData = false;
+          safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.avatarColumn, '0');
+          await insertLeaderboardPayload(payload, false);
+        } else {
+          throw err;
+        }
+      }
+      await leaderboardFetchJson(supabaseLeaderboardUrl(`?player_name=eq.${encodeURIComponent(payload.player_name)}&score=lt.${payload.score}`), {
+        method: 'DELETE',
+        headers: leaderboardHeaders({ Prefer: 'return=minimal' }),
+      }).catch((err) => console.warn('[leaderboard] cleanup old rows failed:', err));
+      setBestScore(payload.score);
+      leaderboardUploadStatus = 'ok';
+      leaderboardLastWasRecord = true;
+      leaderboardStatusMessage = '新纪录已上传';
+      await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
+      leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
+      return { ok: true, rank: leaderboardLastRank };
+    } catch (err) {
+      leaderboardUploadStatus = 'fail';
+      leaderboardStatusMessage = '上传失败，点击重试';
+      console.warn('[leaderboard] upload failed:', err);
+      return { ok: false, reason: 'network', error: err };
+    }
+  }
+  function requestLeaderboardUploadAfterRun() {
+    if (leaderboardRunUploadStarted) return;
+    leaderboardRunUploadStarted = true;
+    setBestScore(score);
+    if (!isLeaderboardEligibleRun()) {
+      leaderboardUploadStatus = 'skipped';
+      leaderboardStatusMessage = '普通模式不参与排行榜；本局成绩仅本地显示';
+      return;
+    }
+    if (score <= 0) {
+      leaderboardUploadStatus = 'skipped';
+      leaderboardStatusMessage = '本局暂无分数';
+      return;
+    }
+    if (!getPlayerName()) {
+      leaderboardUploadStatus = 'needsName';
+      leaderboardStatusMessage = '输入昵称后上传排行榜';
+      showLeaderboardNameDialog('death');
+      return;
+    }
+    submitLeaderboardScore();
+  }
+  function retryLeaderboardUpload() {
+    if (!isLeaderboardEligibleRun()) {
+      leaderboardUploadStatus = 'skipped';
+      leaderboardStatusMessage = '本局未开启地狱模式，不能上传排行榜';
+      return;
+    }
+    if (!getPlayerName()) {
+      showLeaderboardNameDialog('retry');
+      return;
+    }
+    submitLeaderboardScore();
+  }
+  function compressAvatarFile(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !/^image\//i.test(file.type || '')) {
+        reject(new Error('请选择图片文件'));
+        return;
+      }
+      if (typeof FileReader === 'undefined') {
+        reject(new Error('当前浏览器不支持读取头像'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('头像读取失败'));
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('头像图片无法解析'));
+        img.onload = () => {
+          try {
+            const size = LEADERBOARD_AVATAR_SPEC.size;
+            const c = document.createElement('canvas');
+            c.width = size;
+            c.height = size;
+            const g = c.getContext('2d');
+            const minSide = Math.min(img.width || size, img.height || size);
+            const sx = Math.max(0, ((img.width || size) - minSide) / 2);
+            const sy = Math.max(0, ((img.height || size) - minSide) / 2);
+            g.clearRect(0, 0, size, size);
+            g.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+            let data = '';
+            try { data = c.toDataURL(LEADERBOARD_AVATAR_SPEC.preferredMime, LEADERBOARD_AVATAR_SPEC.quality); } catch (e) { data = ''; }
+            if (!data || data.length > LEADERBOARD_AVATAR_SPEC.maxDataUrlLength) {
+              data = c.toDataURL(LEADERBOARD_AVATAR_SPEC.fallbackMime, 0.68);
+            }
+            if (data.length > LEADERBOARD_AVATAR_SPEC.maxDataUrlLength) {
+              reject(new Error('头像压缩后仍然过大，请换一张更小的图片'));
+              return;
+            }
+            resolve(data);
+          } catch (err) {
+            reject(err);
+          }
+        };
+        img.src = String(reader.result || '');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function updateLeaderboardDialogPreview() {
+    if (!leaderboardAvatarPreviewEl) return;
+    const data = getPlayerAvatarData();
+    leaderboardAvatarPreviewEl.style.backgroundImage = data ? `url("${data}")` : '';
+  }
+  function ensureLeaderboardNameDialog() {
+    if (leaderboardNameDialogEl || typeof document === 'undefined' || !document.body || !document.createElement) return leaderboardNameDialogEl;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'leaderboard-dialog-backdrop';
+    backdrop.innerHTML = `
+      <div class="leaderboard-dialog" role="dialog" aria-modal="true">
+        <h2>排行榜身份</h2>
+        <p>输入 3-12 字昵称；头像会压缩成小图后随新纪录上传。头像字段未建时会自动降级为无头像上传。</p>
+        <input class="leaderboard-name-input" type="text" maxlength="12" autocomplete="nickname" placeholder="例如 WANG HAN" />
+        <div class="leaderboard-dialog-row">
+          <div class="leaderboard-avatar-preview" aria-hidden="true"></div>
+          <button class="leaderboard-avatar-btn" type="button">选择头像</button>
+          <button class="leaderboard-avatar-clear secondary" type="button">清除</button>
+          <input class="leaderboard-avatar-file" type="file" accept="image/*" hidden />
+        </div>
+        <div class="error"></div>
+        <div class="actions">
+          <button class="leaderboard-cancel secondary" type="button">取消</button>
+          <button class="leaderboard-confirm" type="button">确认并上传</button>
+        </div>
+      </div>`;
+    document.body.appendChild(backdrop);
+    leaderboardNameDialogEl = backdrop;
+    leaderboardNameInputEl = backdrop.querySelector('.leaderboard-name-input');
+    leaderboardAvatarInputEl = backdrop.querySelector('.leaderboard-avatar-file');
+    leaderboardAvatarPreviewEl = backdrop.querySelector('.leaderboard-avatar-preview');
+    leaderboardDialogErrorEl = backdrop.querySelector('.error');
+    const avatarBtn = backdrop.querySelector('.leaderboard-avatar-btn');
+    const clearBtn = backdrop.querySelector('.leaderboard-avatar-clear');
+    const cancelBtn = backdrop.querySelector('.leaderboard-cancel');
+    const confirmBtn = backdrop.querySelector('.leaderboard-confirm');
+    avatarBtn && avatarBtn.addEventListener('click', () => leaderboardAvatarInputEl && leaderboardAvatarInputEl.click());
+    clearBtn && clearBtn.addEventListener('click', () => {
+      safeLocalStorageRemove(LEADERBOARD_STORAGE_KEYS.avatar);
+      updateLeaderboardDialogPreview();
+      if (leaderboardDialogErrorEl) leaderboardDialogErrorEl.textContent = '头像已清除';
+    });
+    cancelBtn && cancelBtn.addEventListener('click', hideLeaderboardNameDialog);
+    confirmBtn && confirmBtn.addEventListener('click', confirmLeaderboardNameDialog);
+    leaderboardNameInputEl && leaderboardNameInputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') confirmLeaderboardNameDialog();
+      if (e.key === 'Escape') hideLeaderboardNameDialog();
+      e.stopPropagation();
+    });
+    leaderboardAvatarInputEl && leaderboardAvatarInputEl.addEventListener('change', async () => {
+      const file = leaderboardAvatarInputEl.files && leaderboardAvatarInputEl.files[0];
+      if (!file) return;
+      try {
+        if (leaderboardDialogErrorEl) leaderboardDialogErrorEl.textContent = '正在压缩头像...';
+        const data = await compressAvatarFile(file);
+        setPlayerAvatarData(data);
+        updateLeaderboardDialogPreview();
+        if (leaderboardDialogErrorEl) leaderboardDialogErrorEl.textContent = '头像已压缩保存';
+      } catch (err) {
+        if (leaderboardDialogErrorEl) leaderboardDialogErrorEl.textContent = err.message || '头像处理失败';
+      } finally {
+        leaderboardAvatarInputEl.value = '';
+      }
+    });
+    return leaderboardNameDialogEl;
+  }
+  function showLeaderboardNameDialog(reason = 'manual') {
+    leaderboardNameDialogOpen = true;
+    const el = ensureLeaderboardNameDialog();
+    if (!el) return;
+    el.style.display = 'flex';
+    if (leaderboardNameInputEl) {
+      leaderboardNameInputEl.value = getPlayerName();
+      setTimeout(() => leaderboardNameInputEl && leaderboardNameInputEl.focus && leaderboardNameInputEl.focus(), 30);
+    }
+    updateLeaderboardDialogPreview();
+    if (leaderboardDialogErrorEl) leaderboardDialogErrorEl.textContent = reason === 'death' ? '本局结束，确认后自动上传成绩' : '';
+  }
+  function hideLeaderboardNameDialog() {
+    leaderboardNameDialogOpen = false;
+    if (leaderboardNameDialogEl) leaderboardNameDialogEl.style.display = 'none';
+  }
+  function confirmLeaderboardNameDialog() {
+    const value = leaderboardNameInputEl ? leaderboardNameInputEl.value : '';
+    const valid = setPlayerName(value);
+    if (!valid.ok) {
+      if (leaderboardDialogErrorEl) leaderboardDialogErrorEl.textContent = valid.reason;
+      return;
+    }
+    hideLeaderboardNameDialog();
+    leaderboardStatusMessage = `玩家：${valid.name}`;
+    submitLeaderboardScore();
+  }
+  function openLeaderboardView(refresh = true) {
+    leaderboardView = true;
+    if (refresh) fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
+  }
+  function closeLeaderboardView() {
+    leaderboardView = false;
+  }
+  function leaderboardAction(action) {
+    if (action === 'open') { openLeaderboardView(true); return true; }
+    if (action === 'close') { closeLeaderboardView(); return true; }
+    if (action === 'profile') { showLeaderboardNameDialog('manual'); return true; }
+    if (action === 'retry') { retryLeaderboardUpload(); return true; }
+    if (action === 'refresh') { fetchLeaderboard(LEADERBOARD_TOP_LIMIT); return true; }
+    return false;
+  }
+  function registerLeaderboardHit(action, x, y, w, h) {
+    leaderboardHitCards.push({ action, x, y, w, h });
+  }
+  function handleLeaderboardPointer(pt) {
+    for (let i = leaderboardHitCards.length - 1; i >= 0; i--) {
+      const c = leaderboardHitCards[i];
+      if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) {
+        leaderboardAction(c.action);
+        return true;
+      }
+    }
+    if (leaderboardView) return true;
+    return false;
+  }
+  function leaderboardTimeText(seconds) {
+    const s = Math.max(0, Math.floor(Number(seconds) || 0));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  }
+  function characterDisplayName(key) {
+    const c = CHARACTERS[key] || null;
+    if (!c) return key || '-';
+    const parts = String(c.name || key).split(' · ');
+    return parts[1] || parts[0] || key;
+  }
+  function getLeaderboardAvatarImage(dataUrl) {
+    if (!dataUrl || !/^data:image\//i.test(dataUrl)) return null;
+    let rec = leaderboardAvatarCache.get(dataUrl);
+    if (!rec) {
+      const img = new Image();
+      rec = { img, ready: false };
+      img.onload = () => { rec.ready = true; };
+      img.onerror = () => { rec.failed = true; };
+      img.src = dataUrl;
+      leaderboardAvatarCache.set(dataUrl, rec);
+    }
+    return rec.ready && !rec.failed ? rec.img : null;
+  }
+  function sampleLeaderboardRows() {
+    return [
+      { player_name: getPlayerName() || 'WANG HAN', character: 'motherlife', score: 938420, kill_count: 1420, loop_count: 3, elapsed: 726, bosses_cleared: 9, avatar_data: getPlayerAvatarData() },
+      { player_name: 'SUIYI_DEV', character: 'anna', score: 812650, kill_count: 1186, loop_count: 2, elapsed: 642, bosses_cleared: 7 },
+      { player_name: '月蚀观测者', character: 'reaver', score: 764300, kill_count: 1092, loop_count: 2, elapsed: 608, bosses_cleared: 6 },
+      { player_name: 'CAT_CODE', character: 'yanuxiya', score: 702180, kill_count: 980, loop_count: 2, elapsed: 580, bosses_cleared: 5 },
+      { player_name: 'BLOODMOON', character: 'witch', score: 651900, kill_count: 934, loop_count: 1, elapsed: 512, bosses_cleared: 4 },
+    ];
+  }
+  function ensureHellModeDialog() {
+    if (hellModeDialogEl || typeof document === 'undefined' || !document.body || !document.createElement) return hellModeDialogEl;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'leaderboard-dialog-backdrop';
+    backdrop.innerHTML = `
+      <div class="leaderboard-dialog" role="dialog" aria-modal="true">
+        <h2>地狱排行榜模式</h2>
+        <p>只有地狱模式成绩会参与排行榜结算。当前默认开启：本局只要碰到一次敌方弹幕/激光，无视无敌和复活，立即死亡并上传成绩。</p>
+        <div class="actions">
+          <button class="hell-normal secondary" type="button">不参与，普通模式</button>
+          <button class="hell-confirm" type="button">开启地狱并上榜</button>
+        </div>
+      </div>`;
+    document.body.appendChild(backdrop);
+    hellModeDialogEl = backdrop;
+    const normalBtn = backdrop.querySelector('.hell-normal');
+    const confirmBtn = backdrop.querySelector('.hell-confirm');
+    normalBtn && normalBtn.addEventListener('click', () => confirmHellModeStart(false));
+    confirmBtn && confirmBtn.addEventListener('click', () => confirmHellModeStart(true));
+    return hellModeDialogEl;
+  }
+  function showHellModeStartDialog() {
+    hellModeDialogOpen = true;
+    const el = ensureHellModeDialog();
+    if (!el) {
+      startGame({ hellMode: true });
+      return;
+    }
+    el.style.display = 'flex';
+  }
+  function hideHellModeStartDialog() {
+    hellModeDialogOpen = false;
+    if (hellModeDialogEl) hellModeDialogEl.style.display = 'none';
+  }
+  function confirmHellModeStart(enabled) {
+    hideHellModeStartDialog();
+    startGame({ hellMode: enabled !== false });
+  }
+  function requestStartGame() {
+    if (hellModeDialogOpen) return;
+    if (state === 'title' || state === 'win' || state === 'lose') {
+      showHellModeStartDialog();
+    } else {
+      startGame({ hellMode: HELL_MODE_SPEC.defaultEnabled });
+    }
+  }
+  function endRunByHellMode(source = 'hostile') {
+    if (!hellModeActive || state === 'title' || state === 'win' || state === 'lose') return false;
+    player.hp = 0;
+    player.lives = 0;
+    player.inv = 0;
+    player.combo = 0;
+    state = 'lose';
+    stateTimer = 0;
+    screenShake = 22;
+    flash = 0.52;
+    flashColor = '255,60,110';
+    audio.hit();
+    burst(player.x, player.y, '#ff4f8f', 34, 260, true);
+    dmgText(player.x, player.y - 32, 'HELL BREAK', '#ff9cb0', 26);
+    setMessage('地狱模式 · 一击坠落', 999);
+    playSfx('gameover', 0.66, 1);
+    enemyBullets.length = 0;
+    warnings.length = 0;
+    lasers.length = 0;
+    requestLeaderboardUploadAfterRun();
+    return true;
   }
   function normalizeQualityPreset(preset) {
     return Object.prototype.hasOwnProperty.call(QUALITY_PRESETS, preset) ? preset : 'medium';
@@ -1269,6 +1916,36 @@
     const qualityTrim = level >= 2 ? 8 : (level === 1 ? 4 : 0);
     const base = theme === STAGE_THEME_TECH ? 78 : 68;
     return Math.max(52, base + loops * 10 - qualityTrim);
+  }
+  function stageActLabel(stage = segment) {
+    return ({stage1:'第一幕',stage2:'第二幕',stage3:'第三幕',stage4:'第四幕',stage5:'第五幕',stage6:'第六幕',stage7:'第七幕',stage8:'第八幕',stage9:'第九幕',stage10:'第十幕'})[stage] || '第一幕';
+  }
+  function formatMobWaveStatus(spawned = waveIndex, totalWaves = mobStageWaveTarget(), reinforcements = extraSpawned, reinforcementTarget = Math.max(extraWavesForStage(), extraSpawned)) {
+    const total = Math.max(1, totalWaves | 0);
+    if (spawned < total) {
+      const current = clamp(spawned || 1, 1, total);
+      const remaining = Math.max(0, total - current);
+      return {
+        phase: 'main',
+        current,
+        remaining,
+        text: `第 ${current} 波 · 剩余 ${remaining} 波`,
+        compact: `第${current}波  剩${remaining}波`,
+      };
+    }
+    const target = Math.max(0, reinforcementTarget | 0);
+    const current = Math.max(0, reinforcements | 0);
+    const remaining = Math.max(0, target - current);
+    if (target <= 0 && current <= 0) {
+      return { phase: 'clear', current: 0, remaining: 0, text: '清场中 · 剩余 0 波', compact: '清场  剩0波' };
+    }
+    return {
+      phase: 'reinforcement',
+      current,
+      remaining,
+      text: `增援第 ${Math.max(1, current)} 波 · 剩余 ${remaining} 波`,
+      compact: `增援${Math.max(1, current)}波  剩${remaining}波`,
+    };
   }
   function bossDamageMul(kind = bossKind, t = elapsed, loops = loopCount) {
     const pressure = runPressureAt(t);
@@ -7523,14 +8200,17 @@
     messageTimer = dur;
   }
 
-  function startGame() {
+  function startGame(options = {}) {
+    hellModeActive = options.hellMode !== false;
+    leaderboardEligibleRun = hellModeActive;
+    hideHellModeStartDialog();
     audio.start();
     prefetchGameplayAssets();
     reset();
     state = 'mobs';
     syncBgmTrack(true);
     startMusic();
-    setMessage('第一幕：废墟中的使魔群', 2.4);
+    setMessage(hellModeActive ? '地狱排行榜模式：一击即死，成绩可上榜' : '普通模式：本局不参与排行榜', 2.8);
   }
 
   function reset() {
@@ -7614,6 +8294,11 @@
     loopCount = 0;
     extraSpawned = 0;
     bonusFormN = 0;
+    leaderboardRunUploadStarted = false;
+    leaderboardUploadStatus = 'idle';
+    leaderboardStatusMessage = '';
+    leaderboardLastRank = null;
+    leaderboardLastWasRecord = false;
   }
 
   // Switch playable character. Allowed on the title screen, and live mid-battle
@@ -8411,6 +9096,14 @@
     maxCodeRain: 70,
   });
   const SUIYI_CODE_TRAIL_GLYPHS = Object.freeze(['0101', '1010', '{}', '</>', 'if', 'fn']);
+  const SUIYI_READABLE_DANMAKU = Object.freeze({
+    trailStyle: 'short-code-ribbons-no-solid-red-pink-lines',
+    defaultTrailStep: 16,
+    defaultTrailMax: 7,
+    quietTrailTypes: ['virus_node', 'error_window', 'warning_triangle'],
+    shortTrailTypes: ['crash_fragment', 'cursor_bullet', 'scan_shard', 'data_cube'],
+    binaryGateRenderer: 'programmatic-lanes-no-wide-uncropped-texture',
+  });
 	  const HOSTILE_BULLET_RED_EDGE = Object.freeze({
 	    fill: 'rgba(255,28,54,.24)',
 	    stroke: 'rgba(255,28,48,.92)',
@@ -8475,11 +9168,14 @@
   // Select boss by the current stage theme: tech maps are exclusive to Suiyi.
   function selectRandomBoss(stageName) {
     const pool = stageTheme === STAGE_THEME_TECH ? TECH_BOSS_POOL : NORMAL_BOSS_POOL;
-    return pool[Math.floor(Math.random() * pool.length)];
+    const kind = pool[Math.floor(Math.random() * pool.length)];
+    prefetchBossAssets(kind);
+    return kind;
   }
 
   function spawnBoss() {
     const def = BOSS_DEFS[bossKind] || BOSS_DEFS.eclipseboss;
+    prefetchBossAssets(bossKind);
     // Boss 血量随击杀成长与轮回放大，保持后期挑战（整体上调，延长对战时长）
 	    const themeBonus = bossKind === 'suiyi' ? 1.16 : 1;
 	    const bhp = Math.round(def.hp * themeBonus * (1.65 + grindDmg() * 0.85 + loopCount * 0.55));
@@ -8783,6 +9479,7 @@
     enemyBullets.length = 0;
     warnings.length = 0;
     lasers.length = 0;
+    if (bossKind === 'suiyi') clearSuiyiCombatLayers();
     // Boss 击破奖励：必掉一个插件（终极 Boss 更偏向掉七神武）+ 资源
     addItem(boss.x, boss.y, (bossKind === 'finalboss' || bossKind === 'seraph') ? 'plugin_qishenwu' : randPlugin());
     addItem(boss.x - 40, boss.y, 'heal');
@@ -8819,6 +9516,7 @@
       screenShake = Math.max(screenShake, 10);
     }
     if (stateTimer > 2.6) {
+      if (bossKind === 'suiyi') clearSuiyiCombatLayers();
       // Stage progression mapping
       const stageProgression = {
         'stage1': 'stage2',
@@ -8899,6 +9597,7 @@
   }
 
   function damagePlayer(amount) {
+    if (endRunByHellMode('hostileDamage')) return;
     if (player.inv > 0 || state === 'win') return;
     if (motherLifeActive() && motherLifeState.ultimate.active) return;
     if (state === 'boss' || state === 'bossIntro') amount *= bossDamageMul();
@@ -8939,6 +9638,7 @@
       enemyBullets.length = 0;
       warnings.length = 0;
       lasers.length = 0;
+      requestLeaderboardUploadAfterRun();
     }
   }
 
@@ -13119,7 +13819,16 @@
       if (Math.random() < 0.6) addParticle(player.x + rand(-14, 14), player.y + rand(-6, 18), rand(-30, 30), rand(20, 80), 0.3, rand(2, 4), '#ffd45a', true);
     }
 
-    if (pointerDown && pointerTarget) {
+    if (pointerDown && IS_MOBILE_RUNTIME && relativeTouchMove) {
+      const mx = relativeTouchMove.pendingX || 0;
+      const my = relativeTouchMove.pendingY || 0;
+      if (mx || my) {
+        player.x += mx * TOUCH_RELATIVE_MOVE.sensitivity;
+        player.y += my * TOUCH_RELATIVE_MOVE.sensitivity;
+        relativeTouchMove.pendingX = 0;
+        relativeTouchMove.pendingY = 0;
+      }
+    } else if (pointerDown && pointerTarget) {
       player.x = pointerTarget.x;
       player.y = pointerTarget.y;
     } else {
@@ -14933,20 +15642,20 @@
     const extraTotal = extraWavesForStage();
     const minDuration = mobStageMinDuration();
     spawnTimer -= dt;
-    const actLabel = ({stage1:'第一幕',stage2:'第二幕',stage3:'第三幕',stage4:'第四幕',stage5:'第五幕',stage6:'第六幕',stage7:'第七幕',stage8:'第八幕',stage9:'第九幕',stage10:'第十幕'})[segment] || '第一幕';
+    const actLabel = stageActLabel();
     if (spawnTimer <= 0 && waveIndex < total) {
       spawnWave(waveIndex);
       spawnBonusEnemies();
       waveIndex++;
       spawnTimer = Math.max(0.82, 1.42 - elapsed / 260);
-      setMessage(`${actLabel} · 波次 ${waveIndex}/${total}`, 1.0);
+      setMessage(`${actLabel} · ${formatMobWaveStatus().text}`, 1.0);
     } else if (spawnTimer <= 0 && waveIndex >= total && (extraSpawned < extraTotal || stateTimer < minDuration)) {
       // 肉鸽附加波次：复用本关刷怪并叠加增援，随时间越来越猛
       spawnWave((extraSpawned + 1) % sourceTotal);
       spawnBonusEnemies();
       extraSpawned++;
       spawnTimer = Math.max(0.78, 1.24 - elapsed / 320);
-      setMessage(`${actLabel} · 增援 ${extraSpawned}/${Math.max(extraTotal, extraSpawned)}`, 1.0);
+      setMessage(`${actLabel} · ${formatMobWaveStatus().text}`, 1.0);
     }
     // 安全网：波次全部结束后，清除卡在画面外上方、存活过久的残留怪（防止永久卡关）
     if (waveIndex >= total && extraSpawned >= extraTotal && stateTimer >= minDuration && enemies.length > 0) {
@@ -15510,9 +16219,18 @@
 	    }
   }
 
+  function clearSuiyiCombatLayers() {
+    suiyiHazards.length = 0;
+    suiyiFx.length = 0;
+    warnings.length = 0;
+    lasers.length = 0;
+    for (let i = enemyBullets.length - 1; i >= 0; i--) {
+      if (enemyBullets[i] && enemyBullets[i].suiyi) enemyBullets.splice(i, 1);
+    }
+  }
+
   function resetSuiyiState() {
-	    suiyiHazards.length = 0;
-	    suiyiFx.length = 0;
+	    clearSuiyiCombatLayers();
 	    suiyiMapState.previous = null;
 	    suiyiMapState.current = randomBackgroundState.boss;
 	    suiyiMapState.transition = 1;
@@ -15577,7 +16295,11 @@
     b.suiyiSprite = config.sprite || SUIYI_BULLET_SPRITES[type] || null;
     b.suiyiAlpha = config.alpha ?? 1;
     b.suiyiScale = config.scale || 1;
-    b.suiyiTrail = config.trail !== false;
+    const quietTrail = SUIYI_READABLE_DANMAKU.quietTrailTypes.indexOf(type) >= 0;
+    const shortTrail = SUIYI_READABLE_DANMAKU.shortTrailTypes.indexOf(type) >= 0;
+    b.suiyiTrail = config.trail !== undefined ? !!config.trail : !quietTrail;
+    b.suiyiTrailStep = config.trailStep || (shortTrail ? 19 : SUIYI_READABLE_DANMAKU.defaultTrailStep);
+    b.suiyiTrailMax = config.trailMax || (shortTrail ? 5 : SUIYI_READABLE_DANMAKU.defaultTrailMax);
     b.suiyiGlyph = config.glyph || SUIYI_CODE_TRAIL_GLYPHS[(Math.random() * SUIYI_CODE_TRAIL_GLYPHS.length) | 0];
     b.hist = [];
     b.rot = angle;
@@ -15728,7 +16450,7 @@
   }
 
   function updateSuiyiBoss(dt) {
-    if (!boss || boss.kind !== 'suiyi') return;
+    if (!boss || boss.kind !== 'suiyi' || boss.dead) return;
     const hpRate = boss.hp / boss.maxHp;
     const nextPhase = suiyiPhaseForHpRate(hpRate);
     if (nextPhase !== bossPhase) {
@@ -15896,24 +16618,27 @@
   }
 
   function suiyiVirusBloom(phase) {
-    const count = suiyiDensityCount(16 + phase * 3, 34);
+    const count = suiyiDensityCount(10 + phase * 2, 22);
     const base = -Math.PI / 2 + Math.sin(time * 1.5) * 0.18;
     addSuiyiFx('virus_bloom', boss.x, boss.y + 18, 0.86, { phase });
     for (let i = 0; i < count; i++) {
-      const a = base + i * TAU / count + Math.sin(i * 1.9 + time) * 0.04;
+      const a = base + i * TAU / count + Math.sin(i * 1.9 + time) * 0.025;
       const ring = i % 2;
       spawnSuiyiBullet({
         type: ring ? 'virus_node' : 'debug_bit',
         x: boss.x + Math.cos(a) * (28 + ring * 18),
         y: boss.y + 18 + Math.sin(a) * (18 + ring * 12),
         angle: a,
-        speed: 104 + phase * 15 + ring * 24,
+        speed: 108 + phase * 14 + ring * 18,
         r: ring ? 6.5 : 5.6,
-        color: ring ? '#ff72c5' : '#8ffaff',
+        color: ring ? '#ff8fd8' : '#8ffaff',
         life: 8.0,
-        behavior: ring ? 'homing_weak' : 'curve',
-        params: ring ? { turnRate: 0.32 + phase * 0.035, maxSpeed: 238 + phase * 16 } : { turn: i % 2 ? 0.22 : -0.22 },
+        behavior: ring ? 'curve' : 'screen_wrap',
+        params: ring ? { turn: (i % 2 ? 0.12 : -0.12) + phase * 0.012 } : { wrapMargin: 50 },
         glyph: ring ? 'fn' : '1010',
+        trail: !ring,
+        trailMax: 5,
+        trailStep: 19,
       });
     }
   }
@@ -15988,6 +16713,9 @@
         speed: (130 + phase * 17) * (boss.bulletSpeedMul || 1), r: 6.2,
         color: k % 2 ? '#ff68c4' : '#8ffbff', life: 7.7, behavior: 'spiral',
         params: { turn: k % 2 ? 0.72 : -0.72, accel: 4 + phase },
+        trail: phase < 4,
+        trailMax: phase >= 4 ? 4 : 6,
+        trailStep: phase >= 4 ? 21 : 17,
       });
     }
   }
@@ -16003,6 +16731,8 @@
         type: 'data_cube', x, y, angle: a, speed: 126 + phase * 18,
         r: 10, color: '#86f3ff', life: 10, behavior: 'screen_wrap',
         params: { wrapMargin: 42 },
+        trailMax: 5,
+        trailStep: 22,
       });
     }
     addSuiyiFx('memory_leak', boss.x + rand(-170, 170), boss.y + rand(20, 120), 0.8);
@@ -16047,26 +16777,28 @@
       spawnSuiyiBullet({
         type: i % 2 ? 'cursor_bullet' : 'code_arrow', x: boss.x + rand(-80, 80), y: boss.y + rand(0, 70),
         angle: a, speed: 190 + rand(0, 90), r: 7, color: i % 2 ? '#ffffff' : '#ff85d6',
-        life: 7.8, behavior: i % 2 ? 'homing_weak' : 'straight', params: { turnRate: 0.72, maxSpeed: 290 },
+        life: 7.8, behavior: i % 2 ? 'homing_weak' : 'straight', params: { turnRate: 0.58, maxSpeed: 286 },
+        trail: i % 2 ? false : true,
+        trailMax: 5,
       });
     }
   }
 
   function suiyiSystemCrash(t, dt) {
     const step = suiyiSystemCrashStep(t);
-    if (tickEvery(t, dt, 0.15)) suiyiRecursiveSpiral(5);
-    if (tickEvery(t, dt, 0.84)) suiyiStackOverflow(5);
-    if (tickEvery(t, dt, 1.15)) suiyiMergeConflict(5);
+    if (tickEvery(t, dt, 0.24)) suiyiRecursiveSpiral(5);
+    if (tickEvery(t, dt, 1.06)) suiyiStackOverflow(5);
+    if (tickEvery(t, dt, 1.48)) suiyiMergeConflict(5);
     if (step === 'crash_warning' && tickEvery(t, dt, 1.6)) suiyiSyntaxError(5);
     if (step === 'crash_warning' && tickEvery(t, dt, 1.15)) suiyiTargetLockFork(5);
-    if (step === 'error_binary' && tickEvery(t, dt, 0.48)) suiyiBinaryWaterfall(5);
-    if (step === 'error_binary' && tickEvery(t, dt, 1.05)) suiyiBinaryGateSweep(5);
-    if (step === 'code_walls' && tickEvery(t, dt, 1.35)) suiyiDeadlockThreads(5);
-    if (step === 'code_walls' && tickEvery(t, dt, 0.78)) suiyiCodeSnakeWeave(5);
-    if (step === 'core_burst' && tickEvery(t, dt, 0.72)) suiyiFunctionCallRing(5);
-    if (step === 'core_burst' && tickEvery(t, dt, 1.05)) suiyiVirusBloom(5);
-    if (step === 'overload' && tickEvery(t, dt, 0.62)) suiyiHotfixRewrite(5);
-    if (step === 'overload' && tickEvery(t, dt, 0.92)) suiyiOverclockCrossLanes(5);
+    if (step === 'error_binary' && tickEvery(t, dt, 0.66)) suiyiBinaryWaterfall(5);
+    if (step === 'error_binary' && tickEvery(t, dt, 1.22)) suiyiBinaryGateSweep(5);
+    if (step === 'code_walls' && tickEvery(t, dt, 1.58)) suiyiDeadlockThreads(5);
+    if (step === 'code_walls' && tickEvery(t, dt, 0.96)) suiyiCodeSnakeWeave(5);
+    if (step === 'core_burst' && tickEvery(t, dt, 0.92)) suiyiFunctionCallRing(5);
+    if (step === 'core_burst' && tickEvery(t, dt, 1.22)) suiyiVirusBloom(5);
+    if (step === 'overload' && tickEvery(t, dt, 0.86)) suiyiHotfixRewrite(5);
+    if (step === 'overload' && tickEvery(t, dt, 1.12)) suiyiOverclockCrossLanes(5);
     if (tickEvery(t, dt, 2.2)) addSuiyiFx('crash_core', boss.x, boss.y + 8, 1.2);
   }
 
@@ -16074,9 +16806,11 @@
     if (!b || !b.suiyi) return false;
     b.suiyiAge = (b.suiyiAge || 0) + dt;
     b.hist = b.hist || [];
-    if (b.suiyiTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > 10 * 10)) {
+    const trailStep = b.suiyiTrailStep || SUIYI_READABLE_DANMAKU.defaultTrailStep;
+    if (b.suiyiTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > trailStep * trailStep)) {
       b.hist.unshift({ x: b.x, y: b.y, a: b.suiyiAlpha ?? 1 });
-      if (b.hist.length > 11) b.hist.pop();
+      const maxTrail = b.suiyiTrailMax || SUIYI_READABLE_DANMAKU.defaultTrailMax;
+      if (b.hist.length > maxTrail) b.hist.pop();
     }
     const p = b.suiyiParams || {};
     const sp = Math.hypot(b.vx, b.vy) || 1;
@@ -16324,7 +17058,7 @@
     aura.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = aura;
     ctx.beginPath(); ctx.arc(0, 0, phase >= 5 ? 320 : 250, 0, TAU); ctx.fill();
-    if (perfLevel < 2) {
+    if (!boss.dead && perfLevel < 2) {
       drawSuiyiPanel(-170, -34 + Math.sin(time * 2.1) * 5, 150, 72, 'if (boss) cast();', 0.56 + pulse * 0.16, -0.08);
       drawSuiyiPanel(172, -42 + Math.cos(time * 1.9) * 5, 150, 72, 'while(true) fix();', 0.54 + pulse * 0.16, 0.08);
       if (phase >= 3) drawSuiyiPanel(0, -128, 178, 66, phase >= 5 ? 'SYSTEM CRASH' : 'ERROR STACK', 0.52 + pulse * 0.24, 0);
@@ -16364,7 +17098,8 @@
   }
 
   function drawSuiyiHazards() {
-    if (!isSuiyiArena() && suiyiHazards.length === 0 && suiyiFx.length === 0) return;
+    if (!isSuiyiArena()) return;
+    if (suiyiHazards.length === 0 && suiyiFx.length === 0) return;
     ctx.save();
     for (const h of suiyiHazards) {
       const p = 1 - h.life / h.maxLife;
@@ -16396,9 +17131,9 @@
       } else if (h.type === 'binary_gate') {
         const w = W * 0.92, hh = 120;
         ctx.globalCompositeOperation = 'lighter';
-        if (assetReady('suiyiCodeWallCone')) ctx.drawImage(assets.suiyiCodeWallCone, -w / 2, -hh / 2, w, hh);
-        ctx.strokeStyle = 'rgba(255,42,62,.74)';
-        ctx.lineWidth = 2.2;
+        const gateAlpha = 0.30 + Math.sin(time * 9) * 0.05;
+        ctx.strokeStyle = `rgba(255,42,62,${0.56 + gateAlpha * 0.2})`;
+        ctx.lineWidth = 2.0;
         for (let x = -w / 2; x <= w / 2; x += 38) {
           const wx = h.x + x;
           if (Math.abs(wx - h.gap) < 82) continue;
@@ -16406,11 +17141,36 @@
           ctx.moveTo(x, -hh * 0.42);
           ctx.lineTo(x + Math.sin(time * 6 + x * 0.04) * 10, hh * 0.42);
           ctx.stroke();
+          if (((x + w / 2) / 38 | 0) % 2 === 0) {
+            ctx.font = 'bold 10px Menlo, Consolas, monospace';
+            ctx.fillStyle = `rgba(132,248,255,${gateAlpha})`;
+            ctx.fillText(((x + time * 70) | 0) % 3 ? '0101' : '1010', x - 12, -hh * 0.22 + Math.sin(time * 4 + x) * 6);
+          }
+        }
+        ctx.globalCompositeOperation = 'source-over';
+        const gapLocal = (h.gap || W * 0.5) - h.x;
+        const guardGrad = ctx.createLinearGradient(0, -hh * 0.5, 0, hh * 0.5);
+        guardGrad.addColorStop(0, 'rgba(255,34,64,0)');
+        guardGrad.addColorStop(0.5, 'rgba(255,34,64,.64)');
+        guardGrad.addColorStop(1, 'rgba(255,34,64,0)');
+        ctx.fillStyle = guardGrad;
+        ctx.fillRect(gapLocal - 88, -hh * 0.44, 2.5, hh * 0.88);
+        ctx.fillRect(gapLocal + 88, -hh * 0.44, 2.5, hh * 0.88);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.strokeStyle = 'rgba(102,246,255,.18)';
+        ctx.lineWidth = 1.2;
+        for (let y = -hh * 0.34; y <= hh * 0.34; y += 18) {
+          ctx.beginPath();
+          ctx.moveTo(-w * 0.46, y);
+          ctx.lineTo(gapLocal - 96, y + Math.sin(time * 4 + y) * 4);
+          ctx.moveTo(gapLocal + 96, y + Math.cos(time * 3 + y) * 4);
+          ctx.lineTo(w * 0.46, y);
+          ctx.stroke();
         }
         ctx.font = 'bold 13px Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
-        ctx.fillStyle = 'rgba(255,238,246,.88)';
-        ctx.fillText('0101 GATE', (h.gap || W * 0.5) - h.x, hh * 0.54);
+        ctx.fillStyle = 'rgba(255,238,246,.82)';
+        ctx.fillText('0101 GATE', gapLocal, hh * 0.52);
       } else if (h.type === 'debug_grid') {
         const w = W * 0.76, hh = 250;
         ctx.globalCompositeOperation = 'lighter';
@@ -16580,28 +17340,36 @@
   }
 
   function drawSuiyiEnemyBullet(b) {
-    drawHostileBulletRedEdge(b, b.suiyiType === 'error_window' ? 2.15 : 1.78, (b.suiyiAlpha ?? 1) * 0.85);
+    drawHostileBulletRedEdge(b, b.suiyiType === 'error_window' ? 1.48 : 1.14, (b.suiyiAlpha ?? 1) * 0.42);
     if (b.hist && b.hist.length > 1) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
-      for (let layer = 0; layer < 3; layer++) {
-        ctx.lineWidth = layer === 2 ? Math.max(1.2, b.r * 0.28) : (layer ? Math.max(1.6, b.r * 0.48) : b.r * 1.32);
-        ctx.strokeStyle = layer === 2 ? 'rgba(255,34,60,.52)' : (layer ? 'rgba(255,232,250,.70)' : 'rgba(255,80,195,.28)');
+      const trailLayers = [
+        { width: Math.max(1.6, b.r * 0.74), color: 'rgba(90,238,255,.15)' },
+        { width: Math.max(1.0, b.r * 0.28), color: 'rgba(255,154,226,.26)' },
+        { width: Math.max(0.8, b.r * 0.12), color: 'rgba(255,242,252,.34)' },
+      ];
+      for (let layer = 0; layer < trailLayers.length; layer++) {
+        ctx.lineWidth = trailLayers[layer].width;
+        ctx.strokeStyle = trailLayers[layer].color;
         ctx.beginPath();
         for (let i = 0; i < b.hist.length; i++) {
           const p = b.hist[i];
           if (i === 0) ctx.moveTo(p.x, p.y);
-          else ctx.lineTo(p.x, p.y);
+          else {
+            const prev = b.hist[i - 1];
+            ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + p.x) * 0.5, (prev.y + p.y) * 0.5);
+          }
         }
         ctx.stroke();
       }
       if (perfLevel < 2 && b.hist.length > 3) {
         ctx.font = 'bold 10px Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
-        for (let i = 1; i < b.hist.length; i += 3) {
+        for (let i = 1; i < b.hist.length; i += 4) {
           const p = b.hist[i];
-          ctx.globalAlpha = clamp((1 - i / b.hist.length) * 0.62, 0.08, 0.46);
-          ctx.fillStyle = i % 2 ? 'rgba(255,230,242,.82)' : 'rgba(255,48,72,.78)';
+          ctx.globalAlpha = clamp((1 - i / b.hist.length) * 0.42, 0.06, 0.32);
+          ctx.fillStyle = i % 2 ? 'rgba(255,230,248,.62)' : 'rgba(116,248,255,.58)';
           ctx.fillText(b.suiyiGlyph || '0101', p.x, p.y + 3);
         }
         ctx.globalAlpha = 1;
@@ -16697,10 +17465,6 @@
     drawUltimateEffect();
     drawSpriteFx();
     drawProcRings();
-    drawSuiyiHazards();
-    drawEnemyBullets();
-    drawWarnings();
-    drawLasers();
     drawParticles();
     drawMotherLifeUltimate('overlay');
     drawSaintFieldMeteorOverlay(); // 天空圣环、斜角流星、落地爆炸与圣痕
@@ -16726,6 +17490,11 @@
     drawPlayerHitbox();
     drawQishenwu();
     drawMotherHiveFinalButterflyOverlay();
+    // Enemy attack layer: render after all actors/player effects so hostile bullets are never hidden.
+    drawSuiyiHazards();
+    drawEnemyBullets();
+    drawWarnings();
+    drawLasers();
     ctx.restore();
     drawUI();
     drawOverlay();
@@ -17144,6 +17913,12 @@
     else if (bossPhase === 2) bossKey = pfx + 'Phase2';
     else if (bossPhase === 3) bossKey = has3 ? 'bossPhase3' : pfx + 'Phase2';
     else bossKey = pfx + 'Rage';
+    if (!assetReady(bossKey)) {
+      const idleKey = pfx + 'Idle';
+      const phase1Key = pfx + 'Phase1';
+      if (assetReady(idleKey)) bossKey = idleKey;
+      else if (assetReady(phase1Key)) bossKey = phase1Key;
+    }
     if (assetReady(bossKey)) {
       const sc = (boss.scale || 1) * (1 + Math.sin(time * 3.2) * 0.015);
       ctx.scale(sc, sc);
@@ -18954,9 +19729,9 @@
 	      const r = b.r;
 	      if (b.suiyi) {
 	        drawSuiyiEnemyBullet(b);
-	        drawHostileBulletRimOverlay(b, b.suiyiType === 'error_window' ? 1.48 : 1.26, (b.suiyiAlpha ?? 1) * 0.82);
+	        drawHostileBulletRimOverlay(b, b.suiyiType === 'error_window' ? 1.24 : 1.04, (b.suiyiAlpha ?? 1) * 0.88);
 	        continue;
-	      }
+      }
 	      if (b.suiyiTech) drawSuiyiTechBulletTrail(b);
 	      drawHostileBulletRedEdge(b, b.suiyiTech ? 1.92 : (DIRECTIONAL_BULLETS.has(b.kind) ? 1.66 : 1.48), b.suiyiTech ? 0.86 : (drawExtraGlow ? 0.74 : 0.58));
       // —— V2 海洋贴图弹：整套 drawImage（方向性按速度旋转，其余自旋）+ 加法底光 ——
@@ -19458,9 +20233,8 @@
       ctx.strokeText(binfo, W / 2, by + bh + 12);
       ctx.fillStyle = '#ffc7d8'; ctx.fillText(binfo, W / 2, by + bh + 12);
     } else if (state === 'mobs') {
-      const total = mobStageWaveTarget();
-      const actName = ({stage1:'第一幕',stage2:'第二幕',stage3:'第三幕',stage4:'第四幕',stage5:'第五幕',stage6:'第六幕',stage7:'第七幕',stage8:'第八幕',stage9:'第九幕',stage10:'第十幕'})[segment] || '第一幕';
-      const waveLabel = waveIndex < total ? `Wave ${Math.min(waveIndex, total)}/${total}` : `增援 ${extraSpawned}/${Math.max(extraWavesForStage(), extraSpawned)}`;
+      const actName = stageActLabel();
+      const waveLabel = formatMobWaveStatus().text;
       ctx.textAlign = 'center';
       // 极简顶栏：贴顶、半透明磨砂条，不遮挡视野
       const barW = 360, barH = 28, barX = W / 2 - barW / 2, barY = 8;
@@ -19745,8 +20519,7 @@
       const phTotal = (boss && boss.kind === 'suiyi') ? 6 : ((boss && boss.kind === 'midboss') ? 3 : 5);
       ctx.fillText(`阶段 ${Math.min(bossPhase + 1, phTotal)}/${phTotal}`, 40, 242);
     } else {
-      const total = mobStageWaveTarget();
-      ctx.fillText(`Wave ${Math.min(waveIndex, total)}/${total}`, 40, 242);
+      ctx.fillText(formatMobWaveStatus().compact, 40, 242);
     }
 
     // Party cards: all three playable characters, active one highlighted. Tag = switch key.
@@ -20021,6 +20794,7 @@
   }
 
 	  function drawOverlay() {
+    leaderboardHitCards = [];
     if (flash > 0) {
       const hiveLinkFlashCap = motherHiveActive() && motherHive.linkV3.active;
       const flashAlpha = hiveLinkFlashCap ? Math.min(0.10, flash * 0.45) : Math.min(0.72, flash);
@@ -20077,6 +20851,7 @@
 	    if (state === 'title') drawTitle();
     if (state === 'win') drawResult('VICTORY', '第一章 · 月蚀终幕已通关，按 R 再来一局', '#fff2a8');
     if (state === 'lose') drawResult('GAME OVER', '按 R 重开', '#ff9cb0');
+    if (leaderboardView) drawLeaderboardView();
     if (paused) {
       ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.48)'; ctx.fillRect(0,0,W,H);
       if (assetReady('uiPausePanel')) ctx.drawImage(assets.uiPausePanel, 92, H * 0.35, W - 184, 280);
@@ -20117,6 +20892,260 @@
       ctx.font = `bold ${compact ? 16 : 17}px PingFang SC, Microsoft YaHei, sans-serif`;
       ctx.fillText(q.label, x + bw * 0.5, y + bh * 0.64);
     }
+    ctx.restore();
+  }
+
+  function drawLeaderboardButton(x, y, w, h, label, action, active = false) {
+    registerLeaderboardHit(action, x, y, w, h);
+    ctx.save();
+    roundRect(x, y, w, h, Math.min(14, h / 2));
+    const g = ctx.createLinearGradient(0, y, 0, y + h);
+    g.addColorStop(0, active ? 'rgba(255,194,238,.94)' : 'rgba(44,38,70,.90)');
+    g.addColorStop(1, active ? 'rgba(142,76,220,.94)' : 'rgba(14,14,30,.92)');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.lineWidth = active ? 2.2 : 1.2;
+    ctx.strokeStyle = active ? 'rgba(255,244,255,.88)' : 'rgba(206,185,255,.36)';
+    ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `bold ${h > 40 ? 16 : 13}px PingFang SC, Microsoft YaHei, sans-serif`;
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(0,0,0,.55)';
+    ctx.strokeText(label, x + w / 2, y + h / 2 + 0.5);
+    ctx.fillStyle = active ? '#2b1028' : '#fff1ff';
+    ctx.fillText(label, x + w / 2, y + h / 2 + 0.5);
+    ctx.textBaseline = 'alphabetic';
+    ctx.restore();
+  }
+
+  function drawLeaderboardTitleActions(cx, y, compact = false) {
+    const bw = compact ? 176 : 158;
+    const bh = compact ? 44 : 34;
+    const gap = compact ? 14 : 12;
+    drawLeaderboardButton(cx - bw - gap / 2, y, bw, bh, '排行榜', 'open', true);
+    drawLeaderboardButton(cx + gap / 2, y, bw, bh, getPlayerName() ? '昵称头像' : '设置昵称', 'profile', false);
+  }
+
+  function drawLeaderboardBackdrop(alpha = 1) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = 'rgba(2,1,8,.78)';
+    ctx.fillRect(0, 0, W, H);
+    const bgKey = assetReady('suiyiMapVirtualCore') ? 'suiyiMapVirtualCore' : (assetReady('bgEclipse') ? 'bgEclipse' : null);
+    if (bgKey) {
+      const img = assets[bgKey];
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.drawImage(img, -W * 0.08, 0, W * 1.16, H);
+      ctx.restore();
+    }
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    const rg = ctx.createRadialGradient(W * 0.5, H * 0.27, 20, W * 0.5, H * 0.27, W * 0.72);
+    rg.addColorStop(0, 'rgba(255,108,218,.22)');
+    rg.addColorStop(0.45, 'rgba(90,220,255,.10)');
+    rg.addColorStop(1, 'rgba(255,220,140,0)');
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(132,235,255,.15)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 12; i++) {
+      const x = (i * 67 + (time * 14) % 67) % W;
+      ctx.beginPath();
+      ctx.moveTo(x, H * 0.08);
+      ctx.lineTo(x - 130, H * 0.92);
+      ctx.stroke();
+    }
+    ctx.font = '12px Menlo, Monaco, Consolas, monospace';
+    ctx.fillStyle = 'rgba(140,245,255,.18)';
+    for (let i = 0; i < 34; i++) {
+      const x = (i * 43 + Math.sin(time + i) * 18) % W;
+      const y = (i * 71 + time * 26) % H;
+      ctx.fillText(i % 3 === 0 ? '0101' : (i % 3 === 1 ? 'RANK' : 'SCORE'), x, y);
+    }
+    if (assetReady('uiEmblemLoop')) {
+      ctx.globalAlpha = 0.10;
+      ctx.translate(W / 2, H * 0.46);
+      ctx.rotate(time * 0.08);
+      ctx.drawImage(assets.uiEmblemLoop, -260, -260, 520, 520);
+    }
+    ctx.restore();
+    ctx.restore();
+  }
+
+  function drawLeaderboardAvatar(dataUrl, x, y, r, name = '') {
+    ctx.save();
+    const img = getLeaderboardAvatarImage(dataUrl);
+    const g = ctx.createRadialGradient(x - r * 0.3, y - r * 0.35, 2, x, y, r * 1.18);
+    g.addColorStop(0, 'rgba(255,230,255,.92)');
+    g.addColorStop(0.55, 'rgba(255,103,208,.48)');
+    g.addColorStop(1, 'rgba(20,14,38,.92)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r + 2, 0, TAU); ctx.fill();
+    if (img) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(x, y, r - 2, 0, TAU); ctx.clip();
+      ctx.drawImage(img, x - r + 2, y - r + 2, (r - 2) * 2, (r - 2) * 2);
+      ctx.restore();
+    } else {
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `bold ${Math.max(12, r * 0.72)}px PingFang SC, Microsoft YaHei, sans-serif`;
+      ctx.fillStyle = '#fff6ff';
+      ctx.fillText(truncateChars(name || '?', 1).toUpperCase(), x, y + 1);
+      ctx.textBaseline = 'alphabetic';
+    }
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255,226,252,.78)';
+    ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawLeaderboardPanelFrame(x, y, w, h, title) {
+    ctx.save();
+    roundRect(x, y, w, h, 24);
+    const pg = ctx.createLinearGradient(0, y, 0, y + h);
+    pg.addColorStop(0, 'rgba(42,24,58,.92)');
+    pg.addColorStop(0.42, 'rgba(16,14,34,.88)');
+    pg.addColorStop(1, 'rgba(8,7,20,.94)');
+    ctx.fillStyle = pg; ctx.fill();
+    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = 'rgba(255,214,248,.34)';
+    ctx.stroke();
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    const line = ctx.createLinearGradient(x, 0, x + w, 0);
+    line.addColorStop(0, 'rgba(255,130,220,0)');
+    line.addColorStop(0.5, 'rgba(255,230,255,.72)');
+    line.addColorStop(1, 'rgba(120,230,255,0)');
+    ctx.fillStyle = line;
+    ctx.fillRect(x + 28, y + 2, w - 56, 2);
+    ctx.restore();
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 30px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = 'rgba(0,0,0,.62)';
+    ctx.strokeText(title, x + w / 2, y + 46);
+    ctx.fillStyle = '#fff0ff';
+    ctx.fillText(title, x + w / 2, y + 46);
+    ctx.restore();
+  }
+
+  function drawLeaderboardView() {
+    drawLeaderboardBackdrop(1);
+    const margin = IS_MOBILE_RUNTIME ? 28 : 44;
+    const x = margin;
+    const y = IS_MOBILE_RUNTIME ? 88 : 96;
+    const w = W - margin * 2;
+    const h = H - y - 112;
+    drawLeaderboardPanelFrame(x, y, w, h, '月蚀排行榜 · Top 50');
+    const playerName = getPlayerName();
+    const rows = leaderboardData.length ? leaderboardData : (leaderboardFetchStatus === 'ok' ? [] : sampleLeaderboardRows());
+    const rank = leaderboardLastRank || rankForLeaderboardRows(rows, playerName);
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.font = '13px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.fillStyle = 'rgba(232,238,255,.68)';
+    const status = leaderboardFetchStatus === 'loading' ? '正在读取 Supabase...' : (leaderboardStatusMessage || '全局总榜 · 分数降序');
+    ctx.fillText(`${status}${rank ? ` · 你的排名 #${rank}` : ''}`, x + 26, y + 76);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(255,233,170,.78)';
+    ctx.fillText(playerName ? `玩家 ${playerName}` : '未设置昵称', x + w - 26, y + 76);
+
+    const headerY = y + 108;
+    ctx.font = 'bold 12px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.fillStyle = 'rgba(190,225,255,.72)';
+    ctx.fillText('排名', x + 30, headerY);
+    ctx.fillText('玩家', x + 94, headerY);
+    ctx.textAlign = 'right';
+    ctx.fillText('分数', x + w - 206, headerY);
+    ctx.fillText('击杀', x + w - 136, headerY);
+    ctx.fillText('轮回', x + w - 84, headerY);
+    ctx.fillText('时间', x + w - 28, headerY);
+    ctx.textAlign = 'left';
+
+    const rowH = 52;
+    const startY = headerY + 18;
+    const maxRows = Math.max(4, Math.floor((h - 178) / rowH));
+    for (let i = 0; i < Math.min(rows.length, maxRows); i++) {
+      const row = rows[i] || {};
+      const ry = startY + i * rowH;
+      const mine = playerName && normalizeLeaderboardName(row.player_name) === playerName;
+      roundRect(x + 16, ry - 8, w - 32, rowH - 4, 14);
+      const rg = ctx.createLinearGradient(x, ry, x + w, ry);
+      rg.addColorStop(0, mine ? 'rgba(255,112,213,.28)' : (i < 3 ? 'rgba(255,214,120,.16)' : 'rgba(255,255,255,.045)'));
+      rg.addColorStop(1, mine ? 'rgba(120,230,255,.16)' : 'rgba(255,255,255,.025)');
+      ctx.fillStyle = rg; ctx.fill();
+      ctx.strokeStyle = mine ? 'rgba(255,232,255,.58)' : 'rgba(255,255,255,.075)';
+      ctx.lineWidth = mine ? 1.4 : 1;
+      ctx.stroke();
+      ctx.textAlign = 'center';
+      ctx.font = `bold ${i < 3 ? 20 : 16}px Arial`;
+      ctx.fillStyle = i === 0 ? '#fff1a3' : i === 1 ? '#d8e5ff' : i === 2 ? '#ffc7a8' : 'rgba(235,240,255,.76)';
+      ctx.fillText(`#${i + 1}`, x + 44, ry + 22);
+      drawLeaderboardAvatar(row[LEADERBOARD_AVATAR_COLUMN], x + 92, ry + 16, 18, row.player_name);
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 15px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.fillStyle = mine ? '#fff8c8' : '#fff3ff';
+      ctx.fillText(truncateChars(row.player_name || '匿名玩家', 10), x + 122, ry + 13);
+      ctx.font = '11px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.fillStyle = 'rgba(195,222,255,.70)';
+      ctx.fillText(characterDisplayName(row.character), x + 122, ry + 32);
+      ctx.textAlign = 'right';
+      ctx.font = 'bold 15px Arial';
+      ctx.fillStyle = '#ffe7a8';
+      ctx.fillText(String(Math.floor(Number(row.score) || 0)), x + w - 206, ry + 22);
+      ctx.fillStyle = 'rgba(235,245,255,.82)';
+      ctx.fillText(String(Math.floor(Number(row.kill_count) || 0)), x + w - 136, ry + 22);
+      ctx.fillText(String(Math.floor(Number(row.loop_count) || 1)), x + w - 84, ry + 22);
+      ctx.fillText(leaderboardTimeText(row.elapsed), x + w - 28, ry + 22);
+    }
+    if (!rows.length) {
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 20px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,.72)';
+      ctx.fillText(leaderboardFetchStatus === 'fail' ? '读取失败，稍后再试' : '还没有上榜记录', x + w / 2, y + h * 0.48);
+    }
+    ctx.restore();
+    const by = y + h - 58;
+    drawLeaderboardButton(x + 28, by, 132, 38, '刷新', 'refresh', false);
+    drawLeaderboardButton(x + w - 292, by, 132, 38, '昵称头像', 'profile', false);
+    drawLeaderboardButton(x + w - 148, by, 120, 38, '返回', 'close', true);
+  }
+
+  function drawLeaderboardResultPanel() {
+    const x = W / 2 - 248;
+    const y = H * 0.565;
+    const w = 496;
+    const h = 138;
+    ctx.save();
+    roundRect(x, y, w, h, 18);
+    ctx.fillStyle = 'rgba(10,8,22,.70)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,212,245,.28)';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 17px PingFang SC, Microsoft YaHei, sans-serif';
+    let line = '排行榜：';
+    if (leaderboardUploadStatus === 'ok') line += leaderboardLastRank ? `已上榜 #${leaderboardLastRank}` : '已上传';
+    else if (leaderboardUploadStatus === 'pending') line += '正在上传...';
+    else if (leaderboardUploadStatus === 'needsName') line += '请设置昵称后上传';
+    else if (leaderboardUploadStatus === 'fail') line += '上传失败';
+    else if (leaderboardUploadStatus === 'skipped') line += leaderboardStatusMessage || '未破纪录';
+    else if (!isLeaderboardEligibleRun()) line += '普通模式不参与排行榜';
+    else line += getPlayerName() ? '地狱成绩自动上传' : '设置昵称后上传';
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(0,0,0,.66)';
+    ctx.strokeText(line, W / 2, y + 32);
+    ctx.fillStyle = leaderboardUploadStatus === 'fail' ? '#ff9db8' : '#fff0c8';
+    ctx.fillText(line, W / 2, y + 32);
+    ctx.font = '13px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.fillStyle = 'rgba(232,236,255,.76)';
+    ctx.fillText(leaderboardStatusMessage || (hellModeActive ? `地狱模式 · 本地最高分 ${getBestScore()}` : '本局已关闭地狱模式'), W / 2, y + 56);
+    drawLeaderboardButton(x + 30, y + 80, 132, 38, '查看排行榜', 'open', true);
+    drawLeaderboardButton(x + 182, y + 80, 122, 38, !isLeaderboardEligibleRun() ? '不可上传' : (leaderboardUploadStatus === 'fail' ? '重试上传' : '上传成绩'), 'retry', false);
+    drawLeaderboardButton(x + 324, y + 80, 142, 38, '昵称头像', 'profile', false);
     ctx.restore();
   }
 
@@ -20234,9 +21263,10 @@
     ctx.font = 'bold 30px PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillStyle = '#21110c';
     ctx.fillText('开始战斗', W / 2, by + 52);
+    drawLeaderboardTitleActions(W / 2, by + 98, true);
     ctx.font = '15px PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,.72)';
-    ctx.fillText('战斗中：左侧头像换人 · 右侧按钮放技能 · 空白处拖动移动', W / 2, 974);
+    ctx.fillText('战斗中：左侧头像换人 · 右侧按钮放技能 · 空白处拖动移动', W / 2, by + 168);
     ctx.restore();
   }
 
@@ -20375,6 +21405,7 @@
 	    ctx.fillText('Q 圣冕天使降临 · E 夜棺模式切换 · 母巢蝶环仅生命之母出战', W/2, H*0.885);
 	    ctx.globalAlpha = 1;
 	    drawQualitySelector(W / 2, H * 0.925, false);
+	    drawLeaderboardTitleActions(W / 2, H * 0.965, false);
 	    ctx.globalAlpha = 1;
 	    ctx.restore();
 	  }
@@ -20492,6 +21523,7 @@
     }
     ctx.font = '24px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = '#fff'; ctx.fillText(subtitle, W/2, H*0.48);
     ctx.font = '20px Arial'; ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillText(`Score: ${Math.floor(score)}   Kills: ${killCount}   轮回 ${loopCount + 1}`, W/2, H*0.53);
+    drawLeaderboardResultPanel();
     ctx.restore();
   }
 
@@ -20623,11 +21655,46 @@
 	    if (ctrl.type === 'titleCharacter') { selectChar(ctrl.key); return true; }
 	    if (ctrl.type === 'titleWing') { toggleWingSelection(ctrl.key); return true; }
 	    if (ctrl.type === 'titleQuality') { selectQualityPreset(ctrl.key); return true; }
-	    if (ctrl.type === 'startGame') { startGame(); return true; }
+	    if (ctrl.type === 'leaderboardOpen') { openLeaderboardView(true); return true; }
+	    if (ctrl.type === 'leaderboardProfile') { showLeaderboardNameDialog('manual'); return true; }
+	    if (ctrl.type === 'startGame') { requestStartGame(); return true; }
     return false;
   }
 
+  function startRelativeTouchMove(e) {
+    const p = rawCanvasPos(e);
+    relativeTouchMove = {
+      pointerId: e.pointerId,
+      lastX: p.x,
+      lastY: p.y,
+      pendingX: 0,
+      pendingY: 0,
+    };
+    pointerTarget = null;
+  }
+
+  function addRelativeTouchDelta(e) {
+    if (!relativeTouchMove || relativeTouchMove.pointerId !== e.pointerId) return;
+    const p = rawCanvasPos(e);
+    relativeTouchMove.pendingX += p.x - relativeTouchMove.lastX;
+    relativeTouchMove.pendingY += p.y - relativeTouchMove.lastY;
+    relativeTouchMove.lastX = p.x;
+    relativeTouchMove.lastY = p.y;
+  }
+
+  function clearMovePointer() {
+    pointerDown = false;
+    pointerTarget = null;
+    pointerMovePointerId = null;
+    relativeTouchMove = null;
+  }
+
   function setPointerTarget(e, snap = false) {
+    if (IS_MOBILE_RUNTIME && state !== 'title') {
+      if (!relativeTouchMove || relativeTouchMove.pointerId !== e.pointerId) startRelativeTouchMove(e);
+      else addRelativeTouchDelta(e);
+      return;
+    }
     pointerTarget = pointerPos(e);
     if (snap && state !== 'title') {
       player.prevX = player.x;
@@ -20640,6 +21707,21 @@
   }
 
   window.addEventListener('keydown', (e) => {
+    if (leaderboardNameDialogOpen) {
+      if (e.code === 'Escape') hideLeaderboardNameDialog();
+      return;
+    }
+    if (hellModeDialogOpen) {
+      if (e.code === 'Escape') confirmHellModeStart(false);
+      if (e.code === 'Enter') confirmHellModeStart(true);
+      e.preventDefault();
+      return;
+    }
+    if (leaderboardView) {
+      if (e.code === 'Escape' || e.code === 'KeyL') closeLeaderboardView();
+      e.preventDefault();
+      return;
+    }
     keys[e.code] = true;
     unlockAudio();   // 首个按键即解锁音频（满足自动播放策略）
     if (e.code === 'Digit1' || e.code === 'Numpad1') selectChar('witch');
@@ -20648,9 +21730,10 @@
     if (e.code === 'Digit4' || e.code === 'Numpad4') selectChar('reaver');
     if (e.code === 'Digit5' || e.code === 'Numpad5') selectChar('motherlife');
     if (e.code === 'KeyC') cycleSkin();
-    if (e.code === 'Enter' && state === 'title') startGame();
+    if (e.code === 'Enter' && state === 'title') requestStartGame();
     if (e.code === 'KeyP') paused = !paused;
-    if (e.code === 'KeyR') startGame();
+    if (e.code === 'KeyR') requestStartGame();
+    if (e.code === 'KeyL') { openLeaderboardView(true); e.preventDefault(); }
     if (e.code === 'KeyG') { player.energy = player.maxEnergy; }
     if (e.code === 'KeyM') toggleMusic();
     if (e.code === 'KeyF') perfHudEnabled = !perfHudEnabled;
@@ -20664,6 +21747,10 @@
     unlockAudio();   // 首个点击即解锁音频
     const wasTitle = state === 'title';
     const rawPt = rawCanvasPos(e);
+    if (handleLeaderboardPointer(rawPt)) {
+      e.preventDefault();
+      return;
+    }
     const touchedControl = hitTouchControl(rawPt);
     if (touchedControl) {
       activeTouchButtonPointer = e.pointerId;
@@ -20679,24 +21766,25 @@
 	      for (const c of characterCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { selectChar(c.key); return; } }
 	      for (const c of wingCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { toggleWingSelection(c.key); return; } }
 	      for (const c of qualityCards) { if (pt.x >= c.x && pt.x <= c.x + c.w && pt.y >= c.y && pt.y <= c.y + c.h) { selectQualityPreset(c.key); return; } }
-	      if (!IS_MOBILE_RUNTIME) startGame();
+	      if (!IS_MOBILE_RUNTIME) requestStartGame();
       return;
     }
     pointerDown = true;
+    pointerMovePointerId = e.pointerId;
     setPointerTarget(e, !wasTitle);
     canvas.setPointerCapture?.(e.pointerId);
   });
   canvas.addEventListener('pointermove', (e) => {
     if (activeTouchButtonPointer === e.pointerId) return;
-    if (pointerDown) setPointerTarget(e, true);
+    if (pointerDown && pointerMovePointerId === e.pointerId) setPointerTarget(e, true);
   });
   canvas.addEventListener('pointerup', (e) => {
     if (activeTouchButtonPointer === e.pointerId) { activeTouchButtonPointer = null; activeTouchControl = null; }
-    pointerDown = false; pointerTarget = null;
+    if (pointerMovePointerId === e.pointerId) clearMovePointer();
   });
   canvas.addEventListener('pointercancel', (e) => {
     if (activeTouchButtonPointer === e.pointerId) { activeTouchButtonPointer = null; activeTouchControl = null; }
-    pointerDown = false; pointerTarget = null;
+    if (pointerMovePointerId === e.pointerId) clearMovePointer();
   });
 
   // Prevent mobile scrolling while playing.
@@ -20739,6 +21827,16 @@
         types: [...SUIYI_BULLET_TYPES],
         behaviors: { ...SUIYI_BULLET_BEHAVIORS },
       }),
+      readabilitySpec: () => ({
+        bulletVisual: { ...SUIYI_READABLE_DANMAKU },
+        redRim: 'kept-on-bullet-body-not-long-trail',
+        hazardLifecycle: {
+          clearOnDefeat: true,
+          drawOnlyInSuiyiArena: true,
+          clearFunction: 'clearSuiyiCombatLayers',
+        },
+        patternStyle: 'structured-rings-fans-gates-with-readable-gaps',
+      }),
       patternTimelineForTest: (phase) => [...(SUIYI_PHASE_TIMELINE[phase] || [])],
       systemCrashStepForTest: suiyiSystemCrashStep,
       selectRandomMapForTest: (previous, seedList) => selectSuiyiRandomMap(previous, seedList),
@@ -20778,6 +21876,65 @@
 	      selectTechMapForTest: (previous, seedList) => selectSuiyiRandomMap(previous, seedList),
 	    };
 
+    window.__leaderboardInternals__ = {
+      configSpec: () => ({
+        supabaseUrl: SUPABASE_URL,
+        table: LEADERBOARD_TABLE,
+        topLimit: LEADERBOARD_TOP_LIMIT,
+        selectBase: LEADERBOARD_SELECT_BASE,
+        optionalAvatarColumn: LEADERBOARD_AVATAR_COLUMN,
+        usesRestApi: true,
+        noSupabaseSdkDependency: true,
+      }),
+      avatarSpec: () => ({
+        ...LEADERBOARD_AVATAR_SPEC,
+        storageKey: LEADERBOARD_STORAGE_KEYS.avatar,
+        fallbackWhenColumnMissing: true,
+      }),
+      uiSpec: () => ({
+        ...LEADERBOARD_UI_SPEC,
+        buttons: ['titleOpen', 'titleProfile', 'resultOpen', 'resultRetry', 'resultProfile'],
+        panels: ['nameAvatarDialog', 'top50LeaderboardPanel', 'resultUploadStatus'],
+      }),
+      hellModeSpec: () => ({
+        ...HELL_MODE_SPEC,
+        active: hellModeActive,
+        eligible: leaderboardEligibleRun,
+      }),
+      leaderboardEligibilityForTest: (hellMode = true) => ({
+        hellModeActive: !!hellMode,
+        leaderboardEligible: !!hellMode,
+        canUpload: !!hellMode,
+        skippedMessage: '普通模式不参与排行榜；开启地狱模式后才可上传',
+      }),
+      simulateHellDamageForTest: ({ hellMode = true, inv = 2, ultimate = true, lives = 2 } = {}) => {
+        if (hellMode) {
+          return {
+            outcome: 'lose',
+            hpAfter: 0,
+            livesAfter: 0,
+            ignoredInvulnerability: inv > 0,
+            ignoredUltimate: !!ultimate,
+            leaderboardEligible: true,
+          };
+        }
+        return {
+          outcome: inv > 0 ? 'ignoredByInvulnerability' : 'normalDamage',
+          hpAfter: inv > 0 ? 'unchanged' : 'reduced',
+          livesAfter: lives,
+          ignoredInvulnerability: false,
+          ignoredUltimate: false,
+          leaderboardEligible: false,
+        };
+      },
+      normalizeNameForTest: normalizeLeaderboardName,
+      validateNameForTest: validateLeaderboardName,
+      buildPayloadForTest: (source) => buildLeaderboardPayload(source),
+      shouldSubmitForTest: shouldSubmitLeaderboardScore,
+      rankForTest: rankForLeaderboardRows,
+      sampleRowsForTest: sampleLeaderboardRows,
+    };
+
     window.__randomBalanceInternals__ = {
       backgroundPoolSpec: () => ({
         mode: 'equal-random-map-then-theme-bound-content',
@@ -20800,6 +21957,7 @@
         includesFinalbossInNormalPool: NORMAL_BOSS_POOL.includes('finalboss'),
         suiyiExclusiveToTechPool: TECH_BOSS_POOL.includes('suiyi') && !NORMAL_BOSS_POOL.includes('suiyi'),
         loopsOnlyOnStage10: true,
+        bossAssetKeysForTest: (kind) => bossAssetKeys(kind),
       }),
       growthCurveSpec: () => ({
         mode: 'longer-stronger-survivorlike-pressure',
@@ -20841,6 +21999,33 @@
         normalLatePoolIncludesTech: SUIYI_TECH_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_NORMAL).includes(type)),
         techEarlyPool: eligibleStagePool(0, 0, STAGE_THEME_TECH),
         techLatePoolIncludesAllTech: SUIYI_TECH_MOB_TYPES.every(type => eligibleStagePool(480, 0, STAGE_THEME_TECH).includes(type)),
+      }),
+      waveHudSpec: () => ({
+        mode: 'current-wave-plus-remaining-no-slash-denominator',
+        mainSample: formatMobWaveStatus(9, 16, 0, 0).text,
+        reinforcementSample: formatMobWaveStatus(16, 16, 16, 16).text,
+        openingSample: formatMobWaveStatus(0, 16, 0, 0).text,
+      }),
+      layeringSpec: () => ({
+        ...ENEMY_ATTACK_LAYER_SPEC,
+        playerLayerBelowEnemyBullets: true,
+        uiAndOverlayAboveEnemyAttacks: true,
+      }),
+      touchControlSpec: () => ({
+        mobileMoveMode: TOUCH_RELATIVE_MOVE.mode,
+        sensitivity: TOUCH_RELATIVE_MOVE.sensitivity,
+        noSnapOnMobilePointerDown: true,
+        desktopPointerMode: 'absolute-pointer-target-retained',
+        appliesTo: TOUCH_RELATIVE_MOVE.appliesTo,
+        simulateRelativeMoveForTest: (start, deltas) => {
+          let x = start && Number.isFinite(start.x) ? start.x : W * 0.5;
+          let y = start && Number.isFinite(start.y) ? start.y : H - 170;
+          for (const d of deltas || []) {
+            x += (d.dx || 0) * TOUCH_RELATIVE_MOVE.sensitivity;
+            y += (d.dy || 0) * TOUCH_RELATIVE_MOVE.sensitivity;
+          }
+          return { x: clamp(x, 36, W - 36), y: clamp(y, 260, H - 58) };
+        },
       }),
       qualityBudgetSpec: () => ({
         presets: JSON.parse(JSON.stringify(QUALITY_PRESETS)),
@@ -20914,7 +22099,7 @@
 	        const phaseByScene = {
 	          idle: 0, maps: 0, rain: 1, ring: 1, syntax: 3,
 	          recursive: 2, deadlock: 4, hotfix: 4, crash: 5,
-	          snake: 2, virus: 4,
+	          snake: 2, virus: 4, death_clear: 4, layering: 4,
 	        };
         const phase = phaseByScene[scene] ?? 0;
         const rates = [0.95, 0.76, 0.58, 0.38, 0.20, 0.08];
@@ -20930,6 +22115,37 @@
 	        if (scene === 'snake') { suiyiCodeSnakeWeave(phase); suiyiBinaryGateSweep(phase); suiyiDebugGridWeave(phase); }
 	        if (scene === 'virus') { suiyiVirusBloom(phase); suiyiTargetLockFork(phase); suiyiOverclockCrossLanes(phase); }
 	        if (scene === 'crash') { suiyiSystemCrash(45, 1 / 60); addSuiyiFx('crash_core', boss.x, boss.y, 1.2); }
+	        if (scene === 'death_clear') {
+	          suiyiBinaryGateSweep(phase);
+	          clearSuiyiCombatLayers();
+	          boss.dead = true;
+	          state = 'boss';
+	          stateTimer = 0.38;
+	          addSpriteFx('vfxExplosionLarge', boss.x, boss.y + 12, 260, 0.8, 0, 0.5, 0.78);
+	        }
+	        if (scene === 'layering') {
+	          clearSuiyiCombatLayers();
+	          const b = spawnSuiyiBullet({
+	            type: 'code_arrow',
+	            x: player.x,
+	            y: player.y,
+	            angle: -Math.PI / 2,
+	            speed: 1,
+	            r: 14,
+	            damage: 0,
+	            life: 4,
+	            behavior: 'straight',
+	            trail: false,
+	            color: '#ff7bd5',
+	          });
+	          if (b) {
+	            b.x = player.x;
+	            b.y = player.y;
+	            b.vx = 0;
+	            b.vy = 0;
+	            b.suiyiAlpha = 1;
+	          }
+	        }
         messageTimer = 0;
         screenShake = 0;
         flash = 0;
@@ -21103,6 +22319,19 @@
           suiyiFunctionCallRing(3);
           message = '';
           messageTimer = 0;
+        } else if (scene === 'abyss_boss_asset') {
+          elapsed = 360;
+          stageTheme = STAGE_THEME_NORMAL;
+          state = 'boss';
+          bossKind = 'abysswalker';
+          randomBackgroundState.boss = 'bgAbyssCore';
+          spawnBoss();
+          boss.inv = 0;
+          bossPhase = 1;
+          boss.hp = boss.maxHp * 0.68;
+          patternTimer = 0;
+          message = '';
+          messageTimer = 0;
         } else if (scene === 'mobile_low') {
           elapsed = 520;
           perfLevel = 2;
@@ -21162,6 +22391,51 @@
         return { map: bgBaseKey(), enemies: enemies.length, bullets: enemyBullets.length, perfLevel, qualityPreset };
       },
     };
+
+    window.__leaderboardCapture__ = {
+      prepare(scene = 'panel') {
+        hideLeaderboardNameDialog();
+        leaderboardView = false;
+        leaderboardData = sampleLeaderboardRows();
+        leaderboardFetchStatus = 'ok';
+        leaderboardStatusMessage = '验收样例 · Supabase Top 50';
+        leaderboardUploadStatus = 'ok';
+        leaderboardLastRank = 1;
+        leaderboardLastWasRecord = true;
+        safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.name, getPlayerName() || 'WANG HAN');
+        if (scene === 'title') {
+          state = 'title';
+          messageTimer = 0;
+        } else if (scene === 'result') {
+          state = 'lose';
+          score = 938420;
+          killCount = 1420;
+          loopCount = 2;
+          elapsed = 726;
+          bossesCleared = 9;
+          leaderboardStatusMessage = '新纪录已上传';
+        } else if (scene === 'name') {
+          state = 'title';
+          showLeaderboardNameDialog('manual');
+        } else if (scene === 'hell_prompt') {
+          state = 'title';
+          showHellModeStartDialog();
+        } else {
+          state = 'title';
+          leaderboardView = true;
+        }
+        draw();
+        return { scene, view: leaderboardView, rows: leaderboardData.length, status: leaderboardFetchStatus };
+      },
+      step(frames = 20, dt = 1 / 60) {
+        for (let i = 0; i < frames; i++) {
+          time += dt;
+          titlePulse += dt;
+        }
+        draw();
+        return { rows: leaderboardData.length, status: leaderboardFetchStatus, view: leaderboardView };
+      },
+    };
 	  }
 
   if (window.__PAGE_BUILD_VERSION__ && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
@@ -21176,6 +22450,7 @@
     coarsePointer: HAS_COARSE_POINTER,
     bestPerfLevel: MOBILE_BEST_PERF_LEVEL,
     mobileAssets: !!Object.keys(MOBILE_ASSET_PATHS).length,
+    touchMoveMode: TOUCH_RELATIVE_MOVE.mode,
   };
 
   requestAnimationFrame(loop);

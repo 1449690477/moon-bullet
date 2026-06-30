@@ -5,6 +5,10 @@ const indexUrl = new URL('../../index.html', import.meta.url);
 let cachedInternals = null;
 let cachedMotherLifeInternals = null;
 let cachedMotherHiveInternals = null;
+let cachedSuiyiBossInternals = null;
+let cachedSuiyiTechMobInternals = null;
+let cachedRandomBalanceInternals = null;
+let cachedLeaderboardInternals = null;
 
 function makeGradient() {
   return { addColorStop() {} };
@@ -126,6 +130,10 @@ export function loadInternals() {
   cachedInternals = context.window.__saintWingBerserkInternals__;
   cachedMotherLifeInternals = context.window.__motherLifeInternals__;
   cachedMotherHiveInternals = context.window.__motherHiveInternals__;
+  cachedSuiyiBossInternals = context.window.__suiyiBossInternals__;
+  cachedSuiyiTechMobInternals = context.window.__suiyiTechMobInternals__;
+  cachedRandomBalanceInternals = context.window.__randomBalanceInternals__;
+  cachedLeaderboardInternals = context.window.__leaderboardInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
   return cachedInternals;
 }
@@ -142,6 +150,34 @@ export function loadMotherHiveInternals() {
   loadInternals();
   if (!cachedMotherHiveInternals) throw new Error('window.__motherHiveInternals__ was not exposed');
   return cachedMotherHiveInternals;
+}
+
+export function loadSuiyiBossInternals() {
+  if (cachedSuiyiBossInternals) return cachedSuiyiBossInternals;
+  loadInternals();
+  if (!cachedSuiyiBossInternals) throw new Error('window.__suiyiBossInternals__ was not exposed');
+  return cachedSuiyiBossInternals;
+}
+
+export function loadSuiyiTechMobInternals() {
+  if (cachedSuiyiTechMobInternals) return cachedSuiyiTechMobInternals;
+  loadInternals();
+  if (!cachedSuiyiTechMobInternals) throw new Error('window.__suiyiTechMobInternals__ was not exposed');
+  return cachedSuiyiTechMobInternals;
+}
+
+export function loadRandomBalanceInternals() {
+  if (cachedRandomBalanceInternals) return cachedRandomBalanceInternals;
+  loadInternals();
+  if (!cachedRandomBalanceInternals) throw new Error('window.__randomBalanceInternals__ was not exposed');
+  return cachedRandomBalanceInternals;
+}
+
+export function loadLeaderboardInternals() {
+  if (cachedLeaderboardInternals) return cachedLeaderboardInternals;
+  loadInternals();
+  if (!cachedLeaderboardInternals) throw new Error('window.__leaderboardInternals__ was not exposed');
+  return cachedLeaderboardInternals;
 }
 
 export function makeCtxIn(opts = {}) {

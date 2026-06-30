@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+const suiyiTechCapture = readFileSync(new URL('../../tools/capture_suiyi_tech_mobs_acceptance.js', import.meta.url), 'utf8');
+const randomBalanceCapture = readFileSync(new URL('../../tools/capture_random_balance_acceptance.js', import.meta.url), 'utf8');
 function fail(message) {
   console.error(message);
   process.exit(1);
@@ -249,6 +251,199 @@ const burstHook = burstBlock.indexOf('motherHiveOnUltimateFinalBurst();');
 const burstClear = burstBlock.indexOf('enemyBullets.length = 0; warnings.length = 0; lasers.length = 0;');
 if (burstHook < 0 || burstClear < 0 || burstHook > burstClear) {
   fail('motherHiveOnUltimateFinalBurst must run before final burst clears enemy bullets');
+}
+
+for (const key of [
+  'suiyiMapVirtualCore',
+  'suiyiMapControlHall',
+  'suiyiMapDigitalRuins',
+  'suiyiMapCrystalSanctum',
+  'suiyiIdle',
+  'suiyiCrash',
+	  'suiyiBulletCodeArrow',
+	  'suiyiErrorWindowLarge',
+	  'suiyiCrashCore',
+	  'suiyiTargetLock',
+	  'suiyiCodeRainStrip',
+	  'suiyiImpactBurst',
+	]) {
+  if (!html.includes(key)) fail(`${key} suiyi asset key missing`);
+}
+for (const needle of [
+  'const SUIYI_PHASE_HP = Object.freeze({',
+  'const SUIYI_MAP_KEYS = Object.freeze',
+  'function suiyiPatterns(t, dt)',
+  'function updateSuiyiBoss(dt)',
+	  'function drawSuiyiBoss()',
+	  'function updateSuiyiEnemyBullet(b, dt)',
+	  'function suiyiCompileFan(phase)',
+	  'function suiyiBinaryGateSweep(phase)',
+	  'function suiyiCodeSnakeWeave(phase)',
+	  'function suiyiDebugGridWeave(phase)',
+	  'function suiyiVirusBloom(phase)',
+	  'function suiyiTargetLockFork(phase)',
+	  'function suiyiOverclockCrossLanes(phase)',
+	  'function drawHostileBulletRedEdge(b',
+	  'function drawHostileBulletRimOverlay(b',
+	  'window.__suiyiBossInternals__',
+  "'unlocked-random-wave-and-formation-pool'",
+  'function eligibleStageWaves(',
+  'const GLOBAL_STAGE_POOL = Object.freeze',
+  'const GLOBAL_BACKGROUND_POOL = Object.freeze',
+  'const GLOBAL_BOSS_POOL = Object.freeze(Object.keys(BOSS_DEFS))',
+  "suiyi:       { hp:",
+  "if (segment === 'stage10')",
+  "boss.kind === 'suiyi'",
+]) {
+  if (!html.includes(needle)) fail(`Suiyi boss invariant missing: ${needle}`);
+}
+if (!html.includes("code_arrow: 'straight'")
+  || !html.includes("binary_digit: 'slow_then_fast'")
+  || !html.includes("warning_triangle: 'delayed_burst'")
+  || !html.includes("crash_fragment: 'spiral'")
+  || !html.includes("debug_bit: 'screen_wrap'")
+  || !html.includes("virus_node: 'homing_weak'")
+  || !html.includes("logic_gate: 'slow_then_fast'")
+  || !html.includes("scan_shard: 'curve'")) {
+  fail('Suiyi bullet behavior table must cover V2 behavior set');
+}
+for (const needle of [
+  "'Compile Fan'",
+  "'Binary Gate'",
+  "'Code Snake'",
+  "'Debug Grid'",
+  "'Virus Bloom'",
+  "'Target Lock Fork'",
+  "'Overclock Cross Lanes'",
+  'SUIYI_CODE_TRAIL_GLYPHS',
+  'SUIYI_READABLE_DANMAKU',
+  'function clearSuiyiCombatLayers',
+  'programmatic-lanes-no-wide-uncropped-texture',
+  'short-code-ribbons-no-solid-red-pink-lines',
+  'ENEMY_ATTACK_LAYER_SPEC',
+  'relative-drag-no-snap',
+  'function startRelativeTouchMove',
+  'function addRelativeTouchDelta',
+  'layeringSpec',
+  'touchControlSpec',
+  'HOSTILE_BULLET_RED_EDGE',
+  'GLOBAL_BACKGROUND_POOL',
+  'STAGE_THEME_TECH',
+  'TECH_STAGE_WAVES',
+  'mobStageWaveTarget',
+  'mobStageMinDuration',
+  'bossDamageMul',
+  'function bossAssetKeys',
+  'prefetchBossAssets',
+  'QUALITY_PRESETS',
+  'formatMobWaveStatus',
+  'waveHudSpec',
+  'window.__randomBalanceInternals__',
+  'techThemeOnlySpawnsTechMobsAndSuiyi: true',
+  'SUPABASE_URL',
+  'sb_publishable_3z85P8qcxCMc9wweII4oDw_BeXUoGmE',
+  'LEADERBOARD_TABLE',
+  'LEADERBOARD_AVATAR_SPEC',
+  'avatar_data',
+  'function compressAvatarFile',
+  'function submitLeaderboardScore',
+  'function drawLeaderboardView',
+  'function drawLeaderboardBackdrop',
+  'window.__leaderboardInternals__',
+  'window.__leaderboardCapture__',
+  'HELL_MODE_SPEC',
+  '地狱排行榜模式',
+  'function requestStartGame',
+  'function showHellModeStartDialog',
+  'function endRunByHellMode',
+  'leaderboardRequiresHellMode',
+  '普通模式不参与排行榜',
+]) {
+  if (!html.includes(needle)) fail(`Suiyi expanded STG pattern invariant missing: ${needle}`);
+}
+const drawOrder = [
+  'drawPlayer();',
+  'drawPlayerHitbox();',
+  'drawMotherHiveFinalButterflyOverlay();',
+  'drawSuiyiHazards();',
+  'drawEnemyBullets();',
+  'drawWarnings();',
+  'drawLasers();',
+  'drawUI();',
+];
+for (let i = 1; i < drawOrder.length; i++) {
+  if (html.indexOf(drawOrder[i - 1]) < 0 || html.indexOf(drawOrder[i]) < 0 || html.indexOf(drawOrder[i - 1]) > html.indexOf(drawOrder[i])) {
+    fail('Enemy attack layer must render after player/hitbox/effects and before UI');
+  }
+}
+for (const key of [
+  'enSuiyiCodeBug',
+  'enSuiyiCoreDrone',
+  'enSuiyiServerNode',
+  'enSuiyiCrystalCompiler',
+  'suiyiMobCodeBolt',
+  'suiyiMobBinaryOrb',
+  'suiyiMobCursorShard',
+  'suiyiMobCrystalRing',
+  'suiyiMobCrystalShard',
+  'suiyiMobCompileBurst',
+]) {
+  if (!html.includes(key)) fail(`${key} suiyi tech mob asset key missing`);
+}
+for (const needle of [
+  'const SUIYI_TECH_MOB_TYPES = Object.freeze',
+  'function drawSuiyiTechMapFlowOverlay(',
+  'function patTechBitFan(e)',
+  'function patTechCompileRing(e)',
+  'function patTechCodeRain(e)',
+  'function patTechCrystalBloom(e)',
+  "m === 'techSwarm'",
+  "m === 'techHover'",
+  "m === 'techAnchor'",
+  "m === 'techPhase'",
+  "'codeGrid'",
+  "'compilerChevron'",
+  "'terminalColumn'",
+  "'techPincer'",
+  "const TECH_STAGE_POOL = Object.freeze([...SUIYI_TECH_MOB_TYPES])",
+  "poolMode: 'exclusive-tech-theme-pool'",
+  "window.__suiyiTechMobInternals__",
+  "window.__suiyiTechMobCapture__",
+]) {
+  if (!html.includes(needle)) fail(`Suiyi tech mob invariant missing: ${needle}`);
+}
+for (const needle of [
+  '__suiyiTechMobCapture__',
+  '01_tech_map_code_flow.png',
+  '06_mixed_high_pressure_wave.png',
+]) {
+  if (!suiyiTechCapture.includes(needle)) fail(`Suiyi tech mob capture script invariant missing: ${needle}`);
+}
+for (const needle of [
+  '__randomBalanceCapture__',
+  '01_normal_map_normal_mobs.png',
+  '02_tech_map_tech_mobs.png',
+  '07_red_hitbox_and_bullet_rim.png',
+  '08_abysswalker_boss_asset.png',
+]) {
+  if (!randomBalanceCapture.includes(needle)) fail(`Random balance capture script invariant missing: ${needle}`);
+}
+if (html.includes("if (bossKind === 'finalboss') {\n        // Final boss defeated")) {
+  fail('finalboss must not end the loop unless the current segment is stage10');
+}
+const spawnEnemyAt = html.indexOf('function spawnEnemy(type, x, y, move, hoverY)');
+const spawnEnemyEnd = html.indexOf('function spawnEnemyRise(', spawnEnemyAt);
+if (spawnEnemyAt < 0 || spawnEnemyEnd < 0) fail('Could not locate spawnEnemy block');
+const spawnEnemyBlock = html.slice(spawnEnemyAt, spawnEnemyEnd);
+if (spawnEnemyBlock.includes('activateSuiyiTechMobMap')) {
+  fail('Tech mobs must not activate/replace the base map from spawnEnemy');
+}
+const normalStagePoolAt = html.indexOf('const STAGE_POOL = {');
+const normalStagePoolEnd = html.indexOf('const GLOBAL_STAGE_POOL', normalStagePoolAt);
+if (normalStagePoolAt < 0 || normalStagePoolEnd < 0) fail('Could not locate STAGE_POOL block');
+const normalStagePoolBlock = html.slice(normalStagePoolAt, normalStagePoolEnd);
+for (const techType of ['codebug', 'coredrone', 'servernode', 'crystalcompiler']) {
+  if (normalStagePoolBlock.includes(`'${techType}'`)) fail(`${techType} must not leak into normal STAGE_POOL`);
 }
 
 console.log('regression grep ok');
