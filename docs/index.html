@@ -1208,7 +1208,7 @@
   let leaderboardAvatarPreviewEl = null;
   let leaderboardNameInputEl = null;
   let leaderboardDialogErrorEl = null;
-  let leaderboardSupportsAvatarData = safeLocalStorageGet(LEADERBOARD_STORAGE_KEYS.avatarColumn) !== '0';
+  let leaderboardSupportsAvatarData = true;
   const leaderboardAvatarCache = new Map();
   let hellModeActive = HELL_MODE_SPEC.defaultEnabled;
   let leaderboardEligibleRun = HELL_MODE_SPEC.defaultEnabled;
@@ -1364,7 +1364,6 @@
     } catch (err) {
       if (leaderboardSupportsAvatarData && isMissingAvatarColumnError(err)) {
         leaderboardSupportsAvatarData = false;
-        safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.avatarColumn, '0');
         return fetchLeaderboard(n);
       }
       leaderboardFetchStatus = 'fail';
@@ -1416,7 +1415,6 @@
       } catch (err) {
         if (leaderboardSupportsAvatarData && isMissingAvatarColumnError(err)) {
           leaderboardSupportsAvatarData = false;
-          safeLocalStorageSet(LEADERBOARD_STORAGE_KEYS.avatarColumn, '0');
           await insertLeaderboardPayload(payload, false);
         } else {
           throw err;
