@@ -1130,6 +1130,7 @@
   const SUPABASE_URL = 'https://tdlqugkkojwysqnsunqt.supabase.co';
   const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_3z85P8qcxCMc9wweII4oDw_BeXUoGmE';
   const LEADERBOARD_TABLE = 'leaderboard';
+  const LEADERBOARD_FN_BASE = SUPABASE_URL + '/functions/v1/leaderboard-run';
   const LEADERBOARD_TOP_LIMIT = 50;
   const LEADERBOARD_AVATAR_COLUMN = 'avatar_data';
   const LEADERBOARD_SELECT_BASE = 'player_name,character,score,kill_count,loop_count,elapsed,bosses_cleared,created_at';
@@ -1202,6 +1203,8 @@
   let leaderboardLastRank = null;
   let leaderboardLastWasRecord = false;
   let leaderboardRunUploadStarted = false;
+  let leaderboardRunId = null;
+  let leaderboardRunToken = null;
   let leaderboardNameDialogOpen = false;
   let leaderboardNameDialogEl = null;
   let leaderboardAvatarInputEl = null;
@@ -1409,6 +1412,28 @@
     const idx = rows.findIndex(row => normalizeLeaderboardName(row.player_name) === n);
     return idx >= 0 ? idx + 1 : null;
   }
+  async function startRankedRun() {
+    leaderboardRunId = null;
+    leaderboardRunToken = null;
+    if (!isLeaderboardEligibleRun()) return { ok: false, reason: 'notEligible' };
+    try {
+      const res = await fetch(`${LEADERBOARD_FN_BASE}/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ client_version: 'web-v1.4' }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || !data.ok || !data.run_id || !data.run_token) {
+        return { ok: false, reason: 'startFailed', status: res.status, data };
+      }
+      leaderboardRunId = data.run_id;
+      leaderboardRunToken = data.run_token;
+      return { ok: true, expires_at: data.expires_at };
+    } catch (err) {
+      console.warn('[leaderboard] ranked run start failed:', err);
+      return { ok: false, reason: 'network', error: err };
+    }
+  }
   async function submitLeaderboardScore(payloadInput = null, opts = {}) {
     if (!isLeaderboardEligibleRun() && !opts.force) {
       leaderboardUploadStatus = 'skipped';
@@ -1431,39 +1456,44 @@
     leaderboardUploadStatus = 'pending';
     leaderboardStatusMessage = '正在上传排行榜...';
     try {
-      const remoteBest = await getRemoteBestForName(payload.player_name);
-      if (!shouldSubmitLeaderboardScore(payload.score, remoteBest)) {
-        const avatarUpdated = await updateLeaderboardAvatarForBest(payload, remoteBest);
-        leaderboardUploadStatus = 'skipped';
-        leaderboardLastWasRecord = false;
-        leaderboardStatusMessage = avatarUpdated ? `头像已更新；未破纪录：当前最高 ${remoteBest}` : `未破纪录：当前最高 ${remoteBest}`;
+      if (!leaderboardRunToken) await startRankedRun();
+      if (!leaderboardRunToken) {
+        leaderboardUploadStatus = 'fail';
+        leaderboardStatusMessage = '上传失败：排行榜校验服务未就绪';
+        return { ok: false, reason: 'noRunToken' };
+      }
+      const res = await fetch(`${LEADERBOARD_FN_BASE}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, run_id: leaderboardRunId, run_token: leaderboardRunToken, hell_mode: hellModeActive === true }),
+      });
+      const result = await res.json().catch(() => ({}));
+      leaderboardRunId = null;
+      leaderboardRunToken = null;
+      if (result && result.ok && result.status === 'accepted') {
         setBestScore(payload.score);
+        leaderboardUploadStatus = result.note ? 'skipped' : 'ok';
+        leaderboardLastWasRecord = !result.note;
+        leaderboardStatusMessage = result.note ? '未破纪录，资料已同步' : '新纪录已上传';
         await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
         leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
-        return { ok: true, skipped: true, remoteBest, avatarUpdated };
+        return { ok: true, rank: leaderboardLastRank, result };
       }
-      try {
-        await insertLeaderboardPayload(payload, true);
-      } catch (err) {
-        if (leaderboardSupportsAvatarData && isMissingAvatarColumnError(err)) {
-          leaderboardSupportsAvatarData = false;
-          await insertLeaderboardPayload(payload, false);
-        } else {
-          throw err;
-        }
+      if (result && result.ok && result.status === 'quarantined') {
+        leaderboardUploadStatus = 'skipped';
+        leaderboardLastWasRecord = false;
+        leaderboardStatusMessage = '成绩待审核（疑似异常数值）';
+        await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
+        leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
+        return { ok: true, quarantined: true, result };
       }
-      await leaderboardFetchJson(supabaseLeaderboardUrl(`?player_name=eq.${encodeURIComponent(payload.player_name)}&score=lt.${payload.score}`), {
-        method: 'DELETE',
-        headers: leaderboardHeaders({ Prefer: 'return=minimal' }),
-      }).catch((err) => console.warn('[leaderboard] cleanup old rows failed:', err));
-      setBestScore(payload.score);
-      leaderboardUploadStatus = 'ok';
-      leaderboardLastWasRecord = true;
-      leaderboardStatusMessage = '新纪录已上传';
-      await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
-      leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
-      return { ok: true, rank: leaderboardLastRank };
+      const reasons = Array.isArray(result && result.reasons) ? result.reasons.join('、') : '';
+      leaderboardUploadStatus = 'fail';
+      leaderboardStatusMessage = reasons ? `本局不计入：${reasons}` : '上传失败，点击重试';
+      return { ok: false, reason: res.ok ? 'rejected' : 'server', result, status: res.status };
     } catch (err) {
+      leaderboardRunId = null;
+      leaderboardRunToken = null;
       leaderboardUploadStatus = 'fail';
       leaderboardStatusMessage = '上传失败，点击重试';
       console.warn('[leaderboard] upload failed:', err);
@@ -8234,6 +8264,7 @@
   function startGame(options = {}) {
     hellModeActive = options.hellMode !== false;
     leaderboardEligibleRun = hellModeActive;
+    startRankedRun();
     hideHellModeStartDialog();
     audio.start();
     prefetchGameplayAssets();
@@ -21771,7 +21802,7 @@
     if (e.code === 'KeyP') paused = !paused;
     if (e.code === 'KeyR') requestStartGame();
     if (e.code === 'KeyL') { openLeaderboardView(true); e.preventDefault(); }
-    if (e.code === 'KeyG') { player.energy = player.maxEnergy; }
+    if (e.code === 'KeyG') { if (!hellModeActive) player.energy = player.maxEnergy; }
     if (e.code === 'KeyM') toggleMusic();
     if (e.code === 'KeyF') perfHudEnabled = !perfHudEnabled;
     if (e.code === 'KeyX' && state !== 'title') { useBomb(); e.preventDefault(); }
@@ -21921,6 +21952,9 @@
         selectBase: LEADERBOARD_SELECT_BASE,
         optionalAvatarColumn: LEADERBOARD_AVATAR_COLUMN,
         usesRestApi: true,
+        writeEndpoint: LEADERBOARD_FN_BASE,
+        directClientWrites: false,
+        startsRankedRunToken: true,
         noSupabaseSdkDependency: true,
       }),
       avatarSpec: () => ({
@@ -21971,6 +22005,20 @@
       validateNameForTest: validateLeaderboardName,
       buildPayloadForTest: (source) => buildLeaderboardPayload(source),
       payloadHasAvatarForTest: leaderboardPayloadHasAvatar,
+      writeEndpointForTest: () => LEADERBOARD_FN_BASE,
+      rankedRunStateForTest: () => ({
+        runId: leaderboardRunId,
+        hasToken: !!leaderboardRunToken,
+      }),
+      submitRouteSpecForTest: () => ({
+        start: `${LEADERBOARD_FN_BASE}/start`,
+        submit: `${LEADERBOARD_FN_BASE}/submit`,
+        usesRunToken: true,
+        directInsertFromClient: false,
+        directDeleteFromClient: false,
+        acceptedStatuses: ['accepted', 'quarantined', 'rejected'],
+        hellModeDisablesKeyG: true,
+      }),
       avatarForRowForTest: (row, currentName = 'WANG HAN') => {
         const localAvatar = 'local-avatar-for-current-player';
         const remote = row && row[LEADERBOARD_AVATAR_COLUMN];

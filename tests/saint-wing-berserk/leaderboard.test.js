@@ -4,12 +4,15 @@ import { loadLeaderboardInternals } from './setup.js';
 describe('online leaderboard and avatar upload spec', () => {
   const board = loadLeaderboardInternals();
 
-  it('uses Supabase REST without adding the Supabase SDK', () => {
+  it('uses Supabase REST for reads and Edge Function for writes without adding the Supabase SDK', () => {
     const spec = board.configSpec();
     expect(spec.supabaseUrl).toBe('https://tdlqugkkojwysqnsunqt.supabase.co');
     expect(spec.table).toBe('leaderboard');
     expect(spec.topLimit).toBe(50);
     expect(spec.usesRestApi).toBe(true);
+    expect(spec.writeEndpoint).toBe('https://tdlqugkkojwysqnsunqt.supabase.co/functions/v1/leaderboard-run');
+    expect(spec.directClientWrites).toBe(false);
+    expect(spec.startsRankedRunToken).toBe(true);
     expect(spec.noSupabaseSdkDependency).toBe(true);
     expect(spec.optionalAvatarColumn).toBe('avatar_data');
   });
@@ -48,6 +51,17 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(board.shouldSubmitForTest(1000, 999)).toBe(true);
     expect(board.shouldSubmitForTest(1000, 1000)).toBe(false);
     expect(board.shouldSubmitForTest(900, 1000)).toBe(false);
+  });
+
+  it('routes ranked uploads through tokenized Edge Function endpoints', () => {
+    const route = board.submitRouteSpecForTest();
+    expect(route.start).toBe(`${board.writeEndpointForTest()}/start`);
+    expect(route.submit).toBe(`${board.writeEndpointForTest()}/submit`);
+    expect(route.usesRunToken).toBe(true);
+    expect(route.directInsertFromClient).toBe(false);
+    expect(route.directDeleteFromClient).toBe(false);
+    expect(route.hellModeDisablesKeyG).toBe(true);
+    expect(route.acceptedStatuses).toEqual(expect.arrayContaining(['accepted', 'quarantined', 'rejected']));
   });
 
   it('keeps avatar data bounded and can locally fallback the current player avatar', () => {

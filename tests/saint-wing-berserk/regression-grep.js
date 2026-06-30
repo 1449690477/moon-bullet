@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 const suiyiTechCapture = readFileSync(new URL('../../tools/capture_suiyi_tech_mobs_acceptance.js', import.meta.url), 'utf8');
 const randomBalanceCapture = readFileSync(new URL('../../tools/capture_random_balance_acceptance.js', import.meta.url), 'utf8');
+const leaderboardRunFunction = readFileSync(new URL('../../supabase/functions/leaderboard-run/index.ts', import.meta.url), 'utf8');
 function fail(message) {
   console.error(message);
   process.exit(1);
@@ -351,6 +352,12 @@ for (const needle of [
   'function drawLeaderboardBackdrop',
   'window.__leaderboardInternals__',
   'window.__leaderboardCapture__',
+  'LEADERBOARD_FN_BASE',
+  'function startRankedRun',
+  'writeEndpointForTest',
+  'submitRouteSpecForTest',
+  'hell_mode: hellModeActive === true',
+  'directClientWrites: false',
   'HELL_MODE_SPEC',
   '地狱排行榜模式',
   'function requestStartGame',
@@ -358,8 +365,26 @@ for (const needle of [
   'function endRunByHellMode',
   'leaderboardRequiresHellMode',
   '普通模式不参与排行榜',
+  "if (e.code === 'KeyG') { if (!hellModeActive) player.energy = player.maxEnergy; }",
 ]) {
   if (!html.includes(needle)) fail(`Suiyi expanded STG pattern invariant missing: ${needle}`);
+}
+const submitStart = html.indexOf('async function submitLeaderboardScore');
+const submitEnd = html.indexOf('function requestLeaderboardUploadAfterRun', submitStart);
+if (submitStart < 0 || submitEnd < 0) fail('Could not locate submitLeaderboardScore block');
+const submitBlock = html.slice(submitStart, submitEnd);
+for (const forbidden of ['insertLeaderboardPayload(', "method: 'DELETE'", 'getRemoteBestForName(']) {
+  if (submitBlock.includes(forbidden)) fail(`submitLeaderboardScore must not use direct client write path: ${forbidden}`);
+}
+for (const needle of [
+  'leaderboard_runs',
+  'leaderboard_quarantine',
+  'LB_SALT',
+  'status: "quarantined"',
+  'not hell mode',
+  'https://1449690477.github.io',
+]) {
+  if (!leaderboardRunFunction.includes(needle)) fail(`leaderboard Edge Function invariant missing: ${needle}`);
 }
 const drawOrder = [
   'drawPlayer();',
