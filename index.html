@@ -100,6 +100,46 @@
     }
     .leaderboard-dialog .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
     .leaderboard-dialog .error { min-height: 18px; margin-top: 10px; color: #ff9fbd; font-size: 12px; }
+    .update-notice-dialog {
+      width: min(92vw, 520px);
+      max-height: min(84vh, 760px);
+      overflow: auto;
+      border-color: rgba(192, 255, 176, .54);
+      background:
+        radial-gradient(circle at 15% 12%, rgba(192, 255, 150, .24), transparent 32%),
+        radial-gradient(circle at 82% 10%, rgba(255, 214, 126, .20), transparent 34%),
+        linear-gradient(180deg, rgba(30, 42, 31, .97), rgba(13, 13, 25, .97));
+    }
+    .update-notice-dialog h2 { color: #fff8cc; }
+    .update-notice-kicker {
+      margin-bottom: 12px;
+      color: rgba(235, 255, 210, .82);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .update-notice-section {
+      padding-top: 12px;
+      margin-top: 12px;
+      border-top: 1px solid rgba(238, 255, 194, .22);
+    }
+    .update-notice-date {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #2a2710;
+      background: linear-gradient(180deg, rgba(255, 246, 150, .96), rgba(179, 244, 112, .92));
+      font-weight: 900;
+      font-size: 12px;
+      box-shadow: 0 0 18px rgba(204, 255, 140, .20);
+    }
+    .update-notice-dialog ul {
+      margin: 9px 0 0 0;
+      padding-left: 18px;
+      color: rgba(250, 255, 238, .86);
+      font-size: 13px;
+      line-height: 1.62;
+    }
+    .update-notice-dialog li { margin: 5px 0; }
     @media (max-width: 720px) {
       #wrap { padding:0; }
       canvas { border:none; border-radius:0; }
@@ -799,7 +839,71 @@
     suiyiHitSparkCyan: 'assets/vfx/suiyi/hit_spark_cyan.png',
     suiyiImpactBurst: 'assets/vfx/suiyi/impact_burst.png',
     suiyiParticleStar: 'assets/vfx/suiyi/particle_star.png',
-    suiyiCodeRainStrip: 'assets/vfx/suiyi/code_rain_strip.png'
+    suiyiCodeRainStrip: 'assets/vfx/suiyi/code_rain_strip.png',
+    // ===== 蜜瓜号：机械果园 / 果汁工厂主题 =====
+    miguaMapGreenhouse: 'assets/backgrounds/migua/greenhouse.png',
+    miguaMapJuiceFactory: 'assets/backgrounds/migua/juice_factory.png',
+    miguaMapFloatingCity: 'assets/backgrounds/migua/floating_city.png',
+    miguaBossIdle: 'assets/bosses/migua/idle.png',
+    miguaBossPhase1: 'assets/bosses/migua/phase1.png',
+    miguaBossPhase2: 'assets/bosses/migua/phase2.png',
+    miguaBossPhase3: 'assets/bosses/migua/phase3.png',
+    miguaBossFinal: 'assets/bosses/migua/final.png',
+    miguaBossHit: 'assets/bosses/migua/hit.png',
+    miguaBossDeath: 'assets/bosses/migua/death.png',
+    enMiguaDrone: 'assets/enemies/migua/drone.png',
+    enMiguaSliceSpider: 'assets/enemies/migua/slice_spider.png',
+    enMiguaTurret: 'assets/enemies/migua/turret.png',
+    enMiguaJellyMine: 'assets/enemies/migua/jelly_mine.png',
+    enMiguaBeeStinger: 'assets/enemies/migua/bee_stinger.png',
+    enMiguaArmorTurtle: 'assets/enemies/migua/armor_turtle.png',
+    miguaSeedBlackSmall: 'assets/bullets/migua/seed_black_small.png',
+    miguaSeedBlackHeavy: 'assets/bullets/migua/seed_black_heavy.png',
+    miguaSeedGoldSmall: 'assets/bullets/migua/seed_gold_small.png',
+    miguaSeedGoldHeavy: 'assets/bullets/migua/seed_gold_heavy.png',
+    miguaSliceArc: 'assets/bullets/migua/slice_arc.png',
+    miguaCrescentSlice: 'assets/bullets/migua/crescent_slice.png',
+    miguaBittenMelon: 'assets/bullets/migua/bitten_melon.png',
+    miguaJuiceSplashBall: 'assets/bullets/migua/juice_splash_ball.png',
+    miguaJuiceSplashLarge: 'assets/bullets/migua/juice_splash_large.png',
+    miguaMelonBubble: 'assets/bullets/migua/melon_bubble.png',
+    miguaMelonBubbleMedium: 'assets/bullets/migua/melon_bubble_medium.png',
+    miguaMelonBubbleLarge: 'assets/bullets/migua/melon_bubble_large.png',
+    miguaRingBurst: 'assets/bullets/migua/ring_burst.png',
+    miguaMelonSun: 'assets/bullets/migua/melon_sun.png',
+    miguaSeedFragment: 'assets/bullets/migua/seed_fragment.png',
+    miguaHitSplash: 'assets/vfx/migua/hit_splash.png',
+    miguaSeedHalo: 'assets/vfx/migua/seed_halo.png',
+    miguaJuicePuddle: 'assets/vfx/migua/juice_puddle.png',
+    miguaPulpBloom: 'assets/vfx/migua/pulp_bloom.png',
+    miguaWarningRing: 'assets/vfx/migua/warning_ring.png',
+    miguaWarningTriangle: 'assets/vfx/migua/warning_triangle.png',
+    miguaJuiceBeamCore: 'assets/vfx/migua/juice_beam_core.png',
+    miguaJuiceBeamGlow: 'assets/vfx/migua/juice_beam_glow.png',
+    miguaJuiceCloud: 'assets/vfx/migua/juice_cloud.png',
+    miguaFruitPulpCloud: 'assets/vfx/migua/fruit_pulp_cloud.png',
+    miguaBossBloom: 'assets/vfx/migua/boss_bloom.png',
+    miguaBossFinalBurst: 'assets/vfx/migua/boss_final_burst.png',
+    miguaBossBarFrame: 'assets/ui/migua/boss_bar_frame.png',
+    miguaBossBarDamagedFrame: 'assets/ui/migua/boss_bar_damaged_frame.png',
+    miguaBossBarFillGreen: 'assets/ui/migua/boss_bar_fill_green.png',
+    miguaBossBarFillPink: 'assets/ui/migua/boss_bar_fill_pink.png',
+    miguaBossBarSeedMarks: 'assets/ui/migua/boss_bar_seed_marks.png',
+    miguaBossNameplate: 'assets/ui/migua/boss_nameplate.png',
+    miguaBossPhaseWarning: 'assets/ui/migua/boss_phase_warning.png',
+    miguaBarFrame: 'assets/ui/migua/migua_bar_frame.png',
+    miguaBarEmpty: 'assets/ui/migua/migua_bar_empty.png',
+    miguaBarFillGreen: 'assets/ui/migua/migua_bar_fill_green.png',
+    miguaBarFillYellow: 'assets/ui/migua/migua_bar_fill_yellow.png',
+    miguaBarFillRed: 'assets/ui/migua/migua_bar_fill_red.png',
+    miguaBarGloss: 'assets/ui/migua/migua_bar_gloss.png',
+    miguaBarSeedTicks: 'assets/ui/migua/migua_bar_seed_ticks.png',
+    miguaBarCrack: 'assets/ui/migua/migua_bar_crack.png',
+    miguaBarMask: 'assets/ui/migua/migua_bar_mask.png',
+    miguaBarPulse: 'assets/ui/migua/migua_bar_pulse.png',
+    miguaBarPortraitFrame: 'assets/ui/migua/migua_bar_portrait_frame.png',
+    miguaBarNameplate: 'assets/ui/migua/migua_bar_nameplate.png',
+    miguaBarDanger: 'assets/ui/migua/migua_bar_danger.png'
   };
 	  const SUIYI_ASSET_KEYS = Object.freeze([
 	    'suiyiMapVirtualCore', 'suiyiMapControlHall', 'suiyiMapDigitalRuins', 'suiyiMapCrystalSanctum',
@@ -845,6 +949,102 @@
     particleCount: { perf0: 58, perf1: 34, perf2: 20 },
     bossAlpha: 0.46,
     mobAlpha: 0.72,
+  });
+  const MIGUA_ASSET_KEYS = Object.freeze([
+    'miguaMapGreenhouse', 'miguaMapJuiceFactory', 'miguaMapFloatingCity',
+    'miguaBossIdle', 'miguaBossPhase1', 'miguaBossPhase2', 'miguaBossPhase3', 'miguaBossFinal', 'miguaBossHit', 'miguaBossDeath',
+    'enMiguaDrone', 'enMiguaSliceSpider', 'enMiguaTurret', 'enMiguaJellyMine', 'enMiguaBeeStinger', 'enMiguaArmorTurtle',
+    'miguaSeedBlackSmall', 'miguaSeedBlackHeavy', 'miguaSeedGoldSmall', 'miguaSeedGoldHeavy', 'miguaSliceArc',
+    'miguaCrescentSlice', 'miguaBittenMelon', 'miguaJuiceSplashBall', 'miguaJuiceSplashLarge',
+    'miguaMelonBubble', 'miguaMelonBubbleMedium', 'miguaMelonBubbleLarge', 'miguaRingBurst',
+    'miguaMelonSun', 'miguaSeedFragment',
+    'miguaHitSplash', 'miguaSeedHalo', 'miguaJuicePuddle', 'miguaPulpBloom', 'miguaWarningRing',
+    'miguaWarningTriangle', 'miguaJuiceBeamCore', 'miguaJuiceBeamGlow',
+    'miguaJuiceCloud', 'miguaFruitPulpCloud', 'miguaBossBloom', 'miguaBossFinalBurst',
+    'miguaBossBarFrame', 'miguaBossBarDamagedFrame', 'miguaBossBarFillGreen', 'miguaBossBarFillPink',
+    'miguaBossBarSeedMarks', 'miguaBossNameplate', 'miguaBossPhaseWarning',
+    'miguaBarFrame', 'miguaBarEmpty', 'miguaBarFillGreen', 'miguaBarFillYellow', 'miguaBarFillRed',
+    'miguaBarGloss', 'miguaBarSeedTicks', 'miguaBarCrack', 'miguaBarMask', 'miguaBarPulse',
+    'miguaBarPortraitFrame', 'miguaBarNameplate', 'miguaBarDanger',
+  ]);
+  const MIGUA_MOB_TYPES = Object.freeze(['miguadrone', 'miguaslicespider', 'miguaturret', 'miguajellymine', 'miguabeestinger', 'miguaarmorturtle']);
+  const MIGUA_MOB_MOVES = Object.freeze(['miguaFloatDown', 'miguaSideCarve', 'miguaAnchorTurret', 'miguaJellyDrift', 'miguaBeeDive', 'miguaTurtlePush']);
+  const MIGUA_MOB_FORMATIONS = Object.freeze(['miguaOrchardRow', 'miguaSlicePincer', 'miguaFactoryColumn', 'miguaSeedRainGrid']);
+  const MIGUA_MOB_PATTERNS = Object.freeze(['miguaSeedFan', 'miguaSliceArc', 'miguaJuiceBeam', 'miguaJellyBurst', 'miguaBeeSting', 'miguaTurtleBarrage']);
+  const MIGUA_BULLET_TYPES = Object.freeze([
+    'seed_black_small', 'seed_black_heavy', 'seed_gold_small', 'seed_gold_heavy', 'slice_arc',
+    'crescent_slice', 'bitten_melon', 'juice_splash_ball', 'juice_splash_large', 'juice_beam',
+    'melon_bubble', 'melon_bubble_medium', 'melon_bubble_large', 'melon_ring_burst', 'melon_sun', 'seed_fragment',
+  ]);
+  const MIGUA_BULLET_SPRITES = Object.freeze({
+    seed_black_small: 'miguaSeedBlackSmall',
+    seed_black_heavy: 'miguaSeedBlackHeavy',
+    seed_gold_small: 'miguaSeedGoldSmall',
+    seed_gold_heavy: 'miguaSeedGoldHeavy',
+    slice_arc: 'miguaSliceArc',
+    crescent_slice: 'miguaCrescentSlice',
+    bitten_melon: 'miguaBittenMelon',
+    juice_splash_ball: 'miguaJuiceSplashBall',
+    juice_splash_large: 'miguaJuiceSplashLarge',
+    melon_bubble: 'miguaMelonBubble',
+    melon_bubble_medium: 'miguaMelonBubbleMedium',
+    melon_bubble_large: 'miguaMelonBubbleLarge',
+    melon_ring_burst: 'miguaRingBurst',
+    melon_sun: 'miguaMelonSun',
+    seed_fragment: 'miguaSeedFragment',
+  });
+  const MIGUA_PHASE_HP = Object.freeze([1, 0.72, 0.48, 0.22, 0]);
+  const MIGUA_PHASE_NAMES = Object.freeze(['甜味试探', '果汁工厂过载', '蜜瓜军团压制', '甜味爆裂']);
+  const MIGUA_MAP_FLOW = Object.freeze({
+    glyphs: ['MIGUA', 'SEED', 'JUICE', '甜味', '1001'],
+    colors: ['rgba(164,255,116,', 'rgba(255,116,185,', 'rgba(255,228,104,'],
+    particleCount: { perf0: 44, perf1: 26, perf2: 16 },
+    bossAlpha: 0.36,
+    mobAlpha: 0.58,
+  });
+  const MIGUA_CROP_SPEC = Object.freeze({
+    bossIdle: { src: '蜜瓜号boss多形态素材.png', box: [42, 70, 444, 438] },
+    bossPhase1: { src: '蜜瓜号boss多形态素材.png', box: [456, 66, 880, 432] },
+    bossPhase2: { src: '蜜瓜号boss多形态素材.png', box: [892, 52, 1432, 438] },
+    bossPhase3: { src: '蜜瓜号boss多形态素材.png', box: [20, 520, 452, 1072] },
+    bossFinal: { src: '蜜瓜号boss多形态素材.png', box: [448, 482, 1038, 1080] },
+    drone: { src: '蜜瓜小怪.png', box: [152, 58, 540, 326] },
+    sliceSpider: { src: '蜜瓜小怪.png', box: [764, 58, 1248, 356] },
+    turret: { src: '蜜瓜小怪.png', box: [130, 366, 570, 664] },
+    jellyMine: { src: '蜜瓜小怪.png', box: [778, 344, 1180, 668] },
+    beeStinger: { src: '蜜瓜小怪.png', box: [130, 666, 636, 1030] },
+    armorTurtle: { src: '蜜瓜小怪.png', box: [690, 664, 1328, 1068] },
+    crescentSlice: { src: '蜜瓜小怪弹幕.png', box: [1068, 724, 1216, 890] },
+    bittenMelon: { src: '蜜瓜号boss弹幕.png', box: [552, 328, 682, 446] },
+    juiceSplashLarge: { src: '蜜瓜小怪弹幕.png', box: [340, 245, 475, 388] },
+    melonBubbleMedium: { src: '蜜瓜号boss弹幕.png', box: [274, 478, 358, 562] },
+    melonBubbleLarge: { src: '蜜瓜号boss弹幕.png', box: [376, 465, 490, 580] },
+    melonSun: { src: '蜜瓜号boss弹幕.png', box: [1140, 790, 1375, 1025] },
+    bossBarFillGreen: { src: '蜜瓜号boss专属血条UI.png', box: [224, 96, 1268, 176] },
+    bossBarFillPink: { src: '蜜瓜号boss专属血条UI.png', box: [224, 292, 1268, 356] },
+    miguaBarFrame: { src: 'ChatGPT Image 2026年6月30日 22_38_31 (1).png', box: [175, 300, 1325, 430] },
+    miguaBarEmpty: { src: 'ChatGPT Image 2026年6月30日 22_38_32 (2).png', box: [330, 966, 1390, 1060] },
+    miguaBarFillGreen: { src: 'ChatGPT Image 2026年6月30日 22_38_32 (2).png', box: [330, 78, 1380, 166] },
+    miguaBarFillRed: { src: 'ChatGPT Image 2026年6月30日 22_38_32 (2).png', box: [330, 205, 1380, 292] },
+    miguaBarMask: { src: 'ChatGPT Image 2026年6月30日 22_38_32 (2).png', box: [330, 828, 1390, 912] },
+  });
+  const MIGUA_BOSS_BAR_SPEC = Object.freeze({
+    skin: 'melon',
+    fillColors: ['#b9ff72', '#ffe86b', '#ff8cc8'],
+    phases: MIGUA_PHASE_NAMES,
+    lowHpCrackAt: 0.30,
+    criticalAt: 0.10,
+    seedTicks: 18,
+    safeTop: 18,
+    frameMaxWidth: 560,
+    frameAspect: 97 / 860,
+    portraitSize: 82,
+    fillInset: { x: 44, y: 23, w: 770, h: 43 },
+    fillSourceSize: { w: 860, h: 97 },
+    usesSpriteFillClip: false,
+    usesLayeredMaskFill: true,
+    maskComposite: 'destination-in',
+    renderOrder: ['empty-underlay', 'masked-fill', 'masked-gloss', 'seed-ticks', 'crack', 'pulse-danger', 'frame', 'portrait-name-text'],
   });
   const MHR_BLACKHOLE_SEQUENCE_PHASES = Object.freeze({ deploy: 16, loop: 32, overload: 16, collapse: 12 });
   const MHR_BLACKHOLE_SEQUENCE_KEYS = Object.create(null);
@@ -936,6 +1136,7 @@
     const def = typeof kindOrDef === 'string' ? BOSS_DEFS[kindOrDef] : kindOrDef;
     if (!def) return [];
     if (def.sprite === 'suiyi') return [...SUIYI_PHASE_FORM_KEYS, 'suiyiDeath', 'suiyiDrone', 'suiyiCubeSummon'];
+    if (def.sprite === 'migua') return ['miguaBossIdle', 'miguaBossPhase1', 'miguaBossPhase2', 'miguaBossPhase3', 'miguaBossFinal', 'miguaBossHit', 'miguaBossDeath'];
     const pfx = def.sprite || 'boss';
     const keys = [pfx + 'Idle', pfx + 'Phase1', pfx + 'Phase2', pfx + 'Rage', pfx + 'Hit', pfx + 'Death'];
     if (pfx === 'boss') keys.push('bossPhase3');
@@ -1191,6 +1392,38 @@
     writeEndpoint: `${LEADERBOARD_FN_BASE}/message`,
     directClientWrites: false,
   });
+  const UPDATE_NOTICE_VERSION = '2026-07-01-migua-readable-pages';
+  const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
+  const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-01',
+      items: [
+        '蜜瓜号 Boss 正式加入随机 Boss 队列。',
+        '新增蜜瓜主题地图、蜜瓜小怪和水果风弹幕。',
+        '蜜瓜号血条改成真正会随生命变化的专属血条。',
+        '蜜瓜籽、泡泡和果汁弹幕更清楚：加了深色边界和淡色判定边，方便躲避。',
+        '优化蜜瓜号弹幕颜色，不再满屏红色边框。',
+      ],
+    },
+    {
+      date: '2026-06-30',
+      items: [
+        '加入随意 Boss、科技风地图和科技小怪。',
+        '排行榜与留言板上线，支持昵称、头像和玩家留言。',
+        '新增地狱模式排行榜：开启后碰到敌方弹幕就会结算。',
+        '优化手机触屏操作，拖动移动不再把角色强行贴到手指下面。',
+      ],
+    },
+    {
+      date: '2026-06-29',
+      items: [
+        '随机地图、随机 Boss 和关卡成长曲线重新调整。',
+        '加入高、中、低画质设置，低配设备更流畅。',
+        '强化玩家判定点和敌方弹幕层级，战斗中更容易看清位置。',
+        '母巢蝶环僚机追加晶体炮台、生命印记和新弹幕表现。',
+      ],
+    },
+  ]);
   const HELL_MODE_SPEC = Object.freeze({
     defaultEnabled: true,
     leaderboardRequiresHellMode: true,
@@ -1262,6 +1495,8 @@
   let leaderboardEligibleRun = HELL_MODE_SPEC.defaultEnabled;
   let hellModeDialogOpen = false;
   let hellModeDialogEl = null;
+  let updateNoticeDialogOpen = false;
+  let updateNoticeDialogEl = null;
 
   function safeLocalStorageGet(key) {
     try { return window.localStorage && window.localStorage.getItem(key); } catch (e) { return null; }
@@ -1941,6 +2176,57 @@
     }
     if (guestbookDialogErrorEl) guestbookDialogErrorEl.textContent = guestbookStatusMessage || '留言失败，请稍后重试';
   }
+  function escapeHtml(text) {
+    return String(text == null ? '' : text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function ensureUpdateNoticeDialog() {
+    if (updateNoticeDialogEl || typeof document === 'undefined' || !document.body || !document.createElement) return updateNoticeDialogEl;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'leaderboard-dialog-backdrop';
+    const sections = UPDATE_NOTICE_ENTRIES.map(section => `
+      <div class="update-notice-section">
+        <div class="update-notice-date">${escapeHtml(section.date)}</div>
+        <ul>${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      </div>`).join('');
+    backdrop.innerHTML = `
+      <div class="leaderboard-dialog update-notice-dialog" role="dialog" aria-modal="true">
+        <h2>更新公告</h2>
+        <div class="update-notice-kicker">最近版本更新了新 Boss、新地图、排行榜和手机体验。下面是简单版说明：</div>
+        ${sections}
+        <div class="actions">
+          <button class="update-notice-close" type="button">我知道了</button>
+        </div>
+      </div>`;
+    document.body.appendChild(backdrop);
+    updateNoticeDialogEl = backdrop;
+    const closeBtn = backdrop.querySelector('.update-notice-close');
+    closeBtn && closeBtn.addEventListener('click', hideUpdateNoticeDialog);
+    return updateNoticeDialogEl;
+  }
+  function showUpdateNoticeDialog(markSeen = false) {
+    hideHellModeStartDialog();
+    hideLeaderboardNameDialog();
+    hideGuestbookDialog();
+    updateNoticeDialogOpen = true;
+    const el = ensureUpdateNoticeDialog();
+    if (!el) return;
+    el.style.display = 'flex';
+    if (markSeen) safeLocalStorageSet(UPDATE_NOTICE_STORAGE_KEY, UPDATE_NOTICE_VERSION);
+  }
+  function hideUpdateNoticeDialog() {
+    updateNoticeDialogOpen = false;
+    if (updateNoticeDialogEl) updateNoticeDialogEl.style.display = 'none';
+    safeLocalStorageSet(UPDATE_NOTICE_STORAGE_KEY, UPDATE_NOTICE_VERSION);
+  }
+  function showUpdateNoticeIfNeeded() {
+    if (safeLocalStorageGet(UPDATE_NOTICE_STORAGE_KEY) === UPDATE_NOTICE_VERSION) return;
+    showUpdateNoticeDialog(true);
+  }
   function openLeaderboardView(refresh = true) {
     leaderboardView = true;
     if (refresh) {
@@ -1965,6 +2251,7 @@
     if (action === 'leaderboardNext') { leaderboardPage = Math.min(Math.max(0, leaderboardLastPageCount - 1), leaderboardPage + 1); return true; }
     if (action === 'guestbookRefresh') { fetchGuestbook(GUESTBOOK_LIMIT); return true; }
     if (action === 'guestbookCompose') { showGuestbookDialog(); return true; }
+    if (action === 'updateNotice') { showUpdateNoticeDialog(false); return true; }
     return false;
   }
   function registerLeaderboardHit(action, x, y, w, h) {
@@ -2042,6 +2329,7 @@
     return hellModeDialogEl;
   }
   function showHellModeStartDialog() {
+    hideUpdateNoticeDialog();
     hellModeDialogOpen = true;
     const el = ensureHellModeDialog();
     if (!el) {
@@ -2244,7 +2532,7 @@
   // 小怪血量成长低于精英/Boss，保留割草感。
 	  function smallHpMul() { return growthCurveAt().smallHpMul; }
 	  const SMALL_TYPES = { bat: 1, familiar: 1, wisp: 1, cherub: 1, shade: 1, phantom: 1, specter: 1, wraith: 1,
-	    swordfish: 1, starfish: 1, jelly: 1, tideelf: 1, puffer: 1, codebug: 1 };
+	    swordfish: 1, starfish: 1, jelly: 1, tideelf: 1, puffer: 1, codebug: 1, miguadrone: 1 };
   // 弹幕密度与射速：密度先涨、射速后涨，后期高压但不突然糊满屏。
   function densMul() { return growthCurveAt().densMul; }
   function fireMul() { return growthCurveAt().fireMul; }
@@ -2256,12 +2544,12 @@
   }
   function mobStageWaveTarget(theme = stageTheme, level = perfLevel, loops = loopCount) {
     const qualityTrim = level >= 2 ? 2 : (level === 1 ? 1 : 0);
-    const base = theme === STAGE_THEME_TECH ? 16 : 14;
+    const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 16 : 14;
     return Math.max(11, base + Math.min(4, loops * 2) - qualityTrim);
   }
   function mobStageMinDuration(theme = stageTheme, loops = loopCount, level = perfLevel) {
     const qualityTrim = level >= 2 ? 8 : (level === 1 ? 4 : 0);
-    const base = theme === STAGE_THEME_TECH ? 78 : 68;
+    const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 78 : 68;
     return Math.max(52, base + loops * 10 - qualityTrim);
   }
   function stageActLabel(stage = segment) {
@@ -8928,6 +9216,13 @@
 	    coredrone:  { hp: 780,  r: 29, score: 390, color: '#ff7bd5', fire: 1.55, sprite: 'enSuiyiCoreDrone',        size: 104, pattern: 'techCompileRing',  tier: 3, move: 'techHover' },
 	    servernode: { hp: 1420, r: 32, score: 610, color: '#8af7ff', fire: 1.42, sprite: 'enSuiyiServerNode',       size: 114, pattern: 'techCodeRain',     tier: 4, move: 'techAnchor' },
 	    crystalcompiler: { hp: 1680, r: 35, score: 720, color: '#ff92df', fire: 1.34, sprite: 'enSuiyiCrystalCompiler', size: 126, pattern: 'techCrystalBloom', tier: 4, move: 'techPhase' },
+      // ===== 蜜瓜号主题小怪：三张蜜瓜地图专属，甜味机械果园高压可读单位 =====
+      miguadrone:       { hp: 420,  r: 22, score: 230, color: '#b7ff72', fire: 1.72, sprite: 'enMiguaDrone',       size: 94,  pattern: 'miguaSeedFan',       tier: 2, move: 'miguaFloatDown' },
+      miguaslicespider: { hp: 720,  r: 27, score: 360, color: '#ff9fcb', fire: 1.58, sprite: 'enMiguaSliceSpider', size: 104, pattern: 'miguaSliceArc',      tier: 3, move: 'miguaSideCarve' },
+      miguaturret:      { hp: 1180, r: 30, score: 520, color: '#f7ff79', fire: 1.42, sprite: 'enMiguaTurret',      size: 108, pattern: 'miguaJuiceBeam',    tier: 4, move: 'miguaAnchorTurret' },
+      miguajellymine:   { hp: 760,  r: 29, score: 430, color: '#8dffb1', fire: 1.74, sprite: 'enMiguaJellyMine',   size: 102, pattern: 'miguaJellyBurst',   tier: 3, move: 'miguaJellyDrift' },
+      miguabeestinger:  { hp: 640,  r: 24, score: 390, color: '#ffe36a', fire: 1.46, sprite: 'enMiguaBeeStinger',  size: 100, pattern: 'miguaBeeSting',     tier: 3, move: 'miguaBeeDive' },
+      miguaarmorturtle: { hp: 1760, r: 35, score: 760, color: '#9dff82', fire: 1.36, sprite: 'enMiguaArmorTurtle', size: 122, pattern: 'miguaTurtleBarrage', tier: 4, move: 'miguaTurtlePush' },
 	  };
 
   // 每关的"节奏脚本"画风：专属编队形状 + 入场移动轨迹（让 8 关手感分明）
@@ -9122,9 +9417,20 @@
     () => { spawnFormation('compilerChevron', 'crystalcompiler', 3); spawnFormation('codeGrid', 'codebug', 10); spawnEnemy('servernode', W * 0.5, -260); },
     () => { spawnFormation('terminalColumn', 'servernode', 4); spawnFormation('techPincer', 'crystalcompiler', 4); spawnFormation('codeGrid', 'coredrone', 6); },
   ]);
+  const MIGUA_STAGE_WAVES = Object.freeze([
+    () => { spawnFormation('miguaOrchardRow', 'miguadrone', 8); spawnFormation('miguaSlicePincer', 'miguaslicespider', 3); },
+    () => { spawnFormation('miguaSeedRainGrid', 'miguadrone', 9); spawnEnemy('miguajellymine', W * 0.5, -150); },
+    () => { spawnFormation('miguaFactoryColumn', 'miguaturret', 3); spawnFormation('miguaOrchardRow', 'miguadrone', 6); },
+    () => { spawnFormation('miguaSlicePincer', 'miguabeestinger', 6); spawnFormation('miguaSeedRainGrid', 'miguaslicespider', 4); },
+    () => { spawnFormation('miguaFactoryColumn', 'miguajellymine', 4); spawnFormation('miguaOrchardRow', 'miguaturret', 3); },
+    () => { spawnFormation('miguaSlicePincer', 'miguabeestinger', 7); spawnEnemy('miguaarmorturtle', W * 0.5, -170); },
+    () => { spawnFormation('miguaSeedRainGrid', 'miguadrone', 10); spawnFormation('miguaFactoryColumn', 'miguaturret', 3); spawnFormation('miguaSlicePincer', 'miguaslicespider', 5); },
+    () => { spawnFormation('miguaFactoryColumn', 'miguaarmorturtle', 2); spawnFormation('miguaSlicePincer', 'miguabeestinger', 6); spawnFormation('miguaSeedRainGrid', 'miguajellymine', 5); },
+    () => { spawnFormation('miguaOrchardRow', 'miguadrone', 12); spawnFormation('miguaFactoryColumn', 'miguaturret', 4); spawnEnemy('miguaarmorturtle', W * 0.32, -230); spawnEnemy('miguaarmorturtle', W * 0.68, -230); },
+  ]);
 
   function allStageWaves() {
-    return Object.values(STAGE_WAVES).flat().concat([...TECH_STAGE_WAVES]);
+    return Object.values(STAGE_WAVES).flat().concat([...TECH_STAGE_WAVES], [...MIGUA_STAGE_WAVES]);
   }
 
   function stageNumber(stageKey) {
@@ -9150,19 +9456,32 @@
   function isTechStageTheme(theme = stageTheme) {
     return theme === STAGE_THEME_TECH;
   }
+  function isMiguaStageTheme(theme = stageTheme) {
+    return theme === STAGE_THEME_MIGUA;
+  }
   function waveLooksTech(wave) {
     const src = Function.prototype.toString.call(wave);
     return SUIYI_TECH_MOB_TYPES.some(type => src.includes(`'${type}'`))
       || SUIYI_TECH_MOB_FORMATIONS.some(shape => src.includes(`'${shape}'`));
   }
+  function waveLooksMigua(wave) {
+    const src = Function.prototype.toString.call(wave);
+    return MIGUA_MOB_TYPES.some(type => src.includes(`'${type}'`))
+      || MIGUA_MOB_FORMATIONS.some(shape => src.includes(`'${shape}'`));
+  }
   function eligibleTechWaves(t = elapsed, loops = loopCount) {
     const max = Math.max(3, Math.min(TECH_STAGE_WAVES.length, Math.ceil((waveUnlockStageAt(t, loops) / 10) * TECH_STAGE_WAVES.length)));
     return TECH_STAGE_WAVES.slice(0, max);
   }
+  function eligibleMiguaWaves(t = elapsed, loops = loopCount) {
+    const max = Math.max(3, Math.min(MIGUA_STAGE_WAVES.length, Math.ceil((waveUnlockStageAt(t, loops) / 10) * MIGUA_STAGE_WAVES.length)));
+    return MIGUA_STAGE_WAVES.slice(0, max);
+  }
   function eligibleStageWaves(t = elapsed, loops = loopCount, theme = stageTheme) {
     if (isTechStageTheme(theme)) return eligibleTechWaves(t, loops);
+    if (isMiguaStageTheme(theme)) return eligibleMiguaWaves(t, loops);
     const keys = eligibleStageKeys(t, loops);
-    const waves = keys.flatMap(stage => (STAGE_WAVES[stage] || []).filter(wave => !waveLooksTech(wave)));
+    const waves = keys.flatMap(stage => (STAGE_WAVES[stage] || []).filter(wave => !waveLooksTech(wave) && !waveLooksMigua(wave)));
     return waves.length ? waves : (STAGE_WAVES.stage1 || []);
   }
   function selectRandomStageWave(index = 0) {
@@ -9191,6 +9510,7 @@
 	  };
   const GLOBAL_STAGE_POOL = Object.freeze([...new Set(Object.values(STAGE_POOL).flat())]);
   const TECH_STAGE_POOL = Object.freeze([...SUIYI_TECH_MOB_TYPES]);
+  const MIGUA_STAGE_POOL = Object.freeze([...MIGUA_MOB_TYPES]);
   const GLOBAL_STAGE_MOVES = Object.freeze([...new Set(Object.values(STAGE_PROFILE).flatMap(p => p.moves || []))]);
   function eligibleTechStagePool(t = elapsed, loops = loopCount) {
     const unlock = waveUnlockStageAt(t, loops);
@@ -9198,15 +9518,23 @@
     if (unlock < 7) return ['codebug', 'coredrone', 'servernode'];
     return [...TECH_STAGE_POOL];
   }
+  function eligibleMiguaStagePool(t = elapsed, loops = loopCount) {
+    const unlock = waveUnlockStageAt(t, loops);
+    if (unlock < 4) return ['miguadrone', 'miguaslicespider', 'miguajellymine'];
+    if (unlock < 7) return ['miguadrone', 'miguaslicespider', 'miguajellymine', 'miguabeestinger', 'miguaturret'];
+    return [...MIGUA_STAGE_POOL];
+  }
   function eligibleStagePool(t = elapsed, loops = loopCount, theme = stageTheme) {
     if (isTechStageTheme(theme)) return eligibleTechStagePool(t, loops);
+    if (isMiguaStageTheme(theme)) return eligibleMiguaStagePool(t, loops);
     const keys = eligibleStageKeys(t, loops);
     const pool = [...new Set(keys.flatMap(stage => STAGE_POOL[stage] || []))];
     return pool.length ? pool : (STAGE_POOL.stage1 || ['bat', 'familiar']);
   }
   function eligibleFormations(t = elapsed, loops = loopCount, theme = stageTheme) {
     if (isTechStageTheme(theme)) return [...SUIYI_TECH_MOB_FORMATIONS];
-    const normalForms = FORMATIONS.filter(shape => !SUIYI_TECH_MOB_FORMATIONS.includes(shape));
+    if (isMiguaStageTheme(theme)) return [...MIGUA_MOB_FORMATIONS];
+    const normalForms = FORMATIONS.filter(shape => !SUIYI_TECH_MOB_FORMATIONS.includes(shape) && !MIGUA_MOB_FORMATIONS.includes(shape));
     return waveUnlockStageAt(t, loops) >= 5 ? normalForms : BASE_FORMATIONS;
   }
   // —— 编队入场系统：多种规律阵型，让每一波小怪入场都整齐又多变 ——
@@ -9221,7 +9549,7 @@
     const e = spawnEnemy(type, startX, baseY > 0 ? baseY : -80, side < 0 ? 'sideL' : 'sideR', hy);
     if (e) { e.homeX = homeX; e.baseY = hy; e.vx = 0; e.vy = 0; }
   }
-	  const FORMATIONS = ['row', 'vshape', 'wings', 'arc', 'diamond', 'pincer', 'leftSweep', 'rightSweep', 'bottomRise', 'codeGrid', 'compilerChevron', 'terminalColumn', 'techPincer'];
+	  const FORMATIONS = ['row', 'vshape', 'wings', 'arc', 'diamond', 'pincer', 'leftSweep', 'rightSweep', 'bottomRise', 'codeGrid', 'compilerChevron', 'terminalColumn', 'techPincer', 'miguaOrchardRow', 'miguaSlicePincer', 'miguaFactoryColumn', 'miguaSeedRainGrid'];
   function spawnFormation(shape, type, n) {
     const margin = 66, span = W - margin * 2, cx = W * 0.5;
     const tier = ENEMY_DEFS[type]?.tier || 2;
@@ -9266,6 +9594,32 @@
 	      const half = Math.ceil(n / 2);
 	      for (let i = 0; i < half; i++) spawnEnemySide(type, -1, margin + 42 + i * 58, pickHoverY(tier, i + 2));
 	      for (let i = 0; i < n - half; i++) spawnEnemySide(type, 1, W - margin - 42 - i * 58, pickHoverY(tier, i + half + 2));
+      } else if (shape === 'miguaOrchardRow') {      // 蜜瓜果园排布：轻柔错位推进
+        for (let i = 0; i < n; i++) {
+          const t = n === 1 ? 0.5 : i / (n - 1);
+          const x = margin + span * t;
+          spawnEnemyV(type, x, -80 - (i % 3) * 54, 0, pickHoverY(tier, i) + Math.sin(i) * 10);
+        }
+      } else if (shape === 'miguaSlicePincer') {     // 切片夹击：两侧弧线突入
+        const half = Math.ceil(n / 2);
+        for (let i = 0; i < half; i++) spawnEnemySide(type, -1, margin + 54 + i * 66, pickHoverY(tier, i + 1));
+        for (let i = 0; i < n - half; i++) spawnEnemySide(type, 1, W - margin - 54 - i * 66, pickHoverY(tier, i + half + 1));
+      } else if (shape === 'miguaFactoryColumn') {   // 果汁工厂纵列：炮台/重型压线
+        const columns = Math.max(1, Math.min(3, Math.ceil(n / 2)));
+        for (let i = 0; i < n; i++) {
+          const col = i % columns;
+          const row = (i / columns) | 0;
+          const x = cx + (col - (columns - 1) / 2) * 150;
+          spawnEnemyV(type, x, -90 - row * 126, 0, pickHoverY(tier, row + col + 2));
+        }
+      } else if (shape === 'miguaSeedRainGrid') {    // 瓜子雨网格：间隔清晰，留出走位缝
+        const cols = Math.ceil(Math.sqrt(n + 2));
+        for (let i = 0; i < n; i++) {
+          const col = i % cols;
+          const row = (i / cols) | 0;
+          const x = margin + span * ((col + 0.5 + row * 0.18) / Math.max(1, cols));
+          spawnEnemyV(type, clamp(x, margin, W - margin), -78 - row * 96 - col * 8, 0, pickHoverY(tier, row + col));
+        }
 	    } else if (shape === 'vshape') {                // 倒 V：中央低、两翼高
       for (let i = 0; i < n; i++) {
         const t = n === 1 ? 0 : i / (n - 1) - 0.5;
@@ -9352,23 +9706,29 @@
 	  const SUIYI_PHASE_FORM_KEYS = Object.freeze(['suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash']);
 	  const SUIYI_PHASE_NAMES = Object.freeze(['编译启动', '基础代码编译', '递归展开', '错误堆栈', '热更新·多线程', 'System Crash']);
 	  const SUIYI_MAP_KEYS = Object.freeze(['suiyiMapVirtualCore', 'suiyiMapControlHall', 'suiyiMapDigitalRuins', 'suiyiMapCrystalSanctum']);
+  const MIGUA_MAP_KEYS = Object.freeze(['miguaMapGreenhouse', 'miguaMapJuiceFactory', 'miguaMapFloatingCity']);
 	  const STAGE_THEME_NORMAL = 'normal';
 	  const STAGE_THEME_TECH = 'suiyiTech';
+  const STAGE_THEME_MIGUA = 'migua';
   const FIELD_BACKGROUND_KEYS = Object.freeze([
     'bgStage1', 'bgStage2', 'bgStage3', 'bgShadowDepths', 'bgAbyssCore',
     'bgVoidRealm', 'bgChaosRift', 'bgDarkSanctum', 'bgBloodmoon', 'bgEclipse',
   ]);
-  const GLOBAL_BACKGROUND_POOL = Object.freeze([...FIELD_BACKGROUND_KEYS, ...SUIYI_MAP_KEYS]);
+  const GLOBAL_BACKGROUND_POOL = Object.freeze([...FIELD_BACKGROUND_KEYS, ...SUIYI_MAP_KEYS, ...MIGUA_MAP_KEYS]);
   const randomBackgroundState = {
     field: 'bgStage1',
     boss: 'bgEclipse',
   };
 	  let stageTheme = STAGE_THEME_NORMAL;
 	  function themeForBackgroundKey(key) {
-	    return SUIYI_MAP_KEYS.includes(key) ? STAGE_THEME_TECH : STAGE_THEME_NORMAL;
+    if (SUIYI_MAP_KEYS.includes(key)) return STAGE_THEME_TECH;
+    if (MIGUA_MAP_KEYS.includes(key)) return STAGE_THEME_MIGUA;
+	    return STAGE_THEME_NORMAL;
 	  }
 	  function backgroundPoolForTheme(theme = stageTheme) {
-	    return theme === STAGE_THEME_TECH ? SUIYI_MAP_KEYS : FIELD_BACKGROUND_KEYS;
+    if (theme === STAGE_THEME_TECH) return SUIYI_MAP_KEYS;
+    if (theme === STAGE_THEME_MIGUA) return MIGUA_MAP_KEYS;
+	    return FIELD_BACKGROUND_KEYS;
 	  }
   function selectRandomFromPool(pool = GLOBAL_BACKGROUND_POOL, randomValue = Math.random()) {
     const list = (pool && pool.length ? pool : GLOBAL_BACKGROUND_POOL).filter(Boolean);
@@ -9460,6 +9820,8 @@
 	  });
   const suiyiHazards = [];
   const suiyiFx = [];
+  const miguaHazards = [];
+  const miguaFx = [];
   const suiyiMapState = {
     current: 'suiyiMapVirtualCore',
     previous: null,
@@ -9474,6 +9836,7 @@
     lastSwap: -999,
   };
   const SUIYI_BOSS_SIGNATURE = 'SUIYI / CODE ARCHITECT';
+  const MIGUA_BOSS_SIGNATURE = 'MIGUA-X / SWEET ORCHARD SHIP';
 
   // Boss roster. bossKind selects which one spawns.
   // Boss types now randomized - not fixed per stage
@@ -9493,6 +9856,7 @@
     ancientone:  { hp: 13500, r: 74, scale: 1.0,  sprite: 'ancientone',  name: '古神 · 阿撒托斯', intro: '亘古邪神睁眼：古神降临', y: 220, theme: 'ancient' },
     darkqueen:   { hp: 11800, r: 72, scale: 1.0,  sprite: 'darkqueen',   name: '暗夜女王 · 莉莉丝', intro: '暗夜加冕：女王莅临战场', y: 218, theme: 'queen' },
     suiyi:       { hp: 15600, r: 72, scale: 1.0,  sprite: 'suiyi',       name: '随意 · 代码工程师', intro: '系统接入：随意开始重写战场', y: 206, theme: 'suiyi' },
+    migua:       { hp: 18400, r: 76, scale: 1.0,  sprite: 'migua',       name: '蜜瓜号 · MIGUA-X', intro: '甜味警报：蜜瓜号驶入战场', y: 210, theme: 'migua' },
   };
   
   // Boss pools for randomization - each stage has available bosses
@@ -9510,12 +9874,15 @@
   };
   
   const GLOBAL_BOSS_POOL = Object.freeze(Object.keys(BOSS_DEFS));
-  const NORMAL_BOSS_POOL = Object.freeze(GLOBAL_BOSS_POOL.filter(kind => kind !== 'suiyi'));
+  const NORMAL_BOSS_POOL = Object.freeze(GLOBAL_BOSS_POOL.filter(kind => kind !== 'suiyi' && kind !== 'migua'));
   const TECH_BOSS_POOL = Object.freeze(['suiyi']);
+  const MIGUA_BOSS_POOL = Object.freeze(['migua']);
 
-  // Select boss by the current stage theme: tech maps are exclusive to Suiyi.
+  // Select boss by the current stage theme: tech/migua maps bind to their content pack.
   function selectRandomBoss(stageName) {
-    const pool = stageTheme === STAGE_THEME_TECH ? TECH_BOSS_POOL : NORMAL_BOSS_POOL;
+    const pool = stageTheme === STAGE_THEME_TECH ? TECH_BOSS_POOL
+      : stageTheme === STAGE_THEME_MIGUA ? MIGUA_BOSS_POOL
+        : NORMAL_BOSS_POOL;
     const kind = pool[Math.floor(Math.random() * pool.length)];
     prefetchBossAssets(kind);
     return kind;
@@ -9525,7 +9892,7 @@
     const def = BOSS_DEFS[bossKind] || BOSS_DEFS.eclipseboss;
     prefetchBossAssets(bossKind);
     // Boss 血量随击杀成长与轮回放大，保持后期挑战（整体上调，延长对战时长）
-	    const themeBonus = bossKind === 'suiyi' ? 1.16 : 1;
+	    const themeBonus = bossKind === 'suiyi' ? 1.16 : bossKind === 'migua' ? 1.22 : 1;
 	    const bhp = Math.round(def.hp * themeBonus * (1.65 + grindDmg() * 0.85 + loopCount * 0.55));
     boss = {
       x: W * 0.5, y: def.y, targetY: def.y,
@@ -9540,6 +9907,7 @@
     bossPhase = -1;
     patternTimer = 0;
     if (boss.kind === 'suiyi') resetSuiyiState();
+    if (boss.kind === 'migua') resetMiguaState();
     setMessage(def.intro, 2.8);
     screenShake = 10;
     playSfx('bossIntro', 0.58, 0.8);
@@ -9566,6 +9934,7 @@
       ancient:     ['疯狂低语', '混沌旋臂', '邪能爆发', '雷暴狂涌', '终焉·癫狂'],
       queen:       ['玫瑰之吻', '双翼华舞', '魅惑追踪', '蔷薇缺环', '终焉·夜葬'],
       suiyi:       SUIYI_PHASE_NAMES,
+      migua:       MIGUA_PHASE_NAMES,
     };
     const key = (boss && (boss.theme || boss.kind)) || 'eclipseboss';
     const names = PHASE_NAMES[key] || PHASE_NAMES.eclipseboss;
@@ -10021,6 +10390,8 @@
     updateItems(dt);
     updateEnemies(dt);
     updateEnemyBullets(dt);
+    updateMiguaHazards(dt);
+    updateMiguaFx(dt);
     rebuildSpatialIndex();
     updateWarnings(dt);
     updateLasers(dt);
@@ -15436,6 +15807,223 @@
     e.spiralAngle = (e.spiralAngle || 0) + 0.18;
   }
 
+  function miguaDensity(base, max) {
+    const levelTrim = perfLevel === 2 ? 0.72 : perfLevel === 1 ? 0.86 : 1;
+    return Math.min(max, Math.max(1, Math.round(base * clamp(densMul() * 0.78, 1, 1.55) * levelTrim)));
+  }
+
+  function addMiguaFx(type, x, y, opts = {}) {
+    const cap = perfLevel === 2 ? 42 : perfLevel === 1 ? 68 : 96;
+    if (miguaFx.length >= cap) miguaFx.splice(0, miguaFx.length - cap + 1);
+    miguaFx.push({
+      type, x, y,
+      life: opts.life || 0.5,
+      maxLife: opts.life || 0.5,
+      r: opts.r || 48,
+      a: opts.a || rand(0, TAU),
+      color: opts.color || 'rgba(186,255,118,',
+      sprite: opts.sprite || null,
+      spin: opts.spin || 0,
+      vx: opts.vx || 0,
+      vy: opts.vy || 0,
+    });
+  }
+
+  function addMiguaHazard(type, x, y, opts = {}) {
+    const cap = perfLevel === 2 ? 14 : perfLevel === 1 ? 20 : 28;
+    if (miguaHazards.length >= cap) miguaHazards.splice(0, miguaHazards.length - cap + 1);
+    miguaHazards.push({
+      type, x, y,
+      life: opts.life || 0.92,
+      maxLife: opts.life || 0.92,
+      r: opts.r || 76,
+      count: opts.count || 12,
+      speed: opts.speed || 210,
+      angle: opts.angle || 0,
+      spread: opts.spread || Math.PI * 0.45,
+      fired: false,
+      color: opts.color || '#baff78',
+    });
+  }
+
+  function spawnMiguaBullet(type, x, y, vx, vy, opts = {}) {
+    const sprite = MIGUA_BULLET_SPRITES[type] || 'miguaSeedBlackSmall';
+    const isBubble = type.includes('bubble');
+    const isJuice = type.includes('juice');
+    const isSlice = type.includes('slice') || type === 'bitten_melon';
+    const r = opts.r || (
+      type === 'melon_sun' ? 22 :
+      type.includes('large') ? 17 :
+      type.includes('medium') ? 14 :
+      type.includes('heavy') ? 10 :
+      isBubble ? 12 :
+      isSlice ? 12 :
+      isJuice ? 9 : 7
+    );
+    const color = opts.color || (type.includes('gold') ? '#ffe26a' : isJuice ? '#ffd966' : isBubble ? '#a6ffcf' : '#baff78');
+    const damage = opts.damage || (type.includes('heavy') ? 11 : 8);
+    const life = opts.life || 7.2;
+    const b = addEnemyBullet(x, y, vx, vy, r, color, damage, life, `migua_${type}`);
+    b.migua = true;
+    b.miguaType = type;
+    b.miguaSprite = sprite;
+    b.miguaBehavior = opts.behavior || 'straight';
+    b.miguaAge = 0;
+    b.miguaTrail = opts.trail !== false;
+    b.miguaTurn = opts.turn || 0;
+    b.miguaAmp = opts.amp || 0;
+    b.miguaPhase = opts.phase || rand(0, TAU);
+    b.miguaStyle = opts.style || (isJuice ? 'juice' : isBubble ? 'bubble' : isSlice ? 'slice' : type === 'melon_sun' ? 'sun' : 'seed');
+    b.splitAt = opts.splitAt || 0;
+    b.splitCount = opts.splitCount || 0;
+    b.miguaSplitMode = opts.splitMode || (type === 'melon_sun' ? 'melon_burst' : 'seed_fragments');
+    b.hist = [];
+    b.scale = opts.scale || 1;
+    b.spin = opts.spin !== undefined ? opts.spin : (type === 'slice_arc' ? rand(-4.2, 4.2) : rand(-1.8, 1.8));
+    return b;
+  }
+
+  function patMiguaSeedFan(e) {
+    const base = angleTo(e.x, e.y, player.x, player.y);
+    const count = miguaDensity(5 + (e.shotN % 2), 8);
+    const spread = 0.66;
+    addMiguaFx('muzzle', e.x, e.y + 8, { r: 42, life: 0.24, color: 'rgba(188,255,118,' });
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+      const a = base + t * spread + Math.sin(e.t * 2.2 + i) * 0.025;
+      const gold = i % 3 === 1;
+      const speed = 232 + Math.abs(t) * 46;
+      spawnMiguaBullet(gold ? 'seed_gold_small' : 'seed_black_small', e.x, e.y + 8, Math.cos(a) * speed, Math.sin(a) * speed, {
+        r: gold ? 7.2 : 6.6,
+        color: gold ? '#ffe46e' : '#baff78',
+        behavior: 'wobble',
+        amp: gold ? 10 : 6,
+        damage: 8,
+      });
+    }
+  }
+
+  function patMiguaSliceArc(e) {
+    const base = angleTo(e.x, e.y, player.x, player.y);
+    const count = miguaDensity(e.tier >= 4 ? 6 : 5, 8);
+    addMiguaFx('slice_charge', e.x, e.y, { r: 68, life: 0.34, color: 'rgba(255,140,198,' });
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+      const a = base + t * 0.84;
+      spawnMiguaBullet(i % 2 ? 'crescent_slice' : 'slice_arc', e.x, e.y + 2, Math.cos(a) * 198, Math.sin(a) * 198, {
+        r: i % 2 ? 13 : 12,
+        color: '#ff9fcb',
+        behavior: 'curve',
+        turn: (i % 2 ? 0.22 : -0.22) * (0.6 + Math.abs(t)),
+        splitAt: e.tier >= 4 ? 2.0 : 0,
+        splitCount: 3,
+        damage: 9,
+        scale: 0.86,
+      });
+    }
+  }
+
+  function patMiguaJuiceBeam(e) {
+    const aim = angleTo(e.x, e.y, player.x, player.y);
+    addMiguaHazard('juice_beam', e.x, e.y + 12, {
+      life: 0.72,
+      angle: aim,
+      spread: 0.1,
+      r: 86,
+      color: '#baff78',
+    });
+    if (e.shotN % 2 === 0) {
+      const count = miguaDensity(6, 9);
+      for (let i = 0; i < count; i++) {
+        const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+        const a = aim + t * 0.54;
+        const type = i % 3 === 1 ? 'melon_bubble_medium' : 'juice_splash_ball';
+        spawnMiguaBullet(type, e.x, e.y + 18, Math.cos(a) * 206, Math.sin(a) * 206, {
+          r: type.includes('bubble') ? 12 : 9,
+          color: '#ffd966',
+          behavior: type.includes('bubble') ? 'bubble' : 'wobble',
+          amp: 18,
+          damage: 9,
+        });
+      }
+    }
+  }
+
+  function patMiguaJellyBurst(e) {
+    addMiguaHazard('jelly_burst', e.x, e.y, {
+      life: 0.86,
+      r: 72,
+      count: miguaDensity(10, 14),
+      speed: 156 + (e.tier >= 4 ? 24 : 0),
+      color: '#a6ffcf',
+    });
+    if (e.shotN % 2 === 1) {
+      const a = angleTo(e.x, e.y, player.x, player.y);
+      spawnMiguaBullet(e.tier >= 4 ? 'melon_bubble_large' : 'melon_bubble_medium', e.x, e.y, Math.cos(a) * 166, Math.sin(a) * 166, {
+        r: e.tier >= 4 ? 16 : 13,
+        behavior: 'bubble',
+        amp: 34,
+        damage: 8,
+        life: 7.8,
+      });
+    }
+  }
+
+  function patMiguaBeeSting(e) {
+    const base = angleTo(e.x, e.y, player.x, player.y);
+    addMiguaFx('muzzle', e.x, e.y, { r: 38, life: 0.2, color: 'rgba(255,226,106,' });
+    for (const offA of [-0.16, 0, 0.16]) {
+      const a = base + offA + Math.sin(e.t * 4.4) * 0.04;
+      spawnMiguaBullet('seed_gold_small', e.x, e.y, Math.cos(a) * 318, Math.sin(a) * 318, {
+        r: 6,
+        color: '#ffe26a',
+        behavior: 'straight',
+        trail: true,
+        damage: 9,
+        life: 5.8,
+      });
+    }
+    if (e.shotN % 3 === 0) {
+      for (const offA of [-0.32, 0.32]) {
+        const a = base + offA;
+        spawnMiguaBullet('seed_fragment', e.x, e.y, Math.cos(a) * 248, Math.sin(a) * 248, {
+          r: 6.4,
+          color: '#ffb1d6',
+          behavior: 'curve',
+          turn: offA > 0 ? 0.16 : -0.16,
+          damage: 8,
+        });
+      }
+    }
+  }
+
+  function patMiguaTurtleBarrage(e) {
+    const base = angleTo(e.x, e.y, player.x, player.y);
+    addMiguaFx('melon_ring', e.x, e.y, { r: 82, life: 0.4, sprite: 'miguaSeedHalo', color: 'rgba(186,255,118,' });
+    for (let i = -2; i <= 2; i++) {
+      const a = base + i * 0.23;
+      spawnMiguaBullet(i === 0 ? 'seed_black_heavy' : 'seed_gold_heavy', e.x, e.y + 8, Math.cos(a) * 196, Math.sin(a) * 196, {
+        r: i === 0 ? 11 : 9.5,
+        color: i === 0 ? '#baff78' : '#ffe26a',
+        style: 'seed',
+        behavior: 'slow_then_fast',
+        damage: 11,
+        life: 8.2,
+      });
+    }
+    if (e.shotN % 2 === 0) {
+      addMiguaHazard('seed_ring', e.x, e.y, {
+        life: 0.62,
+        r: 92,
+        count: miguaDensity(14, 18),
+        speed: 142,
+        angle: (e.spiralAngle || 0),
+        color: '#ffe26a',
+      });
+    }
+    e.spiralAngle = (e.spiralAngle || 0) + 0.18;
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // 扩充弹幕库（参考东方/雷电经典弹型）——每种有清晰逻辑、可读、可躲
   // ═══════════════════════════════════════════════════════════════
@@ -15721,6 +16309,13 @@
       case 'techCompileRing': patTechCompileRing(e); break;
       case 'techCodeRain': patTechCodeRain(e); break;
       case 'techCrystalBloom': patTechCrystalBloom(e); break;
+      // —— 蜜瓜号主题小怪：瓜子 / 切片 / 果汁 / 泡泡 / 蜂刺高压可读弹幕 ——
+      case 'miguaSeedFan': patMiguaSeedFan(e); break;
+      case 'miguaSliceArc': patMiguaSliceArc(e); break;
+      case 'miguaJuiceBeam': patMiguaJuiceBeam(e); break;
+      case 'miguaJellyBurst': patMiguaJellyBurst(e); break;
+      case 'miguaBeeSting': patMiguaBeeSting(e); break;
+      case 'miguaTurtleBarrage': patMiguaTurtleBarrage(e); break;
       default:
         patSnipe(e, 240, c, 6, 'orbbasic');
     }
@@ -15752,6 +16347,39 @@
       const ty = hoverY + Math.sin(e.orbA * 1.6) * 34;
       e.x += (tx - e.x) * Math.min(1, dt * 1.85);
       e.y += (ty - e.y) * Math.min(1, dt * 2.25);
+    } else if (m === 'miguaFloatDown') {        // 蜜瓜无人机：果园漂浮推进
+      const tx = e.homeX + Math.sin(e.t * 1.8 + e.techSeed) * 38;
+      const ty = hoverY + Math.sin(e.t * 2.3 + e.techSeed) * 16;
+      e.x += (tx - e.x) * Math.min(1, dt * 2.45);
+      e.y += (ty - e.y) * Math.min(1, dt * 3.0);
+    } else if (m === 'miguaSideCarve') {        // 切片蜘蛛：侧向弧切后回到阵位
+      e.orbA += dt * 1.25;
+      const side = e.homeX < W * 0.5 ? -1 : 1;
+      const tx = clamp(e.homeX + side * Math.sin(e.orbA) * 58, 58, W - 58);
+      const ty = hoverY + Math.cos(e.orbA * 1.4) * 24;
+      e.x += (tx - e.x) * Math.min(1, dt * 2.2);
+      e.y += (ty - e.y) * Math.min(1, dt * 2.5);
+    } else if (m === 'miguaAnchorTurret') {     // 果汁炮台：定点架设，只有轻微机械抖动
+      const tx = e.homeX + Math.sin(e.t * 0.72 + e.techSeed) * 12;
+      e.x += (tx - e.x) * Math.min(1, dt * 1.4);
+      e.y += (hoverY - e.y) * Math.min(1, dt * 2.0);
+    } else if (m === 'miguaJellyDrift') {       // 凝胶地雷：软弹漂移
+      e.orbA += dt * 0.95;
+      const tx = e.homeX + Math.sin(e.orbA + e.techSeed) * 46;
+      const ty = hoverY + Math.sin(e.orbA * 1.8) * 30;
+      e.x += (tx - e.x) * Math.min(1, dt * 1.85);
+      e.y += (ty - e.y) * Math.min(1, dt * 2.1);
+    } else if (m === 'miguaBeeDive') {          // 蜂刺机：短距离俯冲再拉回
+      const dive = Math.max(0, Math.sin(e.t * 1.55 + e.techSeed));
+      const tx = e.homeX + Math.sin(e.t * 2.4) * 34;
+      const ty = hoverY + dive * 64;
+      e.x += (tx - e.x) * Math.min(1, dt * 2.8);
+      e.y += (ty - e.y) * Math.min(1, dt * 2.9);
+    } else if (m === 'miguaTurtlePush') {       // 装甲龟：慢速推进，形成压迫前线
+      const tx = e.homeX + Math.sin(e.t * 0.58 + e.techSeed) * 24;
+      const ty = hoverY + 18 + Math.sin(e.t * 1.1) * 10;
+      e.x += (tx - e.x) * Math.min(1, dt * 1.35);
+      e.y += (ty - e.y) * Math.min(1, dt * 1.8);
     } else if (m === 'sideL' || m === 'sideR') {       // 侧边快速突入：横向飞入到 homeX，再降到悬停层
       e.x += (e.homeX - e.x) * Math.min(1, dt * 4.0);
       e.y += (hoverY - e.y) * Math.min(1, dt * 3.2);
@@ -15845,6 +16473,7 @@
       b.vy += b.ay * dt;
       const suiyiCustomMove = updateSuiyiEnemyBullet(b, dt);
       updateSuiyiTechEnemyBullet(b, dt);
+      const miguaCustomMove = updateMiguaEnemyBullet(b, dt);
       // 追踪魂弹：缓慢转向玩家后加速（暗夜女王专属）
       if (b.homingSoul) {
         b.homeT = (b.homeT || 0) + dt;
@@ -15873,7 +16502,7 @@
         b.x += Math.cos(perpAngle) * waveDelta;
         b.y += Math.sin(perpAngle) * waveDelta;
       }
-      if (!suiyiCustomMove) {
+      if (!suiyiCustomMove && !miguaCustomMove) {
         b.x += b.vx * dt;
         b.y += b.vy * dt;
       }
@@ -16049,6 +16678,7 @@
     // 回充伤害信用（DPS 上限的核心）
     if (boss.dmgCredit !== undefined) boss.dmgCredit = Math.min(boss.dmgCreditMax, boss.dmgCredit + boss.dpsCap * dt);
     if (boss.kind === 'suiyi') { updateSuiyiBoss(dt); return; }
+    if (boss.kind === 'migua') { updateMiguaBoss(dt); return; }
     boss.x = W * 0.5 + Math.sin(boss.t * 0.7) * 80 + Math.sin(boss.t * 1.53) * 26;
     boss.y = 210 + Math.sin(boss.t * 0.95) * 18;
 
@@ -17150,6 +17780,310 @@
     if (tickEvery(t, dt, 2.2)) addSuiyiFx('crash_core', boss.x, boss.y + 8, 1.2);
   }
 
+  function clearMiguaCombatLayers() {
+    miguaHazards.length = 0;
+    miguaFx.length = 0;
+    for (let i = enemyBullets.length - 1; i >= 0; i--) {
+      if (enemyBullets[i] && enemyBullets[i].migua) enemyBullets.splice(i, 1);
+    }
+  }
+
+  function resetMiguaState() {
+    clearMiguaCombatLayers();
+    if (boss && boss.kind === 'migua') {
+      boss.form = 'idle';
+      boss.miguaPhaseTimer = 0;
+      boss.miguaSeed = Math.random() * 999;
+      boss.miguaBarPulse = 1;
+      boss.attackRateMul = 1;
+      boss.bulletSpeedMul = 1;
+    }
+  }
+
+  function miguaPhaseForHpRate(rate) {
+    if (rate > MIGUA_PHASE_HP[1]) return 0;
+    if (rate > MIGUA_PHASE_HP[2]) return 1;
+    if (rate > MIGUA_PHASE_HP[3]) return 2;
+    return 3;
+  }
+
+  function miguaBulletBudget(room = 1) {
+    return enemyBullets.length + room < Math.min(perfBudget().enemyBulletMax, perfLevel === 2 ? 300 : perfLevel === 1 ? 360 : 430);
+  }
+
+  function updateMiguaBoss(dt) {
+    if (!boss || boss.kind !== 'migua' || boss.dead) return;
+    const hpRate = boss.hp / boss.maxHp;
+    const nextPhase = miguaPhaseForHpRate(hpRate);
+    if (nextPhase !== bossPhase) {
+      changeBossPhase(nextPhase);
+      boss.form = nextPhase === 0 ? 'phase1' : nextPhase === 1 ? 'phase2' : nextPhase === 2 ? 'phase3' : 'final';
+      boss.miguaPhaseTimer = 0;
+      boss.miguaBarPulse = 1;
+      boss.attackRateMul = 1 + nextPhase * 0.1 + (nextPhase >= 3 ? 0.18 : 0);
+      boss.bulletSpeedMul = 1 + nextPhase * 0.055 + (nextPhase >= 3 ? 0.08 : 0);
+      addMiguaFx(nextPhase >= 3 ? 'final_burst' : 'phase_bloom', boss.x, boss.y, {
+        r: nextPhase >= 3 ? 180 : 132,
+        life: nextPhase >= 3 ? 0.82 : 0.55,
+        sprite: nextPhase >= 3 ? 'miguaBossFinalBurst' : 'miguaBossBloom',
+        color: nextPhase >= 3 ? 'rgba(255,148,196,' : 'rgba(186,255,118,',
+      });
+    }
+    boss.miguaPhaseTimer = (boss.miguaPhaseTimer || 0) + dt;
+    boss.miguaBarPulse = Math.max(0, (boss.miguaBarPulse || 0) - dt * 1.7);
+    const amp = 66 + nextPhase * 13;
+    const speed = 0.58 + nextPhase * 0.08;
+    boss.x = lerp(boss.x, W * 0.5 + Math.sin(boss.t * speed + boss.miguaSeed) * amp + Math.sin(boss.t * 1.7) * 18, 0.038 + nextPhase * 0.006);
+    boss.y = lerp(boss.y, 206 + Math.sin(boss.t * 0.92) * (14 + nextPhase * 3), 0.042);
+    const rate = (1.04 + nextPhase * 0.12) * (boss.attackRateMul || 1) * (1 + loopCount * 0.06);
+    patternTimer += dt * rate;
+    miguaPatterns(patternTimer, dt);
+  }
+
+  function miguaPatterns(t, dt) {
+    if (!boss || boss.kind !== 'migua') return;
+    if (bossPhase === 0) {
+      if (tickEvery(t, dt, 0.58)) miguaSeedBarrage(0);
+      if (tickEvery(t, dt, 1.55)) miguaCompressedKernelFan(0);
+      if (tickEvery(t, dt, 2.85)) miguaThrowMelonBomb(0);
+      if (tickEvery(t, dt, 2.35)) miguaBubbleLane(0);
+    } else if (bossPhase === 1) {
+      if (tickEvery(t, dt, 0.74)) miguaJuiceStream(1);
+      if (tickEvery(t, dt, 1.38)) miguaSplashBurst(1);
+      if (tickEvery(t, dt, 2.05)) miguaThrowMelonBomb(1);
+      if (tickEvery(t, dt, 2.24)) miguaSeedBarrage(1);
+    } else if (bossPhase === 2) {
+      if (tickEvery(t, dt, 0.88)) miguaSliceCarousel(2);
+      if (tickEvery(t, dt, 1.54)) miguaArmySeeding(2);
+      if (tickEvery(t, dt, 2.55)) miguaThrowMelonBomb(2);
+      if (tickEvery(t, dt, 2.15)) miguaBubbleLane(2);
+    } else {
+      if (tickEvery(t, dt, 0.48)) miguaFinalBloom(3);
+      if (tickEvery(t, dt, 1.12)) miguaSweetFlood(3);
+      if (tickEvery(t, dt, 1.86)) miguaThrowMelonBomb(3);
+      if (tickEvery(t, dt, 3.2)) miguaUltimatePulpBurst(3);
+    }
+  }
+
+  function miguaSeedBarrage(phase) {
+    if (!miguaBulletBudget(8)) return;
+    const count = miguaDensity(8 + phase * 2, 14);
+    const base = angleTo(boss.x, boss.y, player.x, player.y);
+    const spread = 0.72 + phase * 0.12;
+    addMiguaFx('muzzle', boss.x, boss.y + 42, { r: 70, life: 0.24, sprite: 'miguaSeedHalo', color: 'rgba(186,255,118,' });
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+      const a = base + t * spread + Math.sin(boss.t * 2 + i) * 0.035;
+      const type = i % 4 === 1 ? 'seed_gold_small' : 'seed_black_small';
+      const speed = (218 + phase * 28 + Math.abs(t) * 46) * (boss.bulletSpeedMul || 1);
+      spawnMiguaBullet(type, boss.x, boss.y + 34, Math.cos(a) * speed, Math.sin(a) * speed, {
+        r: type === 'seed_gold_small' ? 7.2 : 6.6,
+        behavior: i % 5 === 0 ? 'slow_then_fast' : 'wobble',
+        amp: phase >= 2 ? 12 : 7,
+        style: 'seed',
+        color: type === 'seed_gold_small' ? '#ffe26a' : '#baff78',
+        damage: 10 + phase,
+        life: 6.8,
+      });
+    }
+  }
+
+  function miguaCompressedKernelFan(phase) {
+    const count = miguaDensity(5 + phase, 9);
+    const base = Math.PI / 2 + Math.sin(boss.t * 1.2) * 0.22;
+    addMiguaFx('melon_ring', boss.x, boss.y + 24, { r: 104, life: 0.36, sprite: 'miguaSeedHalo', color: 'rgba(255,226,106,' });
+    for (let i = 0; i < count; i++) {
+      const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+      const a = base + t * (0.92 + phase * 0.1);
+      spawnMiguaBullet(i % 2 ? 'seed_gold_heavy' : 'seed_black_heavy', boss.x, boss.y + 34, Math.cos(a) * 178, Math.sin(a) * 178, {
+        r: 10.5,
+        behavior: 'slow_then_fast',
+        color: i % 2 ? '#ffe26a' : '#baff78',
+        damage: 12 + phase,
+        life: 8.2,
+      });
+    }
+  }
+
+  function miguaThrowMelonBomb(phase) {
+    const lanes = phase >= 3 ? 3 : (phase >= 1 ? 2 : 1);
+    if (!miguaBulletBudget(lanes * 12)) return;
+    addMiguaFx('melon_ring', boss.x, boss.y + 34, { r: 118 + phase * 16, life: 0.34, sprite: 'miguaMelonSun', color: 'rgba(186,255,118,' });
+    for (let i = 0; i < lanes; i++) {
+      const laneT = lanes === 1 ? 0 : i / (lanes - 1) - 0.5;
+      const targetX = clamp(player.x + laneT * (160 + phase * 20) + Math.sin(boss.t + i) * 38, 92, W - 92);
+      const targetY = clamp(player.y - 90 + Math.cos(boss.t * 0.8 + i) * 54, H * 0.36, H - 210);
+      const a = angleTo(boss.x, boss.y + 42, targetX, targetY);
+      const speed = (128 + phase * 22 + Math.abs(laneT) * 28) * (boss.bulletSpeedMul || 1);
+      spawnMiguaBullet('melon_sun', boss.x + laneT * 42, boss.y + 42, Math.cos(a) * speed, Math.sin(a) * speed, {
+        r: 20 + phase * 1.6,
+        behavior: 'melon_throw',
+        splitAt: 1.02 + Math.abs(laneT) * 0.16,
+        splitCount: miguaDensity(10 + phase * 3, 18),
+        splitMode: 'melon_burst',
+        color: '#baff78',
+        damage: 13 + phase,
+        life: 3.2,
+        trail: true,
+        amp: 12 + phase * 3,
+        style: 'whole_melon',
+        spin: laneT >= 0 ? 2.1 : -2.1,
+      });
+    }
+  }
+
+  function miguaJuiceStream(phase) {
+    const aim = angleTo(boss.x, boss.y + 40, player.x, player.y);
+    addMiguaHazard('juice_beam', boss.x, boss.y + 42, {
+      life: 0.62,
+      angle: aim + Math.sin(boss.t * 1.6) * 0.12,
+      r: 116,
+      color: '#baff78',
+    });
+    addMiguaFx('juice_cloud', boss.x + Math.cos(aim) * 38, boss.y + 42 + Math.sin(aim) * 38, { r: 104, life: 0.38, sprite: 'miguaFruitPulpCloud', color: 'rgba(255,216,102,' });
+    const droplets = miguaDensity(6 + phase, 10);
+    for (let i = 0; i < droplets; i++) {
+      const t = droplets === 1 ? 0 : i / (droplets - 1) - 0.5;
+      const a = aim + t * 0.8 + rand(-0.04, 0.04);
+      const type = i % 3 === 1 ? 'melon_bubble_medium' : 'juice_splash_ball';
+      spawnMiguaBullet(type, boss.x, boss.y + 42, Math.cos(a) * 210, Math.sin(a) * 210, {
+        r: type.includes('bubble') ? 12.2 : 8.6,
+        behavior: type.includes('bubble') ? 'bubble' : 'wobble',
+        amp: 18,
+        color: '#ffd966',
+        damage: 10,
+        life: 7.2,
+      });
+    }
+  }
+
+  function miguaSplashBurst(phase) {
+    const targets = phase >= 2 ? 3 : 2;
+    for (let i = 0; i < targets; i++) {
+      const x = clamp(player.x + rand(-130, 130), 70, W - 70);
+      const y = clamp(player.y - rand(80, 190), H * 0.32, H - 150);
+      addMiguaHazard('jelly_burst', x, y, {
+        life: 0.9,
+        r: 82,
+        count: miguaDensity(10 + phase * 2, 16),
+        speed: 150 + phase * 18,
+        color: '#a6ffcf',
+      });
+    }
+  }
+
+  function miguaSliceCarousel(phase) {
+    const count = miguaDensity(7 + phase * 2, 14);
+    const off = boss.t * (0.9 + phase * 0.1);
+    addMiguaFx('phase_bloom', boss.x, boss.y + 18, { r: 112, life: 0.35, sprite: 'miguaBossBloom', color: 'rgba(255,150,208,' });
+    for (let i = 0; i < count; i++) {
+      const a = off + i * TAU / count;
+      const speed = (162 + (i % 3) * 22 + phase * 18) * (boss.bulletSpeedMul || 1);
+      const type = i % 5 === 0 ? 'bitten_melon' : (i % 2 ? 'crescent_slice' : 'slice_arc');
+      spawnMiguaBullet(type, boss.x + Math.cos(a) * 28, boss.y + Math.sin(a) * 16, Math.cos(a) * speed, Math.sin(a) * speed, {
+        r: type === 'bitten_melon' ? 14 : 11.5,
+        behavior: 'curve',
+        turn: i % 2 ? 0.18 : -0.18,
+        splitAt: phase >= 2 ? 2.1 : 0,
+        splitCount: 3,
+        color: '#ff9fcb',
+        damage: 11,
+        life: 7.4,
+      });
+    }
+  }
+
+  function miguaArmySeeding(phase) {
+    const gap = clamp(player.x + Math.sin(boss.t * 1.1) * 90, 120, W - 120);
+    const cols = miguaDensity(12 + phase * 2, 18);
+    for (let i = 0; i < cols; i++) {
+      const x = 42 + i * ((W - 84) / Math.max(1, cols - 1));
+      if (Math.abs(x - gap) < 74) continue;
+      const a = Math.PI / 2 + Math.sin(i * 1.3 + boss.t) * 0.14;
+      spawnMiguaBullet(i % 4 === 0 ? 'seed_gold_small' : 'seed_black_small', x, boss.y + 16, Math.cos(a) * 92, Math.sin(a) * (165 + (i % 3) * 18), {
+        r: i % 4 === 0 ? 7.2 : 6.4,
+        behavior: i % 4 === 0 ? 'slow_then_fast' : 'wobble',
+        amp: 10,
+        color: i % 4 === 0 ? '#ffe26a' : '#baff78',
+        damage: 9,
+        life: 8.0,
+      });
+    }
+    if (phase >= 2 && enemies.length < enemyScreenCap() - 6 && Math.random() < 0.45) {
+      spawnFormation(Math.random() < 0.5 ? 'miguaOrchardRow' : 'miguaSlicePincer', Math.random() < 0.55 ? 'miguadrone' : 'miguabeestinger', 4);
+    }
+  }
+
+  function miguaBubbleLane(phase) {
+    const count = miguaDensity(4 + phase, 8);
+    const gap = clamp(player.x, 100, W - 100);
+    for (let i = 0; i < count; i++) {
+      const x = 70 + i * ((W - 140) / Math.max(1, count - 1));
+      if (Math.abs(x - gap) < 70) continue;
+      const a = Math.PI / 2 + Math.sin(i * 1.8 + boss.t) * 0.22;
+      const type = i % 3 === 1 ? 'melon_bubble_large' : (i % 2 ? 'melon_bubble_medium' : 'melon_bubble');
+      spawnMiguaBullet(type, x, boss.y + 10, Math.cos(a) * 70, Math.sin(a) * (118 + phase * 20), {
+        r: type === 'melon_bubble_large' ? 17 : type === 'melon_bubble_medium' ? 14 : 12.5,
+        behavior: 'bubble',
+        amp: 32,
+        color: '#a6ffcf',
+        damage: 8 + phase,
+        life: 8.4,
+      });
+    }
+  }
+
+  function miguaFinalBloom(phase) {
+    addMiguaHazard('boss_bloom', boss.x, boss.y + 26, {
+      life: 0.48,
+      r: 132,
+      count: miguaDensity(18, 26),
+      speed: 164,
+      angle: boss.t * 0.78,
+      color: '#ff94c4',
+    });
+  }
+
+  function miguaSweetFlood(phase) {
+    const rows = perfLevel === 2 ? 2 : 3;
+    for (let row = 0; row < rows; row++) {
+      const y = boss.y + row * 22;
+      const count = miguaDensity(9 + row * 2, 15);
+      const gap = clamp(player.x + Math.sin(boss.t + row) * 80, 100, W - 100);
+      for (let i = 0; i < count; i++) {
+        const x = 40 + i * ((W - 80) / Math.max(1, count - 1));
+        if (Math.abs(x - gap) < 62 + row * 12) continue;
+        const a = Math.PI / 2 + Math.sin(i * 0.9 + row + boss.t) * 0.18;
+        const type = i % 5 === 0 ? 'melon_bubble_medium' : (i % 3 === 0 ? 'juice_splash_ball' : 'seed_black_small');
+        spawnMiguaBullet(type, x, y, Math.cos(a) * 58, Math.sin(a) * (155 + row * 24), {
+          r: type.includes('bubble') ? 12 : type === 'juice_splash_ball' ? 8.6 : 6.4,
+          behavior: type.includes('bubble') ? 'bubble' : (type.includes('juice') ? 'wobble' : 'straight'),
+          amp: 16,
+          color: type.includes('bubble') ? '#a6ffcf' : (type.includes('juice') ? '#ffd966' : '#ffe26a'),
+          damage: 10,
+          life: 7.8,
+        });
+      }
+    }
+  }
+
+  function miguaUltimatePulpBurst(phase) {
+    screenShake = Math.max(screenShake, 9);
+    addMiguaFx('final_burst', boss.x, boss.y + 22, { r: 190, life: 0.85, sprite: 'miguaBossFinalBurst', color: 'rgba(255,146,196,' });
+    addMiguaHazard('boss_bloom', boss.x, boss.y + 38, {
+      life: 0.62,
+      r: 170,
+      count: miguaDensity(24, 34),
+      speed: 184,
+      angle: boss.t,
+      color: '#ff94c4',
+    });
+    for (const off of [-0.34, 0, 0.34]) {
+      const a = angleTo(boss.x, boss.y, player.x, player.y) + off;
+      addMiguaHazard('juice_beam', boss.x, boss.y + 44, { life: 0.74, angle: a, r: 130, color: '#ffe26a' });
+    }
+  }
+
   function updateSuiyiEnemyBullet(b, dt) {
     if (!b || !b.suiyi) return false;
     b.suiyiAge = (b.suiyiAge || 0) + dt;
@@ -17250,6 +18184,169 @@
     }
   }
 
+  function updateMiguaEnemyBullet(b, dt) {
+    if (!b || !b.migua) return false;
+    b.miguaAge = (b.miguaAge || 0) + dt;
+    b.hist = b.hist || [];
+    if (b.miguaTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > 8 * 8)) {
+      b.hist.unshift({ x: b.x, y: b.y });
+      const maxHist = perfLevel === 2 ? 6 : perfLevel === 1 ? 9 : 12;
+      if (b.hist.length > maxHist) b.hist.pop();
+    }
+    const sp = Math.hypot(b.vx, b.vy) || 1;
+    if (b.miguaBehavior === 'curve') {
+      const a = Math.atan2(b.vy, b.vx) + (b.miguaTurn || 0.18) * dt;
+      b.vx = Math.cos(a) * sp;
+      b.vy = Math.sin(a) * sp;
+    } else if (b.miguaBehavior === 'wobble' || b.miguaBehavior === 'bubble') {
+      b.miguaPhase += dt * (b.miguaBehavior === 'bubble' ? 2.2 : 4.1);
+      const perp = Math.atan2(b.vy, b.vx) + Math.PI / 2;
+      const amp = (b.miguaAmp || 10) * Math.sin(b.miguaPhase) * dt;
+      b.x += Math.cos(perp) * amp;
+      b.y += Math.sin(perp) * amp;
+      if (b.miguaBehavior === 'bubble') {
+        const ns = Math.min(190, sp + 12 * dt);
+        const a = Math.atan2(b.vy, b.vx);
+        b.vx = Math.cos(a) * ns;
+        b.vy = Math.sin(a) * ns;
+        b.r = Math.min(18, b.r + 1.5 * dt);
+      }
+    } else if (b.miguaBehavior === 'slow_then_fast') {
+      if (b.miguaAge < 0.45) {
+        b.vx *= Math.pow(0.64, dt);
+        b.vy *= Math.pow(0.64, dt);
+      } else {
+        const a = Math.atan2(b.vy, b.vx);
+        const ns = Math.min(260, sp + 95 * dt);
+        b.vx = Math.cos(a) * ns;
+        b.vy = Math.sin(a) * ns;
+      }
+    } else if (b.miguaBehavior === 'melon_throw') {
+      b.miguaPhase += dt * 2.8;
+      const drift = Math.sin(b.miguaPhase) * (b.miguaAmp || 12) * dt;
+      const perp = Math.atan2(b.vy, b.vx) + Math.PI / 2;
+      b.x += Math.cos(perp) * drift;
+      b.y += Math.sin(perp) * drift;
+      b.vy += (22 + (b.r || 18) * 0.9) * dt;
+      const ns = Math.min(235, sp + 14 * dt);
+      const a = Math.atan2(b.vy, b.vx);
+      b.vx = Math.cos(a) * ns;
+      b.vy = Math.sin(a) * ns;
+    }
+    if (b.splitAt && !b.miguaSplitDone && b.miguaAge >= b.splitAt) {
+      b.miguaSplitDone = true;
+      const count = b.splitCount || 3;
+      if (b.miguaSplitMode === 'melon_burst') {
+        const base = Math.atan2(b.vy, b.vx);
+        const spreadCount = Math.min(perfLevel === 2 ? 10 : perfLevel === 1 ? 14 : 18, count);
+        addMiguaFx('melon_pulp_burst', b.x, b.y, { r: 82 + b.r * 2.1, life: 0.42, sprite: 'miguaPulpBloom', color: 'rgba(186,255,118,' });
+        addMiguaFx('juice_puddle', b.x, b.y, { r: 70 + b.r * 1.7, life: 0.34, sprite: 'miguaJuicePuddle', color: 'rgba(255,216,102,' });
+        for (let i = 0; i < spreadCount; i++) {
+          const a = base + Math.PI + (i / spreadCount) * TAU + Math.sin(i * 2.1) * 0.08;
+          const fruitType = i % 5 === 0 ? 'melon_bubble_medium' : (i % 3 === 0 ? 'seed_gold_small' : (i % 2 ? 'seed_fragment' : 'seed_black_small'));
+          const speed = 132 + (i % 4) * 28 + (b.r || 18) * 2.2;
+          spawnMiguaBullet(fruitType, b.x, b.y, Math.cos(a) * speed, Math.sin(a) * speed, {
+            r: fruitType.includes('bubble') ? 10.8 : fruitType === 'seed_fragment' ? 5.6 : 6.4,
+            color: fruitType.includes('juice') ? '#ffd966' : (fruitType.includes('gold') ? '#ffe26a' : '#baff78'),
+            behavior: fruitType.includes('bubble') ? 'bubble' : (fruitType.includes('juice') ? 'wobble' : 'curve'),
+            turn: i % 2 ? 0.12 : -0.12,
+            amp: 10,
+            damage: 7,
+            life: 5.8,
+          });
+        }
+      } else {
+        const base = Math.atan2(b.vy, b.vx);
+        for (let i = 0; i < count; i++) {
+          const t = count === 1 ? 0 : i / (count - 1) - 0.5;
+          const a = base + t * 0.62;
+          spawnMiguaBullet('seed_fragment', b.x, b.y, Math.cos(a) * 190, Math.sin(a) * 190, {
+            r: 5.6,
+            color: '#ffb9d8',
+            behavior: 'curve',
+            turn: t * 0.26,
+            damage: 7,
+            life: 4.8,
+          });
+        }
+        addMiguaFx('slice_split', b.x, b.y, { r: 46, life: 0.26, color: 'rgba(255,150,208,' });
+      }
+      b.life = 0;
+    }
+    return false;
+  }
+
+  function updateMiguaHazards(dt) {
+    for (let i = miguaHazards.length - 1; i >= 0; i--) {
+      const h = miguaHazards[i];
+      h.life -= dt;
+      const age = h.maxLife - h.life;
+      if (!h.fired && age >= h.maxLife * 0.56) {
+        h.fired = true;
+        if (h.type === 'juice_beam') {
+          const len = 1200;
+          addLaserWarning(h.x, h.y, h.x + Math.cos(h.angle) * len, h.y + Math.sin(h.angle) * len, 20, 0.06, 0.42);
+          addMiguaFx('juice_cloud', h.x + Math.cos(h.angle) * 46, h.y + Math.sin(h.angle) * 46, { r: 120, life: 0.45, sprite: 'miguaJuiceCloud', color: 'rgba(186,255,118,' });
+        } else if (h.type === 'jelly_burst' || h.type === 'seed_ring') {
+          const count = h.count || 12;
+          if (h.type === 'jelly_burst') {
+            addMiguaFx('juice_puddle', h.x, h.y, { r: (h.r || 76) * 1.1, life: 0.42, sprite: 'miguaJuicePuddle', color: 'rgba(255,216,102,' });
+          }
+          for (let k = 0; k < count; k++) {
+            const a = h.angle + k * TAU / count;
+            const type = h.type === 'seed_ring'
+              ? (k % 4 === 0 ? 'seed_gold_heavy' : 'seed_gold_small')
+              : (k % 5 === 0 ? 'seed_gold_heavy' : (k % 2 ? 'melon_bubble_medium' : 'juice_splash_ball'));
+            spawnMiguaBullet(type, h.x, h.y, Math.cos(a) * h.speed, Math.sin(a) * h.speed, {
+              r: type === 'seed_gold_heavy' ? 9.6 : type === 'melon_bubble_medium' ? 12 : h.type === 'seed_ring' ? 6.2 : 9,
+              behavior: h.type === 'seed_ring' ? 'curve' : (type.includes('bubble') ? 'bubble' : 'wobble'),
+              turn: h.type === 'seed_ring' ? (k % 2 ? 0.08 : -0.08) : 0,
+              color: h.type === 'seed_ring' ? '#ffe26a' : (type.includes('juice') ? '#ffd966' : '#a6ffcf'),
+              damage: h.type === 'seed_ring' ? 8 : 7,
+              life: 6.8,
+            });
+          }
+          addMiguaFx(h.type === 'seed_ring' ? 'melon_ring' : 'melon_pulp_burst', h.x, h.y, { r: h.r || 86, life: 0.34, sprite: h.type === 'seed_ring' ? 'miguaSeedHalo' : 'miguaPulpBloom', color: h.type === 'seed_ring' ? 'rgba(255,226,106,' : 'rgba(186,255,118,' });
+        } else if (h.type === 'boss_bloom') {
+          const count = h.count || 22;
+          spawnMiguaBullet('melon_sun', h.x, h.y, Math.cos(h.angle) * 30, Math.sin(h.angle) * 30, {
+            r: 22,
+            behavior: 'slow_then_fast',
+            color: '#baff78',
+            damage: 13,
+            life: 5.6,
+          });
+          for (let k = 0; k < count; k++) {
+            const petal = Math.sin(k * 5.2) * 0.18;
+            const a = h.angle + k * TAU / count + petal;
+            const type = k % 6 === 0 ? 'crescent_slice' : (k % 4 === 0 ? 'melon_bubble_medium' : (k % 3 === 0 ? 'seed_gold_small' : 'seed_black_small'));
+            spawnMiguaBullet(type, h.x, h.y, Math.cos(a) * (h.speed + (k % 3) * 24), Math.sin(a) * (h.speed + (k % 3) * 24), {
+              r: type === 'crescent_slice' ? 12 : type === 'melon_bubble_medium' ? 11.5 : 6.6,
+              behavior: type === 'crescent_slice' ? 'curve' : (type.includes('bubble') ? 'bubble' : 'wobble'),
+              turn: k % 2 ? 0.1 : -0.1,
+              color: type === 'seed_gold_small' ? '#ffe26a' : type.includes('juice') ? '#ffd966' : '#baff78',
+              damage: 9,
+              life: 7,
+            });
+          }
+          addMiguaFx('final_burst', h.x, h.y, { r: h.r || 140, life: 0.55, sprite: 'miguaMelonSun', color: 'rgba(255,146,196,' });
+        }
+      }
+      if (h.life <= 0) removeUnordered(miguaHazards, i);
+    }
+  }
+
+  function updateMiguaFx(dt) {
+    for (let i = miguaFx.length - 1; i >= 0; i--) {
+      const f = miguaFx[i];
+      f.life -= dt;
+      f.x += (f.vx || 0) * dt;
+      f.y += (f.vy || 0) * dt;
+      f.a += (f.spin || 0) * dt;
+      if (f.life <= 0) removeUnordered(miguaFx, i);
+    }
+  }
+
   function tickEvery(timer, dt, interval) {
     return Math.floor(timer / interval) !== Math.floor((timer - dt) / interval);
   }
@@ -17302,7 +18399,7 @@
     ctx.restore();
   }
 
-	  function drawSuiyiTechMapFlowOverlay(baseKey) {
+  function drawSuiyiTechMapFlowOverlay(baseKey) {
 	    const bossArena = isSuiyiArena();
 	    const mobMap = isSuiyiTechMobMapActive();
 	    const isTechMap = SUIYI_MAP_KEYS.indexOf(baseKey) >= 0;
@@ -17355,6 +18452,68 @@
       const r = 1.1 + (i % 4) * 0.45;
       const g = ctx.createRadialGradient(x, y, 0, x, y, r * 6);
       g.addColorStop(0, i % 2 ? `rgba(255,160,230,${0.46 * intensity})` : `rgba(128,248,255,${0.48 * intensity})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, r * 5, 0, TAU);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawMiguaMapFlowOverlay(baseKey) {
+    const miguaArena = boss && boss.kind === 'migua';
+    const isMiguaMap = MIGUA_MAP_KEYS.indexOf(baseKey) >= 0;
+    if (!isMiguaMap && !miguaArena) return;
+    const intensity = miguaArena ? MIGUA_MAP_FLOW.bossAlpha : MIGUA_MAP_FLOW.mobAlpha;
+    const countKey = perfLevel >= 2 ? 'perf2' : (perfLevel === 1 ? 'perf1' : 'perf0');
+    const glyphCount = MIGUA_MAP_FLOW.particleCount[countKey] || 18;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    const veil = ctx.createLinearGradient(0, 0, 0, H);
+    veil.addColorStop(0, `rgba(18,34,18,${0.10 * intensity})`);
+    veil.addColorStop(0.55, `rgba(18,10,30,${0.13 * intensity})`);
+    veil.addColorStop(1, `rgba(4,8,6,${0.18 * intensity})`);
+    ctx.fillStyle = veil;
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.font = 'bold 12px Menlo, Consolas, monospace';
+    ctx.textAlign = 'left';
+    for (let i = 0; i < glyphCount; i++) {
+      const speed = 20 + (i % 5) * 7 + (isMiguaMap ? 8 : 0);
+      const x = (i * 83 + Math.sin(time * 0.7 + i) * 28 + time * (i % 2 ? 9 : -5)) % (W + 120) - 60;
+      const y = ((time * speed + i * 101) % (H + 150)) - 75;
+      const glyph = MIGUA_MAP_FLOW.glyphs[i % MIGUA_MAP_FLOW.glyphs.length];
+      const prefix = MIGUA_MAP_FLOW.colors[i % MIGUA_MAP_FLOW.colors.length];
+      const a = intensity * (0.05 + (i % 5) * 0.012);
+      ctx.fillStyle = `${prefix}${a})`;
+      ctx.fillText(glyph, x, y);
+    }
+    const ribbons = perfLevel >= 2 ? 4 : (perfLevel === 1 ? 6 : 9);
+    ctx.lineCap = 'round';
+    for (let i = 0; i < ribbons; i++) {
+      const y = ((time * (15 + i) + i * 121) % (H + 220)) - 110;
+      const x0 = -90;
+      const x1 = W + 90;
+      const grad = ctx.createLinearGradient(x0, y, x1, y + 54);
+      grad.addColorStop(0, 'rgba(186,255,118,0)');
+      grad.addColorStop(0.36, `rgba(186,255,118,${0.085 * intensity})`);
+      grad.addColorStop(0.66, `rgba(255,139,199,${0.10 * intensity})`);
+      grad.addColorStop(1, 'rgba(255,226,106,0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = i % 3 === 0 ? 2.4 : 1.25;
+      ctx.beginPath();
+      ctx.moveTo(x0, y);
+      ctx.bezierCurveTo(W * 0.24, y + Math.sin(time + i) * 34, W * 0.72, y + 58 + Math.cos(time * 0.8 + i) * 26, x1, y + 46);
+      ctx.stroke();
+    }
+    const seeds = perfLevel >= 2 ? 14 : (perfLevel === 1 ? 22 : 34);
+    for (let i = 0; i < seeds; i++) {
+      const x = (i * 97 + time * (18 + (i % 4) * 5)) % (W + 60) - 30;
+      const y = (i * 137 + time * (14 + (i % 3) * 4)) % (H + 80) - 40;
+      const r = 1.2 + (i % 4) * 0.5;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r * 6);
+      g.addColorStop(0, i % 2 ? `rgba(255,170,214,${0.42 * intensity})` : `rgba(195,255,120,${0.44 * intensity})`);
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g;
       ctx.beginPath();
@@ -17442,6 +18601,193 @@
     ctx.textAlign = 'center';
     ctx.fillStyle = phase >= 5 ? 'rgba(255,110,190,.92)' : 'rgba(160,250,255,.86)';
     ctx.fillText(SUIYI_BOSS_SIGNATURE, 0, 146);
+    ctx.restore();
+  }
+
+  function miguaBossSpriteKey() {
+    if (!boss) return 'miguaBossIdle';
+    if (boss.dead) return assetReady('miguaBossDeath') ? 'miguaBossDeath' : 'miguaBossFinal';
+    if ((boss.hitFlash || 0) > 0 && assetReady('miguaBossHit')) return 'miguaBossHit';
+    if (bossPhase <= 0) return assetReady('miguaBossPhase1') ? 'miguaBossPhase1' : 'miguaBossIdle';
+    if (bossPhase === 1) return 'miguaBossPhase2';
+    if (bossPhase === 2) return 'miguaBossPhase3';
+    return 'miguaBossFinal';
+  }
+
+  function drawMiguaBoss() {
+    if (!boss) return;
+    const phase = Math.max(0, bossPhase);
+    const pulse = 0.5 + Math.sin(time * (4.8 + phase * 0.4)) * 0.5;
+    ctx.save();
+    ctx.translate(boss.x, boss.y);
+    const auraR = phase >= 3 ? 310 : 230 + phase * 26;
+    const aura = ctx.createRadialGradient(0, 0, 8, 0, 0, auraR);
+    aura.addColorStop(0, `rgba(190,255,118,${0.30 + pulse * 0.08})`);
+    aura.addColorStop(0.45, phase >= 2 ? 'rgba(255,148,198,.18)' : 'rgba(255,226,106,.13)');
+    aura.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = aura;
+    ctx.beginPath();
+    ctx.arc(0, 0, auraR, 0, TAU);
+    ctx.fill();
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < (phase >= 2 ? 6 : 4); i++) {
+      const a = time * (0.55 + phase * 0.08) + i * TAU / (phase >= 2 ? 6 : 4);
+      const x = Math.cos(a) * (118 + phase * 10);
+      const y = Math.sin(a) * (54 + phase * 4) + 4;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(a + Math.PI / 2);
+      ctx.fillStyle = i % 2 ? 'rgba(255,226,106,.45)' : 'rgba(186,255,118,.45)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 7, 16, 0, 0, TAU);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,70,86,.72)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    const key = miguaBossSpriteKey();
+    if (assetReady(key)) {
+      const img = assets[key];
+      const size = (phase >= 3 ? 360 : phase >= 2 ? 334 : phase >= 1 ? 326 : 318) * (boss.scale || 1) * (1 + pulse * 0.018);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.22 + pulse * 0.08;
+      ctx.drawImage(img, -size * 0.56, -size * 0.56, size * 1.12, size * 1.12);
+      ctx.restore();
+      ctx.drawImage(img, -size / 2, -size / 2, size, size);
+    } else {
+      ctx.fillStyle = '#baff78';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 76, 54, 0, 0, TAU);
+      ctx.fill();
+      ctx.strokeStyle = '#ff4056';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    if (phase >= 1) {
+      const ringR = 92 + phase * 18 + pulse * 10;
+      ctx.strokeStyle = phase >= 3 ? 'rgba(255,146,196,.62)' : 'rgba(255,226,106,.54)';
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.ellipse(0, 18, ringR, ringR * 0.36, Math.sin(time) * 0.12, 0, TAU);
+      ctx.stroke();
+    }
+    ctx.font = 'bold 12px Menlo, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = phase >= 3 ? 'rgba(255,210,232,.92)' : 'rgba(226,255,174,.9)';
+    ctx.fillText(MIGUA_BOSS_SIGNATURE, 0, 150);
+    ctx.restore();
+  }
+
+  function drawMiguaHazards() {
+    if (!miguaHazards.length) return;
+    ctx.save();
+    for (const h of miguaHazards) {
+      const p = 1 - h.life / h.maxLife;
+      const a = clamp(Math.sin(p * Math.PI) * 1.2, 0, 1);
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.globalAlpha = a;
+      ctx.globalCompositeOperation = 'lighter';
+      if (h.type === 'juice_beam') {
+        ctx.rotate(h.angle || 0);
+        const len = 1180;
+        const w = 18 + Math.sin(time * 18) * 2;
+        const grad = ctx.createLinearGradient(0, 0, len, 0);
+        grad.addColorStop(0, 'rgba(186,255,118,.72)');
+        grad.addColorStop(0.52, 'rgba(255,226,106,.55)');
+        grad.addColorStop(1, 'rgba(255,146,196,0)');
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = w * (0.75 + p * 0.3);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(len, 0);
+        ctx.stroke();
+        if (assetReady('miguaJuiceBeamGlow')) ctx.drawImage(assets.miguaJuiceBeamGlow, -8, -28, 340, 56);
+        if (assetReady('miguaJuiceBeamCore')) ctx.drawImage(assets.miguaJuiceBeamCore, -4, -14, 300, 28);
+      } else {
+        const r = (h.r || 80) * (0.8 + p * 0.36);
+        if (assetReady('miguaWarningRing')) {
+          ctx.drawImage(assets.miguaWarningRing, -r, -r, r * 2, r * 2);
+        }
+        ctx.strokeStyle = h.type === 'boss_bloom' ? 'rgba(255,70,86,.86)' : 'rgba(255,42,62,.72)';
+        ctx.lineWidth = 2.6;
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, TAU);
+        ctx.stroke();
+        ctx.strokeStyle = h.type === 'boss_bloom' ? 'rgba(255,148,198,.42)' : 'rgba(186,255,118,.42)';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.72, -Math.PI / 2, -Math.PI / 2 + TAU * p);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  function drawMiguaFx() {
+    if (!miguaFx.length) return;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (const f of miguaFx) {
+      const p = 1 - f.life / f.maxLife;
+      const a = clamp(Math.sin(p * Math.PI) * 1.15, 0, 1);
+      ctx.save();
+      ctx.translate(f.x, f.y);
+      ctx.rotate((f.a || 0) + time * 0.25);
+      ctx.globalAlpha = a;
+      const r = (f.r || 48) * (0.72 + p * 0.46);
+      if (f.sprite && assetReady(f.sprite)) {
+        const oldAlpha = ctx.globalAlpha;
+        const spriteAlpha = f.type === 'melon_pulp_burst' ? 0.34 : f.type === 'final_burst' ? 0.58 : 1;
+        ctx.globalAlpha = oldAlpha * spriteAlpha;
+        if (f.type === 'juice_puddle') {
+          ctx.drawImage(assets[f.sprite], -r * 1.22, -r * 0.42, r * 2.44, r * 0.84);
+        } else if (f.type === 'juice_cloud') {
+          ctx.drawImage(assets[f.sprite], -r * 1.35, -r * 0.42, r * 2.7, r * 0.84);
+        } else {
+          ctx.drawImage(assets[f.sprite], -r, -r, r * 2, r * 2);
+        }
+        ctx.globalAlpha = oldAlpha;
+      }
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+      g.addColorStop(0, `${f.color || 'rgba(186,255,118,'}${0.32 * a})`);
+      g.addColorStop(0.58, 'rgba(255,226,106,.10)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, TAU);
+      ctx.fill();
+      if (f.type === 'melon_pulp_burst' || f.type === 'juice_puddle' || f.type === 'juice_cloud') {
+        ctx.strokeStyle = 'rgba(255,240,128,.30)';
+        ctx.lineWidth = 1.2;
+        for (let k = 0; k < 3; k++) {
+          const start = -0.28 * Math.PI + k * 0.66 * Math.PI + time * 0.18;
+          ctx.beginPath();
+          ctx.arc(0, 0, r * (0.42 + k * 0.11), start, start + 0.22 * Math.PI);
+          ctx.stroke();
+        }
+        ctx.fillStyle = 'rgba(255,238,136,.52)';
+        for (let k = 0; k < 5; k++) {
+          const da = k * TAU / 5 + time * 0.35;
+          const dr = r * (0.26 + (k % 3) * 0.13);
+          ctx.beginPath();
+          ctx.ellipse(Math.cos(da) * dr, Math.sin(da) * dr * 0.72, Math.max(1.2, r * 0.035), Math.max(0.9, r * 0.022), da, 0, TAU);
+          ctx.fill();
+        }
+      } else {
+        ctx.strokeStyle = 'rgba(255,236,138,.32)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.66, -Math.PI * 0.18, Math.PI * 0.34);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
     ctx.restore();
   }
 
@@ -17840,6 +19186,8 @@
     drawMotherHiveFinalButterflyOverlay();
     // Enemy attack layer: render after all actors/player effects so hostile bullets are never hidden.
     drawSuiyiHazards();
+    drawMiguaHazards();
+    drawMiguaFx();
     drawEnemyBullets();
     drawWarnings();
     drawLasers();
@@ -17883,6 +19231,7 @@
     }
     drawSuiyiBackgroundOverlay();
     drawSuiyiTechMapFlowOverlay(baseKey);
+    drawMiguaMapFlowOverlay(baseKey);
 
     if (assetReady('bgStageDepth') && perfLevel < 2) {
       ctx.save();
@@ -18184,6 +19533,34 @@
     ctx.restore();
   }
 
+  function isMiguaMobType(type) {
+    return MIGUA_MOB_TYPES.indexOf(type) >= 0;
+  }
+
+  function drawMiguaEnemyAura(e, bob, size, hpRate) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    const pulse = 0.5 + Math.sin(time * 5.5 + e.techSeed) * 0.5;
+    ctx.strokeStyle = e.type === 'miguaturret' || e.type === 'miguaarmorturtle'
+      ? `rgba(255,226,106,${0.32 + pulse * 0.16})`
+      : `rgba(186,255,118,${0.30 + pulse * 0.14})`;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.ellipse(0, bob + size * 0.1, size * 0.36, size * 0.17, Math.sin(time + e.techSeed) * 0.12, 0, TAU);
+    ctx.stroke();
+    const dots = perfLevel >= 2 ? 2 : 4;
+    for (let i = 0; i < dots; i++) {
+      const a = time * (0.9 + i * 0.1) + e.techSeed + i * TAU / dots;
+      const x = Math.cos(a) * size * 0.38;
+      const y = bob + Math.sin(a) * size * 0.18;
+      ctx.fillStyle = i % 2 ? 'rgba(255,164,210,.48)' : 'rgba(190,255,118,.48)';
+      ctx.beginPath();
+      ctx.arc(x, y, 2 + pulse * 1.2, 0, TAU);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
   function drawEnemies() {
     for (const e of enemies) {
       ctx.save();
@@ -18197,6 +19574,7 @@
       glow.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, bob, e.r * 3.0, 0, TAU); ctx.fill();
       if (isSuiyiTechMobType(e.type)) drawSuiyiTechEnemyAura(e, bob, size, hpRate);
+      if (isMiguaMobType(e.type)) drawMiguaEnemyAura(e, bob, size, hpRate);
 
       // —— 开火预警（telegraph）：临近开火时显示收缩蓄力环，让玩家预判 ——
       if (e.fireTimer > 0 && e.fireTimer < 0.5 && e.y > 40 && e.y < H * 0.65) {
@@ -18239,6 +19617,7 @@
   function drawBoss() {
     if (!boss) return;
     if (boss.kind === 'suiyi') { drawSuiyiBoss(); return; }
+    if (boss.kind === 'migua') { drawMiguaBoss(); return; }
     ctx.save();
     ctx.translate(boss.x, boss.y);
     const a = boss.dead ? Math.max(0, 1 - stateTimer * 0.7) : 1;
@@ -20069,6 +21448,278 @@
     return spr;
   }
 
+  function miguaSeedBoundaryPath(long, wide) {
+    ctx.beginPath();
+    ctx.moveTo(0, -long);
+    ctx.bezierCurveTo(wide * 1.05, -long * 0.52, wide * 0.9, long * 0.5, 0, long);
+    ctx.bezierCurveTo(-wide * 0.9, long * 0.5, -wide * 1.05, -long * 0.52, 0, -long);
+    ctx.closePath();
+  }
+
+  function drawMiguaReadableSeedBoundary(type, r, pulse) {
+    const long = r * (type.includes('heavy') ? 2.18 : type === 'seed_fragment' ? 1.42 : 1.8) * pulse;
+    const wide = r * (type.includes('heavy') ? 0.84 : type === 'seed_fragment' ? 0.54 : 0.68) * pulse;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(5,30,14,.92)';
+    ctx.lineWidth = Math.max(1.9, r * 0.22);
+    miguaSeedBoundaryPath(long, wide);
+    ctx.stroke();
+    ctx.strokeStyle = type.includes('gold') ? 'rgba(255,246,150,.88)' : 'rgba(208,255,130,.88)';
+    ctx.lineWidth = Math.max(1.0, r * 0.11);
+    miguaSeedBoundaryPath(long * 0.88, wide * 0.86);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,232,.66)';
+    ctx.lineWidth = Math.max(0.8, r * 0.07);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * 0.78, r * 0.50, 0, 0, TAU);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawMiguaRoundDamageBoundary(r, pulse, edgeStyle = 'bubble') {
+    const outer = edgeStyle === 'sun' ? r * 1.18 : r * 1.08;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = 'rgba(14,70,34,.74)';
+    ctx.lineWidth = Math.max(1.4, r * 0.09);
+    ctx.beginPath();
+    ctx.arc(0, 0, outer * pulse, 0, TAU);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,222,.78)';
+    ctx.lineWidth = Math.max(0.8, r * 0.055);
+    ctx.beginPath();
+    ctx.arc(0, 0, Math.max(2, r * 0.86) * pulse, 0, TAU);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawMiguaEnemyBullet(b) {
+    const type = b.miguaType || 'seed_black_small';
+    const r = b.r || 7;
+    const col = parseColor(b.color || '#baff78');
+    const isSeed = type.includes('seed');
+    const isJuice = type.includes('juice');
+    const isBubble = type.includes('bubble');
+    const isSlice = type.includes('slice') || type === 'bitten_melon';
+    const isSun = type === 'melon_sun';
+    if (b.hist && b.hist.length > 1 && b.miguaTrail) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineCap = 'round';
+      if (isSlice) {
+        ctx.beginPath();
+        for (let i = 0; i < Math.min(7, b.hist.length); i++) {
+          const p = b.hist[i];
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else {
+            const wob = Math.sin(i * 1.7 + time * 4) * r * 0.35;
+            ctx.quadraticCurveTo((p.x + b.x) * 0.5 + wob, (p.y + b.y) * 0.5 - wob, p.x, p.y);
+          }
+        }
+        ctx.strokeStyle = 'rgba(255,148,202,0.24)';
+        ctx.lineWidth = Math.max(3, r * 0.75);
+        ctx.stroke();
+      } else {
+        for (let i = 0; i < b.hist.length; i += 2) {
+          const p = b.hist[i];
+          const fade = (1 - i / Math.max(1, b.hist.length));
+          const a = fade * (isSeed ? 0.32 : isJuice ? 0.28 : 0.18);
+          ctx.fillStyle = isJuice ? `rgba(255,216,102,${a})` : isBubble ? `rgba(166,255,207,${a})` : type.includes('gold') ? `rgba(255,226,106,${a})` : `rgba(186,255,118,${a})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(1.4, r * (isSeed ? 0.22 : isJuice ? 0.32 : 0.28) * fade), 0, TAU);
+          ctx.fill();
+          if (isJuice && i < 6) {
+            ctx.fillStyle = `rgba(255,226,106,${a * 0.62})`;
+            ctx.beginPath();
+            ctx.arc(p.x + Math.sin(i + time) * r * 0.5, p.y + Math.cos(i) * r * 0.3, Math.max(1, r * 0.14 * fade), 0, TAU);
+            ctx.fill();
+          }
+        }
+      }
+      ctx.restore();
+    }
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    const angle = Math.atan2(b.vy, b.vx);
+    if (isSlice || isSeed || type === 'seed_fragment') ctx.rotate(angle + Math.PI / 2);
+    else ctx.rotate(b.rot || 0);
+    ctx.globalCompositeOperation = 'lighter';
+    const pulse = 0.9 + Math.sin((b.miguaAge || 0) * (isBubble ? 6 : 3) + b.miguaPhase) * (isBubble ? 0.12 : 0.04);
+    const glowR = isSun ? r * 3.1 : isBubble ? r * 2.8 : isJuice ? r * 2.4 : isSlice ? r * 2.2 : r * 1.75;
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, glowR);
+    g.addColorStop(0, `rgba(${col.r},${col.g},${col.b},${isJuice ? 0.34 : isSun ? 0.28 : 0.34})`);
+    g.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(0, 0, glowR, 0, TAU);
+    ctx.fill();
+    const sprite = b.miguaSprite;
+    if (sprite && assetReady(sprite)) {
+      const img = assets[sprite];
+      const h = (isSun ? r * 4.8 : isJuice ? r * (type.includes('large') ? 4.4 : 3.4) : isSlice ? r * 4.2 : type.includes('heavy') ? r * 3.35 : isBubble ? r * (type.includes('large') ? 3.1 : type.includes('medium') ? 2.85 : 2.55) : r * 2.85) * pulse;
+      const w = h * (img.width / img.height) * (isSeed ? 0.82 : 1);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.shadowColor = isSeed || type === 'seed_fragment' ? 'rgba(170,255,120,.42)' : isJuice ? 'rgba(255,234,130,.34)' : 'rgba(230,255,168,.28)';
+      ctx.shadowBlur = isSun ? r * 0.54 : isBubble ? r * 0.24 : isJuice ? r * 0.22 : r * 0.28;
+      if (isSeed || type === 'seed_fragment') {
+        ctx.globalAlpha = 0.22;
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.globalAlpha = 1;
+        const long = r * (type.includes('heavy') ? 2.1 : type === 'seed_fragment' ? 1.35 : 1.72) * pulse;
+        const wide = r * (type.includes('heavy') ? 0.78 : type === 'seed_fragment' ? 0.48 : 0.62) * pulse;
+        ctx.fillStyle = type.includes('gold') ? 'rgba(116,94,30,.88)' : 'rgba(42,94,48,.88)';
+        ctx.beginPath();
+        ctx.moveTo(0, -long);
+        ctx.bezierCurveTo(wide * 1.04, -long * 0.52, wide * 0.86, long * 0.48, 0, long);
+        ctx.bezierCurveTo(-wide * 0.86, long * 0.48, -wide * 1.04, -long * 0.52, 0, -long);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = type.includes('gold') ? 'rgba(255,228,102,.96)' : 'rgba(205,255,112,.94)';
+        ctx.beginPath();
+        ctx.moveTo(0, -long * 0.78);
+        ctx.bezierCurveTo(wide * 0.62, -long * 0.34, wide * 0.52, long * 0.36, 0, long * 0.72);
+        ctx.bezierCurveTo(-wide * 0.52, long * 0.36, -wide * 0.62, -long * 0.34, 0, -long * 0.78);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,196,.62)';
+        ctx.lineWidth = Math.max(0.9, r * 0.08);
+        ctx.beginPath();
+        ctx.moveTo(wide * 0.14, -long * 0.48);
+        ctx.quadraticCurveTo(wide * 0.36, -long * 0.08, wide * 0.08, long * 0.42);
+        ctx.stroke();
+      } else if (isJuice) {
+        ctx.globalAlpha = 0.20;
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = 'rgba(255,225,96,.88)';
+        ctx.strokeStyle = 'rgba(116,168,68,.64)';
+        ctx.lineWidth = Math.max(1, r * 0.08);
+        ctx.beginPath();
+        ctx.ellipse(0, r * 0.04, r * 1.06, r * 0.70, -0.08, 0, TAU);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(186,255,118,.60)';
+        for (let k = 0; k < 5; k++) {
+          const da = k * TAU / 5 + (b.miguaPhase || 0);
+          const dx = Math.cos(da) * r * (0.58 + (k % 2) * 0.32);
+          const dy = Math.sin(da) * r * (0.42 + (k % 3) * 0.12);
+          ctx.beginPath();
+          ctx.ellipse(dx, dy, r * 0.22, r * 0.14, da, 0, TAU);
+          ctx.fill();
+        }
+        ctx.fillStyle = 'rgba(255,255,218,.78)';
+        ctx.beginPath();
+        ctx.arc(-r * 0.26, -r * 0.22, r * 0.22, 0, TAU);
+        ctx.fill();
+      } else {
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+      }
+      ctx.shadowBlur = 0;
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = isSeed || type === 'seed_fragment' ? 0.10 : isJuice ? 0.16 : isSun ? 0.24 : 0.18;
+      ctx.drawImage(img, -w * 0.56, -h * 0.56, w * 1.12, h * 1.12);
+      ctx.globalAlpha = 1;
+    } else if (type === 'melon_bubble') {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(166,255,207,.42)';
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 1.25, 0, TAU);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.8)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = `rgb(${col.r},${col.g},${col.b})`;
+      ctx.beginPath();
+      ctx.moveTo(0, -r * 1.65);
+      ctx.lineTo(r * 0.78, r * 0.9);
+      ctx.lineTo(0, r * 1.25);
+      ctx.lineTo(-r * 0.78, r * 0.9);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    const miguaEdge = isBubble || isSun ? 'rgba(244,255,184,.50)'
+      : isJuice ? 'rgba(255,236,138,.54)'
+      : isSlice ? 'rgba(255,242,186,.42)'
+      : type.includes('gold') ? 'rgba(124,104,32,.70)'
+      : 'rgba(48,118,56,.72)';
+    ctx.strokeStyle = miguaEdge;
+    ctx.lineWidth = type.includes('heavy') ? 1.8 : 1.25;
+    if (isBubble || isSun) {
+      const edgeR = r * (isSun ? 1.70 : 1.18) * pulse;
+      ctx.beginPath();
+      ctx.arc(0, 0, edgeR, -0.10 * Math.PI, 0.22 * Math.PI);
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(255,255,220,.42)';
+      ctx.lineWidth = Math.max(0.8, r * 0.08);
+      ctx.beginPath();
+      ctx.arc(0, 0, edgeR * 0.82, -0.08 * Math.PI, 0.18 * Math.PI);
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(255,255,255,.82)';
+      ctx.beginPath(); ctx.arc(-r * 0.36, -r * 0.42, r * (isSun ? 0.2 : 0.28), 0, TAU); ctx.fill();
+      drawMiguaRoundDamageBoundary(r, pulse, isSun ? 'sun' : 'bubble');
+    } else if (isSlice) {
+      ctx.strokeStyle = 'rgba(44,86,38,.74)';
+      ctx.lineWidth = Math.max(1.5, r * 0.12);
+      ctx.beginPath();
+      ctx.moveTo(-r * 1.72, r * 0.22);
+      ctx.quadraticCurveTo(0, -r * 1.05, r * 1.78, r * 0.18);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,222,.64)';
+      ctx.lineWidth = Math.max(0.8, r * 0.06);
+      ctx.beginPath();
+      ctx.moveTo(-r * 1.55, r * 0.18);
+      ctx.quadraticCurveTo(0, -r * 0.95, r * 1.62, r * 0.12);
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(255,225,232,.30)';
+      ctx.beginPath();
+      ctx.moveTo(-r * 1.25, -r * 0.08);
+      ctx.quadraticCurveTo(0, -r * 0.62, r * 1.24, -r * 0.08);
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(255,255,255,.78)';
+      ctx.beginPath(); ctx.arc(r * 0.26, -r * 0.18, r * 0.32, 0, TAU); ctx.fill();
+    } else if (isJuice) {
+      ctx.strokeStyle = 'rgba(74,112,34,.76)';
+      ctx.lineWidth = Math.max(1.4, r * 0.12);
+      ctx.beginPath();
+      ctx.ellipse(0, r * 0.02, r * 1.08, r * 0.74, -0.08, 0, TAU);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,218,.72)';
+      ctx.lineWidth = Math.max(0.8, r * 0.06);
+      ctx.beginPath();
+      ctx.moveTo(-r * 1.05, -r * 0.28);
+      ctx.quadraticCurveTo(-r * 0.25, -r * 1.0, r * 0.74, -r * 0.42);
+      ctx.quadraticCurveTo(r * 1.25, 0, r * 0.46, r * 0.82);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,246,192,.82)';
+      ctx.beginPath(); ctx.arc(-r * 0.18, -r * 0.22, r * 0.24, 0, TAU); ctx.fill();
+    } else {
+      if (isSeed || type === 'seed_fragment') {
+        drawMiguaReadableSeedBoundary(type, r, pulse);
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(0, -r * 1.68);
+        ctx.lineTo(r * 0.82, r * 0.88);
+        ctx.lineTo(0, r * 1.28);
+        ctx.lineTo(-r * 0.82, r * 0.88);
+        ctx.closePath();
+        ctx.stroke();
+      }
+      ctx.fillStyle = 'rgba(255,255,255,.82)';
+      ctx.beginPath(); ctx.arc(0, -r * 0.42, r * 0.33, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   function drawEnemyBullets() {
     ctx.save();
     const budget = perfBudget();
@@ -20079,6 +21730,10 @@
 	        drawSuiyiEnemyBullet(b);
 	        drawHostileBulletRimOverlay(b, b.suiyiType === 'error_window' ? 1.24 : 1.04, (b.suiyiAlpha ?? 1) * 0.88);
 	        continue;
+      }
+      if (b.migua) {
+        drawMiguaEnemyBullet(b);
+        continue;
       }
 	      if (b.suiyiTech) drawSuiyiTechBulletTrail(b);
 	      drawHostileBulletRedEdge(b, b.suiyiTech ? 1.92 : (DIRECTIONAL_BULLETS.has(b.kind) ? 1.66 : 1.48), b.suiyiTech ? 0.86 : (drawExtraGlow ? 0.74 : 0.58));
@@ -20556,30 +22211,330 @@
     ctx.fillStyle = fill; roundRect(x, y, w * clamp(rate, 0, 1), h, h / 2); ctx.fill();
   }
 
+  let miguaBossBarOffscreen = null;
+
+  function getMiguaHpState(rate) {
+    if (rate <= (MIGUA_BOSS_BAR_SPEC.criticalAt || 0.1)) return 'critical';
+    if (rate <= (MIGUA_BOSS_BAR_SPEC.lowHpCrackAt || 0.3)) return 'low';
+    if (rate <= 0.6) return 'mid';
+    return 'normal';
+  }
+
+  function getMiguaPhaseBarStyle(phase) {
+    if (phase >= 3) return { glossSpeed: 190, pulse: 0.45, bubbles: true, seedGlow: true, danger: true };
+    if (phase >= 2) return { glossSpeed: 150, pulse: 0.28, bubbles: true, seedGlow: true, danger: false };
+    if (phase >= 1) return { glossSpeed: 120, pulse: 0.2, bubbles: true, seedGlow: false, danger: false };
+    return { glossSpeed: 80, pulse: 0.1, bubbles: false, seedGlow: false, danger: false };
+  }
+
+  function miguaBossBarLayoutForRate(rate = 1, viewport = {}) {
+    const vw = viewport.width || viewport.w || W;
+    const safeTop = MIGUA_BOSS_BAR_SPEC.safeTop || 18;
+    const frameW = Math.min(Math.max(360, vw - 118), MIGUA_BOSS_BAR_SPEC.frameMaxWidth || 560);
+    const frameH = frameW * (MIGUA_BOSS_BAR_SPEC.frameAspect || (97 / 860));
+    const scale = frameW / (MIGUA_BOSS_BAR_SPEC.frameMaxWidth || 560);
+    const portraitSize = (MIGUA_BOSS_BAR_SPEC.portraitSize || 82) * scale;
+    const rootW = Math.min(vw - 22, frameW + portraitSize * 0.72);
+    const rootX = vw / 2 - rootW / 2;
+    const frameX = rootX + portraitSize * 0.55;
+    const frameY = safeTop + 42 * scale;
+    const frame = { x: frameX, y: frameY, w: frameW, h: frameH };
+    const inset = MIGUA_BOSS_BAR_SPEC.fillInset || { x: 44, y: 23, w: 770, h: 43 };
+    const source = MIGUA_BOSS_BAR_SPEC.fillSourceSize || { w: 860, h: 97 };
+    const fill = {
+      x: frame.x + frame.w * inset.x / source.w,
+      y: frame.y + frame.h * inset.y / source.h,
+      w: frame.w * inset.w / source.w,
+      h: frame.h * inset.h / source.h,
+    };
+    const nameplateW = Math.min(frameW * 0.58, 330 * scale);
+    const nameplateH = nameplateW * 0.18;
+    const portrait = {
+      x: rootX - 2 * scale,
+      y: safeTop + 22 * scale,
+      w: portraitSize,
+      h: portraitSize,
+    };
+    const nameplate = {
+      x: frameX + frameW * 0.34,
+      y: safeTop + 8 * scale,
+      w: nameplateW,
+      h: nameplateH,
+    };
+    const clamped = clamp(rate, 0, 1);
+    const dangerW = 132 * scale;
+    return {
+      rate: clamped,
+      frame,
+      fill: { ...fill, liveW: fill.w * clamped, lostX: fill.x + fill.w * clamped, lostW: fill.w * (1 - clamped) },
+      portrait,
+      nameplate,
+      danger: { x: Math.min(frame.x + frame.w - dangerW - 6 * scale, vw - dangerW - 16 * scale), y: frame.y + frame.h + 4 * scale, w: dangerW, h: dangerW * 0.28 },
+      name: { x: nameplate.x + nameplate.w / 2, y: nameplate.y + nameplate.h * 0.61 },
+      info: { x: frame.x + frame.w * 0.52, y: frame.y + frame.h + 17 * scale },
+      hpText: { x: frame.x + frame.w - 24 * scale, y: frame.y + frame.h * 0.62 },
+      scale,
+      safeTop,
+      renderOrder: [...MIGUA_BOSS_BAR_SPEC.renderOrder],
+    };
+  }
+
+  function getMiguaBossBarOffscreen(w, h) {
+    const iw = Math.max(1, Math.ceil(w));
+    const ih = Math.max(1, Math.ceil(h));
+    if (!miguaBossBarOffscreen) {
+      miguaBossBarOffscreen = document.createElement('canvas');
+    }
+    if (miguaBossBarOffscreen.width !== iw || miguaBossBarOffscreen.height !== ih) {
+      miguaBossBarOffscreen.width = iw;
+      miguaBossBarOffscreen.height = ih;
+    }
+    const offCtx = miguaBossBarOffscreen.getContext('2d');
+    offCtx.clearRect(0, 0, iw, ih);
+    return { canvas: miguaBossBarOffscreen, ctx: offCtx, w: iw, h: ih };
+  }
+
+  function drawMiguaLayerWithMask(key, layout, visibleRate = 1, alpha = 1, drawFn = null) {
+    if (!assetReady(key) || visibleRate <= 0 || alpha <= 0) return false;
+    const { fill } = layout;
+    const off = getMiguaBossBarOffscreen(fill.w, fill.h);
+    const octx = off.ctx;
+    octx.save();
+    octx.beginPath();
+    octx.rect(0, 0, off.w * clamp(visibleRate, 0, 1), off.h);
+    octx.clip();
+    octx.globalAlpha = alpha;
+    if (drawFn) {
+      drawFn(octx, off.w, off.h);
+    } else {
+      octx.drawImage(assets[key], 0, 0, off.w, off.h);
+    }
+    octx.restore();
+    if (assetReady('miguaBarMask')) {
+      octx.globalCompositeOperation = MIGUA_BOSS_BAR_SPEC.maskComposite || 'destination-in';
+      octx.drawImage(assets.miguaBarMask, 0, 0, off.w, off.h);
+      octx.globalCompositeOperation = 'source-over';
+    }
+    ctx.drawImage(off.canvas, fill.x, fill.y, fill.w, fill.h);
+    return true;
+  }
+
+  function drawMiguaBarGloss(layout, style) {
+    if (!assetReady('miguaBarGloss') || layout.rate <= 0) return false;
+    const speed = style.glossSpeed || 90;
+    return drawMiguaLayerWithMask('miguaBarGloss', layout, layout.rate, 0.38, (octx, w, h) => {
+      const glossW = Math.max(90, w * 0.25);
+      const offset = (time * speed) % (w + glossW);
+      const x = -glossW + offset;
+      octx.globalCompositeOperation = 'lighter';
+      octx.drawImage(assets.miguaBarGloss, x, 0, glossW, h);
+      octx.drawImage(assets.miguaBarGloss, x - w * 0.55, 0, glossW, h);
+      octx.globalCompositeOperation = 'source-over';
+    });
+  }
+
+  function drawMiguaBarBubbles(layout, style) {
+    if (!style.bubbles || layout.rate <= 0) return;
+    const { fill, scale } = layout;
+    ctx.save();
+    roundRect(fill.x, fill.y, fill.w * layout.rate, fill.h, fill.h / 2);
+    ctx.clip();
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 9; i++) {
+      const drift = (time * (24 + i * 3) + i * 53) % Math.max(1, fill.w * layout.rate);
+      const x = fill.x + drift;
+      const y = fill.y + fill.h * (0.26 + 0.52 * ((i * 37) % 100) / 100);
+      const r = (1.5 + (i % 3) * 0.8) * scale;
+      ctx.fillStyle = `rgba(255,255,210,${0.12 + 0.04 * (i % 2)})`;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawMiguaBarLowHpPulse(layout, style, hpState) {
+    const { frame, scale } = layout;
+    const pulse = 0.42 + Math.sin(time * (hpState === 'critical' ? 12 : 8)) * 0.24;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = (style.pulse || 0.2) + pulse * (hpState === 'critical' ? 0.42 : 0.18);
+    ctx.strokeStyle = hpState === 'critical' ? 'rgba(255,64,114,.95)' : 'rgba(255,130,172,.72)';
+    ctx.shadowColor = hpState === 'critical' ? 'rgba(255,50,105,1)' : 'rgba(255,160,120,.9)';
+    ctx.shadowBlur = 16 * scale;
+    ctx.lineWidth = 3 * scale;
+    roundRect(frame.x + 2 * scale, frame.y + 1 * scale, frame.w - 4 * scale, frame.h - 2 * scale, frame.h * 0.48); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawMiguaBossBarText(layout, phase, hpState) {
+    const { nameplate, scale } = layout;
+    ctx.save();
+    const hasNameplateSprite = assetReady('miguaBarNameplate');
+    if (hasNameplateSprite) {
+      ctx.globalAlpha = 0.96;
+      ctx.drawImage(assets.miguaBarNameplate, nameplate.x, nameplate.y, nameplate.w, nameplate.h);
+    }
+    ctx.textAlign = 'center';
+    if (!hasNameplateSprite) {
+      ctx.font = `bold ${Math.max(12, 15 * scale)}px PingFang SC, Microsoft YaHei, sans-serif`;
+      ctx.lineWidth = 3 * scale;
+      ctx.strokeStyle = 'rgba(36,20,8,.7)';
+      ctx.fillStyle = hpState === 'critical' ? '#ffe1ee' : '#fff8ce';
+      ctx.strokeText('蜜瓜号 · MIGUA-X', layout.name.x, layout.name.y);
+      ctx.fillText('蜜瓜号 · MIGUA-X', layout.name.x, layout.name.y);
+    }
+    ctx.font = `bold ${Math.max(10, 11 * scale)}px PingFang SC, Microsoft YaHei, sans-serif`;
+    const phaseLabel = phase >= 3 ? 'Final · 甜味爆裂' : `Phase ${phase + 1}/4 · ${MIGUA_PHASE_NAMES[Math.min(phase, 3)]}`;
+    ctx.strokeStyle = 'rgba(0,0,0,.62)';
+    ctx.lineWidth = 2.4 * scale;
+    ctx.strokeText(`${phaseLabel}   轮回 ${loopCount + 1}`, layout.info.x, layout.info.y);
+    ctx.fillStyle = hpState === 'critical' ? '#ffd2e6' : (hpState === 'mid' ? '#fff1a5' : '#dfffb3');
+    ctx.fillText(`${phaseLabel}   轮回 ${loopCount + 1}`, layout.info.x, layout.info.y);
+    ctx.textAlign = 'right';
+    ctx.font = `bold ${Math.max(10, 12 * scale)}px PingFang SC, Microsoft YaHei, sans-serif`;
+    ctx.fillStyle = '#fff7bc';
+    ctx.strokeStyle = 'rgba(56,23,16,.7)';
+    const hpPct = `${Math.ceil(layout.rate * 100)}%`;
+    ctx.strokeText(hpPct, layout.hpText.x, layout.hpText.y);
+    ctx.fillText(hpPct, layout.hpText.x, layout.hpText.y);
+    ctx.restore();
+  }
+
+  function drawMiguaBarPortrait(layout) {
+    if (!assetReady('miguaBossIdle')) return false;
+    const img = assets.miguaBossIdle;
+    const { portrait, scale } = layout;
+    const cx = portrait.x + portrait.w * 0.52;
+    const cy = portrait.y + portrait.h * 0.50;
+    const radius = portrait.w * 0.31;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, TAU);
+    ctx.clip();
+    const sx = img.width * 0.22;
+    const sy = img.height * 0.03;
+    const sw = img.width * 0.56;
+    const sh = img.height * 0.52;
+    const dw = radius * 2.36;
+    const dh = radius * 2.06;
+    ctx.fillStyle = 'rgba(255,244,198,.30)';
+    ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+    ctx.drawImage(img, sx, sy, sw, sh, cx - dw / 2, cy - dh * 0.44, dw, dh);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = 'rgba(202,255,128,.9)';
+    ctx.beginPath(); ctx.arc(cx - 3 * scale, cy - 2 * scale, radius * 0.88, 0, TAU); ctx.fill();
+    ctx.restore();
+    return true;
+  }
+
+  function drawMiguaBossBar() {
+    if (!boss || boss.kind !== 'migua') return;
+    const rate = clamp(boss.hp / boss.maxHp, 0, 1);
+    const phase = Math.max(0, bossPhase);
+    const hpState = getMiguaHpState(rate);
+    const style = getMiguaPhaseBarStyle(phase);
+    const layout = miguaBossBarLayoutForRate(rate);
+    const { frame, fill, scale, portrait, danger } = layout;
+    const shake = hpState === 'critical'
+      ? { x: Math.sin(time * 42) * 2.2 * scale, y: Math.cos(time * 37) * 1.6 * scale }
+      : { x: 0, y: 0 };
+    ctx.save();
+    ctx.translate(shake.x, shake.y);
+    ctx.textAlign = 'center';
+
+    if (assetReady('miguaBarEmpty')) {
+      ctx.drawImage(assets.miguaBarEmpty, fill.x, fill.y, fill.w, fill.h);
+    } else {
+      ctx.fillStyle = 'rgba(20,25,14,.86)';
+      roundRect(fill.x, fill.y, fill.w, fill.h, fill.h / 2); ctx.fill();
+    }
+
+    const fillKey = hpState === 'normal'
+      ? 'miguaBarFillGreen'
+      : (hpState === 'mid' ? 'miguaBarFillYellow' : 'miguaBarFillRed');
+    drawMiguaLayerWithMask(fillKey, layout, rate, 1);
+    if (phase >= 3 && hpState !== 'critical') {
+      drawMiguaLayerWithMask('miguaBarFillRed', layout, rate, 0.22 + Math.sin(time * 6) * 0.06);
+    }
+    drawMiguaBarBubbles(layout, style);
+    drawMiguaBarGloss(layout, style);
+
+    if (assetReady('miguaBarSeedTicks')) {
+      ctx.save();
+      ctx.globalAlpha = style.seedGlow ? 0.92 : 0.72;
+      ctx.globalCompositeOperation = style.seedGlow ? 'lighter' : 'source-over';
+      ctx.drawImage(assets.miguaBarSeedTicks, fill.x, fill.y, fill.w, fill.h);
+      ctx.restore();
+    }
+
+    if (hpState === 'low' || hpState === 'critical' || phase >= 3) {
+      drawMiguaLayerWithMask('miguaBarCrack', layout, 1, hpState === 'critical' ? 0.95 : 0.58);
+      drawMiguaBarLowHpPulse(layout, style, hpState);
+    }
+    if ((boss.miguaBarPulse || 0) > 0) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = boss.miguaBarPulse * 0.58;
+      ctx.strokeStyle = phase >= 3 ? '#ff8ecb' : '#dfff74';
+      ctx.lineWidth = 5 * scale;
+      roundRect(frame.x + 2 * scale, frame.y, frame.w - 4 * scale, frame.h, frame.h / 2); ctx.stroke();
+      ctx.restore();
+    }
+    if ((hpState === 'critical' || style.danger) && assetReady('miguaBarPulse')) {
+      drawMiguaLayerWithMask('miguaBarPulse', layout, 1, 0.45 + Math.sin(time * 10) * 0.16);
+    }
+
+    if (assetReady('miguaBarFrame')) {
+      ctx.drawImage(assets.miguaBarFrame, frame.x, frame.y, frame.w, frame.h);
+    } else {
+      ctx.strokeStyle = 'rgba(191,255,118,.70)';
+      ctx.lineWidth = 2 * scale;
+      roundRect(frame.x, frame.y, frame.w, frame.h, frame.h / 2); ctx.stroke();
+    }
+
+    drawMiguaBarPortrait(layout);
+    if (assetReady('miguaBarPortraitFrame')) {
+      ctx.drawImage(assets.miguaBarPortraitFrame, portrait.x, portrait.y, portrait.w, portrait.h);
+    }
+    drawMiguaBossBarText(layout, phase, hpState);
+    if ((hpState === 'critical' || style.danger) && assetReady('miguaBarDanger')) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.78 + Math.sin(time * 11) * 0.16;
+      ctx.drawImage(assets.miguaBarDanger, danger.x, danger.y, danger.w, danger.h);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
   function drawUI() {
     ctx.save();
     // Top boss bar
     if (state === 'boss' && boss) {
-      // 极简 Boss 顶栏：贴顶、半透明磨砂条 + 血条，不再用黑色大框遮挡视野
-      ctx.textAlign = 'center';
-      const bw = 420, bx = W / 2 - bw / 2, by = 8, bh = 40;
-      const g = ctx.createLinearGradient(0, by, 0, by + bh);
-      g.addColorStop(0, 'rgba(28,18,34,0.42)'); g.addColorStop(1, 'rgba(28,18,34,0.12)');
-      ctx.fillStyle = g; roundRect(bx, by, bw, bh, 14); ctx.fill();
-      ctx.strokeStyle = 'rgba(255,150,190,0.30)'; ctx.lineWidth = 1; ctx.stroke();
-      // Boss 名（描边）
-      ctx.font = 'bold 17px PingFang SC, Microsoft YaHei, sans-serif';
-      ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)';
-      ctx.strokeText(boss.name, W / 2, by + 18);
-      ctx.fillStyle = '#ffe2ec'; ctx.fillText(boss.name, W / 2, by + 18);
-      // 血条
-      drawBar(bx + 24, by + 26, bw - 48, 9, boss.hp / boss.maxHp, '#ff4d7f', 'rgba(255,255,255,.14)');
-      const phTotal = boss.kind === 'suiyi' ? 6 : (boss.kind === 'midboss' ? 3 : 5);
-      ctx.font = '11px PingFang SC, Microsoft YaHei, sans-serif';
-      ctx.lineWidth = 2.2; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-      const binfo = `Phase ${Math.min(bossPhase + 1, phTotal)}/${phTotal}   轮回 ${loopCount + 1}`;
-      ctx.strokeText(binfo, W / 2, by + bh + 12);
-      ctx.fillStyle = '#ffc7d8'; ctx.fillText(binfo, W / 2, by + bh + 12);
+      if (boss.kind === 'migua') {
+        drawMiguaBossBar();
+      } else {
+        // 极简 Boss 顶栏：贴顶、半透明磨砂条 + 血条，不再用黑色大框遮挡视野
+        ctx.textAlign = 'center';
+        const bw = 420, bx = W / 2 - bw / 2, by = 8, bh = 40;
+        const g = ctx.createLinearGradient(0, by, 0, by + bh);
+        g.addColorStop(0, 'rgba(28,18,34,0.42)'); g.addColorStop(1, 'rgba(28,18,34,0.12)');
+        ctx.fillStyle = g; roundRect(bx, by, bw, bh, 14); ctx.fill();
+        ctx.strokeStyle = 'rgba(255,150,190,0.30)'; ctx.lineWidth = 1; ctx.stroke();
+        // Boss 名（描边）
+        ctx.font = 'bold 17px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+        ctx.strokeText(boss.name, W / 2, by + 18);
+        ctx.fillStyle = '#ffe2ec'; ctx.fillText(boss.name, W / 2, by + 18);
+        // 血条
+        drawBar(bx + 24, by + 26, bw - 48, 9, boss.hp / boss.maxHp, '#ff4d7f', 'rgba(255,255,255,.14)');
+        const phTotal = boss.kind === 'suiyi' ? 6 : (boss.kind === 'midboss' ? 3 : 5);
+        ctx.font = '11px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.lineWidth = 2.2; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+        const binfo = `Phase ${Math.min(bossPhase + 1, phTotal)}/${phTotal}   轮回 ${loopCount + 1}`;
+        ctx.strokeText(binfo, W / 2, by + bh + 12);
+        ctx.fillStyle = '#ffc7d8'; ctx.fillText(binfo, W / 2, by + bh + 12);
+      }
     } else if (state === 'mobs') {
       const actName = stageActLabel();
       const waveLabel = formatMobWaveStatus().text;
@@ -21267,11 +23222,14 @@
   }
 
   function drawLeaderboardTitleActions(cx, y, compact = false) {
-    const bw = compact ? 176 : 158;
+    const bw = compact ? 134 : 138;
     const bh = compact ? 44 : 34;
-    const gap = compact ? 14 : 12;
-    drawLeaderboardButton(cx - bw - gap / 2, y, bw, bh, '排行榜', 'open', true);
-    drawLeaderboardButton(cx + gap / 2, y, bw, bh, getPlayerName() ? '昵称头像' : '设置昵称', 'profile', false);
+    const gap = compact ? 10 : 10;
+    const total = bw * 3 + gap * 2;
+    const x0 = cx - total / 2;
+    drawLeaderboardButton(x0, y, bw, bh, '排行榜', 'open', true);
+    drawLeaderboardButton(x0 + bw + gap, y, bw, bh, getPlayerName() ? '昵称头像' : '设置昵称', 'profile', false);
+    drawLeaderboardButton(x0 + (bw + gap) * 2, y, bw, bh, '更新公告', 'updateNotice', false);
   }
 
   function drawLeaderboardBackdrop(alpha = 1) {
@@ -22187,6 +24145,11 @@
   }
 
   window.addEventListener('keydown', (e) => {
+    if (updateNoticeDialogOpen) {
+      if (e.code === 'Escape' || e.code === 'Enter' || e.code === 'Space') hideUpdateNoticeDialog();
+      e.preventDefault();
+      return;
+    }
     if (guestbookDialogOpen) {
       if (e.code === 'Escape') hideGuestbookDialog();
       return;
@@ -22221,6 +24184,7 @@
     if (e.code === 'KeyP') paused = !paused;
     if (e.code === 'KeyR') requestStartGame();
     if (e.code === 'KeyL') { openLeaderboardView(true); e.preventDefault(); }
+    if (e.code === 'KeyU' && state === 'title') { showUpdateNoticeDialog(false); e.preventDefault(); }
     if (e.code === 'KeyG') { if (!hellModeActive) player.energy = player.maxEnergy; }
     if (e.code === 'KeyM') toggleMusic();
     if (e.code === 'KeyF') perfHudEnabled = !perfHudEnabled;
@@ -22363,6 +24327,98 @@
 	      selectTechMapForTest: (previous, seedList) => selectSuiyiRandomMap(previous, seedList),
 	    };
 
+    window.__miguaInternals__ = {
+      assetSpec: () => ({
+        maps: [...MIGUA_MAP_KEYS],
+        boss: ['miguaBossIdle', 'miguaBossPhase1', 'miguaBossPhase2', 'miguaBossPhase3', 'miguaBossFinal', 'miguaBossHit', 'miguaBossDeath'],
+        enemies: ['enMiguaDrone', 'enMiguaSliceSpider', 'enMiguaTurret', 'enMiguaJellyMine', 'enMiguaBeeStinger', 'enMiguaArmorTurtle'],
+        bullets: ['miguaSeedBlackSmall', 'miguaSeedBlackHeavy', 'miguaSeedGoldSmall', 'miguaSeedGoldHeavy', 'miguaSliceArc', 'miguaCrescentSlice', 'miguaBittenMelon', 'miguaJuiceSplashBall', 'miguaJuiceSplashLarge', 'miguaMelonBubble', 'miguaMelonBubbleMedium', 'miguaMelonBubbleLarge', 'miguaRingBurst', 'miguaMelonSun', 'miguaSeedFragment'],
+        vfx: ['miguaHitSplash', 'miguaSeedHalo', 'miguaJuicePuddle', 'miguaPulpBloom', 'miguaWarningRing', 'miguaWarningTriangle', 'miguaJuiceBeamCore', 'miguaJuiceBeamGlow', 'miguaJuiceCloud', 'miguaFruitPulpCloud', 'miguaBossBloom', 'miguaBossFinalBurst'],
+        ui: [
+          'miguaBossBarFrame', 'miguaBossBarDamagedFrame', 'miguaBossBarFillGreen', 'miguaBossBarFillPink',
+          'miguaBossBarSeedMarks', 'miguaBossNameplate', 'miguaBossPhaseWarning',
+          'miguaBarFrame', 'miguaBarEmpty', 'miguaBarFillGreen', 'miguaBarFillYellow', 'miguaBarFillRed',
+          'miguaBarGloss', 'miguaBarSeedTicks', 'miguaBarCrack', 'miguaBarMask', 'miguaBarPulse',
+          'miguaBarPortraitFrame', 'miguaBarNameplate', 'miguaBarDanger',
+        ],
+      }),
+      mapSpec: () => ({
+        maps: [...MIGUA_MAP_KEYS],
+        count: MIGUA_MAP_KEYS.length,
+        theme: STAGE_THEME_MIGUA,
+        allInGlobalPool: MIGUA_MAP_KEYS.every(key => GLOBAL_BACKGROUND_POOL.includes(key)),
+        themeForMaps: Object.fromEntries(MIGUA_MAP_KEYS.map(key => [key, themeForBackgroundKey(key)])),
+        backgroundPool: [...backgroundPoolForTheme(STAGE_THEME_MIGUA)],
+      }),
+      cropSpec: () => JSON.parse(JSON.stringify(MIGUA_CROP_SPEC)),
+      enemySpec: () => MIGUA_MOB_TYPES.map(type => {
+        const def = ENEMY_DEFS[type];
+        return { type, hp: def.hp, tier: def.tier, fire: def.fire, pattern: def.pattern, move: def.move, sprite: def.sprite, size: def.size };
+      }),
+      bulletSpec: () => ({
+        types: [...MIGUA_BULLET_TYPES],
+        sprites: { ...MIGUA_BULLET_SPRITES },
+        patternNames: [...MIGUA_MOB_PATTERNS],
+        behaviors: ['straight', 'wobble', 'curve', 'bubble', 'slow_then_fast', 'melon_throw', 'delayed_ring', 'juice_beam'],
+        fruitStyles: ['short-seed-glints', 'whole-melon-throw-burst', 'splash-droplet-clouds', 'transparent-bubble-pulse', 'crescent-rind-ghosts', 'melon-sun-bloom'],
+        redRim: 'fruit-palette-boundary-no-red-rim',
+        layeredDraw: ['fruit-specific-short-tail', 'sprite-body-shadow-edge', 'fruit-palette-damage-boundary'],
+        clarity: 'dark-fruit-outline-and-light-hit-boundary',
+      }),
+      bossSpec: () => ({
+        kind: 'migua',
+        name: BOSS_DEFS.migua.name,
+        hp: BOSS_DEFS.migua.hp,
+        thresholds: [...MIGUA_PHASE_HP],
+        phases: [...MIGUA_PHASE_NAMES],
+        bossPool: [...MIGUA_BOSS_POOL],
+        normalPoolExcludesMigua: !NORMAL_BOSS_POOL.includes('migua'),
+        techPoolExcludesMigua: !TECH_BOSS_POOL.includes('migua'),
+      }),
+      bossBarSpec: () => ({
+        ...MIGUA_BOSS_BAR_SPEC,
+        phases: [...MIGUA_BOSS_BAR_SPEC.phases],
+        renderOrder: [...MIGUA_BOSS_BAR_SPEC.renderOrder],
+      }),
+      bossBarLayoutForTest: (rate = 1, viewport = { width: 720, height: 1280 }) => miguaBossBarLayoutForRate(rate, viewport),
+      formationSpec: () => ({
+        formations: [...MIGUA_MOB_FORMATIONS],
+        moves: [...MIGUA_MOB_MOVES],
+        stageWaves: MIGUA_STAGE_WAVES.length,
+        earlyPool: eligibleMiguaStagePool(0, 0),
+        latePool: eligibleMiguaStagePool(480, 0),
+      }),
+      themeBindingSpec: () => ({
+        mode: 'migua-map-exclusive-content',
+        miguaMaps: [...MIGUA_MAP_KEYS],
+        miguaStagePool: [...MIGUA_STAGE_POOL],
+        miguaBossPool: [...MIGUA_BOSS_POOL],
+        normalPoolContainsMigua: MIGUA_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_NORMAL).includes(type)),
+        techPoolContainsMigua: MIGUA_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_TECH).includes(type)),
+        miguaPoolContainsOnlyMigua: eligibleStagePool(480, 0, STAGE_THEME_MIGUA).every(type => MIGUA_MOB_TYPES.includes(type)),
+        normalBossPoolContainsMigua: NORMAL_BOSS_POOL.includes('migua'),
+        techBossPoolContainsMigua: TECH_BOSS_POOL.includes('migua'),
+        miguaBossPoolContainsOnlyMigua: MIGUA_BOSS_POOL.length === 1 && MIGUA_BOSS_POOL[0] === 'migua',
+      }),
+      mapFlowSpec: () => ({
+        glyphs: [...MIGUA_MAP_FLOW.glyphs],
+        colors: [...MIGUA_MAP_FLOW.colors],
+        particleCount: { ...MIGUA_MAP_FLOW.particleCount },
+        bossAlpha: MIGUA_MAP_FLOW.bossAlpha,
+        mobAlpha: MIGUA_MAP_FLOW.mobAlpha,
+      }),
+      patternTimelineForTest: (phase) => {
+        const table = {
+          0: ['瓜子连发', '果仁压缩扇形', '整瓜抛投', '蜜瓜泡泡道'],
+          1: ['果汁喷泉', '爆浆溅射', '整瓜爆浆', '瓜籽播种雨'],
+          2: ['瓜瓣回旋切', '军团播种', '整瓜夹击爆裂', '蜜瓜泡泡牢笼'],
+          3: ['爆浆花环', '甜味洪流', '整瓜连投爆裂', '蜜瓜太阳阵'],
+        };
+        return [...(table[phase] || [])];
+      },
+      phaseForHpForTest: miguaPhaseForHpRate,
+    };
+
     window.__leaderboardInternals__ = {
       configSpec: () => ({
         supabaseUrl: SUPABASE_URL,
@@ -22405,8 +24461,9 @@
       uiSpec: () => ({
         ...LEADERBOARD_UI_SPEC,
         guestbook: GUESTBOOK_UI_SPEC,
-        buttons: ['titleOpen', 'titleProfile', 'resultOpen', 'resultRetry', 'resultProfile', 'leaderboardPrev', 'leaderboardNext', 'guestbookCompose'],
-        panels: ['nameAvatarDialog', 'top50LeaderboardPanel', 'guestbookSidePanel', 'guestbookMessageDialog', 'resultUploadStatus'],
+        buttons: ['titleOpen', 'titleProfile', 'titleUpdateNotice', 'resultOpen', 'resultRetry', 'resultProfile', 'leaderboardPrev', 'leaderboardNext', 'guestbookCompose'],
+        panels: ['nameAvatarDialog', 'top50LeaderboardPanel', 'guestbookSidePanel', 'guestbookMessageDialog', 'updateNoticeDialog', 'resultUploadStatus'],
+        updateNotice: { version: UPDATE_NOTICE_VERSION, dates: UPDATE_NOTICE_ENTRIES.map(section => section.date) },
       }),
       hellModeSpec: () => ({
         ...HELL_MODE_SPEC,
@@ -22480,11 +24537,15 @@
         pool: [...GLOBAL_BACKGROUND_POOL],
         fieldBackgrounds: [...FIELD_BACKGROUND_KEYS],
         suiyiMaps: [...SUIYI_MAP_KEYS],
+        miguaMaps: [...MIGUA_MAP_KEYS],
         normalThemeMaps: [...FIELD_BACKGROUND_KEYS],
         techThemeMaps: [...SUIYI_MAP_KEYS],
+        miguaThemeMaps: [...MIGUA_MAP_KEYS],
         selectedAt: ['run_start', 'mob_stage_entry'],
         techThemeOnlySpawnsTechMobsAndSuiyi: true,
+        miguaThemeOnlySpawnsMiguaMobsAndMiguaBoss: true,
         normalThemeExcludesTechMobsAndSuiyi: true,
+        normalThemeExcludesMiguaMobsAndMiguaBoss: true,
         selectForTest: (value, pool = GLOBAL_BACKGROUND_POOL) => selectRandomFromPool(pool, value),
         themeForMapForTest: themeForBackgroundKey,
       }),
@@ -22493,8 +24554,10 @@
         allBosses: [...GLOBAL_BOSS_POOL],
         normalPool: [...NORMAL_BOSS_POOL],
         techPool: [...TECH_BOSS_POOL],
+        miguaPool: [...MIGUA_BOSS_POOL],
         includesFinalbossInNormalPool: NORMAL_BOSS_POOL.includes('finalboss'),
         suiyiExclusiveToTechPool: TECH_BOSS_POOL.includes('suiyi') && !NORMAL_BOSS_POOL.includes('suiyi'),
+        miguaExclusiveToMiguaPool: MIGUA_BOSS_POOL.includes('migua') && !NORMAL_BOSS_POOL.includes('migua') && !TECH_BOSS_POOL.includes('migua'),
         loopsOnlyOnStage10: true,
         bossAssetKeysForTest: (kind) => bossAssetKeys(kind),
       }),
@@ -22511,13 +24574,15 @@
           runPressure: 'clamp(elapsed / 600, 0, 1)',
           extraWaves: 'max(0, floor((elapsed - 50) / 55) + loopCount), capped by quality',
           mobStageWaveTarget: 'normal 14 / tech 16 before quality trim',
-          mobStageMinDuration: 'normal 68s / tech 78s before quality trim',
+          mobStageMinDuration: 'normal 68s / tech 78s / migua 78s before quality trim',
         },
         stageFlow: {
           normalTarget: mobStageWaveTarget(STAGE_THEME_NORMAL, 0, 0),
           techTarget: mobStageWaveTarget(STAGE_THEME_TECH, 0, 0),
+          miguaTarget: mobStageWaveTarget(STAGE_THEME_MIGUA, 0, 0),
           normalMinDuration: mobStageMinDuration(STAGE_THEME_NORMAL, 0, 0),
           techMinDuration: mobStageMinDuration(STAGE_THEME_TECH, 0, 0),
+          miguaMinDuration: mobStageMinDuration(STAGE_THEME_MIGUA, 0, 0),
         },
       }),
       waveUnlockSpec: () => ({
@@ -22536,8 +24601,12 @@
         },
         normalEarlyPool: eligibleStagePool(0, 0, STAGE_THEME_NORMAL),
         normalLatePoolIncludesTech: SUIYI_TECH_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_NORMAL).includes(type)),
+        normalLatePoolIncludesMigua: MIGUA_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_NORMAL).includes(type)),
         techEarlyPool: eligibleStagePool(0, 0, STAGE_THEME_TECH),
         techLatePoolIncludesAllTech: SUIYI_TECH_MOB_TYPES.every(type => eligibleStagePool(480, 0, STAGE_THEME_TECH).includes(type)),
+        techLatePoolIncludesMigua: MIGUA_MOB_TYPES.some(type => eligibleStagePool(480, 0, STAGE_THEME_TECH).includes(type)),
+        miguaEarlyPool: eligibleStagePool(0, 0, STAGE_THEME_MIGUA),
+        miguaLatePoolIncludesAllMigua: MIGUA_MOB_TYPES.every(type => eligibleStagePool(480, 0, STAGE_THEME_MIGUA).includes(type)),
       }),
       waveHudSpec: () => ({
         mode: 'current-wave-plus-remaining-no-slash-denominator',
@@ -22730,6 +24799,10 @@
         screenShake = 0;
         player.x = W * 0.5;
         player.y = H - 170;
+        player.hp = player.maxHp;
+        player.inv = 99;
+        hellModeActive = false;
+        leaderboardEligibleRun = false;
         const sceneMaps = {
           map: 'suiyiMapVirtualCore',
           codebug: 'suiyiMapControlHall',
@@ -22797,6 +24870,144 @@
 	        return { map: suiyiTechMobMapState.current, enemies: enemies.length, bullets: enemyBullets.length, warnings: warnings.length };
 	      },
 	    };
+
+    window.__miguaCapture__ = {
+	      prepare(scene = 'greenhouse_stage') {
+	        window.__miguaCaptureSilentBoss = false;
+	        state = 'mobs';
+        stageTheme = STAGE_THEME_MIGUA;
+        segment = 'stage8';
+        elapsed = 360;
+        stateTimer = 0;
+        boss = null;
+        bossKind = '';
+        enemies.length = 0;
+        enemyBullets.length = 0;
+        warnings.length = 0;
+        lasers.length = 0;
+        miguaHazards.length = 0;
+        miguaFx.length = 0;
+        particles.length = 0;
+        spriteFx.length = 0;
+        message = '';
+        messageTimer = 0;
+        flash = 0;
+        screenShake = 0;
+        perfLevel = Math.min(perfLevel, 1);
+        player.x = W * 0.5;
+        player.y = H - 170;
+        const sceneMaps = {
+          greenhouse_stage: 'miguaMapGreenhouse',
+          factory_mobs: 'miguaMapJuiceFactory',
+          floating_boss: 'miguaMapFloatingCity',
+          mixed_mobs: 'miguaMapGreenhouse',
+	          boss_entry: 'miguaMapFloatingCity',
+	          phase2: 'miguaMapJuiceFactory',
+	          phase3: 'miguaMapGreenhouse',
+	          final: 'miguaMapFloatingCity',
+	          bar_full: 'miguaMapFloatingCity',
+	          bar_60: 'miguaMapFloatingCity',
+	          bar_25: 'miguaMapFloatingCity',
+	          bar_critical: 'miguaMapFloatingCity',
+	          fruit_seed: 'miguaMapGreenhouse',
+	          fruit_juice: 'miguaMapJuiceFactory',
+	          fruit_bubbles: 'miguaMapGreenhouse',
+	          fruit_slices: 'miguaMapGreenhouse',
+	          fruit_sun: 'miguaMapFloatingCity',
+	        };
+        randomBackgroundState.field = sceneMaps[scene] || 'miguaMapGreenhouse';
+        randomBackgroundState.boss = sceneMaps[scene] || 'miguaMapFloatingCity';
+        const spawnMobsForScene = () => {
+          if (scene === 'greenhouse_stage') {
+            spawnFormation('miguaOrchardRow', 'miguadrone', 8);
+            spawnFormation('miguaSlicePincer', 'miguaslicespider', 3);
+          } else if (scene === 'factory_mobs') {
+            spawnFormation('miguaFactoryColumn', 'miguaturret', 3);
+            spawnFormation('miguaSeedRainGrid', 'miguajellymine', 5);
+          } else if (scene === 'mixed_mobs') {
+            spawnFormation('miguaOrchardRow', 'miguadrone', 7);
+            spawnFormation('miguaSlicePincer', 'miguabeestinger', 5);
+            spawnFormation('miguaFactoryColumn', 'miguaturret', 2);
+            spawnEnemy('miguaarmorturtle', W * 0.5, -170);
+          }
+          for (let i = 0; i < enemies.length; i++) {
+            const e = enemies[i];
+            e.y = clamp(enemyHoverY(e) + (i % 3 - 1) * 22, 116, H * 0.55);
+            e.x = clamp(e.homeX || e.x, 70, W - 70);
+            e.homeX = e.x;
+            e.vx = 0;
+            e.vy = 0;
+            e.t = 1.1 + i * 0.09;
+            e.fireTimer = 0.04 + (i % 3) * 0.03;
+          }
+          for (const e of enemies) {
+            if (enemyBullets.length < perfBudget().mobSoftCap * 0.72) {
+              enemyFire(e);
+              e.fireTimer = e.fireBase * 0.8;
+            }
+          }
+        };
+	        const bossScenes = ['boss_entry', 'floating_boss', 'phase2', 'phase3', 'final', 'bar_full', 'bar_60', 'bar_25', 'bar_critical', 'fruit_seed', 'fruit_juice', 'fruit_bubbles', 'fruit_slices', 'fruit_sun'];
+	        if (bossScenes.includes(scene)) {
+	          state = 'boss';
+          stageTheme = STAGE_THEME_MIGUA;
+          bossKind = 'migua';
+          spawnBoss();
+          boss.inv = 0;
+          boss.t = 4;
+	          if (scene === 'phase2' || scene === 'bar_60' || scene === 'fruit_juice') boss.hp = boss.maxHp * 0.60;
+	          else if (scene === 'phase3' || scene === 'bar_25' || scene === 'fruit_bubbles' || scene === 'fruit_slices') boss.hp = boss.maxHp * 0.25;
+	          else if (scene === 'final' || scene === 'bar_critical' || scene === 'fruit_sun') boss.hp = boss.maxHp * 0.08;
+	          else if (scene === 'bar_full') boss.hp = boss.maxHp;
+	          else boss.hp = boss.maxHp * 0.92;
+	          bossPhase = -1;
+	          updateBoss(1 / 60);
+	          if (scene.startsWith('bar_')) {
+	            window.__miguaCaptureSilentBoss = true;
+	            enemyBullets.length = 0;
+	            miguaHazards.length = 0;
+	            miguaFx.length = 0;
+	          } else if (scene === 'phase2' || scene === 'fruit_juice') { miguaJuiceStream(1); miguaSplashBurst(1); miguaThrowMelonBomb(1); }
+	          else if (scene === 'phase3' || scene === 'fruit_slices') { miguaSliceCarousel(2); miguaArmySeeding(2); miguaThrowMelonBomb(2); }
+	          else if (scene === 'fruit_bubbles') { miguaBubbleLane(2); addMiguaHazard('jelly_burst', W * 0.5, H * 0.38, { life: 0.7, r: 96, count: miguaDensity(16, 22), speed: 148, color: '#a6ffcf' }); }
+	          else if (scene === 'final' || scene === 'fruit_sun') { miguaFinalBloom(3); miguaSweetFlood(3); miguaThrowMelonBomb(3); miguaUltimatePulpBurst(3); }
+	          else if (scene === 'fruit_seed') { miguaSeedBarrage(0); miguaCompressedKernelFan(0); miguaThrowMelonBomb(0); addMiguaHazard('seed_ring', boss.x, boss.y + 32, { life: 0.5, r: 104, count: miguaDensity(18, 24), speed: 150, angle: boss.t, color: '#ffe26a' }); }
+	          else { miguaSeedBarrage(0); miguaCompressedKernelFan(0); miguaThrowMelonBomb(0); }
+        } else {
+          spawnMobsForScene();
+        }
+        player.x = -999;
+        player.y = H + 999;
+        player.inv = 999;
+        state = state === 'lose' ? 'mobs' : state;
+        message = '';
+        messageTimer = 0;
+        draw();
+        return { scene, map: bgBaseKey(), enemies: enemies.length, bullets: enemyBullets.length, boss: boss && boss.kind, bossPhase };
+      },
+      step(frames = 54, dt = 1 / 60) {
+        for (let i = 0; i < frames; i++) {
+          player.x = -999;
+          player.y = H + 999;
+          player.inv = 999;
+          hellModeActive = false;
+          time += dt;
+          stateTimer += dt;
+	          if (state === 'boss' && !window.__miguaCaptureSilentBoss) updateBoss(dt);
+          else updateEnemies(dt);
+          updateEnemyBullets(dt);
+          updateMiguaHazards(dt);
+          updateMiguaFx(dt);
+          updateWarnings(dt);
+          updateLasers(dt);
+          updateSpriteFx(dt);
+          updateParticles(dt);
+          updateDamageTexts(dt);
+        }
+        draw();
+        return { map: bgBaseKey(), enemies: enemies.length, bullets: enemyBullets.length, hazards: miguaHazards.length, boss: boss && boss.kind, bossPhase };
+      },
+    };
 
     window.__randomBalanceCapture__ = {
       prepare(scene = 'early') {
@@ -22935,6 +25146,8 @@
       prepare(scene = 'panel') {
         hideLeaderboardNameDialog();
         hideGuestbookDialog();
+        hideHellModeStartDialog();
+        hideUpdateNoticeDialog();
         leaderboardView = false;
         leaderboardData = sampleLeaderboardRows();
         while (leaderboardData.length < LEADERBOARD_TOP_LIMIT) {
@@ -22979,6 +25192,9 @@
         } else if (scene === 'hell_prompt') {
           state = 'title';
           showHellModeStartDialog();
+        } else if (scene === 'update_notice') {
+          state = 'title';
+          showUpdateNoticeDialog(false);
         } else {
           state = 'title';
           leaderboardView = true;
@@ -22996,6 +25212,8 @@
       },
     };
 	  }
+
+  setTimeout(showUpdateNoticeIfNeeded, 450);
 
   if (window.__PAGE_BUILD_VERSION__ && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', () => {

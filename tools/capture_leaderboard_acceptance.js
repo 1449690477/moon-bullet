@@ -16,6 +16,7 @@ const SCENES = [
   ['name', '04_name_avatar_dialog.png', 12],
   ['guestbook', '05_guestbook_message_dialog.png', 12],
   ['hell_prompt', '06_hell_mode_prompt.png', 12],
+  ['update_notice', '07_update_notice_dialog.png', 12],
 ];
 
 function browserExecutablePath() {

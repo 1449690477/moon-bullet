@@ -7,6 +7,7 @@ let cachedMotherLifeInternals = null;
 let cachedMotherHiveInternals = null;
 let cachedSuiyiBossInternals = null;
 let cachedSuiyiTechMobInternals = null;
+let cachedMiguaInternals = null;
 let cachedRandomBalanceInternals = null;
 let cachedLeaderboardInternals = null;
 
@@ -132,6 +133,7 @@ export function loadInternals() {
   cachedMotherHiveInternals = context.window.__motherHiveInternals__;
   cachedSuiyiBossInternals = context.window.__suiyiBossInternals__;
   cachedSuiyiTechMobInternals = context.window.__suiyiTechMobInternals__;
+  cachedMiguaInternals = context.window.__miguaInternals__;
   cachedRandomBalanceInternals = context.window.__randomBalanceInternals__;
   cachedLeaderboardInternals = context.window.__leaderboardInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
@@ -164,6 +166,13 @@ export function loadSuiyiTechMobInternals() {
   loadInternals();
   if (!cachedSuiyiTechMobInternals) throw new Error('window.__suiyiTechMobInternals__ was not exposed');
   return cachedSuiyiTechMobInternals;
+}
+
+export function loadMiguaInternals() {
+  if (cachedMiguaInternals) return cachedMiguaInternals;
+  loadInternals();
+  if (!cachedMiguaInternals) throw new Error('window.__miguaInternals__ was not exposed');
+  return cachedMiguaInternals;
 }
 
 export function loadRandomBalanceInternals() {

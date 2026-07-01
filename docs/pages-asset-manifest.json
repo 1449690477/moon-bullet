@@ -1,9 +1,9 @@
 {
-  "version": "4d374308b9f6",
-  "builtAt": 1782814694,
-  "referencedMedia": 723,
-  "mobileVariants": 707,
-  "copiedBytes": 114397667,
+  "version": "bfdb5a0be5c8",
+  "builtAt": 1782885761,
+  "referencedMedia": 786,
+  "mobileVariants": 770,
+  "copiedBytes": 126344153,
   "excluded": [
     "assets/_backup_before_user_import/**",
     "assets_backup_*/**",

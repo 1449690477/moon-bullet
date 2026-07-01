@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 const suiyiTechCapture = readFileSync(new URL('../../tools/capture_suiyi_tech_mobs_acceptance.js', import.meta.url), 'utf8');
 const randomBalanceCapture = readFileSync(new URL('../../tools/capture_random_balance_acceptance.js', import.meta.url), 'utf8');
+const miguaCapture = readFileSync(new URL('../../tools/capture_migua_acceptance.js', import.meta.url), 'utf8');
 const leaderboardRunFunction = readFileSync(new URL('../../supabase/functions/leaderboard-run/index.ts', import.meta.url), 'utf8');
 function fail(message) {
   console.error(message);
@@ -482,6 +483,93 @@ if (normalStagePoolAt < 0 || normalStagePoolEnd < 0) fail('Could not locate STAG
 const normalStagePoolBlock = html.slice(normalStagePoolAt, normalStagePoolEnd);
 for (const techType of ['codebug', 'coredrone', 'servernode', 'crystalcompiler']) {
   if (normalStagePoolBlock.includes(`'${techType}'`)) fail(`${techType} must not leak into normal STAGE_POOL`);
+}
+for (const key of [
+  'miguaMapGreenhouse',
+  'miguaMapJuiceFactory',
+  'miguaMapFloatingCity',
+  'miguaBossFinal',
+  'enMiguaDrone',
+  'enMiguaSliceSpider',
+  'enMiguaTurret',
+  'enMiguaJellyMine',
+  'enMiguaBeeStinger',
+  'enMiguaArmorTurtle',
+  'miguaSeedBlackSmall',
+  'miguaSeedGoldHeavy',
+  'miguaSliceArc',
+  'miguaCrescentSlice',
+  'miguaJuiceSplashLarge',
+  'miguaMelonBubble',
+  'miguaMelonBubbleLarge',
+  'miguaMelonSun',
+  'miguaSeedHalo',
+  'miguaJuicePuddle',
+  'miguaBossBarFrame',
+  'miguaBarFrame',
+  'miguaBarEmpty',
+  'miguaBarFillGreen',
+  'miguaBarFillYellow',
+  'miguaBarFillRed',
+  'miguaBarGloss',
+  'miguaBarSeedTicks',
+  'miguaBarCrack',
+  'miguaBarMask',
+  'miguaBarDanger',
+]) {
+  if (!html.includes(key)) fail(`${key} Migua asset key missing`);
+}
+for (const needle of [
+  'const MIGUA_MAP_KEYS = Object.freeze',
+  'const MIGUA_MOB_TYPES = Object.freeze',
+  'const MIGUA_STAGE_WAVES = Object.freeze',
+  "const MIGUA_BOSS_POOL = Object.freeze(['migua'])",
+  'function drawMiguaBossBar()',
+  'function drawMiguaMapFlowOverlay(',
+  'function spawnMiguaBullet(',
+  'function updateMiguaBoss(dt)',
+  'function drawMiguaEnemyBullet(b)',
+  'function drawMiguaBoss()',
+  'function miguaBossBarLayoutForRate(',
+  'function drawMiguaLayerWithMask(',
+  'function drawMiguaBarGloss(',
+  'function getMiguaHpState(',
+  'window.__miguaInternals__',
+  'bossBarLayoutForTest',
+  'usesLayeredMaskFill: true',
+  "maskComposite: 'destination-in'",
+  "renderOrder: ['empty-underlay', 'masked-fill', 'masked-gloss', 'seed-ticks', 'crack', 'pulse-danger', 'frame', 'portrait-name-text']",
+  "layeredDraw: ['fruit-specific-short-tail', 'sprite-body-shadow-edge', 'fruit-palette-damage-boundary']",
+  "redRim: 'fruit-palette-boundary-no-red-rim'",
+  "clarity: 'dark-fruit-outline-and-light-hit-boundary'",
+  'function drawMiguaReadableSeedBoundary(',
+  'function drawMiguaRoundDamageBoundary(',
+  "UPDATE_NOTICE_VERSION = '2026-07-01-migua-readable-pages'",
+  'function showUpdateNoticeDialog(',
+  'function showUpdateNoticeIfNeeded(',
+  "'更新公告', 'updateNotice'",
+  "updateNotice: { version: UPDATE_NOTICE_VERSION",
+  "b.miguaBehavior === 'melon_throw'",
+  "b.miguaSplitMode === 'melon_burst'",
+  'function miguaThrowMelonBomb(',
+  "STAGE_THEME_MIGUA = 'migua'",
+  'miguaThemeOnlySpawnsMiguaMobsAndMiguaBoss',
+]) {
+  if (!html.includes(needle)) fail(`Migua content invariant missing: ${needle}`);
+}
+for (const miguaType of ['miguadrone', 'miguaslicespider', 'miguaturret', 'miguajellymine', 'miguabeestinger', 'miguaarmorturtle']) {
+  if (normalStagePoolBlock.includes(`'${miguaType}'`)) fail(`${miguaType} must not leak into normal STAGE_POOL`);
+}
+for (const needle of [
+  '__miguaCapture__',
+  '01_migua_greenhouse_stage.png',
+  '04_migua_boss_entry_bar.png',
+  '08_migua_final_burst.png',
+  '09_migua_bar_full.png',
+  '12_migua_bar_critical.png',
+  '15_migua_fruit_bubbles.png',
+]) {
+  if (!miguaCapture.includes(needle)) fail(`Migua capture script invariant missing: ${needle}`);
 }
 
 console.log('regression grep ok');
