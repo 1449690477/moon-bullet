@@ -520,6 +520,19 @@ for (const key of [
   if (!html.includes(key)) fail(`${key} Migua asset key missing`);
 }
 for (const needle of [
+  "skyglory: false",
+  "{ key: 'skyglory', name: '天耀·三璇光阵', short: '天耀' }",
+  'function updateTianyao(dt)',
+  'function drawTianyaoBody()',
+  'function drawTianyaoHand()',
+  "if (key === 'T') { castTianyaoHand(); return true; }",
+  '"capture:tianyao": "node tools/capture_tianyao_acceptance.js"',
+]) {
+  const haystack = needle.includes('capture:tianyao') ? readFileSync(new URL('../../package.json', import.meta.url), 'utf8') : html;
+  if (!haystack.includes(needle)) fail(`Tianyao content invariant missing: ${needle}`);
+}
+
+for (const needle of [
   'const MIGUA_MAP_KEYS = Object.freeze',
   'const MIGUA_MOB_TYPES = Object.freeze',
   'const MIGUA_STAGE_WAVES = Object.freeze',
@@ -544,7 +557,7 @@ for (const needle of [
   "clarity: 'dark-fruit-outline-and-light-hit-boundary'",
   'function drawMiguaReadableSeedBoundary(',
   'function drawMiguaRoundDamageBoundary(',
-  "UPDATE_NOTICE_VERSION = '2026-07-02-tianyao-tech-ui'",
+  "UPDATE_NOTICE_VERSION = '2026-07-02-tianyao-main-ui-merge'",
   'function showUpdateNoticeDialog(',
   'function showUpdateNoticeIfNeeded(',
   "'更新公告', 'updateNotice'",
