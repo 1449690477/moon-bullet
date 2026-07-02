@@ -544,7 +544,7 @@ for (const needle of [
   "clarity: 'dark-fruit-outline-and-light-hit-boundary'",
   'function drawMiguaReadableSeedBoundary(',
   'function drawMiguaRoundDamageBoundary(',
-  "UPDATE_NOTICE_VERSION = '2026-07-01-migua-readable-pages'",
+  "UPDATE_NOTICE_VERSION = '2026-07-02-tianyao-tech-ui'",
   'function showUpdateNoticeDialog(',
   'function showUpdateNoticeIfNeeded(',
   "'更新公告', 'updateNotice'",
