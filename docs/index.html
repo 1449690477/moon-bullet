@@ -1549,9 +1549,20 @@
     writeEndpoint: `${LEADERBOARD_FN_BASE}/message`,
     directClientWrites: false,
   });
-  const UPDATE_NOTICE_VERSION = '2026-07-02-tianyao-main-ui-merge';
+  const UPDATE_NOTICE_VERSION = '2026-07-03-feel-v1';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-03',
+      items: [
+        '手感优化 V1 上线：弹幕、打击感和音效做了一轮整体调整。',
+        '敌方弹幕在高密度场面下更容易看清，背景和特效会适当让出视觉焦点。',
+        '角色受击时增加更明确的边缘警示和短暂停顿，玩家能更快知道自己被打中了。',
+        '击杀敌人的反馈更干脆，精英怪死亡会有更重的冲击感。',
+        '连续击杀时音效会逐步变亮，割草节奏更顺手。',
+        '擦弹、命中、击杀、技能和受伤音效层次重新整理，战斗声音不再糊成一团。',
+      ],
+    },
     {
       date: '2026-07-02',
       items: [
@@ -2653,6 +2664,11 @@
   let hitStop = 0;
   let damagePulse = 0;
   let comboPunch = 0;
+  // 手感优化 V1：弹幕密度压暗帘 / 受击红晕 / 连杀音阶。
+  let dangerDim = 0;
+  let hurtT = 0;
+  let killStreakN = 0;
+  let killStreakT = 0;
   let lastCombo = 0;
   let paused = false;
   let state = 'title'; // title, mobs, bossIntro, boss, win, lose
@@ -11767,19 +11783,22 @@
     graze() {
       if (!this.enabled || time - this.lastGraze < 0.08) return;
       this.lastGraze = time;
-      this.tone(1180 + Math.random() * 140, 0.045, 'sine', 0.018);
+      // 双层擦弹音：主音更亮 + 高频水晶泛音，让擦弹奖励从混战音里跳出来。
+      this.tone(1180 + Math.random() * 140, 0.045, 'sine', 0.032);
+      this.tone(2350 + Math.random() * 260, 0.03, 'triangle', 0.016, null, 0.008);
     }
     // 命中小怪：样本音量拉高 + 清脆高频 tick，反馈明显（高频触发，节流防糊）
     enemyHit() { playSfx('enemyHit', 0.55, 0.05); this.tone(1050 + Math.random() * 320, 0.04, 'triangle', 0.045); }
     // 击杀小怪：样本 + 低频砰 + 噪点爆裂，明显的击杀爽感
-    enemyKill(heavy) {
+    enemyKill(heavy, streak = 0) {
       // 割草脆响：噪声爆破 + 低频"砰" + 上扬亮点（带随机音高，连杀有节奏感）
       const v = 0.92 + Math.random() * 0.16;
       playSfx('enemyDeath', (heavy ? 0.95 : 0.72) * v, 0.05);
       this.noise(heavy ? 0.16 : 0.08, heavy ? 0.13 : 0.075);
       this.tone((heavy ? 105 : 165) * v, 0.16, 'sawtooth', 0.075);
-      // 清脆"叮"高音，给割草反馈
-      const hi = (heavy ? 520 : 720) * v;
+      // 清脆"叮"高音：连杀每级升半音，割草越顺声音越亮。
+      const ladder = Math.pow(1.0595, Math.min(streak, 12));
+      const hi = (heavy ? 520 : 720) * v * ladder;
       this.tone(hi, 0.09, 'triangle', 0.05, null, 0.015);
       this.tone(hi * 1.5, 0.06, 'sine', 0.03, null, 0.025);
     }
@@ -11951,6 +11970,10 @@
     time = 0;
     screenShake = 0;
     flash = 0;
+    dangerDim = 0;
+    hurtT = 0;
+    killStreakN = 0;
+    killStreakT = 0;
 	    paused = false;
 	    segment = 'stage1';
 	    chooseRandomFieldBackground();
@@ -13357,6 +13380,8 @@
     player.combo = 0;
     screenShake = 11;
     flash = 0.18;
+    triggerHitStop(0.16);
+    hurtT = 0.55;
     audio.hit();
     burst(player.x, player.y, '#ff7b9d', 24, 210, true);
     dmgText(player.x, player.y - 30, `-${amount}`, '#ff9cb0', 25);
@@ -13424,6 +13449,15 @@
     updateEnemyBullets(dt);
     updateMiguaHazards(dt);
     updateMiguaFx(dt);
+    {
+      const dimTarget = clamp((enemyBullets.length - 46) / 160, 0, 1) * 0.24;
+      dangerDim += (dimTarget - dangerDim) * Math.min(1, dt * 3.5);
+      if (hurtT > 0) hurtT = Math.max(0, hurtT - dt);
+      if (killStreakT > 0) {
+        killStreakT -= dt;
+        if (killStreakT <= 0) killStreakN = 0;
+      }
+    }
     rebuildSpatialIndex();
     updateWarnings(dt);
     updateLasers(dt);
@@ -19486,7 +19520,14 @@
         player.energy = clamp(player.energy + 7, 0, player.maxEnergy);
         dmgText(e.x, e.y, '+' + e.score, '#fff2a8', 20);
         { const heavy = (e.tier >= 3);
-        audio.enemyKill(heavy);
+        killStreakN = Math.min(killStreakN + 1, 12);
+        killStreakT = 0.9;
+        audio.enemyKill(heavy, killStreakN);
+        if (heavy) {
+          triggerHitStop(0.05);
+          screenShake = Math.max(screenShake, 5);
+          addRingFx(e.x, e.y, 16, 96, 0.34, 'rgba(255,220,180,', 3);
+        }
         const fxMul = perfBudget().killBurstMul;
         addSpriteFx(heavy ? 'vfxExplosionLarge' : 'vfxExplosionSmall', e.x, e.y, heavy ? 132 : 78, heavy ? 0.5 : 0.32, rand(0, TAU), 0.36, heavy ? 0.74 : 0.62);
         burst(e.x, e.y, e.color, Math.max(4, Math.round((heavy ? 36 : 18) * fxMul)), heavy ? 260 : 180, true); }
@@ -22228,6 +22269,10 @@
     drawSuiyiHazards();
     drawMiguaHazards();
     drawMiguaFx();
+    if (dangerDim > 0.01) {
+      ctx.fillStyle = `rgba(7,5,18,${dangerDim.toFixed(3)})`;
+      ctx.fillRect(0, 0, W, H);
+    }
     drawEnemyBullets();
     drawWarnings();
     drawLasers();
@@ -26311,6 +26356,14 @@
       ctx.fillStyle = `rgba(${flashColor},${flashAlpha})`;
       ctx.fillRect(0, 0, W, H);
     }
+    if (hurtT > 0) {
+      const hv = hurtT / 0.55;
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.34, W / 2, H / 2, H * 0.72);
+      vg.addColorStop(0, 'rgba(255,40,70,0)');
+      vg.addColorStop(1, `rgba(255,42,72,${(0.36 * hv).toFixed(3)})`);
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+    }
 
     // Boss 来袭警示横幅（素材 ui_boss_warning），仅在 Boss 入场时滑入
     if (state === 'bossIntro' && assetReady('uiBossWarning')) {
@@ -27806,6 +27859,26 @@
           core: 'red-dot-red-ring-real-hit-radius',
           outerRing: 'cyan-pink-pulse',
           focusRingWhenSlow: true,
+        },
+      }),
+      feelOptimizationSpec: () => ({
+        version: UPDATE_NOTICE_VERSION,
+        title: '手感优化 V1',
+        bulletReadability: {
+          densityDimLayer: 'under-hostile-bullets',
+          targetFormula: 'clamp((enemyBullets.length - 46) / 160, 0, 1) * 0.24',
+          maxAlpha: 0.24,
+          doesNotDimUi: true,
+        },
+        hitFeedback: {
+          playerHitStop: 0.16,
+          hurtVignetteSeconds: 0.55,
+          eliteKillHitStop: 0.05,
+        },
+        audioLayering: {
+          graze: 'two-layer-high-frequency',
+          killStreakWindow: 0.9,
+          killPitchSteps: 12,
         },
       }),
       themeBindingForTest: () => {
