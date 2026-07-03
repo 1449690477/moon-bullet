@@ -134,13 +134,17 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.playerHitbox.core).toBe('red-dot-red-ring-real-hit-radius');
   });
 
-  it('documents the feel optimization v1 readability, impact, and audio layers', () => {
+  it('documents the feel optimization v3 smooth movement, declutter, and audio layers', () => {
     const spec = balance.feelOptimizationSpec();
-    expect(spec.title).toBe('手感优化 V1');
+    expect(spec.title).toBe('手感优化 V3');
     expect(spec.bulletReadability.densityDimLayer).toBe('under-hostile-bullets');
-    expect(spec.bulletReadability.maxAlpha).toBeCloseTo(0.24);
-    expect(spec.hitFeedback.playerHitStop).toBeCloseTo(0.16);
-    expect(spec.hitFeedback.hurtVignetteSeconds).toBeCloseTo(0.55);
+    expect(spec.bulletReadability.maxAlpha).toBeCloseTo(0.18);
+    expect(spec.hitFeedback.hitStopMode).toBe('visual-only-no-input-freeze');
+    expect(spec.hitFeedback.playerHitStop).toBe(0);
+    expect(spec.hitFeedback.eliteKillHitStop).toBe(0);
+    expect(spec.hitFeedback.hurtVignetteSeconds).toBeCloseTo(0.42);
+    expect(spec.uiDeclutter.stripMul).toBeLessThan(0.7);
+    expect(spec.uiDeclutter.scanMul).toBeLessThan(0.7);
     expect(spec.audioLayering.graze).toBe('two-layer-high-frequency');
     expect(spec.audioLayering.killStreakWindow).toBeCloseTo(0.9);
   });

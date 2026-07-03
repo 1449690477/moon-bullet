@@ -1549,18 +1549,18 @@
     writeEndpoint: `${LEADERBOARD_FN_BASE}/message`,
     directClientWrites: false,
   });
-  const UPDATE_NOTICE_VERSION = '2026-07-03-feel-v1';
+  const UPDATE_NOTICE_VERSION = '2026-07-03-feel-v3';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-03',
       items: [
-        '手感优化 V1 上线：弹幕、打击感和音效做了一轮整体调整。',
-        '敌方弹幕在高密度场面下更容易看清，背景和特效会适当让出视觉焦点。',
-        '角色受击时增加更明确的边缘警示和短暂停顿，玩家能更快知道自己被打中了。',
-        '击杀敌人的反馈更干脆，精英怪死亡会有更重的冲击感。',
-        '连续击杀时音效会逐步变亮，割草节奏更顺手。',
-        '擦弹、命中、击杀、技能和受伤音效层次重新整理，战斗声音不再糊成一团。',
+        '手感优化 V3 上线：重点修复战斗中的卡顿感和“被黏住”的感觉。',
+        '角色受击不再冻结移动，改成红色边缘警示、轻震屏和音效提示，穿弹更顺滑。',
+        '精英怪死亡不再频繁顿帧，保留冲击环和击杀音阶，割草节奏更连贯。',
+        '高密度弹幕下的压暗效果变轻，敌弹更清楚，但画面不会再发闷。',
+        '标题页、血条、按钮和排行榜的流光、扫描线、粒子装饰整体降噪，看起来更干净。',
+        '继续保留弹幕可读性、打击感和音效分层，但减少遮挡与视觉杂乱。',
       ],
     },
     {
@@ -2664,7 +2664,19 @@
   let hitStop = 0;
   let damagePulse = 0;
   let comboPunch = 0;
-  // 手感优化 V1：弹幕密度压暗帘 / 受击红晕 / 连杀音阶。
+  const FEEL_V3_TUNING = Object.freeze({
+    title: '手感优化 V3',
+    hitStopMode: 'visual-only-no-input-freeze',
+    hitStopMax: 0.075,
+    dangerDimMax: 0.18,
+    hurtVignetteSeconds: 0.42,
+    hurtVignetteAlpha: 0.24,
+    uiStripMul: 0.58,
+    uiScanMul: 0.52,
+    uiCornerMul: 0.68,
+    uiWashMul: 0.78,
+  });
+  // 手感优化 V3：弹幕密度压暗帘 / 受击红晕 / 连杀音阶。hitStop 只做视觉脉冲，不再冻结操作。
   let dangerDim = 0;
   let hurtT = 0;
   let killStreakN = 0;
@@ -12063,11 +12075,11 @@
     }
   }
 
-  // Freeze-frame impact: real time keeps flowing for the timer, but game time slows.
-  function triggerHitStop(t) { hitStop = Math.max(hitStop, t); }
+  // 手感优化 V3：hitStop 不再冻结世界，只作为极短视觉脉冲计时，避免玩家在弹幕中被“黏住”。
+  function triggerHitStop(t) { hitStop = Math.max(hitStop, Math.min(t, FEEL_V3_TUNING.hitStopMax)); }
 
   // Screen flash with a tint, drawn additively for a bloom-like burst.
-  function setFlash(v, color = '255,255,255') { flash = Math.max(flash, v); flashColor = color; }
+  function setFlash(v, color = '255,255,255') { flash = Math.max(flash, Math.min(v, 0.64)); flashColor = color; }
 
   function addSpriteFx(key, x, y, size = 96, life = 0.36, rot = 0, grow = 0.35, alpha = 0.88) {
     if (!assetReady(key)) return;
@@ -13378,10 +13390,9 @@
     player.hp = Math.max(0, player.hp - amount);
     player.inv = 1.3;   // 受击后短暂无敌，防止连续掉血
     player.combo = 0;
-    screenShake = 11;
-    flash = 0.18;
-    triggerHitStop(0.16);
-    hurtT = 0.55;
+    screenShake = 7;
+    flash = Math.max(flash, 0.10);
+    hurtT = FEEL_V3_TUNING.hurtVignetteSeconds;
     audio.hit();
     burst(player.x, player.y, '#ff7b9d', 24, 210, true);
     dmgText(player.x, player.y - 30, `-${amount}`, '#ff9cb0', 25);
@@ -13450,7 +13461,7 @@
     updateMiguaHazards(dt);
     updateMiguaFx(dt);
     {
-      const dimTarget = clamp((enemyBullets.length - 46) / 160, 0, 1) * 0.24;
+      const dimTarget = clamp((enemyBullets.length - 52) / 180, 0, 1) * FEEL_V3_TUNING.dangerDimMax;
       dangerDim += (dimTarget - dangerDim) * Math.min(1, dt * 3.5);
       if (hurtT > 0) hurtT = Math.max(0, hurtT - dt);
       if (killStreakT > 0) {
@@ -18044,7 +18055,7 @@
     if (boss && state === 'boss' && !boss.dead) hitBoss(base * 0.7, boss.x, boss.y, true);
     for (let q = 0; q < 60; q++) { const a = rand(0, TAU), s = rand(120, 620); addParticle(W * 0.5, qsw.giant.y, Math.cos(a) * s, Math.sin(a) * s * 0.5, rand(0.3, 0.9), rand(3, 9), Math.random() < 0.5 ? '#ffe7a0' : '#cfe6ff', true); }
     addSpriteFx('qswHit', W * 0.5, qsw.giant.y, 360, 0.5, 0, 0.6, 0.95);
-    hitStop = Math.max(hitStop, 0.16);
+    triggerHitStop(0.06);
     // 砸地终结：金色全屏脉冲 + 双层扩张冲击环（弱机只留主环），把"终极一击"的张力拉满
     qsw.goldFlash = Math.max(qsw.goldFlash, 0.85);
     addRingFx(W * 0.5, qsw.giant.y, 40, W * 1.05, 0.6, 'rgba(255,238,180,', 9);
@@ -19524,8 +19535,7 @@
         killStreakT = 0.9;
         audio.enemyKill(heavy, killStreakN);
         if (heavy) {
-          triggerHitStop(0.05);
-          screenShake = Math.max(screenShake, 5);
+          screenShake = Math.max(screenShake, 3.5);
           addRingFx(e.x, e.y, 16, 96, 0.34, 'rgba(255,220,180,', 3);
         }
         const fxMul = perfBudget().killBurstMul;
@@ -25314,13 +25324,14 @@
   }
 
   function drawTyAssetStrip(x, y, w, h, alpha = 0.16, key = 'uiTyFlowThin', speed = 58) {
-    if (!assetReady(key) || w <= 0 || h <= 0 || alpha <= 0) return false;
+    const finalAlpha = alpha * FEEL_V3_TUNING.uiStripMul;
+    if (!assetReady(key) || w <= 0 || h <= 0 || finalAlpha <= 0.012) return false;
     const img = assets[key];
     const iw = Math.max(18, h * img.width / Math.max(1, img.height));
     const drift = (time * speed) % iw;
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-    ctx.globalAlpha = alpha;
+    ctx.globalAlpha = finalAlpha;
     ctx.beginPath();
     ctx.rect(x, y, w, h);
     ctx.clip();
@@ -25367,13 +25378,13 @@
     ctx.save();
     roundRect(x, y, w, h, r);
     ctx.clip();
-    ctx.fillStyle = tyUiGradient(x, y, w, h, opts.wash ?? 0.55);
+    ctx.fillStyle = tyUiGradient(x, y, w, h, (opts.wash ?? 0.55) * FEEL_V3_TUNING.uiWashMul);
     ctx.fillRect(x, y, w, h);
     drawTyAssetStrip(x + 8, y + 3, w - 16, Math.min(18, h * 0.32), opts.stripAlpha ?? 0.13, opts.stripKey || 'uiTyFlowThin', opts.stripSpeed || 46);
     const sx = x + ((time * (opts.scanSpeed || 84) + (opts.phase || 0)) % (w + 96)) - 96;
     const sg = ctx.createLinearGradient(sx, 0, sx + 96, 0);
     sg.addColorStop(0, 'rgba(98,234,255,0)');
-    sg.addColorStop(0.5, `rgba(132,224,255,${opts.scanAlpha ?? 0.14})`);
+    sg.addColorStop(0.5, `rgba(132,224,255,${(opts.scanAlpha ?? 0.14) * FEEL_V3_TUNING.uiScanMul})`);
     sg.addColorStop(1, 'rgba(218,132,255,0)');
     ctx.globalCompositeOperation = 'lighter';
     ctx.fillStyle = sg;
@@ -25387,7 +25398,7 @@
     ctx.strokeStyle = 'rgba(255,255,255,.16)';
     roundRect(x + 2, y + 2, w - 4, h - 4, Math.max(2, r - 3));
     ctx.stroke();
-    drawTyCornerTicks(x, y, w, h, Math.min(r, 14), opts.cornerAlpha ?? (hot ? 1 : 0.72));
+    drawTyCornerTicks(x, y, w, h, Math.min(r, 14), (opts.cornerAlpha ?? (hot ? 1 : 0.72)) * FEEL_V3_TUNING.uiCornerMul);
     ctx.restore();
   }
 
@@ -25417,7 +25428,7 @@
       const glintX = x + ((time * (opts.scanSpeed || 120)) % (w + 76)) - 76;
       const gg = ctx.createLinearGradient(glintX, 0, glintX + 76, 0);
       gg.addColorStop(0, 'rgba(255,255,255,0)');
-      gg.addColorStop(0.48, `rgba(255,255,255,${opts.glintAlpha ?? 0.34})`);
+      gg.addColorStop(0.48, `rgba(255,255,255,${(opts.glintAlpha ?? 0.34) * 0.62})`);
       gg.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.globalCompositeOperation = 'lighter';
       ctx.fillStyle = gg;
@@ -25755,7 +25766,7 @@
       } else {
         ctx.textAlign = 'center';
         const bw = 420, bx = W / 2 - bw / 2, by = 8, bh = 40;
-        drawTyTechPanel(bx, by, bw, bh, { r: 13, hot: true, stripAlpha: 0.12, scanAlpha: 0.18 });
+        drawTyTechPanel(bx, by, bw, bh, { r: 13, hot: true, stripAlpha: 0.075, scanAlpha: 0.09, cornerAlpha: 0.58 });
         ctx.font = 'bold 17px PingFang SC, Microsoft YaHei, sans-serif';
         ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)';
         ctx.strokeText(boss.name, W / 2, by + 18);
@@ -25781,7 +25792,7 @@
       const waveLabel = formatMobWaveStatus().text;
       ctx.textAlign = 'center';
       const barW = 360, barH = 28, barX = W / 2 - barW / 2, barY = 8;
-      drawTyTechPanel(barX, barY, barW, barH, { r: 14, stripAlpha: 0.10, scanAlpha: 0.12 });
+      drawTyTechPanel(barX, barY, barW, barH, { r: 14, stripAlpha: 0.055, scanAlpha: 0.07, cornerAlpha: 0.44 });
       ctx.font = 'bold 16px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,0.55)';
       ctx.strokeText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
@@ -25801,7 +25812,7 @@
       }
       drawSideHud();
       const px = 22, py = H - 118, pw = W - 44, ph = 88;
-      drawTyTechPanel(px, py, pw, ph, { r: 18, stripAlpha: 0.16, stripKey: 'uiTyFlowMid', scanAlpha: 0.12, cornerAlpha: 0.86 });
+      drawTyTechPanel(px, py, pw, ph, { r: 18, stripAlpha: 0.075, stripKey: 'uiTyFlowMid', scanAlpha: 0.065, cornerAlpha: 0.54 });
       ctx.fillStyle = TY_UI_THEME.textMain; ctx.font = 'bold 18px PingFang SC, Microsoft YaHei, sans-serif'; ctx.textAlign = 'left';
       const ccUi = curChar();
       if (assetReady(ccUi.avatar)) {
@@ -25941,7 +25952,7 @@
     registerTouchRect('restartGame', x - 8, y - 8, w + 16, h + 16);
     const pressed = activeTouchControl && activeTouchControl.type === 'restartGame';
     ctx.save();
-    drawTyTechPanel(x, y, w, h, { r: 14, hot: pressed, stripAlpha: pressed ? 0.20 : 0.10, scanAlpha: pressed ? 0.20 : 0.10 });
+    drawTyTechPanel(x, y, w, h, { r: 14, hot: pressed, stripAlpha: pressed ? 0.09 : 0.035, scanAlpha: pressed ? 0.09 : 0.035, cornerAlpha: pressed ? 0.58 : 0.24 });
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = 'bold 15px PingFang SC, Microsoft YaHei, sans-serif';
@@ -25967,7 +25978,7 @@
     ];
     ctx.save();
     ctx.textAlign = 'center';
-    drawTyTechPanel(8, 164, 76, 430, { r: 22, stripAlpha: 0.08, scanAlpha: 0.06, cornerAlpha: 0.42 });
+    drawTyTechPanel(8, 164, 76, 430, { r: 22, stripAlpha: 0.028, scanAlpha: 0.025, cornerAlpha: 0.22 });
     party.forEach((card, i) => {
       const ch = CHARACTERS[card.key];
       const active = card.key === selectedChar;
@@ -26356,11 +26367,23 @@
       ctx.fillStyle = `rgba(${flashColor},${flashAlpha})`;
       ctx.fillRect(0, 0, W, H);
     }
+    if (hitStop > 0) {
+      const ip = clamp(hitStop / FEEL_V3_TUNING.hitStopMax, 0, 1);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const ig = ctx.createRadialGradient(W / 2, H / 2, H * 0.18, W / 2, H / 2, H * 0.78);
+      ig.addColorStop(0, 'rgba(255,255,255,0)');
+      ig.addColorStop(0.72, `rgba(120,230,255,${(0.035 * ip).toFixed(3)})`);
+      ig.addColorStop(1, `rgba(190,120,255,${(0.07 * ip).toFixed(3)})`);
+      ctx.fillStyle = ig;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+    }
     if (hurtT > 0) {
-      const hv = hurtT / 0.55;
+      const hv = hurtT / FEEL_V3_TUNING.hurtVignetteSeconds;
       const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.34, W / 2, H / 2, H * 0.72);
       vg.addColorStop(0, 'rgba(255,40,70,0)');
-      vg.addColorStop(1, `rgba(255,42,72,${(0.36 * hv).toFixed(3)})`);
+      vg.addColorStop(1, `rgba(255,42,72,${(FEEL_V3_TUNING.hurtVignetteAlpha * hv).toFixed(3)})`);
       ctx.fillStyle = vg;
       ctx.fillRect(0, 0, W, H);
     }
@@ -26809,14 +26832,14 @@
     if (assetReady('uiTySoftGlow')) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = 0.16;
+      ctx.globalAlpha = 0.08;
       ctx.drawImage(assets.uiTySoftGlow, W * 0.18, 20, W * 0.64, 260);
       ctx.restore();
     }
     const cc = curChar();
     if (assetReady(cc.cutin)) {
       ctx.save();
-      ctx.globalAlpha = 0.22;
+      ctx.globalAlpha = 0.18;
       ctx.drawImage(assets[cc.cutin], -80, 72, W + 160, 470);
       ctx.restore();
     }
@@ -26845,7 +26868,7 @@
       characterCards.push({ key, x, y, w: cardW, h: cardH });
       registerTouchRect('titleCharacter', x - 6, y - 6, cardW + 12, cardH + 12, key);
       ctx.save();
-      drawTyTechPanel(x, y, cardW, cardH, { r: 18, hot: sel, stripAlpha: sel ? 0.12 : 0.05, scanAlpha: sel ? 0.12 : 0.04, cornerAlpha: sel ? 0.78 : 0.30 });
+    drawTyTechPanel(x, y, cardW, cardH, { r: 18, hot: sel, stripAlpha: sel ? 0.08 : 0.025, scanAlpha: sel ? 0.08 : 0.025, cornerAlpha: sel ? 0.60 : 0.20 });
       if (assetReady(ch.avatar)) {
         ctx.save();
         ctx.beginPath(); ctx.arc(x + 58, y + 60, 38, 0, TAU); ctx.clip();
@@ -26879,7 +26902,7 @@
       const on = wingEnabled(o.key);
       wingCards.push({ key: o.key, x, y, w: wcw, h: wch });
       registerTouchRect('titleWing', x - 6, y - 6, wcw + 12, wch + 12, o.key);
-      drawTyTechPanel(x, y, wcw, wch, { r: 16, hot: on, stripAlpha: on ? 0.14 : 0.05, scanAlpha: on ? 0.13 : 0.04, cornerAlpha: on ? 0.78 : 0.28 });
+      drawTyTechPanel(x, y, wcw, wch, { r: 16, hot: on, stripAlpha: on ? 0.08 : 0.025, scanAlpha: on ? 0.08 : 0.025, cornerAlpha: on ? 0.58 : 0.18 });
       ctx.textAlign = 'left';
       ctx.font = 'bold 22px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillStyle = on ? '#e8fbff' : 'rgba(230,236,255,.74)';
@@ -26898,7 +26921,7 @@
 
 	    const bx = 92, by = 856, bw = W - 184, bh = 82;
     registerTouchRect('startGame', bx - 10, by - 10, bw + 20, bh + 20);
-    drawTyTechPanel(bx, by, bw, bh, { r: 22, hot: true, stripAlpha: 0.20, stripKey: 'uiTyFlowBright', scanAlpha: 0.18, scanSpeed: 124, cornerAlpha: 1 });
+    drawTyTechPanel(bx, by, bw, bh, { r: 22, hot: true, stripAlpha: 0.12, stripKey: 'uiTyFlowBright', scanAlpha: 0.10, scanSpeed: 108, cornerAlpha: 0.72 });
     ctx.font = 'bold 30px PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillStyle = '#e8fbff';
     ctx.fillText('开始战斗', W / 2, by + 52);
@@ -26921,7 +26944,7 @@
     if (assetReady('uiTySoftGlow')) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = 0.18;
+      ctx.globalAlpha = 0.09;
       ctx.drawImage(assets.uiTySoftGlow, W * 0.16, H * 0.11, W * 0.68, 260);
       ctx.restore();
     }
@@ -26933,13 +26956,13 @@
     }
     // 月光徽记：缓慢旋转的轮回纹章 + 银月弦
     if (assetReady('uiEmblemLoop')) {
-      ctx.save(); ctx.globalAlpha = 0.22 + p * 0.10; ctx.globalCompositeOperation = 'lighter';
+      ctx.save(); ctx.globalAlpha = 0.12 + p * 0.05; ctx.globalCompositeOperation = 'lighter';
       ctx.translate(W/2, H*0.285); ctx.rotate(titlePulse * 0.18);
       const es = 360; ctx.drawImage(assets['uiEmblemLoop'], -es/2, -es/2, es, es);
       ctx.restore();
     }
     if (assetReady('uiMoonSilver')) {
-      ctx.save(); ctx.globalAlpha = 0.85; ctx.globalCompositeOperation = 'lighter';
+      ctx.save(); ctx.globalAlpha = 0.52; ctx.globalCompositeOperation = 'lighter';
       const ms = 150; ctx.drawImage(assets['uiMoonSilver'], W/2 - ms/2, H*0.20 - ms/2, ms, ms);
       ctx.restore();
     }
@@ -26968,7 +26991,7 @@
       characterCards.push({ key, x: cx, y: cy, w: cardW, h: cardH });
       const sel = key === selectedChar;
       ctx.save();
-      drawTyTechPanel(cx, cy, cardW, cardH, { r: 16, hot: sel, stripAlpha: sel ? 0.12 : 0.05, scanAlpha: sel ? 0.12 : 0.04, cornerAlpha: sel ? 0.78 : 0.30 });
+      drawTyTechPanel(cx, cy, cardW, cardH, { r: 16, hot: sel, stripAlpha: sel ? 0.08 : 0.025, scanAlpha: sel ? 0.08 : 0.025, cornerAlpha: sel ? 0.58 : 0.18 });
       // 立绘头像
       const av = ch.avatar;
       if (assetReady(av)) {
@@ -27014,7 +27037,7 @@
       const col = i % wCols, row = Math.floor(i / wCols);
       const wx = wx0 + col * (wcw + wgapX), wy = wy0 + row * (wch + wgapY), on = wingEnabled(o.key);
       wingCards.push({ key: o.key, x: wx, y: wy, w: wcw, h: wch });
-      drawTyTechPanel(wx, wy, wcw, wch, { r: 10, hot: on, stripAlpha: on ? 0.12 : 0.05, scanAlpha: on ? 0.11 : 0.04, cornerAlpha: on ? 0.72 : 0.28 });
+      drawTyTechPanel(wx, wy, wcw, wch, { r: 10, hot: on, stripAlpha: on ? 0.075 : 0.022, scanAlpha: on ? 0.075 : 0.022, cornerAlpha: on ? 0.54 : 0.16 });
       ctx.textAlign = 'left';
       ctx.font = 'bold 17px PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillStyle = on ? '#e8fbff' : 'rgba(225,235,255,.72)';
@@ -27040,8 +27063,8 @@
     ctx.fillText('点击 / 按 Enter 开始', W/2, H*0.815);
 	    ctx.globalAlpha = 0.7;
 	    ctx.font = '15px PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = 'rgba(255,255,255,.8)';
-	    ctx.fillText('方向键移动 · Shift 精准 · 空格 技能 · X 大招 · 1/2/3/4/5 换将 · C 换皮肤', W/2, H*0.855);
-	    ctx.fillText('Q 圣冕天使降临 · E 夜棺模式切换 · T 天耀之手 · 母巢蝶环仅生命之母出战', W/2, H*0.885);
+	    ctx.fillText('方向键/触屏移动 · Shift 精准 · 空格技能 · X大招 · 数字键换将 · C换皮肤', W/2, H*0.855);
+	    ctx.fillText('Q / E / T 为特殊僚机技能；排行榜需默认地狱模式结算', W/2, H*0.885);
 	    ctx.globalAlpha = 1;
 	    drawQualitySelector(W / 2, H * 0.925, false);
 	    drawLeaderboardTitleActions(W / 2, H * 0.965, false);
@@ -27198,16 +27221,8 @@
 	        else if (smoothFrameMs < (IS_MOBILE_RUNTIME ? 18 : 17.2) && perfLevel > targetPerf) perfLevel--;
 	        if (perfLevel < targetPerf) perfLevel = targetPerf;
 	      }
-      // hit-stop：短暂冻结战斗推进（仍持续绘制），增强终结/重击打击感
-      if (hitStop > 0) {
-        hitStop -= dt;
-        const ds = performance.now();
-        draw();
-        perfStats.lastUpdateMs = 0;
-        perfStats.lastDrawMs = performance.now() - ds;
-        requestAnimationFrame(loop);
-        return;
-      }
+      // 手感优化 V3：hitStop 只递减视觉脉冲，不拦截 update/draw，移动输入永远不断帧。
+      if (hitStop > 0) hitStop = Math.max(0, hitStop - dt);
       const us = performance.now();
       update(dt);
       perfStats.lastUpdateMs = performance.now() - us;
@@ -27863,17 +27878,25 @@
       }),
       feelOptimizationSpec: () => ({
         version: UPDATE_NOTICE_VERSION,
-        title: '手感优化 V1',
+        title: FEEL_V3_TUNING.title,
         bulletReadability: {
           densityDimLayer: 'under-hostile-bullets',
-          targetFormula: 'clamp((enemyBullets.length - 46) / 160, 0, 1) * 0.24',
-          maxAlpha: 0.24,
+          targetFormula: 'clamp((enemyBullets.length - 52) / 180, 0, 1) * 0.18',
+          maxAlpha: FEEL_V3_TUNING.dangerDimMax,
           doesNotDimUi: true,
         },
         hitFeedback: {
-          playerHitStop: 0.16,
-          hurtVignetteSeconds: 0.55,
-          eliteKillHitStop: 0.05,
+          hitStopMode: FEEL_V3_TUNING.hitStopMode,
+          playerHitStop: 0,
+          hurtVignetteSeconds: FEEL_V3_TUNING.hurtVignetteSeconds,
+          eliteKillHitStop: 0,
+          maxVisualPulse: FEEL_V3_TUNING.hitStopMax,
+        },
+        uiDeclutter: {
+          stripMul: FEEL_V3_TUNING.uiStripMul,
+          scanMul: FEEL_V3_TUNING.uiScanMul,
+          cornerMul: FEEL_V3_TUNING.uiCornerMul,
+          titleGlowReduced: true,
         },
         audioLayering: {
           graze: 'two-layer-high-frequency',
