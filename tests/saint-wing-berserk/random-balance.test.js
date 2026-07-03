@@ -91,7 +91,9 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     const spec = balance.waveHudSpec();
     expect(spec.mode).toBe('current-wave-plus-remaining-no-slash-denominator');
     expect(spec.mainSample).toBe('第 9 波 · 剩余 7 波');
-    expect(spec.reinforcementSample).toBe('增援第 16 波 · 剩余 0 波');
+    expect(spec.reinforcementSample).toBe('增援第 16 波 · 剩余 18 波');
+    expect(spec.reinforcementClearSample).toBe('增援第 16 波 · 剩余 0 波');
+    expect(spec.timedRemainingForTest(60, 68, 1)).toBe(8);
     expect(spec.mainSample).not.toContain('/');
     expect(spec.reinforcementSample).not.toContain('/');
   });
@@ -119,10 +121,19 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
   it('has distinct high, medium, and low quality budgets for desktop and mobile', () => {
     const spec = balance.qualityBudgetSpec();
     expect(Object.keys(spec.presets)).toEqual(['high', 'medium', 'low']);
-    expect(spec.desktop.map(b => b.enemyBulletMax)).toEqual([820, 560, 340]);
-    expect(spec.mobile.map(b => b.enemyBulletMax)).toEqual([440, 320, 240]);
+    expect(spec.desktop.map(b => b.enemyBulletMax)).toEqual([620, 420, 260]);
+    expect(spec.mobile.map(b => b.enemyBulletMax)).toEqual([300, 220, 160]);
     expect(spec.desktop[0].enemyCap).toBeGreaterThan(spec.desktop[2].enemyCap);
     expect(spec.mobile[2].particleCap).toBeLessThan(spec.mobile[0].particleCap);
+    expect(spec.desktop[0].themeFxCap).toBeGreaterThan(spec.desktop[2].themeFxCap);
+  });
+
+  it('uses runtime trimming under high projectile pressure without freezing player update', () => {
+    const spec = balance.runtimePerformanceSpec();
+    expect(spec.mode).toBe('stress-cached-runtime-budget-trim');
+    expect(spec.trims).toEqual(expect.arrayContaining(['enemyBullets', 'suiyiHazards', 'miguaHazards']));
+    expect(spec.preserves).toContain('playerUpdate');
+    expect(spec.themeCapsFromBudget).toBe(true);
   });
 
   it('locks hostile bullet red rim and always-visible player hitbox clarity', () => {

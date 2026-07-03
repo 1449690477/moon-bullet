@@ -1549,12 +1549,14 @@
     writeEndpoint: `${LEADERBOARD_FN_BASE}/message`,
     directClientWrites: false,
   });
-  const UPDATE_NOTICE_VERSION = '2026-07-03-feel-v3';
+  const UPDATE_NOTICE_VERSION = '2026-07-03-wave-perf-fix';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-03',
       items: [
+        '波数提示修复：增援阶段会显示真实剩余波数，不再一直显示“剩余 0 波”。',
+        '高弹幕性能保护加强：随意关卡、蜜瓜关卡和后期高压波会自动降低多余特效，优先保证角色移动顺滑。',
         '手感优化 V3 上线：重点修复战斗中的卡顿感和“被黏住”的感觉。',
         '角色受击不再冻结移动，改成红色边缘警示、轻震屏和音效提示，穿弹更顺滑。',
         '精英怪死亡不再频繁顿帧，保留冲击环和击杀音阶，割草节奏更连贯。',
@@ -1628,6 +1630,7 @@
     lastDrawMs: 0,
     slowT: 0,
   };
+  let runtimePerfStressFlag = false;
   const QUALITY_STORAGE_KEY = 'moonBulletQualityPreset';
   const QUALITY_PRESETS = Object.freeze({
     high:   { label: '高', perfLevel: 0, desc: '完整光效' },
@@ -2578,19 +2581,63 @@
 
   const PERF_BUDGETS = {
     desktop: [
-      { enemyBulletMax: 820, mobSoftCap: 170, bossSoftCap: 320, particleCap: 300, spriteFxCap: 42, ringCap: 34, enemyCap: 52, bulletGlow: true, killBurstMul: 0.92 },
-      { enemyBulletMax: 560, mobSoftCap: 125, bossSoftCap: 220, particleCap: 190, spriteFxCap: 28, ringCap: 20, enemyCap: 42, bulletGlow: false, killBurstMul: 0.60 },
-      { enemyBulletMax: 340, mobSoftCap: 82, bossSoftCap: 140, particleCap: 90, spriteFxCap: 14, ringCap: 10, enemyCap: 32, bulletGlow: false, killBurstMul: 0.32 },
+      { enemyBulletMax: 620, mobSoftCap: 128, bossSoftCap: 240, particleCap: 220, spriteFxCap: 32, ringCap: 24, enemyCap: 46, themeFxCap: 70, hazardCap: 22, bulletGlow: true, killBurstMul: 0.78 },
+      { enemyBulletMax: 420, mobSoftCap: 96, bossSoftCap: 170, particleCap: 130, spriteFxCap: 20, ringCap: 14, enemyCap: 36, themeFxCap: 48, hazardCap: 14, bulletGlow: false, killBurstMul: 0.48 },
+      { enemyBulletMax: 260, mobSoftCap: 62, bossSoftCap: 110, particleCap: 60, spriteFxCap: 10, ringCap: 6, enemyCap: 28, themeFxCap: 26, hazardCap: 8, bulletGlow: false, killBurstMul: 0.22 },
     ],
     mobile: [
-      { enemyBulletMax: 440, mobSoftCap: 96, bossSoftCap: 168, particleCap: 130, spriteFxCap: 20, ringCap: 12, enemyCap: 36, bulletGlow: false, killBurstMul: 0.50 },
-      { enemyBulletMax: 320, mobSoftCap: 72, bossSoftCap: 124, particleCap: 85, spriteFxCap: 14, ringCap: 8, enemyCap: 30, bulletGlow: false, killBurstMul: 0.38 },
-      { enemyBulletMax: 240, mobSoftCap: 54, bossSoftCap: 92, particleCap: 45, spriteFxCap: 8, ringCap: 5, enemyCap: 24, bulletGlow: false, killBurstMul: 0.24 },
+      { enemyBulletMax: 300, mobSoftCap: 70, bossSoftCap: 120, particleCap: 90, spriteFxCap: 12, ringCap: 8, enemyCap: 30, themeFxCap: 34, hazardCap: 10, bulletGlow: false, killBurstMul: 0.38 },
+      { enemyBulletMax: 220, mobSoftCap: 52, bossSoftCap: 90, particleCap: 55, spriteFxCap: 8, ringCap: 5, enemyCap: 24, themeFxCap: 22, hazardCap: 7, bulletGlow: false, killBurstMul: 0.28 },
+      { enemyBulletMax: 160, mobSoftCap: 38, bossSoftCap: 68, particleCap: 32, spriteFxCap: 5, ringCap: 3, enemyCap: 18, themeFxCap: 14, hazardCap: 4, bulletGlow: false, killBurstMul: 0.16 },
     ],
   };
   function perfBudget() {
     const list = IS_MOBILE_RUNTIME ? PERF_BUDGETS.mobile : PERF_BUDGETS.desktop;
     return list[clamp(perfLevel | 0, 0, list.length - 1)] || list[list.length - 1];
+  }
+  function trimArrayTo(arr, cap) {
+    cap = Math.max(0, cap | 0);
+    if (arr.length > cap) arr.splice(0, arr.length - cap);
+  }
+  function currentRuntimeLoad() {
+    const budget = perfBudget();
+    const bulletLoad = enemyBullets.length / Math.max(1, budget.enemyBulletMax);
+    const particleLoad = particles.length / Math.max(1, budget.particleCap);
+    const fxLoad = (spriteFx.length + procRings.length + suiyiFx.length + miguaFx.length) / Math.max(1, (budget.spriteFxCap + budget.ringCap + budget.themeFxCap));
+    const hazardLoad = (suiyiHazards.length + miguaHazards.length) / Math.max(1, budget.hazardCap * 2);
+    const updateLoad = perfStats.updateMs / (IS_MOBILE_RUNTIME ? 9.5 : 14);
+    const drawLoad = perfStats.drawMs / (IS_MOBILE_RUNTIME ? 11 : 17);
+    const frameLoad = smoothFrameMs / (IS_MOBILE_RUNTIME ? 28 : 34);
+    return Math.max(bulletLoad, particleLoad, fxLoad, hazardLoad, updateLoad, drawLoad, frameLoad);
+  }
+  function runtimePerfStressActive() {
+    return runtimePerfStressFlag;
+  }
+  function refreshRuntimePerfStress() {
+    runtimePerfStressFlag = currentRuntimeLoad() > 1.0 || perfLevel >= 2 && enemyBullets.length > perfBudget().enemyBulletMax * 0.86;
+    return runtimePerfStressFlag;
+  }
+  function enforceRuntimePerfBudget(reason = 'frame') {
+    const budget = perfBudget();
+    const stressed = refreshRuntimePerfStress();
+    const hardMul = reason === 'spawn' ? 1 : (stressed ? 0.82 : 1);
+    const bulletCap = Math.max(48, Math.floor(budget.enemyBulletMax * hardMul));
+    const particleCap = Math.max(18, Math.floor(budget.particleCap * hardMul));
+    const spriteCap = Math.max(4, Math.floor(budget.spriteFxCap * hardMul));
+    const ringCap = Math.max(2, Math.floor(budget.ringCap * hardMul));
+    const fxCap = Math.max(8, Math.floor(budget.themeFxCap * hardMul));
+    const hazardCap = Math.max(3, Math.floor(budget.hazardCap * hardMul));
+    if (enemyBullets.length > bulletCap) cullEnemyBullets(bulletCap);
+    trimArrayTo(particles, particleCap);
+    trimArrayTo(spriteFx, spriteCap);
+    trimArrayTo(procRings, ringCap);
+    trimArrayTo(suiyiFx, fxCap);
+    trimArrayTo(miguaFx, fxCap);
+    trimArrayTo(suiyiHazards, hazardCap);
+    trimArrayTo(miguaHazards, hazardCap);
+    trimArrayTo(damageTexts, stressed ? 36 : 64);
+    if (stressed && perfLevel < 2) perfLevel++;
+    refreshRuntimePerfStress();
   }
   function removeUnordered(arr, i) {
     arr[i] = arr[arr.length - 1];
@@ -2748,10 +2795,26 @@
     const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 78 : 68;
     return Math.max(52, base + loops * 10 - qualityTrim);
   }
+  function reinforcementSpawnIntervalAt(t = elapsed) {
+    return Math.max(0.78, 1.24 - t / 320);
+  }
+  function timedReinforcementRemaining(stageT = stateTimer, minDuration = mobStageMinDuration(), interval = reinforcementSpawnIntervalAt()) {
+    const left = Math.max(0, minDuration - stageT);
+    if (left <= 0) return 0;
+    return Math.ceil(left / Math.max(0.18, interval));
+  }
   function stageActLabel(stage = segment) {
     return ({stage1:'第一幕',stage2:'第二幕',stage3:'第三幕',stage4:'第四幕',stage5:'第五幕',stage6:'第六幕',stage7:'第七幕',stage8:'第八幕',stage9:'第九幕',stage10:'第十幕'})[stage] || '第一幕';
   }
-  function formatMobWaveStatus(spawned = waveIndex, totalWaves = mobStageWaveTarget(), reinforcements = extraSpawned, reinforcementTarget = Math.max(extraWavesForStage(), extraSpawned)) {
+  function formatMobWaveStatus(
+    spawned = waveIndex,
+    totalWaves = mobStageWaveTarget(),
+    reinforcements = extraSpawned,
+    reinforcementTarget = extraWavesForStage(),
+    stageT = stateTimer,
+    minDuration = mobStageMinDuration(),
+    reinforcementInterval = reinforcementSpawnIntervalAt()
+  ) {
     const total = Math.max(1, totalWaves | 0);
     if (spawned < total) {
       const current = clamp(spawned || 1, 1, total);
@@ -2766,8 +2829,9 @@
     }
     const target = Math.max(0, reinforcementTarget | 0);
     const current = Math.max(0, reinforcements | 0);
-    const remaining = Math.max(0, target - current);
-    if (target <= 0 && current <= 0) {
+    const timedRemaining = timedReinforcementRemaining(stageT, minDuration, reinforcementInterval);
+    const remaining = Math.max(0, target - current, timedRemaining);
+    if (target <= 0 && current <= 0 && remaining <= 0) {
       return { phase: 'clear', current: 0, remaining: 0, text: '清场中 · 剩余 0 波', compact: '清场  剩0波' };
     }
     return {
@@ -12167,6 +12231,7 @@
 
   function addEnemyBullet(x, y, vx, vy, r = 7, color = '#ffd46a', damage = 8, life = 7, kind = 'orb') {
     if (enemyBullets.length >= perfBudget().enemyBulletMax) cullEnemyBullets();
+    if (enemyBullets.length >= perfBudget().enemyBulletMax) enforceRuntimePerfBudget('spawn');
     const b = { x, y, vx, vy, ax: 0, ay: 0, r, color, damage, life, maxLife: life, kind, grazed: false, rot: rand(0, TAU), spin: rand(-3, 3) };
     enemyBullets.push(b);
     return b;
@@ -12174,9 +12239,10 @@
 
   // 超限回收：优先剔除已飞出屏幕（玩家看不见）的子弹，屏幕内的尽量保留，
   // 避免出现“屏幕内弹幕凭空消失”。出屏弹不够时才删最旧的。
-  function cullEnemyBullets() {
-    const cap = perfBudget().enemyBulletMax;
-    let need = enemyBullets.length - cap + 1;
+  function cullEnemyBullets(targetCap = perfBudget().enemyBulletMax) {
+    const cap = Math.max(24, targetCap | 0);
+    const keep = Math.max(24, Math.floor(cap * 0.92));
+    let need = enemyBullets.length - keep + 1;
     if (need <= 0) return;
     for (let i = 0; i < enemyBullets.length && need > 0; i++) {
       const b = enemyBullets[i];
@@ -13457,6 +13523,7 @@
     updateGiantBirds(dt);
     updateItems(dt);
     updateEnemies(dt);
+    refreshRuntimePerfStress();
     updateEnemyBullets(dt);
     updateMiguaHazards(dt);
     updateMiguaFx(dt);
@@ -13475,6 +13542,7 @@
     updateParticles(dt);
     updateSpriteFx(dt);
     updateDamageTexts(dt);
+    enforceRuntimePerfBudget('update');
     updateQishenwu(dt);
     updateWingmen(dt);
 
@@ -18893,7 +18961,7 @@
   }
 
   function addMiguaFx(type, x, y, opts = {}) {
-    const cap = perfLevel === 2 ? 42 : perfLevel === 1 ? 68 : 96;
+    const cap = perfBudget().themeFxCap;
     if (miguaFx.length >= cap) miguaFx.splice(0, miguaFx.length - cap + 1);
     miguaFx.push({
       type, x, y,
@@ -18910,7 +18978,7 @@
   }
 
   function addMiguaHazard(type, x, y, opts = {}) {
-    const cap = perfLevel === 2 ? 14 : perfLevel === 1 ? 20 : 28;
+    const cap = perfBudget().hazardCap;
     if (miguaHazards.length >= cap) miguaHazards.splice(0, miguaHazards.length - cap + 1);
     miguaHazards.push({
       type, x, y,
@@ -19717,7 +19785,7 @@
       spawnWave((extraSpawned + 1) % sourceTotal);
       spawnBonusEnemies();
       extraSpawned++;
-      spawnTimer = Math.max(0.78, 1.24 - elapsed / 320);
+      spawnTimer = reinforcementSpawnIntervalAt();
       setMessage(`${actLabel} · ${formatMobWaveStatus().text}`, 1.0);
     }
     // 安全网：波次全部结束后，清除卡在画面外上方、存活过久的残留怪（防止永久卡关）
@@ -20388,12 +20456,14 @@
 
   function addSuiyiFx(type, x, y, life = 0.8, extra = {}) {
     suiyiFx.push({ type, x, y, life, maxLife: life, rot: rand(0, TAU), seed: rand(0, 999), ...extra });
-    if (suiyiFx.length > SUIYI_LIMITS.maxFx) suiyiFx.splice(0, suiyiFx.length - SUIYI_LIMITS.maxFx);
+    const cap = Math.min(SUIYI_LIMITS.maxFx, perfBudget().themeFxCap);
+    if (suiyiFx.length > cap) suiyiFx.splice(0, suiyiFx.length - cap);
   }
 
   function addSuiyiHazard(type, x, y, life = 1.4, extra = {}) {
     suiyiHazards.push({ type, x, y, life, maxLife: life, rot: rand(-0.12, 0.12), seed: rand(0, 999), ...extra });
-    if (suiyiHazards.length > SUIYI_LIMITS.maxHazards) suiyiHazards.splice(0, suiyiHazards.length - SUIYI_LIMITS.maxHazards);
+    const cap = Math.min(SUIYI_LIMITS.maxHazards, perfBudget().hazardCap);
+    if (suiyiHazards.length > cap) suiyiHazards.splice(0, suiyiHazards.length - cap);
   }
 
   function updateSuiyiHazards(dt) {
@@ -21174,10 +21244,11 @@
     if (!b || !b.suiyi) return false;
     b.suiyiAge = (b.suiyiAge || 0) + dt;
     b.hist = b.hist || [];
-    const trailStep = b.suiyiTrailStep || SUIYI_READABLE_DANMAKU.defaultTrailStep;
+    const stressed = runtimePerfStressActive();
+    const trailStep = (b.suiyiTrailStep || SUIYI_READABLE_DANMAKU.defaultTrailStep) * (stressed ? 1.75 : 1);
     if (b.suiyiTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > trailStep * trailStep)) {
       b.hist.unshift({ x: b.x, y: b.y, a: b.suiyiAlpha ?? 1 });
-      const maxTrail = b.suiyiTrailMax || SUIYI_READABLE_DANMAKU.defaultTrailMax;
+      const maxTrail = stressed ? Math.min(3, b.suiyiTrailMax || SUIYI_READABLE_DANMAKU.defaultTrailMax) : (b.suiyiTrailMax || SUIYI_READABLE_DANMAKU.defaultTrailMax);
       if (b.hist.length > maxTrail) b.hist.pop();
     }
     const p = b.suiyiParams || {};
@@ -21254,11 +21325,13 @@
   function updateSuiyiTechEnemyBullet(b, dt) {
     if (!b || !b.suiyiTech) return;
     b.techAge = (b.techAge || 0) + dt;
+    const stressed = runtimePerfStressActive();
     if (b.techTrail) {
       b.hist = b.hist || [];
-      if (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > 9 * 9) {
+      const step = stressed ? 18 : 9;
+      if (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > step * step) {
         b.hist.unshift({ x: b.x, y: b.y });
-        const maxHist = perfLevel >= 2 ? 7 : (perfLevel === 1 ? 9 : 12);
+        const maxHist = stressed ? 4 : (perfLevel >= 2 ? 7 : (perfLevel === 1 ? 9 : 12));
         if (b.hist.length > maxHist) b.hist.pop();
       }
     }
@@ -21274,9 +21347,11 @@
     if (!b || !b.migua) return false;
     b.miguaAge = (b.miguaAge || 0) + dt;
     b.hist = b.hist || [];
-    if (b.miguaTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > 8 * 8)) {
+    const stressed = runtimePerfStressActive();
+    const trailStep = stressed ? 18 : 8;
+    if (b.miguaTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > trailStep * trailStep)) {
       b.hist.unshift({ x: b.x, y: b.y });
-      const maxHist = perfLevel === 2 ? 6 : perfLevel === 1 ? 9 : 12;
+      const maxHist = stressed ? 4 : (perfLevel === 2 ? 6 : perfLevel === 1 ? 9 : 12);
       if (b.hist.length > maxHist) b.hist.pop();
     }
     const sp = Math.hypot(b.vx, b.vy) || 1;
@@ -22082,15 +22157,18 @@
 
   function drawSuiyiTechBulletTrail(b) {
     if (!b.hist || b.hist.length < 2) return;
+    const stressed = runtimePerfStressActive();
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    const colors = [
-      { w: b.r * 1.45, c: 'rgba(74,236,255,.16)' },
-      { w: b.r * 0.72, c: 'rgba(255,112,220,.24)' },
-      { w: Math.max(1.0, b.r * 0.20), c: 'rgba(255,235,248,.58)' },
-    ];
+    const colors = stressed
+      ? [{ w: Math.max(1.2, b.r * 0.42), c: 'rgba(138,252,255,.28)' }]
+      : [
+        { w: b.r * 1.45, c: 'rgba(74,236,255,.16)' },
+        { w: b.r * 0.72, c: 'rgba(255,112,220,.24)' },
+        { w: Math.max(1.0, b.r * 0.20), c: 'rgba(255,235,248,.58)' },
+      ];
     for (const layer of colors) {
       ctx.lineWidth = layer.w;
       ctx.strokeStyle = layer.c;
@@ -22105,7 +22183,7 @@
       }
       ctx.stroke();
     }
-    if (perfLevel < 2) {
+    if (perfLevel < 2 && !stressed) {
       ctx.font = 'bold 10px Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       for (let i = 1; i < b.hist.length; i += 3) {
@@ -22122,13 +22200,16 @@
   function drawSuiyiEnemyBullet(b) {
     drawHostileBulletRedEdge(b, b.suiyiType === 'error_window' ? 1.48 : 1.14, (b.suiyiAlpha ?? 1) * 0.42);
     if (b.hist && b.hist.length > 1) {
+      const stressed = runtimePerfStressActive();
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
-      const trailLayers = [
-        { width: Math.max(1.6, b.r * 0.74), color: 'rgba(90,238,255,.15)' },
-        { width: Math.max(1.0, b.r * 0.28), color: 'rgba(255,154,226,.26)' },
-        { width: Math.max(0.8, b.r * 0.12), color: 'rgba(255,242,252,.34)' },
-      ];
+      const trailLayers = stressed
+        ? [{ width: Math.max(1.0, b.r * 0.24), color: 'rgba(116,248,255,.24)' }]
+        : [
+          { width: Math.max(1.6, b.r * 0.74), color: 'rgba(90,238,255,.15)' },
+          { width: Math.max(1.0, b.r * 0.28), color: 'rgba(255,154,226,.26)' },
+          { width: Math.max(0.8, b.r * 0.12), color: 'rgba(255,242,252,.34)' },
+        ];
       for (let layer = 0; layer < trailLayers.length; layer++) {
         ctx.lineWidth = trailLayers[layer].width;
         ctx.strokeStyle = trailLayers[layer].color;
@@ -22143,7 +22224,7 @@
         }
         ctx.stroke();
       }
-      if (perfLevel < 2 && b.hist.length > 3) {
+      if (perfLevel < 2 && !stressed && b.hist.length > 3) {
         ctx.font = 'bold 10px Menlo, Consolas, monospace';
         ctx.textAlign = 'center';
         for (let i = 1; i < b.hist.length; i += 4) {
@@ -24600,13 +24681,14 @@
     const isBubble = type.includes('bubble');
     const isSlice = type.includes('slice') || type === 'bitten_melon';
     const isSun = type === 'melon_sun';
+    const stressed = runtimePerfStressActive();
     if (b.hist && b.hist.length > 1 && b.miguaTrail) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
       ctx.lineCap = 'round';
       if (isSlice) {
         ctx.beginPath();
-        for (let i = 0; i < Math.min(7, b.hist.length); i++) {
+        for (let i = 0; i < Math.min(stressed ? 3 : 7, b.hist.length); i++) {
           const p = b.hist[i];
           if (i === 0) ctx.moveTo(p.x, p.y);
           else {
@@ -24614,11 +24696,12 @@
             ctx.quadraticCurveTo((p.x + b.x) * 0.5 + wob, (p.y + b.y) * 0.5 - wob, p.x, p.y);
           }
         }
-        ctx.strokeStyle = 'rgba(255,148,202,0.24)';
-        ctx.lineWidth = Math.max(3, r * 0.75);
+        ctx.strokeStyle = stressed ? 'rgba(255,238,160,0.20)' : 'rgba(255,148,202,0.24)';
+        ctx.lineWidth = Math.max(2, r * (stressed ? 0.38 : 0.75));
         ctx.stroke();
       } else {
-        for (let i = 0; i < b.hist.length; i += 2) {
+        const step = stressed ? 4 : 2;
+        for (let i = 0; i < b.hist.length; i += step) {
           const p = b.hist[i];
           const fade = (1 - i / Math.max(1, b.hist.length));
           const a = fade * (isSeed ? 0.32 : isJuice ? 0.28 : 0.18);
@@ -24626,7 +24709,7 @@
           ctx.beginPath();
           ctx.arc(p.x, p.y, Math.max(1.4, r * (isSeed ? 0.22 : isJuice ? 0.32 : 0.28) * fade), 0, TAU);
           ctx.fill();
-          if (isJuice && i < 6) {
+          if (!stressed && isJuice && i < 6) {
             ctx.fillStyle = `rgba(255,226,106,${a * 0.62})`;
             ctx.beginPath();
             ctx.arc(p.x + Math.sin(i + time) * r * 0.5, p.y + Math.cos(i) * r * 0.3, Math.max(1, r * 0.14 * fade), 0, TAU);
@@ -25263,16 +25346,19 @@
 
   function drawParticles() {
     // Cheap additive glow pass (no per-particle shadowBlur, which is CPU-killing at scale).
-    ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
-    for (const p of particles) {
-      if (!p.glow) continue;
-      const a = clamp(p.life / p.maxLife, 0, 1);
-      ctx.globalAlpha = a * 0.5;
-      ctx.fillStyle = p.color;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1.4 + a), 0, TAU); ctx.fill();
+    const stressed = runtimePerfStressActive();
+    if (!stressed) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (const p of particles) {
+        if (!p.glow) continue;
+        const a = clamp(p.life / p.maxLife, 0, 1);
+        ctx.globalAlpha = a * 0.5;
+        ctx.fillStyle = p.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1.4 + a), 0, TAU); ctx.fill();
+      }
+      ctx.restore();
     }
-    ctx.restore();
     // Core pass.
     ctx.save();
     for (const p of particles) {
@@ -27233,6 +27319,10 @@
       perfStats.updateMs += (perfStats.lastUpdateMs - perfStats.updateMs) * 0.12;
       perfStats.drawMs += (perfStats.lastDrawMs - perfStats.drawMs) * 0.12;
       perfStats.fps = 1000 / Math.max(1, perfStats.frameMs);
+      refreshRuntimePerfStress();
+      if (perfStats.lastUpdateMs + perfStats.lastDrawMs > (IS_MOBILE_RUNTIME ? 24 : 34) || runtimePerfStressActive()) {
+        enforceRuntimePerfBudget('frame');
+      }
     } catch (err) {
       loopErrCount++;
       if (loopErrCount <= 8) console.error('[loop] recovered from error:', err);
@@ -27832,8 +27922,10 @@
       waveHudSpec: () => ({
         mode: 'current-wave-plus-remaining-no-slash-denominator',
         mainSample: formatMobWaveStatus(9, 16, 0, 0).text,
-        reinforcementSample: formatMobWaveStatus(16, 16, 16, 16).text,
+        reinforcementSample: formatMobWaveStatus(16, 16, 16, 16, 50, 68, 1).text,
+        reinforcementClearSample: formatMobWaveStatus(16, 16, 16, 16, 68, 68, 1).text,
         openingSample: formatMobWaveStatus(0, 16, 0, 0).text,
+        timedRemainingForTest: (stageT = 50, minDuration = 68, interval = 1) => timedReinforcementRemaining(stageT, minDuration, interval),
       }),
       layeringSpec: () => ({
         ...ENEMY_ATTACK_LAYER_SPEC,
@@ -27861,6 +27953,14 @@
         current: { qualityPreset, qualityAutoSelected, perfLevel, probePerfLevel: qualityProbePerfLevel },
         desktop: PERF_BUDGETS.desktop.map(b => ({ ...b })),
         mobile: PERF_BUDGETS.mobile.map(b => ({ ...b })),
+      }),
+      runtimePerformanceSpec: () => ({
+        mode: 'stress-cached-runtime-budget-trim',
+        stressFlag: runtimePerfStressActive(),
+        currentLoad: currentRuntimeLoad(),
+        trims: ['enemyBullets', 'particles', 'spriteFx', 'procRings', 'suiyiFx', 'miguaFx', 'suiyiHazards', 'miguaHazards', 'damageTexts'],
+        preserves: ['playerUpdate', 'hitbox', 'hostileBulletBoundary', 'coreProjectileBodies'],
+        themeCapsFromBudget: true,
       }),
       claritySpec: () => ({
         hostileBullet: {
