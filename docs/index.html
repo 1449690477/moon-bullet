@@ -6646,13 +6646,13 @@
 		    maxShotsOverdrive: 270,
 	    trailNodes: [18, 13, 8],
 	    bodyParticles: [9, 6, 3],
-		    hitFxCap: [34, 22, 12],
+		    hitFxCap: [16, 10, 6],
 		    lowQualityBulletScale: 0.72,
 		    pierceDamageMaxMul: 16,
 		    giantPierceDamageMaxMul: 96,
 		    moduleBounceMaxMul: 32,
 		    moduleBounceOverdriveMaxMul: 256,
-		    bounceFxCap: [34, 24, 12],
+		    bounceFxCap: [8, 6, 4],
 		    blinkSwordCap: [70, 52, 34],
 		    blinkFxCap: [38, 26, 16],
 		  });
@@ -6688,7 +6688,7 @@
 		    moduleBounceSpeed: 1260,
 		    moduleBounceTargetLimit: 6,
 		    arcBladeVisualOffset: 0,
-		    streamTrailBoost: 1.42,
+		    streamTrailBoost: 0.78,
 		  });
 	  const SKYWARD_STELLAR_BLINK = Object.freeze({
 	    name: '星轨跃迁',
@@ -6768,19 +6768,19 @@
 	    v3ArtifactPolicy: 'front-halo-only-no-rear-or-ice-rings',
 	  });
 	  const SKYWARD_BOUNCE_VISUAL = Object.freeze({
-	    policy: 'use dedicated chain-lance sprites; keep additive trail below model readability',
-	    normalSwordW: 82,
-	    overdriveSwordW: 108,
-	    normalTrailLen: 142,
-	    overdriveTrailLen: 190,
-	    normalTrailH: 22,
-	    overdriveTrailH: 30,
-	    normalTrailAlpha: 0.30,
-	    overdriveTrailAlpha: 0.42,
-	    normalGlowAlpha: 0.20,
-	    overdriveGlowAlpha: 0.30,
-	    normalUnderlayAlpha: 0.26,
-	    overdriveUnderlayAlpha: 0.36,
+	    policy: 'use dedicated chain-lance sprites with minimal additive trail; model readability first',
+	    normalSwordW: 70,
+	    overdriveSwordW: 86,
+	    normalTrailLen: 82,
+	    overdriveTrailLen: 108,
+	    normalTrailH: 10,
+	    overdriveTrailH: 14,
+	    normalTrailAlpha: 0.055,
+	    overdriveTrailAlpha: 0.080,
+	    normalGlowAlpha: 0.035,
+	    overdriveGlowAlpha: 0.055,
+	    normalUnderlayAlpha: 0.045,
+	    overdriveUnderlayAlpha: 0.065,
 	    modelAlpha: 0.96,
 	  });
 	  const SKYWARD_SHOT_KINDS = Object.freeze([
@@ -6941,6 +6941,11 @@
   }
   function spawnSkywardBlinkFx(type, x, y, opts = {}) {
     const cap = skywardBlinkFxCap();
+    if (type === 'dashTrail' || type === 'landingWingBurst') {
+      for (let i = skywardState.blinkFx.length - 1; i >= 0; i--) {
+        if (skywardState.blinkFx[i].type === type) skywardState.blinkFx.splice(i, 1);
+      }
+    }
     if (skywardState.blinkFx.length >= cap) skywardState.blinkFx.splice(0, skywardState.blinkFx.length - cap + 1);
     skywardState.blinkFx.push({
       type,
@@ -7005,21 +7010,21 @@
       const spread = (i - (cfg.swordsPerBlink - 1) / 2) / Math.max(1, cfg.swordsPerBlink - 1);
       const a = target ? angleTo(sx, sy, target.x, target.y) : (-Math.PI / 2 + spread * cfg.swordLaunchSpread * 0.16);
       const s = fireSkywardShot(sx, sy, a, cfg.swordSpeed, cfg.swordDamage * dm, 6.8, 'sky_blink_sword', {
-        assetKey: assetReady('skywardBlinkSwordStreak') ? 'skywardBlinkSwordStreak' : (assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : 'skywardLanceM'),
-        modelAssetKey: assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : '',
+        assetKey: assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : 'skywardLanceM',
+        modelAssetKey: '',
         horizontalSprite: false,
         visualRotOffset: 0,
         lanceClass: 'stellarBlinkSword',
-        spriteScale: player.berserk > 0 ? 1.26 : 1.16,
-        spriteLengthMul: player.berserk > 0 ? 1.68 : 1.48,
-        trailBoost: player.berserk > 0 ? 2.85 : 2.25,
-        trailWidthMul: player.berserk > 0 ? 1.28 : 1.16,
-        energyStream: true,
-        flowAssetKey: assetReady('skywardBlinkSwordTrail') ? 'skywardBlinkSwordTrail' : 'skywardChainFlowLong',
+        spriteScale: player.berserk > 0 ? 0.96 : 0.88,
+        spriteLengthMul: player.berserk > 0 ? 1.02 : 0.94,
+        trailBoost: player.berserk > 0 ? 0.88 : 0.68,
+        trailWidthMul: player.berserk > 0 ? 0.46 : 0.38,
+        energyStream: false,
+        flowAssetKey: '',
         trailColor: '#aef4ff',
         goldTrail: i % 3 === 0,
-        tipFlare: player.berserk > 0 ? 1.85 : 1.62,
-        tailFlow: player.berserk > 0 ? 1.74 : 1.48,
+        tipFlare: player.berserk > 0 ? 0.62 : 0.50,
+        tailFlow: player.berserk > 0 ? 0.82 : 0.62,
         life: cfg.swordLife,
         pierce: 0,
       });
@@ -7380,10 +7385,10 @@
 	        goldTrail: true,
 	        lanceClass: center ? 'overdriveCoreLance' : 'overdriveArrayLance',
 	        spriteScale: center ? 1.12 : 0.94,
-	        trailBoost: (center ? 1.58 : 1.32) * SKYWARD_OVERDRIVE_FIRE.streamTrailBoost,
-	        energyStream: true,
-	        flowAssetKey: center ? 'skywardChainFlowLong' : 'skywardChainFlowShort',
-		        tipFlare: center ? 1.18 : 0.96,
+	        trailBoost: (center ? 1.10 : 0.88) * SKYWARD_OVERDRIVE_FIRE.streamTrailBoost,
+	        energyStream: center,
+	        flowAssetKey: center ? 'skywardChainFlowLong' : '',
+		        tipFlare: center ? 0.92 : 0.74,
 		        skyPierceScale: center,
 		        skyPierceMaxMul: center ? SKYWARD_LIMITS.pierceDamageMaxMul : 8,
 		      });
@@ -7396,11 +7401,11 @@
 	        goldTrail: true,
 	        lanceClass: 'overdriveGiantLance',
 	        spriteScale: 1.76,
-	        trailBoost: 2.35,
+	        trailBoost: 1.18,
 	        energyStream: true,
 	        flowAssetKey: 'skywardChainFlowOverdrive',
-	        trailWidthMul: 1.32,
-		        tipFlare: 1.62,
+	        trailWidthMul: 0.58,
+		        tipFlare: 1.04,
 		        life: 1.55,
 		        skyPierceScale: true,
 		        skyPierceMaxMul: SKYWARD_LIMITS.giantPierceDamageMaxMul,
@@ -7463,11 +7468,11 @@
 		        goldTrail: i % 2 === 0,
 		        lanceClass: 'moduleThinLance',
 		        spriteScale: overdrive ? (rear ? 0.84 : 0.76) : (rear ? 0.62 : 0.54),
-		        trailBoost: overdrive ? 1.72 : 0.88,
-		        energyStream: overdrive,
-		        flowAssetKey: overdrive ? 'skywardChainFlowShort' : '',
-		        trailWidthMul: overdrive ? 0.74 : 0.62,
-		        tipFlare: overdrive ? 0.94 : 0.78,
+		        trailBoost: overdrive ? 1.04 : 0.66,
+		        energyStream: false,
+		        flowAssetKey: '',
+		        trailWidthMul: overdrive ? 0.46 : 0.36,
+		        tipFlare: overdrive ? 0.70 : 0.58,
 		        skyBounce: true,
 		        skyBounceMax: overdrive ? SKYWARD_OVERDRIVE_FIRE.moduleBounceCount : SKYWARD_NORMAL_FIRE.moduleBounceCount,
 		        skyBounceTargetLimit: overdrive ? SKYWARD_OVERDRIVE_FIRE.moduleBounceTargetLimit : SKYWARD_NORMAL_FIRE.moduleBounceTargetLimit,
@@ -7513,19 +7518,27 @@
     if (skywardState.hitFx.length > cap) skywardState.hitFx.splice(0, skywardState.hitFx.length - cap);
 	    const fxX = target && target.x !== undefined ? target.x : s.x;
 	    const fxY = target && target.y !== undefined ? target.y : s.y;
+	    if (chainSword) {
+	      addRingFx(fxX, fxY, 1.2, player.berserk > 0 ? 8 : 6, 0.055, 'rgba(126,222,255,', 0.42);
+	      if (perfLevel < 2 && Math.random() < 0.45) {
+	        sparks(fxX, fxY, '#bff4ff', player.berserk > 0 ? 2 : 1, Math.atan2(-s.vy, -s.vx), 0.44, 72);
+	      }
+	      if (audio.enemyHit) audio.enemyHit();
+	      return;
+	    }
 	    const key = blinkSword && assetReady('skywardBlinkHitBurst') ? 'skywardBlinkHitBurst' : (chainSword && assetReady('skywardChainBurst') ? 'skywardChainBurst' : (big ? 'skywardHitM' : 'skywardHitS'));
     skywardState.hitFx.push({
       x: fxX,
       y: fxY,
-      r: chainSword ? (player.berserk > 0 ? 18 : 14) : (big ? 44 : 28),
-      life: chainSword ? 0.12 : (big ? 0.30 : 0.22),
-      maxLife: chainSword ? 0.12 : (big ? 0.30 : 0.22),
+      r: big ? 28 : 18,
+      life: big ? 0.18 : 0.14,
+      maxLife: big ? 0.18 : 0.14,
       rot: s.rot || 0,
       key,
     });
-	    if (assetReady(key)) addSpriteFx(key, fxX, fxY, chainSword ? (player.berserk > 0 ? 28 : 22) : (big ? 74 : 46), chainSword ? 0.10 : 0.18, rand(0, TAU), chainSword ? 0.10 : 0.28, chainSword ? 0.28 : (big ? 0.86 : 0.72));
-	    addRingFx(fxX, fxY, 1.5, chainSword ? (player.berserk > 0 ? 16 : 12) : (big ? 34 : 22), chainSword ? 0.10 : (big ? 0.24 : 0.18), 'rgba(150,230,255,', chainSword ? 0.8 : (big ? 3 : 2));
-	    sparks(fxX, fxY, '#bff4ff', chainSword ? (player.berserk > 0 ? 3 : 2) : (big ? 7 : 4), Math.atan2(-s.vy, -s.vx), chainSword ? 0.72 : (big ? 1.4 : 1.0), chainSword ? 120 : (big ? 260 : 180));
+	    if (assetReady(key)) addSpriteFx(key, fxX, fxY, big ? 42 : 26, 0.11, rand(0, TAU), 0.10, big ? 0.34 : 0.24);
+	    addRingFx(fxX, fxY, 1.2, big ? 16 : 10, big ? 0.085 : 0.060, 'rgba(150,230,255,', big ? 0.9 : 0.55);
+	    sparks(fxX, fxY, '#bff4ff', big ? 3 : 2, Math.atan2(-s.vy, -s.vx), big ? 0.72 : 0.52, big ? 110 : 80);
 	    if (audio.enemyHit) audio.enemyHit();
 	  }
 	  function skywardDamageForHit(s) {
@@ -7562,6 +7575,9 @@
 	    return candidates.length ? candidates[0].e : null;
 	  }
 	  function spawnSkywardBounceSwordFx(s, target, angle, overdrive) {
+	    if (perfLevel >= 2) return;
+	    const hitIndex = s.skyBounceHits || 0;
+	    if (hitIndex % (overdrive ? 3 : 2) !== 0) return;
 	    const cap = SKYWARD_LIMITS.bounceFxCap[Math.min(2, perfLevel)] || 12;
 	    if (skywardState.bounceFx.length >= cap) skywardState.bounceFx.splice(0, skywardState.bounceFx.length - cap + 1);
 	    skywardState.bounceFx.push({
@@ -7570,8 +7586,8 @@
 	      x2: target.x,
 	      y2: target.y,
 	      ang: angle,
-	      life: overdrive ? 0.42 : 0.34,
-	      maxLife: overdrive ? 0.42 : 0.34,
+	      life: overdrive ? 0.20 : 0.16,
+	      maxLife: overdrive ? 0.20 : 0.16,
 	      overdrive,
 	      seed: s.skySeed || 0,
 	      swordKey: overdrive && assetReady('skywardChainLanceOverdrive') ? 'skywardChainLanceOverdrive' : (assetReady('skywardChainLanceS') ? 'skywardChainLanceS' : 'skywardLanceS'),
@@ -7600,16 +7616,16 @@
 	    s.lanceClass = overdrive ? 'moduleChainSwordOverdrive' : 'moduleChainSword';
 	    s.spriteLengthMul = overdrive ? 1.12 : 0.98;
 	    s.spriteScale = overdrive ? 1.02 : 0.92;
-	    s.energyStream = true;
-	    s.flowAssetKey = overdrive && assetReady('skywardChainFlowOverdrive') ? 'skywardChainFlowOverdrive' : (assetReady('skywardChainFlowLong') ? 'skywardChainFlowLong' : 'skywardChainFlowShort');
+	    s.energyStream = false;
+	    s.flowAssetKey = '';
 	    s.boomT = 0.035;
-	    s.trailBoost = Math.max(s.trailBoost || 1, overdrive ? 1.32 : 1.08);
-	    s.trailWidthMul = Math.max(s.trailWidthMul || 1, overdrive ? 0.88 : 0.72);
-	    s.tipFlare = Math.max(s.tipFlare || 1, overdrive ? 1.20 : 1.08);
-	    s.tailFlow = Math.max(s.tailFlow || 1, overdrive ? 1.18 : 1.08);
+	    s.trailBoost = overdrive ? 0.92 : 0.66;
+	    s.trailWidthMul = overdrive ? 0.42 : 0.32;
+	    s.tipFlare = overdrive ? 0.68 : 0.54;
+	    s.tailFlow = overdrive ? 0.76 : 0.58;
 	    spawnSkywardBounceSwordFx(s, target, a, overdrive);
-	    addRingFx(s.x, s.y, 1.5, player.berserk > 0 ? 34 : 24, 0.18, 'rgba(132,230,255,', 2);
-	    if (perfLevel < 2) for (let q = 0; q < (player.berserk > 0 ? 5 : 3); q++) addParticle(s.x, s.y, rand(-90, 90), rand(-90, 90), rand(0.16, 0.28), rand(1.0, 2.5), q % 2 ? '#dffcff' : '#84e8ff', true);
+	    addRingFx(s.x, s.y, 1.0, player.berserk > 0 ? 8 : 6, 0.055, 'rgba(132,230,255,', 0.42);
+	    if (perfLevel < 2 && Math.random() < 0.45) for (let q = 0; q < (player.berserk > 0 ? 2 : 1); q++) addParticle(s.x, s.y, rand(-56, 56), rand(-56, 56), rand(0.12, 0.20), rand(0.8, 1.7), q % 2 ? '#dffcff' : '#84e8ff', true);
 	    return true;
 	  }
 	  function skywardAfterHit(s, target, isBossTarget = false) {
@@ -7672,14 +7688,14 @@
       ctx.closePath();
       ctx.fill();
     };
-	    const stream = (s.energyStream ? 1.16 : 1) * (blinkSword ? 1.18 : bounceSword ? 0.92 : 1);
-	    drawRibbon((giant ? 1.95 : heavy ? 1.60 : blinkSword ? 1.28 : bounceSword ? 0.82 : thin ? 0.82 : 1.16) * stream, giant ? 0.40 : (blinkSword ? 0.46 : bounceSword ? 0.24 : s.energyStream ? 0.35 : 0.28), [
+	    const stream = (s.energyStream ? 1.16 : 1) * (blinkSword ? 0.64 : bounceSword ? 0.56 : 1);
+	    drawRibbon((giant ? 1.95 : heavy ? 1.60 : blinkSword ? 0.38 : bounceSword ? 0.34 : thin ? 0.82 : 1.16) * stream, giant ? 0.40 : (blinkSword ? 0.10 : bounceSword ? 0.075 : s.energyStream ? 0.35 : 0.28), [
 	      [0, 'rgba(40,112,255,0)'],
 	      [0.30, 'rgba(54,166,255,0.10)'],
 	      [0.62, 'rgba(64,214,255,0.18)'],
 	      [1, giant ? 'rgba(198,252,255,0.58)' : 'rgba(180,248,255,0.48)'],
 	    ]);
-	    drawRibbon((giant ? 0.88 : heavy ? 0.66 : blinkSword ? 0.52 : bounceSword ? 0.26 : thin ? 0.32 : 0.46) * stream, giant ? 0.68 : (blinkSword ? 0.78 : bounceSword ? 0.40 : s.energyStream ? 0.62 : 0.54), [
+	    drawRibbon((giant ? 0.88 : heavy ? 0.66 : blinkSword ? 0.18 : bounceSword ? 0.12 : thin ? 0.32 : 0.46) * stream, giant ? 0.68 : (blinkSword ? 0.18 : bounceSword ? 0.13 : s.energyStream ? 0.62 : 0.54), [
 	      [0, 'rgba(120,226,255,0)'],
 	      [0.55, s.goldTrail ? 'rgba(255,224,136,0.20)' : 'rgba(104,222,255,0.26)'],
 	      [1, 'rgba(238,254,255,0.66)'],
@@ -7700,6 +7716,7 @@
 	    const horizontal = !!s.horizontalSprite;
 	    const blinkSword = s.kind === 'sky_blink_sword' || s.lanceClass === 'stellarBlinkSword';
 	    const bounceSword = !!s.skyBounce || (s.lanceClass && String(s.lanceClass).includes('ChainSword'));
+	    if (bounceSword || blinkSword) return;
 	    ctx.save();
 	    ctx.globalCompositeOperation = 'lighter';
 	    const flowKey = s.flowAssetKey && assetReady(s.flowAssetKey) ? s.flowAssetKey : '';
@@ -7759,6 +7776,7 @@
 	    ctx.globalCompositeOperation = 'lighter';
 	    const pulse = 0.5 + Math.sin(time * 16 + (s.glowPhase || 0)) * 0.5;
 	    const over = player.berserk > 0;
+	    const chain = !!s.skyBounce;
 	    const modelKey = s.modelAssetKey && assetReady(s.modelAssetKey) ? s.modelAssetKey : '';
 	    if (modelKey) {
 	      const img = assets[modelKey];
@@ -7778,18 +7796,18 @@
 	    tip.addColorStop(0, 'rgba(255,255,255,0.88)');
 	    tip.addColorStop(0.34, 'rgba(130,238,255,0.36)');
 	    tip.addColorStop(1, 'rgba(70,190,255,0)');
-	    ctx.globalAlpha = (s.skyBounce ? 0.50 : 0.38) + pulse * 0.12;
+	    ctx.globalAlpha = (chain ? 0.12 : 0.38) + pulse * (chain ? 0.04 : 0.12);
 	    ctx.fillStyle = tip;
 	    ctx.beginPath(); ctx.ellipse(headX, 0, h * 0.72, h * 1.42, 0, 0, TAU); ctx.fill();
 	    ctx.lineCap = 'round';
-	    ctx.globalAlpha = (s.skyBounce ? 0.62 : 0.48) + pulse * 0.18;
+	    ctx.globalAlpha = (chain ? 0.18 : 0.48) + pulse * (chain ? 0.05 : 0.18);
 	    ctx.strokeStyle = 'rgba(232,254,255,0.92)';
 	    ctx.lineWidth = Math.max(1, h * 0.08);
 	    ctx.beginPath();
 	    ctx.moveTo(-w * 0.35, -h * 0.20);
 	    ctx.quadraticCurveTo(0, -h * 0.34, w * 0.42, -h * 0.06);
 	    ctx.stroke();
-	    ctx.globalAlpha *= s.skyBounce ? 0.90 : 0.75;
+	    ctx.globalAlpha *= chain ? 0.45 : 0.75;
 	    ctx.strokeStyle = 'rgba(255,226,142,0.72)';
 	    ctx.lineWidth = Math.max(0.7, h * 0.045);
 	    ctx.beginPath();
@@ -7803,13 +7821,13 @@
 	    const pulse = 0.5 + Math.sin(time * 18 + (s.glowPhase || 0)) * 0.5;
 	    ctx.save();
 	    ctx.globalCompositeOperation = 'lighter';
-	    const modelKey = s.modelAssetKey && assetReady(s.modelAssetKey) ? s.modelAssetKey : (assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : '');
+	    const modelKey = s.modelAssetKey && assetReady(s.modelAssetKey) ? s.modelAssetKey : '';
 	    if (modelKey) {
 	      const img = assets[modelKey];
 	      const mw = w * (over ? 1.38 : 1.24);
 	      const mh = mw * img.height / img.width;
 	      const glowKey = skywardGlowKey(modelKey);
-	      drawSkywardGlowAsset(glowKey, -mw / 2, -mh / 2 - h * 0.02, mw, mh, over ? 0.70 : 0.56, 1.1, 1.18);
+	      drawSkywardGlowAsset(glowKey, -mw / 2, -mh / 2 - h * 0.02, mw, mh, over ? 0.16 : 0.12, 0.45, 1.06);
 	      ctx.globalCompositeOperation = 'source-over';
 	      ctx.globalAlpha = over ? 0.96 : 0.92;
 	      ctx.drawImage(img, -mw / 2, -mh / 2 - h * 0.02, mw, mh);
@@ -7821,22 +7839,22 @@
 	    tip.addColorStop(0, 'rgba(255,255,255,0.96)');
 	    tip.addColorStop(0.24, 'rgba(152,246,255,0.58)');
 	    tip.addColorStop(1, 'rgba(72,192,255,0)');
-	    ctx.globalAlpha = over ? 0.62 : 0.50;
+	    ctx.globalAlpha = over ? 0.18 : 0.14;
 	    ctx.fillStyle = tip;
 	    ctx.beginPath(); ctx.ellipse(0, tipY, w * 0.24, w * 0.78, 0, 0, TAU); ctx.fill();
 	    const tail = ctx.createRadialGradient(0, tailY, 0, 0, tailY, w * 1.18);
 	    tail.addColorStop(0, 'rgba(236,254,255,0.74)');
 	    tail.addColorStop(0.38, 'rgba(80,226,255,0.36)');
 	    tail.addColorStop(1, 'rgba(42,120,255,0)');
-	    ctx.globalAlpha = (over ? 0.54 : 0.42) * (s.tailFlow || 1);
+	    ctx.globalAlpha = (over ? 0.16 : 0.12) * (s.tailFlow || 1);
 	    ctx.fillStyle = tail;
 	    ctx.beginPath(); ctx.ellipse(0, tailY, w * 0.34, w * 1.08, 0, 0, TAU); ctx.fill();
 	    ctx.lineCap = 'round';
-	    ctx.globalAlpha = over ? 0.58 : 0.48;
+	    ctx.globalAlpha = over ? 0.22 : 0.18;
 	    ctx.strokeStyle = 'rgba(232,254,255,0.92)';
 	    ctx.lineWidth = Math.max(1.0, w * 0.045);
 	    ctx.beginPath(); ctx.moveTo(0, tailY + h * 0.12); ctx.lineTo(0, tipY - h * 0.02); ctx.stroke();
-	    ctx.globalAlpha = (0.34 + pulse * 0.12);
+	    ctx.globalAlpha = (0.14 + pulse * 0.05);
 	    ctx.strokeStyle = 'rgba(255,224,132,0.72)';
 	    ctx.lineWidth = Math.max(0.7, w * 0.026);
 	    for (const side of [-1, 1]) {
@@ -7849,7 +7867,7 @@
 	    for (let i = 0; i < dotCount; i++) {
 	      const q = (time * (1.6 + i * 0.13) + (s.skySeed || 0) * 0.071 + i / dotCount) % 1;
 	      const y = lerp(tailY, tipY, q);
-	      ctx.globalAlpha = (over ? 0.44 : 0.34) * Math.sin(Math.PI * q);
+	      ctx.globalAlpha = (over ? 0.18 : 0.13) * Math.sin(Math.PI * q);
 	      ctx.fillStyle = i % 2 ? 'rgba(255,226,142,0.86)' : 'rgba(154,244,255,0.92)';
 	      ctx.beginPath(); ctx.ellipse((i - (dotCount - 1) / 2) * w * 0.045, y, over ? 1.4 : 1.0, over ? 5.4 : 4.0, 0, 0, TAU); ctx.fill();
 	    }
@@ -7981,15 +7999,17 @@
 	    const thin = s.kind === 'sky_module_lance' || s.kind === 'sky_blink_sword' || s.lanceClass === 'moduleThinLance' || s.lanceClass === 'stellarBlinkSword';
 	    const blinkSword = s.kind === 'sky_blink_sword' || s.lanceClass === 'stellarBlinkSword';
 	    const bounceSword = !!s.skyBounce || (s.lanceClass && String(s.lanceClass).includes('ChainSword'));
-	    const haloR = s.r * (bounceSword ? 1.55 : giant ? 4.8 : large ? 3.6 : 2.65);
-	    const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, haloR);
-    halo.addColorStop(0, bounceSword ? 'rgba(180,244,255,0.035)' : 'rgba(220,252,255,0.10)');
-    halo.addColorStop(0.48, s.goldTrail ? 'rgba(255,214,115,0.065)' : (bounceSword ? 'rgba(72,206,255,0.035)' : 'rgba(72,206,255,0.085)'));
-    halo.addColorStop(1, 'rgba(90,220,255,0)');
-    ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
-    ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(0, 0, bounceSword ? s.r * 1.75 : s.r * 3.2, 0, TAU); ctx.fill();
-    ctx.restore();
+	    if (!bounceSword) {
+	      const haloR = s.r * (giant ? 4.8 : large ? 3.6 : 2.65);
+	      const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, haloR);
+      halo.addColorStop(0, 'rgba(220,252,255,0.10)');
+      halo.addColorStop(0.48, s.goldTrail ? 'rgba(255,214,115,0.065)' : 'rgba(72,206,255,0.085)');
+      halo.addColorStop(1, 'rgba(90,220,255,0)');
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(0, 0, s.r * 3.2, 0, TAU); ctx.fill();
+      ctx.restore();
+	    }
 	    ctx.rotate(-faceAngle + (s.rot || faceAngle) + (s.visualRotOffset || 0));
 	    if (assetReady(key)) {
 	      const img = assets[key];
@@ -8002,11 +8022,11 @@
 	      const h = w * img.height / img.width;
 	      const glowKey = skywardGlowKey(key);
 		      drawSkywardEnergyStreamUnderlay(s, w, h);
-		      drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, bounceSword ? (player.berserk > 0 ? 0.22 : 0.15) : giant ? 0.52 : large ? 0.42 : (thin ? 0.38 : 0.30), bounceSword ? 0.8 : SKYWARD_VISUAL.bulletGlowBlur, giant ? 1.22 : (thin ? 1.18 : 1.13));
+		      drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, bounceSword ? (player.berserk > 0 ? 0.045 : 0.032) : blinkSword ? 0.06 : giant ? 0.52 : large ? 0.42 : (thin ? 0.38 : 0.30), bounceSword || blinkSword ? 0.35 : SKYWARD_VISUAL.bulletGlowBlur, giant ? 1.22 : (thin ? 1.18 : 1.13));
 	      ctx.globalCompositeOperation = 'source-over';
 	      ctx.globalAlpha = 0.98;
 	      ctx.drawImage(img, -w / 2, -h / 2, w, h);
-	      drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, bounceSword ? 0.08 : giant ? 0.24 : 0.16, 0, 1.02);
+	      drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, bounceSword ? 0.018 : blinkSword ? 0.025 : giant ? 0.24 : 0.16, 0, 1.02);
 		      if (s.horizontalSprite) drawSkywardHorizontalSwordDetails(s, w, h);
 		      else if (blinkSword) drawSkywardBlinkSwordDetails(s, w, h);
 		      else if (s.kind.includes('lance') || s.lanceClass) drawSkywardLanceDetails(s, w, h);
@@ -8018,7 +8038,7 @@
       ctx.fillStyle = lg; ctx.beginPath(); ctx.moveTo(0, -h / 2); ctx.lineTo(w, h * 0.12); ctx.lineTo(0, h / 2); ctx.lineTo(-w, h * 0.12); ctx.closePath(); ctx.fill();
 	    }
 	    ctx.globalCompositeOperation = 'lighter';
-	    ctx.globalAlpha = giant ? 0.30 : large ? 0.24 : 0.16;
+	    ctx.globalAlpha = bounceSword ? 0.055 : giant ? 0.30 : large ? 0.24 : 0.16;
 	    ctx.strokeStyle = 'rgba(200,248,255,0.76)';
 	    ctx.lineWidth = Math.max(0.9, s.r * (giant ? 0.18 : 0.13));
     ctx.beginPath(); ctx.moveTo(0, -s.r * 2.4); ctx.lineTo(0, s.r * 1.6); ctx.stroke();
@@ -8137,12 +8157,12 @@
     for (const fx of skywardState.hitFx) {
       const k = 1 - fx.life / fx.maxLife;
       const chain = fx.key === 'skywardChainBurst';
-      const a = (1 - k) * (chain ? 0.16 : 0.82);
+      const a = (1 - k) * (chain ? 0.10 : 0.36);
       if (assetReady(fx.key)) {
         const img = assets[fx.key], s = fx.r * (chain ? (0.82 + k * 0.42) : (1.05 + k * 0.65)), h = s * img.height / img.width;
         ctx.save(); ctx.translate(fx.x, fx.y); ctx.rotate(fx.rot + k * 1.4); ctx.globalAlpha = a; ctx.drawImage(img, -s / 2, -h / 2, s, h); ctx.restore();
       }
-      ctx.globalAlpha = a * (chain ? 0.22 : 0.55);
+      ctx.globalAlpha = a * (chain ? 0.16 : 0.30);
       ctx.strokeStyle = 'rgba(160,232,255,0.86)';
       ctx.lineWidth = (chain ? 1.35 : 2.2) * (1 - k * 0.4);
       ctx.beginPath(); ctx.arc(fx.x, fx.y, fx.r * (0.35 + k * 0.8), 0, TAU); ctx.stroke();
@@ -8167,16 +8187,16 @@
 	      ctx.rotate(fx.ang);
       const trailKey = fx.trailKey && assetReady(fx.trailKey) ? fx.trailKey : '';
       if (trailKey) {
-        ctx.globalAlpha = (over ? 0.10 : 0.075) * k;
+        ctx.globalAlpha = (over ? 0.025 : 0.018) * k;
         ctx.drawImage(assets[trailKey], Math.max(0, head - trailLen * 1.04), -trailH * 0.86, trailLen * 1.08, trailH * 1.72);
-        ctx.globalAlpha = (over ? 0.24 : 0.18) * k;
+        ctx.globalAlpha = (over ? 0.055 : 0.040) * k;
         ctx.drawImage(assets[trailKey], Math.max(0, head - trailLen), -trailH / 2, trailLen, trailH);
       }
 	      const g = ctx.createLinearGradient(Math.max(0, head - trailLen), 0, head, 0);
 	      g.addColorStop(0, 'rgba(52,130,255,0)');
-	      g.addColorStop(0.32, over ? 'rgba(46,154,255,0.24)' : 'rgba(58,160,255,0.20)');
-	      g.addColorStop(0.68, over ? 'rgba(72,238,255,0.36)' : 'rgba(82,224,255,0.28)');
-	      g.addColorStop(1, 'rgba(238,254,255,0.66)');
+	      g.addColorStop(0.32, over ? 'rgba(46,154,255,0.08)' : 'rgba(58,160,255,0.06)');
+	      g.addColorStop(0.68, over ? 'rgba(72,238,255,0.12)' : 'rgba(82,224,255,0.09)');
+	      g.addColorStop(1, 'rgba(238,254,255,0.22)');
       ctx.globalAlpha = (over ? SKYWARD_BOUNCE_VISUAL.overdriveTrailAlpha : SKYWARD_BOUNCE_VISUAL.normalTrailAlpha) * k;
 	      ctx.fillStyle = g;
 	      ctx.beginPath();
@@ -8186,14 +8206,14 @@
 	      ctx.quadraticCurveTo(head - trailLen * 0.42, trailH * 0.50, Math.max(0, head - trailLen), trailH * 0.28);
 	      ctx.closePath();
 	      ctx.fill();
-	      ctx.globalAlpha = (over ? 0.42 : 0.32) * k;
+	      ctx.globalAlpha = (over ? 0.14 : 0.10) * k;
 	      ctx.strokeStyle = 'rgba(224,252,255,0.86)';
 	      ctx.lineWidth = over ? 1.55 : 1.05;
 	      ctx.beginPath();
 	      ctx.moveTo(Math.max(0, head - trailLen * 0.92), 0);
 	      ctx.quadraticCurveTo(head - trailLen * 0.40, Math.sin(time * 8 + fx.seed) * trailH * 0.10, head + 10, 0);
 	      ctx.stroke();
-	      ctx.globalAlpha = (over ? 0.22 : 0.18) * k;
+	      ctx.globalAlpha = (over ? 0.07 : 0.05) * k;
 	      ctx.strokeStyle = 'rgba(255,224,140,0.76)';
 	      ctx.lineWidth = over ? 1.0 : 0.72;
 	      ctx.beginPath();
@@ -8208,17 +8228,17 @@
 	        const glowKey = skywardGlowKey(swordKey);
 	        drawSkywardGlowAsset(glowKey, head - sw / 2, -sh / 2, sw, sh, over ? SKYWARD_BOUNCE_VISUAL.overdriveGlowAlpha : SKYWARD_BOUNCE_VISUAL.normalGlowAlpha, 0.55, 1.10);
 	        const tail = ctx.createRadialGradient(head - sw * 0.43, 0, 0, head - sw * 0.43, 0, sh * 1.9);
-	        tail.addColorStop(0, 'rgba(238,254,255,0.70)');
-	        tail.addColorStop(0.30, 'rgba(86,230,255,0.36)');
+	        tail.addColorStop(0, 'rgba(238,254,255,0.16)');
+	        tail.addColorStop(0.30, 'rgba(86,230,255,0.08)');
 	        tail.addColorStop(1, 'rgba(60,160,255,0)');
-	        ctx.globalAlpha = (over ? 0.24 : 0.18) * k;
+	        ctx.globalAlpha = (over ? 0.055 : 0.040) * k;
 	        ctx.fillStyle = tail;
 	        ctx.beginPath(); ctx.ellipse(head - sw * 0.43, 0, sh * 0.34, sh * 0.92, 0, 0, TAU); ctx.fill();
 	        const tip = ctx.createRadialGradient(head + sw * 0.45, 0, 0, head + sw * 0.45, 0, sh * 2.15);
-	        tip.addColorStop(0, 'rgba(255,255,255,0.96)');
-	        tip.addColorStop(0.22, 'rgba(150,246,255,0.56)');
+	        tip.addColorStop(0, 'rgba(255,255,255,0.20)');
+	        tip.addColorStop(0.22, 'rgba(150,246,255,0.12)');
 	        tip.addColorStop(1, 'rgba(72,192,255,0)');
-	        ctx.globalAlpha = (over ? 0.32 : 0.24) * k;
+	        ctx.globalAlpha = (over ? 0.075 : 0.055) * k;
 	        ctx.fillStyle = tip;
 	        ctx.beginPath(); ctx.ellipse(head + sw * 0.45, 0, sh * 0.40, sh * 1.04, 0, 0, TAU); ctx.fill();
 	        ctx.globalCompositeOperation = 'source-over';
@@ -8244,11 +8264,11 @@
 	        drawSkywardHorizontalSwordDetails({ skyBounce: true, glowPhase: fx.seed || 0, skyBounceHits: over ? 5 : 2, modelAssetKey: '' }, sw, sh);
 	        ctx.restore();
 	      }
-	      for (let i = 0; i < (perfLevel >= 2 ? 2 : over ? 7 : 4); i++) {
+	      for (let i = 0; i < (perfLevel >= 2 ? 0 : over ? 2 : 1); i++) {
 	        const rnd = Math.sin((fx.seed || 0) * 37.17 + i * 91.73 + time * (over ? 11.0 : 8.2)) * 43758.5453;
 	        const f = rnd - Math.floor(rnd);
 	        const q = Math.max(0, head - f * trailLen);
-	        ctx.globalAlpha = (over ? 0.46 : 0.34) * k;
+	        ctx.globalAlpha = (over ? 0.16 : 0.11) * k;
 	        ctx.fillStyle = i % 2 ? 'rgba(255,226,142,0.72)' : 'rgba(150,238,255,0.82)';
 	        ctx.beginPath();
 	        ctx.ellipse(q, (f - 0.5) * trailH * 0.72, over ? 1.7 : 1.2, over ? 5.6 : 4.0, 0, 0, TAU);
@@ -8352,16 +8372,16 @@
 	        : p < 0.60 ? 'skywardBlinkWingOpen3'
 	          : p < 0.82 ? 'skywardBlinkWingOpen4'
 	            : 'skywardBlinkWingBurst';
-	    const alpha = Math.sin(Math.PI * clamp(p, 0, 1)) * 0.78;
+	    const alpha = Math.sin(Math.PI * clamp(p, 0, 1)) * 0.18;
 	    ctx.save();
 	    ctx.translate(fx.x, fx.y);
 	    ctx.globalCompositeOperation = 'lighter';
 	    const scale = fx.scale * (0.72 + p * 0.70);
 	    if (assetReady(frame)) {
 	      const img = assets[frame];
-	      const w = (210 + p * 84) * scale;
+	      const w = (126 + p * 34) * scale;
 	      const h = w * img.height / img.width;
-	      drawSkywardGlowAsset(skywardGlowKey(frame), -w / 2, -h * 0.52, w, h, 0.42 * alpha, 1.8, 1.12);
+	      drawSkywardGlowAsset(skywardGlowKey(frame), -w / 2, -h * 0.52, w, h, 0.045 * alpha, 0.25, 1.03);
 	      ctx.globalAlpha = alpha;
 	      ctx.drawImage(img, -w / 2, -h * 0.52, w, h);
 	    }
@@ -8369,7 +8389,7 @@
 	    for (const side of [-1, 1]) {
 	      for (let i = 0; i < (perfLevel >= 2 ? 3 : 6); i++) {
 	        const f = i / 5;
-	        ctx.globalAlpha = alpha * (0.30 - f * 0.03);
+	        ctx.globalAlpha = alpha * (0.18 - f * 0.02);
 	        ctx.strokeStyle = i % 2 ? 'rgba(255,224,142,0.55)' : 'rgba(136,240,255,0.72)';
 	        ctx.lineWidth = 1.2 + p * 1.2;
 	        ctx.beginPath();
@@ -8378,7 +8398,7 @@
 	        ctx.stroke();
 	      }
 	    }
-	    ctx.globalAlpha = alpha * 0.52;
+	    ctx.globalAlpha = alpha * 0.24;
 	    ctx.fillStyle = 'rgba(230,254,255,0.85)';
 	    ctx.beginPath(); ctx.arc(0, -22, 9 + 18 * p, 0, TAU); ctx.fill();
 	    ctx.restore();
@@ -8582,15 +8602,15 @@
 	        ctx.save();
 	        ctx.translate(fx.x, fx.y);
 	        ctx.rotate(ang);
-	        const h = 98 * fx.scale;
-	        const keys = ['skywardBlinkDashWispL', 'skywardBlinkDashTrail', 'skywardBlinkDashWispM'];
+	        const h = 44 * fx.scale;
+	        const keys = ['skywardBlinkDashWispS'];
 	        for (let i = 0; i < keys.length; i++) {
 	          const key = assetReady(keys[i]) ? keys[i] : '';
 	          if (!key) continue;
 	          const img = assets[key];
-	          const tw = i === 0 ? len + 132 : len + 64;
-	          const th = (i === 1 ? h * 0.86 : h * (0.82 - i * 0.12));
-	          ctx.globalAlpha = (i === 0 ? 0.62 : 0.46) * k;
+	          const tw = len + 42;
+	          const th = h * 0.45;
+	          ctx.globalAlpha = 0.065 * k;
 	          ctx.drawImage(img, -28 + i * 14, -th / 2, tw, th);
 	        }
 	        const grad = ctx.createLinearGradient(0, 0, len + 54, 0);
@@ -8598,7 +8618,7 @@
 	        grad.addColorStop(0.30, 'rgba(56,210,255,0.20)');
 	        grad.addColorStop(0.70, 'rgba(150,248,255,0.46)');
 	        grad.addColorStop(1, 'rgba(255,255,255,0.74)');
-	        ctx.globalAlpha = 0.56 * k;
+	        ctx.globalAlpha = 0.11 * k;
 	        ctx.fillStyle = grad;
 	        ctx.beginPath();
 	        ctx.moveTo(-8, -h * 0.20);
@@ -8607,14 +8627,14 @@
 	        ctx.quadraticCurveTo(len * 0.48, h * (0.32 + 0.10 * Math.cos(time * 5 + fx.seed)), -8, h * 0.20);
 	        ctx.closePath();
 	        ctx.fill();
-	        const residueN = perfLevel >= 2 ? 7 : SKYWARD_STELLAR_BLINK.dashResidueCount;
+	        const residueN = perfLevel >= 2 ? 3 : 7;
 	        for (let j = 0; j < residueN; j++) {
 	          const rnd = Math.sin((fx.seed || 0) * 19.17 + j * 63.71) * 43758.5453;
 	          const f = rnd - Math.floor(rnd);
 	          const q = (f + time * (0.25 + (j % 3) * 0.035)) % 1;
 	          const xx = lerp(2, len + 38, q);
 	          const yy = Math.sin(j * 1.91 + time * 8.2) * h * (0.10 + 0.20 * (1 - q));
-	          ctx.globalAlpha = k * (0.18 + 0.34 * (1 - q));
+	          ctx.globalAlpha = k * (0.06 + 0.10 * (1 - q));
 	          ctx.fillStyle = j % 4 === 0 ? '#ffe8a2' : '#a6f5ff';
 	          ctx.beginPath();
 	          ctx.ellipse(xx, yy, 1.0 + (j % 2) * 0.6, 4.4 + q * 3.2, ang, 0, TAU);
