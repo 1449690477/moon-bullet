@@ -1,37 +1,38 @@
+// ============================================================
+// 月蚀排行榜 · Edge Function：leaderboard-run
+// 唯一的写入口。前端不再直接写表，所有上榜都经过这里校验。
+//
+// 部署（在你项目根目录，已 supabase login 并 link 到项目后）：
+//   supabase functions deploy leaderboard-run --no-verify-jwt
+//   supabase secrets set LB_SALT="随便一段长随机字符串"
+//   # SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY 由平台自动注入，无需手动设。
+//
+// 两个端点：
+//   POST /functions/v1/leaderboard-run/start   开局领令牌 → { run_id, run_token, expires_at }
+//   POST /functions/v1/leaderboard-run/submit  交分校验   → { ok, status, reasons? }
+//        status = accepted | quarantined | rejected
+// ============================================================
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-const SALT = Deno.env.get("LB_SALT") ?? "";
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SERVICE_KEY  = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SALT         = Deno.env.get("LB_SALT") ?? "CHANGE_ME";
 
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
-const TOKEN_TTL_MS = 2 * 60 * 60 * 1000;
-const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife"]);
-const GUESTBOOK_ID_MAX = 16;
-const GUESTBOOK_NAME_MAX = 12;
-const GUESTBOOK_MESSAGE_MAX = 96;
-const ALLOWED_ORIGINS = new Set([
-  "https://1449690477.github.io",
-  "http://localhost:18765",
-  "http://127.0.0.1:18765",
-]);
+const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife", "skyward"]);
+const TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 令牌有效期 2 小时
 
-function corsHeaders(req: Request) {
-  const origin = req.headers.get("origin") ?? "";
-  const allowOrigin = ALLOWED_ORIGINS.has(origin) ? origin : "https://1449690477.github.io";
-  return {
-    "Access-Control-Allow-Origin": allowOrigin,
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Vary": "Origin",
-  };
-}
+const cors = {
+  "Access-Control-Allow-Origin": "*", // 上线后可改成你的 Pages 域名收紧
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
 
-function json(req: Request, body: unknown, status = 200) {
+function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders(req), "Content-Type": "application/json" },
+    headers: { ...cors, "Content-Type": "application/json" },
   });
 }
 
@@ -39,160 +40,109 @@ async function sha256(s: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
-
-async function tokenHash(token: string): Promise<string> {
-  return sha256(`${token}:${SALT}`);
-}
-
 function randToken(): string {
   const a = new Uint8Array(32);
   crypto.getRandomValues(a);
   return [...a].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
-
 async function clientHashes(req: Request): Promise<[string, string]> {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "";
   const ua = req.headers.get("user-agent") || "";
-  return [await sha256(`${ip}:${SALT}`), await sha256(`${ua}:${SALT}`)];
-}
-
-function intField(value: unknown) {
-  const n = Number(value);
-  return Number.isInteger(n) && n >= 0 ? n : null;
-}
-
-function normalizedAvatar(value: unknown) {
-  if (typeof value !== "string" || !value) return null;
-  if (value.length > 22000) return null;
-  if (!value.startsWith("data:image/")) return null;
-  return value;
-}
-
-function cleanDisplayText(value: unknown, maxChars: number) {
-  const cleaned = String(value ?? "")
-    .replace(/[\u0000-\u001f\u007f]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  return [...cleaned].slice(0, maxChars).join("");
-}
-
-function charLength(value: string) {
-  return [...String(value || "")].length;
+  return [await sha256(ip + SALT), await sha256(ua + SALT)];
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders(req) });
-  if (req.method !== "POST") return json(req, { ok: false, error: "method not allowed" }, 405);
+  if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
+  if (req.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
 
-  const action = new URL(req.url).pathname.split("/").pop();
+  const action = new URL(req.url).pathname.split("/").pop(); // start | submit
 
   try {
-    if (!SUPABASE_URL || !SERVICE_KEY || !SALT || SALT === "CHANGE_ME") {
-      return json(req, { ok: false, error: "server is not configured" }, 500);
-    }
-
+    // ---------------- /start ----------------
     if (action === "start") {
       const [ip_hash, ua_hash] = await clientHashes(req);
       let body: Record<string, unknown> = {};
-      try { body = await req.json(); } catch { body = {}; }
+      try { body = await req.json(); } catch { /* 允许空 body */ }
 
       const token = randToken();
+      const token_hash = await sha256(token);
       const expires_at = new Date(Date.now() + TOKEN_TTL_MS).toISOString();
+
       const { data, error } = await admin
         .from("leaderboard_runs")
-        .insert({
-          token_hash: await tokenHash(token),
-          expires_at,
-          ip_hash,
-          ua_hash,
-          client_version: String(body.client_version ?? ""),
-        })
+        .insert({ token_hash, expires_at, ip_hash, ua_hash, client_version: String(body.client_version ?? "") })
         .select("run_id, expires_at")
         .single();
 
-      if (error) return json(req, { ok: false, error: error.message }, 500);
-      return json(req, { ok: true, run_id: data.run_id, run_token: token, expires_at: data.expires_at });
+      if (error) return json({ ok: false, error: error.message }, 500);
+      return json({ ok: true, run_id: data.run_id, run_token: token, expires_at: data.expires_at });
     }
 
+    // ---------------- /submit ----------------
     if (action === "submit") {
       const [ip_hash, ua_hash] = await clientHashes(req);
       const p = await req.json();
 
-      if (!p.run_id || !p.run_token) {
-        return json(req, { ok: false, status: "rejected", reasons: ["missing run token"] }, 400);
-      }
+      // 1) 核验运行令牌（存在 / 未过期 / 未用过）
+      if (!p.run_id || !p.run_token)
+        return json({ ok: false, status: "rejected", reasons: ["missing run token"] }, 400);
 
-      const { data: run, error: runError } = await admin
+      const { data: run } = await admin
         .from("leaderboard_runs")
         .select("run_id, token_hash, expires_at, submitted_at")
-        .eq("run_id", String(p.run_id))
-        .maybeSingle();
+        .eq("run_id", p.run_id)
+        .single();
 
-      if (runError) return json(req, { ok: false, error: runError.message }, 500);
-      if (!run || run.token_hash !== await tokenHash(String(p.run_token))) {
-        return json(req, { ok: false, status: "rejected", reasons: ["bad token"] }, 400);
-      }
-      if (run.submitted_at) {
-        return json(req, { ok: false, status: "rejected", reasons: ["already submitted"] }, 400);
-      }
-      if (new Date(run.expires_at).getTime() < Date.now()) {
-        return json(req, { ok: false, status: "rejected", reasons: ["token expired"] }, 400);
-      }
+      const tokenHash = await sha256(String(p.run_token));
+      if (!run || run.token_hash !== tokenHash)
+        return json({ ok: false, status: "rejected", reasons: ["bad token"] }, 400);
+      if (run.submitted_at)
+        return json({ ok: false, status: "rejected", reasons: ["already submitted"] }, 400);
+      if (new Date(run.expires_at).getTime() < Date.now())
+        return json({ ok: false, status: "rejected", reasons: ["token expired"] }, 400);
 
-      await admin
-        .from("leaderboard_runs")
-        .update({ submitted_at: new Date().toISOString() })
-        .eq("run_id", run.run_id);
-
-      const name = String(p.player_name ?? "").replace(/[\u0000-\u001f\u007f]/g, "").replace(/\s+/g, " ").trim();
+      // 2) 字段规整
+      const name = String(p.player_name ?? "").trim();
       const character = String(p.character ?? "");
-      const score = intField(p.score);
-      const kills = intField(p.kill_count);
-      const loops = intField(p.loop_count);
-      const elapsed = intField(p.elapsed);
-      const bosses = intField(p.bosses_cleared);
+      const score = Number(p.score);
+      const kills = Number(p.kill_count);
+      const loops = Number(p.loop_count);
+      const elapsed = Number(p.elapsed);
+      const bosses = Number(p.bosses_cleared);
+      const isInt = (n: number) => Number.isInteger(n) && n >= 0;
 
+      // 3) 硬拒绝
       const reject: string[] = [];
-      if (!name || Array.from(name).length > 12) reject.push("invalid name");
+      if (!name || name.length > 24) reject.push("invalid name");
       if (!CHARACTERS.has(character)) reject.push("invalid character");
-      if ([score, kills, loops, elapsed, bosses].some((n) => n === null)) reject.push("non-integer fields");
-      if (elapsed === null || elapsed < 5 || elapsed > 7200) reject.push("elapsed out of range");
-      if (p.hell_mode !== true) reject.push("not hell mode");
+      if (![score, kills, loops, elapsed, bosses].every(isInt)) reject.push("non-integer fields");
+      if (!(elapsed >= 5 && elapsed <= 7200)) reject.push("elapsed out of range");
 
-      if (reject.length) {
-        return json(req, { ok: false, status: "rejected", reasons: reject }, 400);
-      }
+      // 令牌一次性：无论结果如何都标记已用，防重放
+      await admin.from("leaderboard_runs").update({ submitted_at: new Date().toISOString() }).eq("run_id", p.run_id);
 
-      const cleanScore = score as number;
-      const cleanKills = kills as number;
-      const cleanLoops = loops as number;
-      const cleanElapsed = elapsed as number;
-      const cleanBosses = bosses as number;
+      if (reject.length) return json({ ok: false, status: "rejected", reasons: reject }, 400);
 
-      const quarantine: string[] = [];
-      if (cleanScore > 5_000_000) quarantine.push("score > 5000000");
-      if (cleanScore / Math.max(1, cleanElapsed) > 12000) quarantine.push("score/sec > 12000");
-      if (cleanKills / Math.max(1, cleanElapsed) > 20) quarantine.push("kills/sec > 20");
-      if (cleanBosses > Math.floor(cleanElapsed / 80) + 1) quarantine.push("bosses too high for elapsed");
-      if (cleanLoops > cleanBosses + 1) quarantine.push("loop_count > bosses_cleared + 1");
+      // 4) 隔离阈值（疑似作弊 → 进隔离表，不进正式榜）
+      const q: string[] = [];
+      if (elapsed > 0 && score / elapsed > 12000) q.push("score/sec > 12000");
+      if (elapsed > 0 && kills / elapsed > 20) q.push("kills/sec > 20");
+      if (bosses > Math.floor(elapsed / 80) + 1) q.push("bosses too high for elapsed");
+      if (loops > bosses + 1) q.push("loop_count > bosses_cleared + 1");
 
       const payload = {
-        player_name: name,
-        character,
-        score: cleanScore,
-        kill_count: cleanKills,
-        loop_count: cleanLoops,
-        elapsed: cleanElapsed,
-        bosses_cleared: cleanBosses,
-        avatar_data: normalizedAvatar(p.avatar_data),
+        player_name: name, character, score,
+        kill_count: kills, loop_count: loops, elapsed,
+        bosses_cleared: bosses, avatar_data: p.avatar_data ?? null,
       };
 
-      if (quarantine.length) {
-        await admin.from("leaderboard_quarantine").insert({ payload, reasons: quarantine, ip_hash, ua_hash });
-        return json(req, { ok: true, status: "quarantined", reasons: quarantine });
+      if (q.length) {
+        await admin.from("leaderboard_quarantine").insert({ payload, reasons: q, ip_hash, ua_hash });
+        return json({ ok: true, status: "quarantined", reasons: q });
       }
 
-      const { data: best, error: bestError } = await admin
+      // 5) 入榜：同昵称只保留最高分
+      const { data: best } = await admin
         .from("leaderboard")
         .select("id, score")
         .eq("player_name", name)
@@ -200,52 +150,22 @@ Deno.serve(async (req) => {
         .limit(1)
         .maybeSingle();
 
-      if (bestError) return json(req, { ok: false, error: bestError.message }, 500);
-
-      if (best && Number(best.score) >= cleanScore) {
-        if (payload.avatar_data) {
-          await admin.from("leaderboard").update({ avatar_data: payload.avatar_data, character }).eq("id", best.id);
-        }
-        return json(req, { ok: true, status: "accepted", note: "kept existing higher score" });
+      if (best && best.score >= score) {
+        // 已有更高分：只更新头像，不插入低分
+        if (payload.avatar_data)
+          await admin.from("leaderboard").update({ avatar_data: payload.avatar_data }).eq("id", best.id);
+        return json({ ok: true, status: "accepted", note: "kept existing higher score" });
       }
-
       if (best) {
-        await admin.from("leaderboard").update(payload).eq("id", best.id);
+        await admin.from("leaderboard").update(payload).eq("id", best.id); // 刷新为更高分
       } else {
         await admin.from("leaderboard").insert(payload);
       }
-
-      return json(req, { ok: true, status: "accepted" });
+      return json({ ok: true, status: "accepted" });
     }
 
-    if (action === "message") {
-      const p = await req.json();
-      const player_id = cleanDisplayText(p.player_id, GUESTBOOK_ID_MAX);
-      const player_name = cleanDisplayText(p.player_name, GUESTBOOK_NAME_MAX) || "匿名玩家";
-      const message = cleanDisplayText(p.message, GUESTBOOK_MESSAGE_MAX);
-      const reject: string[] = [];
-
-      if (charLength(player_id) < 1 || charLength(player_id) > GUESTBOOK_ID_MAX) reject.push("invalid id");
-      if (charLength(player_name) < 1 || charLength(player_name) > GUESTBOOK_NAME_MAX) reject.push("invalid name");
-      if (charLength(message) < 1 || charLength(message) > GUESTBOOK_MESSAGE_MAX) reject.push("invalid message");
-
-      if (reject.length) {
-        return json(req, { ok: false, status: "rejected", reasons: reject }, 400);
-      }
-
-      const { error } = await admin.from("guestbook_messages").insert({
-        player_id,
-        player_name,
-        message,
-        avatar_data: normalizedAvatar(p.avatar_data),
-      });
-
-      if (error) return json(req, { ok: false, error: error.message }, 500);
-      return json(req, { ok: true, status: "accepted" });
-    }
-
-    return json(req, { ok: false, error: "unknown action" }, 404);
+    return json({ ok: false, error: "unknown action, use /start or /submit" }, 404);
   } catch (e) {
-    return json(req, { ok: false, error: String((e as Error)?.message ?? e) }, 500);
+    return json({ ok: false, error: String((e as Error)?.message ?? e) }, 500);
   }
 });

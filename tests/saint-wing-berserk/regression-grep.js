@@ -3,11 +3,23 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 const suiyiTechCapture = readFileSync(new URL('../../tools/capture_suiyi_tech_mobs_acceptance.js', import.meta.url), 'utf8');
 const randomBalanceCapture = readFileSync(new URL('../../tools/capture_random_balance_acceptance.js', import.meta.url), 'utf8');
-const miguaCapture = readFileSync(new URL('../../tools/capture_migua_acceptance.js', import.meta.url), 'utf8');
-const leaderboardRunFunction = readFileSync(new URL('../../supabase/functions/leaderboard-run/index.ts', import.meta.url), 'utf8');
+const skywardCapture = readFileSync(new URL('../../tools/capture_skyward_acceptance.js', import.meta.url), 'utf8');
+const skywardProcessor = readFileSync(new URL('../../tools/process_skyward_paladin_assets.py', import.meta.url), 'utf8');
+const packageJson = readFileSync(new URL('../../package.json', import.meta.url), 'utf8');
+const leaderboardEdge = readFileSync(new URL('../../supabase/functions/leaderboard-run/index.ts', import.meta.url), 'utf8');
+const leaderboardFixSql = readFileSync(new URL('../../leaderboard-security/04_remove_score_cap_and_add_skyward.sql', import.meta.url), 'utf8');
 function fail(message) {
   console.error(message);
   process.exit(1);
+}
+if (leaderboardEdge.includes('score > 5000000') || leaderboardEdge.includes('5_000_000')) {
+  fail('Leaderboard Edge Function still contains the old 5,000,000 total score cap');
+}
+if (!leaderboardEdge.includes('"skyward"')) {
+  fail('Leaderboard Edge Function must allow skyward character uploads');
+}
+if (!leaderboardFixSql.includes('不再按总分上限拦截') || !leaderboardFixSql.includes("'skyward'")) {
+  fail('Leaderboard score-cap SQL repair script missing skyward/no-total-cap guard');
 }
 const start = html.indexOf('function drawSaintWing()');
 const end = html.indexOf('function updateScFx(dt)', start);
@@ -326,6 +338,10 @@ for (const needle of [
   'relative-drag-no-snap',
   'function startRelativeTouchMove',
   'function addRelativeTouchDelta',
+  'DESKTOP_MOUSE_PILOT',
+  'function requestDesktopMousePilot',
+  'function releaseDesktopMousePilot',
+  'right-click-pointerlock-relative-mouse',
   'layeringSpec',
   'touchControlSpec',
   'HOSTILE_BULLET_RED_EDGE',
@@ -334,16 +350,10 @@ for (const needle of [
   'TECH_STAGE_WAVES',
   'mobStageWaveTarget',
   'mobStageMinDuration',
-  'timedReinforcementRemaining',
-  'reinforcementSpawnIntervalAt',
   'bossDamageMul',
   'function bossAssetKeys',
   'prefetchBossAssets',
   'QUALITY_PRESETS',
-  'enforceRuntimePerfBudget',
-  'runtimePerformanceSpec',
-  'themeFxCap',
-  'hazardCap',
   'formatMobWaveStatus',
   'waveHudSpec',
   'window.__randomBalanceInternals__',
@@ -355,26 +365,13 @@ for (const needle of [
   'avatar_data',
   'function compressAvatarFile',
   'function submitLeaderboardScore',
+  'function currentLeaderboardScore',
+  'GRAZE_SCORE_SPEC',
+  'grazeScoreSpecForTest',
   'function drawLeaderboardView',
   'function drawLeaderboardBackdrop',
-  'GUESTBOOK_TABLE',
-  'guestbook_messages',
-  'GUESTBOOK_UI_SPEC',
-  'function drawGuestbookPanelFrame',
-  'function submitGuestbookMessage',
-  'function showGuestbookDialog',
-  'guestbookSidePanel',
-  'leaderboardPaginationSpecForTest',
-  'leaderboardNext',
-  'guestbookCompose',
   'window.__leaderboardInternals__',
   'window.__leaderboardCapture__',
-  'LEADERBOARD_FN_BASE',
-  'function startRankedRun',
-  'writeEndpointForTest',
-  'submitRouteSpecForTest',
-  'hell_mode: hellModeActive === true',
-  'directClientWrites: false',
   'HELL_MODE_SPEC',
   '地狱排行榜模式',
   'function requestStartGame',
@@ -382,29 +379,8 @@ for (const needle of [
   'function endRunByHellMode',
   'leaderboardRequiresHellMode',
   '普通模式不参与排行榜',
-  "if (e.code === 'KeyG') { if (!hellModeActive) player.energy = player.maxEnergy; }",
 ]) {
   if (!html.includes(needle)) fail(`Suiyi expanded STG pattern invariant missing: ${needle}`);
-}
-const submitStart = html.indexOf('async function submitLeaderboardScore');
-const submitEnd = html.indexOf('function requestLeaderboardUploadAfterRun', submitStart);
-if (submitStart < 0 || submitEnd < 0) fail('Could not locate submitLeaderboardScore block');
-const submitBlock = html.slice(submitStart, submitEnd);
-for (const forbidden of ['insertLeaderboardPayload(', "method: 'DELETE'", 'getRemoteBestForName(']) {
-  if (submitBlock.includes(forbidden)) fail(`submitLeaderboardScore must not use direct client write path: ${forbidden}`);
-}
-for (const needle of [
-  'leaderboard_runs',
-  'leaderboard_quarantine',
-  'LB_SALT',
-  'status: "quarantined"',
-  'not hell mode',
-  'action === "message"',
-  'guestbook_messages',
-  'invalid message',
-  'https://1449690477.github.io',
-]) {
-  if (!leaderboardRunFunction.includes(needle)) fail(`leaderboard Edge Function invariant missing: ${needle}`);
 }
 const drawOrder = [
   'drawPlayer();',
@@ -490,120 +466,154 @@ const normalStagePoolBlock = html.slice(normalStagePoolAt, normalStagePoolEnd);
 for (const techType of ['codebug', 'coredrone', 'servernode', 'crystalcompiler']) {
   if (normalStagePoolBlock.includes(`'${techType}'`)) fail(`${techType} must not leak into normal STAGE_POOL`);
 }
-for (const key of [
-  'miguaMapGreenhouse',
-  'miguaMapJuiceFactory',
-  'miguaMapFloatingCity',
-  'miguaBossFinal',
-  'enMiguaDrone',
-  'enMiguaSliceSpider',
-  'enMiguaTurret',
-  'enMiguaJellyMine',
-  'enMiguaBeeStinger',
-  'enMiguaArmorTurtle',
-  'miguaSeedBlackSmall',
-  'miguaSeedGoldHeavy',
-  'miguaSliceArc',
-  'miguaCrescentSlice',
-  'miguaJuiceSplashLarge',
-  'miguaMelonBubble',
-  'miguaMelonBubbleLarge',
-  'miguaMelonSun',
-  'miguaSeedHalo',
-  'miguaJuicePuddle',
-  'miguaBossBarFrame',
-  'miguaBarFrame',
-  'miguaBarEmpty',
-  'miguaBarFillGreen',
-  'miguaBarFillYellow',
-  'miguaBarFillRed',
-  'miguaBarGloss',
-  'miguaBarSeedTicks',
-  'miguaBarCrack',
-  'miguaBarMask',
-  'miguaBarDanger',
-]) {
-  if (!html.includes(key)) fail(`${key} Migua asset key missing`);
-}
-for (const needle of [
-  "skyglory: false",
-  "{ key: 'skyglory', name: '天耀·三璇光阵', short: '天耀' }",
-  'function updateTianyao(dt)',
-  'function drawTianyaoBody()',
-  'function drawTianyaoHand()',
-  "if (key === 'T') { castTianyaoHand(); return true; }",
-  '"capture:tianyao": "node tools/capture_tianyao_acceptance.js"',
-]) {
-  const haystack = needle.includes('capture:tianyao') ? readFileSync(new URL('../../package.json', import.meta.url), 'utf8') : html;
-  if (!haystack.includes(needle)) fail(`Tianyao content invariant missing: ${needle}`);
-}
 
-for (const needle of [
-  'const MIGUA_MAP_KEYS = Object.freeze',
-  'const MIGUA_MOB_TYPES = Object.freeze',
-  'const MIGUA_STAGE_WAVES = Object.freeze',
-  "const MIGUA_BOSS_POOL = Object.freeze(['migua'])",
-  'function drawMiguaBossBar()',
-  'function drawMiguaMapFlowOverlay(',
-  'function spawnMiguaBullet(',
-  'function updateMiguaBoss(dt)',
-  'function drawMiguaEnemyBullet(b)',
-  'function drawMiguaBoss()',
-  'function miguaBossBarLayoutForRate(',
-  'function drawMiguaLayerWithMask(',
-  'function drawMiguaBarGloss(',
-  'function getMiguaHpState(',
-  'window.__miguaInternals__',
-  'bossBarLayoutForTest',
-  'usesLayeredMaskFill: true',
-  "maskComposite: 'destination-in'",
-  "renderOrder: ['empty-underlay', 'masked-fill', 'masked-gloss', 'seed-ticks', 'crack', 'pulse-danger', 'frame', 'portrait-name-text']",
-  "layeredDraw: ['fruit-specific-short-tail', 'sprite-body-shadow-edge', 'fruit-palette-damage-boundary']",
-  "redRim: 'fruit-palette-boundary-no-red-rim'",
-  "clarity: 'dark-fruit-outline-and-light-hit-boundary'",
-  'function drawMiguaReadableSeedBoundary(',
-  'function drawMiguaRoundDamageBoundary(',
-  "UPDATE_NOTICE_VERSION = '2026-07-03-wave-perf-fix'",
-  '波数提示修复',
-  '高弹幕性能保护加强',
-  '手感优化 V3 上线',
-  'const FEEL_V3_TUNING',
-  "hitStopMode: 'visual-only-no-input-freeze'",
-  'playerHitStop: 0',
-  'eliteKillHitStop: 0',
-  'uiDeclutter',
-  'let dangerDim = 0',
-  'let hurtT = 0',
-  'let killStreakN = 0',
-  'function triggerHitStop(t)',
-  'feelOptimizationSpec',
-  'densityDimLayer',
-  'under-hostile-bullets',
-  'function showUpdateNoticeDialog(',
-  'function showUpdateNoticeIfNeeded(',
-  "'更新公告', 'updateNotice'",
-  "updateNotice: { version: UPDATE_NOTICE_VERSION",
-  "b.miguaBehavior === 'melon_throw'",
-  "b.miguaSplitMode === 'melon_burst'",
-  'function miguaThrowMelonBomb(',
-  "STAGE_THEME_MIGUA = 'migua'",
-  'miguaThemeOnlySpawnsMiguaMobsAndMiguaBoss',
-]) {
-  if (!html.includes(needle)) fail(`Migua content invariant missing: ${needle}`);
-}
-for (const miguaType of ['miguadrone', 'miguaslicespider', 'miguaturret', 'miguajellymine', 'miguabeestinger', 'miguaarmorturtle']) {
-  if (normalStagePoolBlock.includes(`'${miguaType}'`)) fail(`${miguaType} must not leak into normal STAGE_POOL`);
+for (const key of [
+  'skywardIdle',
+  'skywardBodyNormal',
+  'skywardBodyOverdrive',
+  'skywardBodyNormalGlow',
+  'skywardBodyOverdriveGlow',
+  'skywardHaloRing',
+  'skywardLanceS',
+  'skywardLanceSGlow',
+  'skywardLanceHeavy',
+  'skywardLanceHeavyGlow',
+	  'skywardWingBlade1',
+	  'skywardFeatherBlade1',
+	  'skywardArcBlade',
+	  'skywardLightWingTrail',
+	  'skywardBlinkPortalRing',
+	  'skywardBlinkSwordBody',
+	  'skywardBlinkCharge5',
+	  'skywardBlinkWingOpen1',
+	  'skywardBlinkWingBurst',
+	  'skywardBlinkDashWispL',
+	  'skywardBlinkFloatCharge5',
+	  'skywardBlinkChargeBar5',
+	]) {
+  if (!html.includes(key)) fail(`${key} skyward asset key missing`);
 }
 for (const needle of [
-  '__miguaCapture__',
-  '01_migua_greenhouse_stage.png',
-  '04_migua_boss_entry_bar.png',
-  '08_migua_final_burst.png',
-  '09_migua_bar_full.png',
-  '12_migua_bar_critical.png',
-  '15_migua_fruit_bubbles.png',
+  "skyward: {",
+  "weapon: 'skyward'",
+  "if (e.code === 'Digit6' || e.code === 'Numpad6') selectChar('skyward')",
+  'const SKYWARD_LIMITS = Object.freeze',
+  'const SKYWARD_NORMAL_FIRE = Object.freeze',
+	  'const SKYWARD_OVERDRIVE_FIRE = Object.freeze',
+	  'const SKYWARD_STELLAR_BLINK = Object.freeze',
+	  'derived-crystal-glow-mask',
+  'function updateSkywardPaladin(dt, firing)',
+  'function drawSkywardPaladin()',
+  'function drawSkywardShot(s, faceAngle)',
+	  'function skywardShotHitFx(s, target)',
+	  'function skywardDamageForHit(s)',
+	  'function skywardTryBounce(s, fromTarget)',
+	  'function spawnSkywardBounceSwordFx(s, target, angle, overdrive)',
+	  'function drawSkywardBounceFxWorld()',
+	  'function drawSkywardEnergyStreamUnderlay(s, w, h)',
+	  'function drawSkywardHorizontalSwordDetails(s, w, h)',
+	  'function skywardModuleSpriteKey(m, over)',
+		  'function drawSkywardModuleEngineFlare(m, ms, over)',
+		  'function trySkywardBlink()',
+		  'function launchSkywardBlinkSwordVolley()',
+		  'function updateSkywardBlinkSwordHoming(s, dt)',
+		  'function drawSkywardBlinkFxWorld()',
+		  'function drawBlinkPortalRing(fx, isArrive)',
+		  'function drawSkywardBlinkLandingWing(fx)',
+		  'function drawSkywardBlinkWarpOverlay()',
+		  'function drawSkywardBlinkFloatingCharges(over = 0, pulse = 0.5)',
+		  'function drawSkywardBlinkSkillHud(x, y)',
+		  'function drawSkywardBladeDetails(s, w, h)',
+		  'function drawSkywardHaloLayer(layer, over, pulse)',
+	  'function drawSkywardOverdriveWingFlow(over, pulse)',
+	  'function drawSkywardBodyCrystalFloaters(over, pulse, layer',
+	  'function drawSkywardCenterFlow(over, pulse)',
+	  'sky_lance_giant',
+	  'coreLargeLance',
+	  'moduleThinLance',
+	  'overdriveGiantLance',
+	  'v4NormalBodyVisualScale',
+	  'v5ModuleWeaponLayout',
+	  'v5BouncePolicy',
+	  'v6BounceVisualPolicy',
+	  'v6OverdriveStreamPolicy',
+	  'skywardChainLanceS',
+	  'skywardChainFlowOverdrive',
+		  'isSkywardShot(s)',
+	  'no-persistent-light-wing-trail-sprite',
+	  'texture-aligned-crown-augment',
+	  'six-hardpoint-spring-follow',
+	  'moduleFormSpec',
+	  'pierceScalingSpec',
+	  'bounceSpec',
+	  'crownAugmentSpec',
+		  'arcBladeOrientationSpec',
+		  'stellarBlinkSpec',
+		  'landing-wing-burst',
+			  'floatingArrowChargeUi',
+		  'sky_blink_sword',
+		  '星轨跃迁',
+	  'window.__skywardInternals__',
+  'window.__skywardCapture__',
+  'process_skyward_paladin_assets.py',
+  'capture_skyward_acceptance.js',
 ]) {
-  if (!miguaCapture.includes(needle)) fail(`Migua capture script invariant missing: ${needle}`);
+  if (!html.includes(needle) && !skywardCapture.includes(needle) && !skywardProcessor.includes(needle) && !packageJson.includes(needle)) fail(`Skyward invariant missing: ${needle}`);
+}
+for (const needle of [
+  '__skywardCapture__',
+  '01_title_sixth_character_card.png',
+  '04_sacred_lance_straight_fire.png',
+  '08_overdrive_wing_blade_storm.png',
+  '09_normal_body_material_close.png',
+  '13_crystal_hit_vfx_close.png',
+  '14_module_inertia_left_right.png',
+	  '17_overdrive_clean_wing_no_extra_rings.png',
+	  '19_crystal_flow_overdrive_close.png',
+	  '20_v4_normal_shorter_body.png',
+	  '21_v4_body_crystal_float.png',
+	  '22_v4_halo_float_gloss.png',
+	  '23_v4_center_spine_flow.png',
+		  '24_v4_normal_large_lance.png',
+		  '25_v4_module_thin_lance_volley.png',
+		  '26_v4_overdrive_dense_lance_fan.png',
+		  '27_v4_overdrive_giant_lance.png',
+		  '28_v5_six_module_fire.png',
+		  '29_v5_module_bounce_chain_normal.png',
+		  '30_v5_overdrive_module_thrusters.png',
+		  '31_v5_module_bounce_chain_overdrive.png',
+		  '32_v5_central_piercing_lance.png',
+		  '33_v5_crown_texture_augmented.png',
+		  '34_v5_arc_blade_cutting.png',
+		  '35_v5_arc_blade_lance_fallback_check.png',
+			  '36_v6_overdrive_energy_stream.png',
+			  '37_v6_module_bounce_sword_material.png',
+			  '38_space_blink_charge_ui.png',
+			  '39_space_blink_dash_portals.png',
+			  '40_space_blink_homing_swords.png',
+			  '41_space_blink_chain_five.png',
+			  '42_space_blink_warp_transition.png',
+			  '43_space_blink_landing_wing_burst.png',
+				  '44_space_blink_hud_only_charge.png',
+			  '45_space_blink_chain_transition.png',
+			]) {
+  if (!skywardCapture.includes(needle)) fail(`Skyward capture invariant missing: ${needle}`);
+}
+for (const needle of [
+  'keep_major_alpha_islands',
+  'alpha_feather',
+  '连锁特效 题图 拖尾素材.png',
+  'skyward_chain_lance_s.png',
+	  'skyward_chain_flow_overdrive.png',
+	  '空格小技能 穿梭 /用于穿梭的特效 开传送门等.png',
+	  '空格小技能 穿梭 /穿梭特效 光翼和拖尾.png',
+	  '空格小技能 穿梭 /穿梭技能层数提示Ui.png',
+	  'skyward_blink_sword_body.png',
+	  'skyward_blink_wing_open_{n}.png',
+	  'skyward_blink_float_charge_{n}.png',
+	  'over[1] is the clean integrated overdrive silhouette',
+	]) {
+  if (!skywardProcessor.includes(needle)) fail(`Skyward processor invariant missing: ${needle}`);
 }
 
 console.log('regression grep ok');

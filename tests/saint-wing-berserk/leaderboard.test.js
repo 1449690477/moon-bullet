@@ -4,15 +4,12 @@ import { loadLeaderboardInternals } from './setup.js';
 describe('online leaderboard and avatar upload spec', () => {
   const board = loadLeaderboardInternals();
 
-  it('uses Supabase REST for reads and Edge Function for writes without adding the Supabase SDK', () => {
+  it('uses Supabase REST without adding the Supabase SDK', () => {
     const spec = board.configSpec();
     expect(spec.supabaseUrl).toBe('https://tdlqugkkojwysqnsunqt.supabase.co');
     expect(spec.table).toBe('leaderboard');
     expect(spec.topLimit).toBe(50);
     expect(spec.usesRestApi).toBe(true);
-    expect(spec.writeEndpoint).toBe('https://tdlqugkkojwysqnsunqt.supabase.co/functions/v1/leaderboard-run');
-    expect(spec.directClientWrites).toBe(false);
-    expect(spec.startsRankedRunToken).toBe(true);
     expect(spec.noSupabaseSdkDependency).toBe(true);
     expect(spec.optionalAvatarColumn).toBe('avatar_data');
   });
@@ -47,29 +44,24 @@ describe('online leaderboard and avatar upload spec', () => {
     });
   });
 
+  it('allows skyward and scores above the old 5,000,000 cap', () => {
+    const payload = board.buildPayloadForTest({
+      player_name: 'SKY',
+      character: 'skyward',
+      score: 6000000,
+      kill_count: 5200,
+      loop_count: 4,
+      elapsed: 680,
+      bosses_cleared: 11,
+    });
+    expect(payload.character).toBe('skyward');
+    expect(payload.score).toBe(6000000);
+  });
+
   it('only submits scores that beat the remote best score', () => {
     expect(board.shouldSubmitForTest(1000, 999)).toBe(true);
     expect(board.shouldSubmitForTest(1000, 1000)).toBe(false);
     expect(board.shouldSubmitForTest(900, 1000)).toBe(false);
-  });
-
-  it('routes ranked uploads through tokenized Edge Function endpoints', () => {
-    const route = board.submitRouteSpecForTest();
-    expect(route.start).toBe(`${board.writeEndpointForTest()}/start`);
-    expect(route.submit).toBe(`${board.writeEndpointForTest()}/submit`);
-    expect(route.usesRunToken).toBe(true);
-    expect(route.directInsertFromClient).toBe(false);
-    expect(route.directDeleteFromClient).toBe(false);
-    expect(route.hellModeDisablesKeyG).toBe(true);
-    expect(route.acceptedStatuses).toEqual(expect.arrayContaining(['accepted', 'quarantined', 'rejected']));
-  });
-
-  it('keeps avatar data bounded and can locally fallback the current player avatar', () => {
-    expect(board.payloadHasAvatarForTest({ avatar_data: 'data:image/webp;base64,abc' })).toBe(true);
-    expect(board.payloadHasAvatarForTest({ avatar_data: 'x'.repeat(23000) })).toBe(false);
-    expect(board.avatarForRowForTest({ player_name: 'WANG HAN' }, 'WANG HAN')).toBe('local-avatar-for-current-player');
-    expect(board.avatarForRowForTest({ player_name: 'WANG HAN', avatar_data: 'remote-avatar' }, 'WANG HAN')).toBe('remote-avatar');
-    expect(board.avatarForRowForTest({ player_name: 'OTHER' }, 'WANG HAN')).toBe('');
   });
 
   it('defines compressed avatar and themed UI surfaces', () => {
@@ -78,26 +70,12 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(avatar.size).toBe(96);
     expect(avatar.maxDataUrlLength).toBeLessThanOrEqual(22000);
     expect(avatar.fallbackWhenColumnMissing).toBe(true);
-    expect(avatar.localCurrentPlayerFallback).toBe(true);
-    expect(avatar.updateExistingBestWhenScoreNotBeaten).toBe(true);
-    expect(avatar.requiresDatabaseColumnForGlobalAvatar).toBe(true);
 
     const ui = board.uiSpec();
     expect(ui.mode).toBe('moon-eclipse-glass-panel-with-avatar-ranking');
     expect(ui.avatarUpload).toBe(true);
-    expect(ui.pagination).toBe(true);
-    expect(ui.companionGuestbook).toBe(true);
     expect(ui.backgroundAssets).toEqual(expect.arrayContaining(['suiyiMapVirtualCore', 'bgEclipse', 'uiEmblemLoop']));
-    expect(ui.buttons).toEqual(expect.arrayContaining(['titleOpen', 'resultRetry', 'resultProfile', 'leaderboardPrev', 'leaderboardNext', 'guestbookCompose']));
-    expect(ui.panels).toEqual(expect.arrayContaining(['top50LeaderboardPanel', 'guestbookSidePanel', 'guestbookMessageDialog']));
-  });
-
-  it('paginates Top 50 rows instead of capping the board at one visible screen', () => {
-    const page = board.leaderboardPaginationSpecForTest(1080, 50);
-    expect(page.enabled).toBe(true);
-    expect(page.topLimit).toBe(50);
-    expect(page.rowsPerPage).toBeGreaterThanOrEqual(17);
-    expect(page.pageCount).toBeGreaterThan(1);
+    expect(ui.buttons).toEqual(expect.arrayContaining(['titleOpen', 'resultRetry', 'resultProfile']));
   });
 
   it('requires hell mode for leaderboard eligibility and defaults it on', () => {
@@ -111,6 +89,15 @@ describe('online leaderboard and avatar upload spec', () => {
 
     expect(board.leaderboardEligibilityForTest(true).canUpload).toBe(true);
     expect(board.leaderboardEligibilityForTest(false).canUpload).toBe(false);
+  });
+
+  it('tracks graze scoring separately and includes it in the leaderboard score', () => {
+    const graze = board.grazeScoreSpecForTest();
+    expect(graze.base).toBeGreaterThan(0);
+    expect(graze.hellModeMultiplier).toBeGreaterThanOrEqual(1);
+    expect(graze.finalScoreIncludesGraze).toBe(true);
+    expect(graze.leaderboardPayloadUsesFinalScore).toBe(true);
+    expect(graze.display).toBe('separate-graze-score-added-to-final-score');
   });
 
   it('makes a hell-mode hostile hit kill through invulnerability and ultimate protection', () => {
@@ -131,32 +118,5 @@ describe('online leaderboard and avatar upload spec', () => {
     const rows = board.sampleRowsForTest();
     expect(board.rankForTest(rows, rows[0].player_name)).toBe(1);
     expect(board.rankForTest(rows, 'not-on-board')).toBe(null);
-  });
-
-  it('defines a blue-pink guestbook with avatar upload and function-backed writes', () => {
-    const guestbook = board.guestbookSpec();
-    expect(guestbook.mode).toBe('blue-pink-fresh-cute-side-guestbook');
-    expect(guestbook.table).toBe('guestbook_messages');
-    expect(guestbook.limit).toBe(20);
-    expect(guestbook.avatarUpload).toBe(true);
-    expect(guestbook.directClientWrites).toBe(false);
-    expect(guestbook.publicReadFunctionWrite).toBe(true);
-    expect(guestbook.writeEndpoint).toBe(`${board.writeEndpointForTest()}/message`);
-
-    const payload = board.buildGuestbookPayloadForTest({
-      player_id: '  ID  01  ',
-      player_name: '苏苏呀',
-      message: '  你好   月蚀  ',
-      avatar_data: 'data:image/webp;base64,abc',
-    });
-    expect(payload).toEqual({
-      player_id: 'ID 01',
-      player_name: '苏苏呀',
-      message: '你好 月蚀',
-      avatar_data: 'data:image/webp;base64,abc',
-    });
-    expect(board.validateGuestbookPayloadForTest(payload).ok).toBe(true);
-    expect(board.validateGuestbookPayloadForTest({ ...payload, message: '' }).ok).toBe(false);
-    expect(board.normalizeGuestbookMessageForTest('x'.repeat(140))).toHaveLength(96);
   });
 });

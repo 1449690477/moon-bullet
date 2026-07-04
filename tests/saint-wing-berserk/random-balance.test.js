@@ -15,8 +15,6 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
       'suiyiMapDigitalRuins',
       'suiyiMapCrystalSanctum',
       'miguaMapGreenhouse',
-      'miguaMapJuiceFactory',
-      'miguaMapFloatingCity',
     ]));
     expect(spec.pool).toHaveLength(spec.fieldBackgrounds.length + spec.suiyiMaps.length + spec.miguaMaps.length);
     expect(spec.selectForTest(0, ['a', 'b', 'c'])).toBe('a');
@@ -92,8 +90,6 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.mode).toBe('current-wave-plus-remaining-no-slash-denominator');
     expect(spec.mainSample).toBe('第 9 波 · 剩余 7 波');
     expect(spec.reinforcementSample).toBe('增援第 16 波 · 剩余 18 波');
-    expect(spec.reinforcementClearSample).toBe('增援第 16 波 · 剩余 0 波');
-    expect(spec.timedRemainingForTest(60, 68, 1)).toBe(8);
     expect(spec.mainSample).not.toContain('/');
     expect(spec.reinforcementSample).not.toContain('/');
   });
@@ -111,7 +107,10 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     const spec = balance.touchControlSpec();
     expect(spec.mobileMoveMode).toBe('relative-drag-no-snap');
     expect(spec.noSnapOnMobilePointerDown).toBe(true);
-    expect(spec.desktopPointerMode).toBe('absolute-pointer-target-retained');
+    expect(spec.desktopPointerMode).toBe('right-click-pointerlock-relative-mouse');
+    expect(spec.desktopNoLeftClickSnap).toBe(true);
+    expect(spec.desktopRightClickMousePilot).toBe(true);
+    expect(spec.desktopMousePilotReleaseOn).toEqual(expect.arrayContaining(['pause', 'death', 'title']));
     expect(spec.simulateRelativeMoveForTest({ x: 360, y: 900 }, [
       { dx: 40, dy: -80 },
       { dx: -10, dy: 25 },
@@ -125,15 +124,6 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.mobile.map(b => b.enemyBulletMax)).toEqual([300, 220, 160]);
     expect(spec.desktop[0].enemyCap).toBeGreaterThan(spec.desktop[2].enemyCap);
     expect(spec.mobile[2].particleCap).toBeLessThan(spec.mobile[0].particleCap);
-    expect(spec.desktop[0].themeFxCap).toBeGreaterThan(spec.desktop[2].themeFxCap);
-  });
-
-  it('uses runtime trimming under high projectile pressure without freezing player update', () => {
-    const spec = balance.runtimePerformanceSpec();
-    expect(spec.mode).toBe('stress-cached-runtime-budget-trim');
-    expect(spec.trims).toEqual(expect.arrayContaining(['enemyBullets', 'suiyiHazards', 'miguaHazards']));
-    expect(spec.preserves).toContain('playerUpdate');
-    expect(spec.themeCapsFromBudget).toBe(true);
   });
 
   it('locks hostile bullet red rim and always-visible player hitbox clarity', () => {
@@ -143,20 +133,5 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.hostileBullet.lowQualityKeepsRim).toBe(true);
     expect(spec.playerHitbox.alwaysVisible).toBe(true);
     expect(spec.playerHitbox.core).toBe('red-dot-red-ring-real-hit-radius');
-  });
-
-  it('documents the feel optimization v3 smooth movement, declutter, and audio layers', () => {
-    const spec = balance.feelOptimizationSpec();
-    expect(spec.title).toBe('手感优化 V3');
-    expect(spec.bulletReadability.densityDimLayer).toBe('under-hostile-bullets');
-    expect(spec.bulletReadability.maxAlpha).toBeCloseTo(0.18);
-    expect(spec.hitFeedback.hitStopMode).toBe('visual-only-no-input-freeze');
-    expect(spec.hitFeedback.playerHitStop).toBe(0);
-    expect(spec.hitFeedback.eliteKillHitStop).toBe(0);
-    expect(spec.hitFeedback.hurtVignetteSeconds).toBeCloseTo(0.42);
-    expect(spec.uiDeclutter.stripMul).toBeLessThan(0.7);
-    expect(spec.uiDeclutter.scanMul).toBeLessThan(0.7);
-    expect(spec.audioLayering.graze).toBe('two-layer-high-frequency');
-    expect(spec.audioLayering.killStreakWindow).toBeCloseTo(0.9);
   });
 });
