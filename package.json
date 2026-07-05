@@ -8,6 +8,9 @@
   },
   "scripts": {
     "build:pages": "node tools/run_python.js tools/build_pages.py",
+    "sync:main": "node tools/sync_main_mirror.js",
+    "verify:publish": "node tools/verify_publish_consistency.js",
+    "release:pages": "npm run build:pages && npm run sync:main && npm run verify:publish && npm run smoke:pages",
     "smoke:pages": "node tools/smoke_pages.js",
     "syntax": "node tests/saint-wing-berserk/syntax-check.js",
     "regression": "cd tests/saint-wing-berserk && npm run regression",

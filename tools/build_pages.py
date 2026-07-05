@@ -72,6 +72,18 @@ def clean_dist() -> None:
     MOBILE_DIR.mkdir(parents=True)
 
 
+def stable_built_at(version: str) -> int:
+    manifest = DIST / "pages-asset-manifest.json"
+    if manifest.exists():
+        try:
+            previous = json.loads(manifest.read_text(encoding="utf-8"))
+            if previous.get("version") == version and isinstance(previous.get("builtAt"), int):
+                return previous["builtAt"]
+        except Exception:
+            pass
+    return int(time.time())
+
+
 def copy_file(rel: str) -> int:
     src = ROOT / rel
     if not src.exists() or not src.is_file():
@@ -174,6 +186,7 @@ def main() -> None:
     sfx_paths = extract_const_object(source, "SFX_PATHS")
 
     version = hashlib.sha1(source.encode("utf-8")).hexdigest()[:12]
+    built_at = stable_built_at(version)
     clean_dist()
 
     referenced = dict(asset_paths)
@@ -219,7 +232,7 @@ def main() -> None:
 
     asset_manifest = {
         "version": version,
-        "builtAt": int(time.time()),
+        "builtAt": built_at,
         "referencedMedia": len(media_paths),
         "mobileVariants": len(mobile_manifest),
         "copiedBytes": bytes_copied,

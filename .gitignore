@@ -72,3 +72,20 @@ _mlcheck.js
 圣冕技能图标.png
 暴走.png
 绿色HP.png
+
+# ─── 本地预览镜像 / 验收截图 / 临时排查产物 ─────
+# GitHub Pages 只发布根目录 index.html 生成出的 docs/。
+# moon-bullet-main/ 是本机预览镜像，提交前由 npm run sync:main 自动同步。
+moon-bullet-main/
+deno.lock
+supabase/.temp/
+tools/*_acceptance/
+tools/*_asset_preview/
+tools/_*_discovery/
+tools/_*.py
+tools/_ty_*.py
+tests/saint-wing-berserk/suiyi-boss.test.js
+tests/saint-wing-berserk/suiyi-tech-mobs.test.js
+tools/process_suiyi_boss_assets.py
+tools/process_tianyao_assets.py
+tools/process_tianyao_hand_assets.py
