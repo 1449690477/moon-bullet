@@ -30901,11 +30901,15 @@
         resetSkywardState();
         player.x = W * 0.5;
         player.y = scene.includes('stellar_blink') ? H - 230 : (scene.includes('close') ? H * 0.52 : H - 230);
-        player.maxHp = CHARACTERS.skyward.maxHp;
-        player.hp = player.maxHp;
-        player.berserk = scene.includes('overdrive') || scene.includes('berserk') ? 8 : 0;
+	        player.maxHp = CHARACTERS.skyward.maxHp;
+	        player.hp = player.maxHp;
+	        player.inv = 0;
+	        player.berserk = scene.includes('overdrive') || scene.includes('berserk') ? 8 : 0;
 	        player.power = scene.includes('overdrive') || scene.includes('berserk') ? MAX_POWER : 170;
 	        player.shootCd = 0;
+	        flash = 0;
+	        hitStop = 0;
+	        screenShake = 0;
 	        playerShots.length = 0;
 	        enemyBullets.length = 0;
 	        enemies.length = 0;
