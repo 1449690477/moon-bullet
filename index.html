@@ -1752,9 +1752,27 @@
     writeEndpoint: `${LEADERBOARD_FN_BASE}/message`,
     directClientWrites: false,
   });
-  const UPDATE_NOTICE_VERSION = '2026-07-04-skyward-mouse-graze';
+
+  const LEADERBOARD_HISTORY_SEASONS = Object.freeze([
+    Object.freeze({
+      id: 'season-2026-07-05-pre-reset',
+      title: '往期排行榜 · 2026-07-05 开新赛季前',
+      note: '新赛季开启前的历史成绩快照，当前赛季已清零重新竞争。',
+      rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
+    }),
+  ]);
+  const UPDATE_NOTICE_VERSION = '2026-07-05-skyward-season-reset';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-05',
+      items: [
+        '苍穹圣巡继续修复：副弹幕、连锁飞剑和星轨跃迁追踪剑不再糊成白光，剑身贴图、蓝色拖尾和命中特效更清楚。',
+        '排行榜开启新赛季：本季分数已经清零，大家从同一起点重新冲榜。',
+        '排行榜右侧新增“往期”页，可以查看清零前的历史成绩快照。',
+        '取消旧的 500 万分数限制，正常高分不会再因为这个旧上限被挡住。',
+      ],
+    },
     {
       date: '2026-07-04',
       items: [
@@ -1838,6 +1856,7 @@
   });
   let last = performance.now();
   let time = 0;
+  let skywardGlowBudgetMul = 1;
   let screenShake = 0;
   // 自适应性能：平滑帧时（ms）。perfLevel 0=满特效 1=精简 2=极简，弱机自动降级保流畅
   let smoothFrameMs = 16.7;
@@ -1868,6 +1887,7 @@
   let leaderboardData = [];
   let leaderboardPage = 0;
   let leaderboardLastPageCount = 1;
+  let leaderboardSideTab = 'guestbook';
   let leaderboardFetchStatus = 'idle'; // idle|loading|ok|fail
   let leaderboardUploadStatus = 'idle'; // idle|needsName|pending|ok|fail|skipped
   let leaderboardStatusMessage = '';
@@ -2662,6 +2682,8 @@
     if (action === 'refresh') { fetchLeaderboard(LEADERBOARD_TOP_LIMIT); fetchGuestbook(GUESTBOOK_LIMIT); return true; }
     if (action === 'leaderboardPrev') { leaderboardPage = Math.max(0, leaderboardPage - 1); return true; }
     if (action === 'leaderboardNext') { leaderboardPage = Math.min(Math.max(0, leaderboardLastPageCount - 1), leaderboardPage + 1); return true; }
+    if (action === 'sideGuestbook') { leaderboardSideTab = 'guestbook'; return true; }
+    if (action === 'sideHistory') { leaderboardSideTab = 'history'; return true; }
     if (action === 'guestbookRefresh') { fetchGuestbook(GUESTBOOK_LIMIT); return true; }
     if (action === 'guestbookCompose') { showGuestbookDialog(); return true; }
     if (action === 'updateNotice') { showUpdateNoticeDialog(false); return true; }
@@ -6768,18 +6790,18 @@
 	  });
 	  const SKYWARD_BOUNCE_VISUAL = Object.freeze({
 	    policy: 'use dedicated chain-lance sprites with controlled crystal glow and visible travel trail',
-	    normalSwordW: 98,
-	    overdriveSwordW: 126,
-	    normalTrailLen: 160,
-	    overdriveTrailLen: 214,
-	    normalTrailH: 22,
-	    overdriveTrailH: 29,
-	    normalTrailAlpha: 0.24,
-	    overdriveTrailAlpha: 0.32,
-	    normalGlowAlpha: 0.20,
-	    overdriveGlowAlpha: 0.26,
-	    normalUnderlayAlpha: 0.16,
-	    overdriveUnderlayAlpha: 0.22,
+	    normalSwordW: 112,
+	    overdriveSwordW: 142,
+	    normalTrailLen: 178,
+	    overdriveTrailLen: 238,
+	    normalTrailH: 25,
+	    overdriveTrailH: 32,
+	    normalTrailAlpha: 0.27,
+	    overdriveTrailAlpha: 0.35,
+	    normalGlowAlpha: 0.22,
+	    overdriveGlowAlpha: 0.29,
+	    normalUnderlayAlpha: 0.18,
+	    overdriveUnderlayAlpha: 0.24,
 	    modelAlpha: 1.0,
 	  });
 	  const SKYWARD_SHOT_KINDS = Object.freeze([
@@ -7009,21 +7031,21 @@
       const spread = (i - (cfg.swordsPerBlink - 1) / 2) / Math.max(1, cfg.swordsPerBlink - 1);
       const a = target ? angleTo(sx, sy, target.x, target.y) : (-Math.PI / 2 + spread * cfg.swordLaunchSpread * 0.16);
       const s = fireSkywardShot(sx, sy, a, cfg.swordSpeed, cfg.swordDamage * dm, 6.8, 'sky_blink_sword', {
-        assetKey: assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : 'skywardLanceM',
-        modelAssetKey: '',
+        assetKey: assetReady('skywardBlinkSwordStreak') ? 'skywardBlinkSwordStreak' : (assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : 'skywardLanceM'),
+        modelAssetKey: assetReady('skywardBlinkSwordBody') ? 'skywardBlinkSwordBody' : '',
         horizontalSprite: false,
-        visualRotOffset: assetReady('skywardBlinkSwordBody') ? -Math.PI * 0.72 : 0,
+        visualRotOffset: assetReady('skywardBlinkSwordStreak') ? 0 : (assetReady('skywardBlinkSwordBody') ? -Math.PI * 0.72 : 0),
         lanceClass: 'stellarBlinkSword',
-        spriteScale: player.berserk > 0 ? 1.04 : 0.94,
-        spriteLengthMul: player.berserk > 0 ? 1.02 : 0.94,
-        trailBoost: player.berserk > 0 ? 1.08 : 0.86,
-        trailWidthMul: player.berserk > 0 ? 0.62 : 0.50,
-        energyStream: false,
-        flowAssetKey: '',
+        spriteScale: player.berserk > 0 ? 1.18 : 1.08,
+        spriteLengthMul: player.berserk > 0 ? 1.10 : 1.04,
+        trailBoost: player.berserk > 0 ? 1.34 : 1.12,
+        trailWidthMul: player.berserk > 0 ? 0.70 : 0.58,
+        energyStream: true,
+        flowAssetKey: assetReady('skywardBlinkSwordTrail') ? 'skywardBlinkSwordTrail' : '',
         trailColor: '#aef4ff',
         goldTrail: i % 3 === 0,
-        tipFlare: player.berserk > 0 ? 0.92 : 0.76,
-        tailFlow: player.berserk > 0 ? 1.06 : 0.86,
+        tipFlare: player.berserk > 0 ? 1.22 : 1.04,
+        tailFlow: player.berserk > 0 ? 1.30 : 1.08,
         life: cfg.swordLife,
         pierce: 0,
       });
@@ -7467,16 +7489,16 @@
 		        pierce: 0,
 		        goldTrail: i % 2 === 0,
 		        lanceClass: 'moduleThinLance',
-		        spriteScale: overdrive ? (rear ? 0.86 : 0.80) : (rear ? 0.66 : 0.60),
-		        spriteLengthMul: overdrive ? 0.98 : 0.92,
+		        spriteScale: overdrive ? (rear ? 1.02 : 0.96) : (rear ? 0.82 : 0.76),
+		        spriteLengthMul: overdrive ? 1.08 : 1.02,
 		        horizontalSprite: assetReady('skywardChainLanceS'),
 		        visualRotOffset: assetReady('skywardChainLanceS') ? -Math.PI / 2 : 0,
 		        chainTipAtLeft: assetReady('skywardChainLanceS'),
-		        trailBoost: overdrive ? 1.18 : 0.84,
+		        trailBoost: overdrive ? 1.38 : 1.04,
 		        energyStream: true,
 		        flowAssetKey: overdrive && assetReady('skywardChainFlowLong') ? 'skywardChainFlowLong' : (assetReady('skywardChainFlowShort') ? 'skywardChainFlowShort' : ''),
-		        trailWidthMul: overdrive ? 0.58 : 0.46,
-		        tipFlare: overdrive ? 1.00 : 0.82,
+		        trailWidthMul: overdrive ? 0.68 : 0.54,
+		        tipFlare: overdrive ? 1.12 : 0.96,
 		        skyBounce: true,
 		        skyBounceMax: overdrive ? SKYWARD_OVERDRIVE_FIRE.moduleBounceCount : SKYWARD_NORMAL_FIRE.moduleBounceCount,
 		        skyBounceTargetLimit: overdrive ? SKYWARD_OVERDRIVE_FIRE.moduleBounceTargetLimit : SKYWARD_NORMAL_FIRE.moduleBounceTargetLimit,
@@ -7641,15 +7663,15 @@
 	    s.visualRotOffset = -Math.PI / 2;
 	    s.chainTipAtLeft = true;
 	    s.lanceClass = overdrive ? 'moduleChainSwordOverdrive' : 'moduleChainSword';
-	    s.spriteLengthMul = overdrive ? 1.16 : 1.06;
-	    s.spriteScale = overdrive ? 1.10 : 1.02;
+	    s.spriteLengthMul = overdrive ? 1.28 : 1.18;
+	    s.spriteScale = overdrive ? 1.38 : 1.24;
 	    s.energyStream = true;
 	    s.flowAssetKey = overdrive && assetReady('skywardChainFlowOverdrive') ? 'skywardChainFlowOverdrive' : (assetReady('skywardChainFlowLong') ? 'skywardChainFlowLong' : 'skywardChainFlowShort');
 	    s.boomT = 0.035;
-	    s.trailBoost = overdrive ? 1.34 : 1.05;
-	    s.trailWidthMul = overdrive ? 0.74 : 0.58;
-	    s.tipFlare = overdrive ? 1.26 : 1.04;
-	    s.tailFlow = overdrive ? 1.34 : 1.12;
+	    s.trailBoost = overdrive ? 1.72 : 1.42;
+	    s.trailWidthMul = overdrive ? 0.96 : 0.76;
+	    s.tipFlare = overdrive ? 1.54 : 1.28;
+	    s.tailFlow = overdrive ? 1.66 : 1.34;
 	    spawnSkywardBounceSwordFx(s, target, a, overdrive);
 	    addRingFx(s.x, s.y, 1.0, player.berserk > 0 ? 8 : 6, 0.055, 'rgba(132,230,255,', 0.42);
 	    if (perfLevel < 2 && Math.random() < 0.45) for (let q = 0; q < (player.berserk > 0 ? 2 : 1); q++) addParticle(s.x, s.y, rand(-56, 56), rand(-56, 56), rand(0.12, 0.20), rand(0.8, 1.7), q % 2 ? '#dffcff' : '#84e8ff', true);
@@ -7706,7 +7728,7 @@
       const head = points[0], tail = points[points.length - 1];
       const grad = ctx.createLinearGradient(tail.x, tail.y, head.x, head.y);
       for (const stop of colorStops) grad.addColorStop(stop[0], stop[1]);
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = alpha * ((bounceSword || blinkSword || s.energyStream) ? skywardGlowBudgetMul : 1);
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.moveTo(left[0].x, left[0].y);
@@ -7751,9 +7773,9 @@
 	      const hh = Math.max(8, h * (bounceSword ? 0.82 : s.skyBounceHits ? 1.18 : 1.25));
 	      const scroll = ((time * 130 + (s.skySeed || 0) * 17) % len) * 0.18;
 	      if (flowKey) {
-	        ctx.globalAlpha = bounceSword ? (player.berserk > 0 ? 0.135 : 0.095) : 0.22;
+	        ctx.globalAlpha = (bounceSword ? (player.berserk > 0 ? 0.135 : 0.095) : 0.22) * skywardGlowBudgetMul;
 	        ctx.drawImage(assets[flowKey], -len * 0.98 - scroll, -hh * 0.72, len * 1.12, hh * 1.44);
-	        ctx.globalAlpha = bounceSword ? (player.berserk > 0 ? 0.205 : 0.145) : 0.30;
+	        ctx.globalAlpha = (bounceSword ? (player.berserk > 0 ? 0.205 : 0.145) : 0.30) * skywardGlowBudgetMul;
 	        ctx.drawImage(assets[flowKey], -len * 0.86 - scroll, -hh / 2, len, hh);
 	      }
 	      const g = ctx.createLinearGradient(-len * 0.82, 0, w * 0.26, 0);
@@ -7761,7 +7783,7 @@
 	      g.addColorStop(0.36, 'rgba(58,180,255,0.28)');
 	      g.addColorStop(0.70, 'rgba(70,238,255,0.38)');
 	      g.addColorStop(1, 'rgba(238,254,255,0.62)');
-	      ctx.globalAlpha = bounceSword ? (player.berserk > 0 ? SKYWARD_BOUNCE_VISUAL.overdriveUnderlayAlpha : SKYWARD_BOUNCE_VISUAL.normalUnderlayAlpha) : 0.48;
+	      ctx.globalAlpha = (bounceSword ? (player.berserk > 0 ? SKYWARD_BOUNCE_VISUAL.overdriveUnderlayAlpha : SKYWARD_BOUNCE_VISUAL.normalUnderlayAlpha) : 0.48) * skywardGlowBudgetMul;
 	      ctx.fillStyle = g;
 	      ctx.beginPath();
 	      ctx.moveTo(-len * 0.86, -hh * 0.28);
@@ -7777,7 +7799,7 @@
 	        const img = assets[flowKey];
 	        ctx.save();
 	        ctx.rotate(-Math.PI / 2);
-	        ctx.globalAlpha = giant ? 0.30 : blinkSword ? 0.46 : 0.20;
+	        ctx.globalAlpha = (giant ? 0.30 : blinkSword ? 0.22 : 0.20) * skywardGlowBudgetMul;
 	        ctx.drawImage(img, -h * 0.56, -ww / 2, len, ww);
 	        ctx.restore();
 	      }
@@ -7785,7 +7807,7 @@
 	      g.addColorStop(0, 'rgba(34,100,255,0)');
 	      g.addColorStop(0.42, 'rgba(70,210,255,0.22)');
 	      g.addColorStop(1, 'rgba(238,254,255,0.48)');
-	      ctx.globalAlpha = giant ? 0.54 : blinkSword ? 0.66 : 0.36;
+	      ctx.globalAlpha = (giant ? 0.54 : blinkSword ? 0.28 : 0.36) * skywardGlowBudgetMul;
 	      ctx.fillStyle = g;
 	      ctx.beginPath();
 	      ctx.moveTo(-ww * 0.44, h * 0.58);
@@ -7870,9 +7892,9 @@
 	      const mw = w * (over ? 1.38 : 1.24);
 	      const mh = mw * img.height / img.width;
 	      const glowKey = skywardGlowKey(modelKey);
-	      drawSkywardGlowAsset(glowKey, -mw / 2, -mh / 2 - h * 0.02, mw, mh, over ? 0.16 : 0.12, 0.45, 1.06);
+	      drawSkywardGlowAsset(glowKey, -mw / 2, -mh / 2 - h * 0.02, mw, mh, (over ? 0.18 : 0.14) * skywardGlowBudgetMul, 0.45, 1.06);
 	      ctx.globalCompositeOperation = 'source-over';
-	      ctx.globalAlpha = over ? 0.96 : 0.92;
+	      ctx.globalAlpha = over ? 0.98 : 0.95;
 	      ctx.drawImage(img, -mw / 2, -mh / 2 - h * 0.02, mw, mh);
 	      ctx.globalCompositeOperation = 'lighter';
 	    }
@@ -7882,22 +7904,22 @@
 	    tip.addColorStop(0, 'rgba(255,255,255,0.96)');
 	    tip.addColorStop(0.24, 'rgba(152,246,255,0.58)');
 	    tip.addColorStop(1, 'rgba(72,192,255,0)');
-	    ctx.globalAlpha = over ? 0.18 : 0.14;
+	    ctx.globalAlpha = (over ? 0.24 : 0.19) * skywardGlowBudgetMul;
 	    ctx.fillStyle = tip;
 	    ctx.beginPath(); ctx.ellipse(0, tipY, w * 0.24, w * 0.78, 0, 0, TAU); ctx.fill();
 	    const tail = ctx.createRadialGradient(0, tailY, 0, 0, tailY, w * 1.18);
 	    tail.addColorStop(0, 'rgba(236,254,255,0.74)');
 	    tail.addColorStop(0.38, 'rgba(80,226,255,0.36)');
 	    tail.addColorStop(1, 'rgba(42,120,255,0)');
-	    ctx.globalAlpha = (over ? 0.16 : 0.12) * (s.tailFlow || 1);
+	    ctx.globalAlpha = (over ? 0.24 : 0.18) * (s.tailFlow || 1) * skywardGlowBudgetMul;
 	    ctx.fillStyle = tail;
 	    ctx.beginPath(); ctx.ellipse(0, tailY, w * 0.34, w * 1.08, 0, 0, TAU); ctx.fill();
 	    ctx.lineCap = 'round';
-	    ctx.globalAlpha = over ? 0.22 : 0.18;
+	    ctx.globalAlpha = (over ? 0.36 : 0.28) * skywardGlowBudgetMul;
 	    ctx.strokeStyle = 'rgba(232,254,255,0.92)';
 	    ctx.lineWidth = Math.max(1.0, w * 0.045);
 	    ctx.beginPath(); ctx.moveTo(0, tailY + h * 0.12); ctx.lineTo(0, tipY - h * 0.02); ctx.stroke();
-	    ctx.globalAlpha = (0.14 + pulse * 0.05);
+	    ctx.globalAlpha = (0.22 + pulse * 0.08) * skywardGlowBudgetMul;
 	    ctx.strokeStyle = 'rgba(255,224,132,0.72)';
 	    ctx.lineWidth = Math.max(0.7, w * 0.026);
 	    for (const side of [-1, 1]) {
@@ -7910,7 +7932,7 @@
 	    for (let i = 0; i < dotCount; i++) {
 	      const q = (time * (1.6 + i * 0.13) + (s.skySeed || 0) * 0.071 + i / dotCount) % 1;
 	      const y = lerp(tailY, tipY, q);
-	      ctx.globalAlpha = (over ? 0.18 : 0.13) * Math.sin(Math.PI * q);
+	      ctx.globalAlpha = (over ? 0.26 : 0.18) * Math.sin(Math.PI * q) * skywardGlowBudgetMul;
 	      ctx.fillStyle = i % 2 ? 'rgba(255,226,142,0.86)' : 'rgba(154,244,255,0.92)';
 	      ctx.beginPath(); ctx.ellipse((i - (dotCount - 1) / 2) * w * 0.045, y, over ? 1.4 : 1.0, over ? 5.4 : 4.0, 0, 0, TAU); ctx.fill();
 	    }
@@ -8042,6 +8064,7 @@
 	    const thin = s.kind === 'sky_module_lance' || s.kind === 'sky_blink_sword' || s.lanceClass === 'moduleThinLance' || s.lanceClass === 'stellarBlinkSword';
 	    const blinkSword = s.kind === 'sky_blink_sword' || s.lanceClass === 'stellarBlinkSword';
 	    const bounceSword = !!s.skyBounce || (s.lanceClass && String(s.lanceClass).includes('ChainSword'));
+	    const glowBudget = (bounceSword || blinkSword || thin || s.energyStream) ? skywardGlowBudgetMul : 1;
 	    if (!bounceSword) {
 	      const haloR = s.r * (giant ? 4.8 : large ? 3.6 : 2.65);
 	      const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, haloR);
@@ -8050,6 +8073,7 @@
       halo.addColorStop(1, 'rgba(90,220,255,0)');
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = glowBudget;
       ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(0, 0, s.r * 3.2, 0, TAU); ctx.fill();
       ctx.restore();
 	    }
@@ -8069,10 +8093,10 @@
 		      if (flipChainSprite) {
 		        ctx.save();
 		        ctx.scale(-1, 1);
-		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, player.berserk > 0 ? 0.26 : 0.20, 0.62, 1.13);
+		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, (player.berserk > 0 ? 0.26 : 0.20) * glowBudget, 0.62, 1.13);
 		        ctx.restore();
 		      } else {
-		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, bounceSword ? (player.berserk > 0 ? 0.26 : 0.20) : blinkSword ? 0.10 : giant ? 0.52 : large ? 0.42 : (thin ? 0.38 : 0.30), bounceSword || blinkSword ? 0.62 : SKYWARD_VISUAL.bulletGlowBlur, giant ? 1.22 : (thin ? 1.18 : 1.13));
+		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, (bounceSword ? (player.berserk > 0 ? 0.26 : 0.20) : blinkSword ? 0.16 : giant ? 0.52 : large ? 0.42 : (thin ? 0.38 : 0.30)) * glowBudget, bounceSword || blinkSword ? 0.62 : SKYWARD_VISUAL.bulletGlowBlur, giant ? 1.22 : (thin ? 1.18 : 1.13));
 		      }
 	      ctx.globalCompositeOperation = 'source-over';
 	      ctx.globalAlpha = 0.98;
@@ -8087,10 +8111,10 @@
 		      if (flipChainSprite) {
 		        ctx.save();
 		        ctx.scale(-1, 1);
-		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, 0.075, 0, 1.02);
-		        ctx.restore();
-		      } else {
-		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, bounceSword ? 0.075 : blinkSword ? 0.040 : giant ? 0.24 : 0.16, 0, 1.02);
+	          drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, 0.075 * glowBudget, 0, 1.02);
+		          ctx.restore();
+		        } else {
+		        drawSkywardGlowAsset(glowKey, -w / 2, -h / 2, w, h, (bounceSword ? 0.075 : blinkSword ? 0.060 : giant ? 0.24 : 0.16) * glowBudget, 0, 1.02);
 		      }
 		      if (s.horizontalSprite) drawSkywardHorizontalSwordDetails(s, w, h);
 		      else if (blinkSword) drawSkywardBlinkSwordDetails(s, w, h);
@@ -8103,7 +8127,7 @@
       ctx.fillStyle = lg; ctx.beginPath(); ctx.moveTo(0, -h / 2); ctx.lineTo(w, h * 0.12); ctx.lineTo(0, h / 2); ctx.lineTo(-w, h * 0.12); ctx.closePath(); ctx.fill();
 	    }
 	    ctx.globalCompositeOperation = 'lighter';
-	    ctx.globalAlpha = bounceSword ? 0.16 : giant ? 0.30 : large ? 0.24 : 0.16;
+	    ctx.globalAlpha = (bounceSword ? 0.16 : giant ? 0.30 : large ? 0.24 : 0.16) * glowBudget;
 	    ctx.strokeStyle = 'rgba(200,248,255,0.76)';
 	    ctx.lineWidth = Math.max(0.9, s.r * (giant ? 0.18 : 0.13));
     ctx.beginPath(); ctx.moveTo(0, -s.r * 2.4); ctx.lineTo(0, s.r * 1.6); ctx.stroke();
@@ -8252,17 +8276,17 @@
 	      ctx.rotate(fx.ang);
       const trailKey = fx.trailKey && assetReady(fx.trailKey) ? fx.trailKey : '';
       if (trailKey) {
-        ctx.globalAlpha = (over ? 0.145 : 0.105) * k;
-        ctx.drawImage(assets[trailKey], Math.max(0, head - trailLen * 1.04), -trailH * 0.86, trailLen * 1.08, trailH * 1.72);
-        ctx.globalAlpha = (over ? 0.225 : 0.160) * k;
-        ctx.drawImage(assets[trailKey], Math.max(0, head - trailLen), -trailH / 2, trailLen, trailH);
+	        ctx.globalAlpha = (over ? 0.155 : 0.115) * k * skywardGlowBudgetMul;
+	        ctx.drawImage(assets[trailKey], Math.max(0, head - trailLen * 1.04), -trailH * 0.86, trailLen * 1.08, trailH * 1.72);
+	        ctx.globalAlpha = (over ? 0.245 : 0.180) * k * skywardGlowBudgetMul;
+	        ctx.drawImage(assets[trailKey], Math.max(0, head - trailLen), -trailH / 2, trailLen, trailH);
       }
 	      const g = ctx.createLinearGradient(Math.max(0, head - trailLen), 0, head, 0);
 	      g.addColorStop(0, 'rgba(52,130,255,0)');
 	      g.addColorStop(0.32, over ? 'rgba(46,154,255,0.15)' : 'rgba(58,160,255,0.12)');
 	      g.addColorStop(0.68, over ? 'rgba(72,238,255,0.24)' : 'rgba(82,224,255,0.18)');
 	      g.addColorStop(1, 'rgba(238,254,255,0.38)');
-      ctx.globalAlpha = (over ? SKYWARD_BOUNCE_VISUAL.overdriveTrailAlpha : SKYWARD_BOUNCE_VISUAL.normalTrailAlpha) * k;
+      ctx.globalAlpha = (over ? SKYWARD_BOUNCE_VISUAL.overdriveTrailAlpha : SKYWARD_BOUNCE_VISUAL.normalTrailAlpha) * k * skywardGlowBudgetMul;
 	      ctx.fillStyle = g;
 	      ctx.beginPath();
 	      ctx.moveTo(Math.max(0, head - trailLen), -trailH * 0.28);
@@ -8271,14 +8295,14 @@
 	      ctx.quadraticCurveTo(head - trailLen * 0.42, trailH * 0.50, Math.max(0, head - trailLen), trailH * 0.28);
 	      ctx.closePath();
 	      ctx.fill();
-	      ctx.globalAlpha = (over ? 0.36 : 0.28) * k;
+	      ctx.globalAlpha = (over ? 0.40 : 0.31) * k * skywardGlowBudgetMul;
 	      ctx.strokeStyle = 'rgba(224,252,255,0.86)';
 	      ctx.lineWidth = over ? 1.55 : 1.05;
 	      ctx.beginPath();
 	      ctx.moveTo(Math.max(0, head - trailLen * 0.92), 0);
 	      ctx.quadraticCurveTo(head - trailLen * 0.40, Math.sin(time * 8 + fx.seed) * trailH * 0.10, head + 10, 0);
 	      ctx.stroke();
-	      ctx.globalAlpha = (over ? 0.20 : 0.15) * k;
+	      ctx.globalAlpha = (over ? 0.23 : 0.17) * k * skywardGlowBudgetMul;
 	      ctx.strokeStyle = 'rgba(255,224,140,0.76)';
 	      ctx.lineWidth = over ? 1.0 : 0.72;
 	      ctx.beginPath();
@@ -8296,23 +8320,23 @@
 	          ctx.save();
 	          ctx.translate(head, 0);
 	          ctx.scale(-1, 1);
-	          drawSkywardGlowAsset(glowKey, -sw / 2, -sh / 2, sw, sh, over ? SKYWARD_BOUNCE_VISUAL.overdriveGlowAlpha : SKYWARD_BOUNCE_VISUAL.normalGlowAlpha, 0.55, 1.12);
+	          drawSkywardGlowAsset(glowKey, -sw / 2, -sh / 2, sw, sh, (over ? SKYWARD_BOUNCE_VISUAL.overdriveGlowAlpha : SKYWARD_BOUNCE_VISUAL.normalGlowAlpha) * skywardGlowBudgetMul, 0.55, 1.12);
 	          ctx.restore();
 	        } else {
-	          drawSkywardGlowAsset(glowKey, head - sw / 2, -sh / 2, sw, sh, over ? SKYWARD_BOUNCE_VISUAL.overdriveGlowAlpha : SKYWARD_BOUNCE_VISUAL.normalGlowAlpha, 0.55, 1.12);
+	          drawSkywardGlowAsset(glowKey, head - sw / 2, -sh / 2, sw, sh, (over ? SKYWARD_BOUNCE_VISUAL.overdriveGlowAlpha : SKYWARD_BOUNCE_VISUAL.normalGlowAlpha) * skywardGlowBudgetMul, 0.55, 1.12);
 	        }
 	        const tail = ctx.createRadialGradient(head - sw * 0.43, 0, 0, head - sw * 0.43, 0, sh * 1.9);
 	        tail.addColorStop(0, 'rgba(238,254,255,0.28)');
 	        tail.addColorStop(0.30, 'rgba(86,230,255,0.16)');
 	        tail.addColorStop(1, 'rgba(60,160,255,0)');
-	        ctx.globalAlpha = (over ? 0.13 : 0.09) * k;
+	        ctx.globalAlpha = (over ? 0.16 : 0.11) * k * skywardGlowBudgetMul;
 	        ctx.fillStyle = tail;
 	        ctx.beginPath(); ctx.ellipse(head - sw * 0.43, 0, sh * 0.34, sh * 0.92, 0, 0, TAU); ctx.fill();
 	        const tip = ctx.createRadialGradient(head + sw * 0.45, 0, 0, head + sw * 0.45, 0, sh * 2.15);
 	        tip.addColorStop(0, 'rgba(255,255,255,0.34)');
 	        tip.addColorStop(0.22, 'rgba(150,246,255,0.22)');
 	        tip.addColorStop(1, 'rgba(72,192,255,0)');
-	        ctx.globalAlpha = (over ? 0.16 : 0.12) * k;
+	        ctx.globalAlpha = (over ? 0.18 : 0.13) * k * skywardGlowBudgetMul;
 	        ctx.fillStyle = tip;
 	        ctx.beginPath(); ctx.ellipse(head + sw * 0.45, 0, sh * 0.40, sh * 1.04, 0, 0, TAU); ctx.fill();
 	        ctx.globalCompositeOperation = 'source-over';
@@ -8334,7 +8358,7 @@
 	          ctx.save();
 	          ctx.translate(head, 0);
 	          ctx.rotate(-Math.PI / 2);
-	          drawSkywardGlowAsset(skywardGlowKey(fx.modelKey), -mw / 2, -mh / 2, mw, mh, over ? 0.50 : 0.38, 0.8, 1.18);
+	          drawSkywardGlowAsset(skywardGlowKey(fx.modelKey), -mw / 2, -mh / 2, mw, mh, (over ? 0.50 : 0.38) * skywardGlowBudgetMul, 0.8, 1.18);
 	          ctx.globalCompositeOperation = 'source-over';
 	          ctx.globalAlpha = (over ? 0.92 : 0.82) * k;
 	          ctx.drawImage(m, -mw / 2, -mh / 2, mw, mh);
@@ -8350,7 +8374,7 @@
 	        const rnd = Math.sin((fx.seed || 0) * 37.17 + i * 91.73 + time * (over ? 11.0 : 8.2)) * 43758.5453;
 	        const f = rnd - Math.floor(rnd);
 	        const q = Math.max(0, head - f * trailLen);
-	        ctx.globalAlpha = (over ? 0.16 : 0.11) * k;
+	        ctx.globalAlpha = (over ? 0.18 : 0.12) * k * skywardGlowBudgetMul;
 	        ctx.fillStyle = i % 2 ? 'rgba(255,226,142,0.72)' : 'rgba(150,238,255,0.82)';
 	        ctx.beginPath();
 	        ctx.ellipse(q, (f - 0.5) * trailH * 0.72, over ? 1.7 : 1.2, over ? 5.6 : 4.0, 0, 0, TAU);
@@ -26354,6 +26378,15 @@
     }
     ctx.restore();
   }
+  function updateSkywardGlowBudget() {
+    let load = 0;
+    for (const s of playerShots) {
+      if (!isSkywardShot(s)) continue;
+      load += s.skyBounce || s.skyBlinkSword || s.energyStream ? 1.35 : 0.75;
+    }
+    if (skywardState && skywardState.bounceFx) load += skywardState.bounceFx.length * 1.2;
+    skywardGlowBudgetMul = load <= 24 ? 1 : Math.max(0.34, Math.sqrt(24 / load));
+  }
   function drawPlayerShots() {
     ctx.save();
     // 幽灵暗刃：幽灵挥砍动画（在弹幕之下）
@@ -26362,6 +26395,7 @@
     drawChainLinks();
     // 追踪弹幕：锁定环 / 追踪标记 —— 在被锁定的目标上绘制脉动光环
     drawHomingLocks();
+    updateSkywardGlowBudget();
     drawSkywardBlinkFxWorld();
     drawSkywardHitFxWorld();
     for (const s of playerShots) {
@@ -29759,7 +29793,7 @@
     const guestW = Math.max(220, w - boardW - gap);
     const guestX = x + boardW + gap;
     drawLeaderboardPanelFrame(x, y, boardW, h, '月蚀排行榜 · Top 50');
-    drawGuestbookPanelFrame(guestX, y, guestW, h, '星光留言板');
+    drawGuestbookPanelFrame(guestX, y, guestW, h, leaderboardSideTab === 'history' ? '往期排行榜' : '星光留言板');
     const playerName = getPlayerName();
     const rows = leaderboardData.length ? leaderboardData : (leaderboardFetchStatus === 'ok' ? [] : sampleLeaderboardRows());
     const rank = leaderboardLastRank || rankForLeaderboardRows(rows, playerName);
@@ -29841,52 +29875,104 @@
     ctx.fillText(`第 ${leaderboardPage + 1}/${leaderboardLastPageCount} 页`, x + boardW / 2, by - 10);
     ctx.restore();
 
+    drawLeaderboardButton(guestX + 16, y + 48, 62, 28, '留言', 'sideGuestbook', leaderboardSideTab === 'guestbook');
+    drawLeaderboardButton(guestX + 86, y + 48, 62, 28, '往期', 'sideHistory', leaderboardSideTab === 'history');
     ctx.save();
-    const messageRows = guestbookData.length ? guestbookData : (guestbookFetchStatus === 'ok' ? [] : sampleGuestbookMessages());
-    const gbStatus = guestbookFetchStatus === 'loading' ? '正在读取留言...' : (guestbookStatusMessage || '玩家自由留言');
-    ctx.textAlign = 'left';
-    ctx.font = '12px PingFang SC, Microsoft YaHei, sans-serif';
-    ctx.fillStyle = 'rgba(206,245,255,.76)';
-    ctx.fillText(gbStatus, guestX + 18, y + 74);
-    const gbRowH = 76;
-    const gbStartY = y + 98;
-    const gbMaxRows = Math.max(4, Math.floor((h - 170) / gbRowH));
-    for (let i = 0; i < Math.min(messageRows.length, gbMaxRows); i++) {
-      const row = messageRows[i] || {};
-      const ry = gbStartY + i * gbRowH;
-      roundRect(guestX + 12, ry - 6, guestW - 24, gbRowH - 8, 14);
-      const mg = ctx.createLinearGradient(guestX, ry, guestX + guestW, ry);
-      mg.addColorStop(0, i % 2 ? 'rgba(120,230,255,.10)' : 'rgba(255,140,220,.12)');
-      mg.addColorStop(1, 'rgba(255,255,255,.035)');
-      ctx.fillStyle = mg; ctx.fill();
-      ctx.strokeStyle = 'rgba(177,234,255,.13)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      drawLeaderboardAvatar(row[LEADERBOARD_AVATAR_COLUMN], guestX + 36, ry + 18, 15, row.player_name);
-      ctx.textAlign = 'left';
-      ctx.font = 'bold 12px PingFang SC, Microsoft YaHei, sans-serif';
-      ctx.fillStyle = '#f9fbff';
-      ctx.fillText(truncateChars(row.player_name || '匿名玩家', 6), guestX + 58, ry + 10);
-      ctx.font = '10px Menlo, Monaco, Consolas, monospace';
-      ctx.fillStyle = 'rgba(160,244,255,.70)';
-      ctx.fillText(`ID ${truncateChars(row.player_id || 'MOON', 8)}`, guestX + 58, ry + 27);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = 'rgba(255,203,232,.64)';
-      ctx.fillText(guestbookTimeText(row.created_at), guestX + guestW - 20, ry + 10);
+    if (leaderboardSideTab === 'history') {
+      const season = LEADERBOARD_HISTORY_SEASONS[0] || { rows: [], title: '往期排行榜', note: '' };
+      const historyRows = Array.isArray(season.rows) ? season.rows : [];
       ctx.textAlign = 'left';
       ctx.font = '12px PingFang SC, Microsoft YaHei, sans-serif';
-      ctx.fillStyle = 'rgba(247,248,255,.88)';
-      drawWrappedCanvasText(row.message || '', guestX + 18, ry + 51, guestW - 36, 14, 2);
-    }
-    if (!messageRows.length) {
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 16px PingFang SC, Microsoft YaHei, sans-serif';
-      ctx.fillStyle = 'rgba(245,252,255,.70)';
-      ctx.fillText(guestbookFetchStatus === 'fail' ? '留言读取失败' : '还没有留言', guestX + guestW / 2, y + h * 0.48);
+      ctx.fillStyle = 'rgba(206,245,255,.78)';
+      ctx.fillText(season.note || '历史成绩快照', guestX + 18, y + 88);
+      const histRowH = 42;
+      const histStartY = y + 112;
+      const histMaxRows = Math.max(5, Math.floor((h - 184) / histRowH));
+      for (let i = 0; i < Math.min(historyRows.length, histMaxRows); i++) {
+        const row = historyRows[i] || {};
+        const ry = histStartY + i * histRowH;
+        const rankNo = i + 1;
+        roundRect(guestX + 12, ry - 6, guestW - 24, histRowH - 7, 12);
+        const hg = ctx.createLinearGradient(guestX, ry, guestX + guestW, ry);
+        hg.addColorStop(0, rankNo <= 3 ? 'rgba(255,218,122,.18)' : 'rgba(110,224,255,.10)');
+        hg.addColorStop(1, 'rgba(255,255,255,.035)');
+        ctx.fillStyle = hg; ctx.fill();
+        ctx.strokeStyle = 'rgba(177,234,255,.13)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 13px Arial';
+        ctx.fillStyle = rankNo === 1 ? '#fff1a3' : rankNo === 2 ? '#d8e5ff' : rankNo === 3 ? '#ffc7a8' : 'rgba(235,240,255,.76)';
+        ctx.fillText(`#${rankNo}`, guestX + 34, ry + 16);
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 12px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.fillStyle = '#f9fbff';
+        ctx.fillText(truncateChars(row.player_name || '匿名玩家', 7), guestX + 58, ry + 7);
+        ctx.font = '10px Menlo, Monaco, Consolas, monospace';
+        ctx.fillStyle = 'rgba(160,244,255,.70)';
+        ctx.fillText(`ID ${row.id || '-'} · ${characterDisplayName(row.character)}`, guestX + 58, ry + 24);
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 12px Arial';
+        ctx.fillStyle = '#ffe7a8';
+        ctx.fillText(String(Math.floor(Number(row.score) || 0)), guestX + guestW - 18, ry + 16);
+      }
+      if (!historyRows.length) {
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 16px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.fillStyle = 'rgba(245,252,255,.70)';
+        ctx.fillText('暂无往期记录', guestX + guestW / 2, y + h * 0.48);
+      }
+    } else {
+      const messageRows = guestbookData.length ? guestbookData : (guestbookFetchStatus === 'ok' ? [] : sampleGuestbookMessages());
+      const gbStatus = guestbookFetchStatus === 'loading' ? '正在读取留言...' : (guestbookStatusMessage || '玩家自由留言');
+      ctx.textAlign = 'left';
+      ctx.font = '12px PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.fillStyle = 'rgba(206,245,255,.76)';
+      ctx.fillText(gbStatus, guestX + 18, y + 88);
+      const gbRowH = 76;
+      const gbStartY = y + 112;
+      const gbMaxRows = Math.max(4, Math.floor((h - 184) / gbRowH));
+      for (let i = 0; i < Math.min(messageRows.length, gbMaxRows); i++) {
+        const row = messageRows[i] || {};
+        const ry = gbStartY + i * gbRowH;
+        roundRect(guestX + 12, ry - 6, guestW - 24, gbRowH - 8, 14);
+        const mg = ctx.createLinearGradient(guestX, ry, guestX + guestW, ry);
+        mg.addColorStop(0, i % 2 ? 'rgba(120,230,255,.10)' : 'rgba(255,140,220,.12)');
+        mg.addColorStop(1, 'rgba(255,255,255,.035)');
+        ctx.fillStyle = mg; ctx.fill();
+        ctx.strokeStyle = 'rgba(177,234,255,.13)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        drawLeaderboardAvatar(row[LEADERBOARD_AVATAR_COLUMN], guestX + 36, ry + 18, 15, row.player_name);
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 12px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.fillStyle = '#f9fbff';
+        ctx.fillText(truncateChars(row.player_name || '匿名玩家', 6), guestX + 58, ry + 10);
+        ctx.font = '10px Menlo, Monaco, Consolas, monospace';
+        ctx.fillStyle = 'rgba(160,244,255,.70)';
+        ctx.fillText(`ID ${truncateChars(row.player_id || 'MOON', 8)}`, guestX + 58, ry + 27);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = 'rgba(255,203,232,.64)';
+        ctx.fillText(guestbookTimeText(row.created_at), guestX + guestW - 20, ry + 10);
+        ctx.textAlign = 'left';
+        ctx.font = '12px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.fillStyle = 'rgba(247,248,255,.88)';
+        drawWrappedCanvasText(row.message || '', guestX + 18, ry + 51, guestW - 36, 14, 2);
+      }
+      if (!messageRows.length) {
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 16px PingFang SC, Microsoft YaHei, sans-serif';
+        ctx.fillStyle = 'rgba(245,252,255,.70)';
+        ctx.fillText(guestbookFetchStatus === 'fail' ? '留言读取失败' : '还没有留言', guestX + guestW / 2, y + h * 0.48);
+      }
     }
     ctx.restore();
-    drawLeaderboardButton(guestX + 14, by, 64, 34, '刷新', 'guestbookRefresh', false);
-    drawLeaderboardButton(guestX + 86, by, 72, 34, '写留言', 'guestbookCompose', true);
+    if (leaderboardSideTab === 'guestbook') {
+      drawLeaderboardButton(guestX + 14, by, 64, 34, '刷新', 'guestbookRefresh', false);
+      drawLeaderboardButton(guestX + 86, by, 72, 34, '写留言', 'guestbookCompose', true);
+    } else {
+      drawLeaderboardButton(guestX + 14, by, 86, 34, '回留言', 'sideGuestbook', false);
+    }
     drawLeaderboardButton(guestX + guestW - 70, by, 56, 34, '返回', 'close', false);
   }
 

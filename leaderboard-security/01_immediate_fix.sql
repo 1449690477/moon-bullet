@@ -61,9 +61,8 @@ BEGIN
     RAISE EXCEPTION 'leaderboard guard: elapsed out of range (%)', NEW.elapsed;
   END IF;
 
-  -- 异常分数阈值（与 Edge Function 的隔离规则一致）：不再按总分上限拦截，允许 500 万以上正常高分。
-  IF (NEW.elapsed > 0 AND NEW.score::numeric / NEW.elapsed > 12000)
-     OR (NEW.elapsed > 0 AND NEW.kill_count::numeric / NEW.elapsed > 20)
+  -- 异常阈值：不再按总分或分数速度拦截，允许 500 万以上正常高分。
+  IF (NEW.elapsed > 0 AND NEW.kill_count::numeric / NEW.elapsed > 20)
      OR NEW.bosses_cleared > floor(NEW.elapsed / 80.0) + 1
      OR NEW.loop_count > NEW.bosses_cleared + 1 THEN
     RAISE EXCEPTION 'leaderboard guard: score failed sanity check';

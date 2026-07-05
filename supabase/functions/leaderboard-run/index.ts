@@ -125,7 +125,7 @@ Deno.serve(async (req) => {
 
       // 4) 隔离阈值（疑似作弊 → 进隔离表，不进正式榜）
       const q: string[] = [];
-      if (elapsed > 0 && score / elapsed > 12000) q.push("score/sec > 12000");
+      // 新赛季取消旧的总分 / 分数速度限制，避免 500 万以上正常成绩被误拦。
       if (elapsed > 0 && kills / elapsed > 20) q.push("kills/sec > 20");
       if (bosses > Math.floor(elapsed / 80) + 1) q.push("bosses too high for elapsed");
       if (loops > bosses + 1) q.push("loop_count > bosses_cleared + 1");

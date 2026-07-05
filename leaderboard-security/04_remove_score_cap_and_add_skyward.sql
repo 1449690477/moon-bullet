@@ -35,8 +35,8 @@ BEGIN
     RAISE EXCEPTION 'leaderboard guard: elapsed out of range (%)', NEW.elapsed;
   END IF;
 
-  IF (NEW.elapsed > 0 AND NEW.score::numeric / NEW.elapsed > 12000)
-     OR (NEW.elapsed > 0 AND NEW.kill_count::numeric / NEW.elapsed > 20)
+  -- 新赛季取消旧的分数速度限制，避免 500 万以上正常成绩被误拦。
+  IF (NEW.elapsed > 0 AND NEW.kill_count::numeric / NEW.elapsed > 20)
      OR NEW.bosses_cleared > floor(NEW.elapsed / 80.0) + 1
      OR NEW.loop_count > NEW.bosses_cleared + 1 THEN
     RAISE EXCEPTION 'leaderboard guard: score failed sanity check';
