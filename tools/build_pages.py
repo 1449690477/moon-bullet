@@ -118,6 +118,8 @@ def make_mobile_variant(key: str, rel: str) -> str | None:
 
 def inject_pages_manifest(index_html: str) -> str:
     tag = '  <script src="./asset-mobile-manifest.js"></script>\n'
+    if tag in index_html:
+        return index_html
     return index_html.replace("  <script>\n(() => {", tag + "  <script>\n(() => {", 1)
 
 
