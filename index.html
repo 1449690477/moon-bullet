@@ -7803,9 +7803,9 @@
 		      }
 		      if (flowKey) {
 		        ctx.globalCompositeOperation = 'lighter';
-		        ctx.globalAlpha = 0.22 * skywardGlowBudgetMul;
+		        ctx.globalAlpha = 0.10 * skywardGlowBudgetMul;
 		        ctx.drawImage(assets[flowKey], -len * 0.98 - scroll, -hh * 0.72, len * 1.12, hh * 1.44);
-		        ctx.globalAlpha = 0.30 * skywardGlowBudgetMul;
+		        ctx.globalAlpha = 0.16 * skywardGlowBudgetMul;
 		        ctx.drawImage(assets[flowKey], -len * 0.86 - scroll, -hh / 2, len, hh);
 		      }
 	      const g = ctx.createLinearGradient(-len * 0.82, 0, w * 0.26, 0);
@@ -7813,7 +7813,7 @@
 	      g.addColorStop(0.36, 'rgba(58,180,255,0.28)');
 	      g.addColorStop(0.70, 'rgba(70,238,255,0.38)');
 	      g.addColorStop(1, 'rgba(238,254,255,0.62)');
-	      ctx.globalAlpha = (bounceSword ? (player.berserk > 0 ? SKYWARD_BOUNCE_VISUAL.overdriveUnderlayAlpha : SKYWARD_BOUNCE_VISUAL.normalUnderlayAlpha) : 0.48) * skywardGlowBudgetMul;
+		      ctx.globalAlpha = 0.18 * skywardGlowBudgetMul;
 	      ctx.fillStyle = g;
 	      ctx.beginPath();
 	      ctx.moveTo(-len * 0.86, -hh * 0.28);
@@ -7826,18 +7826,18 @@
 	      const len = h * (giant ? 0.72 : blinkSword ? 0.72 : 0.54);
 	      const ww = w * (giant ? 1.34 : blinkSword ? 1.58 : 1.02);
 	      if (flowKey) {
-	        const img = assets[flowKey];
-	        ctx.save();
-	        ctx.rotate(-Math.PI / 2);
-	        ctx.globalAlpha = (giant ? 0.30 : blinkSword ? 0.22 : 0.20) * skywardGlowBudgetMul;
-	        ctx.drawImage(img, -h * 0.56, -ww / 2, len, ww);
-	        ctx.restore();
+		        const img = assets[flowKey];
+		        ctx.save();
+		        ctx.rotate(-Math.PI / 2);
+		        ctx.globalAlpha = (giant ? 0.16 : blinkSword ? 0.12 : 0.12) * skywardGlowBudgetMul;
+		        ctx.drawImage(img, -h * 0.56, -ww / 2, len, ww);
+		        ctx.restore();
 	      }
 	      const g = ctx.createLinearGradient(0, h * 0.60, 0, -h * 0.02);
 	      g.addColorStop(0, 'rgba(34,100,255,0)');
 	      g.addColorStop(0.42, 'rgba(70,210,255,0.22)');
 	      g.addColorStop(1, 'rgba(238,254,255,0.48)');
-	      ctx.globalAlpha = (giant ? 0.54 : blinkSword ? 0.28 : 0.36) * skywardGlowBudgetMul;
+		      ctx.globalAlpha = (giant ? 0.22 : blinkSword ? 0.15 : 0.18) * skywardGlowBudgetMul;
 	      ctx.fillStyle = g;
 	      ctx.beginPath();
 	      ctx.moveTo(-ww * 0.44, h * 0.58);

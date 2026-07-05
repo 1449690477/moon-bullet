@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moon-bullet-pages-88138d1b200a';
+const CACHE_NAME = 'moon-bullet-pages-a1a9e1fbc8cd';
 const CORE_ASSETS = [
   "./",
   "./index.html",
