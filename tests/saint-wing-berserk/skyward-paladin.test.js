@@ -202,6 +202,8 @@ describe('skyward paladin character spec', () => {
       fixedRadiusLanding: true,
       releaseToBlink: true,
       movementLockedWhileHolding: true,
+      desktopMousePilotCompatible: true,
+      pointerLockDeltaAim: true,
       blueRangeCircle: true,
       landingCircle: true,
     });
@@ -238,6 +240,12 @@ describe('skyward paladin character spec', () => {
     expect(ult.empoweredShots.fireIntervalMul).toBeLessThan(1);
     expect(ult.empoweredShots.homingTurnRate).toBeGreaterThan(5);
     expect(ult.moduleSlots).toHaveLength(6);
-    expect(ult.assets).toEqual(expect.arrayContaining(['skywardAegisBarrierPanel', 'skywardAegisProjector1-4']));
+    expect(ult.visualV2).toMatchObject({
+      primaryShieldBody: 'skywardAegisReferenceFull',
+      waterRippleMembrane: true,
+      elasticImpactDent: true,
+      strongerBluePierceTrail: true,
+    });
+    expect(ult.assets).toEqual(expect.arrayContaining(['skywardAegisReferenceFull', 'skywardAegisBarrierPanel', 'skywardAegisProjector1-4']));
   });
 	});

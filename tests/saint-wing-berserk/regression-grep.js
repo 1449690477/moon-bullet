@@ -492,6 +492,7 @@ for (const key of [
 	  'skywardBlinkChargeBar5',
 	  'skywardAegisBarrierPanel',
 	  'skywardAegisFlowStrip',
+	  'skywardAegisReferenceFull',
 	  'skywardAegisProjector1',
 	  'skywardAegisBurstL',
 	]) {
