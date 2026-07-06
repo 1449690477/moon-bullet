@@ -16,6 +16,7 @@ describe('skyward paladin character spec', () => {
       selectableDigit: 6,
       avatar: 'skywardAvatar',
       cutin: 'skywardCutin',
+      ultKind: 'skywardAegis',
     });
     expect(spec.name).toContain('苍穹圣巡');
   });
@@ -68,6 +69,12 @@ describe('skyward paladin character spec', () => {
       'skywardBlinkCharge5',
       'skywardBlinkFloatCharge5',
       'skywardBlinkChargeBar5',
+    ]));
+    expect(assets.ultimateAegis).toEqual(expect.arrayContaining([
+      'skywardAegisBarrierPanel',
+      'skywardAegisFlowStrip',
+      'skywardAegisProjector1',
+      'skywardAegisBurstL',
     ]));
     expect(assets.vfx).toEqual(expect.arrayContaining(['skywardLightWingTrail', 'skywardChainFlowLong', 'skywardChainFlowOverdrive']));
     expect(assets.disabledRuntimeSprites).toContain('skywardLightWingTrail-as-persistent-wing');
@@ -186,6 +193,18 @@ describe('skyward paladin character spec', () => {
     const blink = skyward.stellarBlinkSpec();
     expect(blink.name).toBe('星轨跃迁');
     expect(blink.input).toBe('Space');
+    expect(blink.aimMode).toContain('hold-space');
+    expect(blink.aimDistanceFixed).toBe(380);
+    expect(blink.movementLockWhileAiming).toBe(true);
+    expect(blink.interactionV2).toMatchObject({
+      holdToAim: true,
+      mouseOrbitTarget: true,
+      fixedRadiusLanding: true,
+      releaseToBlink: true,
+      movementLockedWhileHolding: true,
+      blueRangeCircle: true,
+      landingCircle: true,
+    });
     expect(blink.maxCharges).toBe(5);
     expect(blink.rechargeTime).toBeCloseTo(3.5);
     expect(blink.dashDistance).toBe(380);
@@ -204,5 +223,21 @@ describe('skyward paladin character spec', () => {
       floatingArrowChargeUi: true,
     });
     expect(blink.assets).toEqual(expect.arrayContaining(['skywardBlinkPortalRing', 'skywardBlinkSwordBody', 'skywardBlinkWingOpen1-4', 'skywardBlinkFloatCharge1-5', 'skywardBlinkChargeBar0-5']));
+  });
+
+  it('exposes the X ultimate as a ten-second optical aegis with bullet empowerment', () => {
+    const ult = skyward.ultimateSpec();
+    expect(ult.name).toBe('圣域折光壁');
+    expect(ult.input).toBe('X');
+    expect(ult.duration).toBe(10);
+    expect(ult.cooldown).toBe(25);
+    expect(ult.cooldownStartsOnCast).toBe(true);
+    expect(ult.blocksEnemyBullets).toBe(true);
+    expect(ult.forcesOverdrive).toBe(true);
+    expect(ult.empoweredShots.damageMul).toBeGreaterThan(1.4);
+    expect(ult.empoweredShots.fireIntervalMul).toBeLessThan(1);
+    expect(ult.empoweredShots.homingTurnRate).toBeGreaterThan(5);
+    expect(ult.moduleSlots).toHaveLength(6);
+    expect(ult.assets).toEqual(expect.arrayContaining(['skywardAegisBarrierPanel', 'skywardAegisProjector1-4']));
   });
 	});

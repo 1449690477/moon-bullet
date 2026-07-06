@@ -490,6 +490,10 @@ for (const key of [
 	  'skywardBlinkDashWispL',
 	  'skywardBlinkFloatCharge5',
 	  'skywardBlinkChargeBar5',
+	  'skywardAegisBarrierPanel',
+	  'skywardAegisFlowStrip',
+	  'skywardAegisProjector1',
+	  'skywardAegisBurstL',
 	]) {
   if (!html.includes(key)) fail(`${key} skyward asset key missing`);
 }
@@ -520,10 +524,15 @@ for (const needle of [
 		  'function drawSkywardBlinkFxWorld()',
 		  'function drawBlinkPortalRing(fx, isArrive)',
 		  'function drawSkywardBlinkLandingWing(fx)',
-		  'function drawSkywardBlinkWarpOverlay()',
-		  'function drawSkywardBlinkFloatingCharges(over = 0, pulse = 0.5)',
-		  'function drawSkywardBlinkSkillHud(x, y)',
-		  'function drawSkywardBladeDetails(s, w, h)',
+		  'function drawSkywardBlinkWarpOverlay(topLayer = false)',
+	  'function drawSkywardBlinkFloatingCharges(over = 0, pulse = 0.5)',
+	  'function drawSkywardBlinkSkillHud(x, y)',
+	  'const SKYWARD_AEGIS = Object.freeze',
+	  'function castSkywardAegis()',
+	  'function updateSkywardAegis(dt)',
+	  'function drawSkywardAegisWorld(front = false)',
+	  'function updateSkywardAegisEmpowerShot(s)',
+	  'function drawSkywardBladeDetails(s, w, h)',
 		  'function drawSkywardHaloLayer(layer, over, pulse)',
 	  'function drawSkywardOverdriveWingFlow(over, pulse)',
 	  'function drawSkywardBodyCrystalFloaters(over, pulse, layer',
@@ -549,6 +558,7 @@ for (const needle of [
 	  'crownAugmentSpec',
 		  'arcBladeOrientationSpec',
 		  'stellarBlinkSpec',
+		  'ultimateSpec',
 		  'landing-wing-burst',
 			  'floatingArrowChargeUi',
 		  'sky_blink_sword',
@@ -596,6 +606,10 @@ for (const needle of [
 			  '43_space_blink_landing_wing_burst.png',
 				  '44_space_blink_hud_only_charge.png',
 			  '45_space_blink_chain_transition.png',
+			  '46_x_aegis_deploy.png',
+			  '47_x_aegis_blocking.png',
+			  '48_x_aegis_empowered_fire.png',
+			  '49_x_aegis_collapse.png',
 			]) {
   if (!skywardCapture.includes(needle)) fail(`Skyward capture invariant missing: ${needle}`);
 }
@@ -612,6 +626,9 @@ for (const needle of [
 	  'skyward_blink_wing_open_{n}.png',
 	  'skyward_blink_float_charge_{n}.png',
 	  'over[1] is the clean integrated overdrive silhouette',
+	  '大招开发/大招护盾贴图.png',
+	  '大招开发/护盾释放时 释放护盾的僚机贴图.png',
+	  'skyward_aegis_barrier_panel.png',
 	]) {
   if (!skywardProcessor.includes(needle)) fail(`Skyward processor invariant missing: ${needle}`);
 }

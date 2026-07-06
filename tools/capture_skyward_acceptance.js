@@ -55,6 +55,11 @@ const SCENES = [
   ['stellar_blink_landing_wing_burst_close', '43_space_blink_landing_wing_burst.png', 12],
   ['stellar_blink_charge_hud_only', '44_space_blink_hud_only_charge.png', 20],
   ['stellar_blink_chain_transition_close', '45_space_blink_chain_transition.png', 18],
+  ['stellar_blink_aim_select', '50_space_blink_aim_select.png', 18],
+  ['ultimate_aegis_deploy_close', '46_x_aegis_deploy.png', 14],
+  ['ultimate_aegis_active_blocking_close', '47_x_aegis_blocking.png', 18],
+  ['ultimate_aegis_empowered_fire_close', '48_x_aegis_empowered_fire.png', 12],
+  ['ultimate_aegis_collapse_close', '49_x_aegis_collapse.png', 10],
 ];
 
 function browserExecutablePath() {

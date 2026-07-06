@@ -22,6 +22,8 @@ from scipy import ndimage
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "苍穹 战机开发"
+if not SRC.exists():
+    SRC = ROOT / "moon-bullet-main" / "苍穹 战机开发"
 OUT = ROOT / "assets/player/skyward_paladin"
 PREVIEW = ROOT / "tools/skyward_paladin_asset_preview"
 
@@ -219,6 +221,16 @@ def derive_material_layers(manifest: dict) -> None:
         "skyward_blink_charge_glow_3",
     ]:
         derive_pairs.append((f"ui/{name}.png", f"ui/{name}_glow.png"))
+    for name in [
+        "skyward_aegis_barrier_panel", "skyward_aegis_barrier_panel_small",
+        "skyward_aegis_hex_texture", "skyward_aegis_flow_strip",
+        "skyward_aegis_edge_strip", "skyward_aegis_ring",
+        "skyward_aegis_core", "skyward_aegis_projector_1",
+        "skyward_aegis_projector_2", "skyward_aegis_projector_3",
+        "skyward_aegis_projector_4", "skyward_aegis_burst_s",
+        "skyward_aegis_burst_m", "skyward_aegis_burst_l",
+    ]:
+        derive_pairs.append((f"ultimate/{name}.png", f"ultimate/{name}_glow.png"))
     for src, dst in derive_pairs:
         make_crystal_glow_layer(src, dst, manifest)
 
@@ -277,6 +289,10 @@ def main() -> None:
     blink_ui = components("空格小技能 穿梭 /技能 和 五次存储图标、.png", min_area=350, merge=2)
     blink_wing = components("空格小技能 穿梭 /穿梭特效 光翼和拖尾.png", min_area=350, merge=2)
     blink_orbit_ui = components("空格小技能 穿梭 /穿梭技能层数提示Ui.png", min_area=350, merge=2)
+    aegis_main = components("大招开发/大招护盾主贴图素材.png", min_area=600, merge=3)
+    aegis_panel = components("大招开发/大招护盾贴图.png", min_area=500, merge=3)
+    aegis_detail = components("大招开发/护盾细节 纹理贴图.png", min_area=260, merge=2)
+    aegis_projector = components("大招开发/护盾释放时 释放护盾的僚机贴图.png", min_area=350, merge=2)
     fx = components("特效贴图.png", min_area=600, merge=3)
     particles = components("粒子特效 打击特效 光效图.png", min_area=600, merge=3)
 
@@ -414,6 +430,27 @@ def main() -> None:
         save_from(blink_orbit_ui, idx, f"ui/skyward_blink_charge_bar_{n}.png", 520, manifest)
     for n, idx in enumerate([38, 28, 29], start=1):
         save_from(blink_orbit_ui, idx, f"ui/skyward_blink_charge_glow_{n}.png", 150, manifest)
+
+    print("[ultimate aegis]")
+    # 圣域折光壁：使用素材表中的弧形光学护盾作为基底，运行时只做裁切/遮罩/流光增强。
+    # 这些索引对应 V1 文档素材表中的：完整屏障、小屏障、流光条、细节纹理、金色环核、投射僚机和爆发星芒。
+    save_from(aegis_panel, 14, "ultimate/skyward_aegis_barrier_panel.png", 740, manifest, major_islands=True)
+    save_from(aegis_panel, 13, "ultimate/skyward_aegis_barrier_panel_small.png", 520, manifest, major_islands=True)
+    save_from(aegis_detail, 5, "ultimate/skyward_aegis_hex_texture.png", 620, manifest, major_islands=True)
+    save_from(aegis_detail, 0, "ultimate/skyward_aegis_flow_strip.png", 760, manifest)
+    save_from(aegis_detail, 1, "ultimate/skyward_aegis_edge_strip.png", 760, manifest)
+    save_from(aegis_panel, 0, "ultimate/skyward_aegis_ring.png", 260, manifest)
+    save_from(aegis_panel, 1, "ultimate/skyward_aegis_core.png", 240, manifest)
+    for n, idx in enumerate([0, 1, 2, 3], start=1):
+        save_from(aegis_projector, idx, f"ultimate/skyward_aegis_projector_{n}.png", 260, manifest, major_islands=True)
+    for rel, idx, md in [
+        ("ultimate/skyward_aegis_burst_s.png", 33, 220),
+        ("ultimate/skyward_aegis_burst_m.png", 34, 280),
+        ("ultimate/skyward_aegis_burst_l.png", 35, 340),
+    ]:
+        save_from(aegis_projector, idx, rel, md, manifest)
+    if len(aegis_main) > 0:
+        save_from(aegis_main, 0, "ultimate/skyward_aegis_reference_full.png", 760, manifest, major_islands=True)
 
     print("[derived material layers]")
     derive_material_layers(manifest)
