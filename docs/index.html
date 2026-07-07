@@ -218,7 +218,9 @@
   'use strict';
 
   const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+  // Windows(Chrome/ANGLE) 上 desynchronized 低延迟画布在高叠加特效时会撕裂/闪屏；仅在非 Windows 平台启用。
+  const IS_WINDOWS_PLATFORM = /Win(dows|32|64|NT)/i.test((navigator.userAgent || '') + ' ' + ((navigator.platform) || ''));
+  const ctx = canvas.getContext('2d', { alpha: false, desynchronized: !IS_WINDOWS_PLATFORM });
   const W = canvas.width;
   const H = canvas.height;
   const TAU = Math.PI * 2;
@@ -1902,13 +1904,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-07-dragon-breath-vfx-balance-v6';
+  const UPDATE_NOTICE_VERSION = '2026-07-07-dragonbreath-winflicker-fix-v8';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-07',
       items: [
-        '龙息弹平衡优化：修复弹体裁切痕迹与闪屏问题，发射台改为局部材质光泽，持续时间提升到10秒并强化高血量Boss伤害。',
+        '修复 Windows 上龙息弹打 Boss 屏幕不停闪烁：Windows(Chrome) 关闭低延迟(desynchronized)画布——这是高叠加特效时撕裂/闪屏的主因；同时取消龙息弹命中 Boss 的震屏、压低命中特效与锁定光束的加色峰值亮度，多技能叠加时自动压暗，杜绝过曝闪烁。Mac 表现不变。',
+        '龙息弹打 Boss 命中特效大幅缩小：不再整块贴大爆炸图挡住 Boss，改为小范围程序化光效反馈，能清楚看到 Boss 与血条。',
+        '龙息弹再强化：持续时间提升到 15 秒，对高血量 Boss 伤害大幅提高（血量越高，单发增伤越大）。',
+        '新增“极低”画质档：面向低配电脑/手机，弹幕多、特效多时大幅削减粒子、光圈、拖尾等纯视觉负担（弹幕量仅小幅下调以保留可读性与公平），尽量让所有人都能流畅运行。卡顿时还会自动临时降到极低，画面恢复流畅后再自动升回你选择的档位。',
+        '龙息弹平衡优化：修复弹体裁切痕迹与闪屏问题，发射台改为局部材质光泽，并强化高血量Boss伤害。',
         '龙息弹边缘羽化：对龙头图集（projectile_angles）做四边羽化缓存（模糊遮罩 + destination-in），消除单元格边界的硬切面和外沿绿色碎须，龙焰主体不受影响。',
         '龙息弹拖尾强化：尾部新增最外层蓝绿辉光晕，亮核亮度提升、外光条加亮；流光线增至10条、拖尾粒子增至18颗并掺入白青亮粒，整体拖尾更亮更长（手机端仍按性能预算收敛）。',
         'iPhone/Chrome 全屏修复：识别 iOS 不支持普通元素真全屏后，改为可靠的沉浸式伪全屏，并按 visualViewport 重新计算画面尺寸，避免按钮被浏览器栏挡住。',
@@ -2073,6 +2079,7 @@
     high:   { label: '高', perfLevel: 0, desc: '完整光效' },
     medium: { label: '中', perfLevel: 1, desc: '均衡流畅' },
     low:    { label: '低', perfLevel: 2, desc: '低配优先' },
+    ultra:  { label: '极低', perfLevel: 3, desc: '最强兼容' },
   });
   let qualityPreset = 'medium';
   let qualityAutoSelected = true;
@@ -3188,7 +3195,7 @@
     return Object.prototype.hasOwnProperty.call(QUALITY_PRESETS, preset) ? preset : 'medium';
   }
   function qualityPresetFromPerfLevel(level) {
-    return level <= 0 ? 'high' : (level === 1 ? 'medium' : 'low');
+    return level <= 0 ? 'high' : (level === 1 ? 'medium' : (level === 2 ? 'low' : 'ultra'));
   }
   function qualityTargetPerfLevel() {
     return Math.max(QUALITY_PRESETS[normalizeQualityPreset(qualityPreset)].perfLevel, targetFpsPerfFloor());
@@ -3210,11 +3217,15 @@
       { enemyBulletMax: 620, mobSoftCap: 128, bossSoftCap: 240, particleCap: 220, spriteFxCap: 32, ringCap: 24, enemyCap: 46, themeFxCap: 70, hazardCap: 22, bulletGlow: true, killBurstMul: 0.78 },
       { enemyBulletMax: 420, mobSoftCap: 96, bossSoftCap: 170, particleCap: 130, spriteFxCap: 20, ringCap: 14, enemyCap: 36, themeFxCap: 48, hazardCap: 14, bulletGlow: false, killBurstMul: 0.48 },
       { enemyBulletMax: 260, mobSoftCap: 62, bossSoftCap: 110, particleCap: 60, spriteFxCap: 10, ringCap: 6, enemyCap: 28, themeFxCap: 26, hazardCap: 8, bulletGlow: false, killBurstMul: 0.22 },
+      // 极低（perfLevel 3）：视觉预算再砍一半，弹幕量仅小幅下调以尽量保留弹幕逻辑与公平性
+      { enemyBulletMax: 220, mobSoftCap: 50, bossSoftCap: 92, particleCap: 30, spriteFxCap: 5, ringCap: 3, enemyCap: 22, themeFxCap: 13, hazardCap: 5, bulletGlow: false, killBurstMul: 0.12 },
     ],
     mobile: [
       { enemyBulletMax: 300, mobSoftCap: 70, bossSoftCap: 120, particleCap: 90, spriteFxCap: 12, ringCap: 8, enemyCap: 30, themeFxCap: 34, hazardCap: 10, bulletGlow: false, killBurstMul: 0.38 },
       { enemyBulletMax: 220, mobSoftCap: 52, bossSoftCap: 90, particleCap: 55, spriteFxCap: 8, ringCap: 5, enemyCap: 24, themeFxCap: 22, hazardCap: 7, bulletGlow: false, killBurstMul: 0.28 },
       { enemyBulletMax: 160, mobSoftCap: 38, bossSoftCap: 68, particleCap: 32, spriteFxCap: 5, ringCap: 3, enemyCap: 18, themeFxCap: 14, hazardCap: 4, bulletGlow: false, killBurstMul: 0.16 },
+      // 极低（perfLevel 3）移动端：面向最弱机型，几乎只保留可读弹幕与最小反馈
+      { enemyBulletMax: 130, mobSoftCap: 30, bossSoftCap: 54, particleCap: 16, spriteFxCap: 3, ringCap: 2, enemyCap: 14, themeFxCap: 8, hazardCap: 3, bulletGlow: false, killBurstMul: 0.10 },
     ],
   };
   function targetFpsVisualBudgetMul(value = targetFps) {
@@ -3281,7 +3292,7 @@
     trimArrayTo(suiyiHazards, hazardCap);
     trimArrayTo(miguaHazards, hazardCap);
     trimArrayTo(damageTexts, stressed ? 36 : 64);
-    if (stressed && perfLevel < 2) perfLevel++;
+    if (stressed && perfLevel < 3) perfLevel++;
     refreshRuntimePerfStress();
   }
   function removeUnordered(arr, i) {
@@ -16628,9 +16639,9 @@
   }
 
   function addParticle(x, y, vx, vy, life, r, color, glow = false) {
-    // 降级时按概率丢弃粒子并收紧上限，弱机优先保弹幕/手感
+    // 降级时按概率丢弃粒子并收紧上限，弱机优先保弹幕/手感（极低档丢得更狠）
     if (perfLevel === 1 && Math.random() < 0.4) return;
-    if (perfLevel === 2 && Math.random() < 0.7) return;
+    if (perfLevel >= 2 && Math.random() < (perfLevel >= 3 ? 0.9 : 0.7)) return;
     const cap = perfBudget().particleCap;
     if (particles.length > cap) particles.splice(0, particles.length - cap);
     particles.push({ x, y, vx, vy, life, maxLife: life, r, color, glow });
@@ -16659,21 +16670,21 @@
   const DRAGON_BREATH = Object.freeze({
     name: '龙息弹',
     input: 'Y',
-    duration: 10.0,
+    duration: 15.0,
     cooldown: 18.0,
     firstShot: 0.8,
     shotInterval: 1.0,
-    shotCount: 10,
+    shotCount: 15,
     projectileSpeed: 1050,
     projectileLife: 1.8,
     attackBase: 100,
     attackPerPower: 32,
     baseMul: 3.6,
-    bossBaseMul: 10.0,
+    bossBaseMul: 12.0,
     hpPercent: 0.016,
-    bossHpPercent: 0.065,
-    bossPercentCapMul: 110,
-    bossCreditMul: 2.0,
+    bossHpPercent: 0.09,
+    bossPercentCapMul: 150,
+    bossCreditMul: 2.5,
     deployTime: 0.7,
     collapseTime: 0.5,
     chargeLead: 0.18,
@@ -16696,7 +16707,7 @@
       flowW: 270,
       flowH: 620,
       directionalHeads: true,
-      lockBeamAlpha: 0.76,
+      lockBeamAlpha: 0.6,
       hitSize: 220,
     },
     noEnergyCost: true,
@@ -16871,9 +16882,10 @@
     dragonBreath.hitFx.push({
       x: target.x,
       y: target.y,
-      life: isBoss ? 0.56 : 0.36,
-      maxLife: isBoss ? 0.56 : 0.36,
-      size: (isBoss ? 320 : 150) + Math.min(isBoss ? 108 : 64, Math.sqrt(Math.max(0, amount || 0)) * (isBoss ? 3.6 : 2.4)),
+      life: isBoss ? 0.44 : 0.36,
+      maxLife: isBoss ? 0.44 : 0.36,
+      // Boss 命中特效大幅缩小：只做光效反馈，不再整块贴图挡住 Boss
+      size: (isBoss ? 150 : 150) + Math.min(isBoss ? 34 : 64, Math.sqrt(Math.max(0, amount || 0)) * (isBoss ? 1.4 : 2.4)),
       rot: rand(0, TAU),
       dir: Math.atan2(s.vy, s.vx),
       boss: isBoss,
@@ -16890,7 +16902,7 @@
       const sp = rand(80, isBoss ? 330 : 230);
       addParticle(target.x, target.y, Math.cos(a) * sp, Math.sin(a) * sp, rand(0.20, 0.38), rand(1.3, isBoss ? 4.2 : 3.2), i % 3 ? '#78f8e8' : '#c8a858', true);
     }
-    if (isBoss) screenShake = Math.max(screenShake, 2.2);
+    // 不再对龙息弹命中 Boss 施加震屏：逐帧随机抖动会放大加色特效的过曝闪烁（Windows 尤甚）
   }
   function dragonBreathTrailFx(s, dt) {
     if (!s) return;
@@ -17224,36 +17236,40 @@
     ctx.restore();
   }
   function drawDragonBreathHitFx() {
+    const hitGlowMul = skillVisualBudget().glowMul; // 多技能叠加时自动压暗，降低过曝闪烁
     for (const fx of dragonBreath.hitFx) {
       const p = 1 - clamp(fx.life / fx.maxLife, 0, 1);
-      const env = Math.sin(Math.PI * clamp(1 - p, 0, 1));
+      const env = Math.sin(Math.PI * clamp(1 - p, 0, 1)) * hitGlowMul;
       const size = fx.size * (0.72 + p * 0.48);
       ctx.save();
       ctx.translate(fx.x, fx.y);
       ctx.rotate(fx.rot + p * 0.5);
       ctx.globalCompositeOperation = 'lighter';
-      const core = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.42);
-      core.addColorStop(0, `rgba(248,255,255,${0.92 * env})`);
-      core.addColorStop(0.22, `rgba(120,248,232,${0.58 * env})`);
-      core.addColorStop(0.68, `rgba(58,216,132,${0.24 * env})`);
+      // 核心光斑：降低白核不透明度、收窄半径，避免加色过曝（Windows 闪屏主因之一）
+      const core = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.36);
+      core.addColorStop(0, `rgba(226,255,250,${0.5 * env})`);
+      core.addColorStop(0.28, `rgba(120,248,232,${0.4 * env})`);
+      core.addColorStop(0.7, `rgba(58,216,132,${0.18 * env})`);
       core.addColorStop(1, 'rgba(58,216,132,0)');
       ctx.globalAlpha = 1;
       ctx.fillStyle = core;
       ctx.beginPath();
-      ctx.arc(0, 0, size * 0.42, 0, TAU);
+      ctx.arc(0, 0, size * 0.36, 0, TAU);
       ctx.fill();
-      ctx.globalAlpha = (fx.boss ? 0.78 : 0.58) * env;
-      if (assetReady('skillDragonBreathImpactAtlas')) {
-        const region = fx.boss ? [0.00, 0.34, 0.52, 0.43] : [0.50, 0.00, 0.50, 0.36];
-        drawDragonBreathImageRegion('skillDragonBreathImpactAtlas', region[0], region[1], region[2], region[3], -size / 2, -size / 2, size, size);
-      } else if (assetReady('skillDragonBreathHitBlast')) {
-        ctx.drawImage(assets.skillDragonBreathHitBlast, -size / 2, -size / 2, size, size);
-      } else {
-        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.5);
-        g.addColorStop(0, 'rgba(248,255,255,0.9)');
-        g.addColorStop(0.45, 'rgba(120,248,232,0.45)');
-        g.addColorStop(1, 'rgba(24,168,136,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, size * 0.5, 0, TAU); ctx.fill();
+      // Boss 命中：只用程序化光效反馈，不贴大爆炸图（避免挡住 Boss）。仅普通敌人叠加淡贴图。
+      if (!fx.boss) {
+        ctx.globalAlpha = 0.5 * env;
+        if (assetReady('skillDragonBreathImpactAtlas')) {
+          drawDragonBreathImageRegion('skillDragonBreathImpactAtlas', 0.50, 0.00, 0.50, 0.36, -size / 2, -size / 2, size, size);
+        } else if (assetReady('skillDragonBreathHitBlast')) {
+          ctx.drawImage(assets.skillDragonBreathHitBlast, -size / 2, -size / 2, size, size);
+        } else {
+          const g = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.5);
+          g.addColorStop(0, 'rgba(226,255,250,0.7)');
+          g.addColorStop(0.45, 'rgba(120,248,232,0.4)');
+          g.addColorStop(1, 'rgba(24,168,136,0)');
+          ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, size * 0.5, 0, TAU); ctx.fill();
+        }
       }
       ctx.globalAlpha = (fx.boss ? 0.36 : 0.22) * env;
       ctx.lineWidth = fx.boss ? 3.2 : 2;
@@ -17603,7 +17619,7 @@
   // —— 程序化扩散环（替代贴图光圈/冲击环）——
   const procRings = [];
   function addRingFx(x, y, r0, r1, life, colorPrefix = 'rgba(190,225,255,', lw = 3, ry = 1) {
-    if (perfLevel === 2 && Math.random() < 0.5) return;
+    if (perfLevel >= 2 && Math.random() < (perfLevel >= 3 ? 0.78 : 0.5)) return;
     procRings.push({ x, y, r0, r1, life, maxLife: life, c: colorPrefix, lw, ry });
     const cap = perfBudget().ringCap;
     if (procRings.length > cap) procRings.splice(0, procRings.length - cap);
@@ -24533,7 +24549,7 @@
   }
 
   function miguaDensity(base, max) {
-    const levelTrim = perfLevel === 2 ? 0.72 : perfLevel === 1 ? 0.86 : 1;
+    const levelTrim = perfLevel >= 2 ? 0.72 : perfLevel === 1 ? 0.86 : 1;
     return Math.min(max, Math.max(1, Math.round(base * clamp(densMul() * 0.78, 1, 1.55) * levelTrim)));
   }
 
@@ -26544,7 +26560,7 @@
   }
 
   function miguaBulletBudget(room = 1) {
-    return enemyBullets.length + room < Math.min(perfBudget().enemyBulletMax, perfLevel === 2 ? 300 : perfLevel === 1 ? 360 : 430);
+    return enemyBullets.length + room < Math.min(perfBudget().enemyBulletMax, perfLevel >= 2 ? 300 : perfLevel === 1 ? 360 : 430);
   }
 
   function updateMiguaBoss(dt) {
@@ -26781,7 +26797,7 @@
   }
 
   function miguaSweetFlood(phase) {
-    const rows = perfLevel === 2 ? 2 : 3;
+    const rows = perfLevel >= 2 ? 2 : 3;
     for (let row = 0; row < rows; row++) {
       const y = boss.y + row * 22;
       const count = miguaDensity(9 + row * 2, 15);
@@ -26931,7 +26947,7 @@
     const trailStep = stressed ? 18 : 8;
     if (b.miguaTrail && (b.hist.length === 0 || dist2(b.x, b.y, b.hist[0].x, b.hist[0].y) > trailStep * trailStep)) {
       b.hist.unshift({ x: b.x, y: b.y });
-      const maxHist = stressed ? 4 : (perfLevel === 2 ? 6 : perfLevel === 1 ? 9 : 12);
+      const maxHist = stressed ? 4 : (perfLevel >= 2 ? 6 : perfLevel === 1 ? 9 : 12);
       if (b.hist.length > maxHist) b.hist.pop();
     }
     const sp = Math.hypot(b.vx, b.vy) || 1;
@@ -26979,7 +26995,7 @@
       const count = b.splitCount || 3;
       if (b.miguaSplitMode === 'melon_burst') {
         const base = Math.atan2(b.vy, b.vx);
-        const spreadCount = Math.min(perfLevel === 2 ? 10 : perfLevel === 1 ? 14 : 18, count);
+        const spreadCount = Math.min(perfLevel >= 2 ? 10 : perfLevel === 1 ? 14 : 18, count);
         addMiguaFx('melon_pulp_burst', b.x, b.y, { r: 82 + b.r * 2.1, life: 0.42, sprite: 'miguaPulpBloom', color: 'rgba(186,255,118,' });
         addMiguaFx('juice_puddle', b.x, b.y, { r: 70 + b.r * 1.7, life: 0.34, sprite: 'miguaJuicePuddle', color: 'rgba(255,216,102,' });
         for (let i = 0; i < spreadCount; i++) {
@@ -33245,10 +33261,10 @@
 	  }
 
   function drawQualitySelector(cx, y, compact = false) {
-    const presets = ['high', 'medium', 'low'];
-    const bw = compact ? 92 : 116;
+    const presets = ['high', 'medium', 'low', 'ultra'];
+    const bw = compact ? 76 : 96;
     const bh = compact ? 34 : 38;
-    const gap = compact ? 8 : 10;
+    const gap = compact ? 7 : 9;
     const total = bw * presets.length + gap * (presets.length - 1);
     const x0 = cx - total / 2;
     qualityCards = [];
@@ -34067,10 +34083,10 @@
 	      const hardSlowMs = IS_MOBILE_RUNTIME ? Math.max(24, wantFrameMs * 1.45) : Math.max(31, wantFrameMs * 1.65);
 	      const softSlowMs = IS_MOBILE_RUNTIME ? Math.max(18, wantFrameMs * 1.16) : Math.max(24, wantFrameMs * 1.28);
 	      const recoverMs = IS_MOBILE_RUNTIME ? Math.max(11, wantFrameMs * 0.76) : Math.max(12, wantFrameMs * 0.82);
-	      if (smoothFrameMs > hardSlowMs && perfLevel < 2) { perfLevel++; perfHoldT = 0; }
+	      if (smoothFrameMs > hardSlowMs && perfLevel < 3) { perfLevel++; perfHoldT = 0; }
 	      else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
 	        perfHoldT = 0;
-	        if (smoothFrameMs > softSlowMs && perfLevel < 2) perfLevel++;
+	        if (smoothFrameMs > softSlowMs && perfLevel < 3) perfLevel++;
 	        else if (smoothFrameMs < recoverMs && perfLevel > targetPerf) perfLevel--;
 	        if (perfLevel < targetPerf) perfLevel = targetPerf;
 	      }

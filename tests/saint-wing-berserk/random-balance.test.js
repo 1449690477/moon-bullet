@@ -122,13 +122,17 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     ])).toEqual({ x: 390, y: 845 });
   });
 
-  it('has distinct high, medium, and low quality budgets for desktop and mobile', () => {
+  it('has distinct high, medium, low, and ultra quality budgets for desktop and mobile', () => {
     const spec = balance.qualityBudgetSpec();
-    expect(Object.keys(spec.presets)).toEqual(['high', 'medium', 'low']);
-    expect(spec.desktop.map(b => b.enemyBulletMax)).toEqual([620, 420, 260]);
-    expect(spec.mobile.map(b => b.enemyBulletMax)).toEqual([300, 220, 160]);
+    expect(Object.keys(spec.presets)).toEqual(['high', 'medium', 'low', 'ultra']);
+    expect(spec.desktop.map(b => b.enemyBulletMax)).toEqual([620, 420, 260, 220]);
+    expect(spec.mobile.map(b => b.enemyBulletMax)).toEqual([300, 220, 160, 130]);
     expect(spec.desktop[0].enemyCap).toBeGreaterThan(spec.desktop[2].enemyCap);
     expect(spec.mobile[2].particleCap).toBeLessThan(spec.mobile[0].particleCap);
+    // 极低（ultra, index 3）必须是最省的一档
+    expect(spec.desktop[3].particleCap).toBeLessThan(spec.desktop[2].particleCap);
+    expect(spec.mobile[3].particleCap).toBeLessThanOrEqual(spec.mobile[2].particleCap);
+    expect(spec.desktop[3].enemyBulletMax).toBeLessThan(spec.desktop[2].enemyBulletMax);
     expect(spec.targetFps).toMatchObject({ options: [30, 45, 60], defaultMobile: 45, max: 60, adaptsPerfLevel: true });
     expect(spec.targetFps.fpsToPerfFloor).toEqual({ 30: 0, 45: 1, 60: 2 });
     expect(spec.targetFps.visualBudgetMulAt60).toBeLessThan(1);

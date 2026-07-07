@@ -10,14 +10,14 @@ describe('dragon breath common skill', () => {
     expect(cfg.input).toBe('Y');
     expect(cfg.universal).toBe(true);
     expect(cfg.cooldownOnly).toBe(true);
-    expect(cfg.duration).toBe(10);
+    expect(cfg.duration).toBe(15);
     expect(cfg.cooldown).toBe(18);
-    expect(cfg.shotCount).toBe(10);
+    expect(cfg.shotCount).toBe(15);
     expect(cfg.firstShot).toBeCloseTo(0.8);
     expect(cfg.shotInterval).toBe(1);
     expect(cfg.projectileSpeed).toBe(1050);
     expect(cfg.projectileLife).toBeCloseTo(1.8);
-    expect(dragon.scheduleForTest()).toEqual([0.8, 1.8, 2.8, 3.8, 4.8, 5.8, 6.8, 7.8, 8.8, 9.8]);
+    expect(dragon.scheduleForTest()).toEqual([0.8, 1.8, 2.8, 3.8, 4.8, 5.8, 6.8, 7.8, 8.8, 9.8, 10.8, 11.8, 12.8, 13.8, 14.8]);
   });
 
   it('loads all runtime assets from the processed Dragon Breath folder', () => {
@@ -55,8 +55,8 @@ describe('dragon breath common skill', () => {
     const attackLv1 = dragon.attackForTest(1);
     expect(attackLv1).toBe(132);
     expect(dragon.damageForTest(1000, false, 1)).toBeCloseTo(132 * 3.6 + 1000 * 0.016);
-    // 高血量 Boss：百分比项按上限 attack×110 结算（1,000,000×0.065=65,000 > 132×110=14,520）
-    expect(dragon.damageForTest(1_000_000, true, 1)).toBeCloseTo(132 * 10 + 132 * 110);
+    // 高血量 Boss：百分比项按上限 attack×150 结算（1,000,000×0.09=90,000 > 132×150=19,800）
+    expect(dragon.damageForTest(1_000_000, true, 1)).toBeCloseTo(132 * 12 + 132 * 150);
   });
 
   it('models a wide piercing capsule for the five-headed projectile', () => {
