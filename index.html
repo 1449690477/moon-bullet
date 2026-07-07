@@ -14,7 +14,7 @@
       user-select:none;
     }
     #wrap {
-      width: 100vw; height: 100vh;
+      width: 100vw; height: 100dvh;
       display:flex; align-items:center; justify-content:center;
       background:
         radial-gradient(circle at 50% 14%, rgba(129,57,206,.28), transparent 28%),
@@ -23,14 +23,36 @@
       padding:8px;
     }
     canvas {
-      width: min(100vw, calc(100vh * 0.5625));
-      height: min(100vh, calc(100vw / 0.5625));
+      width: min(100vw, calc(100dvh * 0.5625));
+      height: min(100dvh, calc(100vw / 0.5625));
       max-width:720px; max-height:1280px;
       background:#05040a;
       border:1px solid rgba(255,255,255,.18);
       border-radius:18px;
       box-shadow:0 0 60px rgba(132,78,255,.32), inset 0 0 52px rgba(255,255,255,.04);
       touch-action:none;
+    }
+    body.mobile-game-fullscreen #wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      width: 100vw;
+      height: 100dvh;
+      padding:
+        max(0px, env(safe-area-inset-top))
+        max(0px, env(safe-area-inset-right))
+        max(0px, env(safe-area-inset-bottom))
+        max(0px, env(safe-area-inset-left));
+      background:#020208;
+    }
+    body.mobile-game-fullscreen canvas {
+      width: min(100vw, calc(100dvh * 0.5625));
+      height: min(100dvh, calc(100vw / 0.5625));
+      max-width:none;
+      max-height:none;
+      border:none;
+      border-radius:0;
+      box-shadow:none;
     }
     #tip {
       position: fixed; left: 12px; bottom: 10px;
@@ -209,6 +231,18 @@
   const MOBILE_BEST_PERF_LEVEL = 0; // perfLevel: 0=high, 1=medium, 2=low. Mobile auto usually starts lower, but manual high is allowed.
   const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 2 : 0;
   let perfHudEnabled = /(?:[?&])perf(?:=1|=true|&|$)/.test((typeof location !== 'undefined' && location.search) || '');
+  const FORCE_MOBILE_FULLSCREEN = /(?:[?&])fullscreen(?:=1|=true|&|$)/.test(SEARCH_PARAMS);
+  const TARGET_FPS_STORAGE_KEY = 'moonBulletTargetFps';
+  const MOBILE_FULLSCREEN_STORAGE_KEY = 'moonBulletMobileFullscreen';
+  const TARGET_FPS_OPTIONS = Object.freeze([30, 45, 60]);
+  function normalizeTargetFps(value) {
+    const n = Math.max(30, Math.min(60, Math.round(Number(value) || (IS_MOBILE_RUNTIME ? 45 : 60))));
+    if (n <= 37) return 30;
+    if (n <= 52) return 45;
+    return 60;
+  }
+  let targetFps = normalizeTargetFps(safeLocalStorageGet(TARGET_FPS_STORAGE_KEY));
+  let mobileFullscreenMode = IS_MOBILE_RUNTIME && (FORCE_MOBILE_FULLSCREEN || safeLocalStorageGet(MOBILE_FULLSCREEN_STORAGE_KEY) === '1');
 
   const bgmEl = document.getElementById('bgm');
   const musicStatusEl = document.getElementById('musicStatus');
@@ -1822,12 +1856,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-06-danmaku-readability-skyward-power-v7';
+  const UPDATE_NOTICE_VERSION = '2026-07-07-mobile-fullscreen-skyward-survival-v8';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-06',
       items: [
+        '移动端新增全屏游玩模式：战斗 HUD 加入全屏、暂停、重开、FPS 和目标帧率按钮，减少浏览器上下栏遮挡。',
+        '目标帧率设置上线：手机端可在 30 / 45 / 60 FPS 间切换，运行时会根据目标帧率自动收紧或放宽特效预算。',
+        '苍穹圣巡星轨跃迁修复：地狱模式现在也会尊重穿梭期间和落点后的 1 秒无敌，不再刚落地就被地狱判定吞掉。',
+        '圣域折光壁持续时间提升到 15 秒，仍保持开启瞬间开始计时、25 秒冷却。',
+        '多僚机技能同屏优化：天使降临、天耀之手、苍穹大招等同时释放时统一控制白闪、震屏和叠光预算，避免画面连续闪烁。',
         '弹幕可读性优化：敌方弹幕统一补深色外描边、危险红边和受控亮核，暗地图和强光大招里都更容易看清每一颗弹。',
         '地狱小怪节奏加强：小怪入场更快、血量更厚，保留规律扇形/环形/留缝弹墙的可学习弹幕逻辑。',
         '苍穹圣巡伤害大幅上调：普通弹、暴走弹、星轨跃迁飞剑和圣域折光壁穿盾强化弹整体增伤，对 Boss 的伤害信用上限同步提高。',
@@ -1948,7 +1987,8 @@
     leaderboardRequiresHellMode: true,
     promptOnStart: true,
     oneHostileHitKills: true,
-    ignoresInvulnerability: true,
+    ignoresInvulnerability: false,
+    skywardBlinkInvulnerabilityProtected: true,
     disablesExtraLives: true,
     uploadOnlyWhenEligible: true,
   });
@@ -2029,6 +2069,58 @@
   function safeLocalStorageRemove(key) {
     try { if (window.localStorage) window.localStorage.removeItem(key); } catch (e) { /* ignore private-mode storage errors */ }
   }
+
+  function targetFrameMs() {
+    return 1000 / Math.max(1, normalizeTargetFps(targetFps));
+  }
+  function setTargetFps(value, manual = true) {
+    targetFps = normalizeTargetFps(value);
+    if (manual) safeLocalStorageSet(TARGET_FPS_STORAGE_KEY, String(targetFps));
+    perfHudEnabled = perfHudEnabled || (IS_MOBILE_RUNTIME && mobileFullscreenMode);
+    return targetFps;
+  }
+  function cycleTargetFps() {
+    const idx = TARGET_FPS_OPTIONS.indexOf(normalizeTargetFps(targetFps));
+    const next = TARGET_FPS_OPTIONS[(idx + 1) % TARGET_FPS_OPTIONS.length];
+    setTargetFps(next, true);
+    setMessage(`目标帧率：${next} FPS`, 1.2);
+    return next;
+  }
+  function applyMobileFullscreenClass() {
+    if (typeof document === 'undefined') return;
+    const on = !!mobileFullscreenMode;
+    document.documentElement && document.documentElement.classList && document.documentElement.classList.toggle('mobile-game-fullscreen', on);
+    document.body && document.body.classList && document.body.classList.toggle('mobile-game-fullscreen', on);
+    if (on && IS_MOBILE_RUNTIME) perfHudEnabled = true;
+  }
+  function setMobileFullscreenMode(active, persist = true) {
+    mobileFullscreenMode = !!(IS_MOBILE_RUNTIME && active);
+    applyMobileFullscreenClass();
+    if (persist) safeLocalStorageSet(MOBILE_FULLSCREEN_STORAGE_KEY, mobileFullscreenMode ? '1' : '0');
+    return mobileFullscreenMode;
+  }
+  async function requestMobileFullscreenMode() {
+    if (!IS_MOBILE_RUNTIME) return false;
+    setMobileFullscreenMode(true, true);
+    const wrap = document.getElementById('wrap') || canvas;
+    const req = wrap.requestFullscreen || wrap.webkitRequestFullscreen || wrap.msRequestFullscreen;
+    if (req && !document.fullscreenElement && !document.webkitFullscreenElement) {
+      try { await req.call(wrap); } catch (e) { /* CSS pseudo-fullscreen remains active as fallback */ }
+    }
+    return true;
+  }
+  async function exitMobileFullscreenMode() {
+    const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+    if (exit && (document.fullscreenElement || document.webkitFullscreenElement)) {
+      try { await exit.call(document); } catch (e) { /* ignore */ }
+    }
+    setMobileFullscreenMode(false, true);
+    return false;
+  }
+  function toggleMobileFullscreenMode() {
+    return mobileFullscreenMode ? exitMobileFullscreenMode() : requestMobileFullscreenMode();
+  }
+  applyMobileFullscreenClass();
 
   function charCount(text) {
     return Array.from(String(text || '')).length;
@@ -2861,7 +2953,7 @@
     backdrop.innerHTML = `
       <div class="leaderboard-dialog" role="dialog" aria-modal="true">
         <h2>地狱排行榜模式</h2>
-        <p>只有地狱模式成绩会参与排行榜结算。当前默认开启：本局只要碰到一次敌方弹幕/激光，无视无敌和复活，立即死亡并上传成绩。</p>
+        <p>只有地狱模式成绩会参与排行榜结算。当前默认开启：非无敌状态碰到一次敌方弹幕/激光就会立即死亡并上传成绩；穿梭等短暂无敌仍会生效。</p>
         <div class="actions">
           <button class="hell-normal secondary" type="button">不参与，普通模式</button>
           <button class="hell-confirm" type="button">开启地狱并上榜</button>
@@ -2973,7 +3065,7 @@
     const hazardLoad = (suiyiHazards.length + miguaHazards.length) / Math.max(1, budget.hazardCap * 2);
     const updateLoad = perfStats.updateMs / (IS_MOBILE_RUNTIME ? 9.5 : 14);
     const drawLoad = perfStats.drawMs / (IS_MOBILE_RUNTIME ? 11 : 17);
-    const frameLoad = smoothFrameMs / (IS_MOBILE_RUNTIME ? 28 : 34);
+    const frameLoad = smoothFrameMs / Math.max(12, targetFrameMs() * (IS_MOBILE_RUNTIME ? 1.25 : 1.40));
     return Math.max(bulletLoad, particleLoad, fxLoad, hazardLoad, updateLoad, drawLoad, frameLoad);
   }
   function runtimePerfStressActive() {
@@ -6861,14 +6953,14 @@
 	  });
 	  const SKYWARD_AEGIS = Object.freeze({
 	    name: '圣域折光壁',
-	    duration: 10,
+	    duration: 15,
 	    cooldown: 25,           // 大招冷却：从"开启瞬间"起算 25 秒（苍穹大招不吃 EN 槽）
 	    phaseDurations: Object.freeze({
 	      start: 0.24,
 	      overdrive: 0.30,
 	      depart: 0.54,
 	      deploy: 0.62,
-	      active: 7.72,
+	      active: 12.72,
 	      collapse: 0.42,
 	      return: 0.16,
 	    }),
@@ -16374,8 +16466,47 @@
   // 手感优化 V3：hitStop 不再冻结世界，只作为极短视觉脉冲计时，避免玩家在弹幕中被“黏住”。
   function triggerHitStop(t) { hitStop = Math.max(hitStop, Math.min(t, FEEL_V3_TUNING.hitStopMax)); }
 
-  // Screen flash with a tint, drawn additively for a bloom-like burst.
-  function setFlash(v, color = '255,255,255') { flash = Math.max(flash, Math.min(v, 0.64)); flashColor = color; }
+  function activeMajorSkillVisualCount() {
+    let n = 0;
+    if (skywardAegisActive()) n++;
+    if (scField && scField.active) n++;
+    if (thHand && thHand.active) n++;
+    if (motherLifeState && motherLifeState.ultimate && motherLifeState.ultimate.active) n++;
+    if (wmBeam && wmBeam.active) n++;
+    if (nrVoid && nrVoid.active) n++;
+    if (qsw && qsw.active) n++;
+    return n;
+  }
+  function skillVisualBudget() {
+    const count = activeMajorSkillVisualCount();
+    const stacked = count >= 2;
+    const crowded = count >= 3;
+    return {
+      count,
+      flashCap: crowded ? (IS_MOBILE_RUNTIME ? 0.16 : 0.22) : stacked ? (IS_MOBILE_RUNTIME ? 0.20 : 0.30) : (IS_MOBILE_RUNTIME ? 0.40 : 0.56),
+      flashMul: crowded ? 0.38 : stacked ? 0.52 : 0.72,
+      shakeCap: crowded ? (IS_MOBILE_RUNTIME ? 3.6 : 5.2) : stacked ? (IS_MOBILE_RUNTIME ? 4.8 : 7.0) : (IS_MOBILE_RUNTIME ? 9.0 : 16.0),
+      glowMul: crowded ? 0.58 : stacked ? 0.74 : 1.0,
+    };
+  }
+  function effectiveScreenShake() {
+    const b = skillVisualBudget();
+    return Math.min(screenShake || 0, b.shakeCap);
+  }
+  function overlayFlashAlpha() {
+    const b = skillVisualBudget();
+    const hiveLinkFlashCap = motherHiveActive() && motherHive.linkV3.active;
+    const cap = hiveLinkFlashCap ? Math.min(0.10, b.flashCap) : b.flashCap;
+    const mul = hiveLinkFlashCap ? Math.min(0.45, b.flashMul) : b.flashMul;
+    return Math.min(cap, Math.max(0, flash || 0) * mul);
+  }
+
+  // Screen flash with a tint, drawn as a controlled overlay so stacked skills do not strobe.
+  function setFlash(v, color = '255,255,255') {
+    const b = skillVisualBudget();
+    flash = Math.max(flash, Math.min(v, b.count >= 2 ? 0.36 : 0.64));
+    flashColor = color;
+  }
 
   function addSpriteFx(key, x, y, size = 96, life = 0.36, rot = 0, grow = 0.35, alpha = 0.88) {
     if (!assetReady(key)) return;
@@ -17475,7 +17606,7 @@
     }
 
     if (curChar().ultKind === 'skywardAegis') {
-      player.bombCd = SKYWARD_AEGIS.cooldown;   // 冷却从开启瞬间起算（覆盖大招10s持续期）
+      player.bombCd = SKYWARD_AEGIS.cooldown;   // 冷却从开启瞬间起算（覆盖大招15s持续期）
       skillCutin.title = '圣 域 折 光 壁';
       skillCutin.life = skillCutin.maxLife = 0.50;
       skillCutin.compact = true;
@@ -17709,8 +17840,8 @@
   }
 
   function damagePlayer(amount) {
-    if (endRunByHellMode('hostileDamage')) return;
     if (player.inv > 0 || state === 'win') return;
+    if (endRunByHellMode('hostileDamage')) return;
     if (motherLifeActive() && motherLifeState.ultimate.active) return;
     if (state === 'boss' || state === 'bossIntro') amount *= bossDamageMul();
     if (motherLifeActive() && player.berserk > 0) amount *= 0.8;
@@ -26661,8 +26792,9 @@
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
     touchControls.length = 0;
-    const sx = screenShake > 0 ? rand(-screenShake, screenShake) : 0;
-    const sy = screenShake > 0 ? rand(-screenShake, screenShake) : 0;
+    const shake = effectiveScreenShake();
+    const sx = shake > 0 ? rand(-shake, shake) : 0;
+    const sy = shake > 0 ? rand(-shake, shake) : 0;
     // alpha:false 上下文要求每帧铺满不透明像素，先打底防残影
     ctx.fillStyle = '#05040a';
     ctx.fillRect(0, 0, W, H);
@@ -27956,9 +28088,10 @@
     }
     if (skywardState && skywardState.bounceFx) load += skywardState.bounceFx.length * 1.2;
     const aegisOn = skywardAegisActive();
-    const limit = aegisOn ? 2 : 40;
+    const stackBudget = skillVisualBudget();
+    const limit = (aegisOn ? 2 : 40) * stackBudget.glowMul;
     const floor = aegisOn ? (IS_MOBILE_RUNTIME ? 0.04 : 0.05) : 0.55;
-    skywardGlowBudgetMul = load <= limit ? 1 : Math.max(floor, Math.sqrt(limit / load));
+    skywardGlowBudgetMul = (load <= limit ? 1 : Math.max(floor, Math.sqrt(limit / load))) * stackBudget.glowMul;
   }
   function skywardAegisElasticSample(worldX, panelW) {
     // 返回该横坐标处盾膜的纵向位移（px）。只位移不缩放：逐片缩放会让相邻切片
@@ -31221,21 +31354,38 @@
     ctx.restore();
   }
 
-  function drawMobileRestartButton() {
-    const x = W - 96, y = 78, w = 76, h = 34;
-    registerTouchRect('restartGame', x - 8, y - 8, w + 16, h + 16);
-    const pressed = activeTouchControl && activeTouchControl.type === 'restartGame';
+  function mobileHudBottomLift() {
+    return IS_MOBILE_RUNTIME && !mobileFullscreenMode ? 36 : 12;
+  }
+  function mobileHudTopY() {
+    return mobileFullscreenMode ? 68 : 78;
+  }
+  function drawMobileHudButton(x, y, w, h, type, label, hot = false, key = '') {
+    registerTouchRect(type, x - 8, y - 8, w + 16, h + 16, key);
+    const pressed = activeTouchControl && activeTouchControl.type === type && (!key || activeTouchControl.key === key);
     ctx.save();
-    drawTyTechPanel(x, y, w, h, { r: 14, hot: pressed, stripAlpha: pressed ? 0.09 : 0.035, scanAlpha: pressed ? 0.09 : 0.035, cornerAlpha: pressed ? 0.58 : 0.24 });
+    drawTyTechPanel(x, y, w, h, { r: 14, hot: pressed || hot, stripAlpha: pressed || hot ? 0.09 : 0.035, scanAlpha: pressed || hot ? 0.09 : 0.035, cornerAlpha: pressed || hot ? 0.58 : 0.24 });
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = 'bold 15px PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.font = `bold ${w <= 58 ? 13 : 14}px PingFang SC, Microsoft YaHei, sans-serif`;
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'rgba(0,0,0,.68)';
-    ctx.strokeText('重开', x + w / 2, y + h / 2 + 1);
+    ctx.strokeText(label, x + w / 2, y + h / 2 + 1);
     ctx.fillStyle = pressed ? '#061222' : '#dff8ff';
-    ctx.fillText('重开', x + w / 2, y + h / 2 + 1);
+    ctx.fillText(label, x + w / 2, y + h / 2 + 1);
     ctx.restore();
+  }
+  function drawMobileSystemButtons(mode = 'battle') {
+    const y = mode === 'title' ? 132 : mobileHudTopY();
+    if (mode === 'title') {
+      drawMobileHudButton(W - 250, y, 86, 34, 'targetFps', `${targetFps}FPS`, false);
+      drawMobileHudButton(W - 154, y, 74, 34, 'fullscreen', mobileFullscreenMode ? '退出' : '全屏', mobileFullscreenMode);
+      return;
+    }
+    drawMobileHudButton(W - 322, y, 76, 34, 'targetFps', `${targetFps}FPS`, false);
+    drawMobileHudButton(W - 238, y, 68, 34, 'fullscreen', mobileFullscreenMode ? '退出' : '全屏', mobileFullscreenMode);
+    drawMobileHudButton(W - 162, y, 60, 34, 'pauseGame', paused ? '继续' : 'P暂停', paused);
+    drawMobileHudButton(W - 94, y, 68, 34, 'restartGame', 'R重开', false);
   }
 
   function drawMobileBattleHud() {
@@ -31243,6 +31393,7 @@
     const mm = String(Math.floor(remain / 60)).padStart(2, '0');
     const ss = String(Math.floor(remain % 60)).padStart(2, '0');
     const railX = 38;
+    const bottomLift = mobileHudBottomLift();
     const party = [
       { key: 'witch', tag: '1' },
       { key: 'yanuxiya', tag: '2' },
@@ -31282,7 +31433,7 @@
       }
     });
 
-    const panelX = 92, panelY = H - 106, panelW = W - 292, panelH = 78;
+    const panelX = 92, panelY = H - 106 - bottomLift, panelW = W - 292, panelH = 78;
     drawTyTechPanel(panelX, panelY, panelW, panelH, { r: 18, stripAlpha: 0.12, scanAlpha: 0.10 });
     const ccUi = curChar();
     ctx.textAlign = 'left';
@@ -31319,12 +31470,12 @@
       xReady = player.bombCd <= 0;
       xIcon = 'skywardUltIcon';
     }
-    drawMobileSkillButton(W - 142, H - 92, 39, 'Space', spaceName, spaceCd, spaceReady, spaceIcon, motherLifeActive() ? '255,154,214' : '150,224,255');
-    if (skywardActive()) drawSkywardBlinkHudMeter(W - 142, H - 152, 0.92);
-    drawMobileSkillButton(W - 58, H - 92, 39, 'X', xName, xCd, xReady, xIcon, motherLifeActive() ? '255,184,225' : '255,216,128');
+    drawMobileSkillButton(W - 142, H - 92 - bottomLift, 39, 'Space', spaceName, spaceCd, spaceReady, spaceIcon, motherLifeActive() ? '255,154,214' : '150,224,255');
+    if (skywardActive()) drawSkywardBlinkHudMeter(W - 142, H - 152 - bottomLift, 0.92);
+    drawMobileSkillButton(W - 58, H - 92 - bottomLift, 39, 'X', xName, xCd, xReady, xIcon, motherLifeActive() ? '255,184,225' : '255,216,128');
 
     const companions = companionSkillDefs();
-    const topY = H - 196;
+    const topY = H - 196 - bottomLift;
     companions.forEach((skill, i) => {
       const cdRate = skill.cdMax > 0 ? clamp(skill.cd / skill.cdMax, 0, 1) : 0;
       drawMobileSkillButton(W - 142 + i * 84, topY, 33, skill.key, skill.name, cdRate, skill.ready, skill.icon, skill.color);
@@ -31342,7 +31493,7 @@
       ctx.fillStyle = '#aeefff'; ctx.font = 'bold 20px Arial';
       ctx.fillText(`Combo ×${player.combo}`, W - 20, grazeScore > 0 ? 84 : 68);
     }
-    drawMobileRestartButton();
+    drawMobileSystemButtons('battle');
     ctx.restore();
   }
 
@@ -31842,6 +31993,7 @@
       `FPS ${perfStats.fps.toFixed(1)}  frame ${perfStats.frameMs.toFixed(1)}ms`,
       `upd ${perfStats.updateMs.toFixed(2)}ms  draw ${perfStats.drawMs.toFixed(2)}ms`,
 	      `perf ${perfLevel}  quality ${qualityPreset}${qualityAutoSelected ? '/auto' : ''}  mobile ${IS_MOBILE_RUNTIME ? 'Y' : 'N'}`,
+      `target ${targetFps}fps  fullscreen ${mobileFullscreenMode ? 'Y' : 'N'}`,
       `enemy ${enemies.length}  eBul ${enemyBullets.length}/${budget.enemyBulletMax}`,
       `shot ${playerShots.length}  p ${particles.length}/${budget.particleCap}  fx ${spriteFx.length}/${budget.spriteFxCap}`,
     ];
@@ -31857,8 +32009,7 @@
 	  function drawOverlay() {
     leaderboardHitCards = [];
     if (flash > 0) {
-      const hiveLinkFlashCap = motherHiveActive() && motherHive.linkV3.active;
-      const flashAlpha = hiveLinkFlashCap ? Math.min(0.10, flash * 0.45) : Math.min(0.72, flash);
+      const flashAlpha = overlayFlashAlpha();
       ctx.fillStyle = `rgba(${flashColor},${flashAlpha})`;
       ctx.fillRect(0, 0, W, H);
     }
@@ -31937,6 +32088,7 @@
       ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.48)'; ctx.fillRect(0,0,W,H);
       if (assetReady('uiPausePanel')) ctx.drawImage(assets.uiPausePanel, 92, H * 0.35, W - 184, 280);
       ctx.fillStyle = '#fff4d1'; ctx.font = 'bold 48px Arial'; ctx.textAlign = 'center'; ctx.fillText('PAUSED', W/2, H/2); ctx.restore();
+      if (IS_MOBILE_RUNTIME) drawMobileSystemButtons('battle');
     }
 	  }
 
@@ -32400,6 +32552,7 @@
     ctx.font = '18px PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,.78)';
     ctx.fillText('选择角色与僚机编队', W / 2, 122);
+    drawMobileSystemButtons('title');
 
     const order = ['witch', 'yanuxiya', 'anna', 'reaver', 'motherlife', 'skyward'];
     const cardW = 318, cardH = 122, gapX = 16, gapY = 14;
@@ -32768,11 +32921,15 @@
       if (rawMs > 0 && rawMs < 200) smoothFrameMs += (rawMs - smoothFrameMs) * 0.1;
       perfHoldT += dt;
 	      const targetPerf = qualityTargetPerfLevel();
-	      if (smoothFrameMs > (IS_MOBILE_RUNTIME ? 40 : 48) && perfLevel < 2) { perfLevel++; perfHoldT = 0; }
+	      const wantFrameMs = targetFrameMs();
+	      const hardSlowMs = IS_MOBILE_RUNTIME ? Math.max(24, wantFrameMs * 1.45) : Math.max(31, wantFrameMs * 1.65);
+	      const softSlowMs = IS_MOBILE_RUNTIME ? Math.max(18, wantFrameMs * 1.16) : Math.max(24, wantFrameMs * 1.28);
+	      const recoverMs = IS_MOBILE_RUNTIME ? Math.max(11, wantFrameMs * 0.76) : Math.max(12, wantFrameMs * 0.82);
+	      if (smoothFrameMs > hardSlowMs && perfLevel < 2) { perfLevel++; perfHoldT = 0; }
 	      else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
 	        perfHoldT = 0;
-	        if (smoothFrameMs > (IS_MOBILE_RUNTIME ? 27 : 31) && perfLevel < 2) perfLevel++;
-	        else if (smoothFrameMs < (IS_MOBILE_RUNTIME ? 18 : 17.2) && perfLevel > targetPerf) perfLevel--;
+	        if (smoothFrameMs > softSlowMs && perfLevel < 2) perfLevel++;
+	        else if (smoothFrameMs < recoverMs && perfLevel > targetPerf) perfLevel--;
 	        if (perfLevel < targetPerf) perfLevel = targetPerf;
 	      }
       // 手感优化 V3：hitStop 只递减视觉脉冲，不拦截 update/draw，移动输入永远不断帧。
@@ -32931,6 +33088,9 @@
 	    if (ctrl.type === 'leaderboardProfile') { showLeaderboardNameDialog('manual'); return true; }
 	    if (ctrl.type === 'startGame') { requestStartGame(); return true; }
 	    if (ctrl.type === 'restartGame') { requestStartGame(); return true; }
+	    if (ctrl.type === 'pauseGame') { paused = !paused; if (paused) releaseDesktopMousePilot(); return true; }
+	    if (ctrl.type === 'fullscreen') { toggleMobileFullscreenMode(); return true; }
+	    if (ctrl.type === 'targetFps') { cycleTargetFps(); return true; }
     return false;
   }
 
@@ -33123,6 +33283,16 @@
       canvas.style.cursor = 'none';
     }
   });
+  document.addEventListener('fullscreenchange', () => {
+    if (IS_MOBILE_RUNTIME && !document.fullscreenElement && mobileFullscreenMode && !FORCE_MOBILE_FULLSCREEN) {
+      setMobileFullscreenMode(false, true);
+    }
+  });
+  document.addEventListener('webkitfullscreenchange', () => {
+    if (IS_MOBILE_RUNTIME && !document.webkitFullscreenElement && mobileFullscreenMode && !FORCE_MOBILE_FULLSCREEN) {
+      setMobileFullscreenMode(false, true);
+    }
+  });
   window.addEventListener('blur', () => {
     keys.Space = false;
     cancelSkywardBlinkAim();
@@ -33252,7 +33422,8 @@
 	        aimDistanceFixed: SKYWARD_STELLAR_BLINK.dashDistance,
 	        movementLockWhileAiming: true,
 	        aimTarget: { x: skywardState.stellarBlink.aimTargetX, y: skywardState.stellarBlink.aimTargetY },
-	        immunity: 'dash plus one-second landing invulnerability; hell-mode still ends run before invulnerability',
+	        immunity: 'dash plus one-second landing invulnerability; hell-mode respects player.inv before lethal hit',
+	        hellModeInvulnerabilityProtected: true,
 	        launch: '10 homing material light swords from visible hover modules at landing point',
 	        interactionV2: {
 	          holdToAim: true,
@@ -33755,12 +33926,22 @@
         skippedMessage: '普通模式不参与排行榜；开启地狱模式后才可上传',
       }),
       simulateHellDamageForTest: ({ hellMode = true, inv = 2, ultimate = true, lives = 2 } = {}) => {
+        if (hellMode && inv > 0) {
+          return {
+            outcome: 'ignoredByInvulnerability',
+            hpAfter: 'unchanged',
+            livesAfter: lives,
+            ignoredInvulnerability: false,
+            ignoredUltimate: false,
+            leaderboardEligible: true,
+          };
+        }
         if (hellMode) {
           return {
             outcome: 'lose',
             hpAfter: 0,
             livesAfter: 0,
-            ignoredInvulnerability: inv > 0,
+            ignoredInvulnerability: false,
             ignoredUltimate: !!ultimate,
             leaderboardEligible: true,
           };
@@ -33911,6 +34092,9 @@
         mobileMoveMode: TOUCH_RELATIVE_MOVE.mode,
         sensitivity: TOUCH_RELATIVE_MOVE.sensitivity,
         noSnapOnMobilePointerDown: true,
+        mobileHudControls: ['fullscreen', 'pauseGame', 'restartGame', 'targetFps', 'Space', 'X'],
+        mobileFullscreen: { enabled: true, cssFallback: true, storageKey: MOBILE_FULLSCREEN_STORAGE_KEY },
+        targetFps: { enabled: true, options: [...TARGET_FPS_OPTIONS], current: targetFps, max: 60, storageKey: TARGET_FPS_STORAGE_KEY, fullscreenShowsHud: true },
         desktopPointerMode: DESKTOP_MOUSE_PILOT.mode,
         desktopNoLeftClickSnap: DESKTOP_MOUSE_PILOT.noLeftClickSnap,
         desktopRightClickMousePilot: true,
@@ -33928,9 +34112,10 @@
       }),
       qualityBudgetSpec: () => ({
         presets: JSON.parse(JSON.stringify(QUALITY_PRESETS)),
-        current: { qualityPreset, qualityAutoSelected, perfLevel, probePerfLevel: qualityProbePerfLevel },
+        current: { qualityPreset, qualityAutoSelected, perfLevel, probePerfLevel: qualityProbePerfLevel, targetFps },
         desktop: PERF_BUDGETS.desktop.map(b => ({ ...b })),
         mobile: PERF_BUDGETS.mobile.map(b => ({ ...b })),
+        targetFps: { options: [...TARGET_FPS_OPTIONS], defaultMobile: 45, max: 60, adaptsPerfLevel: true },
       }),
       runtimePerformanceSpec: () => ({
         mode: 'stress-cached-runtime-budget-trim',
@@ -33939,6 +34124,16 @@
         trims: ['enemyBullets', 'particles', 'spriteFx', 'procRings', 'suiyiFx', 'miguaFx', 'suiyiHazards', 'miguaHazards', 'damageTexts'],
         preserves: ['playerUpdate', 'hitbox', 'hostileBulletBoundary', 'coreProjectileBodies'],
         themeCapsFromBudget: true,
+        targetFps: { current: targetFps, frameBudgetMs: Number(targetFrameMs().toFixed(2)), max: 60 },
+        visualStackBudget: skillVisualBudget(),
+      }),
+      visualStackSpec: () => ({
+        mode: 'stacked-skill-flash-and-shake-budget',
+        countedSkills: ['skywardAegis', 'saintField', 'tianyaoHand', 'motherLifeUltimate', 'moonfeatherBeam', 'nightReaverVoid', 'qishenwu'],
+        current: skillVisualBudget(),
+        capsFullscreenFlash: true,
+        capsScreenShake: true,
+        dimsStackedGlowBudget: true,
       }),
       claritySpec: () => ({
         hostileBullet: {
@@ -34689,6 +34884,11 @@
     bestPerfLevel: MOBILE_BEST_PERF_LEVEL,
     mobileAssets: !!Object.keys(MOBILE_ASSET_PATHS).length,
     touchMoveMode: TOUCH_RELATIVE_MOVE.mode,
+    targetFpsOptions: [...TARGET_FPS_OPTIONS],
+    get targetFps() { return targetFps; },
+    get fullscreenMode() { return mobileFullscreenMode; },
+    get perfHudEnabled() { return perfHudEnabled; },
+    controls: ['fullscreen', 'pauseGame', 'restartGame', 'targetFps', 'Space', 'X'],
   };
 
   requestAnimationFrame(loop);

@@ -110,6 +110,9 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.desktopPointerMode).toBe('right-click-pointerlock-relative-mouse');
     expect(spec.desktopNoLeftClickSnap).toBe(true);
     expect(spec.desktopRightClickMousePilot).toBe(true);
+    expect(spec.mobileHudControls).toEqual(expect.arrayContaining(['fullscreen', 'pauseGame', 'restartGame', 'targetFps']));
+    expect(spec.mobileFullscreen).toMatchObject({ enabled: true, cssFallback: true });
+    expect(spec.targetFps).toMatchObject({ enabled: true, options: [30, 45, 60], max: 60, fullscreenShowsHud: true });
     expect(spec.desktopMousePilotReleaseOn).toEqual(expect.arrayContaining(['pause', 'death', 'title']));
     expect(spec.simulateRelativeMoveForTest({ x: 360, y: 900 }, [
       { dx: 40, dy: -80 },
@@ -124,6 +127,16 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.mobile.map(b => b.enemyBulletMax)).toEqual([300, 220, 160]);
     expect(spec.desktop[0].enemyCap).toBeGreaterThan(spec.desktop[2].enemyCap);
     expect(spec.mobile[2].particleCap).toBeLessThan(spec.mobile[0].particleCap);
+    expect(spec.targetFps).toMatchObject({ options: [30, 45, 60], defaultMobile: 45, max: 60, adaptsPerfLevel: true });
+  });
+
+  it('caps full-screen flash and screen shake when several companion skills stack', () => {
+    const spec = balance.visualStackSpec();
+    expect(spec.mode).toBe('stacked-skill-flash-and-shake-budget');
+    expect(spec.countedSkills).toEqual(expect.arrayContaining(['skywardAegis', 'saintField', 'tianyaoHand']));
+    expect(spec.capsFullscreenFlash).toBe(true);
+    expect(spec.capsScreenShake).toBe(true);
+    expect(spec.dimsStackedGlowBudget).toBe(true);
   });
 
   it('locks hostile bullet red rim and always-visible player hitbox clarity', () => {

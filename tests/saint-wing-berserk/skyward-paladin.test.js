@@ -212,6 +212,8 @@ describe('skyward paladin character spec', () => {
     expect(blink.dashDistance).toBe(380);
     expect(blink.dashTime).toBeCloseTo(0.13);
     expect(blink.invulnTime).toBe(1);
+    expect(blink.hellModeInvulnerabilityProtected).toBe(true);
+    expect(blink.immunity).toContain('hell-mode respects');
     expect(blink.materializeTime).toBeCloseTo(0.20);
     expect(blink.landingWingLife).toBeCloseTo(0.58);
     expect(blink.swordsPerBlink).toBe(10);
@@ -227,11 +229,12 @@ describe('skyward paladin character spec', () => {
     expect(blink.assets).toEqual(expect.arrayContaining(['skywardBlinkPortalRing', 'skywardBlinkSwordBody', 'skywardBlinkWingOpen1-4', 'skywardBlinkFloatCharge1-5', 'skywardBlinkChargeBar0-5']));
   });
 
-  it('exposes the X ultimate as a ten-second optical aegis with bullet empowerment', () => {
+  it('exposes the X ultimate as a fifteen-second optical aegis with bullet empowerment', () => {
     const ult = skyward.ultimateSpec();
     expect(ult.name).toBe('圣域折光壁');
     expect(ult.input).toBe('X');
-    expect(ult.duration).toBe(10);
+    expect(ult.duration).toBe(15);
+    expect(ult.phases.active).toBeCloseTo(12.72);
     expect(ult.cooldown).toBe(25);
     expect(ult.cooldownStartsOnCast).toBe(true);
     expect(ult.blocksEnemyBullets).toBe(true);

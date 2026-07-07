@@ -84,7 +84,8 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(hell.leaderboardRequiresHellMode).toBe(true);
     expect(hell.promptOnStart).toBe(true);
     expect(hell.oneHostileHitKills).toBe(true);
-    expect(hell.ignoresInvulnerability).toBe(true);
+    expect(hell.ignoresInvulnerability).toBe(false);
+    expect(hell.skywardBlinkInvulnerabilityProtected).toBe(true);
     expect(hell.uploadOnlyWhenEligible).toBe(true);
 
     expect(board.leaderboardEligibilityForTest(true).canUpload).toBe(true);
@@ -100,14 +101,19 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(graze.display).toBe('separate-graze-score-added-to-final-score');
   });
 
-  it('makes a hell-mode hostile hit kill through invulnerability and ultimate protection', () => {
+  it('keeps short invulnerability alive in hell mode but still kills through ultimate-only protection', () => {
     const hit = board.simulateHellDamageForTest({ hellMode: true, inv: 9, ultimate: true, lives: 2 });
-    expect(hit.outcome).toBe('lose');
-    expect(hit.hpAfter).toBe(0);
-    expect(hit.livesAfter).toBe(0);
-    expect(hit.ignoredInvulnerability).toBe(true);
-    expect(hit.ignoredUltimate).toBe(true);
+    expect(hit.outcome).toBe('ignoredByInvulnerability');
+    expect(hit.hpAfter).toBe('unchanged');
+    expect(hit.livesAfter).toBe(2);
     expect(hit.leaderboardEligible).toBe(true);
+
+    const lethal = board.simulateHellDamageForTest({ hellMode: true, inv: 0, ultimate: true, lives: 2 });
+    expect(lethal.outcome).toBe('lose');
+    expect(lethal.hpAfter).toBe(0);
+    expect(lethal.livesAfter).toBe(0);
+    expect(lethal.ignoredUltimate).toBe(true);
+    expect(lethal.leaderboardEligible).toBe(true);
 
     const normal = board.simulateHellDamageForTest({ hellMode: false, inv: 9, ultimate: true, lives: 2 });
     expect(normal.outcome).toBe('ignoredByInvulnerability');
