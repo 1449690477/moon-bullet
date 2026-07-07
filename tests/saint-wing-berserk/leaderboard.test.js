@@ -76,6 +76,16 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(ui.avatarUpload).toBe(true);
     expect(ui.backgroundAssets).toEqual(expect.arrayContaining(['suiyiMapVirtualCore', 'bgEclipse', 'uiEmblemLoop']));
     expect(ui.buttons).toEqual(expect.arrayContaining(['titleOpen', 'resultRetry', 'resultProfile']));
+    expect(ui.panels).toEqual(expect.arrayContaining(['restartConfirmDialog']));
+  });
+
+  it('does not quarantine high or fast scores after the Edge Function accepts valid fields', () => {
+    const route = board.submitRouteSpecForTest();
+    expect(route.acceptedStatuses).toEqual(['accepted', 'rejected']);
+    expect(route.acceptedStatuses).not.toContain('quarantined');
+    expect(route.quarantineDisabled).toBe(true);
+    expect(route.acceptsAnyNonNegativeScore).toBe(true);
+    expect(route.legacyQuarantineDirectFallback).toBe(true);
   });
 
   it('requires hell mode for leaderboard eligibility and defaults it on', () => {

@@ -2,19 +2,23 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <link rel="icon" href="data:," />
   <title>月蚀弹幕 V1.0 - 移动端自适应版</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; background:#020208; overflow: hidden; }
+    html {
+      --app-vw: 100vw;
+      --app-vh: 100dvh;
+    }
     body {
       color:#f8f1ff;
       font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
       user-select:none;
     }
     #wrap {
-      width: 100vw; height: 100dvh;
+      width: var(--app-vw); height: var(--app-vh);
       display:flex; align-items:center; justify-content:center;
       background:
         radial-gradient(circle at 50% 14%, rgba(129,57,206,.28), transparent 28%),
@@ -23,8 +27,8 @@
       padding:8px;
     }
     canvas {
-      width: min(100vw, calc(100dvh * 0.5625));
-      height: min(100dvh, calc(100vw / 0.5625));
+      width: min(var(--app-vw), calc(var(--app-vh) * 0.5625));
+      height: min(var(--app-vh), calc(var(--app-vw) / 0.5625));
       max-width:720px; max-height:1280px;
       background:#05040a;
       border:1px solid rgba(255,255,255,.18);
@@ -32,12 +36,22 @@
       box-shadow:0 0 60px rgba(132,78,255,.32), inset 0 0 52px rgba(255,255,255,.04);
       touch-action:none;
     }
+    html.mobile-game-fullscreen,
+    body.mobile-game-fullscreen {
+      position: fixed;
+      inset: 0;
+      width: var(--app-vw);
+      height: var(--app-vh);
+      overflow: hidden;
+      overscroll-behavior: none;
+      background:#020208;
+    }
     body.mobile-game-fullscreen #wrap {
       position: fixed;
       inset: 0;
       z-index: 30;
-      width: 100vw;
-      height: 100dvh;
+      width: var(--app-vw);
+      height: var(--app-vh);
       padding:
         max(0px, env(safe-area-inset-top))
         max(0px, env(safe-area-inset-right))
@@ -46,8 +60,8 @@
       background:#020208;
     }
     body.mobile-game-fullscreen canvas {
-      width: min(100vw, calc(100dvh * 0.5625));
-      height: min(100dvh, calc(100vw / 0.5625));
+      width: min(var(--app-vw), calc(var(--app-vh) * 0.5625));
+      height: min(var(--app-vh), calc(var(--app-vw) / 0.5625));
       max-width:none;
       max-height:none;
       border:none;
@@ -223,6 +237,7 @@
   const IS_VERY_NARROW = Math.min(VIEW_W, VIEW_H) <= 500;
   const UA_MOBILE = /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(UA);
   const IS_TOUCH_DEVICE = HAS_COARSE_POINTER || TOUCH_POINTS > 0 || !!(navigator.userAgentData && navigator.userAgentData.mobile) || UA_MOBILE;
+  const IS_IOS_RUNTIME = /iPhone|iPad|iPod/i.test(UA) || (navigator.platform === 'MacIntel' && TOUCH_POINTS > 1);
   const TOUCH_PORTRAIT_PHONE_LIKE = TOUCH_POINTS > 0 && VIEW_H >= VIEW_W && (VIEW_W <= 900 || SCREEN_MIN <= 900);
   const IS_MOBILE_RUNTIME = !FORCE_DESKTOP_RUNTIME && (
     FORCE_MOBILE_RUNTIME || UA_MOBILE || !!(navigator.userAgentData && navigator.userAgentData.mobile) ||
@@ -235,6 +250,7 @@
   const TARGET_FPS_STORAGE_KEY = 'moonBulletTargetFps';
   const MOBILE_FULLSCREEN_STORAGE_KEY = 'moonBulletMobileFullscreen';
   const TARGET_FPS_OPTIONS = Object.freeze([30, 45, 60]);
+  const IOS_FULLSCREEN_API_UNRELIABLE = IS_IOS_RUNTIME;
   function normalizeTargetFps(value) {
     const n = Math.max(30, Math.min(60, Math.round(Number(value) || (IS_MOBILE_RUNTIME ? 45 : 60))));
     if (n <= 37) return 30;
@@ -1856,9 +1872,18 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-07-mobile-fullscreen-skyward-survival-v8';
+  const UPDATE_NOTICE_VERSION = '2026-07-07-ios-fullscreen-restart-score-v9';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-07',
+      items: [
+        'iPhone/Chrome 全屏修复：识别 iOS 不支持普通元素真全屏后，改为可靠的沉浸式伪全屏，并按 visualViewport 重新计算画面尺寸，避免按钮被浏览器栏挡住。',
+        '目标帧率修复：30 / 45 / 60 FPS 会直接联动画质预算，目标越高越主动压低移动端特效负担。',
+        'PC 和手机端重开都新增确认窗口，防止误触 R 或重开按钮把当前战斗清掉。',
+        '排行榜上传取消待审核隔离：合法字段的任意非负分数都正常进入提交流程，不再因为分数或击杀节奏触发“需要审核”。',
+      ],
+    },
     {
       date: '2026-07-06',
       items: [
@@ -2057,6 +2082,8 @@
   let leaderboardEligibleRun = HELL_MODE_SPEC.defaultEnabled;
   let hellModeDialogOpen = false;
   let hellModeDialogEl = null;
+  let restartConfirmDialogOpen = false;
+  let restartConfirmDialogEl = null;
   let updateNoticeDialogOpen = false;
   let updateNoticeDialogEl = null;
 
@@ -2070,12 +2097,41 @@
     try { if (window.localStorage) window.localStorage.removeItem(key); } catch (e) { /* ignore private-mode storage errors */ }
   }
 
+  function updateAppViewportSize() {
+    if (typeof document === 'undefined') return;
+    const vv = typeof window !== 'undefined' ? window.visualViewport : null;
+    const vw = Math.max(1, Math.round((vv && vv.width) || window.innerWidth || document.documentElement?.clientWidth || 720));
+    const vh = Math.max(1, Math.round((vv && vv.height) || window.innerHeight || document.documentElement?.clientHeight || 1280));
+    const rootStyle = document.documentElement && document.documentElement.style;
+    if (!rootStyle || !rootStyle.setProperty) return;
+    rootStyle.setProperty('--app-vw', `${vw}px`);
+    rootStyle.setProperty('--app-vh', `${vh}px`);
+  }
   function targetFrameMs() {
     return 1000 / Math.max(1, normalizeTargetFps(targetFps));
+  }
+  function targetFpsPerfFloor(value = targetFps) {
+    if (!IS_MOBILE_RUNTIME) return 0;
+    const fps = normalizeTargetFps(value);
+    if (fps >= 60) return 2;
+    if (fps >= 45) return 1;
+    return 0;
+  }
+  function syncTargetFpsQualityBudget() {
+    const floor = targetFpsPerfFloor(targetFps);
+    if (perfLevel < floor) perfLevel = floor;
+    const presetLevel = QUALITY_PRESETS[normalizeQualityPreset(qualityPreset)].perfLevel;
+    if (presetLevel < floor) {
+      qualityPreset = qualityPresetFromPerfLevel(floor);
+      qualityAutoSelected = true;
+    }
+    try { refreshRuntimePerfStress(); } catch (e) { /* combat arrays may not be initialized during startup */ }
+    return floor;
   }
   function setTargetFps(value, manual = true) {
     targetFps = normalizeTargetFps(value);
     if (manual) safeLocalStorageSet(TARGET_FPS_STORAGE_KEY, String(targetFps));
+    syncTargetFpsQualityBudget();
     perfHudEnabled = perfHudEnabled || (IS_MOBILE_RUNTIME && mobileFullscreenMode);
     return targetFps;
   }
@@ -2089,6 +2145,7 @@
   function applyMobileFullscreenClass() {
     if (typeof document === 'undefined') return;
     const on = !!mobileFullscreenMode;
+    updateAppViewportSize();
     document.documentElement && document.documentElement.classList && document.documentElement.classList.toggle('mobile-game-fullscreen', on);
     document.body && document.body.classList && document.body.classList.toggle('mobile-game-fullscreen', on);
     if (on && IS_MOBILE_RUNTIME) perfHudEnabled = true;
@@ -2102,11 +2159,16 @@
   async function requestMobileFullscreenMode() {
     if (!IS_MOBILE_RUNTIME) return false;
     setMobileFullscreenMode(true, true);
+    updateAppViewportSize();
     const wrap = document.getElementById('wrap') || canvas;
     const req = wrap.requestFullscreen || wrap.webkitRequestFullscreen || wrap.msRequestFullscreen;
-    if (req && !document.fullscreenElement && !document.webkitFullscreenElement) {
+    if (!IOS_FULLSCREEN_API_UNRELIABLE && req && !document.fullscreenElement && !document.webkitFullscreenElement) {
       try { await req.call(wrap); } catch (e) { /* CSS pseudo-fullscreen remains active as fallback */ }
     }
+    if (IOS_FULLSCREEN_API_UNRELIABLE) {
+      setTimeout(() => { try { window.scrollTo(0, 1); } catch (e) { /* ignore */ } updateAppViewportSize(); }, 80);
+    }
+    setMessage(IOS_FULLSCREEN_API_UNRELIABLE ? 'iPhone 浏览器已进入沉浸模式' : '全屏模式已开启', 1.2);
     return true;
   }
   async function exitMobileFullscreenMode() {
@@ -2115,11 +2177,13 @@
       try { await exit.call(document); } catch (e) { /* ignore */ }
     }
     setMobileFullscreenMode(false, true);
+    setMessage('全屏模式已退出', 1.0);
     return false;
   }
   function toggleMobileFullscreenMode() {
     return mobileFullscreenMode ? exitMobileFullscreenMode() : requestMobileFullscreenMode();
   }
+  updateAppViewportSize();
   applyMobileFullscreenClass();
 
   function charCount(text) {
@@ -2316,6 +2380,29 @@
       return false;
     }
   }
+  async function submitLeaderboardDirectFallback(payload, source = 'edgeFallback') {
+    leaderboardUploadStatus = 'pending';
+    leaderboardStatusMessage = '正在兼容上传排行榜...';
+    try {
+      try {
+        await insertLeaderboardPayload(payload, true);
+      } catch (err) {
+        if (!isMissingAvatarColumnError(err)) throw err;
+        leaderboardSupportsAvatarData = false;
+        await insertLeaderboardPayload(payload, false);
+      }
+      setBestScore(payload.score);
+      leaderboardUploadStatus = 'ok';
+      leaderboardLastWasRecord = true;
+      leaderboardStatusMessage = '新纪录已上传';
+      await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
+      leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
+      return { ok: true, rank: leaderboardLastRank, directFallback: true, source };
+    } catch (err) {
+      console.warn('[leaderboard] direct fallback failed:', err);
+      return { ok: false, reason: 'directFallbackFailed', error: err, source };
+    }
+  }
   async function fetchLeaderboard(limit = LEADERBOARD_TOP_LIMIT) {
     leaderboardFetchStatus = 'loading';
     const n = Math.max(1, Math.min(LEADERBOARD_TOP_LIMIT, Math.floor(Number(limit) || LEADERBOARD_TOP_LIMIT)));
@@ -2488,9 +2575,11 @@
     try {
       if (!leaderboardRunToken) await startRankedRun();
       if (!leaderboardRunToken) {
+        const fallback = await submitLeaderboardDirectFallback(payload, 'noRunToken');
+        if (fallback.ok) return fallback;
         leaderboardUploadStatus = 'fail';
-        leaderboardStatusMessage = '上传失败：排行榜校验服务未就绪';
-        return { ok: false, reason: 'noRunToken' };
+        leaderboardStatusMessage = '上传失败：排行榜服务未就绪';
+        return { ok: false, reason: 'noRunToken', fallback };
       }
       const res = await fetch(`${LEADERBOARD_FN_BASE}/submit`, {
         method: 'POST',
@@ -2510,12 +2599,12 @@
         return { ok: true, rank: leaderboardLastRank, result };
       }
       if (result && result.ok && result.status === 'quarantined') {
-        leaderboardUploadStatus = 'skipped';
+        const fallback = await submitLeaderboardDirectFallback(payload, 'legacyQuarantine');
+        if (fallback.ok) return fallback;
+        leaderboardUploadStatus = 'fail';
         leaderboardLastWasRecord = false;
-        leaderboardStatusMessage = '成绩待审核（疑似异常数值）';
-        await fetchLeaderboard(LEADERBOARD_TOP_LIMIT);
-        leaderboardLastRank = rankForLeaderboardRows(leaderboardData, payload.player_name);
-        return { ok: true, quarantined: true, result };
+        leaderboardStatusMessage = '上传失败，点击重试';
+        return { ok: false, reason: 'legacyQuarantineFallbackFailed', result, fallback };
       }
       const reasons = Array.isArray(result && result.reasons) ? result.reasons.join('、') : '';
       leaderboardUploadStatus = 'fail';
@@ -2985,12 +3074,58 @@
     hideHellModeStartDialog();
     startGame({ hellMode: enabled !== false });
   }
+  function ensureRestartConfirmDialog() {
+    if (restartConfirmDialogEl) return restartConfirmDialogEl;
+    if (typeof document === 'undefined' || !document.createElement || !document.body) return null;
+    const backdrop = document.createElement('div');
+    backdrop.className = 'leaderboard-dialog-backdrop';
+    backdrop.innerHTML = `
+      <div class="leaderboard-dialog">
+        <h2>确认重开</h2>
+        <p>当前战斗会立即结束并重新开始，已打出的本局进度不会保留。</p>
+        <div class="actions">
+          <button class="secondary restart-cancel" type="button">取消</button>
+          <button class="restart-confirm" type="button">确认重开</button>
+        </div>
+      </div>`;
+    document.body.appendChild(backdrop);
+    restartConfirmDialogEl = backdrop;
+    const cancelBtn = backdrop.querySelector('.restart-cancel');
+    const confirmBtn = backdrop.querySelector('.restart-confirm');
+    cancelBtn && cancelBtn.addEventListener('click', hideRestartConfirmDialog);
+    confirmBtn && confirmBtn.addEventListener('click', confirmRestartGame);
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) hideRestartConfirmDialog(); });
+    return restartConfirmDialogEl;
+  }
+  function showRestartConfirmDialog() {
+    hideUpdateNoticeDialog();
+    restartConfirmDialogOpen = true;
+    const el = ensureRestartConfirmDialog();
+    if (!el) {
+      if (typeof window !== 'undefined' && window.confirm && !window.confirm('确定要重开当前战斗吗？')) {
+        restartConfirmDialogOpen = false;
+        return;
+      }
+      confirmRestartGame();
+      return;
+    }
+    el.style.display = 'flex';
+  }
+  function hideRestartConfirmDialog() {
+    restartConfirmDialogOpen = false;
+    if (restartConfirmDialogEl) restartConfirmDialogEl.style.display = 'none';
+  }
+  function confirmRestartGame() {
+    const keepHellMode = hellModeActive !== false;
+    hideRestartConfirmDialog();
+    startGame({ hellMode: keepHellMode });
+  }
   function requestStartGame() {
-    if (hellModeDialogOpen) return;
+    if (hellModeDialogOpen || restartConfirmDialogOpen) return;
     if (state === 'title' || state === 'win' || state === 'lose') {
       showHellModeStartDialog();
     } else {
-      startGame({ hellMode: HELL_MODE_SPEC.defaultEnabled });
+      showRestartConfirmDialog();
     }
   }
   function endRunByHellMode(source = 'hostile') {
@@ -3023,7 +3158,7 @@
     return level <= 0 ? 'high' : (level === 1 ? 'medium' : 'low');
   }
   function qualityTargetPerfLevel() {
-    return QUALITY_PRESETS[normalizeQualityPreset(qualityPreset)].perfLevel;
+    return Math.max(QUALITY_PRESETS[normalizeQualityPreset(qualityPreset)].perfLevel, targetFpsPerfFloor());
   }
   function applyQualityPreset(preset, manual = false) {
     qualityPreset = normalizeQualityPreset(preset);
@@ -3049,9 +3184,28 @@
       { enemyBulletMax: 160, mobSoftCap: 38, bossSoftCap: 68, particleCap: 32, spriteFxCap: 5, ringCap: 3, enemyCap: 18, themeFxCap: 14, hazardCap: 4, bulletGlow: false, killBurstMul: 0.16 },
     ],
   };
+  function targetFpsVisualBudgetMul(value = targetFps) {
+    if (!IS_MOBILE_RUNTIME) return 1;
+    const fps = normalizeTargetFps(value);
+    if (fps >= 60) return 0.68;
+    if (fps >= 45) return 0.84;
+    return 1;
+  }
   function perfBudget() {
     const list = IS_MOBILE_RUNTIME ? PERF_BUDGETS.mobile : PERF_BUDGETS.desktop;
-    return list[clamp(perfLevel | 0, 0, list.length - 1)] || list[list.length - 1];
+    const base = list[clamp(perfLevel | 0, 0, list.length - 1)] || list[list.length - 1];
+    if (!IS_MOBILE_RUNTIME) return base;
+    const mul = targetFpsVisualBudgetMul();
+    if (mul >= 0.99) return base;
+    return {
+      ...base,
+      particleCap: Math.max(18, Math.floor(base.particleCap * mul)),
+      spriteFxCap: Math.max(4, Math.floor(base.spriteFxCap * mul)),
+      ringCap: Math.max(2, Math.floor(base.ringCap * mul)),
+      themeFxCap: Math.max(8, Math.floor(base.themeFxCap * mul)),
+      hazardCap: Math.max(3, Math.floor(base.hazardCap * Math.max(mul, 0.82))),
+      killBurstMul: base.killBurstMul * Math.max(mul, 0.72),
+    };
   }
   function trimArrayTo(arr, cap) {
     cap = Math.max(0, cap | 0);
@@ -33153,6 +33307,12 @@
       if (e.code === 'Escape') hideLeaderboardNameDialog();
       return;
     }
+    if (restartConfirmDialogOpen) {
+      if (e.code === 'Escape') hideRestartConfirmDialog();
+      if (e.code === 'Enter') confirmRestartGame();
+      e.preventDefault();
+      return;
+    }
     if (hellModeDialogOpen) {
       if (e.code === 'Escape') confirmHellModeStart(false);
       if (e.code === 'Enter') confirmHellModeStart(true);
@@ -33292,6 +33452,20 @@
     if (IS_MOBILE_RUNTIME && !document.webkitFullscreenElement && mobileFullscreenMode && !FORCE_MOBILE_FULLSCREEN) {
       setMobileFullscreenMode(false, true);
     }
+  });
+  window.addEventListener('resize', () => {
+    updateAppViewportSize();
+    if (mobileFullscreenMode) applyMobileFullscreenClass();
+  });
+  window.visualViewport && window.visualViewport.addEventListener('resize', () => {
+    updateAppViewportSize();
+    if (mobileFullscreenMode) applyMobileFullscreenClass();
+  });
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      updateAppViewportSize();
+      if (mobileFullscreenMode) applyMobileFullscreenClass();
+    }, 80);
   });
   window.addEventListener('blur', () => {
     keys.Space = false;
@@ -33911,7 +34085,7 @@
         ...LEADERBOARD_UI_SPEC,
         guestbook: GUESTBOOK_UI_SPEC,
         buttons: ['titleOpen', 'titleProfile', 'titleUpdateNotice', 'resultOpen', 'resultRetry', 'resultProfile', 'leaderboardPrev', 'leaderboardNext', 'guestbookCompose'],
-        panels: ['nameAvatarDialog', 'top50LeaderboardPanel', 'guestbookSidePanel', 'guestbookMessageDialog', 'updateNoticeDialog', 'resultUploadStatus'],
+        panels: ['nameAvatarDialog', 'top50LeaderboardPanel', 'guestbookSidePanel', 'guestbookMessageDialog', 'updateNoticeDialog', 'resultUploadStatus', 'restartConfirmDialog'],
         updateNotice: { version: UPDATE_NOTICE_VERSION, dates: UPDATE_NOTICE_ENTRIES.map(section => section.date) },
       }),
       hellModeSpec: () => ({
@@ -33978,7 +34152,10 @@
         usesRunToken: true,
         directInsertFromClient: false,
         directDeleteFromClient: false,
-        acceptedStatuses: ['accepted', 'quarantined', 'rejected'],
+        acceptedStatuses: ['accepted', 'rejected'],
+        quarantineDisabled: true,
+        acceptsAnyNonNegativeScore: true,
+        legacyQuarantineDirectFallback: true,
         hellModeDisablesKeyG: true,
       }),
       avatarForRowForTest: (row, currentName = 'WANG HAN') => {
@@ -34093,8 +34270,8 @@
         sensitivity: TOUCH_RELATIVE_MOVE.sensitivity,
         noSnapOnMobilePointerDown: true,
         mobileHudControls: ['fullscreen', 'pauseGame', 'restartGame', 'targetFps', 'Space', 'X'],
-        mobileFullscreen: { enabled: true, cssFallback: true, storageKey: MOBILE_FULLSCREEN_STORAGE_KEY },
-        targetFps: { enabled: true, options: [...TARGET_FPS_OPTIONS], current: targetFps, max: 60, storageKey: TARGET_FPS_STORAGE_KEY, fullscreenShowsHud: true },
+        mobileFullscreen: { enabled: true, cssFallback: true, iosCssFallbackOnly: IOS_FULLSCREEN_API_UNRELIABLE, visualViewportSizing: true, storageKey: MOBILE_FULLSCREEN_STORAGE_KEY },
+        targetFps: { enabled: true, options: [...TARGET_FPS_OPTIONS], current: targetFps, max: 60, storageKey: TARGET_FPS_STORAGE_KEY, fullscreenShowsHud: true, qualityFloor: targetFpsPerfFloor(), visualBudgetMul: targetFpsVisualBudgetMul() },
         desktopPointerMode: DESKTOP_MOUSE_PILOT.mode,
         desktopNoLeftClickSnap: DESKTOP_MOUSE_PILOT.noLeftClickSnap,
         desktopRightClickMousePilot: true,
@@ -34115,7 +34292,7 @@
         current: { qualityPreset, qualityAutoSelected, perfLevel, probePerfLevel: qualityProbePerfLevel, targetFps },
         desktop: PERF_BUDGETS.desktop.map(b => ({ ...b })),
         mobile: PERF_BUDGETS.mobile.map(b => ({ ...b })),
-        targetFps: { options: [...TARGET_FPS_OPTIONS], defaultMobile: 45, max: 60, adaptsPerfLevel: true },
+        targetFps: { options: [...TARGET_FPS_OPTIONS], defaultMobile: 45, max: 60, adaptsPerfLevel: true, fpsToPerfFloor: { 30: 0, 45: 1, 60: 2 }, visualBudgetMulAt60: 0.68 },
       }),
       runtimePerformanceSpec: () => ({
         mode: 'stress-cached-runtime-budget-trim',
@@ -34124,8 +34301,15 @@
         trims: ['enemyBullets', 'particles', 'spriteFx', 'procRings', 'suiyiFx', 'miguaFx', 'suiyiHazards', 'miguaHazards', 'damageTexts'],
         preserves: ['playerUpdate', 'hitbox', 'hostileBulletBoundary', 'coreProjectileBodies'],
         themeCapsFromBudget: true,
-        targetFps: { current: targetFps, frameBudgetMs: Number(targetFrameMs().toFixed(2)), max: 60 },
+        targetFps: { current: targetFps, frameBudgetMs: Number(targetFrameMs().toFixed(2)), max: 60, qualityFloor: targetFpsPerfFloor(), visualBudgetMul: targetFpsVisualBudgetMul() },
         visualStackBudget: skillVisualBudget(),
+      }),
+      restartConfirmSpec: () => ({
+        enabled: true,
+        appliesTo: ['desktopKeyR', 'mobileRestartButton'],
+        bypassStates: ['title', 'win', 'lose'],
+        dialog: 'restartConfirmDialog',
+        confirmKeepsHellMode: true,
       }),
       visualStackSpec: () => ({
         mode: 'stacked-skill-flash-and-shake-budget',
@@ -34875,6 +35059,8 @@
 
   window.__mobileRuntimeInfo__ = {
     isMobile: IS_MOBILE_RUNTIME,
+    iosRuntime: IS_IOS_RUNTIME,
+    iosFullscreenApiUnreliable: IOS_FULLSCREEN_API_UNRELIABLE,
     narrowViewport: IS_VERY_NARROW,
     coarsePointer: HAS_COARSE_POINTER,
     touchPoints: TOUCH_POINTS,
@@ -34887,6 +35073,7 @@
     targetFpsOptions: [...TARGET_FPS_OPTIONS],
     get targetFps() { return targetFps; },
     get fullscreenMode() { return mobileFullscreenMode; },
+    get targetFpsQualityFloor() { return targetFpsPerfFloor(); },
     get perfHudEnabled() { return perfHudEnabled; },
     controls: ['fullscreen', 'pauseGame', 'restartGame', 'targetFps', 'Space', 'X'],
   };

@@ -10,7 +10,7 @@
 // 两个端点：
 //   POST /functions/v1/leaderboard-run/start   开局领令牌 → { run_id, run_token, expires_at }
 //   POST /functions/v1/leaderboard-run/submit  交分校验   → { ok, status, reasons? }
-//        status = accepted | quarantined | rejected
+//        status = accepted | rejected
 // ============================================================
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -80,7 +80,6 @@ Deno.serve(async (req) => {
 
     // ---------------- /submit ----------------
     if (action === "submit") {
-      const [ip_hash, ua_hash] = await clientHashes(req);
       const p = await req.json();
 
       // 1) 核验运行令牌（存在 / 未过期 / 未用过）
@@ -123,25 +122,13 @@ Deno.serve(async (req) => {
 
       if (reject.length) return json({ ok: false, status: "rejected", reasons: reject }, 400);
 
-      // 4) 隔离阈值（疑似作弊 → 进隔离表，不进正式榜）
-      const q: string[] = [];
-      // 新赛季取消旧的总分 / 分数速度限制，避免 500 万以上正常成绩被误拦。
-      if (elapsed > 0 && kills / elapsed > 20) q.push("kills/sec > 20");
-      if (bosses > Math.floor(elapsed / 80) + 1) q.push("bosses too high for elapsed");
-      if (loops > bosses + 1) q.push("loop_count > bosses_cleared + 1");
-
       const payload = {
         player_name: name, character, score,
         kill_count: kills, loop_count: loops, elapsed,
         bosses_cleared: bosses, avatar_data: p.avatar_data ?? null,
       };
 
-      if (q.length) {
-        await admin.from("leaderboard_quarantine").insert({ payload, reasons: q, ip_hash, ua_hash });
-        return json({ ok: true, status: "quarantined", reasons: q });
-      }
-
-      // 5) 入榜：同昵称只保留最高分
+      // 4) 入榜：同昵称只保留最高分。分数不再走待审核隔离，合法字段一律正常入榜。
       const { data: best } = await admin
         .from("leaderboard")
         .select("id, score")

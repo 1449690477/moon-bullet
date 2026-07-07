@@ -18,6 +18,9 @@ if (leaderboardEdge.includes('score > 5000000') || leaderboardEdge.includes('5_0
 if (!leaderboardEdge.includes('"skyward"')) {
   fail('Leaderboard Edge Function must allow skyward character uploads');
 }
+if (leaderboardEdge.includes('quarantined') || leaderboardEdge.includes('leaderboard_quarantine')) {
+  fail('Leaderboard Edge Function must not quarantine valid score submissions');
+}
 if (!leaderboardFixSql.includes('不再按总分上限拦截') || !leaderboardFixSql.includes("'skyward'")) {
   fail('Leaderboard score-cap SQL repair script missing skyward/no-total-cap guard');
 }

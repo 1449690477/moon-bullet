@@ -111,8 +111,10 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.desktopNoLeftClickSnap).toBe(true);
     expect(spec.desktopRightClickMousePilot).toBe(true);
     expect(spec.mobileHudControls).toEqual(expect.arrayContaining(['fullscreen', 'pauseGame', 'restartGame', 'targetFps']));
-    expect(spec.mobileFullscreen).toMatchObject({ enabled: true, cssFallback: true });
+    expect(spec.mobileFullscreen).toMatchObject({ enabled: true, cssFallback: true, visualViewportSizing: true });
     expect(spec.targetFps).toMatchObject({ enabled: true, options: [30, 45, 60], max: 60, fullscreenShowsHud: true });
+    expect(spec.targetFps.qualityFloor).toBeGreaterThanOrEqual(0);
+    expect(spec.targetFps.visualBudgetMul).toBeGreaterThan(0);
     expect(spec.desktopMousePilotReleaseOn).toEqual(expect.arrayContaining(['pause', 'death', 'title']));
     expect(spec.simulateRelativeMoveForTest({ x: 360, y: 900 }, [
       { dx: 40, dy: -80 },
@@ -128,6 +130,16 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(spec.desktop[0].enemyCap).toBeGreaterThan(spec.desktop[2].enemyCap);
     expect(spec.mobile[2].particleCap).toBeLessThan(spec.mobile[0].particleCap);
     expect(spec.targetFps).toMatchObject({ options: [30, 45, 60], defaultMobile: 45, max: 60, adaptsPerfLevel: true });
+    expect(spec.targetFps.fpsToPerfFloor).toEqual({ 30: 0, 45: 1, 60: 2 });
+    expect(spec.targetFps.visualBudgetMulAt60).toBeLessThan(1);
+  });
+
+  it('asks for confirmation before restarting from desktop R or mobile restart', () => {
+    const spec = balance.restartConfirmSpec();
+    expect(spec.enabled).toBe(true);
+    expect(spec.appliesTo).toEqual(expect.arrayContaining(['desktopKeyR', 'mobileRestartButton']));
+    expect(spec.bypassStates).toEqual(expect.arrayContaining(['title', 'win', 'lose']));
+    expect(spec.confirmKeepsHellMode).toBe(true);
   });
 
   it('caps full-screen flash and screen shake when several companion skills stack', () => {
