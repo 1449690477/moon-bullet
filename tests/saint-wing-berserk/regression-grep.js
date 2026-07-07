@@ -32,7 +32,7 @@ for (const key of ['skillDragonBreathDevice', 'skillDragonBreathCircle', 'skillD
 for (const symbol of ['const DRAGON_BREATH = Object.freeze', 'function castDragonBreath()', "kind === 'dragon_breath'", 'window.__dragonBreathInternals__', 'window.__dragonBreathCapture__']) {
   if (!html.includes(symbol)) fail(`${symbol} Dragon Breath runtime hook missing`);
 }
-for (const symbol of ['headRowW: 500', 'projectileSpeed: 1050', 'baseMul: 3.2', 'bossBaseMul: 8.0', 'directionalHeads: true', 'function drawDragonBreathHorizontalHeadRow', 'function dragonBreathTrailFx', 'function drawDragonBreathBossLockBeam', 'skillDragonBreathProjectileFlow']) {
+for (const symbol of ['headRowW: 500', 'projectileSpeed: 1050', 'baseMul: 3.6', 'bossBaseMul: 10.0', 'directionalHeads: true', 'function drawDragonBreathHorizontalHeadRow', 'function dragonBreathTrailFx', 'function drawDragonBreathBossLockBeam', 'skillDragonBreathProjectileFlow']) {
   if (!html.includes(symbol)) fail(`${symbol} Dragon Breath horizontal projectile VFX marker missing`);
 }
 if (!html.includes("if (e.code === 'KeyY'") || !html.includes("if (key === 'Y') { castDragonBreath(); return true; }")) {
