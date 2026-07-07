@@ -3,9 +3,9 @@
     "key": "device",
     "source": "发射装置主体.png",
     "file": "assets/common/dragon_breath/device.png",
-    "w": 640,
-    "h": 610,
-    "green_residue_pixels": 0
+    "w": 575,
+    "h": 640,
+    "green_residue_pixels": 1
   },
   "circle": {
     "key": "circle",
@@ -55,11 +55,65 @@
     "h": 539,
     "green_residue_pixels": 0
   },
+  "device_light_fx": {
+    "key": "device_light_fx",
+    "source": "发射装置光效参考贴图.png",
+    "file": "assets/common/dragon_breath/device_light_fx.png",
+    "w": 980,
+    "h": 730,
+    "green_residue_pixels": 36
+  },
+  "device_detail_sheet": {
+    "key": "device_detail_sheet",
+    "source": "发射装置细节拆分贴图.png",
+    "file": "assets/common/dragon_breath/device_detail_sheet.png",
+    "w": 980,
+    "h": 715,
+    "green_residue_pixels": 0
+  },
+  "projectile_angles": {
+    "key": "projectile_angles",
+    "source": "不同角度的龙头弹贴图.png",
+    "file": "assets/common/dragon_breath/projectile_angles.png",
+    "w": 843,
+    "h": 980,
+    "green_residue_pixels": 1
+  },
+  "projectile_flow": {
+    "key": "projectile_flow",
+    "source": "拖尾 尾部特效 流光 线条.png",
+    "file": "assets/common/dragon_breath/projectile_flow.png",
+    "w": 980,
+    "h": 944,
+    "green_residue_pixels": 7
+  },
+  "impact_atlas": {
+    "key": "impact_atlas",
+    "source": "击中 爆炸 范围伤害特效.png",
+    "file": "assets/common/dragon_breath/impact_atlas.png",
+    "w": 980,
+    "h": 933,
+    "green_residue_pixels": 3
+  },
+  "array_fx": {
+    "key": "array_fx",
+    "source": "法阵贴图 有绿色残留 需要二次元处理 光效优化再用.png",
+    "file": "assets/common/dragon_breath/array_fx.png",
+    "w": 980,
+    "h": 438,
+    "green_residue_pixels": 28
+  },
+  "device_glow_mask": {
+    "file": "assets/common/dragon_breath/device_glow_mask.png",
+    "w": 575,
+    "h": 640,
+    "green_residue_pixels": 267318
+  },
   "icon": {
     "file": "assets/common/dragon_breath/icon.png",
     "w": 512,
     "h": 512,
-    "green_residue_pixels": 5
+    "green_residue_pixels": 1
   },
   "source_folder": "moon-bullet-main/龙息弹开发",
   "pipeline": "trim-despill-erode-alpha-feather-resize"

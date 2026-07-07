@@ -32,6 +32,12 @@ FILES = {
     "projectile_trail": ("龙头弹拖尾光效.png", "projectile_trail.png", 980),
     "hit_blast": ("命中特效 爆炸光电贴图.png", "hit_blast.png", 720),
     "particles": ("特效粒子贴图.png", "particles.png", 720),
+    "device_light_fx": ("发射装置光效参考贴图.png", "device_light_fx.png", 980),
+    "device_detail_sheet": ("发射装置细节拆分贴图.png", "device_detail_sheet.png", 980),
+    "projectile_angles": ("不同角度的龙头弹贴图.png", "projectile_angles.png", 980),
+    "projectile_flow": ("拖尾 尾部特效 流光 线条.png", "projectile_flow.png", 980),
+    "impact_atlas": ("击中 爆炸 范围伤害特效.png", "impact_atlas.png", 980),
+    "array_fx": ("法阵贴图 有绿色残留 需要二次元处理 光效优化再用.png", "array_fx.png", 980),
 }
 
 
@@ -130,6 +136,25 @@ def make_icon(manifest: dict) -> dict:
     return {"file": str(path.relative_to(ROOT)), "w": 512, "h": 512, "green_residue_pixels": count_green_residue(out)}
 
 
+def make_device_glow_mask(manifest: dict) -> dict:
+    device = Image.open(ROOT / manifest["device"]["file"]).convert("RGBA")
+    alpha = device.getchannel("A")
+    soft = alpha.filter(ImageFilter.MaxFilter(7)).filter(ImageFilter.GaussianBlur(14))
+    hard = alpha.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.GaussianBlur(2.2))
+    glow = Image.new("RGBA", device.size, (0, 0, 0, 0))
+    glow_arr = np.asarray(glow).astype(np.float32)
+    soft_arr = np.asarray(soft).astype(np.float32)
+    hard_arr = np.asarray(hard).astype(np.float32)
+    glow_arr[..., 0] = 76
+    glow_arr[..., 1] = 255
+    glow_arr[..., 2] = 214
+    glow_arr[..., 3] = np.clip(soft_arr * 0.62 + hard_arr * 0.38, 0, 218)
+    out = Image.fromarray(np.clip(glow_arr, 0, 255).astype(np.uint8), "RGBA")
+    path = OUT / "device_glow_mask.png"
+    out.save(path)
+    return {"file": str(path.relative_to(ROOT)), "w": out.width, "h": out.height, "green_residue_pixels": count_green_residue(out)}
+
+
 def make_contact_sheet(manifest: dict) -> None:
     PREVIEW.mkdir(parents=True, exist_ok=True)
     rows = []
@@ -159,8 +184,12 @@ def main() -> None:
     manifest: dict[str, dict] = {}
     for key, (src_name, out_name, max_dim) in FILES.items():
         manifest[key] = save_processed(key, src_name, out_name, max_dim)
+    manifest["device_glow_mask"] = make_device_glow_mask(manifest)
     manifest["icon"] = make_icon(manifest)
-    manifest["source_folder"] = str(SRC.relative_to(ROOT))
+    try:
+        manifest["source_folder"] = str(SRC.relative_to(ROOT))
+    except ValueError:
+        manifest["source_folder"] = str(SRC)
     manifest["pipeline"] = "trim-despill-erode-alpha-feather-resize"
     (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     make_contact_sheet(manifest)

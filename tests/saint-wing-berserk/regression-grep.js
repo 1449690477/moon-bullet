@@ -26,7 +26,7 @@ if (leaderboardEdge.includes('quarantined') || leaderboardEdge.includes('leaderb
 if (!leaderboardFixSql.includes('不再按总分上限拦截') || !leaderboardFixSql.includes("'skyward'")) {
   fail('Leaderboard score-cap SQL repair script missing skyward/no-total-cap guard');
 }
-for (const key of ['skillDragonBreathDevice', 'skillDragonBreathCircle', 'skillDragonBreathProjectileMain', 'skillDragonBreathProjectileAlt', 'skillDragonBreathTrail', 'skillDragonBreathHitBlast', 'skillDragonBreathParticles', 'uiSkillDragonBreathIcon']) {
+for (const key of ['skillDragonBreathDevice', 'skillDragonBreathCircle', 'skillDragonBreathProjectileMain', 'skillDragonBreathProjectileAlt', 'skillDragonBreathTrail', 'skillDragonBreathHitBlast', 'skillDragonBreathParticles', 'skillDragonBreathDeviceGlowMask', 'skillDragonBreathDeviceLightFx', 'skillDragonBreathProjectileAngles', 'skillDragonBreathProjectileFlow', 'skillDragonBreathImpactAtlas', 'skillDragonBreathArrayFx', 'uiSkillDragonBreathIcon']) {
   if (!html.includes(key)) fail(`${key} Dragon Breath asset key missing`);
 }
 for (const symbol of ['const DRAGON_BREATH = Object.freeze', 'function castDragonBreath()', "kind === 'dragon_breath'", 'window.__dragonBreathInternals__', 'window.__dragonBreathCapture__']) {
@@ -38,10 +38,10 @@ if (!html.includes("if (e.code === 'KeyY'") || !html.includes("if (key === 'Y') 
 if (!packageJson.includes('"capture:dragon"')) {
   fail('package.json missing capture:dragon script');
 }
-if (!dragonBreathProcessor.includes('despill_green') || !dragonBreathProcessor.includes('dragon_breath_contact.png')) {
+if (!dragonBreathProcessor.includes('despill_green') || !dragonBreathProcessor.includes('device_glow_mask') || !dragonBreathProcessor.includes('dragon_breath_contact.png')) {
   fail('Dragon Breath processor must despill source art and emit a visual contact sheet');
 }
-if (!dragonBreathCapture.includes('__dragonBreathCapture__') || !dragonBreathCapture.includes('04_mobile_y_skill_button.png')) {
+if (!dragonBreathCapture.includes('__dragonBreathCapture__') || !dragonBreathCapture.includes('01_deploy_appear.png') || !dragonBreathCapture.includes('07_mobile_y_button.png')) {
   fail('Dragon Breath capture script must exercise runtime and mobile Y HUD');
 }
 const start = html.indexOf('function drawSaintWing()');

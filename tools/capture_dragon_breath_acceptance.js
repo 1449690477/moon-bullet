@@ -10,9 +10,12 @@ const OUT_DIR = path.join(ROOT, 'tools', 'dragon_breath_acceptance');
 const PORT = Number(process.env.DRAGON_CAPTURE_PORT || 18807);
 
 const DESKTOP_SCENES = [
-  ['deploy', '01_y_dragon_breath_deploy.png', 18],
-  ['volley', '02_y_dragon_breath_projectile.png', 70],
-  ['boss_hit', '03_y_dragon_breath_boss_hit.png', 62],
+  ['deploy', '01_deploy_appear.png', 6],
+  ['deploy', '02_deploy_inject.png', 22],
+  ['deploy', '03_deploy_array_open.png', 36],
+  ['deploy', '04_deploy_charged.png', 38],
+  ['volley', '05_projectile_angle.png', 70],
+  ['boss_hit', '06_boss_impact.png', 66],
 ];
 
 function browserExecutablePath() {
@@ -122,7 +125,7 @@ async function main() {
     await page.setViewport({ width: 720, height: 1280, deviceScaleFactor: 1 });
     await page.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'networkidle0', timeout: 30000 });
     await page.waitForFunction(() => !!window.__dragonBreathCapture__, { timeout: 15000 });
-    await page.waitForFunction(() => window.__dragonBreathCapture__.readyKeys().length >= 8, { timeout: 15000 });
+    await page.waitForFunction(() => window.__dragonBreathCapture__.readyKeys().length >= 14, { timeout: 15000 });
     for (const [scene, fileName, frames] of DESKTOP_SCENES) await captureScene(page, scene, fileName, frames);
 
     const mobile = await browser.newPage();
@@ -131,7 +134,7 @@ async function main() {
     await mobile.setViewport({ width: 430, height: 860, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
     await mobile.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'networkidle0', timeout: 30000 });
     await mobile.waitForFunction(() => !!window.__dragonBreathCapture__, { timeout: 15000 });
-    await captureScene(mobile, 'mobile_hud', '04_mobile_y_skill_button.png', 20);
+    await captureScene(mobile, 'mobile_hud', '07_mobile_y_button.png', 20);
 
     if (errors.length) throw new Error(`Page errors during dragon capture:\n${errors.slice(0, 8).join('\n')}`);
   } finally {

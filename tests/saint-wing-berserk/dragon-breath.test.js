@@ -35,6 +35,12 @@ describe('dragon breath common skill', () => {
       'skillDragonBreathTrail',
       'skillDragonBreathHitBlast',
       'skillDragonBreathParticles',
+      'skillDragonBreathDeviceGlowMask',
+      'skillDragonBreathDeviceLightFx',
+      'skillDragonBreathProjectileAngles',
+      'skillDragonBreathProjectileFlow',
+      'skillDragonBreathImpactAtlas',
+      'skillDragonBreathArrayFx',
       'uiSkillDragonBreathIcon',
     ]));
   });
@@ -67,5 +73,18 @@ describe('dragon breath common skill', () => {
       name: '龙息弹',
     });
     expect(hud.mobileHudControls).toContain('Y');
+  });
+
+  it('exposes the rebuilt VFX timeline and fixed-device debug state', () => {
+    const cfg = dragon.configSpec();
+    expect(cfg.chargeLead).toBeCloseTo(0.18);
+    expect(cfg.visual.deviceSize).toBe(248);
+    expect(cfg.visual.deviceGlowSize).toBe(310);
+    const visual = dragon.visualStateSpec();
+    expect(visual).toMatchObject({
+      deployPhase: expect.any(String),
+      bodyRotation: 0,
+    });
+    expect(Array.isArray(visual.projectileAngleFrames)).toBe(true);
   });
 });
