@@ -1206,6 +1206,14 @@
     uiSkillBombIcon: 'assets/ui/ui_skill_bomb_icon.png',
     uiSaintSkillIcon: 'assets/ui/ui_saint_skill_icon.png',
     uiNightCoffinSkillIcon: 'assets/ui/ui_night_coffin_skill_icon.png',
+    skillDragonBreathDevice: 'assets/common/dragon_breath/device.png',
+    skillDragonBreathCircle: 'assets/common/dragon_breath/circle.png',
+    skillDragonBreathProjectileMain: 'assets/common/dragon_breath/projectile_main.png',
+    skillDragonBreathProjectileAlt: 'assets/common/dragon_breath/projectile_alt.png',
+    skillDragonBreathTrail: 'assets/common/dragon_breath/projectile_trail.png',
+    skillDragonBreathHitBlast: 'assets/common/dragon_breath/hit_blast.png',
+    skillDragonBreathParticles: 'assets/common/dragon_breath/particles.png',
+    uiSkillDragonBreathIcon: 'assets/common/dragon_breath/icon.png',
     uiDivider: 'assets/ui/ui_divider.png',
     uiCircleFrame: 'assets/ui/ui_circle_frame.png',
     uiFocusRing: 'assets/ui/ui_focus_ring.png',
@@ -1575,11 +1583,21 @@
   function prefetchBossAssets(kind) {
     loadAssetGroup(bossAssetKeys(kind));
   }
+  const DRAGON_BREATH_ASSET_KEYS = [
+    'skillDragonBreathDevice',
+    'skillDragonBreathCircle',
+    'skillDragonBreathProjectileMain',
+    'skillDragonBreathProjectileAlt',
+    'skillDragonBreathTrail',
+    'skillDragonBreathHitBlast',
+    'skillDragonBreathParticles',
+    'uiSkillDragonBreathIcon',
+  ];
   const CORE_ASSET_KEYS = [
     'bgStageBase', 'bgStage1', 'bgStageDepth',
     'uiEmblemLoop', 'uiMoonSilver', 'uiBannerOrnate',
     'uiTimerPanel', 'uiSidePartyCard', 'uiCircleFrame',
-    'uiSkillBeamIcon', 'uiSkillBombIcon', 'uiSaintSkillIcon', 'uiNightCoffinSkillIcon',
+    'uiSkillBeamIcon', 'uiSkillBombIcon', 'uiSaintSkillIcon', 'uiNightCoffinSkillIcon', 'uiSkillDragonBreathIcon',
     'playerAvatar', 'yanuxiyaBAvatar', 'annaAvatar', 'reaverAvatar', 'motherlifeAvatar', 'skywardAvatar', 'skywardIcon', 'skywardBodyOverdriveSmall',
     'playerCutin', 'yanuxiyaBCutin', 'annaCutin', 'reaverCutin', 'motherlifeCutin', 'skywardCutin',
   ];
@@ -1589,7 +1607,7 @@
     'bulletAuroraA', 'bulletAuroraB', 'bulletAuroraC',
     'seraphPhase1', 'seraphPhase2', 'seraphRage',
     'voidlordIdle', 'abysswalkerIdle', 'voidtitanIdle', 'ancientoneIdle', 'darkqueenIdle',
-	  ].concat(SUIYI_ASSET_KEYS, SUIYI_TECH_ASSET_KEYS);
+	  ].concat(SUIYI_ASSET_KEYS, SUIYI_TECH_ASSET_KEYS, DRAGON_BREATH_ASSET_KEYS);
   const CHARACTER_ASSET_GROUPS = {
     witch: ['playerIdle', 'playerMoveLeft', 'playerMoveRight', 'playerFocus', 'playerHit', 'playerAvatar', 'playerCutin', 'vfxUltimate'],
     yanuxiya: ['yanuxiyaBIdle', 'yanuxiyaBMoveLeft', 'yanuxiyaBMoveRight', 'yanuxiyaBFocus', 'yanuxiyaBHit', 'yanuxiyaBAvatar', 'yanuxiyaBCutin', 'yMoon', 'yMoonGlow', 'yCloud', 'yLightning', 'yRing', 'yRadial'],
@@ -1872,12 +1890,13 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-07-ios-fullscreen-restart-score-v9';
+  const UPDATE_NOTICE_VERSION = '2026-07-07-dragon-breath-common-skill-v1';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-07',
       items: [
+        '新增通用技能「龙息弹」：所有角色按 Y 部署青玉龙息发射装置，8 秒内自动锁定当前血量最高敌人发射 8 发五龙头宽体贯穿弹，专门压制 Boss 和高血量目标。',
         'iPhone/Chrome 全屏修复：识别 iOS 不支持普通元素真全屏后，改为可靠的沉浸式伪全屏，并按 visualViewport 重新计算画面尺寸，避免按钮被浏览器栏挡住。',
         '目标帧率修复：30 / 45 / 60 FPS 会直接联动画质预算，目标越高越主动压低移动端特效负担。',
         'PC 和手机端重开都新增确认窗口，防止误触 R 或重开按钮把当前战斗清掉。',
@@ -6490,6 +6509,7 @@
 
   const rand = (a, b) => a + Math.random() * (b - a);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const smoothstep = (v) => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
   const lerp = (a, b, t) => a + (b - a) * t;
   const easeOutCubic = (t) => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
   const dist2 = (ax, ay, bx, by) => { const x = ax - bx, y = ay - by; return x * x + y * y; };
@@ -16473,6 +16493,7 @@
     player.pluginGlow = 0;
     player.berserk = 0;
     resetSkywardState();
+    resetDragonBreathState();
     playerShots.length = 0;
     giantBirds.length = 0;
     enemyBullets.length = 0;
@@ -16620,9 +16641,341 @@
   // 手感优化 V3：hitStop 不再冻结世界，只作为极短视觉脉冲计时，避免玩家在弹幕中被“黏住”。
   function triggerHitStop(t) { hitStop = Math.max(hitStop, Math.min(t, FEEL_V3_TUNING.hitStopMax)); }
 
+  const DRAGON_BREATH = Object.freeze({
+    name: '龙息弹',
+    input: 'Y',
+    duration: 8.0,
+    cooldown: 18.0,
+    firstShot: 0.8,
+    shotInterval: 1.0,
+    shotCount: 8,
+    projectileSpeed: 1800,
+    projectileLife: 1.4,
+    attackBase: 100,
+    attackPerPower: 32,
+    baseMul: 1.8,
+    hpPercent: 0.008,
+    bossPercentCapMul: 12,
+    deployTime: 0.7,
+    collapseTime: 0.5,
+    hitAhead: 285,
+    hitBehind: 230,
+    hitWidth: 46,
+    visual: {
+      deviceSize: 184,
+      circleW: 232,
+      circleH: 174,
+      projectileW: 162,
+      projectileH: 572,
+      trailW: 138,
+      trailH: 438,
+      hitSize: 190,
+    },
+    noEnergyCost: true,
+  });
+  const dragonBreath = {
+    cd: 0,
+    devices: [],
+    hitFx: [],
+    lockFx: [],
+    castCount: 0,
+    lastTargetKind: '',
+    lastFiredAt: 0,
+  };
+  function dragonBreathReady() { return dragonBreath.cd <= 0 && state !== 'title' && state !== 'win' && state !== 'lose'; }
+  function dragonBreathCooldownRate() { return DRAGON_BREATH.cooldown > 0 ? clamp(dragonBreath.cd / DRAGON_BREATH.cooldown, 0, 1) : 0; }
+  function dragonBreathActive() { return dragonBreath.devices.length > 0; }
+  function resetDragonBreathState() {
+    dragonBreath.cd = 0;
+    dragonBreath.devices.length = 0;
+    dragonBreath.hitFx.length = 0;
+    dragonBreath.lockFx.length = 0;
+    dragonBreath.lastTargetKind = '';
+    dragonBreath.lastFiredAt = 0;
+  }
+  function dragonBreathAttackPower(level = powerLevel()) {
+    return DRAGON_BREATH.attackBase + clamp(level, 1, 5) * DRAGON_BREATH.attackPerPower;
+  }
+  function dragonBreathDamageForHp(currentHp, isBoss = false, level = powerLevel()) {
+    const attack = dragonBreathAttackPower(level);
+    const hp = Math.max(0, currentHp || 0);
+    const percent = isBoss ? Math.min(hp * DRAGON_BREATH.hpPercent, attack * DRAGON_BREATH.bossPercentCapMul) : hp * DRAGON_BREATH.hpPercent;
+    return attack * DRAGON_BREATH.baseMul + percent;
+  }
+  function dragonBreathDamageForTarget(target) {
+    return dragonBreathDamageForHp(target && target.hp, target === boss);
+  }
+  function dragonBreathValidTarget(target) {
+    return !!target && !target.dead && (target.hp || 0) > 0 && (target.r || 0) > 0;
+  }
+  function dragonBreathPickHighestTarget(list) {
+    let best = null;
+    let bestHp = -1;
+    for (const target of list || []) {
+      if (!dragonBreathValidTarget(target)) continue;
+      const hp = Math.max(0, target.hp || 0);
+      if (hp > bestHp) {
+        best = target;
+        bestHp = hp;
+      }
+    }
+    return best;
+  }
+  function dragonBreathHighestHpTarget() {
+    const pool = enemies.slice();
+    if (boss && state === 'boss' && !boss.dead && boss.hp > 0) pool.push(boss);
+    return dragonBreathPickHighestTarget(pool);
+  }
+  function castDragonBreath() {
+    if (!dragonBreathReady()) return false;
+    loadAssetGroup(DRAGON_BREATH_ASSET_KEYS);
+    dragonBreath.cd = DRAGON_BREATH.cooldown;
+    dragonBreath.castCount++;
+    const device = {
+      x: player.x,
+      y: player.y - 12,
+      t: 0,
+      fired: 0,
+      seed: rand(0, TAU),
+      muzzleT: 0,
+      collapse: false,
+    };
+    dragonBreath.devices.push(device);
+    if (dragonBreath.devices.length > 2) dragonBreath.devices.splice(0, dragonBreath.devices.length - 2);
+    playSfx('skillBeam', 0.55, 0.12);
+    setFlash(0.08, '120,255,220');
+    screenShake = Math.max(screenShake, 3.2);
+    addRingFx(device.x, device.y + 28, 20, 160, 0.45, 'rgba(88,245,210,', 3, 0.55);
+    const n = perfLevel >= 2 ? 5 : (perfLevel >= 1 ? 9 : 15);
+    for (let i = 0; i < n; i++) {
+      const a = rand(0, TAU), sp = rand(70, 230);
+      addParticle(device.x + Math.cos(a) * rand(18, 58), device.y + Math.sin(a) * rand(8, 34), Math.cos(a) * sp, Math.sin(a) * sp - 40, rand(0.22, 0.48), rand(1.6, 3.8), i % 3 ? '#78f8e8' : '#d8f8ff', true);
+    }
+    setMessage('通用技能 · 龙息弹', 1.25);
+    return true;
+  }
+  function fireDragonBreathFromDevice(device) {
+    const target = dragonBreathHighestHpTarget();
+    let tx = device.x, ty = -120;
+    if (target) { tx = target.x; ty = target.y; }
+    const a = angleTo(device.x, device.y - 40, tx, ty);
+    const sp = DRAGON_BREATH.projectileSpeed;
+    const shot = addPlayerShot(device.x + Math.cos(a) * 46, device.y - 40 + Math.sin(a) * 46, Math.cos(a) * sp, Math.sin(a) * sp, dragonBreathDamageForTarget(target || { hp: 0 }), 34, 'dragon_breath');
+    shot.life = DRAGON_BREATH.projectileLife;
+    shot.rot = a + Math.PI / 2;
+    shot.hitIds = [];
+    shot.hitBoss = false;
+    shot.spawnT = time;
+    shot.targetHpAtFire = target ? target.hp : 0;
+    shot.dragonSeed = rand(0, TAU);
+    device.muzzleT = 0.18;
+    dragonBreath.lastTargetKind = target === boss ? 'boss' : (target ? 'enemy' : 'none');
+    dragonBreath.lastFiredAt = time;
+    dragonBreath.lockFx.push({ x1: device.x, y1: device.y - 40, x2: tx, y2: ty, life: 0.18, maxLife: 0.18, target: dragonBreath.lastTargetKind });
+    if (dragonBreath.lockFx.length > 10) dragonBreath.lockFx.splice(0, dragonBreath.lockFx.length - 10);
+    playSfx('skillBeam', 0.34, 0.06);
+    const n = perfLevel >= 2 ? 2 : (perfLevel >= 1 ? 4 : 7);
+    for (let i = 0; i < n; i++) {
+      addParticle(device.x + rand(-20, 20), device.y - 48 + rand(-16, 10), -Math.cos(a) * rand(50, 150) + rand(-40, 40), -Math.sin(a) * rand(50, 150) + rand(-40, 40), rand(0.15, 0.28), rand(1.2, 2.8), i % 2 ? '#78f8e8' : '#c8a858', true);
+    }
+    return shot;
+  }
+  function updateDragonBreath(dt) {
+    dragonBreath.cd = Math.max(0, dragonBreath.cd - dt);
+    for (let i = dragonBreath.devices.length - 1; i >= 0; i--) {
+      const d = dragonBreath.devices[i];
+      d.t += dt;
+      d.muzzleT = Math.max(0, (d.muzzleT || 0) - dt);
+      while (d.fired < DRAGON_BREATH.shotCount && d.t >= DRAGON_BREATH.firstShot + d.fired * DRAGON_BREATH.shotInterval) {
+        fireDragonBreathFromDevice(d);
+        d.fired++;
+      }
+      if (d.t >= DRAGON_BREATH.duration + DRAGON_BREATH.collapseTime) dragonBreath.devices.splice(i, 1);
+    }
+    for (let i = dragonBreath.hitFx.length - 1; i >= 0; i--) {
+      const fx = dragonBreath.hitFx[i];
+      fx.life -= dt;
+      if (fx.life <= 0) dragonBreath.hitFx.splice(i, 1);
+    }
+    for (let i = dragonBreath.lockFx.length - 1; i >= 0; i--) {
+      const fx = dragonBreath.lockFx[i];
+      fx.life -= dt;
+      if (fx.life <= 0) dragonBreath.lockFx.splice(i, 1);
+    }
+  }
+  function dragonBreathShotHitsTarget(s, target) {
+    if (!s || !target) return false;
+    const sp = Math.hypot(s.vx, s.vy) || 1;
+    const ux = s.vx / sp, uy = s.vy / sp;
+    const x1 = s.x - ux * DRAGON_BREATH.hitBehind;
+    const y1 = s.y - uy * DRAGON_BREATH.hitBehind;
+    const x2 = s.x + ux * DRAGON_BREATH.hitAhead;
+    const y2 = s.y + uy * DRAGON_BREATH.hitAhead;
+    return pointLineDistance(target.x, target.y, x1, y1, x2, y2) <= DRAGON_BREATH.hitWidth + (target.r || 0);
+  }
+  function dragonBreathOnHit(s, target, amount, isBoss = false) {
+    const cap = perfLevel >= 2 ? 8 : 18;
+    if (dragonBreath.hitFx.length >= cap) dragonBreath.hitFx.splice(0, dragonBreath.hitFx.length - cap + 1);
+    dragonBreath.hitFx.push({
+      x: target.x,
+      y: target.y,
+      life: isBoss ? 0.34 : 0.26,
+      maxLife: isBoss ? 0.34 : 0.26,
+      size: (isBoss ? 230 : 150) + Math.min(80, Math.sqrt(Math.max(0, amount || 0)) * 3.5),
+      rot: rand(0, TAU),
+      dir: Math.atan2(s.vy, s.vx),
+      boss: isBoss,
+    });
+    if ((s.dragonHitSfxT || 0) <= time) {
+      s.dragonHitSfxT = time + 0.06;
+      playSfx(isBoss ? 'skillBomb' : 'enemyHit', isBoss ? 0.42 : 0.30, 0.04);
+    }
+    const n = perfLevel >= 2 ? (isBoss ? 2 : 1) : (isBoss ? 8 : 4);
+    for (let i = 0; i < n; i++) {
+      const a = (s ? Math.atan2(s.vy, s.vx) : -Math.PI / 2) + rand(-1.7, 1.7);
+      const sp = rand(80, isBoss ? 330 : 230);
+      addParticle(target.x, target.y, Math.cos(a) * sp, Math.sin(a) * sp, rand(0.20, 0.38), rand(1.3, isBoss ? 4.2 : 3.2), i % 3 ? '#78f8e8' : '#c8a858', true);
+    }
+    if (isBoss) screenShake = Math.max(screenShake, 2.2);
+  }
+  function drawDragonBreathAtlasFrame(key, frame, cols, rows, dx, dy, dw, dh) {
+    if (!assetReady(key)) return false;
+    const img = assets[key];
+    const fw = img.width / cols;
+    const fh = img.height / rows;
+    const idx = ((frame | 0) % (cols * rows) + cols * rows) % (cols * rows);
+    const sx = (idx % cols) * fw;
+    const sy = Math.floor(idx / cols) * fh;
+    ctx.drawImage(img, sx, sy, fw, fh, dx, dy, dw, dh);
+    return true;
+  }
+  function drawDragonBreathDevices() {
+    if (!dragonBreath.devices.length && !dragonBreath.lockFx.length && !dragonBreath.hitFx.length) return;
+    ctx.save();
+    for (const l of dragonBreath.lockFx) {
+      const k = clamp(l.life / l.maxLife, 0, 1);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.55 * k;
+      ctx.strokeStyle = l.target === 'boss' ? 'rgba(248,255,255,0.95)' : 'rgba(120,248,232,0.86)';
+      ctx.lineWidth = l.target === 'boss' ? 3 : 2;
+      if (ctx.setLineDash) ctx.setLineDash([12, 10]);
+      ctx.lineDashOffset = -time * 90;
+      ctx.beginPath();
+      ctx.moveTo(l.x1, l.y1);
+      ctx.lineTo(l.x2, l.y2);
+      ctx.stroke();
+      ctx.restore();
+    }
+    for (const d of dragonBreath.devices) {
+      const deploy = smoothstep(clamp(d.t / DRAGON_BREATH.deployTime, 0, 1));
+      const collapse = d.t > DRAGON_BREATH.duration ? clamp((d.t - DRAGON_BREATH.duration) / DRAGON_BREATH.collapseTime, 0, 1) : 0;
+      const alpha = deploy * (1 - collapse);
+      const pulse = 0.5 + Math.sin(time * 5.2 + d.seed) * 0.5;
+      ctx.save();
+      ctx.translate(d.x, d.y);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * (0.42 + pulse * 0.12);
+      ctx.rotate(time * 0.48 + d.seed);
+      const circleFrame = Math.min(5, Math.floor(deploy * 5 + time * 5) % 6);
+      drawDragonBreathAtlasFrame('skillDragonBreathCircle', circleFrame, 3, 2, -DRAGON_BREATH.visual.circleW / 2, 4, DRAGON_BREATH.visual.circleW, DRAGON_BREATH.visual.circleH);
+      ctx.rotate(-time * 0.9);
+      ctx.globalAlpha = alpha * 0.22;
+      drawDragonBreathAtlasFrame('skillDragonBreathCircle', (circleFrame + 3) % 6, 3, 2, -DRAGON_BREATH.visual.circleW * 0.42, -42, DRAGON_BREATH.visual.circleW * 0.84, DRAGON_BREATH.visual.circleH * 0.84);
+      ctx.globalCompositeOperation = 'source-over';
+      if (assetReady('skillDragonBreathDevice')) {
+        const ds = DRAGON_BREATH.visual.deviceSize * (0.78 + deploy * 0.22 + (d.muzzleT || 0) * 0.26);
+        ctx.globalAlpha = alpha * 0.96;
+        ctx.drawImage(assets.skillDragonBreathDevice, -ds / 2, -ds * 0.50, ds, ds * (assets.skillDragonBreathDevice.height / assets.skillDragonBreathDevice.width));
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = alpha * (0.20 + pulse * 0.10 + (d.muzzleT || 0) * 1.6);
+        ctx.drawImage(assets.skillDragonBreathDevice, -ds * 0.54, -ds * 0.53, ds * 1.08, ds * 1.08 * (assets.skillDragonBreathDevice.height / assets.skillDragonBreathDevice.width));
+      } else {
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = 'rgba(120,248,232,0.82)';
+        ctx.beginPath(); ctx.arc(0, 0, 44, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+    drawDragonBreathHitFx();
+    ctx.restore();
+  }
+  function drawDragonBreathHitFx() {
+    for (const fx of dragonBreath.hitFx) {
+      const p = 1 - clamp(fx.life / fx.maxLife, 0, 1);
+      const env = Math.sin(Math.PI * clamp(1 - p, 0, 1));
+      const size = fx.size * (0.72 + p * 0.48);
+      ctx.save();
+      ctx.translate(fx.x, fx.y);
+      ctx.rotate(fx.rot + p * 0.5);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = (fx.boss ? 0.72 : 0.52) * env;
+      if (assetReady('skillDragonBreathHitBlast')) {
+        ctx.drawImage(assets.skillDragonBreathHitBlast, -size / 2, -size / 2, size, size);
+      } else {
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.5);
+        g.addColorStop(0, 'rgba(248,255,255,0.9)');
+        g.addColorStop(0.45, 'rgba(120,248,232,0.45)');
+        g.addColorStop(1, 'rgba(24,168,136,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, size * 0.5, 0, TAU); ctx.fill();
+      }
+      ctx.globalAlpha = 0.46 * env;
+      drawDragonBreathAtlasFrame('skillDragonBreathParticles', Math.floor(p * 6), 3, 2, -size * 0.34, -size * 0.34, size * 0.68, size * 0.68);
+      ctx.restore();
+    }
+  }
+  function drawDragonBreathProjectile(s) {
+    const age = time - (s.spawnT || time);
+    const fadeIn = clamp(age / 0.12, 0, 1);
+    const fadeOut = clamp((s.life || 0) / 0.22, 0, 1);
+    const alpha = fadeIn * fadeOut;
+    const pulse = 0.5 + Math.sin(time * 13 + (s.dragonSeed || 0)) * 0.5;
+    const w = DRAGON_BREATH.visual.projectileW * (1 + pulse * 0.04);
+    const h = DRAGON_BREATH.visual.projectileH;
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha * 0.52;
+    if (assetReady('skillDragonBreathTrail')) {
+      ctx.drawImage(assets.skillDragonBreathTrail, -DRAGON_BREATH.visual.trailW / 2, h * 0.02, DRAGON_BREATH.visual.trailW, DRAGON_BREATH.visual.trailH);
+    } else {
+      const tail = ctx.createLinearGradient(0, 0, 0, h * 0.62);
+      tail.addColorStop(0, 'rgba(120,248,232,0.48)');
+      tail.addColorStop(1, 'rgba(24,168,136,0)');
+      ctx.fillStyle = tail;
+      ctx.beginPath(); ctx.moveTo(-w * 0.25, 0); ctx.lineTo(w * 0.25, 0); ctx.lineTo(0, h * 0.62); ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = alpha * (0.26 + pulse * 0.12);
+    drawDragonBreathAtlasFrame('skillDragonBreathProjectileAlt', Math.floor(time * 12), 2, 1, -w * 0.58, -h * 0.49, w * 1.16, h * 0.98);
+    if (assetReady('skillDragonBreathProjectileMain')) {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = alpha * 0.96;
+      ctx.drawImage(assets.skillDragonBreathProjectileMain, -w / 2, -h / 2, w, h);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * 0.20;
+      ctx.drawImage(assets.skillDragonBreathProjectileMain, -w * 0.54, -h * 0.52, w * 1.08, h * 1.04);
+    } else {
+      ctx.globalCompositeOperation = 'lighter';
+      const g = ctx.createLinearGradient(0, -h / 2, 0, h / 2);
+      g.addColorStop(0, 'rgba(248,255,255,0.96)');
+      g.addColorStop(0.35, 'rgba(120,248,232,0.88)');
+      g.addColorStop(1, 'rgba(24,168,136,0.18)');
+      ctx.fillStyle = g;
+      roundRect(-w / 2, -h / 2, w, h, w * 0.42);
+      ctx.fill();
+    }
+    ctx.globalAlpha = alpha * 0.72;
+    ctx.strokeStyle = 'rgba(248,255,255,0.86)';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(-w * 0.20, -h * 0.42);
+    ctx.quadraticCurveTo(0, -h * 0.51, w * 0.20, -h * 0.42);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
   function activeMajorSkillVisualCount() {
     let n = 0;
     if (skywardAegisActive()) n++;
+    if (dragonBreathActive()) n++;
     if (scField && scField.active) n++;
     if (thHand && thHand.active) n++;
     if (motherLifeState && motherLifeState.ultimate && motherLifeState.ultimate.active) n++;
@@ -16812,9 +17165,10 @@
     const pierce = kind === 'crescent' ? 1 : (kind === 'scythe' ? 2 : (kind === 'bloodblade' ? 2 : (kind === 'bird' ? 3 : (kind === 'chainheart' ? 1 : (kind === 'feather' ? 3 : (kind === 'homingspear' ? 1 : (kind === 'wmcrescent' ? 5 : (kind === 'nrblade' ? 2 : (kind === 'nrcrescent' ? 6 : (kind === 'nrsword' ? 99 : (kind === 'nrbigblade' ? 99 : (kind === 'nrhalfmoon' ? 99 : (kind === 'nrhomesword' ? 1 : (kind === 'nrlance' ? 2 : (kind === 'nrwmblade' ? 4 : (kind === 'holyspear' ? 1 : (kind === 'holyspeargiant' ? 99 : 0)))))))))))))))));
     const s = { x, y, vx, vy, damage, r, kind, life: 2.6, pierce, homing: kind === 'bird', rot: rand(0, TAU), spin: kind === 'scythe' ? rand(-3, 3) : rand(-6, 6), flap: (Math.random() * 4) | 0 };
 	    if (kind === 'sky_lance' || kind === 'sky_lance_side' || kind === 'sky_module_lance') s.pierce = 1;
-	    if (kind === 'sky_lance_heavy') s.pierce = 3;
+    if (kind === 'sky_lance_heavy') s.pierce = 3;
 	    if (kind === 'sky_lance_giant') s.pierce = 8;
 	    if (kind === 'sky_wing_blade' || kind === 'sky_feather_blade' || kind === 'sky_halo_orb') s.pierce = 1;
+    if (kind === 'dragon_breath') { s.pierce = 9999; s.hitIds = []; s.spin = 0; }
     if (kind === 'mhrpetal' || kind === 'mhrberserkpetal' || kind === 'mhrwave') s.pierce = 1;
     if (kind === 'mhrbutterfly' || kind === 'mhrberserkbutterfly' || kind === 'mhrcounter' || kind === 'mhrfinal') s.homing = true;
     playerShots.push(s);
@@ -18067,6 +18421,7 @@
     }
 
     updatePlayer(dt);
+    updateDragonBreath(dt);
     updatePlayerShots(dt);
     updateGiantBirds(dt);
     updateItems(dt);
@@ -22336,6 +22691,7 @@
 
     if (keys.Space && !skywardActive()) { keys.Space = false; useBeam(); }
     if (keys.KeyX) { keys.KeyX = false; useBomb(); }
+    if (keys.KeyY) { keys.KeyY = false; castDragonBreath(); }
 
     if (playerBeam) {
       playerBeam.life -= dt;
@@ -23092,12 +23448,14 @@
       let removed = false;
       for (let j = enemies.length - 1; j >= 0; j--) {
           const e = enemies[j];
-          if (dist2(s.x, s.y, e.x, e.y) < (s.r + e.r) * (s.r + e.r)) {
+          const isDragonBreathShot = s.kind === 'dragon_breath';
+          if (isDragonBreathShot ? dragonBreathShotHitsTarget(s, e) : dist2(s.x, s.y, e.x, e.y) < (s.r + e.r) * (s.r + e.r)) {
 	            const isBounce = (s.kind === 'chainheart' || s.kind === 'bladesmall');
 	            if (isBounce && s.hitIds && s.hitIds.indexOf(e) >= 0) continue; // 不重复命中同一目标
+	            if (isDragonBreathShot && s.hitIds && s.hitIds.indexOf(e) >= 0) continue;
 	            if (isMotherHiveLaceSpike(s) && s.hitIds && s.hitIds.indexOf(e) >= 0) continue;
 	            if (isSkywardShot(s) && s.hitIds && s.hitIds.indexOf(e) >= 0) continue;
-	            const actualShotDamage = isSkywardShot(s) ? skywardDamageForHit(s) : s.damage;
+	            const actualShotDamage = isDragonBreathShot ? dragonBreathDamageForTarget(e) : (isSkywardShot(s) ? skywardDamageForHit(s) : s.damage);
 	            e.hp -= actualShotDamage * grindDmg();
           e.hitFlash = 0.13;
           // 僚机弹：圣击音效 + 程序化命中爆点（无贴图）
@@ -23187,6 +23545,12 @@
             if (Math.random() < 0.35) addParticle(s.x, s.y, rand(-50, 50), rand(-80, 20), 0.22, rand(2, 5), '#bdefff', true);
           }
 	          score += actualShotDamage;
+          if (isDragonBreathShot) {
+            s.hitIds = s.hitIds || [];
+            s.hitIds.push(e);
+            dragonBreathOnHit(s, e, actualShotDamage, false);
+            continue;
+          }
           // 幽灵光刃：穿透斩切（命中火花 + 紫光迸溅），不分裂
           if (s.kind === 'bladebig' && s.gblade) {
             e.hitFlash = 0.16;
@@ -23215,11 +23579,16 @@
       }
       if (removed) continue;
       if (boss && state === 'boss' && !boss.dead) {
-	        if (dist2(s.x, s.y, boss.x, boss.y + 8) < (s.r + boss.r) * (s.r + boss.r)) {
+	        if (s.kind === 'dragon_breath' ? dragonBreathShotHitsTarget(s, boss) : dist2(s.x, s.y, boss.x, boss.y + 8) < (s.r + boss.r) * (s.r + boss.r)) {
 	          const isBounceB = (s.kind === 'chainheart' || s.kind === 'bladesmall');
-	          if (!((isBounceB && s.hitBoss) || (isMotherHiveLaceSpike(s) && s.hitBoss) || (isSkywardShot(s) && s.hitBoss))) {
-	            const actualBossDamage = isSkywardShot(s) ? skywardDamageForHit(s) * SKYWARD_BOSS_DAMAGE_MUL : s.damage;
+	          if (!((isBounceB && s.hitBoss) || (s.kind === 'dragon_breath' && s.hitBoss) || (isMotherHiveLaceSpike(s) && s.hitBoss) || (isSkywardShot(s) && s.hitBoss))) {
+	            const actualBossDamage = s.kind === 'dragon_breath' ? dragonBreathDamageForTarget(boss) : (isSkywardShot(s) ? skywardDamageForHit(s) * SKYWARD_BOSS_DAMAGE_MUL : s.damage);
 	            hitBoss(actualBossDamage, s.x, s.y, false);
+            if (s.kind === 'dragon_breath') {
+              s.hitBoss = true;
+              dragonBreathOnHit(s, boss, actualBossDamage, true);
+              continue;
+            }
             if (isSkywardShot(s) && (s.boomT || 0) <= 0) {
               s.boomT = 0.06;
               skywardShotHitFx(s, boss);
@@ -29010,6 +29379,7 @@
     drawSkywardBlinkFxWorld();
     drawSkywardHitFxWorld();
     drawSkywardAegisWorld(false);
+    drawDragonBreathDevices();
     for (const s of playerShots) {
       const a = Math.atan2(s.vy, s.vx) + Math.PI / 2;
       ctx.save();
@@ -29018,6 +29388,8 @@
 
       if (isSkywardShot(s)) {
         drawSkywardShot(s, a);
+      } else if (s.kind === 'dragon_breath') {
+        drawDragonBreathProjectile(s);
       } else if (s.kind === 'lance') {
         const tail = ctx.createLinearGradient(0, 36, 0, -28);
         tail.addColorStop(0, 'rgba(105,229,255,0)');
@@ -31412,6 +31784,7 @@
         drawSkill(W - 180, H - 94, 'Space', '月光束', player.beamCd / 5.0);
         drawSkill(W - 92, H - 94, 'X', '大招', player.energy >= 100 ? 0 : 1 - player.energy / player.maxEnergy, player.energy >= 100);
       }
+      drawSkill(W - 268, H - 94, 'Y', '龙息弹', dragonBreathCooldownRate(), dragonBreathReady(), 'uiSkillDragonBreathIcon');
       drawCompanionSkillHud();
 
       ctx.fillStyle = 'rgba(232,248,255,.92)'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'right';
@@ -31439,7 +31812,7 @@
     base.addColorStop(0.58, 'rgba(17,18,48,.94)');
     base.addColorStop(1, 'rgba(3,5,18,.98)');
     ctx.fillStyle = base; ctx.beginPath(); ctx.arc(0, 0, rr + 5, 0, TAU); ctx.fill();
-    const useKey = assetReady(iconKey) ? iconKey : (key === 'X' ? 'uiSkillBombIcon' : key === 'Space' ? 'uiSkillBeamIcon' : null);
+    const useKey = assetReady(iconKey) ? iconKey : (key === 'Y' ? 'uiSkillDragonBreathIcon' : (key === 'X' ? 'uiSkillBombIcon' : key === 'Space' ? 'uiSkillBeamIcon' : null));
     if (useKey) {
       const isSkywardUltIcon = useKey === 'skywardUltIcon';
       ctx.save();
@@ -31485,7 +31858,7 @@
       ctx.restore();
     }
     if (cdRate > 0.01) {
-      const secs = key === 'X' ? (skywardActive() ? `${Math.ceil(player.bombCd)}s` : (player.energy < 100 ? `${Math.floor(player.energy)}%` : '')) : '';
+      const secs = key === 'Y' ? `${Math.ceil(dragonBreath.cd)}s` : (key === 'X' ? (skywardActive() ? `${Math.ceil(player.bombCd)}s` : (player.energy < 100 ? `${Math.floor(player.energy)}%` : '')) : '');
       if (secs) {
         ctx.font = 'bold 14px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.82)'; ctx.strokeText(secs, 0, 2);
@@ -31587,7 +31960,7 @@
       }
     });
 
-    const panelX = 92, panelY = H - 106 - bottomLift, panelW = W - 292, panelH = 78;
+    const panelX = 92, panelY = H - 106 - bottomLift, panelW = Math.max(220, W - 376), panelH = 78;
     drawTyTechPanel(panelX, panelY, panelW, panelH, { r: 18, stripAlpha: 0.12, scanAlpha: 0.10 });
     const ccUi = curChar();
     ctx.textAlign = 'left';
@@ -31624,6 +31997,7 @@
       xReady = player.bombCd <= 0;
       xIcon = 'skywardUltIcon';
     }
+    drawMobileSkillButton(W - 226, H - 92 - bottomLift, 39, 'Y', '龙息弹', dragonBreathCooldownRate(), dragonBreathReady(), 'uiSkillDragonBreathIcon', '120,248,232');
     drawMobileSkillButton(W - 142, H - 92 - bottomLift, 39, 'Space', spaceName, spaceCd, spaceReady, spaceIcon, motherLifeActive() ? '255,154,214' : '150,224,255');
     if (skywardActive()) drawSkywardBlinkHudMeter(W - 142, H - 152 - bottomLift, 0.92);
     drawMobileSkillButton(W - 58, H - 92 - bottomLift, 39, 'X', xName, xCd, xReady, xIcon, motherLifeActive() ? '255,184,225' : '255,216,128');
@@ -31702,7 +32076,7 @@
     registerTouchSkill(cx, cy, R + 20, key, name);
     ctx.fillStyle = ready ? 'rgba(20,32,72,.88)' : 'rgba(12,15,38,.76)';
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.fill();
-    const iconKey = iconOverride || (key === 'X' ? 'uiSkillBombIcon' : 'uiSkillBeamIcon');
+    const iconKey = iconOverride || (key === 'Y' ? 'uiSkillDragonBreathIcon' : (key === 'X' ? 'uiSkillBombIcon' : 'uiSkillBeamIcon'));
     const fb = key === 'X' ? 'skillBomb' : 'skillBeam';
     const useKey = assetReady(iconKey) ? iconKey : (assetReady(fb) ? fb : null);
     if (useKey) {
@@ -31728,6 +32102,12 @@
       if (key === 'X' && skywardActive()) {
         // 苍穹大招：显示剩余冷却秒数（时间冷却制）
         const cdSecs = `${Math.ceil(player.bombCd)}s`;
+        ctx.font = 'bold 15px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.82)'; ctx.strokeText(cdSecs, cx, cy + 2);
+        ctx.fillStyle = '#ffffff'; ctx.fillText(cdSecs, cx, cy + 2);
+        ctx.textBaseline = 'alphabetic';
+      } else if (key === 'Y') {
+        const cdSecs = `${Math.ceil(dragonBreath.cd)}s`;
         ctx.font = 'bold 15px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.82)'; ctx.strokeText(cdSecs, cx, cy + 2);
         ctx.fillStyle = '#ffffff'; ctx.fillText(cdSecs, cx, cy + 2);
@@ -33225,6 +33605,7 @@
     unlockAudio();
     if (key === 'Space') { useBeam(); return true; }
     if (key === 'X') { useBomb(); return true; }
+    if (key === 'Y') { castDragonBreath(); return true; }
     if (key === 'Q') { castSaintField(); return true; }
     if (key === 'E') { ncToggleMode(); return true; }
     if (key === 'T') { castTianyaoHand(); return true; }
@@ -33353,6 +33734,7 @@
     if (e.code === 'KeyM') toggleMusic();
     if (e.code === 'KeyF') perfHudEnabled = !perfHudEnabled;
     if (e.code === 'KeyX' && state !== 'title') { useBomb(); e.preventDefault(); }
+    if (e.code === 'KeyY' && state !== 'title') { castDragonBreath(); e.preventDefault(); }
     if (e.code === 'KeyQ' && state !== 'title') castSaintField();
     if (e.code === 'KeyE' && state !== 'title') ncToggleMode();
     if (e.code === 'KeyT' && state !== 'title') castTianyaoHand();
@@ -33476,6 +33858,138 @@
   document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 
   if (typeof window !== 'undefined') {
+    window.__dragonBreathInternals__ = {
+      assetSpec: () => ({
+        sourceFolder: 'moon-bullet-main/龙息弹开发',
+        runtimeRoot: 'assets/common/dragon_breath',
+        keys: [...DRAGON_BREATH_ASSET_KEYS],
+        runtimeFiles: {
+          device: ASSET_PATHS.skillDragonBreathDevice,
+          circle: ASSET_PATHS.skillDragonBreathCircle,
+          projectileMain: ASSET_PATHS.skillDragonBreathProjectileMain,
+          projectileAlt: ASSET_PATHS.skillDragonBreathProjectileAlt,
+          projectileTrail: ASSET_PATHS.skillDragonBreathTrail,
+          hitBlast: ASSET_PATHS.skillDragonBreathHitBlast,
+          particles: ASSET_PATHS.skillDragonBreathParticles,
+          icon: ASSET_PATHS.uiSkillDragonBreathIcon,
+        },
+        processor: 'tools/process_dragon_breath_assets.py',
+        pipeline: 'trim-despill-erode-alpha-feather-resize-contact-sheet',
+        noExternalAssets: true,
+      }),
+      configSpec: () => ({
+        ...DRAGON_BREATH,
+        visual: { ...DRAGON_BREATH.visual },
+        cooldownOnly: DRAGON_BREATH.noEnergyCost,
+        input: 'Y',
+        universal: true,
+      }),
+      scheduleForTest: () => Array.from({ length: DRAGON_BREATH.shotCount }, (_, i) => Number((DRAGON_BREATH.firstShot + i * DRAGON_BREATH.shotInterval).toFixed(3))),
+      damageForTest: (hp, isBoss = false, level = 1) => dragonBreathDamageForHp(hp, isBoss, level),
+      attackForTest: (level = 1) => dragonBreathAttackPower(level),
+      targetForTest: (targets = []) => {
+        const t = dragonBreathPickHighestTarget(targets);
+        return t ? { hp: t.hp, index: targets.indexOf(t), kind: t.kind || (t === boss ? 'boss' : 'enemy') } : null;
+      },
+      projectileHitForTest: (shot, target) => dragonBreathShotHitsTarget(shot, target),
+      hudSpec: () => ({
+        desktopKey: 'Y',
+        mobileVirtualKey: 'Y',
+        icon: 'uiSkillDragonBreathIcon',
+        mobileHudControls: ['Space', 'X', 'Y'],
+        name: DRAGON_BREATH.name,
+      }),
+      stateSpec: () => ({
+        cd: dragonBreath.cd,
+        activeDevices: dragonBreath.devices.length,
+        activeProjectiles: playerShots.filter(s => s.kind === 'dragon_breath').length,
+        hitFx: dragonBreath.hitFx.length,
+        lockFx: dragonBreath.lockFx.length,
+        lastTargetKind: dragonBreath.lastTargetKind,
+      }),
+      visualBudgetSpec: () => ({
+        countedInMajorSkillBudget: true,
+        activeMajorSkillCountIncludesDragonBreath: activeMajorSkillVisualCount(),
+        perfControlledFx: ['hitFx', 'particles', 'trail-alpha', 'no-fullscreen-white-flash'],
+      }),
+    };
+
+    window.__dragonBreathCapture__ = {
+      setup(scene = 'deploy') {
+        selectedChar = 'witch';
+        prefetchGameplayAssets();
+        loadAssetGroup(DRAGON_BREATH_ASSET_KEYS);
+        state = scene === 'title' ? 'title' : (scene.includes('boss') || scene.includes('hit') ? 'boss' : 'mobs');
+        stateTimer = 0;
+        time = 0;
+        patternTimer = 0;
+        resetDragonBreathState();
+        player.x = W * 0.5;
+        player.y = H - 190;
+        player.prevX = player.x;
+        player.prevY = player.y;
+        player.moveVX = 0;
+        player.moveVY = 0;
+        player.maxHp = curChar().maxHp;
+        player.hp = player.maxHp;
+        player.energy = player.maxEnergy;
+        player.beamCd = 0;
+        player.bombCd = 0;
+        player.inv = 0;
+        player.power = MAX_POWER;
+        playerShots.length = 0;
+        enemies.length = 0;
+        enemyBullets.length = 0;
+        particles.length = 0;
+        spriteFx.length = 0;
+        procRings.length = 0;
+        warnings.length = 0;
+        lasers.length = 0;
+        damageTexts.length = 0;
+        flash = 0;
+        screenShake = 0;
+        boss = null;
+        bossPhase = 1;
+        const addTarget = (x, y, hp, r = 26) => enemies.push({ x, y, vx: 0, vy: 0, hp, maxHp: hp, r, type: 'dragonBreathTarget', color: '#78f8e8', score: 1, fireCd: 99, t: 0, phase: 0 });
+        if (scene.includes('boss') || scene.includes('hit')) {
+          boss = { x: W * 0.5, y: 220, hp: 32000, maxHp: 32000, r: 82, name: '龙息靶标', kind: 'dragonCaptureBoss', spritePrefix: 'boss', dead: false, inv: 0, hitFlash: 0, dmgCredit: undefined, scale: 0.86 };
+          addTarget(W * 0.5 - 160, 360, 1600, 24);
+          addTarget(W * 0.5 + 150, 420, 2200, 26);
+        } else {
+          for (let i = 0; i < 5; i++) addTarget(W * 0.5 + (i - 2) * 78, 260 + (i % 2) * 68, 900 + i * 900, 23 + i * 2);
+        }
+        castDragonBreath();
+        return window.__dragonBreathCapture__.snapshot();
+      },
+      advance(frames = 60) {
+        for (let i = 0; i < frames; i++) {
+          const dt = 1 / 60;
+          time += dt;
+          stateTimer += dt;
+          updateDragonBreath(dt);
+          updatePlayerShots(dt);
+          updateParticles(dt);
+          updateSpriteFx(dt);
+          updateDamageTexts(dt);
+          if (boss) boss.hitFlash = Math.max(0, (boss.hitFlash || 0) - dt);
+        }
+        draw();
+        return window.__dragonBreathCapture__.snapshot();
+      },
+      snapshot: () => ({
+        state,
+        cd: dragonBreath.cd,
+        devices: dragonBreath.devices.map(d => ({ x: d.x, y: d.y, t: d.t, fired: d.fired })),
+        shots: playerShots.filter(s => s.kind === 'dragon_breath').map(s => ({ x: s.x, y: s.y, life: s.life, hitIds: s.hitIds ? s.hitIds.length : 0, hitBoss: !!s.hitBoss })),
+        hitFx: dragonBreath.hitFx.length,
+        lockFx: dragonBreath.lockFx.length,
+        lastTargetKind: dragonBreath.lastTargetKind,
+        player: { x: player.x, y: player.y },
+        mobileControls: ['Space', 'X', 'Y'],
+      }),
+      readyKeys: () => DRAGON_BREATH_ASSET_KEYS.filter(k => assetReady(k)),
+    };
+
     window.__skywardInternals__ = {
       assetSpec: () => ({
         sourceFolder: '苍穹 战机开发',
@@ -34269,7 +34783,7 @@
         mobileMoveMode: TOUCH_RELATIVE_MOVE.mode,
         sensitivity: TOUCH_RELATIVE_MOVE.sensitivity,
         noSnapOnMobilePointerDown: true,
-        mobileHudControls: ['fullscreen', 'pauseGame', 'restartGame', 'targetFps', 'Space', 'X'],
+        mobileHudControls: ['fullscreen', 'pauseGame', 'restartGame', 'targetFps', 'Space', 'X', 'Y'],
         mobileFullscreen: { enabled: true, cssFallback: true, iosCssFallbackOnly: IOS_FULLSCREEN_API_UNRELIABLE, visualViewportSizing: true, storageKey: MOBILE_FULLSCREEN_STORAGE_KEY },
         targetFps: { enabled: true, options: [...TARGET_FPS_OPTIONS], current: targetFps, max: 60, storageKey: TARGET_FPS_STORAGE_KEY, fullscreenShowsHud: true, qualityFloor: targetFpsPerfFloor(), visualBudgetMul: targetFpsVisualBudgetMul() },
         desktopPointerMode: DESKTOP_MOUSE_PILOT.mode,
@@ -34313,7 +34827,7 @@
       }),
       visualStackSpec: () => ({
         mode: 'stacked-skill-flash-and-shake-budget',
-        countedSkills: ['skywardAegis', 'saintField', 'tianyaoHand', 'motherLifeUltimate', 'moonfeatherBeam', 'nightReaverVoid', 'qishenwu'],
+        countedSkills: ['skywardAegis', 'dragonBreath', 'saintField', 'tianyaoHand', 'motherLifeUltimate', 'moonfeatherBeam', 'nightReaverVoid', 'qishenwu'],
         current: skillVisualBudget(),
         capsFullscreenFlash: true,
         capsScreenShake: true,

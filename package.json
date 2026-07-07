@@ -19,7 +19,8 @@
     "capture:mhr-crystal": "node tools/capture_mother_hive_crystal_acceptance.js",
     "capture:leaderboard": "node tools/capture_leaderboard_acceptance.js",
     "capture:tianyao": "node tools/capture_tianyao_acceptance.js",
-    "capture:skyward": "node tools/capture_skyward_acceptance.js"
+    "capture:skyward": "node tools/capture_skyward_acceptance.js",
+    "capture:dragon": "node tools/capture_dragon_breath_acceptance.js"
   },
   "keywords": [],
   "author": "",

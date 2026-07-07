@@ -11,6 +11,7 @@ let cachedMiguaInternals = null;
 let cachedRandomBalanceInternals = null;
 let cachedLeaderboardInternals = null;
 let cachedSkywardInternals = null;
+let cachedDragonBreathInternals = null;
 
 function makeGradient() {
   return { addColorStop() {} };
@@ -138,6 +139,7 @@ export function loadInternals() {
   cachedRandomBalanceInternals = context.window.__randomBalanceInternals__;
   cachedLeaderboardInternals = context.window.__leaderboardInternals__;
   cachedSkywardInternals = context.window.__skywardInternals__;
+  cachedDragonBreathInternals = context.window.__dragonBreathInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
   return cachedInternals;
 }
@@ -196,6 +198,13 @@ export function loadSkywardInternals() {
   loadInternals();
   if (!cachedSkywardInternals) throw new Error('window.__skywardInternals__ was not exposed');
   return cachedSkywardInternals;
+}
+
+export function loadDragonBreathInternals() {
+  if (cachedDragonBreathInternals) return cachedDragonBreathInternals;
+  loadInternals();
+  if (!cachedDragonBreathInternals) throw new Error('window.__dragonBreathInternals__ was not exposed');
+  return cachedDragonBreathInternals;
 }
 
 export function makeCtxIn(opts = {}) {

@@ -1,0 +1,66 @@
+{
+  "device": {
+    "key": "device",
+    "source": "发射装置主体.png",
+    "file": "assets/common/dragon_breath/device.png",
+    "w": 640,
+    "h": 610,
+    "green_residue_pixels": 0
+  },
+  "circle": {
+    "key": "circle",
+    "source": "法阵.png",
+    "file": "assets/common/dragon_breath/circle.png",
+    "w": 720,
+    "h": 540,
+    "green_residue_pixels": 2
+  },
+  "projectile_main": {
+    "key": "projectile_main",
+    "source": "龙头弹贴图素材.png",
+    "file": "assets/common/dragon_breath/projectile_main.png",
+    "w": 279,
+    "h": 980,
+    "green_residue_pixels": 0
+  },
+  "projectile_alt": {
+    "key": "projectile_alt",
+    "source": "龙息弹贴图.png",
+    "file": "assets/common/dragon_breath/projectile_alt.png",
+    "w": 685,
+    "h": 920,
+    "green_residue_pixels": 1
+  },
+  "projectile_trail": {
+    "key": "projectile_trail",
+    "source": "龙头弹拖尾光效.png",
+    "file": "assets/common/dragon_breath/projectile_trail.png",
+    "w": 266,
+    "h": 980,
+    "green_residue_pixels": 3
+  },
+  "hit_blast": {
+    "key": "hit_blast",
+    "source": "命中特效 爆炸光电贴图.png",
+    "file": "assets/common/dragon_breath/hit_blast.png",
+    "w": 720,
+    "h": 669,
+    "green_residue_pixels": 14
+  },
+  "particles": {
+    "key": "particles",
+    "source": "特效粒子贴图.png",
+    "file": "assets/common/dragon_breath/particles.png",
+    "w": 720,
+    "h": 539,
+    "green_residue_pixels": 0
+  },
+  "icon": {
+    "file": "assets/common/dragon_breath/icon.png",
+    "w": 512,
+    "h": 512,
+    "green_residue_pixels": 5
+  },
+  "source_folder": "moon-bullet-main/龙息弹开发",
+  "pipeline": "trim-despill-erode-alpha-feather-resize"
+}

@@ -5,6 +5,8 @@ const suiyiTechCapture = readFileSync(new URL('../../tools/capture_suiyi_tech_mo
 const randomBalanceCapture = readFileSync(new URL('../../tools/capture_random_balance_acceptance.js', import.meta.url), 'utf8');
 const skywardCapture = readFileSync(new URL('../../tools/capture_skyward_acceptance.js', import.meta.url), 'utf8');
 const skywardProcessor = readFileSync(new URL('../../tools/process_skyward_paladin_assets.py', import.meta.url), 'utf8');
+const dragonBreathCapture = readFileSync(new URL('../../tools/capture_dragon_breath_acceptance.js', import.meta.url), 'utf8');
+const dragonBreathProcessor = readFileSync(new URL('../../tools/process_dragon_breath_assets.py', import.meta.url), 'utf8');
 const packageJson = readFileSync(new URL('../../package.json', import.meta.url), 'utf8');
 const leaderboardEdge = readFileSync(new URL('../../supabase/functions/leaderboard-run/index.ts', import.meta.url), 'utf8');
 const leaderboardFixSql = readFileSync(new URL('../../leaderboard-security/04_remove_score_cap_and_add_skyward.sql', import.meta.url), 'utf8');
@@ -23,6 +25,24 @@ if (leaderboardEdge.includes('quarantined') || leaderboardEdge.includes('leaderb
 }
 if (!leaderboardFixSql.includes('不再按总分上限拦截') || !leaderboardFixSql.includes("'skyward'")) {
   fail('Leaderboard score-cap SQL repair script missing skyward/no-total-cap guard');
+}
+for (const key of ['skillDragonBreathDevice', 'skillDragonBreathCircle', 'skillDragonBreathProjectileMain', 'skillDragonBreathProjectileAlt', 'skillDragonBreathTrail', 'skillDragonBreathHitBlast', 'skillDragonBreathParticles', 'uiSkillDragonBreathIcon']) {
+  if (!html.includes(key)) fail(`${key} Dragon Breath asset key missing`);
+}
+for (const symbol of ['const DRAGON_BREATH = Object.freeze', 'function castDragonBreath()', "kind === 'dragon_breath'", 'window.__dragonBreathInternals__', 'window.__dragonBreathCapture__']) {
+  if (!html.includes(symbol)) fail(`${symbol} Dragon Breath runtime hook missing`);
+}
+if (!html.includes("if (e.code === 'KeyY'") || !html.includes("if (key === 'Y') { castDragonBreath(); return true; }")) {
+  fail('Dragon Breath must support desktop KeyY and mobile virtual Y');
+}
+if (!packageJson.includes('"capture:dragon"')) {
+  fail('package.json missing capture:dragon script');
+}
+if (!dragonBreathProcessor.includes('despill_green') || !dragonBreathProcessor.includes('dragon_breath_contact.png')) {
+  fail('Dragon Breath processor must despill source art and emit a visual contact sheet');
+}
+if (!dragonBreathCapture.includes('__dragonBreathCapture__') || !dragonBreathCapture.includes('04_mobile_y_skill_button.png')) {
+  fail('Dragon Breath capture script must exercise runtime and mobile Y HUD');
 }
 const start = html.indexOf('function drawSaintWing()');
 const end = html.indexOf('function updateScFx(dt)', start);
