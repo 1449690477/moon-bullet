@@ -14,7 +14,7 @@ const DESKTOP_SCENES = [
   ['deploy', '02_deploy_inject.png', 22],
   ['deploy', '03_deploy_array_open.png', 36],
   ['deploy', '04_deploy_charged.png', 38],
-  ['volley', '05_projectile_angle.png', 70],
+  ['volley', '05_projectile_angle.png', 56],
   ['boss_hit', '06_boss_impact.png', 66],
 ];
 

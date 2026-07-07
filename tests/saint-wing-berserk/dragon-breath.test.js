@@ -80,6 +80,8 @@ describe('dragon breath common skill', () => {
     expect(cfg.chargeLead).toBeCloseTo(0.18);
     expect(cfg.visual.deviceSize).toBe(248);
     expect(cfg.visual.deviceGlowSize).toBe(310);
+    expect(cfg.visual.headRowW).toBe(500);
+    expect(cfg.visual.headRowH).toBe(190);
     const visual = dragon.visualStateSpec();
     expect(visual).toMatchObject({
       deployPhase: expect.any(String),
