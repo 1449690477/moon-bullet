@@ -15,8 +15,8 @@ describe('dragon breath common skill', () => {
     expect(cfg.shotCount).toBe(8);
     expect(cfg.firstShot).toBeCloseTo(0.8);
     expect(cfg.shotInterval).toBe(1);
-    expect(cfg.projectileSpeed).toBe(1800);
-    expect(cfg.projectileLife).toBeCloseTo(1.4);
+    expect(cfg.projectileSpeed).toBe(1050);
+    expect(cfg.projectileLife).toBeCloseTo(1.8);
     expect(dragon.scheduleForTest()).toEqual([0.8, 1.8, 2.8, 3.8, 4.8, 5.8, 6.8, 7.8]);
   });
 
@@ -54,12 +54,12 @@ describe('dragon breath common skill', () => {
 
     const attackLv1 = dragon.attackForTest(1);
     expect(attackLv1).toBe(132);
-    expect(dragon.damageForTest(1000, false, 1)).toBeCloseTo(132 * 1.8 + 8);
-    expect(dragon.damageForTest(1_000_000, true, 1)).toBeCloseTo(132 * 1.8 + 132 * 12);
+    expect(dragon.damageForTest(1000, false, 1)).toBeCloseTo(132 * 3.2 + 12);
+    expect(dragon.damageForTest(1_000_000, true, 1)).toBeCloseTo(132 * 8 + 132 * 60);
   });
 
   it('models a wide piercing capsule for the five-headed projectile', () => {
-    const shot = { x: 360, y: 700, vx: 0, vy: -1800 };
+    const shot = { x: 360, y: 700, vx: 0, vy: -1050 };
     expect(dragon.projectileHitForTest(shot, { x: 360, y: 460, r: 24 })).toBe(true);
     expect(dragon.projectileHitForTest(shot, { x: 430, y: 460, r: 18 })).toBe(false);
   });
@@ -82,10 +82,14 @@ describe('dragon breath common skill', () => {
     expect(cfg.visual.deviceGlowSize).toBe(310);
     expect(cfg.visual.headRowW).toBe(500);
     expect(cfg.visual.headRowH).toBe(190);
+    expect(cfg.visual.directionalHeads).toBe(true);
+    expect(cfg.visual.lockBeamAlpha).toBeGreaterThan(0.5);
     const visual = dragon.visualStateSpec();
     expect(visual).toMatchObject({
       deployPhase: expect.any(String),
       bodyRotation: 0,
+      directionalHeads: true,
+      bossLockBeamEnabled: true,
     });
     expect(Array.isArray(visual.projectileAngleFrames)).toBe(true);
   });

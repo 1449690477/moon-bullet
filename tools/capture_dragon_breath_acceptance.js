@@ -14,7 +14,7 @@ const DESKTOP_SCENES = [
   ['deploy', '02_deploy_inject.png', 22],
   ['deploy', '03_deploy_array_open.png', 36],
   ['deploy', '04_deploy_charged.png', 38],
-  ['volley', '05_projectile_angle.png', 56],
+  ['volley', '05_projectile_angle.png', 62],
   ['boss_hit', '06_boss_impact.png', 66],
 ];
 
@@ -89,7 +89,10 @@ async function captureScene(page, scene, fileName, frames) {
   }, { scene, frames });
   const base64 = result.dataUrl.replace(/^data:image\/png;base64,/, '');
   fs.writeFileSync(path.join(OUT_DIR, fileName), Buffer.from(base64, 'base64'));
-  console.log(`${fileName}: scene=${scene} shots=${result.stepped.shots.length} devices=${result.stepped.devices.length} target=${result.stepped.lastTargetKind}`);
+  const firstShot = result.stepped.shots[0] ? ` shot=(${Math.round(result.stepped.shots[0].x)},${Math.round(result.stepped.shots[0].y)}) bossHit=${result.stepped.shots[0].hitBoss}` : '';
+  const boss = result.stepped.boss ? ` boss=(${Math.round(result.stepped.boss.x)},${Math.round(result.stepped.boss.y)}) hp=${Math.round(result.stepped.boss.hp)}` : '';
+  const preparedBoss = result.prepared.boss ? ` preparedBoss=(${Math.round(result.prepared.boss.x)},${Math.round(result.prepared.boss.y)})` : '';
+  console.log(`${fileName}: scene=${scene} shots=${result.stepped.shots.length} hitFx=${result.stepped.hitFx} lockFx=${result.stepped.lockFx} devices=${result.stepped.devices.length} target=${result.stepped.lastTargetKind}${firstShot}${boss}${preparedBoss}`);
 }
 
 async function main() {
