@@ -37,6 +37,7 @@ describe('dragon breath common skill', () => {
       'skillDragonBreathParticles',
       'skillDragonBreathDeviceGlowMask',
       'skillDragonBreathDeviceLightFx',
+      'skillDragonBreathDeviceDetailSheet',
       'skillDragonBreathProjectileAngles',
       'skillDragonBreathProjectileFlow',
       'skillDragonBreathImpactAtlas',
@@ -85,6 +86,8 @@ describe('dragon breath common skill', () => {
     expect(cfg.visual.headRowH).toBe(190);
     expect(cfg.visual.directionalHeads).toBe(true);
     expect(cfg.visual.lockBeamAlpha).toBeGreaterThan(0.5);
+    expect(cfg.visual.devicePieceGlow).toBeGreaterThan(1);
+    expect(cfg.visual.trailLightBarStrength).toBeGreaterThan(1);
     const visual = dragon.visualStateSpec();
     expect(visual).toMatchObject({
       deployPhase: expect.any(String),

@@ -20,7 +20,8 @@
     "capture:leaderboard": "node tools/capture_leaderboard_acceptance.js",
     "capture:tianyao": "node tools/capture_tianyao_acceptance.js",
     "capture:skyward": "node tools/capture_skyward_acceptance.js",
-    "capture:dragon": "node tools/capture_dragon_breath_acceptance.js"
+    "capture:dragon": "node tools/capture_dragon_breath_acceptance.js",
+    "render:dragon": "node tools/headless_dragon_render.js"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +29,8 @@
   "type": "commonjs",
   "dependencies": {
     "puppeteer-core": "^23.11.1"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^1.0.2"
   }
 }
