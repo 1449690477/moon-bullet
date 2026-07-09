@@ -1,18 +1,48 @@
-# 弹幕视觉参考手册 V3.10
+# 弹幕视觉参考手册（与现行 ENEMY_DEFS 同步）
 
-## 🎨 弹幕素材速查表
+## 威胁色语义（普通敌弹）
 
-### 敌人弹幕配色方案
+| threat | 含义 | 描边/核倾向 |
+|--------|------|-------------|
+| `aimed` | 快瞄准压迫 | 暖金/白核 |
+| `spread` | 环/扇/螺旋阵型 | 冷青/紫 |
+| `hazard` | 弹墙/高威胁刃 | 高对比红边 |
+| `deco` | 慢装饰层 | 低饱和、略淡 |
 
-| 敌人类型 | 主弹幕 | 颜色 | 特殊模式 | 颜色 | 触发节奏 |
-|---------|--------|------|----------|------|----------|
-| **bat** 蝙蝠 | 金色月牙 | #ffd97b | 笼中球（减速） | #ffb84d | 每5发 |
-| **familiar** 使魔 | 紫色花瓣 | #cc90ff | 双层花瓣 | #cc90ff | 每4发 |
-| **wisp** 游魂 | 极光弹A | #7ff0d8 | 极光弹B（波浪） | #7ff0d8 | 每3发 |
-| **nun** 修女 | 金色圆弹 + 白月牙 | #ffd36d / #fff8dc | 米字爆射 | #fff8dc | 每3发 |
-| **cherub** 天使 | 雪花弹 | #e8f5ff | 雪花散布 | #d5eeff | 每4发 |
-| **seraphguard** 守卫 | 水晶弹（螺旋） | #9fc6ff | 钻石弹（星阵） | #9fc6ff | 每3发 |
-| **warden** 守望者 | 紫镰刀 + 灵魂弹 | #c9b4ff / #d8c6ff | 红镰刀（星阵） | #ff89a8 | 每4发 |
+随意/蜜瓜专属弹（`suiyi` / `migua` / `suiyiTech`）不走此配色覆盖。
+
+## 普通小怪 pattern 映射（现行）
+
+| 敌人 | pattern | 说明 |
+|------|---------|------|
+| bat | aimed1 | 单发瞄准 |
+| shade | aimed2 | 双发平行瞄准 |
+| phantom | chasefork | 慢母弹裂三叉 |
+| familiar | mirrorfan | 左右镜像扇 |
+| wisp | pendulum | 钟摆宽弧扫射 |
+| specter | twinsnake | 双蛇正弦流 |
+| wraith | gatepulse | 闸门脉冲墙 |
+| nun / warlock | delayring | 迟滞环后加速 |
+| cherub | boomerang | 回旋扇 |
+| cultist | hexbloom | 六瓣绽放 |
+| banshee | diamondlat | 菱形晶格 |
+| seraphguard | rosespiral | 玫瑰螺旋 |
+| warden | orbitring | 轨道扩张环 |
+| fiend / voltray | meteor | 流星雨柱 |
+| reaper | accel | 刹车瞄准弹 |
+| archfiend | spiral3aim | 三臂螺旋 + 周期瞄准 |
+
+### V3.15 第二轮新增花样（12）
+
+`orbitring` / `boomerang` / `diamondlat` / `hexbloom` / `chasefork` / `pendulum` / `twinsnake` / `gatepulse` / `meteor` / `rosespiral` / `mirrorfan` / `delayring`
+
+### V3.16 多样性恢复 + 非飞行机关（8）
+
+`spinsaw` 旋转电锯 · `chargeram` 冲撞预警刃 · `bouncerblade` 弹跳刃 · `pseudodisc` 伪3D飞盘 · `scythelane` 镰刀回廊 · `featherstorm` 羽刃风暴 · `candynote` 糖果音符环 · `heartblade` 心刃十字
+
+同时：V3.13 / V2 PNG 真正接入 `drawImage`；海洋怪恢复 `aimedstar`/`snowring`/`knifefan` 等 V2 贴图弹幕。
+
+海洋 V2 / 随意科技 / 蜜瓜小怪 pattern 名见 `ENEMY_DEFS`（`aimedstar`…`eyebarrage` / `tech*` / `migua*`）。
 
 ### Boss阶段弹幕配置
 
