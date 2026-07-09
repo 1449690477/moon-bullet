@@ -1,9 +1,9 @@
 {
-  "version": "d28369a18764",
-  "builtAt": 1783605710,
-  "referencedMedia": 1323,
-  "mobileVariants": 1312,
-  "copiedBytes": 165427840,
+  "version": "e60cc806d5db",
+  "builtAt": 1783606874,
+  "referencedMedia": 1329,
+  "mobileVariants": 1318,
+  "copiedBytes": 167719510,
   "excluded": [
     "assets/_backup_before_user_import/**",
     "assets_backup_*/**",

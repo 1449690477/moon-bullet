@@ -1314,6 +1314,13 @@
     bossBreak: 'assets/bosses/eclipse_boss_break.png',
     bossDeath: 'assets/bosses/eclipse_boss_death.png',
     bossNameplate: 'assets/bosses/eclipse_boss_nameplate.png',
+    // midboss：棺守独立立绘（素材库 body_10103008），不再复用蚀环贴图
+    midbossIdle: 'assets/bosses/midboss_idle.png',
+    midbossPhase1: 'assets/bosses/midboss_phase1.png',
+    midbossPhase2: 'assets/bosses/midboss_phase2.png',
+    midbossRage: 'assets/bosses/midboss_rage.png',
+    midbossHit: 'assets/bosses/midboss_hit.png',
+    midbossDeath: 'assets/bosses/midboss_death.png',
     uiHpPlayer: 'assets/ui/ui_hp_bar_player.png',
     uiHpBoss: 'assets/ui/ui_hp_bar_boss.png',
     uiEnergy: 'assets/ui/ui_energy_bar.png',
@@ -1821,6 +1828,7 @@
     'vfxEnemyHit', 'vfxBossHit', 'vfxExplosionSmall', 'vfxExplosionLarge', 'vfxClearBullets',
     'bulletAuroraA', 'bulletAuroraB', 'bulletAuroraC',
     'seraphPhase1', 'seraphPhase2', 'seraphRage',
+    'midbossIdle', 'midbossPhase1', 'midbossPhase2', 'midbossRage',
     'voidlordIdle', 'abysswalkerIdle', 'voidtitanIdle', 'ancientoneIdle', 'darkqueenIdle',
     'nightheraldIdle', 'stormreaverIdle', 'crystalmatronIdle', 'abyssprinceIdle', 'voidsirenIdle',
     'bgSceneDarkHall', 'bgSceneGothicCastle', 'bgSceneCrystalForest',
@@ -2107,12 +2115,14 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-09-danmaku-expand-v26';
+  const UPDATE_NOTICE_VERSION = '2026-07-09-boss-freshness-mob-pressure-v28';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-09',
       items: [
+        'Boss 新鲜感与小怪加压 V3.28：普通 Boss 近期去重防连刷；棺守拥有独立弹幕谱面；各 Boss 外观/编排保持独立；普通小怪关波次/时长/密度/血量大幅加压。',
+        'Midboss 立绘拆分：早期守卫「棺守 · 格雷厄姆」改用素材库独立立绘，不再与蚀环守望者共用同一套贴图。',
         '弹幕大扩容 V3.26：从素材库目视确认后新接入 20 种敌弹贴图；小怪新增花瓣扇/雷瀑/火核俯冲/晶矛雨/交叉刃/缎带螺旋/星矢/刀光走廊/鬼火环抛/射线脉冲/棱晶门等 ≥10 种形式，普通关难度约 +20%；非随意/蜜瓜 Boss 同步新编排并上调血量。',
         'UI 字体与动效升级：接入 M PLUS Rounded / Nunito 圆润加粗字体；面板流光改为糖果缎带+气泡星光（参考 Sparklify / Sparkle.graphics / kawaii-ui），替换旧天耀科技贴图动效。',
         'UI 风格回正：恢复蓝白粉清新路线——淡天蓝到浅粉底的磨砂玻璃过渡，文字用深蓝墨色保证可读，不再偏暮蓝。',
@@ -3625,26 +3635,27 @@
   let bossKind = 'eclipseboss';    // 'midboss' | 'eclipseboss' | 'seraph' | 'finalboss'
   let selectedChar = 'witch'; // witch | yanuxiya | anna | reaver | motherlife | skyward
   let bossesCleared = 0;    // how many bosses defeated this run (for chapter flow)
+  let recentBossKinds = []; // 近期出现过的普通 Boss，避免连刷同一张脸
   // —— 肉鸽难度系统：随时间与轮回增长的强度 ——
   let elapsed = 0;          // 本局有效游戏时间（秒）
   let loopCount = 0;        // 轮回次数（通关后循环，强度递增）
   let extraSpawned = 0;     // 当前关卡已额外刷出的肉鸽波次
   function runPressureAt(t = elapsed) { return Math.max(0, Math.min(1, t / 520)); }
   function extraWavesAt(t = elapsed, loops = loopCount, level = perfLevel) {
-    const base = Math.max(0, Math.floor((t - 42) / 48) + loops);
-    const cap = Math.max(3, 8 + loops * 2 + (level === 0 ? 4 : level === 1 ? 2 : 0));
+    const base = Math.max(0, Math.floor((t - 28) / 36) + loops + 1);
+    const cap = Math.max(5, 12 + loops * 3 + (level === 0 ? 5 : level === 1 ? 3 : 1));
     return Math.min(cap, base);
   }
   function growthCurveAt(t = elapsed, loops = loopCount, kills = killCount, level = perfLevel) {
     const p = runPressureAt(t);
     return {
       pressure: p,
-      diffMul: 1.95 + p * 3.45 + loops * 0.66 + (hellModeActive ? 0.18 : 0),
-      hpMul: Math.min(15.8, 2.85 + p * 4.45 + loops * 1.08 + (hellModeActive ? 0.32 : 0)),
-      smallHpMul: Math.min(14.0, 2.70 + p * 3.90 + loops * 0.95 + (hellModeActive ? 0.34 : 0)),
-      densMul: Math.min(5.7, 1.85 + p * 2.35 + loops * 0.42),
-      fireMul: Math.min(4.15, 1.72 + p * 1.45 + loops * 0.30),
-      grindDmg: 1 + Math.min(kills, 2000) / 2000 * 2.30 + loops * 0.36,
+      diffMul: 2.35 + p * 4.10 + loops * 0.78 + (hellModeActive ? 0.18 : 0),
+      hpMul: Math.min(18.5, 3.40 + p * 5.20 + loops * 1.25 + (hellModeActive ? 0.32 : 0)),
+      smallHpMul: Math.min(16.5, 3.25 + p * 4.60 + loops * 1.10 + (hellModeActive ? 0.34 : 0)),
+      densMul: Math.min(6.8, 2.25 + p * 2.85 + loops * 0.50),
+      fireMul: Math.min(4.85, 2.05 + p * 1.70 + loops * 0.36),
+      grindDmg: 1 + Math.min(kills, 2000) / 2000 * 2.55 + loops * 0.40,
       extraWaves: extraWavesAt(t, loops, level),
     };
   }
@@ -3667,16 +3678,16 @@
   }
   function mobStageWaveTarget(theme = stageTheme, level = perfLevel, loops = loopCount) {
     const qualityTrim = level >= 2 ? 2 : (level === 1 ? 1 : 0);
-    const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 24 : 24;
-    return Math.max(16, base + Math.min(8, loops * 2) - qualityTrim);
+    const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 28 : 30;
+    return Math.max(18, base + Math.min(10, loops * 3) - qualityTrim);
   }
   function mobStageMinDuration(theme = stageTheme, loops = loopCount, level = perfLevel) {
     const qualityTrim = level >= 2 ? 8 : (level === 1 ? 4 : 0);
-    const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 115 : 110;
-    return Math.max(80, base + loops * 16 - qualityTrim);
+    const base = (theme === STAGE_THEME_TECH || theme === STAGE_THEME_MIGUA) ? 135 : 140;
+    return Math.max(95, base + loops * 20 - qualityTrim);
   }
   function reinforcementSpawnIntervalAt(t = elapsed) {
-    return Math.max(0.62, 1.05 - t / 260);
+    return Math.max(0.48, 0.88 - t / 220);
   }
   function timedReinforcementRemaining(stageT = stateTimer, minDuration = mobStageMinDuration(), interval = reinforcementSpawnIntervalAt()) {
     const left = Math.max(0, minDuration - stageT);
@@ -16806,6 +16817,7 @@
 	    chooseRandomBossBackground();
 	    bossKind = 'eclipseboss';
     bossesCleared = 0;
+    recentBossKinds = [];
     elapsed = 0;
     loopCount = 0;
     extraSpawned = 0;
@@ -18873,10 +18885,10 @@
 	  }
 	  let bonusFormN = 0;
   function bonusEnemyCountAt(t = elapsed, loops = loopCount, level = perfLevel) {
-    if (t < 25 && loops === 0) return 0;
+    if (t < 18 && loops === 0) return 0;
     const p = runPressureAt(t);
     const themeBoost = isTechStageTheme() ? 1 : 0;
-    const base = 4 + Math.floor(p * 7) + Math.min(5, loops) + themeBoost;
+    const base = 6 + Math.floor(p * 10) + Math.min(7, loops * 2) + themeBoost;
     const qualityTrim = level >= 2 ? 2 : (level === 1 ? 1 : 0);
     return Math.max(0, base - qualityTrim);
   }
@@ -19135,8 +19147,8 @@
     seraph:      { hp: 12800, r: 76, scale: 1.12, sprite: 'seraph', name: '六翼 · 堕辉炽天使', intro: '禁断降临：六翼 · 堕辉炽天使', y: 218 },
     // Final Boss - uses finalboss_* sprites (asset key prefix: 'final')
     finalboss:   { hp: 16600, r: 72, scale: 1.06, sprite: 'final',  name: '雪月咏者 · 哑奴西亚', intro: '终焉降临：雪月咏者 · 哑奴西亚', y: 224 },
-    // Mid-boss (weaker version for early stages, uses eclipse_boss sprites)
-    midboss:     { hp: 6200,  r: 58, scale: 0.78, sprite: 'boss',   name: '蚀环守望者 · 加冕', intro: '前方守卫降临：蚀环守望者', y: 200 },
+    // Mid-boss：早期守卫，独立棺守立绘（不再复用 eclipse_boss）
+    midboss:     { hp: 6200,  r: 58, scale: 0.86, sprite: 'midboss', name: '棺守 · 格雷厄姆', intro: '前方守卫降临：棺守 · 格雷厄姆', y: 200 },
     // ===== V3.13 新Boss（素材库提取，使用主题化弹幕） =====
     voidlord:    { hp: 11600,  r: 70, scale: 0.92, sprite: 'voidlord',    name: '虚空领主 · 格雷姆', intro: '虚空裂隙撕裂：虚空领主降临', y: 216, theme: 'void' },
     abysswalker: { hp: 12400, r: 72, scale: 0.95, sprite: 'abysswalker', name: '深渊行者 · 莫德雷', intro: '深渊之门洞开：深渊行者现身', y: 218, theme: 'abyss' },
@@ -19156,16 +19168,17 @@
   
   // Boss pools for randomization - each stage has available bosses
   const BOSS_POOLS = {
-    stage1: ['midboss', 'nightherald'],
-    stage2: ['eclipseboss', 'voidlord', 'nightherald'],
-    stage3: ['eclipseboss', 'seraph', 'voidlord', 'abysswalker', 'stormreaver'],
-    stage4: ['seraph', 'abysswalker', 'darkqueen', 'stormreaver', 'crystalmatron'],
-    stage5: ['seraph', 'voidtitan', 'darkqueen', 'crystalmatron'],
-    stage6: ['voidtitan', 'ancientone', 'darkqueen', 'abyssprince'],
-    stage7: ['ancientone', 'voidtitan', 'darkqueen', 'abyssprince', 'voidsiren'],
-    stage8: ['voidtitan', 'ancientone', 'voidsiren'],
-    stage9: ['ancientone', 'voidtitan', 'darkqueen', 'voidsiren', 'abyssprince'],
-    stage10: ['finalboss', 'ancientone', 'voidsiren'],
+    // 每幕池子加宽，降低同幕连刷；再配合 recentBossKinds 去重
+    stage1: ['midboss', 'nightherald', 'voidlord'],
+    stage2: ['eclipseboss', 'voidlord', 'nightherald', 'stormreaver'],
+    stage3: ['eclipseboss', 'seraph', 'voidlord', 'abysswalker', 'stormreaver', 'nightherald'],
+    stage4: ['seraph', 'abysswalker', 'darkqueen', 'stormreaver', 'crystalmatron', 'eclipseboss'],
+    stage5: ['seraph', 'voidtitan', 'darkqueen', 'crystalmatron', 'abysswalker', 'stormreaver'],
+    stage6: ['voidtitan', 'ancientone', 'darkqueen', 'abyssprince', 'crystalmatron', 'seraph'],
+    stage7: ['ancientone', 'voidtitan', 'darkqueen', 'abyssprince', 'voidsiren', 'crystalmatron'],
+    stage8: ['voidtitan', 'ancientone', 'voidsiren', 'abyssprince', 'finalboss'],
+    stage9: ['ancientone', 'voidtitan', 'darkqueen', 'voidsiren', 'abyssprince', 'finalboss'],
+    stage10: ['finalboss', 'ancientone', 'voidsiren', 'abyssprince', 'voidtitan'],
   };
   
   const GLOBAL_BOSS_POOL = Object.freeze(Object.keys(BOSS_DEFS));
@@ -19174,13 +19187,31 @@
   const MIGUA_BOSS_POOL = Object.freeze(['migua']);
 
   // Select boss by the current stage theme: tech/migua maps bind to their content pack.
+  // 普通 Boss 会避开近期出现过的种类，避免连续刷同一张脸/同一套弹幕。
   function selectRandomBoss(stageName) {
-    const pool = stageTheme === STAGE_THEME_TECH ? TECH_BOSS_POOL
-      : stageTheme === STAGE_THEME_MIGUA ? MIGUA_BOSS_POOL
-        : (BOSS_POOLS[stageName] && BOSS_POOLS[stageName].length ? BOSS_POOLS[stageName] : NORMAL_BOSS_POOL);
+    if (stageTheme === STAGE_THEME_TECH) {
+      prefetchBossAssets('suiyi');
+      return 'suiyi';
+    }
+    if (stageTheme === STAGE_THEME_MIGUA) {
+      prefetchBossAssets('migua');
+      return 'migua';
+    }
+    const basePool = (BOSS_POOLS[stageName] && BOSS_POOLS[stageName].length)
+      ? BOSS_POOLS[stageName]
+      : NORMAL_BOSS_POOL;
+    const avoid = new Set(recentBossKinds.slice(-4));
+    let pool = basePool.filter(k => !avoid.has(k));
+    if (!pool.length) pool = basePool.filter(k => k !== bossKind);
+    if (!pool.length) pool = [...basePool];
     const kind = pool[Math.floor(Math.random() * pool.length)];
     prefetchBossAssets(kind);
     return kind;
+  }
+  function rememberBossEncounter(kind) {
+    if (!kind || kind === 'suiyi' || kind === 'migua') return;
+    recentBossKinds.push(kind);
+    if (recentBossKinds.length > 8) recentBossKinds.splice(0, recentBossKinds.length - 8);
   }
 
   function spawnBoss() {
@@ -19220,7 +19251,7 @@
     // 每个 Boss 阶段名各异，强化个性
     const PHASE_NAMES = {
       eclipseboss: ['月环散射', '金色回廊', '白羽爆线', '血月蛇阵', '终幕·审判线'],
-      midboss:     ['月环散射', '金色回廊', '蚀光爆裂'],
+      midboss:     ['墓灯初燃', '棺链回廊', '终幕·启棺'],
       seraph:      ['六翼初振', '极光回廊', '圣辉环阵', '裁决光矛', '终焉·堕辉'],
       finalboss:   ['初雪飘落', '月刃旋舞', '霜灵追猎', '月华裂线', '终曲·雪月葬'],
       void:        ['虚空旋涡', '空间汇流', '裂隙旋臂', '塌缩走廊', '终焉·吞噬'],
@@ -19496,6 +19527,7 @@
   function defeatBoss() {
     if (!boss || boss.dead) return;
     boss.dead = true;
+    rememberBossEncounter(bossKind);
     bossesCleared++;
     state = 'bossOutro';
     stateTimer = 0;
@@ -19521,7 +19553,7 @@
       setMessage('随意断开连接……系统恢复控制', 2.2);
       playSfx('bossPhase', 0.55, 0.72);
     } else if (bossKind === 'midboss') {
-      setMessage('守卫被击破！', 2.2);
+      setMessage('棺守倒下……墓灯熄灭', 2.2);
       playSfx('bossPhase', 0.5, 0.6);
     } else if (bossKind === 'seraph') {
       setMessage('六翼炽天使坠落……极光散尽', 2.2);
@@ -26720,7 +26752,7 @@
       spawnWave(waveIndex);
       spawnBonusEnemies();
       waveIndex++;
-      spawnTimer = Math.max(hellModeActive ? 0.66 : 0.82, (hellModeActive ? 1.24 : 1.42) - elapsed / 260);
+      spawnTimer = Math.max(hellModeActive ? 0.52 : 0.64, (hellModeActive ? 1.05 : 1.18) - elapsed / 220);
       setMessage(`${actLabel} · ${formatMobWaveStatus().text}`, 1.0);
     } else if (spawnTimer <= 0 && waveIndex >= total && (extraSpawned < extraTotal || stateTimer < minDuration)) {
       // 肉鸽附加波次：复用本关刷怪并叠加增援，随时间越来越猛
@@ -26796,10 +26828,11 @@
     const t = patternTimer;
     if (boss.kind === 'seraph') { seraphPatterns(t, dt); return; }
     if (boss.kind === 'finalboss') { finalbossPatterns(t, dt); return; }
+    if (boss.kind === 'midboss') { midbossPatterns(t, dt); return; }
     if (boss.theme) { themeBossPatterns(t, dt, boss.theme); return; }
     
     // ═══════════════════════════════════════════════════════════════
-    // Eclipse Boss & Mid-boss弹幕 - 简化版：规律、可预判、有呼吸空间
+    // Eclipse Boss 专属弹幕：蚀环六瓣 / 月牙对旋 / 刃轮终幕
     // ═══════════════════════════════════════════════════════════════
     
     if (bossPhase === 0) {
@@ -26840,6 +26873,32 @@
     const b = { x, y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, ax: 0, ay: 0, r, color, damage, life: 7, maxLife: 7, kind: 'orb', grazed: false, rot: rand(0, TAU), spin: rand(-2, 2) };
     enemyBullets.push(b);
     return b;
+  }
+
+
+  // ── 棺守 · 格雷厄姆：墓灯 / 棺链 / 启棺 专属谱面 ─────────────────
+  // 与蚀环完全分离：火核俯冲、锁链缎带、鬼火环抛、刀光走廊，规律可读
+  function midbossPatterns(t, dt) {
+    const cx = boss.x, cy = boss.y + 18;
+    if (bossPhase === 0) {
+      // 墓灯初燃：火核扇 + 鬼火环抛，中央留缝
+      if (tickEvery(t, dt, 1.15)) emitFireDiveCurtain(cx, cy, 7, 195, '#ff9a4a', 7, 'v3firecore');
+      if (tickEvery(t, dt, 1.8)) emitGhostOrbitRelease(cx, cy, 6, 58, 145, '#c9a0ff', 7, 'v3wisp', boss.t * 1.1);
+      if (tickEvery(t, dt, 2.4)) emitAimedRingGap(cx, cy, 12, 170, '#ffe6a8', 6.5, 'v3ember', 0.55);
+    } else if (bossPhase === 1) {
+      // 棺链回廊：缎带螺旋 + 刀光走廊 + 迟滞环
+      if (tickEvery(t, dt, 0.55)) emitRibbonHelix(cx, cy, 4, 150, '#b0a0ff', 6.5, 'v3path2', boss.t * 1.35);
+      if (tickEvery(t, dt, 1.9)) emitDaoWaveCorridor(cy + 24, 160, '#ffd46d', 7.5, 'v3daow', player.x);
+      if (tickEvery(t, dt, 1.35)) emitPulseRingBurst(cx, cy, 14, 185, '#9fe6ff', 7, 'v3ghost', boss.t * 0.55);
+      if (tickEvery(t, dt, 2.5)) patChaseFork(boss, 240, '#ffb070', 7, 'v3firecore');
+    } else {
+      // 终幕·启棺：交叉刃 + 鬼火抛射 + 棱晶门，压迫但有移动缺口
+      if (tickEvery(t, dt, 1.4)) emitSlashCrossBurst(cx, cy, 165, '#c984ff', 7.5, 'v3slashx', boss.t);
+      if (tickEvery(t, dt, 1.1)) emitGhostOrbitRelease(cx, cy, 8, 72, 170, '#e8c0ff', 7, 'v3wisp', -boss.t * 1.2);
+      if (tickEvery(t, dt, 2.0)) emitPrismGateWall(180, '#ffe6a8', 7, 'v3prism', player.x);
+      if (tickEvery(t, dt, 0.7)) emitRibbonHelix(cx, cy, 5, 165, '#ff8a5c', 6.5, 'v3path2', boss.t * 1.6);
+      if (tickEvery(t, dt, 2.6)) emitFireDiveCurtain(cx, cy, 9, 220, '#ff7040', 7, 'v3firecore');
+    }
   }
 
   // ── Aurora seraph: six-wing radiant barrage ─────────────────────────────
