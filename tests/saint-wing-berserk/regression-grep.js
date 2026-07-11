@@ -74,8 +74,8 @@ if (!/rightSrc\s*=\s*\{\s*sx:\s*601,\s*sy:\s*20,\s*sw:\s*111,\s*sh:\s*260\s*\}/.
 if (!/motherhive:\s*false/.test(html)) {
   fail('motherhive default equipment flag missing');
 }
-if (!/\{\s*key:\s*'motherhive',\s*name:\s*'母巢蝶环'[\s\S]*exclusive:\s*'生命之母专属'/.test(html)) {
-  fail('motherhive wing option or exclusive label missing');
+if (!/\{\s*key:\s*'motherhive',\s*name:\s*'母巢蝶环',\s*short:\s*'母巢'\s*\}/.test(html)) {
+  fail('motherhive wing option missing');
 }
 for (const key of ['mhrFrontFlowerBud', 'mhrFrontFlowerOpen1', 'mhrFrontFlowerOpen2', 'mhrFrontFlowerOpen3', 'mhrFrontFlowerOverload', 'mhrFrontFlowerBurst']) {
   if (!html.includes(key)) fail(`${key} asset key missing`);

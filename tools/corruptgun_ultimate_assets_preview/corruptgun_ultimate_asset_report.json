@@ -1,0 +1,15 @@
+{
+  "manifest": "assets/player/corrupt_gun/ult/cg_ultimate_manifest.json",
+  "sourceCopiesVerified": [
+    "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹",
+    "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹"
+  ],
+  "sequenceCount": 9,
+  "runtimeAssetCount": 53,
+  "qa": {
+    "status": "pass",
+    "residualGreen": {},
+    "residualCyan": {}
+  },
+  "contactSheet": "tools/corruptgun_ultimate_assets_preview/corruptgun_ultimate_contact_sheet.png"
+}

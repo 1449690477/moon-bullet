@@ -20,7 +20,7 @@ const SALT         = Deno.env.get("LB_SALT") ?? "CHANGE_ME";
 
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
-const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife", "skyward"]);
+const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife", "skyward", "corruptgun"]);
 const TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 令牌有效期 2 小时
 
 const cors = {

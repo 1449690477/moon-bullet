@@ -2,8 +2,8 @@
 """Build a clean GitHub Pages publish directory.
 
 The source project keeps raw imports, backups and desktop-quality assets.
-This script publishes only files referenced by index.html and creates an
-optional mobile WebP mirror used by the runtime on coarse-pointer devices.
+This script publishes files referenced by index.html plus manifest-declared
+runtime groups, and creates a mobile WebP mirror for coarse-pointer devices.
 """
 
 from __future__ import annotations
@@ -25,6 +25,68 @@ MOBILE_DIR = DIST / "assets_mobile"
 IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 AUDIO_EXTS = {".ogg", ".wav", ".mp3", ".m4a"}
 MHR_BLACKHOLE_SEQUENCE_PHASES = {"deploy": 16, "loop": 32, "overload": 16, "collapse": 12}
+CORRUPTGUN_VFX_MANIFEST_REL = "assets/player/corrupt_gun/cg_vfx_v2_manifest.json"
+CORRUPTGUN_VFX_BUNDLE_REL = "assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js"
+CORRUPTGUN_INFECTION_MANIFEST_REL = "assets/player/corrupt_gun/infection/cg_infection_manifest.json"
+CORRUPTGUN_MATERIAL_MANIFEST_REL = "assets/player/corrupt_gun/cg_material_manifest.json"
+CORRUPTGUN_ULTIMATE_MANIFEST_REL = "assets/player/corrupt_gun/ult/cg_ultimate_manifest.json"
+CORRUPTGUN_ULTIMATE_REFERENCE_REL = "assets/player/corrupt_gun/ult/reference/cg_ult_concept.png"
+CORRUPTGUN_NOTICE_REL = "THIRD_PARTY_NOTICES.md"
+CORRUPTGUN_VERSION_INPUTS = (
+    CORRUPTGUN_VFX_BUNDLE_REL,
+    CORRUPTGUN_VFX_MANIFEST_REL,
+    CORRUPTGUN_INFECTION_MANIFEST_REL,
+    CORRUPTGUN_MATERIAL_MANIFEST_REL,
+    CORRUPTGUN_ULTIMATE_MANIFEST_REL,
+    CORRUPTGUN_NOTICE_REL,
+)
+CORRUPTGUN_VFX_KEYS = {
+    "mainOrb": {
+        "base": "cgVfxMainOrbBase",
+        "energy": "cgVfxMainOrbEnergy",
+    },
+    "cloneOrb": {
+        "base": "cgVfxCloneOrbBase",
+        "energy": "cgVfxCloneOrbEnergy",
+    },
+    "trail": {
+        "base": "cgVfxTrailBase",
+        "energy": "cgVfxTrailEnergy",
+    },
+    "muzzle": {
+        "base": "cgVfxMuzzleBase",
+        "energy": "cgVfxMuzzleEnergy",
+    },
+    "impact": {
+        "base": "cgVfxImpactBase",
+        "energy": "cgVfxImpactEnergy",
+    },
+    "mark": {
+        "base": "cgVfxMarkBase",
+        "energy": "cgVfxMarkEnergy",
+    },
+    "cloneField": {
+        "base": "cgVfxCloneFieldBase",
+        "energy": "cgVfxCloneFieldEnergy",
+    },
+}
+CORRUPTGUN_INFECTION_KEYS = {
+    f"{part}_{theme}": f"cgInfect{''.join(token.title() for token in part.split('_'))}{theme.title()}"
+    for part in ("tendril_1", "tendril_2", "tendril_3", "link", "node", "hit", "burst")
+    for theme in ("main", "clone")
+}
+CORRUPTGUN_INFECTION_KEYS.update({
+    f"{part}_{theme}": f"{runtime_prefix}{theme.title()}"
+    for part, runtime_prefix in (
+        ("chain_head", "cgChainHead"),
+        ("chain_link", "cgChainLink"),
+        ("tendril_spine", "cgTendrilSpine"),
+        ("tendril_barb", "cgTendrilBarb"),
+        ("source_node", "cgInfectSourceNode"),
+        ("target_burst", "cgInfectTargetBurst"),
+    )
+    for theme in ("main", "clone")
+})
 
 
 def read_index() -> str:
@@ -63,6 +125,236 @@ def augment_mother_hive_sequence_assets(asset_paths: dict[str, str]) -> None:
             idx = f"{i:03d}"
             key = f"mhrBhSeq{cap}{idx}"
             asset_paths[key] = f"{base}/{phase}/bh_{phase}_{idx}.png"
+
+
+def augment_corruptgun_assets(asset_paths: dict[str, str]) -> dict[str, str]:
+    base = "assets/player/corrupt_gun"
+    asset_paths.update({
+        "cgBodyNormal": f"{base}/body/cg_body_normal.png",
+        "cgBodyOver": f"{base}/body/cg_body_over.png",
+        "cgCloneNoise": f"{base}/clone/cg_clone_noise.png",
+        "cgAvatar": f"{base}/ui/cg_avatar.png",
+        "cgCutin": f"{base}/ui/cg_cutin.png",
+    })
+    for form in ("Normal", "Over"):
+        form_file = form.lower()
+        for layer in ("Ao", "Crystal", "Muzzle", "Reactor", "Engine", "Wing"):
+            asset_paths[f"cgMat{form}{layer}"] = f"{base}/body/material/cg_mat_{form_file}_{layer.lower()}.png"
+    groups = (
+        ("cgBodyBankR", "body/cg_body_bankR", 3),
+        ("cgBodyBankL", "body/cg_body_bankL", 3),
+        ("cgBodyOverBankR", "body/cg_body_over_bankR", 3),
+        ("cgFormSwitch", "body/cg_form_switch", 8),
+        ("cgWingBlade", "body/cg_wing_blade", 4),
+        ("cgCloneIdle", "clone/cg_clone_idle", 4),
+        ("cgCloneAttack", "clone/cg_clone_attack", 3),
+        ("cgCloneSpawn", "clone/cg_clone_spawn", 5),
+        ("cgCloneDespawn", "clone/cg_clone_despawn", 4),
+        ("cgCloneOrb", "bullets/cg_clone_orb", 2),
+        ("cgOrbSide", "bullets/cg_orb_side", 4),
+        ("cgOrbPierce", "bullets/cg_orb_pierce", 4),
+        ("cgOrbMain", "bullets/cg_orb_main", 2),
+        ("cgOrbOver", "bullets/cg_orb_over", 2),
+        ("cgOrbBaked", "bullets/cg_orb_baked", 4),
+        ("cgTrailStrip", "bullets/cg_trail_strip", 5),
+        ("cgFlameOver", "fx/cg_flame_over", 6),
+        ("cgCorePulse", "fx/cg_core_pulse", 6),
+        ("cgMark", "fx/cg_mark", 6),
+        ("cgDeathBoom", "fx/cg_death_boom", 7),
+        ("cgChargeOrb", "fx/cg_charge_orb", 2),
+        ("cgHitSpark", "fx/cg_hit_spark", 6),
+        ("cgFlameNormal", "fx/cg_flame_normal", 5),
+        ("cgMuzzleNormal", "fx/cg_muzzle_normal", 4),
+        ("cgMuzzleOver", "fx/cg_muzzle_over", 4),
+        ("cgAura", "fx/cg_aura", 4),
+        ("cgStackBurst", "fx/cg_stack_burst", 6),
+        ("cgShockring", "fx/cg_shockring", 6),
+        ("cgSpark", "fx/cg_spark", 8),
+        ("cgShard", "fx/cg_shard", 8),
+        ("cgDotR", "fx/cg_dot_r", 3),
+        ("cgDotP", "fx/cg_dot_p", 3),
+        ("cgDotW", "fx/cg_dot_w", 3),
+        ("cgMatNormalMetal", "body/material/cg_mat_normal_metal", 8),
+        ("cgMatOverMetal", "body/material/cg_mat_over_metal", 8),
+    )
+    groups += tuple(
+        (f"cgMatForm{layer}", f"body/material/cg_mat_form_{layer.lower()}", 8)
+        for layer in ("Ao", "Metal", "Crystal", "Muzzle", "Reactor", "Engine", "Wing")
+    )
+    groups += (
+        ("cgUltBladeA", "ult/parts/cg_ult_blade_a", 4),
+        ("cgUltSwirl", "ult/parts/cg_ult_swirl", 3),
+        ("cgUltDartS", "ult/parts/cg_ult_dart_s", 4),
+        ("cgUltRingThin", "ult/parts/cg_ult_ring_thin", 3),
+        ("cgUltCrescent", "ult/parts/cg_ult_crescent", 8),
+        ("cgUltVortexS", "ult/parts/cg_ult_vortex_s", 4),
+        ("cgUltRune", "ult/parts/cg_ult_rune", 6),
+    )
+    for key_prefix, path_prefix, count in groups:
+        for index in range(1, count + 1):
+            asset_paths[f"{key_prefix}{index}"] = f"{base}/{path_prefix}_{index}.png"
+
+    manifest_path = ROOT / CORRUPTGUN_VFX_MANIFEST_REL
+    if not manifest_path.is_file():
+        raise RuntimeError(f"Missing Corrupt Gun VFX manifest: {CORRUPTGUN_VFX_MANIFEST_REL}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as error:
+        raise RuntimeError(f"Invalid Corrupt Gun VFX manifest: {error}") from error
+
+    render_contract = manifest.get("renderContract", {})
+    if manifest.get("formatVersion") != 2 or manifest.get("character") != "corruptgun":
+        raise RuntimeError("Corrupt Gun VFX manifest has an unsupported identity or format")
+    if render_contract.get("fallbackIsVisuallyComplete") is not True:
+        raise RuntimeError("Corrupt Gun VFX manifest does not guarantee a complete fallback")
+    if render_contract.get("mobileEncoding") != "lossless WebP":
+        raise RuntimeError("Corrupt Gun VFX manifest must declare lossless WebP mobile assets")
+    if manifest.get("qa", {}).get("status") != "pass":
+        raise RuntimeError("Corrupt Gun VFX manifest QA is not passing")
+
+    manifest_assets = manifest.get("assets")
+    if not isinstance(manifest_assets, dict):
+        raise RuntimeError("Corrupt Gun VFX manifest is missing its assets object")
+
+    lossless_sources: dict[str, str] = {}
+    allowed_prefix = "assets/player/corrupt_gun/vfx_v2/"
+    for asset_name, layer_keys in CORRUPTGUN_VFX_KEYS.items():
+        asset = manifest_assets.get(asset_name)
+        if not isinstance(asset, dict):
+            raise RuntimeError(f"Corrupt Gun VFX manifest is missing asset {asset_name}")
+        layers = asset.get("layers")
+        if not isinstance(layers, dict):
+            raise RuntimeError(f"Corrupt Gun VFX manifest is missing layers for {asset_name}")
+        for layer_name, runtime_key in layer_keys.items():
+            layer = layers.get(layer_name)
+            if not isinstance(layer, dict):
+                raise RuntimeError(f"Corrupt Gun VFX manifest is missing {asset_name}.{layer_name}")
+            png_rel = layer.get("png")
+            webp_rel = layer.get("webpLossless")
+            if not isinstance(png_rel, str) or not png_rel.startswith(allowed_prefix) or not png_rel.endswith(".png"):
+                raise RuntimeError(f"Invalid PNG path for Corrupt Gun VFX {asset_name}.{layer_name}")
+            if not isinstance(webp_rel, str) or not webp_rel.startswith(allowed_prefix) or not webp_rel.endswith(".webp"):
+                raise RuntimeError(f"Invalid lossless WebP path for Corrupt Gun VFX {asset_name}.{layer_name}")
+            for encoding, rel, hash_key in (
+                ("PNG", png_rel, "pngSha256"),
+                ("lossless WebP", webp_rel, "webpSha256"),
+            ):
+                source_path = ROOT / rel
+                expected_hash = layer.get(hash_key)
+                if not source_path.is_file():
+                    raise RuntimeError(f"Missing Corrupt Gun VFX {encoding}: {rel}")
+                if not isinstance(expected_hash, str) or hashlib.sha256(source_path.read_bytes()).hexdigest() != expected_hash:
+                    raise RuntimeError(
+                        f"Corrupt Gun VFX {asset_name}.{layer_name} {encoding} does not match its audited hash"
+                    )
+            declared_rel = asset_paths.get(runtime_key)
+            if declared_rel is None:
+                raise RuntimeError(f"index.html is missing Corrupt Gun VFX key {runtime_key}")
+            if declared_rel != png_rel:
+                raise RuntimeError(
+                    f"index.html path for {runtime_key} does not match the audited VFX manifest"
+                )
+            asset_paths[runtime_key] = png_rel
+            lossless_sources[png_rel] = webp_rel
+    return lossless_sources
+
+
+def validate_corruptgun_infection_assets(asset_paths: dict[str, str]) -> int:
+    manifest_path = ROOT / CORRUPTGUN_INFECTION_MANIFEST_REL
+    if not manifest_path.is_file():
+        raise RuntimeError(f"Missing Corrupt Gun infection manifest: {CORRUPTGUN_INFECTION_MANIFEST_REL}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as error:
+        raise RuntimeError(f"Invalid Corrupt Gun infection manifest: {error}") from error
+    if manifest.get("formatVersion") != 1 or manifest.get("character") != "corruptgun":
+        raise RuntimeError("Corrupt Gun infection manifest has an unsupported identity or format")
+    if manifest.get("renderContract", {}).get("fallbackComplete") is not True:
+        raise RuntimeError("Corrupt Gun infection manifest does not guarantee a complete fallback")
+    assets = manifest.get("assets")
+    if not isinstance(assets, dict) or set(assets) != set(CORRUPTGUN_INFECTION_KEYS):
+        raise RuntimeError("Corrupt Gun infection manifest does not contain the expected 26 assets")
+    for manifest_key, runtime_key in CORRUPTGUN_INFECTION_KEYS.items():
+        item = assets.get(manifest_key)
+        rel = item.get("file") if isinstance(item, dict) else None
+        if not isinstance(rel, str) or not rel.startswith("assets/player/corrupt_gun/infection/") or not rel.endswith(".png"):
+            raise RuntimeError(f"Invalid infection asset path for {manifest_key}")
+        path = ROOT / rel
+        if not path.is_file():
+            raise RuntimeError(f"Missing infection asset: {rel}")
+        if item.get("greenPixels") != 0:
+            raise RuntimeError(f"Infection asset still contains green spill: {rel}")
+        if manifest_key.endswith("_clone") and item.get("cyanPixels") != 0:
+            raise RuntimeError(f"Clone infection asset still contains cyan spill: {rel}")
+        if hashlib.sha256(path.read_bytes()).hexdigest() != item.get("sha256"):
+            raise RuntimeError(f"Infection asset hash mismatch: {rel}")
+        if asset_paths.get(runtime_key) != rel:
+            raise RuntimeError(f"index.html infection asset mismatch for {runtime_key}")
+    return len(assets)
+
+
+def validate_corruptgun_material_assets(asset_paths: dict[str, str]) -> int:
+    manifest_path = ROOT / CORRUPTGUN_MATERIAL_MANIFEST_REL
+    if not manifest_path.is_file():
+        raise RuntimeError(f"Missing Corrupt Gun material manifest: {CORRUPTGUN_MATERIAL_MANIFEST_REL}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as error:
+        raise RuntimeError(f"Invalid Corrupt Gun material manifest: {error}") from error
+    if manifest.get("version") != 1 or manifest.get("character") != "corruptgun":
+        raise RuntimeError("Corrupt Gun material manifest has an unsupported identity or format")
+    assets = manifest.get("assets")
+    if not isinstance(assets, dict) or len(assets) != 84:
+        raise RuntimeError("Corrupt Gun material manifest does not contain the expected 84 layers")
+    declared_paths = set(asset_paths.values())
+    for rel, item in assets.items():
+        if not rel.startswith("body/material/") or not rel.endswith(".png"):
+            raise RuntimeError(f"Invalid material asset path: {rel}")
+        full_rel = f"assets/player/corrupt_gun/{rel}"
+        path = ROOT / full_rel
+        if not path.is_file() or full_rel not in declared_paths:
+            raise RuntimeError(f"Missing or undeclared material asset: {full_rel}")
+        if item.get("residualGreenPixels") != 0:
+            raise RuntimeError(f"Material asset still contains green spill: {full_rel}")
+        if hashlib.sha256(path.read_bytes()).hexdigest() != item.get("sha256"):
+            raise RuntimeError(f"Material asset hash mismatch: {full_rel}")
+    return len(assets)
+
+
+def validate_corruptgun_ultimate_assets(asset_paths: dict[str, str]) -> int:
+    manifest_path = ROOT / CORRUPTGUN_ULTIMATE_MANIFEST_REL
+    if not manifest_path.is_file():
+        raise RuntimeError(f"Missing Corrupt Gun ultimate manifest: {CORRUPTGUN_ULTIMATE_MANIFEST_REL}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception as error:
+        raise RuntimeError(f"Invalid Corrupt Gun ultimate manifest: {error}") from error
+    if manifest.get("formatVersion") != 1 or manifest.get("character") != "corruptgun" or manifest.get("ultimate") != "darkWheel":
+        raise RuntimeError("Corrupt Gun ultimate manifest has an unsupported identity or format")
+    assets = manifest.get("assets")
+    if not isinstance(assets, dict) or len(assets) != 53:
+        raise RuntimeError("Corrupt Gun ultimate manifest does not contain the expected 53 audited assets")
+    declared_paths = set(asset_paths.values())
+    for relative_asset, item in assets.items():
+        rel = f"assets/player/corrupt_gun/ult/{relative_asset}"
+        path = ROOT / rel
+        if not path.is_file():
+            raise RuntimeError(f"Missing Corrupt Gun ultimate asset: {rel}")
+        is_reference = relative_asset == "reference/cg_ult_concept.png"
+        if not is_reference and rel not in declared_paths:
+            raise RuntimeError(f"Undeclared Corrupt Gun ultimate runtime asset: {rel}")
+        if not is_reference and (item.get("residualGreenPixels") != 0 or item.get("residualCyanPixels") != 0):
+            raise RuntimeError(f"Corrupt Gun ultimate asset still contains green/cyan spill: {rel}")
+        if hashlib.sha256(path.read_bytes()).hexdigest() != item.get("sha256"):
+            raise RuntimeError(f"Corrupt Gun ultimate asset hash mismatch: {rel}")
+    sequences = manifest.get("sequences")
+    expected_frames = {
+        "orb_stage": 6, "orb_roll": 6, "orb_dart": 5, "comet": 6,
+        "shatter": 8, "form": 8, "form_b": 8, "wheel": 8, "wheel_inner": 8,
+    }
+    if not isinstance(sequences, dict) or {key: value.get("frames") for key, value in sequences.items()} != expected_frames:
+        raise RuntimeError("Corrupt Gun ultimate sequence mapping does not match the audited frame contract")
+    return len(assets)
 
 
 def clean_dist() -> None:
@@ -104,23 +396,42 @@ def mobile_max_side(rel: str) -> int:
     return 768
 
 
-def make_mobile_variant(key: str, rel: str) -> str | None:
+def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) -> str | None:
     src = ROOT / rel
     if src.suffix.lower() not in IMAGE_EXTS or not src.exists():
         return None
 
-    out_rel = Path("assets_mobile") / Path(rel).with_suffix(".webp").relative_to("assets")
+    lossless_rel = lossless_sources.get(rel)
+    mobile_source_rel = lossless_rel or Path(rel).with_suffix(".webp").as_posix()
+    out_rel = Path("assets_mobile") / Path(mobile_source_rel).relative_to("assets")
     out = DIST / out_rel
     out.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-      with Image.open(src) as im:
-        im = im.convert("RGBA") if im.mode not in ("RGB", "RGBA") else im.copy()
-        max_side = mobile_max_side(rel)
-        if max(im.size) > max_side:
-            im.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
-        im.save(out, "WEBP", quality=72, method=4)
+        if lossless_rel:
+            lossless_src = ROOT / lossless_rel
+            if not lossless_src.is_file():
+                raise FileNotFoundError(lossless_rel)
+            # The VFX generator already produced the audited lossless-alpha file.
+            # Copying it byte-for-byte avoids translucent black/red edge damage.
+            shutil.copy2(lossless_src, out)
+        else:
+            with Image.open(src) as im:
+                im = im.convert("RGBA") if im.mode not in ("RGB", "RGBA") else im.copy()
+                max_side = mobile_max_side(rel)
+                if max(im.size) > max_side:
+                    im.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
+                if rel.startswith((
+                    "assets/player/corrupt_gun/infection/",
+                    "assets/player/corrupt_gun/body/material/",
+                    "assets/player/corrupt_gun/ult/",
+                )):
+                    im.save(out, "WEBP", lossless=True, method=6)
+                else:
+                    im.save(out, "WEBP", quality=72, method=4)
     except Exception:
+        if rel in lossless_sources:
+            raise
         return None
 
     if out.exists() and out.stat().st_size > 0:
@@ -137,6 +448,20 @@ def inject_pages_manifest(index_html: str) -> str:
 
 def rel_url(rel: str) -> str:
     return "./" + rel.replace("\\", "/")
+
+
+def build_version(source: str) -> str:
+    digest = hashlib.sha1()
+    digest.update(source.encode("utf-8"))
+    for rel in CORRUPTGUN_VERSION_INPUTS:
+        path = ROOT / rel
+        if not path.is_file():
+            raise FileNotFoundError(rel)
+        digest.update(b"\0")
+        digest.update(rel.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+    return digest.hexdigest()[:12]
 
 
 def write_service_worker(version: str, core_urls: list[str]) -> None:
@@ -181,16 +506,29 @@ self.addEventListener('fetch', event => {{
 def main() -> None:
     source = read_index()
     asset_paths = extract_const_object(source, "ASSET_PATHS")
+    asset_paths.update(extract_const_object(source, "CG_ASSET_PATHS"))
+    corruptgun_lossless_sources = augment_corruptgun_assets(asset_paths)
+    corruptgun_infection_assets = validate_corruptgun_infection_assets(asset_paths)
+    corruptgun_material_assets = validate_corruptgun_material_assets(asset_paths)
+    corruptgun_ultimate_assets = validate_corruptgun_ultimate_assets(asset_paths)
     augment_mother_hive_sequence_assets(asset_paths)
     bgm_paths = extract_const_object(source, "BGM_PATHS")
     sfx_paths = extract_const_object(source, "SFX_PATHS")
 
-    version = hashlib.sha1(source.encode("utf-8")).hexdigest()[:12]
+    version = build_version(source)
     built_at = stable_built_at(version)
     clean_dist()
 
     referenced = dict(asset_paths)
-    media_paths = set(asset_paths.values()) | set(bgm_paths.values()) | set(sfx_paths.values())
+    companion_webp_paths = set(corruptgun_lossless_sources.values())
+    runtime_support_paths = set(CORRUPTGUN_VERSION_INPUTS) | {CORRUPTGUN_ULTIMATE_REFERENCE_REL}
+    media_paths = (
+        set(asset_paths.values())
+        | set(bgm_paths.values())
+        | set(sfx_paths.values())
+        | companion_webp_paths
+        | runtime_support_paths
+    )
     bytes_copied = 0
     missing: list[str] = []
     for rel in sorted(media_paths):
@@ -204,7 +542,7 @@ def main() -> None:
     available_assets = {key: (ROOT / rel).exists() for key, rel in referenced.items()}
     mobile_manifest: dict[str, str] = {}
     for key, rel in referenced.items():
-        variant = make_mobile_variant(key, rel)
+        variant = make_mobile_variant(key, rel, corruptgun_lossless_sources)
         if variant:
             mobile_manifest[key] = variant
 
@@ -214,14 +552,26 @@ def main() -> None:
         f"window.__MOBILE_ASSET_PATHS__ = {json.dumps(mobile_manifest, ensure_ascii=False, sort_keys=True)};\n"
     )
     (DIST / "asset-mobile-manifest.js").write_text(manifest_js, encoding="utf-8")
+    # Root index.html is also a supported local preview entry; keep its availability map fresh.
+    (ROOT / "asset-mobile-manifest.js").write_text(manifest_js, encoding="utf-8")
     (DIST / "index.html").write_text(inject_pages_manifest(source), encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
 
     core_keys = [
         "bgStageBase", "bgStage1", "playerAvatar", "yanuxiyaBAvatar", "annaAvatar",
-        "reaverAvatar", "motherlifeAvatar", "uiSkillBeamIcon", "uiSkillBombIcon",
+        "reaverAvatar", "motherlifeAvatar", "cgAvatar", "uiSkillBeamIcon", "uiSkillBombIcon",
     ]
-    core_urls = ["./", "./index.html", "./asset-mobile-manifest.js"]
+    core_urls = [
+        "./",
+        "./index.html",
+        "./asset-mobile-manifest.js",
+        rel_url(CORRUPTGUN_VFX_BUNDLE_REL),
+        rel_url(CORRUPTGUN_VFX_MANIFEST_REL),
+        rel_url(CORRUPTGUN_INFECTION_MANIFEST_REL),
+        rel_url(CORRUPTGUN_MATERIAL_MANIFEST_REL),
+        rel_url(CORRUPTGUN_ULTIMATE_MANIFEST_REL),
+        rel_url("assets/player/corrupt_gun/ult/ui/cg_ult_icon.png"),
+    ]
     for key in core_keys:
         rel = asset_paths.get(key)
         if rel:
@@ -235,6 +585,11 @@ def main() -> None:
         "builtAt": built_at,
         "referencedMedia": len(media_paths),
         "mobileVariants": len(mobile_manifest),
+        "losslessCorruptgunVfxVariants": len(corruptgun_lossless_sources),
+        "losslessCorruptgunInfectionVariants": corruptgun_infection_assets,
+        "corruptgunMaterialLayers": corruptgun_material_assets,
+        "corruptgunUltimateAssets": corruptgun_ultimate_assets,
+        "runtimeSupportFiles": list(CORRUPTGUN_VERSION_INPUTS),
         "copiedBytes": bytes_copied,
         "excluded": [
             "assets/_backup_before_user_import/**",

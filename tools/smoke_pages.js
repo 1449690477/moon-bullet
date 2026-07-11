@@ -10,6 +10,7 @@
  * 检查项：
  *   - 控制台错误 / 404
  *   - asset-mobile-manifest.js 是否加载
+ *   - 腐化枪本地 WebGL VFX bundle 是否加载
  *   - 移动资源 vs 桌面资源路径
  *   - Canvas 非空（游戏有渲染）
  *   - 点击开始后游戏状态切换
@@ -66,6 +67,7 @@ const SCENARIOS = [
     expectMobile: true,
     checks: [
       { label: 'asset-mobile-manifest 加载', test: (r) => r.hasMobileManifest },
+      { label: '腐化枪 VFX bundle 加载', test: (r) => r.hasCorruptgunVfxBundle },
       { label: 'IS_MOBILE_RUNTIME=true', test: (r) => r.isMobileRuntime === true },
       { label: 'Canvas 非空', test: (r) => r.canvasNonBlank },
       { label: '无 404', test: (r) => !r.has404 },
@@ -81,6 +83,7 @@ const SCENARIOS = [
     expectMobile: false,
     checks: [
       { label: 'asset-mobile-manifest 不加载或忽略', test: (r) => !r.hasMobileManifest || !r.isMobileRuntime },
+      { label: '腐化枪 VFX bundle 加载', test: (r) => r.hasCorruptgunVfxBundle },
       { label: 'IS_MOBILE_RUNTIME=false', test: (r) => r.isMobileRuntime === false },
       { label: 'Canvas 非空', test: (r) => r.canvasNonBlank },
       { label: '无 404', test: (r) => !r.has404 },
@@ -96,6 +99,7 @@ const SCENARIOS = [
     expectMobile: true,
     checks: [
       { label: '触控设备识别为移动端', test: (r) => r.isMobileRuntime === true || r.hasCoarsePointer },
+      { label: '腐化枪 VFX bundle 加载', test: (r) => r.hasCorruptgunVfxBundle },
       { label: 'Canvas 非空', test: (r) => r.canvasNonBlank },
       { label: '无 404', test: (r) => !r.has404 },
       { label: '无 JS 错误', test: (r) => r.jsErrors.length === 0 },
@@ -151,6 +155,7 @@ async function runScenario(browser, scenario, baseUrl) {
     jsErrors: [],
     has404: false,
     hasMobileManifest: false,
+    hasCorruptgunVfxBundle: false,
     isMobileRuntime: null,
     hasCoarsePointer: null,
     canvasNonBlank: false,
@@ -188,6 +193,9 @@ async function runScenario(browser, scenario, baseUrl) {
       result.has404 = true;
     }
   });
+  page.on('response', response => {
+    if (response.status() === 404) result.has404 = true;
+  });
 
   try {
     await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
@@ -205,6 +213,9 @@ async function runScenario(browser, scenario, baseUrl) {
     // 检查 asset-mobile-manifest 是否被使用
     result.hasMobileManifest = await page.evaluate(() => {
       return !!document.querySelector('script[src*="asset-mobile-manifest"]');
+    });
+    result.hasCorruptgunVfxBundle = await page.evaluate(() => {
+      return typeof window.CgVfxEngine?.create === 'function';
     });
 
     // Canvas 非空检查：等几帧让游戏渲染

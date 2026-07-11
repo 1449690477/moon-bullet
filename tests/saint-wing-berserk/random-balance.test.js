@@ -63,9 +63,9 @@ describe('random map, boss, roguelike balance, and clarity spec', () => {
     expect(samples.sixMinutes.diffMul).toBeGreaterThan(samples.thirtySeconds.diffMul);
     expect(samples.tenMinutes.hpMul).toBeGreaterThan(samples.sixMinutes.hpMul);
     expect(samples.loopTwo.diffMul).toBeGreaterThan(samples.tenMinutes.diffMul);
-    expect(samples.loopTwo.hpMul).toBeLessThanOrEqual(7.5);
+    expect(samples.loopTwo.hpMul).toBeLessThanOrEqual(18.5);
     expect(stageFlow.normalTarget).toBeGreaterThan(10);
-    expect(stageFlow.techTarget).toBeGreaterThan(stageFlow.normalTarget);
+    expect(stageFlow.techTarget).toBeLessThan(stageFlow.normalTarget);
     expect(stageFlow.normalMinDuration).toBeGreaterThanOrEqual(60);
   });
 

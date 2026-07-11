@@ -58,6 +58,19 @@ describe('online leaderboard and avatar upload spec', () => {
     expect(payload.score).toBe(6000000);
   });
 
+  it('keeps the seventh fighter character key in leaderboard payloads', () => {
+    const payload = board.buildPayloadForTest({
+      player_name: 'ABYSS',
+      character: 'corruptgun',
+      score: 1200000,
+      kill_count: 1600,
+      loop_count: 2,
+      elapsed: 300,
+      bosses_cleared: 3,
+    });
+    expect(payload.character).toBe('corruptgun');
+  });
+
   it('only submits scores that beat the remote best score', () => {
     expect(board.shouldSubmitForTest(1000, 999)).toBe(true);
     expect(board.shouldSubmitForTest(1000, 1000)).toBe(false);

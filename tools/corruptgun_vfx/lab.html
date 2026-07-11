@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <title>Corrupt Gun VFX Lab</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; background: #030207; color: #f7e9ed; font-family: system-ui, sans-serif; }
+      body { display: grid; place-items: center; padding: 18px; }
+      .lab { width: min(1180px, 100%); }
+      .bar { display: flex; align-items: center; justify-content: space-between; min-height: 42px; }
+      h1 { margin: 0; font-size: 18px; letter-spacing: 0; }
+      select { min-height: 34px; border: 1px solid #833249; background: #15060d; color: #fff; padding: 0 10px; }
+      canvas { display: block; width: 100%; aspect-ratio: 16 / 9; border: 1px solid #3b1422; background: #05030a; }
+      output { display: block; min-height: 26px; padding-top: 8px; color: #ff9cb2; font: 13px ui-monospace, monospace; }
+    </style>
+  </head>
+  <body>
+    <main class="lab">
+      <div class="bar">
+        <h1>Corrupt Gun VFX Lab</h1>
+        <select id="quality" aria-label="quality">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low fallback signal</option>
+        </select>
+      </div>
+      <canvas id="stage" width="1152" height="648"></canvas>
+      <output id="status"></output>
+    </main>
+    <script src="../../assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js"></script>
+    <script>
+      const canvas = document.querySelector('#stage');
+      const ctx = canvas.getContext('2d');
+      const quality = document.querySelector('#quality');
+      const statusOutput = document.querySelector('#status');
+      const engine = window.CgVfxEngine.create({
+        width: canvas.width,
+        height: canvas.height,
+        quality: quality.value,
+        dpr: Math.min(devicePixelRatio, 2),
+      });
+
+      quality.addEventListener('change', () => engine.setQuality(quality.value));
+
+      function backdrop() {
+        const gradient = ctx.createRadialGradient(576, 324, 30, 576, 324, 640);
+        gradient.addColorStop(0, '#171020');
+        gradient.addColorStop(0.48, '#080610');
+        gradient.addColorStop(1, '#020106');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = 'rgba(255, 55, 100, 0.075)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= canvas.width; x += 48) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, canvas.height);
+          ctx.stroke();
+        }
+        for (let y = 0; y <= canvas.height; y += 48) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width, y);
+          ctx.stroke();
+        }
+      }
+
+      function drawFallbackLabel() {
+        ctx.fillStyle = '#ff8ba7';
+        ctx.font = '600 18px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText('LOW requests the sprite-atlas fallback from the game renderer', 576, 324);
+      }
+
+      function frame(now) {
+        const time = now * 0.001;
+        backdrop();
+        const ready = engine.beginFrame({
+          width: canvas.width,
+          height: canvas.height,
+          time,
+          quality: quality.value,
+        });
+        if (!ready) {
+          drawFallbackLabel();
+          statusOutput.value = JSON.stringify(engine.getStatus());
+          requestAnimationFrame(frame);
+          return;
+        }
+
+        const flight = (time * 90) % 180;
+        const mainX = 430 + flight;
+        const mainTrail = [];
+        for (let i = 7; i >= 0; i -= 1) mainTrail.push([mainX - i * 21, 180 + Math.sin(time * 3 - i * 0.38) * 7]);
+        engine.drawTrail({ points: mainTrail, tailWidth: 4, headWidth: 22, phase: 0.15 });
+        engine.drawOrb({ x: mainX, y: 180, diameter: 98, variant: 'over', phase: 0.15 });
+
+        const cloneTrail = [];
+        for (let i = 5; i >= 0; i -= 1) cloneTrail.push([840 - i * 16, 458 + Math.sin(time * 4 - i * 0.5) * 4]);
+        engine.drawCloneField({ x: 820, y: 470, diameter: 148, slot: 2 });
+        engine.drawTrail({ points: cloneTrail, tailWidth: 2, headWidth: 12, phase: 0.7 });
+        engine.drawOrb({ x: 840, y: 458, diameter: 54, variant: 'clone', phase: 0.7 });
+
+        engine.drawImpact({ x: 760, y: 205, diameter: 154, elapsed: (now % 900) * 0.42, duration: 380, phase: 0.42 });
+        engine.drawMark({ x: 295, y: 415, width: 88, height: 62, stacks: 5, phase: 0.35 });
+        engine.drawMuzzle({ x: 480, y: 480, length: 132, width: 82, angle: 0, elapsed: now % 560, duration: 140, phase: 0.2 });
+
+        engine.compositeTo(ctx, 'back');
+        ctx.fillStyle = '#170911';
+        ctx.strokeStyle = '#c82451';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(800, 450);
+        ctx.lineTo(830, 420);
+        ctx.lineTo(860, 450);
+        ctx.lineTo(850, 505);
+        ctx.lineTo(810, 505);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        engine.compositeTo(ctx, 'front');
+        statusOutput.value = JSON.stringify(engine.getStatus());
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    </script>
+  </body>
+</html>

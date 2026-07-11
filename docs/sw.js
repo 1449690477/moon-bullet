@@ -1,8 +1,14 @@
-const CACHE_NAME = 'moon-bullet-pages-e60cc806d5db';
+const CACHE_NAME = 'moon-bullet-pages-bc649e8f68fe';
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./asset-mobile-manifest.js",
+  "./assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js",
+  "./assets/player/corrupt_gun/cg_vfx_v2_manifest.json",
+  "./assets/player/corrupt_gun/infection/cg_infection_manifest.json",
+  "./assets/player/corrupt_gun/cg_material_manifest.json",
+  "./assets/player/corrupt_gun/ult/cg_ultimate_manifest.json",
+  "./assets/player/corrupt_gun/ult/ui/cg_ult_icon.png",
   "./assets/backgrounds/bg_stage_base.png",
   "./assets_mobile/backgrounds/bg_stage_base.webp",
   "./assets/backgrounds/bg_stage1.png",
@@ -17,6 +23,8 @@ const CORE_ASSETS = [
   "./assets_mobile/characters/player_reaver_avatar.webp",
   "./assets/player/mother_life/ship/avatar.png",
   "./assets_mobile/player/mother_life/ship/avatar.webp",
+  "./assets/player/corrupt_gun/ui/cg_avatar.png",
+  "./assets_mobile/player/corrupt_gun/ui/cg_avatar.webp",
   "./assets/ui/ui_skill_beam_icon.png",
   "./assets_mobile/ui/ui_skill_beam_icon.webp",
   "./assets/ui/ui_skill_bomb_icon.png",

@@ -1,0 +1,450 @@
+{
+  "formatVersion": 2,
+  "character": "corruptgun",
+  "generator": "tools/generate_corruptgun_vfx_v2.py",
+  "seed": 12614161,
+  "renderContract": {
+    "atlasOrigin": "top-left",
+    "baseBlend": "source-over",
+    "energyBlend": "lighter",
+    "alphaStorage": "straight alpha; browser performs Canvas premultiplication",
+    "transparentRgbZeroed": true,
+    "mobileEncoding": "lossless WebP",
+    "fallbackIsVisuallyComplete": true
+  },
+  "palette": {
+    "void": [
+      5,
+      2,
+      10
+    ],
+    "shadow": [
+      14,
+      3,
+      18
+    ],
+    "metal": [
+      42,
+      8,
+      24
+    ],
+    "deep_red": [
+      94,
+      5,
+      28
+    ],
+    "red": [
+      232,
+      24,
+      74
+    ],
+    "hot_red": [
+      255,
+      48,
+      102
+    ],
+    "magenta": [
+      244,
+      64,
+      178
+    ],
+    "white": [
+      255,
+      232,
+      246
+    ]
+  },
+  "assets": {
+    "mainOrb": {
+      "frames": 12,
+      "columns": 4,
+      "rows": 3,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "orientation": "radial",
+      "loop": true,
+      "frameDurationMs": 70,
+      "frameTimesMs": null,
+      "displaySizes": {
+        "normal": 58,
+        "overdrive": 74
+      },
+      "sourceConcept": "assets/player/corrupt_gun/bullets/cg_orb_main_1.png",
+      "sourceConceptSha256": "0ac576fccd38344b4830f33bbe49d53ee774eee130885de4e2856c4dec211502",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_main_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_main_base_atlas.webp",
+          "pngSha256": "1836e95daf187a33d6f4ccab2cea7fb0ef07e3f4a493c4b3d3888ea6a432fa38",
+          "webpSha256": "b03296662c6226b9e8ca68ddfea7083e98a7241fa40cd7d452446640dbae7c6f",
+          "width": 768,
+          "height": 576,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_main_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_main_energy_atlas.webp",
+          "pngSha256": "7e150df3cc54e683e332c496a7b6beb9459a52c6e35891d6135b44689911f078",
+          "webpSha256": "0bb7ea86d1cb5ec878d6c5fa34aa564eb94fc357ace3114c74f1d7a1a97dac54",
+          "width": 768,
+          "height": 576,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 9,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 255
+      }
+    },
+    "cloneOrb": {
+      "frames": 8,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "orientation": "radial",
+      "loop": true,
+      "frameDurationMs": 80,
+      "frameTimesMs": null,
+      "displaySizes": {
+        "clone": 58,
+        "cloneOverdrive": 74
+      },
+      "sourceConcept": "assets/player/corrupt_gun/bullets/cg_clone_orb_1.png",
+      "sourceConceptSha256": "5bc11bbe61f851a82fd4ddaa20e64efcaedf462cfb783b0f16fef729859c0637",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_clone_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_clone_base_atlas.webp",
+          "pngSha256": "3d0264eae354acf2154ccd34850b387b22520fa946aa11aba88b950775b5671d",
+          "webpSha256": "90559668cdfe094dd7baea3013235245ecf99e0b4961c95f4e4ed9aed5c44159",
+          "width": 512,
+          "height": 256,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_clone_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/orb/cg_orb_clone_energy_atlas.webp",
+          "pngSha256": "a983658331215cad9fc6b3f1e645ec58d369d5a7d1af1ce5493c3a1604971222",
+          "webpSha256": "23ff10ed954da0e5dedddc06f2a2a06323d26fe232b70c6a3e68d60aa5ec829c",
+          "width": 512,
+          "height": 256,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 7,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 255
+      }
+    },
+    "trail": {
+      "frames": 8,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 256,
+      "frameHeight": 96,
+      "anchor": [
+        0.94,
+        0.5
+      ],
+      "orientation": "+X toward head",
+      "loop": true,
+      "frameDurationMs": 60,
+      "frameTimesMs": null,
+      "displaySizes": {
+        "normalLength": 196,
+        "overdriveLength": 244,
+        "cloneLength": 196,
+        "normalHeadWidth": 72,
+        "overdriveHeadWidth": 88
+      },
+      "sourceConcept": "assets/player/corrupt_gun/bullets/cg_orb_baked_2.png",
+      "sourceConceptSha256": "e823bf401ce160114a20ec76ab7e1b98ab65ac55350e2504ff46f3dd0dba1cba",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/trail/cg_trail_flow_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/trail/cg_trail_flow_base_atlas.webp",
+          "pngSha256": "3aeb3ee4ba30e37221bb337677a2bc05fe45e29c219bef910feb691c14eaff60",
+          "webpSha256": "bc40d9f88d2b8077fc19f5d62b6ca522058437b20c23c6711f2819daf502bef6",
+          "width": 1024,
+          "height": 192,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/trail/cg_trail_flow_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/trail/cg_trail_flow_energy_atlas.webp",
+          "pngSha256": "b56bfa407d8bcc1c470a0d31d21464cb935095978474247128fbce8a09ea8f6e",
+          "webpSha256": "7f37759e6a9c3befb9309511c53cea4894a79b80beb8d11ee4c02f700882667e",
+          "width": 1024,
+          "height": 192,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 8,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 255
+      }
+    },
+    "muzzle": {
+      "frames": 8,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 192,
+      "frameHeight": 192,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "orientation": "radial",
+      "loop": false,
+      "frameDurationMs": null,
+      "frameTimesMs": [
+        0,
+        25,
+        40,
+        60,
+        80,
+        105,
+        140,
+        180
+      ],
+      "displaySizes": {
+        "normal": 112,
+        "overdrive": 132
+      },
+      "sourceConcept": "assets/player/corrupt_gun/fx/cg_muzzle_normal_3.png",
+      "sourceConceptSha256": "58a8f1914ea703c112fb0844c9e31a01129941d9d601771b6ca9f45d394cf922",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/muzzle/cg_muzzle_flow_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/muzzle/cg_muzzle_flow_base_atlas.webp",
+          "pngSha256": "8b6b8163833ea29c9647429edf217841f6dbcc98b301fa28226e8fbd73ec0e21",
+          "webpSha256": "c67dc3b0eaa1d48eb491c164aed3585bad773fd0ddf4818cbd539a232dcf9432",
+          "width": 768,
+          "height": 384,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/muzzle/cg_muzzle_flow_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/muzzle/cg_muzzle_flow_energy_atlas.webp",
+          "pngSha256": "aced2b4b45a15bea43f3987b2162687e2ac5b6dc6da99efa93c2cc3fbf7e1b8b",
+          "webpSha256": "f8b6142c51d0e1876bd749c30cf6319cc0a3081e7865ac9b133c425ed86794f2",
+          "width": 768,
+          "height": 384,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 24,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 126
+      }
+    },
+    "impact": {
+      "frames": 16,
+      "columns": 4,
+      "rows": 4,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "orientation": "radial",
+      "loop": false,
+      "frameDurationMs": null,
+      "frameTimesMs": [
+        0,
+        24,
+        48,
+        60,
+        84,
+        108,
+        132,
+        140,
+        164,
+        188,
+        212,
+        236,
+        260,
+        300,
+        340,
+        380
+      ],
+      "displaySizes": {
+        "normal": 124,
+        "overdrive": 144,
+        "clone": 84
+      },
+      "sourceConcept": "assets/player/corrupt_gun/fx/cg_hit_spark_4.png",
+      "sourceConceptSha256": "278cdfb4c9d93d0a6f9313d097e79a53bee512b2fc2529347257a83d3d916dde",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/impact/cg_impact_flow_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/impact/cg_impact_flow_base_atlas.webp",
+          "pngSha256": "70f1d410d83a53cc371cf6f4fe90fc6289ae4886fb5aeb8a1208b0a5ca88aeb2",
+          "webpSha256": "0c83162553a41ee757e61a361fdaf556f3be24fe40a4fe2c3289e08c8ff9f48b",
+          "width": 1024,
+          "height": 1024,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/impact/cg_impact_flow_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/impact/cg_impact_flow_energy_atlas.webp",
+          "pngSha256": "626d3581132236ea73fccca63fb690a8b9a8554dd5239182ba3a797723f526bf",
+          "webpSha256": "0cfe24325de23208486bdcb68c557a52bb54099ff773ac8b5dbc0269c40cb9ff",
+          "width": 1024,
+          "height": 1024,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 16,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 119
+      }
+    },
+    "mark": {
+      "frames": 8,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 128,
+      "frameHeight": 128,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "orientation": "radial",
+      "loop": true,
+      "frameDurationMs": 90,
+      "frameTimesMs": null,
+      "displaySizes": {
+        "enemy": 62
+      },
+      "sourceConcept": "assets/player/corrupt_gun/fx/cg_mark_5.png",
+      "sourceConceptSha256": "cff3fb428aeb7b72595e4b013928235accb608fb5ccdf3f534d3ddca49555dd8",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/mark/cg_mark_flow_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/mark/cg_mark_flow_base_atlas.webp",
+          "pngSha256": "b26530d13eb2bdbfd0466446399444dec8dc698b0686afd586d818862922f1e5",
+          "webpSha256": "f78d6aa2fc925624fdd824e9e6548c1820eba9e2349f24fc40356def4645853f",
+          "width": 512,
+          "height": 256,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/mark/cg_mark_flow_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/mark/cg_mark_flow_energy_atlas.webp",
+          "pngSha256": "32e36cfa5f27f6c0e28e6fe6afa3517c543b3005fb5fae5a76fba05b3063c0f1",
+          "webpSha256": "f9fd21fca0ae30ba7e1dd0cfbdd4907cd993864eebfb4a499a62f45a3cde66b7",
+          "width": 512,
+          "height": 256,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 18,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 255
+      }
+    },
+    "cloneField": {
+      "frames": 8,
+      "columns": 4,
+      "rows": 2,
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "orientation": "radial",
+      "loop": true,
+      "frameDurationMs": 85,
+      "frameTimesMs": null,
+      "displaySizes": {
+        "field": 132
+      },
+      "sourceConcept": "assets/player/corrupt_gun/clone/cg_clone_noise.png",
+      "sourceConceptSha256": "8daea43446df0b85e8195ac187bd164915b080b2931d9547dbf53e1abb308352",
+      "layers": {
+        "base": {
+          "blend": "source-over",
+          "png": "assets/player/corrupt_gun/vfx_v2/clone/cg_clone_field_base_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/clone/cg_clone_field_base_atlas.webp",
+          "pngSha256": "87498fff225975aa38ba80e030a52a8fb14b2bd542edbaffcb37db397dbb0ea8",
+          "webpSha256": "badfce853d9785fd5394bf4898e68447d35de0b2410da82591f239c707797188",
+          "width": 1024,
+          "height": 512,
+          "webpMaxChannelDelta": 0
+        },
+        "energy": {
+          "blend": "lighter",
+          "png": "assets/player/corrupt_gun/vfx_v2/clone/cg_clone_field_energy_atlas.png",
+          "webpLossless": "assets/player/corrupt_gun/vfx_v2/clone/cg_clone_field_energy_atlas.webp",
+          "pngSha256": "8e328029fd17c93abb3211c08b57ec899c85ebab0e106d6fe0b6080ed788d03d",
+          "webpSha256": "5d3b526c5b9be67a41e23c7bea4f56e20f761dee52f3b3d85b2081ba8e23ffd1",
+          "width": 1024,
+          "height": 512,
+          "webpMaxChannelDelta": 0
+        }
+      },
+      "qa": {
+        "greenPixels": 0,
+        "edgeGreenPixels": 0,
+        "borderAlphaPixels": 0,
+        "minimumPaddingPx": 22,
+        "maximumAnchorDriftPx": 0.0,
+        "minimumPeakAlpha": 255
+      }
+    }
+  },
+  "qa": {
+    "status": "pass",
+    "report": "tools/corruptgun_vfx_v2_preview/cg_vfx_v2_qa.json",
+    "contactSheet": "tools/corruptgun_vfx_v2_preview/cg_vfx_v2_contact.png",
+    "motionStrip": "tools/corruptgun_vfx_v2_preview/cg_vfx_v2_motion_strip.png"
+  }
+}

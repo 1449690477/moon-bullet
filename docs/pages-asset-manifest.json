@@ -1,9 +1,21 @@
 {
-  "version": "e60cc806d5db",
-  "builtAt": 1783606874,
-  "referencedMedia": 1329,
-  "mobileVariants": 1318,
-  "copiedBytes": 167719510,
+  "version": "bc649e8f68fe",
+  "builtAt": 1783745542,
+  "referencedMedia": 1678,
+  "mobileVariants": 1646,
+  "losslessCorruptgunVfxVariants": 14,
+  "losslessCorruptgunInfectionVariants": 26,
+  "corruptgunMaterialLayers": 84,
+  "corruptgunUltimateAssets": 53,
+  "runtimeSupportFiles": [
+    "assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js",
+    "assets/player/corrupt_gun/cg_vfx_v2_manifest.json",
+    "assets/player/corrupt_gun/infection/cg_infection_manifest.json",
+    "assets/player/corrupt_gun/cg_material_manifest.json",
+    "assets/player/corrupt_gun/ult/cg_ultimate_manifest.json",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "copiedBytes": 258969402,
   "excluded": [
     "assets/_backup_before_user_import/**",
     "assets_backup_*/**",

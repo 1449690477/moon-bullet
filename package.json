@@ -7,7 +7,12 @@
     "test": "tests"
   },
   "scripts": {
-    "build:pages": "node tools/run_python.js tools/build_pages.py",
+    "build:pages": "npm run assets:corruptgun && npm run assets:corruptgun-vfx-v2 && npm run assets:corruptgun-ultimate && npm run build:corruptgun-vfx && npm run assets:corruptgun-infection && node tools/run_python.js tools/build_pages.py",
+    "build:corruptgun-vfx": "node tools/build_corruptgun_vfx.js",
+    "assets:corruptgun": "node tools/run_python.js tools/import_corruptgun_assets.py",
+    "assets:corruptgun-vfx-v2": "node tools/run_python.js tools/generate_corruptgun_vfx_v2.py",
+    "assets:corruptgun-infection": "node tools/run_python.js tools/process_corruptgun_infection_assets.py",
+    "assets:corruptgun-ultimate": "node tools/run_python.js tools/process_corruptgun_ultimate_assets.py",
     "sync:main": "node tools/sync_main_mirror.js",
     "verify:publish": "node tools/verify_publish_consistency.js",
     "release:pages": "npm run build:pages && npm run sync:main && npm run verify:publish && npm run smoke:pages",
@@ -18,8 +23,10 @@
     "capture:mhr-v3": "node tools/capture_mother_hive_v3_acceptance.js",
     "capture:mhr-crystal": "node tools/capture_mother_hive_crystal_acceptance.js",
     "capture:leaderboard": "node tools/capture_leaderboard_acceptance.js",
+    "capture:ui": "node tools/capture_ui_acceptance.js",
     "capture:tianyao": "node tools/capture_tianyao_acceptance.js",
     "capture:skyward": "node tools/capture_skyward_acceptance.js",
+    "capture:corruptgun": "node tools/capture_corruptgun_acceptance.js",
     "capture:dragon": "node tools/capture_dragon_breath_acceptance.js",
     "render:dragon": "node tools/headless_dragon_render.js"
   },
@@ -31,6 +38,8 @@
     "puppeteer-core": "^23.11.1"
   },
   "devDependencies": {
-    "@napi-rs/canvas": "^1.0.2"
+    "@napi-rs/canvas": "^1.0.2",
+    "esbuild": "0.28.1",
+    "ogl": "1.0.11"
   }
 }

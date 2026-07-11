@@ -49,6 +49,7 @@ function main() {
   copyFile(path.join(ROOT, 'docs', 'asset-mobile-manifest.js'), path.join(MIRROR, 'asset-mobile-manifest.js'));
   copyFile(path.join(ROOT, 'docs', 'sw.js'), path.join(MIRROR, 'sw.js'));
   copyFile(path.join(ROOT, 'docs', 'pages-asset-manifest.json'), path.join(MIRROR, 'pages-asset-manifest.json'));
+  copyFile(path.join(ROOT, 'THIRD_PARTY_NOTICES.md'), path.join(MIRROR, 'THIRD_PARTY_NOTICES.md'));
 
   rsyncDir(path.join(ROOT, 'assets'), path.join(MIRROR, 'assets'));
   rsyncDir(path.join(ROOT, 'docs'), path.join(MIRROR, 'docs'));

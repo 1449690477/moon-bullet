@@ -1,0 +1,621 @@
+{
+  "formatVersion": 1,
+  "character": "corruptgun",
+  "effect": "void-corrosion-infection-chain",
+  "generator": "tools/process_corruptgun_infection_assets.py",
+  "sourceFolders": [
+    "7号战机 开发文件夹_副本",
+    "moon-bullet-main/7号战机 开发文件夹"
+  ],
+  "sourceSha256": {
+    "连锁触手贴图.png": "23ec7fd6e753318c66c13c0849d696d17da250ccb592ce0c06c9b0aa9fe9344c",
+    "连锁打击特效 幅画.png": "7ac89a8b0fc078e831300b15216335ef26027ca1b0cb719386fa641186a6e518",
+    "传导 连锁腐蚀 锁链 感染特效贴图参考.png": "d3fbb7b0d026b38382484841c3b44674c6063f85a2c33fd16d40de4661131b13"
+  },
+  "renderContract": {
+    "mainTheme": "black-red with hot crimson core",
+    "cloneTheme": "deeper void-black and blood-crimson",
+    "blend": "source-over body plus restrained lighter core",
+    "fallbackComplete": true
+  },
+  "assets": {
+    "tendril_1_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_1_main.png",
+      "size": [
+        1170,
+        199
+      ],
+      "alphaBounds": [
+        18,
+        19,
+        1152,
+        181
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "57c7df5b05e1b1f84fcc3b599a7917602d2d39ad994917f0772a9c2fd1b6c542",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        35,
+        15,
+        1230,
+        220
+      ]
+    },
+    "tendril_1_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_1_clone.png",
+      "size": [
+        1170,
+        199
+      ],
+      "alphaBounds": [
+        18,
+        19,
+        1152,
+        181
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "5522b4f826842d6a0c81c6f3a563a42488c1b90bb0c1fdaf69dd54fbd6301c73",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        35,
+        15,
+        1230,
+        220
+      ]
+    },
+    "tendril_2_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_2_main.png",
+      "size": [
+        567,
+        266
+      ],
+      "alphaBounds": [
+        18,
+        18,
+        549,
+        248
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "02c028c2c7804852ec115824b188e595ffc7370a5121654e1bef17277586f103",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        45,
+        245,
+        620,
+        490
+      ]
+    },
+    "tendril_2_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_2_clone.png",
+      "size": [
+        567,
+        266
+      ],
+      "alphaBounds": [
+        18,
+        18,
+        549,
+        248
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "0fa49c1fcd7daf48e20edfffad3f59d445a3c2ee4a2fbc6b7d8c84fc185ee03c",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        45,
+        245,
+        620,
+        490
+      ]
+    },
+    "tendril_3_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_3_main.png",
+      "size": [
+        756,
+        274
+      ],
+      "alphaBounds": [
+        18,
+        18,
+        710,
+        256
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "4dd1de9a1cb2f2b442855b40a7a8e3284c638814da8d4e563b903b26dc9374eb",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        25,
+        720,
+        745,
+        958
+      ]
+    },
+    "tendril_3_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_3_clone.png",
+      "size": [
+        756,
+        274
+      ],
+      "alphaBounds": [
+        18,
+        18,
+        710,
+        256
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "7e247b39fad5087b7add3106b62c147208f04df2adb01a8d1583866d468d3010",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        25,
+        720,
+        745,
+        958
+      ]
+    },
+    "link_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_link_main.png",
+      "size": [
+        124,
+        64
+      ],
+      "alphaBounds": [
+        18,
+        18,
+        106,
+        45
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "85de6454dd80dc9ba6ec0e74d9427074f6c6babc915bbff9dde6d754bc3e647e",
+      "source": "传导 连锁腐蚀 锁链 感染特效贴图参考.png",
+      "crop": [
+        270,
+        48,
+        358,
+        92
+      ]
+    },
+    "link_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_link_clone.png",
+      "size": [
+        124,
+        64
+      ],
+      "alphaBounds": [
+        18,
+        18,
+        106,
+        45
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "a077be04833d3dd428bd7ed677627dcd1059e81cec051fa99c9993940c8c2f19",
+      "source": "传导 连锁腐蚀 锁链 感染特效贴图参考.png",
+      "crop": [
+        270,
+        48,
+        358,
+        92
+      ]
+    },
+    "node_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_node_main.png",
+      "size": [
+        355,
+        406
+      ],
+      "alphaBounds": [
+        88,
+        82,
+        337,
+        331
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "5d7b5f0afd8853d1cd15ebffdad1b5228d5ae31c6d12dc80cbab0cdb51c34a7d",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        420,
+        40,
+        765,
+        410
+      ]
+    },
+    "node_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_node_clone.png",
+      "size": [
+        355,
+        406
+      ],
+      "alphaBounds": [
+        88,
+        82,
+        337,
+        331
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "9cbb1194ce825d68507be4dfe26ea3185ac9935abc51a70b918fac1784faf6b8",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        420,
+        40,
+        765,
+        410
+      ]
+    },
+    "hit_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_hit_main.png",
+      "size": [
+        454,
+        419
+      ],
+      "alphaBounds": [
+        19,
+        19,
+        435,
+        401
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "c72a1c54609c14a7db6b01c468991bf65a487c83baadf405ca643e8bbbca3d70",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        785,
+        35,
+        1235,
+        420
+      ]
+    },
+    "hit_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_hit_clone.png",
+      "size": [
+        454,
+        419
+      ],
+      "alphaBounds": [
+        19,
+        19,
+        435,
+        401
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "82492ea3ed8c6ae4a47f3c94f340cd3784e6e5439db932189f4af5f610238aa8",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        785,
+        35,
+        1235,
+        420
+      ]
+    },
+    "burst_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_burst_main.png",
+      "size": [
+        409,
+        387
+      ],
+      "alphaBounds": [
+        39,
+        19,
+        326,
+        369
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "d8c98f7e96e76b80f006c67578138c44ac7d6f241d891887b2cfc07bb525b6cb",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        865,
+        825,
+        1238,
+        1215
+      ]
+    },
+    "burst_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_burst_clone.png",
+      "size": [
+        409,
+        387
+      ],
+      "alphaBounds": [
+        39,
+        19,
+        326,
+        369
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "c17549eed6efe9319576e11a0fff5f76a6555308d79eabbead56de889c24317c",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        865,
+        825,
+        1238,
+        1215
+      ]
+    },
+    "chain_head_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_chain_head_main.png",
+      "size": [
+        128,
+        96
+      ],
+      "alphaBounds": [
+        19,
+        6,
+        115,
+        90
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "5313f0ab22f5406354f4f222e6cea22586a728f1aff7f2d2221c66338f0a465c",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        25,
+        720,
+        310,
+        960
+      ]
+    },
+    "chain_head_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_chain_head_clone.png",
+      "size": [
+        128,
+        96
+      ],
+      "alphaBounds": [
+        19,
+        6,
+        115,
+        90
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "6eaee698121a4aefa811ab4aa7a0d9aa2759c47f009fc1923571c51423065f5c",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        25,
+        720,
+        310,
+        960
+      ]
+    },
+    "chain_link_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_chain_link_main.png",
+      "size": [
+        72,
+        36
+      ],
+      "alphaBounds": [
+        5,
+        9,
+        67,
+        26
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "91e45e9c075f6244d67da14f1ef383f42db1544176f5ab45b499283cba5c8de2",
+      "source": "传导 连锁腐蚀 锁链 感染特效贴图参考.png",
+      "crop": [
+        270,
+        48,
+        358,
+        92
+      ]
+    },
+    "chain_link_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_chain_link_clone.png",
+      "size": [
+        72,
+        36
+      ],
+      "alphaBounds": [
+        5,
+        9,
+        67,
+        26
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "13b67205a4a5a8236360d79026d06aaf1490395742c592dc22a890380180d756",
+      "source": "传导 连锁腐蚀 锁链 感染特效贴图参考.png",
+      "crop": [
+        270,
+        48,
+        358,
+        92
+      ]
+    },
+    "tendril_spine_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_spine_main.png",
+      "size": [
+        104,
+        46
+      ],
+      "alphaBounds": [
+        6,
+        11,
+        98,
+        34
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "8e25d46e9951752b1eda533c724d1264f9318cee350bc844edaa4eb55153f9f4",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        430,
+        70,
+        735,
+        205
+      ]
+    },
+    "tendril_spine_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_spine_clone.png",
+      "size": [
+        104,
+        46
+      ],
+      "alphaBounds": [
+        6,
+        11,
+        98,
+        34
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "b91340c6defdd96ecefad2eeb24e9e0059a147105e1a3113e1dcd1043fa96bdb",
+      "source": "连锁触手贴图.png",
+      "crop": [
+        430,
+        70,
+        735,
+        205
+      ]
+    },
+    "tendril_barb_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_barb_main.png",
+      "size": [
+        64,
+        48
+      ],
+      "alphaBounds": [
+        8,
+        6,
+        56,
+        42
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "44b722175543a45ff94ed86442a1f6f74e42f45106484405624b4739912c5571",
+      "source": "传导 连锁腐蚀 锁链 感染特效贴图参考.png",
+      "crop": [
+        145,
+        365,
+        300,
+        510
+      ]
+    },
+    "tendril_barb_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_tendril_barb_clone.png",
+      "size": [
+        64,
+        48
+      ],
+      "alphaBounds": [
+        8,
+        6,
+        56,
+        42
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "a1c1853e9660e5b78fe0970235614d45b0cc83204b7c4d8752e4c0226bdf5bf7",
+      "source": "传导 连锁腐蚀 锁链 感染特效贴图参考.png",
+      "crop": [
+        145,
+        365,
+        300,
+        510
+      ]
+    },
+    "source_node_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_source_node_main.png",
+      "size": [
+        128,
+        128
+      ],
+      "alphaBounds": [
+        36,
+        26,
+        114,
+        104
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "7530e8bf07dfe6e8311189002d6e702e9e14543f3e490c2f33e330fbb897c101",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        420,
+        40,
+        765,
+        410
+      ]
+    },
+    "source_node_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_source_node_clone.png",
+      "size": [
+        128,
+        128
+      ],
+      "alphaBounds": [
+        36,
+        26,
+        114,
+        104
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "4b4f0ff2b59f4b5ea7c68b57e65dd729529fefce33b933477afc77b266c688e6",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        420,
+        40,
+        765,
+        410
+      ]
+    },
+    "target_burst_main": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_target_burst_main.png",
+      "size": [
+        160,
+        160
+      ],
+      "alphaBounds": [
+        7,
+        13,
+        153,
+        148
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "a56826df67a94f6787fcf3e0429a29ea195d3759cf76db17930431612e43c3d8",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        785,
+        35,
+        1235,
+        420
+      ]
+    },
+    "target_burst_clone": {
+      "file": "assets/player/corrupt_gun/infection/cg_infect_target_burst_clone.png",
+      "size": [
+        160,
+        160
+      ],
+      "alphaBounds": [
+        7,
+        13,
+        153,
+        148
+      ],
+      "greenPixels": 0,
+      "cyanPixels": 0,
+      "sha256": "efcae4587373d13cab1623e7e7f3b183bf8b44accada51cf799108dade68ec2b",
+      "source": "连锁打击特效 幅画.png",
+      "crop": [
+        785,
+        35,
+        1235,
+        420
+      ]
+    }
+  }
+}

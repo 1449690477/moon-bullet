@@ -1,0 +1,3692 @@
+{
+  "character": "corruptgun",
+  "source": "7号战机 开发文件夹_副本",
+  "sourceCount": 38,
+  "assetCount": 245,
+  "materialAssetCount": 84,
+  "materialManifest": "cg_material_manifest.json",
+  "disabledRuntimeFrames": [
+    "fx/cg_death_boom_8.png",
+    "fx/cg_death_boom_9.png",
+    "fx/cg_death_boom_10.png",
+    "fx/cg_stack_burst_7.png",
+    "fx/cg_stack_burst_8.png"
+  ],
+  "assets": {
+    "fx/cg_flame_over_1.png": {
+      "source": "、暴走引擎尾焰，长条猩红腐化喷流.png",
+      "sourceIndex": 0,
+      "width": 268,
+      "height": 624,
+      "alphaBBox": [
+        43,
+        20,
+        224,
+        603
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4816,
+      "sha256": "752547be5ac9b399e9b89845fa444c9c19ff90be37d520f6f98a01fd6837de1f"
+    },
+    "fx/cg_flame_over_2.png": {
+      "source": "、暴走引擎尾焰，长条猩红腐化喷流.png",
+      "sourceIndex": 1,
+      "width": 268,
+      "height": 624,
+      "alphaBBox": [
+        33,
+        14,
+        234,
+        609
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6406,
+      "sha256": "c88065f5d9b108d78f21d3464b095b9c378375d41c991aa85ecbeb81d0999150"
+    },
+    "fx/cg_flame_over_3.png": {
+      "source": "、暴走引擎尾焰，长条猩红腐化喷流.png",
+      "sourceIndex": 2,
+      "width": 268,
+      "height": 624,
+      "alphaBBox": [
+        12,
+        11,
+        256,
+        613
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6666,
+      "sha256": "14a2f0205c2999e7c5c226a982e1c306fc5889f34bb1bb862aef4ceadc78fe53"
+    },
+    "fx/cg_flame_over_4.png": {
+      "source": "、暴走引擎尾焰，长条猩红腐化喷流.png",
+      "sourceIndex": 3,
+      "width": 268,
+      "height": 624,
+      "alphaBBox": [
+        8,
+        8,
+        259,
+        615
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 7022,
+      "sha256": "fe039c8b22727cc6d38adedf2f130421209d052b36d4f9d4cdb83a646d26e78f"
+    },
+    "fx/cg_flame_over_5.png": {
+      "source": "、暴走引擎尾焰，长条猩红腐化喷流.png",
+      "sourceIndex": 4,
+      "width": 268,
+      "height": 624,
+      "alphaBBox": [
+        19,
+        12,
+        249,
+        611
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6398,
+      "sha256": "39fbd88c0a63580bb45d7ec04b378a1cf7b5d6b852f85ca75207b17c2e9bc32a"
+    },
+    "fx/cg_flame_over_6.png": {
+      "source": "、暴走引擎尾焰，长条猩红腐化喷流.png",
+      "sourceIndex": 5,
+      "width": 268,
+      "height": 624,
+      "alphaBBox": [
+        19,
+        11,
+        248,
+        612
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6612,
+      "sha256": "761520778f19b4d88d9959faca2d18c48afc10edb3cff81080d6de39dcd02c90"
+    },
+    "fx/cg_core_pulse_1.png": {
+      "source": "中央核心脉冲，腐化心跳光效。.png",
+      "sourceIndex": 0,
+      "width": 360,
+      "height": 388,
+      "alphaBBox": [
+        51,
+        67,
+        309,
+        321
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1284,
+      "sha256": "102099ebb23295d90c64c860ff7876884944647fc7c81e359480af8a24101d95"
+    },
+    "fx/cg_core_pulse_2.png": {
+      "source": "中央核心脉冲，腐化心跳光效。.png",
+      "sourceIndex": 1,
+      "width": 360,
+      "height": 388,
+      "alphaBBox": [
+        47,
+        61,
+        313,
+        326
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1150,
+      "sha256": "709c3002175c34eacd22d2a2964a2b08a4032f84934994dd679517553953bcda"
+    },
+    "fx/cg_core_pulse_3.png": {
+      "source": "中央核心脉冲，腐化心跳光效。.png",
+      "sourceIndex": 2,
+      "width": 360,
+      "height": 388,
+      "alphaBBox": [
+        19,
+        51,
+        349,
+        337
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1420,
+      "sha256": "1ddfbca47bc90f362d627f2bb9f58b016ebe81cdb367a0eae75f24b4ec7192b0"
+    },
+    "fx/cg_core_pulse_4.png": {
+      "source": "中央核心脉冲，腐化心跳光效。.png",
+      "sourceIndex": 3,
+      "width": 360,
+      "height": 388,
+      "alphaBBox": [
+        1,
+        9,
+        359,
+        379
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4093,
+      "sha256": "d29a9c52c951a43f6fdc0d8a6ad8e20e879801b8186d17b97deefa52a8f8fbba"
+    },
+    "fx/cg_core_pulse_5.png": {
+      "source": "中央核心脉冲，腐化心跳光效。.png",
+      "sourceIndex": 4,
+      "width": 360,
+      "height": 388,
+      "alphaBBox": [
+        37,
+        51,
+        322,
+        336
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1380,
+      "sha256": "8752603907cb717718255582ff3ec57f1830b162c22b7030cf1273241a4cdcd1"
+    },
+    "fx/cg_core_pulse_6.png": {
+      "source": "中央核心脉冲，腐化心跳光效。.png",
+      "sourceIndex": 5,
+      "width": 360,
+      "height": 388,
+      "alphaBBox": [
+        53,
+        66,
+        306,
+        322
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1171,
+      "sha256": "fcf048859379f686459625d5e5201b4930d34308507978d7c33546364afe6130"
+    },
+    "clone/cg_clone_idle_1.png": {
+      "source": "分身待机循环，半透明科技投影风格.png",
+      "sourceIndex": 0,
+      "width": 552,
+      "height": 540,
+      "alphaBBox": [
+        10,
+        9,
+        542,
+        530
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "e7312ad1fb3bdd8cc404f20cec2bf026094d0fa4d751109de02c0064fac567d2"
+    },
+    "clone/cg_clone_idle_2.png": {
+      "source": "分身待机循环，半透明科技投影风格.png",
+      "sourceIndex": 1,
+      "width": 552,
+      "height": 540,
+      "alphaBBox": [
+        9,
+        9,
+        542,
+        530
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "26e0aa356df76d6fcbf8515204bec9eecd6087cc1f28a465b9e706fb42b55f10"
+    },
+    "clone/cg_clone_idle_3.png": {
+      "source": "分身待机循环，半透明科技投影风格.png",
+      "sourceIndex": 2,
+      "width": 552,
+      "height": 540,
+      "alphaBBox": [
+        10,
+        9,
+        541,
+        530
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "9713f76eca13bc585f8cb00732cdf52ce3a79bc6f8bccbc430471f2e7e300bb4"
+    },
+    "clone/cg_clone_idle_4.png": {
+      "source": "分身待机循环，半透明科技投影风格.png",
+      "sourceIndex": 3,
+      "width": 552,
+      "height": 540,
+      "alphaBBox": [
+        11,
+        10,
+        541,
+        530
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "d1258f7292988dd68f1d8ed46f966cc2397dfe0151c1baabca3aff86bc8397b8"
+    },
+    "clone/cg_clone_noise.png": {
+      "source": "分身投影噪声粒子，暗红像素化虚影。.png",
+      "sourceIndex": 0,
+      "width": 1032,
+      "height": 1080,
+      "alphaBBox": [
+        8,
+        9,
+        1023,
+        1070
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "8daea43446df0b85e8195ac187bd164915b080b2931d9547dbf53e1abb308352"
+    },
+    "clone/cg_clone_attack_1.png": {
+      "source": "分身攻击姿态，锁定敌人发射腐化光球。.png",
+      "sourceIndex": 0,
+      "width": 652,
+      "height": 640,
+      "alphaBBox": [
+        28,
+        30,
+        624,
+        610
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ebab533cffc95bbf060bfaec513d271df5b3dfd564859ee7e3d799d3788a3609"
+    },
+    "clone/cg_clone_attack_2.png": {
+      "source": "分身攻击姿态，锁定敌人发射腐化光球。.png",
+      "sourceIndex": 1,
+      "width": 652,
+      "height": 640,
+      "alphaBBox": [
+        26,
+        26,
+        626,
+        614
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "fc89e1defda4467ed134d45bd803df7e9f1ee5193a082bcd327304e6cebbd689"
+    },
+    "clone/cg_clone_attack_3.png": {
+      "source": "分身攻击姿态，锁定敌人发射腐化光球。.png",
+      "sourceIndex": 2,
+      "width": 652,
+      "height": 640,
+      "alphaBBox": [
+        9,
+        8,
+        643,
+        632
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "a85230963ef35b2d17e7cc78521ac7887ed18cb36ccee0f754270e8d6a27132f"
+    },
+    "clone/cg_clone_despawn_1.png": {
+      "source": "分身消散，像红色数据碎片散开。.png",
+      "sourceIndex": 0,
+      "width": 352,
+      "height": 472,
+      "alphaBBox": [
+        12,
+        9,
+        339,
+        462
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "b5d583d523d6bfa566ce1028290839250f053c5f6562d19a721f0295b18feea2"
+    },
+    "clone/cg_clone_despawn_2.png": {
+      "source": "分身消散，像红色数据碎片散开。.png",
+      "sourceIndex": 1,
+      "width": 352,
+      "height": 472,
+      "alphaBBox": [
+        8,
+        8,
+        344,
+        463
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "a1e99718f5be80ba6106a6be9e633445a39b41deec1cae98a3b31a75133cf5be"
+    },
+    "clone/cg_clone_despawn_3.png": {
+      "source": "分身消散，像红色数据碎片散开。.png",
+      "sourceIndex": 2,
+      "width": 352,
+      "height": 472,
+      "alphaBBox": [
+        8,
+        10,
+        344,
+        462
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "6a33a881eb0c69ea4fb6b6458b3b67924875dea12832c27c270b6cd0fd1e568f"
+    },
+    "clone/cg_clone_despawn_4.png": {
+      "source": "分身消散，像红色数据碎片散开。.png",
+      "sourceIndex": 3,
+      "width": 352,
+      "height": 472,
+      "alphaBBox": [
+        18,
+        11,
+        333,
+        461
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "2cfc36d45807401f982b250dc19fde9a7ed993df178a1f57950ed50695015104"
+    },
+    "clone/cg_clone_spawn_1.png": {
+      "source": "分身生成过程，战机从红色全息轮廓实体化。.png",
+      "sourceIndex": 1,
+      "width": 320,
+      "height": 464,
+      "alphaBBox": [
+        23,
+        16,
+        297,
+        448
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ea004113292dc50dbddf04070b09cca6180407005f24c48aaf949ba45aece455"
+    },
+    "clone/cg_clone_spawn_2.png": {
+      "source": "分身生成过程，战机从红色全息轮廓实体化。.png",
+      "sourceIndex": 2,
+      "width": 320,
+      "height": 464,
+      "alphaBBox": [
+        20,
+        16,
+        299,
+        448
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "06224164a5467d54ce813ee1b9d3058984487020bb8026ddff2766ad2841d666"
+    },
+    "clone/cg_clone_spawn_3.png": {
+      "source": "分身生成过程，战机从红色全息轮廓实体化。.png",
+      "sourceIndex": 3,
+      "width": 320,
+      "height": 464,
+      "alphaBBox": [
+        14,
+        25,
+        306,
+        438
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "f97910fbcdc7a5c5acc6d20458bc0fe824e992510644ec77985c5dd8f29b2847"
+    },
+    "clone/cg_clone_spawn_4.png": {
+      "source": "分身生成过程，战机从红色全息轮廓实体化。.png",
+      "sourceIndex": 4,
+      "width": 320,
+      "height": 464,
+      "alphaBBox": [
+        9,
+        10,
+        311,
+        453
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "01cb0e34185a24c9a4d0f6376b77ab67c8ae2d4423a3316b1b6ca65d8f0812ff"
+    },
+    "clone/cg_clone_spawn_5.png": {
+      "source": "分身生成过程，战机从红色全息轮廓实体化。.png",
+      "sourceIndex": 5,
+      "width": 320,
+      "height": 464,
+      "alphaBBox": [
+        8,
+        8,
+        312,
+        454
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "d01be3a179bbea9aa7dd6843d8bd6a65c59644d84c9db6846b61127fad84adb1"
+    },
+    "bullets/cg_clone_orb_1.png": {
+      "source": "分身用小号弹幕.png",
+      "sourceIndex": 0,
+      "width": 504,
+      "height": 488,
+      "alphaBBox": [
+        9,
+        8,
+        495,
+        479
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "5bc11bbe61f851a82fd4ddaa20e64efcaedf462cfb783b0f16fef729859c0637"
+    },
+    "bullets/cg_clone_orb_2.png": {
+      "source": "分身用小号弹幕.png",
+      "sourceIndex": 1,
+      "width": 504,
+      "height": 488,
+      "alphaBBox": [
+        8,
+        9,
+        496,
+        479
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "8cad10f55fa54f8342ce162d034a613b585faf2f96063402143c5970346e8a5e"
+    },
+    "fx/cg_mark_1.png": {
+      "source": "命中后施加腐化标记动画，眼形 : 圆环 : 裂纹.png",
+      "sourceIndex": 0,
+      "width": 448,
+      "height": 408,
+      "alphaBBox": [
+        116,
+        98,
+        332,
+        310
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 450,
+      "sha256": "b22f77c4d05326c01a94bbb1bef15366979319c3a3ff30af6bb967173e2d0696"
+    },
+    "fx/cg_mark_2.png": {
+      "source": "命中后施加腐化标记动画，眼形 : 圆环 : 裂纹.png",
+      "sourceIndex": 1,
+      "width": 448,
+      "height": 408,
+      "alphaBBox": [
+        40,
+        23,
+        408,
+        385
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1445,
+      "sha256": "ecb787f0379e5f23b724bf8765b2e597886ca0da21cd39eb65bcac29479647f9"
+    },
+    "fx/cg_mark_3.png": {
+      "source": "命中后施加腐化标记动画，眼形 : 圆环 : 裂纹.png",
+      "sourceIndex": 2,
+      "width": 448,
+      "height": 408,
+      "alphaBBox": [
+        27,
+        19,
+        420,
+        388
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2385,
+      "sha256": "7eb50a9ca3a07ce27edd316941c9806a0ff2f32ab0ffe86f7301f90fe674cca9"
+    },
+    "fx/cg_mark_4.png": {
+      "source": "命中后施加腐化标记动画，眼形 : 圆环 : 裂纹.png",
+      "sourceIndex": 3,
+      "width": 448,
+      "height": 408,
+      "alphaBBox": [
+        11,
+        16,
+        436,
+        391
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3752,
+      "sha256": "08ba476857683244ec6c48116b16e8f74bc254b8009373433cfcf65d05e301ec"
+    },
+    "fx/cg_mark_5.png": {
+      "source": "命中后施加腐化标记动画，眼形 : 圆环 : 裂纹.png",
+      "sourceIndex": 4,
+      "width": 448,
+      "height": 408,
+      "alphaBBox": [
+        14,
+        10,
+        434,
+        398
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5506,
+      "sha256": "cff3fb428aeb7b72595e4b013928235accb608fb5ccdf3f534d3ddca49555dd8"
+    },
+    "fx/cg_mark_6.png": {
+      "source": "命中后施加腐化标记动画，眼形 : 圆环 : 裂纹.png",
+      "sourceIndex": 5,
+      "width": 448,
+      "height": 408,
+      "alphaBBox": [
+        1,
+        9,
+        439,
+        398
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5113,
+      "sha256": "8b1ef8620ea46aec7a6cc73e2f243176191f655a429513786461787d8ab91557"
+    },
+    "fx/cg_death_boom_1.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 0,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        54,
+        77,
+        249,
+        270
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1288,
+      "sha256": "e42ade5ba0aa3e9324c80adeba7d8051eb9702f147e6d4a69aa0b6d00b0ff4cb"
+    },
+    "fx/cg_death_boom_2.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 1,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        15,
+        28,
+        288,
+        320
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1919,
+      "sha256": "494eb4fb257a04b69a5a106a432bf93c362cb6acaa4273faf6ead21e6fca42b9"
+    },
+    "fx/cg_death_boom_3.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 2,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        3,
+        21,
+        304,
+        326
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1483,
+      "sha256": "6049a6fa238cb8c0876def88d19699ecf8ac704d1a2ced19dc988cfdd911e9f7"
+    },
+    "fx/cg_death_boom_4.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 3,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        0,
+        8,
+        303,
+        340
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1263,
+      "sha256": "ad5b03b4f9c9bb8b67c48c743b1e318ef37f9a0eb701944ef288f4e60ad4fddb"
+    },
+    "fx/cg_death_boom_5.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 4,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        7,
+        13,
+        289,
+        334
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1685,
+      "sha256": "d0ef78d2635c838398daa57efcb4fe3a4f3ceec8db218f3069c5bb37cf1f980d"
+    },
+    "fx/cg_death_boom_6.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 5,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        13,
+        19,
+        291,
+        328
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1213,
+      "sha256": "1eb8c41e2d53976522ae08939b2afd17362b2df8b2a03cd2a620501786c69462"
+    },
+    "fx/cg_death_boom_7.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 6,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        13,
+        21,
+        289,
+        327
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 613,
+      "sha256": "80fe28c6c49e3c7b5911f84ade557a20307c121b694f3dae2083d8c7daae4c24"
+    },
+    "fx/cg_death_boom_8.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 7,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        15,
+        17,
+        281,
+        331
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 856,
+      "sha256": "3b9d93d71cfcc9726a0692d36ec5b0a79c0a1d15e6f089d44ffb0d41df63310c"
+    },
+    "fx/cg_death_boom_9.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 8,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        13,
+        28,
+        283,
+        319
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1117,
+      "sha256": "ea0372f2aebb87f472621668bbce2657834b04bff59b40940ac4f283d070451c"
+    },
+    "fx/cg_death_boom_10.png": {
+      "source": "大型腐化爆炸，黑红碎片扩散。.png",
+      "sourceIndex": 9,
+      "width": 304,
+      "height": 348,
+      "alphaBBox": [
+        10,
+        46,
+        286,
+        302
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1269,
+      "sha256": "2b1398d4b0be9a371c1bab092ac4e7939b9269941190def4f5cfdc073f6cbbd8"
+    },
+    "fx/cg_charge_orb_1.png": {
+      "source": "普通主弹：科技感虚空粒子光球，圆形，不是实体球。.png",
+      "sourceIndex": 0,
+      "width": 648,
+      "height": 596,
+      "alphaBBox": [
+        8,
+        10,
+        640,
+        586
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2355,
+      "sha256": "1476f90ff5de05fb295ed53b8030950881850fa027a25e18c19c465b3d6d9484"
+    },
+    "fx/cg_charge_orb_2.png": {
+      "source": "普通主弹：科技感虚空粒子光球，圆形，不是实体球。.png",
+      "sourceIndex": 1,
+      "width": 648,
+      "height": 596,
+      "alphaBBox": [
+        8,
+        8,
+        640,
+        588
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4598,
+      "sha256": "ba753894f9ff796450a5042cfc83da1e0502d2826d396d3ead52bab2783fae1e"
+    },
+    "fx/cg_hit_spark_1.png": {
+      "source": "普通命中火花，红色放射爆点。.png",
+      "sourceIndex": 0,
+      "width": 408,
+      "height": 400,
+      "alphaBBox": [
+        150,
+        148,
+        258,
+        252
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 140,
+      "sha256": "bd0e8f6138d722b703478349375780c4cc3087a85fc56c5d1273e4c35e73a909"
+    },
+    "fx/cg_hit_spark_2.png": {
+      "source": "普通命中火花，红色放射爆点。.png",
+      "sourceIndex": 1,
+      "width": 408,
+      "height": 400,
+      "alphaBBox": [
+        75,
+        71,
+        332,
+        328
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 850,
+      "sha256": "0a792b8f44fb068608a9544cc4b6edee02874f2c1ba7aaae1a6fcb600d81279a"
+    },
+    "fx/cg_hit_spark_3.png": {
+      "source": "普通命中火花，红色放射爆点。.png",
+      "sourceIndex": 2,
+      "width": 408,
+      "height": 400,
+      "alphaBBox": [
+        42,
+        41,
+        365,
+        359
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1037,
+      "sha256": "a2a2428c39c2c667314c16951a71e3004b2719f208bb7c30a9239350585eb889"
+    },
+    "fx/cg_hit_spark_4.png": {
+      "source": "普通命中火花，红色放射爆点。.png",
+      "sourceIndex": 3,
+      "width": 408,
+      "height": 400,
+      "alphaBBox": [
+        9,
+        9,
+        398,
+        390
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1347,
+      "sha256": "278cdfb4c9d93d0a6f9313d097e79a53bee512b2fc2529347257a83d3d916dde"
+    },
+    "fx/cg_hit_spark_5.png": {
+      "source": "普通命中火花，红色放射爆点。.png",
+      "sourceIndex": 4,
+      "width": 408,
+      "height": 400,
+      "alphaBBox": [
+        28,
+        23,
+        379,
+        377
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 858,
+      "sha256": "fa45af445ffbefd276b3c143849209d50ade546a57c6a8ed73e6e1100c421dae"
+    },
+    "fx/cg_hit_spark_6.png": {
+      "source": "普通命中火花，红色放射爆点。.png",
+      "sourceIndex": 5,
+      "width": 408,
+      "height": 400,
+      "alphaBBox": [
+        48,
+        37,
+        359,
+        362
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 142,
+      "sha256": "1c25496370f6587a9c570eca5ea180bf2c38dbbc2477ee13f7e33c1087f515d2"
+    },
+    "fx/cg_flame_normal_1.png": {
+      "source": "普通引擎尾焰，暗红短喷流.png",
+      "sourceIndex": 0,
+      "width": 192,
+      "height": 492,
+      "alphaBBox": [
+        15,
+        10,
+        177,
+        482
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 804,
+      "sha256": "7ac38c5d8aa82a33f0e93c5513409b3a4f0990c25ff2c97f7fa0d01952ed3d2f"
+    },
+    "fx/cg_flame_normal_2.png": {
+      "source": "普通引擎尾焰，暗红短喷流.png",
+      "sourceIndex": 1,
+      "width": 192,
+      "height": 492,
+      "alphaBBox": [
+        18,
+        9,
+        174,
+        483
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1042,
+      "sha256": "c8dac7f59aa1cabe79e2ee27b9a2d142a2963478ab89171d805f5ae1adb915a6"
+    },
+    "fx/cg_flame_normal_3.png": {
+      "source": "普通引擎尾焰，暗红短喷流.png",
+      "sourceIndex": 2,
+      "width": 192,
+      "height": 492,
+      "alphaBBox": [
+        15,
+        9,
+        177,
+        483
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1047,
+      "sha256": "d333863f7544bc6e193bb9bcf6473d47972bc8059e418ac04a61808899f492ac"
+    },
+    "fx/cg_flame_normal_4.png": {
+      "source": "普通引擎尾焰，暗红短喷流.png",
+      "sourceIndex": 3,
+      "width": 192,
+      "height": 492,
+      "alphaBBox": [
+        8,
+        9,
+        183,
+        483
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 851,
+      "sha256": "c798c8272005568bf0dceb176d487700eaee3f6a84b6c237b820844622339ad3"
+    },
+    "fx/cg_flame_normal_5.png": {
+      "source": "普通引擎尾焰，暗红短喷流.png",
+      "sourceIndex": 4,
+      "width": 192,
+      "height": 492,
+      "alphaBBox": [
+        13,
+        9,
+        178,
+        482
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 933,
+      "sha256": "498ef9071dac55473ae799aa27f0617ec576a99d327c4e555f4584df8158735e"
+    },
+    "bullets/cg_orb_side_1.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 0,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        31,
+        11,
+        508,
+        196
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 457,
+      "sha256": "7b85631403f672bfa5ce67fc3cd54a5bab3906c2733d4923fbb8f7b0ca109b86"
+    },
+    "bullets/cg_orb_side_2.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 2,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        55,
+        11,
+        485,
+        196
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 483,
+      "sha256": "5b7f658cb6fb6bcb6e20979b8668b25b899e651e6f84d34b4b2717fbc5387d02"
+    },
+    "bullets/cg_orb_side_3.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 4,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        38,
+        9,
+        501,
+        199
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 454,
+      "sha256": "3ae50189ac4ac21c240c8e82a77dea82e711253a6e8d81b4401a0b0a6d518eba"
+    },
+    "bullets/cg_orb_side_4.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 6,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        30,
+        10,
+        510,
+        198
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 463,
+      "sha256": "33dda1445d43af82f6af99ca026df9ad93ce4dbe1b82aff640f807547e7da12c"
+    },
+    "bullets/cg_orb_pierce_1.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 1,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        17,
+        17,
+        522,
+        190
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 618,
+      "sha256": "22ab9e9d4f8c889a4fdc9c0499e6ab1932bfa67e578ea11490b1e27158dda8f4"
+    },
+    "bullets/cg_orb_pierce_2.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 3,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        26,
+        13,
+        514,
+        195
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 605,
+      "sha256": "411b16c9822d66d18e3ef111c90d0e5f0372e5cf370c3fd548e9f416b161bd37"
+    },
+    "bullets/cg_orb_pierce_3.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 5,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        17,
+        8,
+        523,
+        199
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 695,
+      "sha256": "0b7fffbc372268f7481b65c885bcc50047b9eabd7d817db1a3827f94c8b77391"
+    },
+    "bullets/cg_orb_pierce_4.png": {
+      "source": "普通弹幕和穿透弹幕.png",
+      "sourceIndex": 7,
+      "width": 540,
+      "height": 208,
+      "alphaBBox": [
+        8,
+        8,
+        531,
+        200
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1057,
+      "sha256": "871bc3dfccd13018ea77d8681e7d7f7ee0486e7e091c0aa5023cabeb90a7d7f5"
+    },
+    "body/cg_body_alt_1.png": {
+      "source": "普通形态 和右转向.png",
+      "sourceIndex": 0,
+      "width": 612,
+      "height": 676,
+      "alphaBBox": [
+        11,
+        8,
+        600,
+        668
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 13298,
+      "sha256": "ddc42acd387a4949cae506052dd318e6016a2602be9d27ec1f7545c6f5863690"
+    },
+    "body/cg_body_alt_2.png": {
+      "source": "普通形态 和右转向.png",
+      "sourceIndex": 1,
+      "width": 612,
+      "height": 676,
+      "alphaBBox": [
+        9,
+        9,
+        602,
+        667
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 15362,
+      "sha256": "930f0eb97f328d5bf1712e72f0d19666825cb3fc4b0429540af12159ac49dd97"
+    },
+    "body/cg_body_alt_3.png": {
+      "source": "普通形态 和右转向.png",
+      "sourceIndex": 2,
+      "width": 612,
+      "height": 676,
+      "alphaBBox": [
+        11,
+        9,
+        600,
+        667
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 15035,
+      "sha256": "19cf16e8b18b663c1b3e248631503c1e32b893464eb5430f7ec30503b92c115b"
+    },
+    "body/cg_body_bankR_1.png": {
+      "source": "普通形态右转向.png",
+      "sourceIndex": 0,
+      "width": 492,
+      "height": 672,
+      "alphaBBox": [
+        17,
+        9,
+        475,
+        662
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 14422,
+      "sha256": "7a52b502cbb6b026ed54c6250c931f3f7dc55ea49508b38b0a06bb3f72150688"
+    },
+    "body/cg_body_bankR_2.png": {
+      "source": "普通形态右转向.png",
+      "sourceIndex": 1,
+      "width": 492,
+      "height": 672,
+      "alphaBBox": [
+        19,
+        14,
+        472,
+        658
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 14523,
+      "sha256": "5dc0fe40389ac50552226a43180338d5ba3262c17c8191010d15842194d1d87b"
+    },
+    "body/cg_body_bankR_3.png": {
+      "source": "普通形态右转向.png",
+      "sourceIndex": 2,
+      "width": 492,
+      "height": 672,
+      "alphaBBox": [
+        9,
+        21,
+        483,
+        651
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 15532,
+      "sha256": "4ec39ca0b7406b142f692aad81e3f8515388a3a011ef6aca00b2779ed9c675c0"
+    },
+    "body/cg_body_bankL_1.png": {
+      "source": "普通形态左转向.png",
+      "sourceIndex": 0,
+      "width": 644,
+      "height": 632,
+      "alphaBBox": [
+        88,
+        9,
+        555,
+        622
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 13408,
+      "sha256": "27bb10759749a783214acf2fd7848949bc796779917e062d4eabf24f56356311"
+    },
+    "body/cg_body_bankL_2.png": {
+      "source": "普通形态左转向.png",
+      "sourceIndex": 1,
+      "width": 644,
+      "height": 632,
+      "alphaBBox": [
+        8,
+        12,
+        644,
+        620
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 13823,
+      "sha256": "1a3cb908f0a0a6cb1cafdb6216e6f98c73e5da0e8b259dde548b9f1b6e0bb49b"
+    },
+    "body/cg_body_bankL_3.png": {
+      "source": "普通形态左转向.png",
+      "sourceIndex": 2,
+      "width": 644,
+      "height": 632,
+      "alphaBBox": [
+        61,
+        67,
+        574,
+        564
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 14057,
+      "sha256": "ecf04a70ee631f6ea12f58f9d66a818529dc807bd0423a5ec28db4e818e98e90"
+    },
+    "body/cg_body_normal.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        9,
+        8,
+        655,
+        1111
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 39724,
+      "sha256": "591af60b943211d3635aadf0e224e505046ab0ccca0b7c3b18d59a6a260df8de"
+    },
+    "body/cg_form_switch_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        127,
+        38,
+        312,
+        365
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5214,
+      "sha256": "b2df53559c00ddabed3555fb5a29ab662bee483281328aaac97d9eda707f804e"
+    },
+    "body/cg_form_switch_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        111,
+        38,
+        329,
+        366
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5476,
+      "sha256": "424cb7988a587fc5e44ff60ad0759f2ccfd4d94f6aa3145dfbac6a65a6b0d9d5"
+    },
+    "body/cg_form_switch_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        61,
+        37,
+        378,
+        366
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5875,
+      "sha256": "ae6835cdea0035db1f7e0c8b63f66de72db9a3abc2e724aa3ecade35dcb2fdb2"
+    },
+    "body/cg_form_switch_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        31,
+        34,
+        401,
+        369
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5422,
+      "sha256": "1d3a860281330b4be0f94acc5588469f64964a1cabdff69ffde8539de7b7241d"
+    },
+    "body/cg_form_switch_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        55,
+        11,
+        385,
+        393
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4390,
+      "sha256": "93165b8c86bbc1eab629dcc7714e9f1930ba35646aa1aecc50dd8dc8da192ba0"
+    },
+    "body/cg_form_switch_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        13,
+        9,
+        434,
+        394
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3671,
+      "sha256": "4cf1192bcde52f5c4ff0ed18b36203c8f42fe5c7a9a30f63e969571de1dfbc70"
+    },
+    "body/cg_form_switch_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        0,
+        9,
+        439,
+        394
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3521,
+      "sha256": "c7d5941b7885cee62264f11cfc0c269bb18339824ce4ac3c8fd55e2765e7fb7c"
+    },
+    "body/cg_form_switch_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        21,
+        8,
+        411,
+        396
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3998,
+      "sha256": "a7404d8ccf509eb57ac5ce058d158b7704035e3ac3aae2293afe6b0beebf5418"
+    },
+    "fx/cg_muzzle_normal_1.png": {
+      "source": "普通枪口火光，圆形充能后发射。.png",
+      "sourceIndex": 0,
+      "width": 524,
+      "height": 448,
+      "alphaBBox": [
+        136,
+        98,
+        387,
+        350
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 799,
+      "sha256": "426fc050c3353800ee351a84a83bc5d68ef7387fc1271dd176552f7f0aa73ac8"
+    },
+    "fx/cg_muzzle_normal_2.png": {
+      "source": "普通枪口火光，圆形充能后发射。.png",
+      "sourceIndex": 1,
+      "width": 524,
+      "height": 448,
+      "alphaBBox": [
+        97,
+        65,
+        426,
+        383
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2032,
+      "sha256": "c4d0afc143635499c7bcf70fb694dff39d11847372dfb076ef338c5ed7e70c2f"
+    },
+    "fx/cg_muzzle_normal_3.png": {
+      "source": "普通枪口火光，圆形充能后发射。.png",
+      "sourceIndex": 2,
+      "width": 524,
+      "height": 448,
+      "alphaBBox": [
+        56,
+        32,
+        467,
+        416
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2849,
+      "sha256": "58a8f1914ea703c112fb0844c9e31a01129941d9d601771b6ca9f45d394cf922"
+    },
+    "fx/cg_muzzle_normal_4.png": {
+      "source": "普通枪口火光，圆形充能后发射。.png",
+      "sourceIndex": 3,
+      "width": 524,
+      "height": 448,
+      "alphaBBox": [
+        8,
+        8,
+        516,
+        439
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5067,
+      "sha256": "6934ea0235b9d0adc2b60e11d29dee4736b17db83ecb5ac36e553d9f076a4f95"
+    },
+    "bullets/cg_orb_over_1.png": {
+      "source": "暴走弹幕细节.png",
+      "sourceIndex": 0,
+      "width": 800,
+      "height": 788,
+      "alphaBBox": [
+        55,
+        62,
+        745,
+        726
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 14009,
+      "sha256": "9f44c9512a6381db295d6c424a197941b94c2ef75223d24cb9ca6295c73c0e2f"
+    },
+    "bullets/cg_orb_over_2.png": {
+      "source": "暴走弹幕细节.png",
+      "sourceIndex": 1,
+      "width": 800,
+      "height": 788,
+      "alphaBBox": [
+        9,
+        9,
+        791,
+        779
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 13803,
+      "sha256": "b4bbb167081df92f100f3d7e325b49cb27c21fa99081ad5abc43f29e5fde57c5"
+    },
+    "body/cg_body_over.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        9,
+        9,
+        1234,
+        1122
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 43843,
+      "sha256": "229032426ae02ef95ff1416f2c0692cd0a7067e25f7be10dedc6d0413171fffa"
+    },
+    "body/cg_body_over_bankR_1.png": {
+      "source": "暴走形态转转向.png",
+      "sourceIndex": 0,
+      "width": 608,
+      "height": 636,
+      "alphaBBox": [
+        9,
+        22,
+        598,
+        614
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 8474,
+      "sha256": "5c4334342b71dbfa38a3cc56a5496f6700432803fa8a7a88b386068ead53c3cc"
+    },
+    "body/cg_body_over_bankR_2.png": {
+      "source": "暴走形态转转向.png",
+      "sourceIndex": 1,
+      "width": 608,
+      "height": 636,
+      "alphaBBox": [
+        11,
+        8,
+        596,
+        627
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 8529,
+      "sha256": "89be255cfb9074b4a95c48ccfe5b3f77690d432ec9478e59cf675bc6bfc0bca7"
+    },
+    "body/cg_body_over_bankR_3.png": {
+      "source": "暴走形态转转向.png",
+      "sourceIndex": 2,
+      "width": 608,
+      "height": 636,
+      "alphaBBox": [
+        21,
+        11,
+        586,
+        624
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 7686,
+      "sha256": "ae6a643a67cd92ec0936777d407dba24c5b6e63a0b1a3dada0642d2a49fef555"
+    },
+    "fx/cg_muzzle_over_1.png": {
+      "source": "暴走枪口火光，裂纹爆闪、强红光。.png",
+      "sourceIndex": 0,
+      "width": 528,
+      "height": 504,
+      "alphaBBox": [
+        35,
+        9,
+        492,
+        494
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3795,
+      "sha256": "e59b3aa1839b39b7ec97ad4d44c50fcca988caa7f1f045ce8ec7f296bd1e652c"
+    },
+    "fx/cg_muzzle_over_2.png": {
+      "source": "暴走枪口火光，裂纹爆闪、强红光。.png",
+      "sourceIndex": 1,
+      "width": 528,
+      "height": 504,
+      "alphaBBox": [
+        16,
+        12,
+        512,
+        492
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6864,
+      "sha256": "ddee3b3ee06d12c61f20c0ab059192769832a0b9b65fd1099d155a9d7aaafc63"
+    },
+    "fx/cg_muzzle_over_3.png": {
+      "source": "暴走枪口火光，裂纹爆闪、强红光。.png",
+      "sourceIndex": 2,
+      "width": 528,
+      "height": 504,
+      "alphaBBox": [
+        8,
+        10,
+        519,
+        493
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 7579,
+      "sha256": "b84270e3bc53f0656eb6ff7575ea5636a17df3cf18c56b7f2a1ae54edee8280f"
+    },
+    "fx/cg_muzzle_over_4.png": {
+      "source": "暴走枪口火光，裂纹爆闪、强红光。.png",
+      "sourceIndex": 3,
+      "width": 528,
+      "height": 504,
+      "alphaBBox": [
+        20,
+        19,
+        508,
+        485
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 5033,
+      "sha256": "fe7f53163489266817462982757e8e0b0371d9a7a610cd566c60779ac376c3e8"
+    },
+    "body/cg_wing_blade_1.png": {
+      "source": "暴走翼刃能量延展，华丽红色裂纹光翼.png",
+      "sourceIndex": 0,
+      "width": 608,
+      "height": 552,
+      "alphaBBox": [
+        51,
+        113,
+        557,
+        439
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1466,
+      "sha256": "84f8259426fd1ec6cb6112c0dbe9ab3146c4c017bb21847aa28ece5f687fcb29"
+    },
+    "body/cg_wing_blade_2.png": {
+      "source": "暴走翼刃能量延展，华丽红色裂纹光翼.png",
+      "sourceIndex": 1,
+      "width": 608,
+      "height": 552,
+      "alphaBBox": [
+        16,
+        85,
+        591,
+        466
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2214,
+      "sha256": "cb55d07c01f2cde7d3b684951313a215416c03558d8cd030963e0f00bdad3eb7"
+    },
+    "body/cg_wing_blade_3.png": {
+      "source": "暴走翼刃能量延展，华丽红色裂纹光翼.png",
+      "sourceIndex": 2,
+      "width": 608,
+      "height": 552,
+      "alphaBBox": [
+        23,
+        61,
+        584,
+        490
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2653,
+      "sha256": "809f85fc9d545ce0a2963fd79bf212b82d2fded06a7b3553ccb231d9bf6410da"
+    },
+    "body/cg_wing_blade_4.png": {
+      "source": "暴走翼刃能量延展，华丽红色裂纹光翼.png",
+      "sourceIndex": 3,
+      "width": 608,
+      "height": 552,
+      "alphaBBox": [
+        6,
+        0,
+        598,
+        543
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4598,
+      "sha256": "88d73ea096235d457a5747a9fab0e98abd5c6c8a7deda0f07a6ea200e371826a"
+    },
+    "fx/cg_aura_1.png": {
+      "source": "机体周围暗红腐化气场，内收束边缘。.png",
+      "sourceIndex": 0,
+      "width": 572,
+      "height": 568,
+      "alphaBBox": [
+        12,
+        9,
+        560,
+        559
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2502,
+      "sha256": "adfc56154369e3896f08e3d075ecadb15ccb7f464a863c76ea3c8fd51d02958f"
+    },
+    "fx/cg_aura_2.png": {
+      "source": "机体周围暗红腐化气场，内收束边缘。.png",
+      "sourceIndex": 1,
+      "width": 572,
+      "height": 568,
+      "alphaBBox": [
+        18,
+        15,
+        554,
+        553
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3171,
+      "sha256": "e4977258e7e4abeaaed64fa86302dbc74118eca1ed92b8cf230aca3a930c0e00"
+    },
+    "fx/cg_aura_3.png": {
+      "source": "机体周围暗红腐化气场，内收束边缘。.png",
+      "sourceIndex": 2,
+      "width": 572,
+      "height": 568,
+      "alphaBBox": [
+        10,
+        15,
+        562,
+        553
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2329,
+      "sha256": "43eb9082f43378ad189cd369ff9e9d6ea9f25c4423fc1d276836282237b6b46b"
+    },
+    "fx/cg_aura_4.png": {
+      "source": "机体周围暗红腐化气场，内收束边缘。.png",
+      "sourceIndex": 3,
+      "width": 572,
+      "height": 568,
+      "alphaBBox": [
+        8,
+        16,
+        563,
+        552
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2684,
+      "sha256": "29a602bb4856da048c3e26a1dcee1b77e6a5f2ea5a8a3bce9a1f0a5d01e819ce"
+    },
+    "bullets/cg_orb_main_1.png": {
+      "source": "穿透弹幕光球细节.png",
+      "sourceIndex": 0,
+      "width": 676,
+      "height": 652,
+      "alphaBBox": [
+        14,
+        19,
+        662,
+        632
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 11513,
+      "sha256": "0ac576fccd38344b4830f33bbe49d53ee774eee130885de4e2856c4dec211502"
+    },
+    "bullets/cg_orb_main_2.png": {
+      "source": "穿透弹幕光球细节.png",
+      "sourceIndex": 1,
+      "width": 676,
+      "height": 652,
+      "alphaBBox": [
+        9,
+        8,
+        667,
+        643
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 17228,
+      "sha256": "2dc65442e3178935dcb3ec5113268b8e048c4445dccfd231a5c3e0809339ad2e"
+    },
+    "bullets/cg_trail_strip_1.png": {
+      "source": "红色粒子流条带，给弹幕拖尾拼接。.png",
+      "sourceIndex": 0,
+      "width": 232,
+      "height": 1168,
+      "alphaBBox": [
+        74,
+        203,
+        158,
+        964
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 567,
+      "sha256": "4febf96bdc1b1445f44fa60d0a9dd388b49c6bba432f93e40733770ff70b77f9"
+    },
+    "bullets/cg_trail_strip_2.png": {
+      "source": "红色粒子流条带，给弹幕拖尾拼接。.png",
+      "sourceIndex": 1,
+      "width": 232,
+      "height": 1168,
+      "alphaBBox": [
+        46,
+        83,
+        177,
+        1085
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1756,
+      "sha256": "a0a5714a2eb7800f8dfa7703261e1ee76230144e7c9b8505de0844c3918674c6"
+    },
+    "bullets/cg_trail_strip_3.png": {
+      "source": "红色粒子流条带，给弹幕拖尾拼接。.png",
+      "sourceIndex": 2,
+      "width": 232,
+      "height": 1168,
+      "alphaBBox": [
+        34,
+        49,
+        189,
+        1119
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3611,
+      "sha256": "0b50e7d847d7afebc65e1d305928c5e9bfbfa9f2e9fea33632b2db4fd49894a8"
+    },
+    "bullets/cg_trail_strip_4.png": {
+      "source": "红色粒子流条带，给弹幕拖尾拼接。.png",
+      "sourceIndex": 3,
+      "width": 232,
+      "height": 1168,
+      "alphaBBox": [
+        23,
+        36,
+        201,
+        1131
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4342,
+      "sha256": "94c986ffd416584b9eb372dcfe7eff008075d852c76b7b38d4ab9aa8e508b619"
+    },
+    "bullets/cg_trail_strip_5.png": {
+      "source": "红色粒子流条带，给弹幕拖尾拼接。.png",
+      "sourceIndex": 4,
+      "width": 232,
+      "height": 1168,
+      "alphaBBox": [
+        1,
+        8,
+        222,
+        1160
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4630,
+      "sha256": "95f08a57b35e43f4217e0a367c13d299542d99951946710d5d825b6a2ce85e76"
+    },
+    "fx/cg_stack_burst_1.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 0,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        45,
+        39,
+        382,
+        373
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2288,
+      "sha256": "4a3fa93c87a9e664c3180a91d1b6e44f1a14882068003c61231bf234e99ed859"
+    },
+    "fx/cg_stack_burst_2.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 1,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        42,
+        39,
+        386,
+        373
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 993,
+      "sha256": "f60fab95d330fd56b074d7ddd08df08813ae8c9eb2e73e0b84a033a5337d4f3b"
+    },
+    "fx/cg_stack_burst_3.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 2,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        36,
+        29,
+        392,
+        383
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1698,
+      "sha256": "f71efd69eba4e577ba7ab0c71b70a3bf2a8d5dc6cd19d7d27f8423ddbf829fed"
+    },
+    "fx/cg_stack_burst_4.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 3,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        20,
+        26,
+        407,
+        386
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4097,
+      "sha256": "9c9ed90be77589ca3833fc7c7bb1bef0b0ebd82561c1aa879e60d30d58a57e94"
+    },
+    "fx/cg_stack_burst_5.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 4,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        9,
+        0,
+        424,
+        403
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 7723,
+      "sha256": "79f7ceebf1ee8c60b3b2fccdee1fa861e2c2d3d7d04074590574584b83ff8932"
+    },
+    "fx/cg_stack_burst_6.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 5,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        16,
+        9,
+        411,
+        402
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4915,
+      "sha256": "d0b214cfe28a8ba16d2428091052ece9eeb2e8fedfe1e47bc4dc6313537e3b46"
+    },
+    "fx/cg_stack_burst_7.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 6,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        24,
+        14,
+        404,
+        398
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1076,
+      "sha256": "8373697f826db78c1a242789615276b55f26af71af0b753f05e36d5b94464b14"
+    },
+    "fx/cg_stack_burst_8.png": {
+      "source": "翻倍伤害触发爆发，腐化印记炸裂。.png",
+      "sourceIndex": 7,
+      "width": 428,
+      "height": 412,
+      "alphaBBox": [
+        23,
+        11,
+        405,
+        400
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 59,
+      "sha256": "4e1e51487c67d7c17315e44253e8e50dbbc755ec5760adbfd4b41ec04dd0e6ec"
+    },
+    "bullets/cg_orb_baked_1.png": {
+      "source": "腐化光球弹幕飞行拖尾.png",
+      "sourceIndex": 0,
+      "width": 328,
+      "height": 608,
+      "alphaBBox": [
+        27,
+        24,
+        301,
+        584
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 716,
+      "sha256": "e19d41d1eb43fe7b847e74ef528a1d8e01aced29a2275a229aed960c1c48e6a9"
+    },
+    "bullets/cg_orb_baked_2.png": {
+      "source": "腐化光球弹幕飞行拖尾.png",
+      "sourceIndex": 1,
+      "width": 328,
+      "height": 608,
+      "alphaBBox": [
+        8,
+        8,
+        319,
+        600
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 976,
+      "sha256": "e823bf401ce160114a20ec76ab7e1b98ab65ac55350e2504ff46f3dd0dba1cba"
+    },
+    "bullets/cg_orb_baked_3.png": {
+      "source": "腐化光球弹幕飞行拖尾.png",
+      "sourceIndex": 2,
+      "width": 328,
+      "height": 608,
+      "alphaBBox": [
+        22,
+        26,
+        305,
+        582
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 593,
+      "sha256": "9ff9fefe1f41357590a8255d5ef51b035ad84e262e0a6f406a6beb1eabe12ad4"
+    },
+    "bullets/cg_orb_baked_4.png": {
+      "source": "腐化光球弹幕飞行拖尾.png",
+      "sourceIndex": 3,
+      "width": 328,
+      "height": 608,
+      "alphaBBox": [
+        19,
+        10,
+        308,
+        597
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 669,
+      "sha256": "1f542890f6ebcd3f971118c22dd12cfa83ffc90e3e83623f28b0fed407ae8d31"
+    },
+    "fx/cg_shockring_1.png": {
+      "source": "腐化冲击光环.png",
+      "sourceIndex": 0,
+      "width": 416,
+      "height": 420,
+      "alphaBBox": [
+        87,
+        90,
+        328,
+        330
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1586,
+      "sha256": "09228129610bf82d0ef4933f65861cc274236c13e42976b26b588f7064553ac4"
+    },
+    "fx/cg_shockring_2.png": {
+      "source": "腐化冲击光环.png",
+      "sourceIndex": 1,
+      "width": 416,
+      "height": 420,
+      "alphaBBox": [
+        57,
+        49,
+        359,
+        370
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3180,
+      "sha256": "2372a2e5e63045042cc2b03aae5afedd97c39960d548842e1319ccc0f19ad412"
+    },
+    "fx/cg_shockring_3.png": {
+      "source": "腐化冲击光环.png",
+      "sourceIndex": 2,
+      "width": 416,
+      "height": 420,
+      "alphaBBox": [
+        11,
+        17,
+        397,
+        403
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 3717,
+      "sha256": "646ff5eaa1c166425d3431441df1046d9e55eecbc1c891dcfd566467c38b7b87"
+    },
+    "fx/cg_shockring_4.png": {
+      "source": "腐化冲击光环.png",
+      "sourceIndex": 3,
+      "width": 416,
+      "height": 420,
+      "alphaBBox": [
+        4,
+        4,
+        415,
+        412
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4727,
+      "sha256": "488bd805f5bf1842567b250261cda52a8f3140c48887e2f98c3a548646b4f68c"
+    },
+    "fx/cg_shockring_5.png": {
+      "source": "腐化冲击光环.png",
+      "sourceIndex": 4,
+      "width": 416,
+      "height": 420,
+      "alphaBBox": [
+        40,
+        45,
+        375,
+        374
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1598,
+      "sha256": "6902d9b2abcb953da6694bc8b044ac580417b54261a5562b4275ee4545b05bac"
+    },
+    "fx/cg_shockring_6.png": {
+      "source": "腐化冲击光环.png",
+      "sourceIndex": 5,
+      "width": 416,
+      "height": 420,
+      "alphaBBox": [
+        173,
+        95,
+        243,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 43,
+      "sha256": "c6ee0a682f9969c951987b57c71bdaf8733784331f658206a4a894804b1fc468"
+    },
+    "fx/cg_dot_r_1.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 0,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        28,
+        35,
+        252,
+        256
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 871,
+      "sha256": "f61324c2ec62122f88c1dd73365d67d1ee4c23f64eedc4750d18cbbe2b25f247"
+    },
+    "fx/cg_dot_r_2.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 1,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        12,
+        16,
+        268,
+        276
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1734,
+      "sha256": "0b87c3990a17afd29aeaf3eaa52cd7bcaf0d99365ec8b8e2262a8fff91d82883"
+    },
+    "fx/cg_dot_r_3.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 2,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        9,
+        15,
+        271,
+        276
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1208,
+      "sha256": "db0e3674e275e17bea09e62ef3ae857a536fa20c9a33bc6bc02f3c7575080dfa"
+    },
+    "fx/cg_dot_p_1.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 3,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        18,
+        24,
+        262,
+        267
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2037,
+      "sha256": "739eeac54cacce8879e888459d77544991025702b9f034b54a658aa78311a84c"
+    },
+    "fx/cg_dot_p_2.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 4,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        24,
+        35,
+        255,
+        257
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1768,
+      "sha256": "982043d37ffa8234495e8d41b4abf302c1efd19e48de5c2432f8f3cb2ac85e45"
+    },
+    "fx/cg_dot_p_3.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 5,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        17,
+        22,
+        263,
+        269
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2215,
+      "sha256": "51c02581013f0dd8892523dd373efca6c9eab55665879e493431b688b1d9bb19"
+    },
+    "fx/cg_dot_w_1.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 6,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        28,
+        36,
+        251,
+        255
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6394,
+      "sha256": "02ae3d164b1bee347de71a3f819810aa1b5bac706fef7df2a364244e40433950"
+    },
+    "fx/cg_dot_w_2.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 7,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        13,
+        15,
+        266,
+        276
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 19376,
+      "sha256": "7a0ff45bbaa1096f17b80f78d63d0c9a00ef0ea92e288bae27b14457f6fd3cfe"
+    },
+    "fx/cg_dot_w_3.png": {
+      "source": "虚空粒子圆点组，红 : 粉紫 : 近白三档.png",
+      "sourceIndex": 8,
+      "width": 280,
+      "height": 292,
+      "alphaBBox": [
+        13,
+        8,
+        266,
+        283
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 15182,
+      "sha256": "29471c9bc6bc2a84f9c8a3496bc903c285cea4f1400615e43d2981875a4d9c72"
+    },
+    "fx/cg_spark_1.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 12,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        30,
+        1,
+        178,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 524,
+      "sha256": "785c0cd4d6f2680406c890ce714e25f89309c66533a29b1a159e7dbd2ebb4691"
+    },
+    "fx/cg_spark_2.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 27,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        1,
+        29,
+        204,
+        210
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 311,
+      "sha256": "b5b730662c28ee1c5bf9004e1b1dbdf727128cc535dc1814bcdeea52ed3faafa"
+    },
+    "fx/cg_spark_3.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 10,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        23,
+        0,
+        184,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 426,
+      "sha256": "5b08246595ebc899137d4928c6f38528510284d36a8cd26cde9c9d50942424dd"
+    },
+    "fx/cg_spark_4.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 28,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        21,
+        27,
+        195,
+        212
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 327,
+      "sha256": "643a75d97407338d5cc2fa76b3a2b0b51d7af2481499c37ebd9ac304b24951f8"
+    },
+    "fx/cg_spark_5.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 22,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        1,
+        0,
+        206,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 528,
+      "sha256": "109f9d95bba298d88595837b25ddf9c1a4e40eb47c3d53ac0b48d5954451cda1"
+    },
+    "fx/cg_spark_6.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 23,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        22,
+        0,
+        178,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 379,
+      "sha256": "901b90f0a6f0bc6045aa5e2b3d4fdf3693e9db5fa4b8824d7a4f8d92ff928e0d"
+    },
+    "fx/cg_spark_7.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 14,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        29,
+        1,
+        178,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 358,
+      "sha256": "777c7b2c8f4cc131bda9c2d1c12c136a3a1a03810be160f47581728c0d619774"
+    },
+    "fx/cg_spark_8.png": {
+      "source": "腐化火花，短划、长划、尖刺碎光。.png",
+      "sourceIndex": 29,
+      "width": 208,
+      "height": 248,
+      "alphaBBox": [
+        23,
+        28,
+        177,
+        212
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 163,
+      "sha256": "66f059d647c25040793730ecca35b709d75497cd1eba1ce940e88f6fc7c145e4"
+    },
+    "fx/cg_shard_1.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 5,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        8,
+        20,
+        175,
+        235
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 954,
+      "sha256": "e318ede10649c85cd7c5c1c66fa4b964463da32dcefe0d1c86a48c9668d5caf6"
+    },
+    "fx/cg_shard_2.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 4,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        1,
+        18,
+        167,
+        237
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2653,
+      "sha256": "c2a616b0e2a73574817d6c30a59f9cdcb4ec7b1abcb45403839401f6197da472"
+    },
+    "fx/cg_shard_3.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 2,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        0,
+        21,
+        175,
+        235
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2347,
+      "sha256": "46c07c0882d1819776eaf85f6e3f651cb37ce3159d71acc1332091e861ab3800"
+    },
+    "fx/cg_shard_4.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 15,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        0,
+        1,
+        175,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1075,
+      "sha256": "e7ea3ad09e409602912f4148a3a9fe4d6cb5e5f851dae3ae102596a255bbd25a"
+    },
+    "fx/cg_shard_5.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 3,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        7,
+        18,
+        160,
+        238
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1951,
+      "sha256": "b59f756e9bb8a65967082f0e4cb5f4f755b77fd692708a3ce92ec3700dfa39d6"
+    },
+    "fx/cg_shard_6.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 16,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        0,
+        1,
+        175,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2300,
+      "sha256": "181f1cd82474fdb463640ae1d4027cfc61ffcb218294df1a744c9af0d06eebcb"
+    },
+    "fx/cg_shard_7.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 22,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        0,
+        0,
+        175,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1026,
+      "sha256": "84d3a407492856175d88532d35e0ef6d83edb3e1a94ed8308347747f6ecd18fe"
+    },
+    "fx/cg_shard_8.png": {
+      "source": "腐化能量碎片，黑红晶片状。.png",
+      "sourceIndex": 8,
+      "width": 176,
+      "height": 248,
+      "alphaBBox": [
+        0,
+        0,
+        175,
+        247
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2088,
+      "sha256": "dd8987d35aada6e9f5700895dbd9b7345aa98d6967387fd7b340005a2b6dd089"
+    },
+    "reference/cg_ref_parts.png": {
+      "source": "机身拆解细节贴图.png",
+      "sourceIndex": 0,
+      "width": 1448,
+      "height": 1086,
+      "alphaBBox": [
+        35,
+        20,
+        1413,
+        1069
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 46581,
+      "sha256": "7708f070caed0a85763fa7d77585af1c29794c70689cba6c22c9c6f03f16978b"
+    },
+    "body/material/cg_mat_normal_ao.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        10,
+        14,
+        653,
+        1106
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "cb48aee825159636de388752fb4e2b87ca6c4ac20fad7b32823e83e358a36e24"
+    },
+    "body/material/cg_mat_normal_crystal.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        228,
+        315,
+        436,
+        899
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "84e5092759b24cb804c1e2caf9276f4df36968d685597a928cd6f025ce61b91b"
+    },
+    "body/material/cg_mat_normal_muzzle.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        241,
+        8,
+        425,
+        565
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "6e5ec543fb87c2b93307cf97255e74fc1106e7a84e2a347cdb1efa548bf07ae4"
+    },
+    "body/material/cg_mat_normal_reactor.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        9,
+        244,
+        655,
+        972
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "cddb83dd453395376fb713cd2759477ff4cd38a5c02564c88892051e160e4a40"
+    },
+    "body/material/cg_mat_normal_engine.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        10,
+        657,
+        654,
+        1111
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "512230e040ddd124ddb7bd3cf9f953fe767b700785b92f9733ebddff4e6a9913"
+    },
+    "body/material/cg_mat_normal_wing.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        9,
+        335,
+        655,
+        992
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "8b2d0774eb136655f0cbbd18eaea87f98ed5dc3f3ff8e294c6c733bf0ab8eaea"
+    },
+    "body/material/cg_mat_normal_metal_1.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        25,
+        35,
+        640,
+        1101
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 14783,
+      "sha256": "841864ecd7d3392758d26c12a60a1b1f19f8dfa305549b2252669e944266584e"
+    },
+    "body/material/cg_mat_normal_metal_2.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        10,
+        33,
+        640,
+        1101
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 19005,
+      "sha256": "587675fe6fd1fbe4ea318809eedcc4f88be56e77f273695b33dfce448a56b8f0"
+    },
+    "body/material/cg_mat_normal_metal_3.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        10,
+        8,
+        640,
+        1101
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 30742,
+      "sha256": "6a06238e5bd3065069a21d1dae4aa80400f64e83e3c388ae97f1cf8f7e6806c7"
+    },
+    "body/material/cg_mat_normal_metal_4.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        25,
+        26,
+        640,
+        1101
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 40559,
+      "sha256": "395c57d17c788227d18d4878f06502c0a3a0cdd1f48690c88a5850b11566fc27"
+    },
+    "body/material/cg_mat_normal_metal_5.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        25,
+        35,
+        640,
+        1109
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 35495,
+      "sha256": "d0d182d80d43ce7e424682a6d7490b054e701756ce9ee73dfffdcd0483beeafc"
+    },
+    "body/material/cg_mat_normal_metal_6.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        25,
+        35,
+        640,
+        1101
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 27369,
+      "sha256": "01c2879d99fd07657b8b07033cd078d486b98c95de472533b0b40bcbc1b9692d"
+    },
+    "body/material/cg_mat_normal_metal_7.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        25,
+        35,
+        644,
+        1111
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 23197,
+      "sha256": "935a831be169fb31dcab742f27d087fa710e78b2e3f21dddbcb964fe44e51446"
+    },
+    "body/material/cg_mat_normal_metal_8.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 664,
+      "height": 1120,
+      "alphaBBox": [
+        25,
+        35,
+        654,
+        1101
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 16305,
+      "sha256": "3a6bf5fffa6e4b708c8a1b187b2a93db9c88277a1eba913dd33bc96735ddb850"
+    },
+    "body/material/cg_mat_over_ao.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        46,
+        15,
+        1197,
+        1116
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "a26f45b42252b6119fcc2134fa0a776ad248dfb67644bba93e6114278a7eefcb"
+    },
+    "body/material/cg_mat_over_crystal.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        428,
+        294,
+        815,
+        909
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "d55b9cc6f537777bf766076944e3df02f9b8bd434f6c4ac69853162cbfaea39e"
+    },
+    "body/material/cg_mat_over_muzzle.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        393,
+        9,
+        851,
+        571
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "618e14dde915848434633bcb3204b2c22943fd5186e80a052f343537aa4ca41b"
+    },
+    "body/material/cg_mat_over_reactor.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        9,
+        238,
+        1234,
+        982
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ed733c6c94dcaadf54bdf343688364bff74e56220bfcea9fcbfdc16630783434"
+    },
+    "body/material/cg_mat_over_engine.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        11,
+        664,
+        1232,
+        1122
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "b66950144194b07e9d10df4d9eb6be2816119f5ab0ff081056700ddf90d32344"
+    },
+    "body/material/cg_mat_over_wing.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        9,
+        170,
+        1233,
+        997
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "0d8bd04acc8244799c8abe80aa34442c59724b7d0b27123ee11cd157bcbcc712"
+    },
+    "body/material/cg_mat_over_metal_1.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        12,
+        25,
+        1230,
+        1110
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 24286,
+      "sha256": "f97325b2216124af4c58c6f2a00efaee8627d528817f71e01c28f9e71e8d37f9"
+    },
+    "body/material/cg_mat_over_metal_2.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        10,
+        22,
+        1230,
+        1110
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 27136,
+      "sha256": "062912d8d2a794c5ed1723b3d39ea0a07ac1e6dfcc9aa4606a44243faf14ffb5"
+    },
+    "body/material/cg_mat_over_metal_3.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        10,
+        10,
+        1230,
+        1110
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 41677,
+      "sha256": "6564da126770cfe49101654540c26c8d3571fdb4ab1b50e4b32d579567eeebef"
+    },
+    "body/material/cg_mat_over_metal_4.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        12,
+        22,
+        1230,
+        1110
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 53273,
+      "sha256": "1a4ec22c8fc9ceecae26a6e19b25d6f2792baa984b4afb237bf1c62aaca94148"
+    },
+    "body/material/cg_mat_over_metal_5.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        12,
+        25,
+        1230,
+        1121
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 51637,
+      "sha256": "2cd4b4b113ba577b8930296bb15a80f7c465e8fb8edaa4da5552529fd28d0859"
+    },
+    "body/material/cg_mat_over_metal_6.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        12,
+        25,
+        1230,
+        1121
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 41971,
+      "sha256": "b075b006ee646d27933d90f4a5bd48d25989bbbc6ac88b6de62b59f81ea33c71"
+    },
+    "body/material/cg_mat_over_metal_7.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        12,
+        25,
+        1233,
+        1121
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 31291,
+      "sha256": "5bc456f2608ed11cd9fcde128aec2f95922d9b449037969ead99d9a8e63c4956"
+    },
+    "body/material/cg_mat_over_metal_8.png": {
+      "source": "暴走形态贴图.png",
+      "sourceIndex": 0,
+      "width": 1244,
+      "height": 1132,
+      "alphaBBox": [
+        12,
+        25,
+        1233,
+        1115
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 25394,
+      "sha256": "6a7b7bfb239bc432f3535bed748745c1e5e941696d082ae1be2a842a775b67e7"
+    },
+    "body/material/cg_mat_form_ao_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        127,
+        39,
+        312,
+        357
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ef348e35c0e53729fdc102868f9a404b56fe662d1f511549350a38fa6faab564"
+    },
+    "body/material/cg_mat_form_crystal_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        152,
+        118,
+        289,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "c29ea182cd1028ad7bd612266895461bdd3df1e55218190328bef71507b114b8"
+    },
+    "body/material/cg_mat_form_muzzle_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        156,
+        39,
+        282,
+        204
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "d33ac1eb99f2224fee2845f78bcea1a0cd80e8ceb69fa1168cb2ba8d68703f21"
+    },
+    "body/material/cg_mat_form_reactor_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        127,
+        91,
+        312,
+        343
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "c8108841d17b4b427b39f698a1c52d3cc8e555090c2b8b0cbb81dc6aa8d020b6"
+    },
+    "body/material/cg_mat_form_engine_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        127,
+        237,
+        311,
+        365
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "b69e2ad8a746c3e7c5c8d6f44360d9814fc8455e39b4951b2fbc5f1faba59831"
+    },
+    "body/material/cg_mat_form_wing_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        127,
+        102,
+        312,
+        287
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "b74f1bdfd38bbd7a36ca4f7c4993b60a011aef408d5a18f934609e581021f4c5"
+    },
+    "body/material/cg_mat_form_metal_1.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 0,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        141,
+        43,
+        303,
+        335
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1187,
+      "sha256": "dc55c4b7008fac7958720dbeca98eef4d298a9622ed613488f649470bf3b0039"
+    },
+    "body/material/cg_mat_form_ao_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        112,
+        41,
+        328,
+        358
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "b4f9d0bb63771925c2495ebdf8be777afbaae5b6e1a66c45c72e3231056a4e69"
+    },
+    "body/material/cg_mat_form_crystal_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        151,
+        118,
+        281,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "df292e1e63d693074acc4293b707aa4f5441fc6541bcff2475263775b92d4638"
+    },
+    "body/material/cg_mat_form_muzzle_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        160,
+        38,
+        281,
+        204
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "710cc56bb79bf06decf053ddac837daa7128d23d008258153838939be4b0d29b"
+    },
+    "body/material/cg_mat_form_reactor_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        111,
+        92,
+        329,
+        344
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "46722f65a0732c13a7afa7c7ef71919b9faf20878ee9a68010057d28f36ad05d"
+    },
+    "body/material/cg_mat_form_engine_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        111,
+        238,
+        329,
+        366
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "79321fc3c414cae332863643631a9548547cdec10feeeb1e90f0f5e7c1bdad4b"
+    },
+    "body/material/cg_mat_form_wing_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        112,
+        100,
+        328,
+        301
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ad6a576134ba66cd011871d08223ab0e65bd7dba9b934b2c1436bec427eddd57"
+    },
+    "body/material/cg_mat_form_metal_2.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 1,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        129,
+        42,
+        315,
+        350
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1347,
+      "sha256": "8935e6b7f55b1aa9bd9f29d839ef97f83e12b4a31d3ddf63ad3dbd0c547a9b8d"
+    },
+    "body/material/cg_mat_form_ao_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        63,
+        38,
+        375,
+        359
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "b5d46bf5666c86c31cef1b2a110c96a78941a376a4f65c61b3b9af185d29a63a"
+    },
+    "body/material/cg_mat_form_crystal_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        152,
+        114,
+        289,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "11a49607e13da01d7999d2372ba4e00ef6ca674d8147ad07c90ed8cd955f3d04"
+    },
+    "body/material/cg_mat_form_muzzle_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        151,
+        37,
+        297,
+        204
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "11a45fb28c6db47fdf294b5b5e816cf7de211e070249c948cb058301a7caca8b"
+    },
+    "body/material/cg_mat_form_reactor_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        61,
+        89,
+        378,
+        343
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "49b275b0f5963e5d1d9664f44ad6098d6681a5a91d08cab30a6b9816c35dfdee"
+    },
+    "body/material/cg_mat_form_engine_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        61,
+        237,
+        377,
+        366
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "53447b243514b6c35fa5340ec92191a43eb6666efceee770a5d6fa28365147bd"
+    },
+    "body/material/cg_mat_form_wing_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        61,
+        88,
+        377,
+        288
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "0253b07f94f5868cf0b366d51c36037db94c915026598580671ba19f496f984c"
+    },
+    "body/material/cg_mat_form_metal_3.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 2,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        62,
+        41,
+        347,
+        320
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4535,
+      "sha256": "65790554c15da799519908d66bc8d009100544e3b6b43a61ad0ca31265792e2a"
+    },
+    "body/material/cg_mat_form_ao_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        31,
+        35,
+        398,
+        359
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "4d8b5cb5ce8900a9163aa152ff492588829148300d06f3700a45bea657154604"
+    },
+    "body/material/cg_mat_form_crystal_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        151,
+        109,
+        285,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "73f15b8682806a801ecca6cdbc355e6a435bde0206e026733bca5328e49bef02"
+    },
+    "body/material/cg_mat_form_muzzle_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        140,
+        34,
+        299,
+        204
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "0514055bd0c277e49a6677207f001f1af39ffca2b49bbb0ddc9aee07965e487c"
+    },
+    "body/material/cg_mat_form_reactor_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        31,
+        89,
+        401,
+        343
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "7c571fc2381de5cd0a588ba58477407e4c4e5a2cb796b045388c652a631f1bb4"
+    },
+    "body/material/cg_mat_form_engine_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        31,
+        237,
+        400,
+        369
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "e5d001581e5e0ef882db9d8aebaa2e4f28bef256feda8b6ea9a7ab55e1a8d3f3"
+    },
+    "body/material/cg_mat_form_wing_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        31,
+        69,
+        400,
+        307
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "447a641155034d1953911fcfd68356661b4b4b81dd55c55a857a58e9e50c2ef7"
+    },
+    "body/material/cg_mat_form_metal_4.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 3,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        63,
+        38,
+        359,
+        349
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 6158,
+      "sha256": "9aaf5fda7da19e641858b94ea5ac024bce66e8f75e67f227776e559c0695e025"
+    },
+    "body/material/cg_mat_form_ao_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        57,
+        12,
+        382,
+        385
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "462025b983f20ea7ea255e9861eb5a1d10b1766284137ec35a19375d628833e4"
+    },
+    "body/material/cg_mat_form_crystal_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        152,
+        111,
+        280,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "278980fb9fa5440d20740c02f726178b27c3f350a24eab07b8bc6c6f36f71b2a"
+    },
+    "body/material/cg_mat_form_muzzle_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        140,
+        12,
+        302,
+        204
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "f6e8a7f92d225275897cd010c092cf1a9721c7143f00e1608a6ca33f67399d9b"
+    },
+    "body/material/cg_mat_form_reactor_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        55,
+        86,
+        385,
+        343
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "4860278481bcb6c9757f2efc52adbe8a04b6fd2a9a31087f36766fb2e9e3ec8a"
+    },
+    "body/material/cg_mat_form_engine_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        56,
+        237,
+        384,
+        393
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "7212af5b82f9b73b524ca7119486e577f3ca642b896d6ce415b8fcaa458c6c74"
+    },
+    "body/material/cg_mat_form_wing_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        55,
+        59,
+        385,
+        291
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "2d1486570466b9be2673e10441b9817601209e6810d7a792ba0ddba0d3908008"
+    },
+    "body/material/cg_mat_form_metal_5.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 4,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        92,
+        40,
+        356,
+        366
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 4432,
+      "sha256": "48771e0b9414318a9e45f035a0d8da180d0818cdd2e9c299c6f0373a17192028"
+    },
+    "body/material/cg_mat_form_ao_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        16,
+        11,
+        434,
+        384
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "2714a4d4b88c820158fe9d2eefe8631f6e1d40d01c73e649e91024575c3c286d"
+    },
+    "body/material/cg_mat_form_crystal_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        151,
+        109,
+        286,
+        325
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "bb39f1a4aff3c4f3809e128de91fb74603f39ba231b29ab76f168eda29b04e6f"
+    },
+    "body/material/cg_mat_form_muzzle_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        134,
+        9,
+        302,
+        204
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "181da74d0df64958835a7fe28f21338a5e41b494fa49c4c75cf55de97da639f7"
+    },
+    "body/material/cg_mat_form_reactor_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        13,
+        85,
+        434,
+        344
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "5c5be1ffd4ba8e894d8c9bb2c54407ecfc9affb50b724e42186a99e9253422ff"
+    },
+    "body/material/cg_mat_form_engine_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        14,
+        237,
+        433,
+        394
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "e3815bf326fe5113f5245180dfad7004d202c110b6a43175bd7f675bc14aae6b"
+    },
+    "body/material/cg_mat_form_wing_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        13,
+        52,
+        434,
+        298
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "9a13a39e68c7b621f2144e002d6bb18ceb09583e6027643dfec33d990ed21c40"
+    },
+    "body/material/cg_mat_form_metal_6.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 5,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        32,
+        38,
+        386,
+        393
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 2362,
+      "sha256": "9a2d41264984327a3887e3628bf42fba997f524f7e333b619711661f89a4023c"
+    },
+    "body/material/cg_mat_form_ao_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        0,
+        11,
+        440,
+        388
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "4a0fb6a02d3d2efd8987225c180733debeaea5595d292c13068b39fc95fe5543"
+    },
+    "body/material/cg_mat_form_crystal_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        153,
+        105,
+        289,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "050495f2cf43f61b7615919a30d6e1b6ebcdd09fcd4e484241b8620a0b28a1c7"
+    },
+    "body/material/cg_mat_form_muzzle_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        134,
+        9,
+        298,
+        202
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ca3496714ddce4c0e70451793452666f14e08a958fdfa841da8f0a9ca188e4c0"
+    },
+    "body/material/cg_mat_form_reactor_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        0,
+        85,
+        439,
+        345
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "812b6ba81dda95d62f9187b21e2f252f20e4acc9d6034b8c657d86908baf4301"
+    },
+    "body/material/cg_mat_form_engine_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        1,
+        237,
+        438,
+        394
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "ae52d047d60fcf816f884d692262c76d6a6a0510b683987946edebad0819e631"
+    },
+    "body/material/cg_mat_form_wing_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        0,
+        40,
+        439,
+        335
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "3528668b32a74daeafbd5381b4f9e4afd6c59e2654597fa641e7c068d330248d"
+    },
+    "body/material/cg_mat_form_metal_7.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 6,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        23,
+        42,
+        438,
+        342
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1583,
+      "sha256": "455715770fe6508faa8f78da71f662655fc774a3d1017e8706b1662bd252ed94"
+    },
+    "body/material/cg_mat_form_ao_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        21,
+        9,
+        409,
+        383
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "9677b562a48c893ed7168d3971686dc6e96c439d18e47a4164e812c652a0c0c4"
+    },
+    "body/material/cg_mat_form_crystal_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        151,
+        108,
+        288,
+        324
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "94e12baf0e6faec2ade88e5a3f4bd90730af36f8a847f13620982e37711cbc25"
+    },
+    "body/material/cg_mat_form_muzzle_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        133,
+        9,
+        301,
+        203
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "a6fb63e930a6c0947b149125bc80ac5bd99c92311e533d45393f9741fe7d6ac4"
+    },
+    "body/material/cg_mat_form_reactor_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        21,
+        85,
+        410,
+        344
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "07175620dfe2f1e24332c86b713a0d0bbba7929be8adea344df213ce9843ac40"
+    },
+    "body/material/cg_mat_form_engine_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        22,
+        237,
+        404,
+        396
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "3f9129d75e2f6b6e26ad7254f8a374bf2df2b183a8191b35a5d4fa71cbc5e27b"
+    },
+    "body/material/cg_mat_form_wing_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        21,
+        29,
+        411,
+        313
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "sha256": "e9da75b4805115b1b0f06ee2c376ce1b409e93fa772c061ef59a7ba43e5562ea"
+    },
+    "body/material/cg_mat_form_metal_8.png": {
+      "source": "普通形象到暴走形态的帧序列切换动画.png",
+      "sourceIndex": 7,
+      "width": 440,
+      "height": 404,
+      "alphaBBox": [
+        36,
+        37,
+        404,
+        386
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1623,
+      "sha256": "8f185738a97375dd560f19bc848777ba9a8abc19ad35c44e6eb9c5bce216b801"
+    },
+    "ui/cg_avatar.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 256,
+      "height": 256,
+      "alphaBBox": [
+        66,
+        23,
+        190,
+        232
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 1540,
+      "sha256": "ae15b968753160c2e0522524fecfff8ea05680a73f1a42d3f5ef08dd532534f2"
+    },
+    "ui/cg_cutin.png": {
+      "source": "普通形态贴图素材.png",
+      "sourceIndex": 0,
+      "width": 720,
+      "height": 1080,
+      "alphaBBox": [
+        77,
+        58,
+        642,
+        1022
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 30682,
+      "sha256": "844a1c71fc734a815a33d570dc73f9020d84e132d8450c5a03cef4f056fea15e"
+    }
+  }
+}
