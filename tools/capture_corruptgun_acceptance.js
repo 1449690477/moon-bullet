@@ -217,8 +217,9 @@ async function main() {
     report.ultimate = await page.evaluate(() => window.__corruptgunInternals__.ultimateSpec());
     if (report.ultimate.kind !== 'darkWheel' || report.ultimate.timeline.spin !== 8 || report.ultimate.fullBossSequenceStacks !== 19 || report.ultimate.orb.size !== 96
       || report.ultimate.wheel.size !== 900 || report.ultimate.wheel.damageRadius !== 500 || report.ultimate.wheel.tick !== 0.4
-      || report.ultimate.wheel.discSize !== 660 || report.ultimate.wheel.innerDiscSize !== 430
-      || report.ultimate.wheel.bladeSize !== 198 || report.ultimate.absorption.tangentialPull !== 330
+      || report.ultimate.wheel.discSize !== 540 || report.ultimate.wheel.innerDiscSize !== 358
+      || report.ultimate.wheel.bladeSize !== 126 || report.ultimate.absorption.tangentialPull !== 455
+      || report.ultimate.render.spinMasterPixels !== 768 || report.ultimate.render.visualEnvelope > 700
       || report.ultimate.burst.radius !== 430 || report.ultimate.finale.radius !== 680) {
       throw new Error(`Dark Wheel gameplay/render contract mismatch: ${JSON.stringify(report.ultimate)}`);
     }

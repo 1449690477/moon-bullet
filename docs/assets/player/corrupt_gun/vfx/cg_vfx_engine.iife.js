@@ -536,8 +536,8 @@ ${De(r)}`)),this.gl.linkProgram(this.program),!this.gl.getProgramParameter(this.
 
   vec4 shadeUltimateWheel(vec2 p) {
     float radius = length(p);
-    vec2 outerP = rotate2d(-uPhase * 1.58) * p;
-    vec2 innerP = rotate2d(uPhase * 2.34) * p;
+    vec2 outerP = rotate2d(-uPhase * 2.24) * p;
+    vec2 innerP = rotate2d(uPhase * 3.24) * p;
     float outerAngle = atan(outerP.y, outerP.x);
     float innerAngle = atan(innerP.y, innerP.x);
     vec2 gradientA;
@@ -548,9 +548,9 @@ ${De(r)}`)),this.gl.linkProgram(this.program),!this.gl.getProgramParameter(this.
     float collapse = clamp(uProgress, 0.0, 1.0);
     float outerSegments = 0.26 + 0.74 * smoothstep(0.02, 0.76, sin(outerAngle * 24.0 + flowA));
     float innerSegments = 0.28 + 0.72 * smoothstep(0.04, 0.74, sin(innerAngle * 16.0 + flowB));
-    float outerRing = band(radius, 0.79, 0.018, 0.034) * outerSegments;
-    float innerRing = band(radius, 0.50, 0.015, 0.030) * innerSegments;
-    float fissures = pow(smoothstep(0.38, 0.86, abs(flowB + sin(outerAngle * 9.0 + radius * 26.0) * 0.32)), 2.2)
+    float outerRing = band(radius, 0.79, 0.010, 0.019) * outerSegments;
+    float innerRing = band(radius, 0.50, 0.009, 0.018) * innerSegments;
+    float fissures = pow(smoothstep(0.44, 0.88, abs(flowB + sin(outerAngle * 9.0 + radius * 26.0) * 0.32)), 2.7)
       * smoothstep(0.30, 0.46, radius) * (1.0 - smoothstep(0.80, 0.96, radius));
     float flameBand = smoothstep(0.73, 0.86, radius) * (1.0 - smoothstep(0.90, 1.05, radius));
     float flame = flameBand * smoothstep(-0.18, 0.76, flowA + sin(outerAngle * 11.0) * 0.42);
@@ -558,7 +558,7 @@ ${De(r)}`)),this.gl.linkProgram(this.program),!this.gl.getProgramParameter(this.
     vec3 color = vec3(0.12, 0.001, 0.018) * fissures;
     color += vec3(0.82, 0.010, 0.070) * outerRing * (0.72 + absorbed * 0.62);
     color += vec3(0.58, 0.004, 0.066) * innerRing;
-    color += vec3(0.44, 0.002, 0.038) * flame * (0.78 + absorbed * 0.46);
+    color += vec3(0.36, 0.001, 0.032) * flame * (0.62 + absorbed * 0.38);
     color += vec3(0.015, 0.0, 0.012) * blackPulse;
     color *= 1.0 + collapse * 0.45;
     float alpha = max(fissures * 0.72, max(outerRing, max(innerRing, flame * 0.72)));

@@ -133,12 +133,12 @@
     "atlas/cg_ult_orb_stage_base_atlas.png": {
       "width": 1536,
       "height": 1024,
-      "sha256": "3f6f8cc2a08b8c7e3e20c6e97469e73ea2a39b9ce06184458db3c04adc14b11e",
+      "sha256": "2e3a5a534db911a298467460a4352d2a71151b18f473ac3c328e1d38a6f4aab9",
       "alphaBounds": [
         28,
-        31,
-        1510,
-        997
+        32,
+        1509,
+        996
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -146,12 +146,12 @@
     "atlas/cg_ult_orb_stage_energy_atlas.png": {
       "width": 1536,
       "height": 1024,
-      "sha256": "e489473714ccb0cc06ab0087b72bff28b1d5837a6dc0f2bb96f7285048d5ecdf",
+      "sha256": "325c2252687c88c9ba927fd71ed07db0d5f5ab250e405382489ae61a1f893060",
       "alphaBounds": [
-        27,
-        30,
-        1509,
-        997
+        28,
+        32,
+        1508,
+        996
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -159,12 +159,12 @@
     "atlas/cg_ult_orb_roll_base_atlas.png": {
       "width": 1536,
       "height": 1024,
-      "sha256": "04824c7a2d87fea657132622a4a9b358a6f298361d0e0528edab3df1afabff31",
+      "sha256": "39f5f755c33eefb09b1fb662abedbf35186d0b7dfe7d3d2887e97710da83970f",
       "alphaBounds": [
-        80,
-        89,
+        65,
+        86,
         1513,
-        986
+        1001
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -172,12 +172,12 @@
     "atlas/cg_ult_orb_roll_energy_atlas.png": {
       "width": 1536,
       "height": 1024,
-      "sha256": "d91d64dfbdc33ed054d3f280526bf2689700dc89b9cb864036e2bef7de92e98f",
+      "sha256": "1e2c941d7c34fee8075eb9b292c1ea622a1cd84d7836f78cca7e767175769783",
       "alphaBounds": [
-        80,
-        93,
-        1502,
-        971
+        74,
+        87,
+        1511,
+        981
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -185,9 +185,9 @@
     "atlas/cg_ult_orb_dart_base_atlas.png": {
       "width": 1920,
       "height": 256,
-      "sha256": "40eb2f73aa52ab63b7861f80ec1d45a04c1f4aa9ca286146ae5145f1991f9272",
+      "sha256": "792b9adc633951d49aef596850bc2afb34c94cf7a97c3c1da195d6f012157d07",
       "alphaBounds": [
-        207,
+        170,
         22,
         1898,
         234
@@ -198,12 +198,12 @@
     "atlas/cg_ult_orb_dart_energy_atlas.png": {
       "width": 1920,
       "height": 256,
-      "sha256": "2ed29efdb331fe604df3d0f882e74b6902c3dabcd9b38478677b646881c32d4a",
+      "sha256": "e1b8a671d106ecbf4632ad2170bee1b8c73d17ea175617b7a40d8745ffd7861f",
       "alphaBounds": [
-        207,
+        170,
         24,
         1898,
-        229
+        185
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -211,10 +211,10 @@
     "atlas/cg_ult_comet_base_atlas.png": {
       "width": 1536,
       "height": 768,
-      "sha256": "7a7e451bf0120c8837460f7fbbd139bd0522d3d750d8a979e0319df24e555d53",
+      "sha256": "629eb8a7717b53f66298019104a9816d3b7f2de6168584588f8cd14f1783116e",
       "alphaBounds": [
-        29,
-        52,
+        30,
+        51,
         1514,
         716
       ],
@@ -224,12 +224,12 @@
     "atlas/cg_ult_comet_energy_atlas.png": {
       "width": 1536,
       "height": 768,
-      "sha256": "f0dd93e35cecab17fc5105dde71a9941ec27046a3a54ea987b6ea93d6f097112",
+      "sha256": "c5fd7a8933bc6b520a1ac117f3c53179bf0389ae55115a3f87509ba74540a69d",
       "alphaBounds": [
-        29,
-        52,
-        1515,
-        717
+        32,
+        51,
+        1514,
+        716
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -237,12 +237,12 @@
     "atlas/cg_ult_shatter_base_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "8dbe7364b54051084f8365bdff7072895a8e463a009352ffb1a055e6bba84cfd",
+      "sha256": "ccf037470c802bd6678b86c388cc230aa0b4d4313943b8dc035bb6e89c2d3632",
       "alphaBounds": [
-        43,
+        42,
         22,
-        2010,
-        999
+        2014,
+        1000
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -250,12 +250,12 @@
     "atlas/cg_ult_shatter_energy_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "d672347612532dc53ed9dbbef2f99d68296982d56c58f8190e6dbe28be49074c",
+      "sha256": "f2fa2debb8ff48693e62d2e0489f3cc88bc21325c81b5bad0423fcb5cb65392b",
       "alphaBounds": [
         45,
         23,
-        2008,
-        998
+        2012,
+        999
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -263,10 +263,10 @@
     "atlas/cg_ult_form_base_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "c5d350d5e4dddb4f9732b9e72a37e7556d0eb0c109949ea182e497b71f058cfe",
+      "sha256": "fae03147382998ca51783362b9dd6a23fb82741200eb72df3f09f44d6a6f1b4c",
       "alphaBounds": [
         86,
-        44,
+        45,
         1963,
         1002
       ],
@@ -276,11 +276,11 @@
     "atlas/cg_ult_form_energy_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "adc87633d02ccaf944b70b5c1de6979f70ac4ce661434891703639c524fd6bd9",
+      "sha256": "35f18111fa1598e7ae4a2e149399037cf8e8259214da74fb2c83e6da9ceea6d0",
       "alphaBounds": [
-        88,
-        47,
-        1963,
+        107,
+        46,
+        1962,
         1001
       ],
       "residualGreenPixels": 0,
@@ -289,10 +289,10 @@
     "atlas/cg_ult_form_b_base_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "d34e84f730d6779d40daa14da08e5572466dae869635ea798b4c30c6d2b6557f",
+      "sha256": "da685f8799cac1fe68993794328f9d399ffaffc1e0d3700005c71763bb8aed19",
       "alphaBounds": [
         52,
-        38,
+        42,
         1993,
         1002
       ],
@@ -302,12 +302,12 @@
     "atlas/cg_ult_form_b_energy_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "01bb517d4b08c6b8c94aa8d476b769ac2b18ca678e3e6fe17f7cb753a643b8a8",
+      "sha256": "23b4785a6c1bfdf42512e6ccfd83899cd959f12d7897d01787450933a6b524d1",
       "alphaBounds": [
-        52,
-        38,
-        1991,
-        1002
+        54,
+        43,
+        1990,
+        1001
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -315,7 +315,7 @@
     "atlas/cg_ult_wheel_base_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "4e7f7ec0162cc60d9a4f0b9baad0050acbe38b7759b5bf8e8fe89f055e54f436",
+      "sha256": "00e30ecb60844df4f4a04fa5814649f196d01a4c4f4ce69ea5e98c4ff3992a37",
       "alphaBounds": [
         28,
         22,
@@ -328,12 +328,12 @@
     "atlas/cg_ult_wheel_energy_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "b8f820b4e0019725a289b7d141d54626db65971e7e63cc11aba54295d13b72c3",
+      "sha256": "1053d0d9ce4ec97aad465afa3aff6da81ee7ea55f0a0a4914c6777161b12d260",
       "alphaBounds": [
-        28,
-        22,
-        2027,
-        1002
+        29,
+        23,
+        2026,
+        1001
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -341,10 +341,10 @@
     "atlas/cg_ult_wheel_inner_base_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "5725858912c0c17502c5edd8e3cb52439fb6c50ba42617ab67492448c5e8f84e",
+      "sha256": "7466ecf032a4b49ac1108b716dcc916e940044a298c14feeb4793dbea14dfe3d",
       "alphaBounds": [
         47,
-        22,
+        23,
         2000,
         1002
       ],
@@ -354,12 +354,51 @@
     "atlas/cg_ult_wheel_inner_energy_atlas.png": {
       "width": 2048,
       "height": 1024,
-      "sha256": "dfd77ae93a80d6555d107bb401a72dd92ede51f5cf88e224ecb2198ca31a04f9",
+      "sha256": "2a1614cf33697228fd4933f4d12ce990717ee2bce2dbde5f0ecb5795f3ef233f",
       "alphaBounds": [
         48,
-        24,
-        2001,
+        31,
+        2000,
         1002
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "steady/cg_ult_wheel_steady_base.png": {
+      "width": 768,
+      "height": 768,
+      "sha256": "67698027731495ca5ba2d44022ed26790695f8820f430e492aca6bb67268b5f3",
+      "alphaBounds": [
+        54,
+        48,
+        703,
+        711
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "steady/cg_ult_wheel_steady_energy.png": {
+      "width": 768,
+      "height": 768,
+      "sha256": "21641c55efc2329217124cc69153df69cbf064774ad2a11b057e70279607b487",
+      "alphaBounds": [
+        54,
+        48,
+        703,
+        711
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "steady/cg_ult_wheel_steady_detail.png": {
+      "width": 768,
+      "height": 768,
+      "sha256": "cb230200b52f2ae7a8781994950bebb472340fd4fb7a32b14a9c96a3b4e8f2be",
+      "alphaBounds": [
+        55,
+        49,
+        702,
+        710
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -367,12 +406,12 @@
     "parts/cg_ult_blade_a_1.png": {
       "width": 192,
       "height": 192,
-      "sha256": "a075e0834843a12c0e01db0c3898e1d2224dfcdbf9eabcaead14bed66d46610e",
+      "sha256": "4946125e06cfe0c8e2f47e15eca7f2742ba899dd3bf3db8f6c640d5d6249c53d",
       "alphaBounds": [
         31,
-        37,
+        35,
         161,
-        155
+        157
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -380,12 +419,12 @@
     "parts/cg_ult_blade_a_2.png": {
       "width": 192,
       "height": 192,
-      "sha256": "8c83ef1802a44091ba9a693cd5329548103356e8b89dd1a033200b03002b3587",
+      "sha256": "15870c4a3f959917e4104df02fcd402da4730ef38ce89cf45ced5e0f918c66fb",
       "alphaBounds": [
         45,
-        33,
-        146,
-        158
+        31,
+        147,
+        160
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -393,12 +432,12 @@
     "parts/cg_ult_blade_a_3.png": {
       "width": 192,
       "height": 192,
-      "sha256": "366ecb0f0b40936b0702a0b1b5f41441db918f8de7865a6fff8f01d02c4c7101",
+      "sha256": "234b1bee5d2dcae1b8e307d13bfb9b9ed14bacfcce57d76bfb75a8d6405c7314",
       "alphaBounds": [
-        39,
-        29,
+        38,
+        27,
         153,
-        163
+        164
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -406,12 +445,12 @@
     "parts/cg_ult_blade_a_4.png": {
       "width": 192,
       "height": 192,
-      "sha256": "5cf17c0c7e66444bf8482871ce1fd4049e4f09a28f28b9aabda9235364c75bd9",
+      "sha256": "3d788d300193d6e66679d0840d3aac9817e988cbff76c11d96a6a8b8dfb906ec",
       "alphaBounds": [
         22,
-        29,
+        27,
         170,
-        163
+        165
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -419,12 +458,12 @@
     "parts/cg_ult_swirl_1.png": {
       "width": 224,
       "height": 224,
-      "sha256": "42408a374088c1285b0a81998429974d11ce54a0d9a8039b22b43ca097295d97",
+      "sha256": "0c656e6ae1761200555cac950bf92dc4e5d795f569049b786181e417a9655bf5",
       "alphaBounds": [
-        63,
-        87,
-        161,
-        137
+        34,
+        75,
+        189,
+        148
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -432,12 +471,12 @@
     "parts/cg_ult_swirl_2.png": {
       "width": 224,
       "height": 224,
-      "sha256": "4cebc2fa4656e6cd9a8de83ecf5c7423711c1188a1b3a2ba856f8bedd1735d6a",
+      "sha256": "09d41e165032b0b4d04e21cbe8ba169f69a30bc45c744175a64b3ad4d99ccd3a",
       "alphaBounds": [
-        22,
-        82,
-        202,
-        141
+        47,
+        72,
+        176,
+        151
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -445,12 +484,12 @@
     "parts/cg_ult_swirl_3.png": {
       "width": 224,
       "height": 224,
-      "sha256": "c631d6dfc68f66ea2b04ac07a692340bd6887309c8a96bfd39ed9ff0331e26e8",
+      "sha256": "1ff6955611987fc68a5169d43ce5be040d78961df41de15d55eaf98fadedac35",
       "alphaBounds": [
-        89,
-        82,
-        134,
-        141
+        22,
+        63,
+        202,
+        160
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -458,11 +497,11 @@
     "parts/cg_ult_dart_s_1.png": {
       "width": 160,
       "height": 160,
-      "sha256": "7ef71c7c8e8f456f955f606960e1cce68e0600537a96e716c0c000d3b2ea01c1",
+      "sha256": "9dacb349eac30d1315c823c40608ae27c52f8cd6801defb81309610ee10007a4",
       "alphaBounds": [
         32,
         49,
-        128,
+        127,
         111
       ],
       "residualGreenPixels": 0,
@@ -471,11 +510,11 @@
     "parts/cg_ult_dart_s_2.png": {
       "width": 160,
       "height": 160,
-      "sha256": "46a2ea4962bd06d6916742235a0568025de35dd21b9d7fd05d5e50a03a4c09dd",
+      "sha256": "340e114e4038b13dbc9e83a3013b1a93ccd9701a8298dab2fa6aa7292a2a9b19",
       "alphaBounds": [
         37,
         49,
-        123,
+        122,
         111
       ],
       "residualGreenPixels": 0,
@@ -484,7 +523,7 @@
     "parts/cg_ult_dart_s_3.png": {
       "width": 160,
       "height": 160,
-      "sha256": "17e71fde04a6915e5d38b424791a8204d994d81cc7c4893f945c06e3a5603609",
+      "sha256": "702aa47b121db72467afc676fd51021cef0bac4562e59b9682d2c5b61af3ca90",
       "alphaBounds": [
         22,
         52,
@@ -497,7 +536,7 @@
     "parts/cg_ult_dart_s_4.png": {
       "width": 160,
       "height": 160,
-      "sha256": "12a27a694a4f2a580b17edec9c8811eca1848bbdf959e1c500bddf6bb3c13619",
+      "sha256": "8dbae9c54240da3c285aaf1f364cc48c005e3db8aafe29cb660216334f948399",
       "alphaBounds": [
         41,
         55,
@@ -510,12 +549,12 @@
     "parts/cg_ult_ring_thin_1.png": {
       "width": 192,
       "height": 192,
-      "sha256": "9e1f7090eca51caf3b82c0baba0ea833c5ac8471f2258d232b7066eb63b1e64c",
+      "sha256": "e6ecfc8915ddae5775f2259b5bafb15c45e82f70e2753bc4ae640d5ad072940f",
       "alphaBounds": [
         71,
-        41,
+        42,
         121,
-        151
+        149
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -523,11 +562,11 @@
     "parts/cg_ult_ring_thin_2.png": {
       "width": 192,
       "height": 192,
-      "sha256": "c419ad49a007b7f7f73e9994c48e6fcf2baa621c7922b75536daaecc37dc6244",
+      "sha256": "f3105494c77c8f54a15eb47749bd57662aab6bd3866117650354ee52c23b2fa4",
       "alphaBounds": [
         50,
         22,
-        141,
+        142,
         170
       ],
       "residualGreenPixels": 0,
@@ -536,10 +575,10 @@
     "parts/cg_ult_ring_thin_3.png": {
       "width": 192,
       "height": 192,
-      "sha256": "468e77426f87e43ed78f645e28ded183fd5b682447fd8fa8eaf3464bceb06b77",
+      "sha256": "15e21165dda185bb74397b4762acfc2f117321427584c332cfc152aa140cb365",
       "alphaBounds": [
-        36,
-        36,
+        37,
+        37,
         155,
         155
       ],
@@ -549,7 +588,7 @@
     "parts/cg_ult_crescent_1.png": {
       "width": 176,
       "height": 176,
-      "sha256": "28c210ec9d7617d15a5fa7cfbbab5553e6c52ce0da209b7f8f25f60c24f5ca0c",
+      "sha256": "c74595c192cdfa46d35df9f71e3a8d2156656009fbbacb24106594c1e0510556",
       "alphaBounds": [
         26,
         23,
@@ -562,11 +601,11 @@
     "parts/cg_ult_crescent_2.png": {
       "width": 176,
       "height": 176,
-      "sha256": "048e0b983fe924c9780474ea1f0ceed3c582c13b4f3906bdf1997b43c0e761f6",
+      "sha256": "abf246b05697e9a49236db18ec8a46d61e3901f4999037bdff976bdb67aaef95",
       "alphaBounds": [
-        22,
+        27,
         23,
-        154,
+        149,
         153
       ],
       "residualGreenPixels": 0,
@@ -575,12 +614,12 @@
     "parts/cg_ult_crescent_3.png": {
       "width": 176,
       "height": 176,
-      "sha256": "622e694a7dcb7bafc21d8c69631dc7fc22c028222f809714464db567fb8f3a23",
+      "sha256": "83dcb631f0681b9c86193f28f2810ffe404a159a879fe13b0607fbdf88cf0d10",
       "alphaBounds": [
         35,
-        37,
+        25,
         140,
-        139
+        150
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -588,11 +627,11 @@
     "parts/cg_ult_crescent_4.png": {
       "width": 176,
       "height": 176,
-      "sha256": "476515f9a92e56f4e63658726cd97b83f7589ccf38156f3c535114a56fb965d7",
+      "sha256": "5a1c1075fc2540f698d7348cb5ed4aaf13be34fadb5bb2e9788af70c0d3f27de",
       "alphaBounds": [
-        35,
+        37,
         24,
-        140,
+        139,
         152
       ],
       "residualGreenPixels": 0,
@@ -601,9 +640,9 @@
     "parts/cg_ult_crescent_5.png": {
       "width": 176,
       "height": 176,
-      "sha256": "d5b6c592f8fa071e077e6927ac137ceeaf40507aae1d80139c519a9e2155d570",
+      "sha256": "60ddaf3dd7679472511c9cb89e58d9dabfce250090e468f2ad38e33f92a1781a",
       "alphaBounds": [
-        54,
+        55,
         35,
         121,
         141
@@ -614,12 +653,12 @@
     "parts/cg_ult_crescent_6.png": {
       "width": 176,
       "height": 176,
-      "sha256": "3b95de05a5280ac39a94a23ea2f6c74f4b4f4911b5792222ef01a94e3a477c7e",
+      "sha256": "a4afda928c61e971f56f8d56ec1164824a3ccc4dd0f7a1a97111905706921d21",
       "alphaBounds": [
-        40,
+        41,
         22,
-        135,
-        153
+        134,
+        154
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -627,12 +666,12 @@
     "parts/cg_ult_crescent_7.png": {
       "width": 176,
       "height": 176,
-      "sha256": "94249ae4a27d62155677a5eda2ecc107a94d8c9c0284231469e1de5836fd51d4",
+      "sha256": "6e247fe4aa7d63c778ab27feac6e16fe16aa98d1bf91037e4b8a5be4063a9cf0",
       "alphaBounds": [
         26,
-        23,
+        26,
         150,
-        152
+        150
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
@@ -640,11 +679,11 @@
     "parts/cg_ult_crescent_8.png": {
       "width": 176,
       "height": 176,
-      "sha256": "9151e6bbf503271b1426ac2ac02c516592502278bacdb328d0515eb7c1a84f25",
+      "sha256": "b643e571e56788dbd8ab1fde412bdc6a9687a4c6051dbf64220f9b33048e40ba",
       "alphaBounds": [
         37,
         25,
-        139,
+        138,
         151
       ],
       "residualGreenPixels": 0,
@@ -653,11 +692,11 @@
     "parts/cg_ult_vortex_s_1.png": {
       "width": 224,
       "height": 160,
-      "sha256": "7d26b5ed0a2d84dfa728082e7601d89e664cadd41aa5a4a9351e6b57138debfd",
+      "sha256": "3c27a2995cef25d6ad4b9e9d0563f47eefa2ab8b40ead7ac4ae792b11b6532bb",
       "alphaBounds": [
-        37,
+        39,
         22,
-        186,
+        185,
         138
       ],
       "residualGreenPixels": 0,
@@ -666,9 +705,9 @@
     "parts/cg_ult_vortex_s_2.png": {
       "width": 224,
       "height": 160,
-      "sha256": "668d8bdbbd203d792896abdfdb9cefdd4b0556992971301f2361bc089f84ec4a",
+      "sha256": "1d03f2370585f843899cfe19b2de46cd7cd3bcddfd23b30dcfa64fbabb19e4fe",
       "alphaBounds": [
-        32,
+        33,
         22,
         191,
         138
@@ -679,11 +718,11 @@
     "parts/cg_ult_vortex_s_3.png": {
       "width": 224,
       "height": 160,
-      "sha256": "68fa2c7245eb92e635e51fb0a4c7bc383e1d7cbd6757041e453f2bed78c62f0c",
+      "sha256": "ed39efb13ae3c490369e1abdc3492b2f97d7719c61475d52194fcebeda05347a",
       "alphaBounds": [
-        26,
+        30,
         22,
-        197,
+        194,
         138
       ],
       "residualGreenPixels": 0,
@@ -692,11 +731,11 @@
     "parts/cg_ult_vortex_s_4.png": {
       "width": 224,
       "height": 160,
-      "sha256": "48d664416dab74e307364f8b3e87c264f61b24c38cae3b8e9672ab32b9de10fe",
+      "sha256": "553e187f91f275bf29778ac599a99037a9225b19381dc07f972ca1a6afc70b67",
       "alphaBounds": [
-        38,
+        42,
         22,
-        186,
+        181,
         138
       ],
       "residualGreenPixels": 0,
@@ -705,7 +744,7 @@
     "parts/cg_ult_rune_1.png": {
       "width": 128,
       "height": 128,
-      "sha256": "e911848ddaaf13e043f11768d86d5a3c34480532c20ffc206e4a84288fbcfaa0",
+      "sha256": "794110643898f6ac8ef1c0a3c5cd8c3affc5462be556ff50f142679f9b7be8eb",
       "alphaBounds": [
         22,
         26,
@@ -718,7 +757,7 @@
     "parts/cg_ult_rune_2.png": {
       "width": 128,
       "height": 128,
-      "sha256": "3cf8b6d0f4d138fcd5c07e0fac3f87f7a805096a8e2b0b9b237904d37a9a4a6d",
+      "sha256": "d05b782bebe3973193e0772e62aa72e23807d4491fcaec6fdc2ad345c83b9a43",
       "alphaBounds": [
         22,
         25,
@@ -731,7 +770,7 @@
     "parts/cg_ult_rune_3.png": {
       "width": 128,
       "height": 128,
-      "sha256": "882ae90bc6b76109890706909c3392ba3b8dace0a533fca657f7a2d6a62cda63",
+      "sha256": "72f1a0afa245f0eda03e3f4dbbd30969151cec7641e9b893167a750d5b46aea1",
       "alphaBounds": [
         22,
         28,
@@ -744,11 +783,11 @@
     "parts/cg_ult_rune_4.png": {
       "width": 128,
       "height": 128,
-      "sha256": "a636fe534c7efca640b7afa100b3e11e02e42788b698846be1787b2d86ab5ebc",
+      "sha256": "975e8a0a2f85e5392f53fd7e5e34bd7ca6960ea2c0501fc42e1714cc057e7795",
       "alphaBounds": [
         22,
         28,
-        106,
+        105,
         100
       ],
       "residualGreenPixels": 0,
@@ -757,7 +796,7 @@
     "parts/cg_ult_rune_5.png": {
       "width": 128,
       "height": 128,
-      "sha256": "bfee258a0d4e109e2a9e105b6eb5d692435ff57a00d9f5935c8ff21011c1381f",
+      "sha256": "3b974c0937a6ef03e0854f4de8983f5361c975f502191bbc2f0d479f14758b49",
       "alphaBounds": [
         22,
         25,
@@ -770,7 +809,7 @@
     "parts/cg_ult_rune_6.png": {
       "width": 128,
       "height": 128,
-      "sha256": "dc3288b785c09643df3bdcb8dd3ce3f729f1054934e77f75a4479a660e7d0a58",
+      "sha256": "43eef3a015ade96db0e1e1e5a31e6687e29816f42582e956a94ffae80dac40be",
       "alphaBounds": [
         31,
         39,
@@ -783,7 +822,7 @@
     "ui/cg_ult_icon.png": {
       "width": 160,
       "height": 160,
-      "sha256": "42e1252e42b054fdf5a56ce4e987a8a5ea9009fc92aa3394ae4840669e9108c3",
+      "sha256": "bb10ccd5f70c64940d973034d3d5a6313b4aac71a5faa297c51c92fcebbd5969",
       "alphaBounds": [
         8,
         8,
@@ -796,7 +835,7 @@
     "ui/cg_ult_slow_mark.png": {
       "width": 96,
       "height": 96,
-      "sha256": "a75b8a593044a1b73c3105b9e1ced391f42b588c3e7194c791c3f165249c80c2",
+      "sha256": "176003f267a33bf0f81b398904a9c993d0b00e146c6906ce4a5ee22ce04fd183",
       "alphaBounds": [
         28,
         15,
@@ -816,6 +855,7 @@
   "renderContract": {
     "baseBlend": "source-over",
     "energyBlend": "lighter",
+    "spinMaster": "768px registered single frame",
     "fallbackIsVisuallyComplete": true,
     "mobileEncoding": "lossless WebP"
   },

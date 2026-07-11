@@ -232,10 +232,10 @@ describe('seventh fighter corruption gun', () => {
       orb: { damage: 220, speed: 730, r: 20, size: 96, pierce: 99 },
       burst: { radius: 430, damage: 650, hitStop: 0.06 },
       wheel: {
-        size: 900, discSize: 660, innerDiscSize: 430,
+        size: 900, discSize: 540, innerDiscSize: 358,
         damageRadius: 500, damage: 250, tick: 0.4,
         slowRadius: 620, slowMultiplier: 0.3, slowLinger: 0.6,
-        bladeSpeed: 2.56, bladeSize: 198, metalBladeSize: 126,
+        bladeSpeed: 4.1, bladeSize: 126, metalBladeSize: 154,
       },
       finale: { radius: 680, baseDamage: 900, damagePerAbsorbed: 20, bossMultiplier: 0.8, hitStop: 0.1, shake: 14 },
       fullBossSequenceStacks: 19,
@@ -243,6 +243,7 @@ describe('seventh fighter corruption gun', () => {
     expect(cg.ultimateTickCountForTest()).toBe(20);
     expect(cg.ultimateBossStackCountForTest()).toBe(19);
     expect(cg.ultimateBossStackCountForTest(195)).toBe(200);
+    expect(ultimate.render).toMatchObject({ spinMaster: 'cgUltWheelSteadyBase', spinMasterPixels: 768, visualEnvelope: 696, mobileLosslessMaster: true });
     expect(cg.ultimateFinaleDamageForTest(0)).toBe(900);
     expect(cg.ultimateFinaleDamageForTest(80)).toBe(2500);
     expect(cg.ultimateFinaleDamageForTest(80, true)).toBe(2000);
@@ -266,22 +267,22 @@ describe('seventh fighter corruption gun', () => {
     expect(cg.ultimatePullForTest(700, false)).toBe(520);
     expect(cg.ultimatePullForTest(679, false)).toBe(900);
     expect(cg.ultimatePullForTest(679, true)).toBe(1620);
-    expect(cg.ultimateSpiralPullForTest(680, 'bullet', false)).toEqual({ radial: 520, tangential: 330, direction: 'clockwise' });
+    expect(cg.ultimateSpiralPullForTest(680, 'bullet', false)).toEqual({ radial: 520, tangential: 455, direction: 'clockwise' });
     const enemySpiral = cg.ultimateSpiralPullForTest(320, 'enemy', false);
     expect(enemySpiral).toMatchObject({ radial: 200, direction: 'clockwise' });
-    expect(enemySpiral.tangential).toBeCloseTo(70.2, 6);
+    expect(enemySpiral.tangential).toBeCloseTo(97.875, 6);
   });
 
   it('renders a stable crisp disc with continuous counter-rotating blade layers', () => {
     const ultimate = cg.ultimateSpec();
-    expect(ultimate.render).toMatchObject({ stableAtlasFrame: 2, continuousRotation: true });
+    expect(ultimate.render).toMatchObject({ spinMaster: 'cgUltWheelSteadyBase', spinMasterPixels: 768, visualEnvelope: 696, continuousRotation: true });
     expect(ultimate.render.passes).toContain('world-front-counter-rotating-harvester-blades-and-spiral-absorption');
     const source = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
     expect(source).toContain('if (Number.isFinite(spec.steadyFrame))');
     expect(source).toContain('drawCgUltimateInboundTrails');
     const shader = readFileSync(new URL('../../tools/corruptgun_vfx/cg_vfx_engine.mjs', import.meta.url), 'utf8');
-    expect(shader).toContain('outerP = rotate2d(-uPhase * 1.58) * p');
-    expect(shader).toContain('innerP = rotate2d(uPhase * 2.34) * p');
+    expect(shader).toContain('outerP = rotate2d(-uPhase * 2.24) * p');
+    expect(shader).toContain('innerP = rotate2d(uPhase * 3.24) * p');
   });
 
   it('uses strongest-slow semantics, preserves post-launch revival, and clears only finale hazards', () => {
@@ -296,10 +297,14 @@ describe('seventh fighter corruption gun', () => {
     expect(cg.ultimateHazardPolicyForTest('finale')).toEqual({ enemyBullets: 'clear', warnings: 'clear', lasers: 'clear' });
   });
 
-  it('publishes a 53-asset audited ultimate manifest with no runtime green or cyan residue', () => {
+  it('publishes a 56-asset audited ultimate manifest with a registered high-resolution spin master', () => {
     const manifest = JSON.parse(readFileSync(new URL('../../assets/player/corrupt_gun/ult/cg_ultimate_manifest.json', import.meta.url), 'utf8'));
     expect(manifest).toMatchObject({ formatVersion: 1, character: 'corruptgun', ultimate: 'darkWheel' });
-    expect(Object.keys(manifest.assets)).toHaveLength(53);
+    expect(Object.keys(manifest.assets)).toHaveLength(56);
+    expect(manifest.renderContract.spinMaster).toContain('768px');
+    expect(manifest.assets['steady/cg_ult_wheel_steady_base.png']).toBeTruthy();
+    expect(manifest.assets['steady/cg_ult_wheel_steady_energy.png']).toBeTruthy();
+    expect(manifest.assets['steady/cg_ult_wheel_steady_detail.png']).toBeTruthy();
     const runtimeAssets = Object.entries(manifest.assets).filter(([rel]) => !rel.startsWith('reference/'));
     expect(runtimeAssets.every(([, item]) => item.residualGreenPixels === 0 && item.residualCyanPixels === 0)).toBe(true);
     expect(manifest.sequences).toMatchObject({

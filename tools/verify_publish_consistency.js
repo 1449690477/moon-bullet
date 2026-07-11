@@ -206,8 +206,8 @@ try {
   if (manifestJson.corruptgunMaterialLayers !== 84) {
     errors.push(`docs/pages-asset-manifest.json 腐化枪材质分层应为 84，当前为 ${manifestJson.corruptgunMaterialLayers}`);
   }
-  if (manifestJson.corruptgunUltimateAssets !== 53) {
-    errors.push(`docs/pages-asset-manifest.json 暗蚀轮回素材应为 53，当前为 ${manifestJson.corruptgunUltimateAssets}`);
+  if (manifestJson.corruptgunUltimateAssets !== 56) {
+    errors.push(`docs/pages-asset-manifest.json 暗蚀轮回素材应为 56，当前为 ${manifestJson.corruptgunUltimateAssets}`);
   }
 } catch (error) {
   errors.push(`docs/pages-asset-manifest.json 无法解析：${error.message}`);
@@ -381,8 +381,8 @@ try {
     errors.push('cg_ultimate_manifest.json 身份或格式不正确');
   }
   const ultimateAssets = parsedUltimateManifest.assets || {};
-  if (Object.keys(ultimateAssets).length !== 53) {
-    errors.push(`cg_ultimate_manifest.json 应包含 53 个素材，当前为 ${Object.keys(ultimateAssets).length}`);
+  if (Object.keys(ultimateAssets).length !== 56) {
+    errors.push(`cg_ultimate_manifest.json 应包含 56 个素材，当前为 ${Object.keys(ultimateAssets).length}`);
   }
   for (const [relativeAsset, item] of Object.entries(ultimateAssets)) {
     const rel = `assets/player/corrupt_gun/ult/${relativeAsset}`;

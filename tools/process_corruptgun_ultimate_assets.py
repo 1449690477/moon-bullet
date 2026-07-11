@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Iterable
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 from scipy import ndimage
 
 
@@ -28,6 +28,7 @@ MAIN_DEV = ROOT / "moon-bullet-main/7号战机 开发文件夹" / DEV_SUBDIR
 OUT = ROOT / "assets/player/corrupt_gun/ult"
 PREVIEW = ROOT / "tools/corruptgun_ultimate_assets_preview"
 ALPHA_THRESHOLD = 8
+EDGE_ALPHA_FLOOR = 2
 
 REQUIRED_FILES = (
     "光球细节.png",
@@ -162,20 +163,50 @@ def expected_horizontal_clusters(image: Image.Image, expected: int) -> list[Imag
     return crops
 
 
+def spill_masks(r: np.ndarray, g: np.ndarray, b: np.ndarray, a: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Find green/cyan hues, including low-alpha matte pixels that become visible after scaling."""
+    visible = a > 0
+    maximum = np.maximum.reduce([r, g, b])
+    minimum = np.minimum.reduce([r, g, b])
+    chroma = maximum - minimum
+    saturation = np.divide(chroma, np.maximum(maximum, 1), out=np.zeros_like(chroma), where=maximum > 0)
+    hue = np.zeros_like(maximum)
+    valid = chroma > 0.001
+    red_max = valid & (maximum == r)
+    green_max = valid & (maximum == g)
+    blue_max = valid & (maximum == b)
+    hue[red_max] = np.mod((g[red_max] - b[red_max]) / chroma[red_max], 6.0)
+    hue[green_max] = (b[green_max] - r[green_max]) / chroma[green_max] + 2.0
+    hue[blue_max] = (r[blue_max] - g[blue_max]) / chroma[blue_max] + 4.0
+    hue *= 60.0
+    hue = np.mod(hue, 360.0)
+    green_hue = visible & (maximum > 10) & (saturation > 0.10) & (hue >= 43) & (hue <= 168)
+    cyan_hue = visible & (maximum > 10) & (saturation > 0.10) & (hue > 168) & (hue <= 205)
+    return green_hue, cyan_hue, saturation
+
+
 def clean_palette(image: Image.Image) -> Image.Image:
     px = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
     r, g, b, a = (px[:, :, index] for index in range(4))
-    visible = a > ALPHA_THRESHOLD
+    visible = a > 0
     if not np.any(visible):
         return Image.fromarray(px.astype(np.uint8), "RGBA")
 
     max_rb = np.maximum(r, b)
     green_dom = g - max_rb
     cyan_dom = np.minimum(g, b) - r
-    contaminated = visible & ((green_dom > 2) | (cyan_dom > 5))
+    green_hue, cyan_hue, saturation = spill_masks(r, g, b, a)
+    # The source sheets use a thick neon-green key matte. Treat strong key
+    # pixels as transparency everywhere, not merely on the outermost 3px;
+    # recolouring that matte produced the old jagged red/green sticker rim.
+    key_green = green_hue & (saturation > 0.38) & (g > np.maximum(r, b) * 1.08) & (g > 28)
+    key_cyan = cyan_hue & (saturation > 0.42) & (np.minimum(g, b) > r * 1.10) & (np.maximum(g, b) > 32)
+    a[key_green | key_cyan] = 0
+    visible = a > 0
+    contaminated = visible & ((green_dom > 2) | (cyan_dom > 5) | green_hue | cyan_hue)
 
     edge = visible & ~ndimage.binary_erosion(visible, iterations=3, border_value=0)
-    strong_spill = contaminated & edge & ((green_dom > 14) | (cyan_dom > 20))
+    strong_spill = contaminated & edge & ((green_dom > 14) | (cyan_dom > 20) | (saturation > 0.34))
     fade = np.clip(1.0 - np.maximum(green_dom, cyan_dom) / 76.0, 0.0, 1.0)
     a[strong_spill] *= fade[strong_spill]
 
@@ -188,16 +219,16 @@ def clean_palette(image: Image.Image) -> Image.Image:
         r[contaminated] * 0.56,
     )
 
-    a[a < ALPHA_THRESHOLD] = 0
+    a[a <= EDGE_ALPHA_FLOOR] = 0
     solid = a > 0
     if np.any(solid):
         eroded = ndimage.binary_erosion(solid, iterations=1, border_value=0)
         a[solid & ~eroded] = 0
         a = ndimage.gaussian_filter(a, sigma=0.55)
-        a[a < ALPHA_THRESHOLD] = 0
+        a[a <= EDGE_ALPHA_FLOOR] = 0
 
     # Final hard guarantee: no green/cyan dominant visible pixels survive.
-    visible = a > ALPHA_THRESHOLD
+    visible = a > 0
     max_rb = np.maximum(r, b)
     g[visible] = np.minimum(g[visible], max_rb[visible])
     cyan = visible & (g > r + 5) & (b > r + 5)
@@ -260,15 +291,17 @@ def energy_layer(image: Image.Image) -> Image.Image:
     r, g, b, alpha = (px[:, :, index] for index in range(4))
     brightness = np.maximum.reduce([r, g, b]) / 255.0
     redness = np.clip((r - g * 0.55 - b * 0.18) / 210.0, 0, 1)
-    score = np.clip(brightness * 0.35 + redness * 0.90 - 0.16, 0, 1)
-    mask = alpha * np.power(score, 1.25)
+    # Keep only authored cracks and hot edges. A broad mask makes the full metal
+    # wheel bloom and is the main reason the old 660px runtime draw looked soft.
+    score = np.clip(brightness * 0.24 + redness * 1.08 - 0.27, 0, 1)
+    mask = alpha * np.power(score, 1.48)
     out = np.zeros_like(px)
     out[:, :, 0] = np.maximum(r, brightness * 235)
     out[:, :, 1] = np.minimum(np.maximum(g, brightness * 24), out[:, :, 0] * 0.28)
     out[:, :, 2] = np.minimum(np.maximum(b, brightness * 72), out[:, :, 0] * 0.65)
     out[:, :, 3] = mask
     sharp = Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), "RGBA")
-    blurred = sharp.filter(ImageFilter.GaussianBlur(1.2))
+    blurred = sharp.filter(ImageFilter.GaussianBlur(0.55))
     result = Image.alpha_composite(blurred, sharp)
     result_px = np.asarray(result).copy()
     result_px[result_px[:, :, 3] == 0, :3] = 0
@@ -292,9 +325,7 @@ def pack_atlas(frames: Iterable[Image.Image], cols: int, rows: int) -> Image.Ima
 def residual_counts(image: Image.Image) -> tuple[int, int]:
     px = np.asarray(image.convert("RGBA"), dtype=np.int16)
     r, g, b, a = (px[:, :, index] for index in range(4))
-    visible = a > ALPHA_THRESHOLD
-    green = visible & (g > np.maximum(r, b) + 2)
-    cyan = visible & (g > r + 5) & (b > r + 5)
+    green, cyan, _ = spill_masks(r.astype(np.float32), g.astype(np.float32), b.astype(np.float32), a.astype(np.float32))
     return int(green.sum()), int(cyan.sum())
 
 
@@ -302,9 +333,8 @@ def final_palette_guard(image: Image.Image) -> Image.Image:
     """Remove tiny chroma values reintroduced by Lanczos interpolation."""
     px = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
     r, g, b, a = (px[:, :, index] for index in range(4))
-    visible = a > ALPHA_THRESHOLD
-    green = visible & (g > np.maximum(r, b) + 2)
-    cyan = visible & (g > r + 5) & (b > r + 5)
+    a[a <= EDGE_ALPHA_FLOOR] = 0
+    green, cyan, _ = spill_masks(r, g, b, a)
     contaminated = green | cyan
     if np.any(contaminated):
         energy = np.maximum.reduce([r, g, b])
@@ -314,6 +344,8 @@ def final_palette_guard(image: Image.Image) -> Image.Image:
             np.maximum(b[contaminated] * 0.46, r[contaminated] * 0.18),
             r[contaminated] * 0.54,
         )
+    visible = a > 0
+    g[visible] = np.minimum(g[visible], np.maximum(r[visible], b[visible]))
     px[:, :, 0] = r
     px[:, :, 1] = g
     px[:, :, 2] = b
@@ -321,6 +353,56 @@ def final_palette_guard(image: Image.Image) -> Image.Image:
     px = np.clip(px, 0, 255).astype(np.uint8)
     px[px[:, :, 3] == 0, :3] = 0
     return Image.fromarray(px, "RGBA")
+
+
+def keep_wheel_body(image: Image.Image) -> Image.Image:
+    """Remove detached chroma-key crumbs while preserving the authored wheel silhouette."""
+    px = np.asarray(image.convert("RGBA")).copy()
+    alpha = px[:, :, 3]
+    labels, count = ndimage.label(alpha > EDGE_ALPHA_FLOOR)
+    if count <= 1:
+        return image
+    sizes = np.bincount(labels.ravel())
+    keep_labels = np.where(sizes >= max(72, int(sizes[1:].max() * 0.0025)))[0]
+    keep = np.isin(labels, keep_labels) & (labels != 0)
+    alpha[~keep] = 0
+    px[:, :, 3] = alpha
+    px[alpha == 0, :3] = 0
+    return Image.fromarray(px, "RGBA")
+
+
+def build_wheel_master(frame: Image.Image) -> tuple[Image.Image, Image.Image, Image.Image]:
+    """Build a single high-resolution, registered wheel for the eight-second spin phase."""
+    base = normalize_group((frame,), (768, 768), padding=48)[0]
+    base = keep_wheel_body(final_palette_guard(base))
+    alpha = base.getchannel("A")
+    rgb = base.convert("RGB")
+    rgb = ImageEnhance.Contrast(rgb).enhance(1.10)
+    rgb = rgb.filter(ImageFilter.UnsharpMask(radius=1.15, percent=185, threshold=3))
+    rgb = ImageEnhance.Sharpness(rgb).enhance(1.20)
+    base = Image.merge("RGBA", (*rgb.split(), alpha))
+    base = final_palette_guard(base)
+
+    energy = final_palette_guard(energy_layer(base))
+    px = np.asarray(base.convert("RGBA"), dtype=np.float32)
+    r, g, b, a = (px[:, :, index] for index in range(4))
+    luminance = r * 0.30 + g * 0.59 + b * 0.11
+    gx = ndimage.sobel(luminance, axis=1)
+    gy = ndimage.sobel(luminance, axis=0)
+    edge = np.hypot(gx, gy)
+    scale = max(1.0, float(np.percentile(edge[a > 12], 97.5))) if np.any(a > 12) else 1.0
+    edge = np.clip(edge / scale, 0, 1)
+    interior = ndimage.binary_erosion(a > 8, iterations=1, border_value=0)
+    perimeter = (a > 8) & ~ndimage.binary_erosion(a > 8, iterations=3, border_value=0)
+    detail_alpha = np.clip(edge * 168 + perimeter.astype(np.float32) * 92, 0, 210)
+    detail_alpha *= interior.astype(np.float32) * np.clip(a / 255.0, 0, 1)
+    detail = np.zeros_like(px)
+    detail[:, :, 0] = 248
+    detail[:, :, 1] = 18
+    detail[:, :, 2] = 62
+    detail[:, :, 3] = detail_alpha
+    detail = final_palette_guard(Image.fromarray(np.clip(detail, 0, 255).astype(np.uint8), "RGBA"))
+    return base, energy, detail
 
 
 def save_asset(image: Image.Image, relative: str, records: dict[str, dict]) -> Path:
@@ -457,6 +539,11 @@ def main() -> None:
     save_sequence(SequenceSpec("wheel", tuple(wheel), 4, 2, (512, 512)), records, sequences)
     save_sequence(SequenceSpec("wheel_inner", tuple(wheel_inner), 4, 2, (512, 512)), records, sequences)
 
+    wheel_master_base, wheel_master_energy, wheel_master_detail = build_wheel_master(wheel[2])
+    save_asset(wheel_master_base, "steady/cg_ult_wheel_steady_base.png", records)
+    save_asset(wheel_master_energy, "steady/cg_ult_wheel_steady_energy.png", records)
+    save_asset(wheel_master_detail, "steady/cg_ult_wheel_steady_detail.png", records)
+
     blade_frames = save_loose_group(blades, "blade_a", (192, 192), records)
     save_loose_group(swirls, "swirl", (224, 224), records)
 
@@ -511,6 +598,7 @@ def main() -> None:
         "renderContract": {
             "baseBlend": "source-over",
             "energyBlend": "lighter",
+            "spinMaster": "768px registered single frame",
             "fallbackIsVisuallyComplete": True,
             "mobileEncoding": "lossless WebP",
         },

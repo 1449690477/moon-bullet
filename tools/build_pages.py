@@ -15,6 +15,7 @@ import shutil
 import time
 from pathlib import Path
 
+import numpy as np
 from PIL import Image
 
 
@@ -332,8 +333,8 @@ def validate_corruptgun_ultimate_assets(asset_paths: dict[str, str]) -> int:
     if manifest.get("formatVersion") != 1 or manifest.get("character") != "corruptgun" or manifest.get("ultimate") != "darkWheel":
         raise RuntimeError("Corrupt Gun ultimate manifest has an unsupported identity or format")
     assets = manifest.get("assets")
-    if not isinstance(assets, dict) or len(assets) != 53:
-        raise RuntimeError("Corrupt Gun ultimate manifest does not contain the expected 53 audited assets")
+    if not isinstance(assets, dict) or len(assets) != 56:
+        raise RuntimeError("Corrupt Gun ultimate manifest does not contain the expected 56 audited assets")
     declared_paths = set(asset_paths.values())
     for relative_asset, item in assets.items():
         rel = f"assets/player/corrupt_gun/ult/{relative_asset}"
@@ -396,6 +397,60 @@ def mobile_max_side(rel: str) -> int:
     return 768
 
 
+def clean_mobile_ultimate(image: Image.Image) -> Image.Image:
+    """Reapply chroma cleanup after resize so low-alpha key green cannot bleed on phones."""
+    px = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
+    r, g, b, a = (px[:, :, index] for index in range(4))
+    a[a <= 2] = 0
+    maximum = np.maximum.reduce([r, g, b])
+    minimum = np.minimum.reduce([r, g, b])
+    chroma = maximum - minimum
+    saturation = np.divide(chroma, np.maximum(maximum, 1), out=np.zeros_like(chroma), where=maximum > 0)
+    hue = np.zeros_like(maximum)
+    valid = chroma > 0.001
+    red_max = valid & (maximum == r)
+    green_max = valid & (maximum == g)
+    blue_max = valid & (maximum == b)
+    hue[red_max] = np.mod((g[red_max] - b[red_max]) / chroma[red_max], 6.0)
+    hue[green_max] = (b[green_max] - r[green_max]) / chroma[green_max] + 2.0
+    hue[blue_max] = (r[blue_max] - g[blue_max]) / chroma[blue_max] + 4.0
+    hue = np.mod(hue * 60.0, 360.0)
+    visible = a > 0
+    spill = visible & (maximum > 10) & (saturation > 0.10) & (hue >= 43) & (hue <= 205)
+    if np.any(spill):
+        energy = maximum
+        r[spill] = np.maximum(r[spill], energy[spill] * 0.82)
+        g[spill] = np.minimum(g[spill], r[spill] * 0.12)
+        b[spill] = np.minimum(np.maximum(b[spill] * 0.42, r[spill] * 0.20), r[spill] * 0.58)
+    visible = a > 0
+    g[visible] = np.minimum(g[visible], np.maximum(r[visible], b[visible]))
+    px[:, :, 0] = r
+    px[:, :, 1] = g
+    px[:, :, 2] = b
+    px[:, :, 3] = a
+    px = np.clip(px, 0, 255).astype(np.uint8)
+    px[px[:, :, 3] == 0, :3] = 0
+
+    # The exact same hue audit runs on the final mobile pixels.
+    check = px.astype(np.float32)
+    cr, cg, cb, ca = (check[:, :, index] for index in range(4))
+    cmax = np.maximum.reduce([cr, cg, cb])
+    cmin = np.minimum.reduce([cr, cg, cb])
+    cdelta = cmax - cmin
+    csat = np.divide(cdelta, np.maximum(cmax, 1), out=np.zeros_like(cdelta), where=cmax > 0)
+    chue = np.zeros_like(cmax)
+    cvalid = cdelta > 0.001
+    masks = (cvalid & (cmax == cr), cvalid & (cmax == cg), cvalid & (cmax == cb))
+    chue[masks[0]] = np.mod((cg[masks[0]] - cb[masks[0]]) / cdelta[masks[0]], 6.0)
+    chue[masks[1]] = (cb[masks[1]] - cr[masks[1]]) / cdelta[masks[1]] + 2.0
+    chue[masks[2]] = (cr[masks[2]] - cg[masks[2]]) / cdelta[masks[2]] + 4.0
+    chue = np.mod(chue * 60.0, 360.0)
+    residual = (ca > 0) & (cmax > 10) & (csat > 0.10) & (chue >= 43) & (chue <= 205)
+    if np.any(residual):
+        raise RuntimeError(f"Corrupt Gun ultimate mobile asset still contains {int(residual.sum())} green/cyan pixels")
+    return Image.fromarray(px, "RGBA")
+
+
 def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) -> str | None:
     src = ROOT / rel
     if src.suffix.lower() not in IMAGE_EXTS or not src.exists():
@@ -421,6 +476,8 @@ def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) ->
                 max_side = mobile_max_side(rel)
                 if max(im.size) > max_side:
                     im.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
+                if rel.startswith("assets/player/corrupt_gun/ult/"):
+                    im = clean_mobile_ultimate(im)
                 if rel.startswith((
                     "assets/player/corrupt_gun/infection/",
                     "assets/player/corrupt_gun/body/material/",
@@ -430,11 +487,14 @@ def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) ->
                 else:
                     im.save(out, "WEBP", quality=72, method=4)
     except Exception:
-        if rel in lossless_sources:
+        if rel in lossless_sources or rel.startswith("assets/player/corrupt_gun/ult/"):
             raise
         return None
 
     if out.exists() and out.stat().st_size > 0:
+        if rel.startswith("assets/player/corrupt_gun/ult/"):
+            with Image.open(out) as encoded:
+                clean_mobile_ultimate(encoded)
         return out_rel.as_posix()
     return None
 
