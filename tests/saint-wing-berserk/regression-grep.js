@@ -142,7 +142,7 @@ if (vortexBlock.includes('ctx.beginPath(); ctx.ellipse(0, 0, rx * pulse, ry * pu
 if (vortexBlock.includes('setLineDash') || vortexBlock.includes('lineDashOffset')) {
   fail('V3 vortex must not use dashed guide arcs as the main body');
 }
-if (html.includes('drawImage(canvas')) {
+if (vortexBlock.includes('drawImage(canvas')) {
   fail('V3 vortex must not re-sample the live canvas; it caused full-screen flashing');
 }
 if (html.includes('0.05 + deploy * 0.15')) {

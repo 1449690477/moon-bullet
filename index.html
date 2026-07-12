@@ -244,7 +244,10 @@
   let rsLastChangeSec = -999;   // 上次背板变更时刻（防抖动振荡）
   let rsFastHoldSec = 0;        // 连续流畅累计时长（升档条件）
   function applyRenderScale(rs) {
-    rs = Math.max(0.70, Math.min(1, rs));
+    // 手机屏幕的CSS显示尺寸很小，0.62背板仍清晰，但可显著降低大面积
+    // additive、半透明贴图和黑洞填充的像素开支。桌面维持原0.70下限。
+    const minScale = typeof IS_MOBILE_RUNTIME !== 'undefined' && IS_MOBILE_RUNTIME ? 0.62 : 0.70;
+    rs = Math.max(minScale, Math.min(1, rs));
     if (Math.abs(rs - renderScale) < 0.01) return;
     renderScale = rs;
     rsLastChangeSec = performance.now() * 0.001;
@@ -275,7 +278,7 @@
   );
   const MOBILE_BEST_PERF_LEVEL = 0; // perfLevel: 0=high, 1=medium, 2=low. Mobile auto usually starts lower, but manual high is allowed.
   const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 2 : 0;
-  if (IS_MOBILE_RUNTIME) applyRenderScale(0.85);
+  if (IS_MOBILE_RUNTIME) applyRenderScale(0.80);
   let perfHudEnabled = /(?:[?&])perf(?:=1|=true|&|$)/.test((typeof location !== 'undefined' && location.search) || '');
   const FORCE_MOBILE_FULLSCREEN = /(?:[?&])fullscreen(?:=1|=true|&|$)/.test(SEARCH_PARAMS);
   const TARGET_FPS_STORAGE_KEY = 'moonBulletTargetFps';
@@ -1725,6 +1728,22 @@
   }
   Object.assign(ASSET_PATHS, CG_ASSET_PATHS);
   const CORRUPTGUN_ASSET_KEYS = Object.freeze(Object.keys(CG_ASSET_PATHS));
+  const CG_ULT_PHASE2_ASSET_KEYS = Object.freeze(CORRUPTGUN_ASSET_KEYS.filter(key => CG_ASSET_PATHS[key].includes('/ult/phase2/')));
+  const CG_ULT_PHASE1_ASSET_KEYS = Object.freeze(CORRUPTGUN_ASSET_KEYS.filter(key => {
+    const path = CG_ASSET_PATHS[key];
+    return path.includes('/ult/') && !path.includes('/ult/phase2/') && key !== 'cgUltIcon' && key !== 'cgUltSlowMark';
+  }));
+  const CG_MATERIAL_ANIM_ASSET_KEYS = Object.freeze(CORRUPTGUN_ASSET_KEYS.filter(key =>
+    key.startsWith('cgMatForm') || /^cgMat(?:Normal|Over)Metal[2-8]$/.test(key)
+  ));
+  const CG_DEFERRED_ASSET_KEYS = new Set([
+    ...CG_ULT_PHASE1_ASSET_KEYS,
+    ...CG_ULT_PHASE2_ASSET_KEYS,
+    ...CG_MATERIAL_ANIM_ASSET_KEYS,
+  ]);
+  // Mobile starts with the complete regular-fire/clone/infection set, but does not
+  // decode the ultimate and 70 large material-animation layers at character select.
+  const CORRUPTGUN_CORE_ASSET_KEYS = Object.freeze(CORRUPTGUN_ASSET_KEYS.filter(key => !CG_DEFERRED_ASSET_KEYS.has(key)));
 	  const SUIYI_ASSET_KEYS = Object.freeze([
 	    'suiyiMapVirtualCore', 'suiyiMapControlHall', 'suiyiMapDigitalRuins', 'suiyiMapCrystalSanctum',
 	    'suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash', 'suiyiDeath', 'suiyiDrone', 'suiyiCubeSummon',
@@ -2026,7 +2045,7 @@
       'skywardBlinkFloatCharge1', 'skywardBlinkFloatCharge2', 'skywardBlinkFloatCharge3', 'skywardBlinkFloatCharge4', 'skywardBlinkFloatCharge5', 'skywardBlinkFloatCharge1Glow', 'skywardBlinkFloatCharge2Glow', 'skywardBlinkFloatCharge3Glow', 'skywardBlinkFloatCharge4Glow', 'skywardBlinkFloatCharge5Glow', 'skywardBlinkFloatEmpty', 'skywardBlinkFloatEmptyGlow',
       'skywardBlinkChargeBar0', 'skywardBlinkChargeBar1', 'skywardBlinkChargeBar2', 'skywardBlinkChargeBar3', 'skywardBlinkChargeBar4', 'skywardBlinkChargeBar5', 'skywardBlinkChargeGlow1', 'skywardBlinkChargeGlow2', 'skywardBlinkChargeGlow3', 'skywardBlinkChargeGlow1Glow', 'skywardBlinkChargeGlow2Glow', 'skywardBlinkChargeGlow3Glow', 'skywardUltIcon',
     ],
-    corruptgun: CORRUPTGUN_ASSET_KEYS,
+    corruptgun: IS_MOBILE_RUNTIME ? CORRUPTGUN_CORE_ASSET_KEYS : CORRUPTGUN_ASSET_KEYS,
   };
   const WING_ASSET_GROUPS = {
     moonfeather: ['wmBody', 'wmBodyBerserk', 'wmBodyT', 'wmBodyTB', 'wmFeather', 'wmFeatherBerserk', 'wmBurst', 'wmCircle', 'wmImpact', 'wmShield'],
@@ -2038,6 +2057,33 @@
   };
   function prefetchCharacterAssets(key) {
     loadAssetGroup(CHARACTER_ASSET_GROUPS[key] || []);
+    if (key === 'corruptgun' && (!IS_MOBILE_RUNTIME || perfLevel < 2)) prefetchCorruptgunMaterialAssets();
+  }
+  let cgMaterialPrefetchStarted = false;
+  let cgUltPhase1PrefetchStarted = false;
+  let cgUltPhase2PrefetchStarted = false;
+  function prefetchCorruptgunMaterialAssets() {
+    if (cgMaterialPrefetchStarted) return;
+    cgMaterialPrefetchStarted = true;
+    loadAssetGroup(CG_MATERIAL_ANIM_ASSET_KEYS);
+  }
+  function prefetchCorruptgunUltimatePhase1() {
+    if (cgUltPhase1PrefetchStarted) return;
+    cgUltPhase1PrefetchStarted = true;
+    loadAssetGroup(CG_ULT_PHASE1_ASSET_KEYS);
+  }
+  function prefetchCorruptgunUltimatePhase2() {
+    if (cgUltPhase2PrefetchStarted) return;
+    cgUltPhase2PrefetchStarted = true;
+    loadAssetGroup(CG_ULT_PHASE2_ASSET_KEYS);
+  }
+  function maybePrefetchCorruptgunDeferredAssets() {
+    if (!corruptgunActive()) return;
+    if (perfLevel < 2) prefetchCorruptgunMaterialAssets();
+    if (corruptGunState.ultimate.active || player.energy >= player.maxEnergy * 0.55) prefetchCorruptgunUltimatePhase1();
+    if (corruptGunState.ultimate.phase === 'spin' || corruptGunState.ultimate.phase === 'collapse' || corruptGunState.ultimate.phase === 'finale') {
+      prefetchCorruptgunUltimatePhase2();
+    }
   }
   function prefetchEquippedWingAssets() {
     for (const key of Object.keys(equippedWings || {})) {
@@ -2285,12 +2331,16 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-12-mobile-render-scale-hotfix-v32';
+  const UPDATE_NOTICE_VERSION = '2026-07-12-mobile-performance-v33';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
       date: '2026-07-12',
       items: [
+        '移动端性能优化 V3.33：30/45/60 FPS 现在使用真实的帧截止时间调度；高刷新率手机不再无意义地重复更新和绘制，同时动态背板可进一步降到0.62倍以抵抗满屏特效峰值。',
+        '底层渲染减负：7号战机的双层 WebGL 背板不再每帧重复分配尺寸，空图层不再清屏与整屏合成；Canvas 贴图绘制减少重复状态保存，敌弹危险红边在低配手机改用清晰缓存层。',
+        '7号战机低/极低画质新增独立预算：光球保留暗面、亮芯和尖锋拖尾，命中、投影、腐化标记、外刃与游魂仍完整可读；重复路径、粒子、材质层和吸弹轨迹按压力收敛。',
+        '资源载入分阶段进行：手机选择7号时先载入机体、普通弹、分身与感染素材；大招一段在能量接近可用时预取，二段在施放起手时提前预取，减少开局解码卡顿与转场加载峰值。',
         '手机端画面热修 V3.32：修正动态分辨率缩放的绘制顺序，低配背板现在始终完整对应720×1280逻辑画面；标题页、战斗HUD和触控区域不再向右下偏移或被裁掉。',
         '7号战机大招「暗蚀轮回」收割影刃 V3.31：外围刀刃不再依靠整张复合贴图和同图残影旋转，改为黑钢本体、低亮裂纹能量、刀根核心、刀脊流光、刃口扫光和针状刀尖逐层绘制。',
         '每种影刃都按真实素材锚点校正：弯镰与长枪刃分别对齐轮毂、金属脊、刃口和刀尖，去掉错位的额外贴片，金属纹理保持清晰，发光只覆盖能量与锋刃区域。',
@@ -2488,6 +2538,8 @@
   let smoothFrameMs = 16.7;
   let perfLevel = 0;
   let perfHoldT = 0;
+  let mobileFrameDeadline = 0;
+  let mobileSkippedRaf = 0;
   const perfStats = {
     fps: 60,
     frameMs: 16.7,
@@ -2574,6 +2626,22 @@
   function targetFrameMs() {
     return 1000 / Math.max(1, normalizeTargetFps(targetFps));
   }
+  function mobileFrameDue(now) {
+    if (!IS_MOBILE_RUNTIME) return true;
+    const interval = targetFrameMs();
+    if (!(mobileFrameDeadline > 0) || now - mobileFrameDeadline > interval * 4) {
+      mobileFrameDeadline = now;
+    }
+    // Deadline pacing produces the requested average on 60/90/120Hz displays.
+    // A simple "skip N frames" policy would incorrectly turn 45 FPS into 30 FPS.
+    if (now + Math.min(1.2, interval * 0.06) < mobileFrameDeadline) {
+      mobileSkippedRaf++;
+      return false;
+    }
+    mobileFrameDeadline += interval;
+    while (mobileFrameDeadline <= now) mobileFrameDeadline += interval;
+    return true;
+  }
   function targetFpsPerfFloor(value = targetFps) {
     if (!IS_MOBILE_RUNTIME) return 0;
     const fps = normalizeTargetFps(value);
@@ -2594,6 +2662,7 @@
   }
   function setTargetFps(value, manual = true) {
     targetFps = normalizeTargetFps(value);
+    mobileFrameDeadline = 0;
     if (manual) safeLocalStorageSet(TARGET_FPS_STORAGE_KEY, String(targetFps));
     syncTargetFpsQualityBudget();
     perfHudEnabled = perfHudEnabled || (IS_MOBILE_RUNTIME && mobileFullscreenMode);
@@ -3660,13 +3729,20 @@
     if (fps >= 45) return 0.84;
     return 1;
   }
+  let perfBudgetCacheKey = '';
+  let perfBudgetCacheValue = null;
   function perfBudget() {
+    const cacheKey = `${IS_MOBILE_RUNTIME ? 1 : 0}:${perfLevel | 0}:${normalizeTargetFps(targetFps)}`;
+    if (perfBudgetCacheKey === cacheKey && perfBudgetCacheValue) return perfBudgetCacheValue;
     const list = IS_MOBILE_RUNTIME ? PERF_BUDGETS.mobile : PERF_BUDGETS.desktop;
     const base = list[clamp(perfLevel | 0, 0, list.length - 1)] || list[list.length - 1];
-    if (!IS_MOBILE_RUNTIME) return base;
+    if (!IS_MOBILE_RUNTIME) {
+      perfBudgetCacheKey = cacheKey;
+      perfBudgetCacheValue = base;
+      return base;
+    }
     const mul = targetFpsVisualBudgetMul();
-    if (mul >= 0.99) return base;
-    return {
+    const value = mul >= 0.99 ? base : {
       ...base,
       particleCap: Math.max(18, Math.floor(base.particleCap * mul)),
       spriteFxCap: Math.max(4, Math.floor(base.spriteFxCap * mul)),
@@ -3675,6 +3751,9 @@
       hazardCap: Math.max(3, Math.floor(base.hazardCap * Math.max(mul, 0.82))),
       killBurstMul: base.killBurstMul * Math.max(mul, 0.72),
     };
+    perfBudgetCacheKey = cacheKey;
+    perfBudgetCacheValue = value;
+    return value;
   }
   function trimArrayTo(arr, cap) {
     cap = Math.max(0, cap | 0);
@@ -7610,24 +7689,24 @@
     }),
     finaleHit: Object.freeze({ radius: 680, baseDamage: 900, damagePerAbsorbed: 20, bossMultiplier: 0.80, hitStop: 0.10, shake: 14, visualSize: 900 }),
     vignette: Object.freeze({ castPeak: 0.30, flight: 0.12, spin: 0.22 }),
-    fxCaps: Object.freeze([96, 64, 36]),
+    fxCaps: Object.freeze([96, 64, 36, 20]),
     quality: Object.freeze({
-      blades: Object.freeze([6, 5, 4]),
-      darts: Object.freeze([7, 6, 4]),
-      slashes: Object.freeze([3, 2, 1]),
-      runes: Object.freeze([6, 4, 0]),
-      spirals: Object.freeze([3, 2, 2]),
-      warpStrips: Object.freeze([7, 5, 3]),
-      bladeTrailSegments: Object.freeze([7, 5, 3]),
-      bladeAfterimages: Object.freeze([2, 1, 1]),
-      bladeSpinePackets: Object.freeze([3, 2, 1]),
-      bladeRootArcs: Object.freeze([2, 1, 1]),
-      bladeDust: Object.freeze([4, 2, 1]),
-      bladeHubParticles: Object.freeze([3, 2, 1]),
-      bladeTipParticles: Object.freeze([2, 1, 1]),
-      bladeEdgeGlints: Object.freeze([2, 1, 1]),
-      spaceCuts: Object.freeze([5, 3, 2]),
-      spaceCutInterval: Object.freeze([0.11, 0.16, 0.22]),
+      blades: Object.freeze([6, 5, 4, 4]),
+      darts: Object.freeze([7, 6, 4, 3]),
+      slashes: Object.freeze([3, 2, 1, 1]),
+      runes: Object.freeze([6, 4, 0, 0]),
+      spirals: Object.freeze([3, 2, 2, 1]),
+      warpStrips: Object.freeze([7, 5, 3, 2]),
+      bladeTrailSegments: Object.freeze([7, 5, 3, 2]),
+      bladeAfterimages: Object.freeze([2, 1, 1, 0]),
+      bladeSpinePackets: Object.freeze([3, 2, 1, 1]),
+      bladeRootArcs: Object.freeze([2, 1, 1, 1]),
+      bladeDust: Object.freeze([4, 2, 1, 0]),
+      bladeHubParticles: Object.freeze([3, 2, 1, 1]),
+      bladeTipParticles: Object.freeze([2, 1, 1, 1]),
+      bladeEdgeGlints: Object.freeze([2, 1, 1, 1]),
+      spaceCuts: Object.freeze([5, 3, 2, 1]),
+      spaceCutInterval: Object.freeze([0.11, 0.16, 0.22, 0.30]),
     }),
     atlas: Object.freeze({
       orbStage: Object.freeze({ base: 'cgUltOrbStageBase', energy: 'cgUltOrbStageEnergy', frames: 6, cols: 3, rows: 2, frameMs: 83 }),
@@ -7718,9 +7797,9 @@
     splashRadius: 108,
     bossMultiplier: 0.55,
     burstVisualSize: 236,
-    trailNodes: Object.freeze([7, 5, 3]),
-    particleCounts: Object.freeze([6, 4, 2]),
-    particleCaps: Object.freeze([180, 120, 72]),
+    trailNodes: Object.freeze([7, 5, 3, 2]),
+    particleCounts: Object.freeze([6, 4, 2, 1]),
+    particleCaps: Object.freeze([180, 120, 72, 40]),
     atlas: Object.freeze({
       emerge: Object.freeze({ base: 'cgUltSoulEmergeBase', energy: 'cgUltSoulEmergeEnergy', frames: 6, cols: 3, rows: 2 }),
       flight: Object.freeze({ base: 'cgUltSoulFlightBase', energy: 'cgUltSoulFlightEnergy', frames: 6, cols: 3, rows: 2 }),
@@ -7730,7 +7809,7 @@
     }),
   });
   const CG_VFX_CONFIG = Object.freeze({
-    fxCaps: Object.freeze([180, 132, 90]),
+    fxCaps: Object.freeze([180, 132, 72, 42]),
     overloadScale: 1,
     overloadEnemyThreshold: 24,
     sizes: Object.freeze({
@@ -7755,7 +7834,7 @@
     projection: Object.freeze({
       fieldDiameter: 232, voidDiameter: 206, ringInner: 72, ringOuter: 105,
       ringSpeedInner: 0.55, ringSpeedOuter: -0.34,
-      particlesHigh: 10, particlesMedium: 7, particlesLow: 4,
+      particlesHigh: 10, particlesMedium: 7, particlesLow: 4, particlesUltra: 2,
       columnAlpha: 0.48, scanBandCount: 7,
     }),
     bossCorrosion: Object.freeze({
@@ -7824,6 +7903,8 @@
   }
   // 移动端/低画质轻量档（IS_MOBILE_RUNTIME 默认 perfLevel=2）
   function cgLite() { return perfLevel >= 2; }
+  function cgUltra() { return perfLevel >= 3; }
+  function cgQualityIndex() { return clamp(perfLevel | 0, 0, 3); }
   const CG_ULT_CORRUPTION_KINDS = Object.freeze(['cgUltOrb', 'cgUltBurst', 'cgUltWheel', 'cgUltFinale', 'cgUltSoul']);
   const corruptGunState = {
     t: 0,
@@ -7860,6 +7941,7 @@
         originX: 0, originY: 0, souls: [], particles: [],
         devouredEnemies: new Set(), targetClaims: new Map(), targetIds: new Map(),
         nextTargetId: 1, nextBurstAt: new Map(), lastSfxT: -99,
+        targetPoolT: -1, targetPool: [],
       },
     },
   };
@@ -7893,14 +7975,30 @@
     const h = height == null ? width * image.height / Math.max(1, image.width) : height;
     const alpha = options.alpha === undefined ? 1 : options.alpha;
     const top = options.anchor === 'top' ? 0 : -h / 2;
+    if (!options.rot && !options.flipX) {
+      const previousBlend = ctx.globalCompositeOperation;
+      const previousAlpha = ctx.globalAlpha;
+      ctx.globalCompositeOperation = options.blend || 'source-over';
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(image, x - width / 2, y + top, width, h);
+      if (options.glow && perfLevel < 2) {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = alpha * (options.glowAlpha === undefined ? 0.35 : options.glowAlpha);
+        const scale = options.glowScale || 1.30;
+        const gw = width * scale, gh = h * scale;
+        const gy = options.anchor === 'top' ? y : y - gh / 2;
+        ctx.drawImage(image, x - gw / 2, gy, gw, gh);
+      }
+      ctx.globalCompositeOperation = previousBlend;
+      ctx.globalAlpha = previousAlpha;
+      return true;
+    }
     ctx.save();
     ctx.translate(x, y);
     if (options.rot) ctx.rotate(options.rot);
     if (options.flipX) ctx.scale(-1, 1);
     ctx.globalCompositeOperation = options.blend || 'source-over';
     ctx.globalAlpha = alpha;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(image, -width / 2, top, width, h);
     if (options.glow && perfLevel < 2) {
       ctx.globalCompositeOperation = 'lighter';
@@ -7921,14 +8019,22 @@
     const index = ((frame | 0) % total + total) % total;
     const sourceW = image.width / safeCols, sourceH = image.height / safeRows;
     const sourceX = (index % safeCols) * sourceW, sourceY = Math.floor(index / safeCols) * sourceH;
+    if (!options.rot && !options.flipX) {
+      const previousBlend = ctx.globalCompositeOperation;
+      const previousAlpha = ctx.globalAlpha;
+      ctx.globalCompositeOperation = options.blend || 'source-over';
+      ctx.globalAlpha = options.alpha === undefined ? 1 : options.alpha;
+      ctx.drawImage(image, sourceX, sourceY, sourceW, sourceH, x - width / 2, y - height / 2, width, height);
+      ctx.globalCompositeOperation = previousBlend;
+      ctx.globalAlpha = previousAlpha;
+      return true;
+    }
     ctx.save();
     ctx.translate(x, y);
     if (options.rot) ctx.rotate(options.rot);
     if (options.flipX) ctx.scale(-1, 1);
     ctx.globalCompositeOperation = options.blend || 'source-over';
     ctx.globalAlpha = options.alpha === undefined ? 1 : options.alpha;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(image, sourceX, sourceY, sourceW, sourceH, -width / 2, -height / 2, width, height);
     ctx.restore();
     return true;
@@ -8006,7 +8112,7 @@
     ctx.restore();
   }
   function cgVfxQuality() { return perfLevel >= 2 ? 'low' : (perfLevel === 1 ? 'medium' : 'high'); }
-  function cgVfxCap() { return CG_VFX_CONFIG.fxCaps[clamp(perfLevel | 0, 0, 2)]; }
+  function cgVfxCap() { return CG_VFX_CONFIG.fxCaps[cgQualityIndex()]; }
   function cgVfxLogOnce(reason, detail = '') {
     if (cgVfxRenderer.errors.has(reason)) return;
     cgVfxRenderer.errors.add(reason);
@@ -8068,13 +8174,15 @@
     cgVfxRenderer.backComposited = false;
     if (!initCgVfxRenderer()) return false;
     const quality = cgVfxQuality();
-    cgVfxRenderer.adaptiveScale = 1;
+    // 主Canvas降分辨率时，离屏WebGL层同步收紧，避免手机GPU仍然维护
+    // 两张720x1280全尺寸特效缓冲。
+    cgVfxRenderer.adaptiveScale = IS_MOBILE_RUNTIME ? renderScale : 1;
     cgVfxRenderer.frameActive = !!cgVfxRenderer.engine.beginFrame({ width: W, height: H, dpr: cgVfxRenderer.adaptiveScale, time, quality });
     cgVfxRenderer.status = cgVfxRenderer.engine.getStatus();
     return cgVfxRenderer.frameActive;
   }
   function cgVfxSceneActive() {
-    if (corruptgunActive() || corruptGunState.clones.length || corruptGunState.fx.length || corruptGunState.ultimate.active) return true;
+    if (corruptGunState.pendingShot || corruptGunState.clones.length || corruptGunState.fx.length || corruptGunState.ultimate.active) return true;
     if (playerShots.some(isCgShot)) return true;
     if (boss && boss._cgMark) return true;
     return enemies.some(enemy => !!(enemy && enemy._cgMark));
@@ -8140,10 +8248,10 @@
   }
   function spawnCgImpactV2(x, y, size, variant = 'normal', power = 1, follow = null) {
     if (cgLite()) {
-      // lite：冲击特效并发上限 6（伤害不受影响，只限演出）
+      // lite/ultra：完整保留四段命中包络，仅限制同时存在的重复演出。
       let liveImpacts = 0;
       for (const fx of corruptGunState.fx) if (fx.type === 'impactV2') liveImpacts++;
-      if (liveImpacts >= 6) return null;
+      if (liveImpacts >= (cgUltra() ? 3 : 5)) return null;
     }
     return pushCgFx({
       type: 'impactV2', x, y, size, variant, power, follow,
@@ -8421,6 +8529,12 @@
     const residual = open(at(190), at(255), p) * (1 - open(at(470), 1, p));
     const radius = size * 0.5;
     const cloneImpact = fx.variant === 'clone';
+    const rayCount = cgUltra() ? 4 : (cgLite() ? 7 : 14);
+    const ringParts = cgUltra() ? 3 : (cgLite() ? 4 : 8);
+    const toothCount = cgUltra() ? 10 : (cgLite() ? 14 : 24);
+    const residualArms = cgUltra() ? 2 : (cgLite() ? 3 : 6);
+    const residualSteps = cgUltra() ? 7 : (cgLite() ? 10 : 20);
+    const residueParticles = cgUltra() ? 2 : (cgLite() ? 4 : 10);
     ctx.save();
     ctx.translate(fx.x, fx.y);
     ctx.globalAlpha = opacity;
@@ -8441,8 +8555,8 @@
     ctx.globalCompositeOperation = 'lighter';
     if (burst > 0.01) {
       ctx.lineCap = 'round';
-      for (let i = 0; i < 14; i++) {
-        const a = seed + i * TAU / 14 + Math.sin(i * 2.17 + seed) * 0.08;
+      for (let i = 0; i < rayCount; i++) {
+        const a = seed + i * TAU / rayCount + Math.sin(i * 2.17 + seed) * 0.08;
         const inner = radius * (0.05 + 0.04 * p);
         const outer = radius * (0.46 + 0.35 * open(0.12, 0.46, p)) * (0.78 + 0.22 * Math.sin(i * 7.3 + seed));
         ctx.strokeStyle = cloneImpact
@@ -8471,8 +8585,8 @@
           ? (ring ? `rgba(104,2,39,${(0.58 * rings).toFixed(3)})` : `rgba(177,14,62,${(0.68 * rings).toFixed(3)})`)
           : (ring ? `rgba(255,34,100,${(0.62 * rings).toFixed(3)})` : `rgba(255,178,202,${(0.78 * rings).toFixed(3)})`);
         ctx.lineWidth = ring ? 2.4 : 1.7;
-        for (let part = 0; part < 8; part++) {
-          const a0 = seed + time * (ring ? -2.2 : 3.1) + part * TAU / 8;
+        for (let part = 0; part < ringParts; part++) {
+          const a0 = seed + time * (ring ? -2.2 : 3.1) + part * TAU / ringParts;
           ctx.beginPath(); ctx.arc(0, 0, rr, a0, a0 + (ring ? 0.38 : 0.50)); ctx.stroke();
         }
       }
@@ -8482,8 +8596,8 @@
       ctx.strokeStyle = cloneImpact ? `rgba(137,5,48,${(0.86 * rings).toFixed(3)})` : `rgba(255,40,98,${(0.90 * rings).toFixed(3)})`;
       ctx.lineWidth = Math.max(1.4, size * 0.014);
       ctx.beginPath();
-      for (let tooth = 0; tooth < 24; tooth++) {
-        const a = seed + tooth * TAU / 24 - time * 1.7;
+      for (let tooth = 0; tooth < toothCount; tooth++) {
+        const a = seed + tooth * TAU / toothCount - time * 1.7;
         const rr = biteRadius * (tooth & 1 ? 0.79 : 1.08);
         const px = Math.cos(a) * rr, py = Math.sin(a) * rr;
         if (tooth === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
@@ -8493,15 +8607,15 @@
     }
     if (residual > 0.01) {
       ctx.lineCap = 'round';
-      for (let arm = 0; arm < 6; arm++) {
-        const base = seed + arm * TAU / 6 - time * 3.8;
+      for (let arm = 0; arm < residualArms; arm++) {
+        const base = seed + arm * TAU / residualArms - time * 3.8;
         ctx.strokeStyle = cloneImpact
           ? (arm % 2 ? `rgba(77,1,31,${(0.58 * residual).toFixed(3)})` : `rgba(143,7,52,${(0.66 * residual).toFixed(3)})`)
           : (arm % 2 ? `rgba(225,10,78,${(0.52 * residual).toFixed(3)})` : `rgba(255,71,129,${(0.68 * residual).toFixed(3)})`);
         ctx.lineWidth = arm % 2 ? 2.1 : 2.8;
         ctx.beginPath();
-        for (let step = 0; step <= 20; step++) {
-          const t = step / 20;
+        for (let step = 0; step <= residualSteps; step++) {
+          const t = step / residualSteps;
           const rr = radius * (0.07 + t * 0.72) * (1 - p * 0.10);
           const a = base + t * 2.8 + Math.sin(t * 8 + seed) * 0.07;
           const px = Math.cos(a) * rr, py = Math.sin(a) * rr;
@@ -8509,7 +8623,7 @@
         }
         ctx.stroke();
       }
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < residueParticles; i++) {
         const a = seed + i * 2.399 + time * (i % 2 ? -1.2 : 1.6);
         const rr = radius * (0.28 + 0.56 * ((i * 0.381 + p) % 1));
         ctx.globalAlpha = opacity * residual * (0.48 + (i % 3) * 0.16);
@@ -8940,17 +9054,18 @@
     arc.visualTension = 0;
   }
 
+  function updateCorruptionMarkTarget(target, dt) {
+    if (!target) return;
+    if (target._cgSpreadCd) target._cgSpreadCd = Math.max(0, target._cgSpreadCd - dt);
+    const mark = target._cgMark;
+    if (!mark) return;
+    const next = ageCorruptMark(mark, dt);
+    if (next) target._cgMark = next;
+    else delete target._cgMark;
+  }
   function updateCorruptionMarks(dt) {
-    const targets = boss && !boss.dead ? enemies.concat([boss]) : enemies;
-    for (const target of targets) {
-      if (!target) continue;
-      if (target._cgSpreadCd) target._cgSpreadCd = Math.max(0, target._cgSpreadCd - dt);
-      const mark = target._cgMark;
-      if (!mark) continue;
-      const next = ageCorruptMark(mark, dt);
-      if (next) target._cgMark = next;
-      else delete target._cgMark;
-    }
+    for (const target of enemies) updateCorruptionMarkTarget(target, dt);
+    if (boss && !boss.dead) updateCorruptionMarkTarget(boss, dt);
   }
   function drawCorruptionMark(target) {
     const mark = target && target._cgMark;
@@ -8959,7 +9074,7 @@
     const frame = cgLoopFrame(spec, (target.x * 0.0017 + target.y * 0.0023) % 1);
     const size = clamp((target.r || 18) * 3.0, 40, 120);
     const alpha = mark.t < 1 ? lerp(0.34, 0.82, mark.t) : 0.88;
-    drawCgOrbUnderDisc(target.x, target.y, size * 1.15, 0.30 * (alpha / 0.88)); // 标记暗盘：腐蚀吞噬的"暗一半"
+    if (!cgUltra()) drawCgOrbUnderDisc(target.x, target.y, size * 1.15, 0.30 * (alpha / 0.88)); // 标记暗盘：腐蚀吞噬的"暗一半"
     const atlasOk = drawCgAtlasPair(spec, frame, target.x, target.y, size, size * 0.72, { baseAlpha: alpha * 0.84, energyAlpha: alpha });
     // 蠕动弧：2 段 40° 圆弧沿标记环往复爬行（±1.4rad/s）——"腐蚀在活动"（lite 关闭）
     if (cgLite()) return;
@@ -9052,6 +9167,7 @@
     sh.absorbedEnemies = 0; sh.originX = 0; sh.originY = 0;
     sh.souls.length = 0; sh.particles.length = 0;
     sh.targetClaims.clear(); sh.targetIds.clear(); sh.nextBurstAt.clear(); sh.nextTargetId = 1;
+    sh.targetPoolT = -1; sh.targetPool.length = 0;
     sh.lastSfxT = -99; sh.killedTargetId = null;
     if (clearDevoured) sh.devouredEnemies.clear();
   }
@@ -9078,8 +9194,14 @@
   }
   function cgSoulTargetPool() {
     const sh = cgSoulhuntState(), radius2 = CG_ULT_SECOND_CONFIG.targetRadius ** 2;
-    const pool = enemies.filter(target => cgSoulTargetValid(target) && dist2(sh.originX, sh.originY, target.x, target.y) <= radius2);
+    if (sh.targetPoolT === sh.t) return sh.targetPool;
+    const pool = sh.targetPool;
+    pool.length = 0;
+    for (const target of enemies) {
+      if (cgSoulTargetValid(target) && dist2(sh.originX, sh.originY, target.x, target.y) <= radius2) pool.push(target);
+    }
     if (boss && cgSoulTargetValid(boss) && dist2(sh.originX, sh.originY, boss.x, boss.y) <= radius2) pool.push(boss);
+    sh.targetPoolT = sh.t;
     return pool;
   }
   function cgSoulReleaseTarget(soul) {
@@ -9094,14 +9216,18 @@
     const sh = cgSoulhuntState();
     const pool = cgSoulTargetPool();
     if (!pool.length) { cgSoulReleaseTarget(soul); return null; }
-    pool.sort((a, b) => {
-      const claimDelta = (sh.targetClaims.get(a) || 0) - (sh.targetClaims.get(b) || 0);
-      if (claimDelta) return claimDelta;
-      const distanceDelta = dist2(soul.x, soul.y, a.x, a.y) - dist2(soul.x, soul.y, b.x, b.y);
-      if (Math.abs(distanceDelta) > 0.001) return distanceDelta;
-      return String(cgSoulTargetId(a)).localeCompare(String(cgSoulTargetId(b)));
-    });
-    const target = pool[0];
+    let target = pool[0];
+    let bestClaims = sh.targetClaims.get(target) || 0;
+    let bestDistance = dist2(soul.x, soul.y, target.x, target.y);
+    for (let index = 1; index < pool.length; index++) {
+      const candidate = pool[index];
+      const claims = sh.targetClaims.get(candidate) || 0;
+      if (claims > bestClaims) continue;
+      const distance = dist2(soul.x, soul.y, candidate.x, candidate.y);
+      if (claims < bestClaims || distance < bestDistance) {
+        target = candidate; bestClaims = claims; bestDistance = distance;
+      }
+    }
     if (soul.target !== target) {
       cgSoulReleaseTarget(soul);
       soul.target = target;
@@ -9116,11 +9242,11 @@
     return delta - Math.PI;
   }
   function cgSoulTrailCap() {
-    return CG_ULT_SECOND_CONFIG.trailNodes[Math.min(2, Math.max(0, perfLevel | 0))] || 3;
+    return CG_ULT_SECOND_CONFIG.trailNodes[cgQualityIndex()] || 2;
   }
   function pushCgSoulParticle(particle) {
     const sh = cgSoulhuntState();
-    const cap = CG_ULT_SECOND_CONFIG.particleCaps[Math.min(2, Math.max(0, perfLevel | 0))] || 72;
+    const cap = CG_ULT_SECOND_CONFIG.particleCaps[cgQualityIndex()] || 40;
     if (sh.particles.length >= cap) sh.particles.shift();
     sh.particles.push(particle);
   }
@@ -9138,7 +9264,7 @@
     if (!soul || soul.state === 'dissolve' || soul.state === 'done') return;
     cgSoulReleaseTarget(soul);
     soul.state = 'dissolve'; soul.stateT = 0;
-    spawnCgSoulAsh(soul.x, soul.y, CG_ULT_SECOND_CONFIG.particleCounts[Math.min(2, perfLevel)] || 2, 0.55);
+    spawnCgSoulAsh(soul.x, soul.y, CG_ULT_SECOND_CONFIG.particleCounts[cgQualityIndex()] || 1, 0.55);
   }
   function beginCgSoulPossess(soul) {
     if (!soul || !cgSoulTargetValid(soul.target)) return false;
@@ -9202,7 +9328,7 @@
     cgSoulReleaseTarget(soul);
     soul.state = 'burst'; soul.stateT = 0;
     sh.exploded = (sh.exploded || 0) + 1;
-    const count = CG_ULT_SECOND_CONFIG.particleCounts[Math.min(2, perfLevel)] || 2;
+    const count = CG_ULT_SECOND_CONFIG.particleCounts[cgQualityIndex()] || 1;
     spawnCgSoulAsh(soul.x, soul.y, count, 1);
     if (sh.t - sh.lastSfxT >= 0.12) {
       sh.lastSfxT = sh.t;
@@ -9217,6 +9343,7 @@
     sh.planned = cgUltimateSoulCount(u.absorbed, absorbedEnemies);
     sh.spawned = 0; sh.possessing = 0; sh.burst = 0; sh.dissolving = 0; sh.completed = 0; sh.exploded = 0;
     sh.souls.length = 0; sh.particles.length = 0; sh.targetClaims.clear(); sh.targetIds.clear(); sh.nextBurstAt.clear(); sh.nextTargetId = 1;
+    sh.targetPoolT = -1; sh.targetPool.length = 0;
     sh.lastSfxT = -99; sh.killedTargetId = null;
     for (let index = 0; index < sh.planned; index++) {
       const wave = Math.floor(index / cfg.spawnWaveSize), lane = index % cfg.spawnWaveSize;
@@ -9388,6 +9515,10 @@
   }
   function castDarkWheel() {
     if (!corruptgunActive() || corruptGunState.ultimate.active) return false;
+    prefetchCorruptgunUltimatePhase1();
+    // Phase two has a long runway, so start its ten-image request with the cast
+    // instead of competing with the finale-to-soul transition on a slow phone.
+    prefetchCorruptgunUltimatePhase2();
     resetCgUltimate();
     const u = corruptGunState.ultimate;
     const muzzle = cgUltimateMuzzle();
@@ -9513,7 +9644,7 @@
   // 切割反馈：大尺寸月牙沿轮盘切线掠出，金属刃线与碎屑把每次 tick 读成实际剐切。
   function spawnCgUltCutFx(target) {
     const u = corruptGunState.ultimate;
-    const qualityIndex = Math.min(2, perfLevel);
+    const qualityIndex = cgQualityIndex();
     const bladeCount = CG_ULT_CONFIG.quality.blades[qualityIndex];
     const targetAngle = Math.atan2(target.y - u.y, target.x - u.x);
     const phase = u.totalT * CG_ULT_CONFIG.wheel.bladeSpeed;
@@ -9588,7 +9719,7 @@
     // V1.4 终爆黑洞爆发帧（大招优化素材04 第11格）
     spawnCgSequence('cgUltHole1', 1, 0.42, u.x, u.y, 640, { alpha: 0.92, scaleFrom: 0.55, scaleTo: 1.2, glow: false });
     // V1.5 终爆演出补强：全向刃光射线 + 扩张暗浪 + 白炽核闪
-    const streakN = perfLevel >= 2 ? 8 : 14;
+    const streakN = cgUltra() ? 4 : (cgLite() ? 6 : 14);
     for (let index = 0; index < streakN; index++) {
       const a = index / streakN * TAU + rand(-0.1, 0.1);
       pushCgFx({ type: 'slash', key: `cgUltCrescent${1 + (index % 8)}`, x: u.x + Math.cos(a) * 60, y: u.y + Math.sin(a) * 60, vx: Math.cos(a) * rand(620, 880), vy: Math.sin(a) * rand(620, 880), rot: a, life: 0.30, maxLife: 0.30, size: 64 });
@@ -9596,7 +9727,7 @@
     spawnCgDark(u.x, u.y, 30, 320, 0.50, 0.85);
     spawnCgSequence('cgHitSpark', 6, 0.05, u.x, u.y, 300, { alpha: 0.95, scaleFrom: 0.5, scaleTo: 1.6, glow: perfLevel < 2 });
     spawnCgDark(u.x, u.y, 180, 180, 0.90, 0.50);
-    const shardCount = perfLevel >= 2 ? 7 : 12;
+    const shardCount = cgUltra() ? 3 : (cgLite() ? 5 : 12);
     for (let index = 0; index < shardCount; index++) {
       const angle = index / shardCount * TAU + rand(-0.18, 0.18);
       const speed = rand(160, 420), life = rand(0.50, 0.90);
@@ -9606,7 +9737,7 @@
         gravity: 260, life, maxLife: life, size: rand(10, 22), rot: angle, spin: rand(-5, 5),
       });
     }
-    for (let index = 0; index < (perfLevel >= 2 ? 6 : 12); index++) {
+    for (let index = 0; index < (cgUltra() ? 3 : (cgLite() ? 4 : 12)); index++) {
       const angle = rand(0, TAU), speed = rand(30, 70);
       spawnCgDot(u.x + rand(-36, 36), u.y + rand(-36, 36), Math.cos(angle) * speed, -Math.abs(Math.sin(angle) * speed), rand(0.55, 0.95), rand(4, 8), index & 1 ? 'P' : 'R');
     }
@@ -9646,7 +9777,7 @@
       if (cut.life <= 0) u.spaceCuts.splice(index, 1);
     }
     if (!spawn) return;
-    const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+    const qualityIndex = cgQualityIndex();
     const cap = CG_ULT_CONFIG.quality.spaceCuts[qualityIndex];
     u.bladeCutT -= dt * speedMul;
     if (u.bladeCutT > 0 || u.spaceCuts.length >= cap) return;
@@ -9704,7 +9835,7 @@
     }
 
     // 短而断续的空间跳线沿螺旋向内滑动，只表达吸入，不闭合成第二个圆环。
-    const stripCount = CG_ULT_CONFIG.quality.warpStrips[Math.min(2, perfLevel)] || 5;
+    const stripCount = CG_ULT_CONFIG.quality.warpStrips[cgQualityIndex()] || 2;
     const golden = 2.399963229728653;
     for (let index = 0; index < stripCount; index++) {
       const phase = (u.totalT * (0.34 + (index % 3) * 0.035) + index * 0.173) % 1;
@@ -9793,6 +9924,7 @@
     if (u.phase === 'form') {
       if (u.t >= CG_ULT_CONFIG.form) {
         u.phase = 'spin'; u.t = 0;
+        prefetchCorruptgunUltimatePhase2();
         for (const enemy of enemies) enemy._cgUltTickT = 0;
         if (boss) boss._cgUltTickT = 0;
         if (audio.nrVoidSuck) audio.nrVoidSuck();
@@ -9854,11 +9986,16 @@
     const cfg = CG_ULT_CONFIG.absorption;
     const phaseMul = u.phase === 'collapse' ? cfg.collapsePullMultiplier : 1;
     let visualGroups = 0;
+    let trailSlots = 0;
+    const trailBudget = cgUltra() ? 12 : (cgLite() ? 24 : 52);
+    const trailRadius2 = cfg.trailRadius * cfg.trailRadius;
+    const consumeRadius2 = cfg.consumeRadius * cfg.consumeRadius;
     for (let index = enemyBullets.length - 1; index >= 0; index--) {
       const bullet = enemyBullets[index];
       if (!bullet) continue;
       const dx = u.x - bullet.x, dy = u.y - bullet.y;
-      const distance = Math.hypot(dx, dy) || 0.001;
+      const distance2 = dx * dx + dy * dy;
+      const distance = Math.sqrt(distance2) || 0.001;
       const pull = (distance < cfg.nearRadius ? cfg.nearPull : cfg.farPull) * phaseMul;
       const step = Math.min(distance, pull * dt);
       const inwardX = dx / distance, inwardY = dy / distance;
@@ -9867,7 +10004,8 @@
       const tangentStep = cfg.tangentialPull * tangentK * phaseMul * dt;
       bullet.x += inwardX * step + tangentX * tangentStep;
       bullet.y += inwardY * step + tangentY * tangentStep;
-      if (distance <= cfg.trailRadius) {
+      if (distance2 <= trailRadius2 && trailSlots < trailBudget) {
+        trailSlots++;
         bullet._cgUltTrailT = (bullet._cgUltTrailT || 0) + dt;
         if (!bullet._cgUltTrail || bullet._cgUltTrailT >= 0.026) {
           bullet._cgUltTrailT = 0;
@@ -9875,16 +10013,19 @@
           bullet._cgUltTrail.unshift({ x: bullet.x, y: bullet.y });
           if (bullet._cgUltTrail.length > cfg.trailNodes) bullet._cgUltTrail.pop();
         }
+      } else if (cgLite() && bullet._cgUltTrail && bullet._cgUltTrail.length) {
+        bullet._cgUltTrail.length = 0;
       }
-      const nextDistance = Math.hypot(u.x - bullet.x, u.y - bullet.y);
-      if (nextDistance >= cfg.consumeRadius) continue;
+      const nextDx = u.x - bullet.x, nextDy = u.y - bullet.y;
+      if (nextDx * nextDx + nextDy * nextDy >= consumeRadius2) continue;
       const startX = bullet.x, startY = bullet.y;
-      enemyBullets.splice(index, 1);
+      removeUnordered(enemyBullets, index);
       u.absorbed++;
       if (visualGroups < (cgLite() ? 3 : cfg.visualGroupsPerFrame)) {
         visualGroups++;
         const life = 0.32;
         const angle = Math.atan2(u.y - startY, u.x - startX);
+        if (u.absorptionFx.length >= CG_ULT_CONFIG.fxCaps[cgQualityIndex()]) u.absorptionFx.shift();
         u.absorptionFx.push({
           x1: startX, y1: startY, x2: u.x, y2: u.y,
           cx: (startX + u.x) * 0.5 + Math.cos(angle + Math.PI / 2) * 60,
@@ -9909,7 +10050,9 @@
     const main = s.kind === 'cgMain' || s.kind === 'cgMainOver';
     const clone = s.kind === 'cgClone';
     const ultimate = s.kind === 'cgUltOrb';
-    const maxNodes = ultimate ? 14 : (main ? CG_VFX_CONFIG.trailNodes.main : (clone ? CG_VFX_CONFIG.trailNodes.clone : CG_VFX_CONFIG.trailNodes.side));
+    const maxNodes = ultimate
+      ? (cgUltra() ? 5 : (cgLite() ? 7 : 14))
+      : cgShotTrailNodeCap(s);
     s.cgTrailT = (s.cgTrailT || 0) + dt;
     while (s.cgTrailT >= 0.024) {
       s.cgTrailT -= 0.024;
@@ -10314,14 +10457,18 @@
       const rotation = time * (ring ? cfg.ringSpeedOuter : cfg.ringSpeedInner) + clone.phase;
       ctx.strokeStyle = ring ? `rgba(90,2,34,${(0.52 * alpha * attackBoost).toFixed(3)})` : `rgba(174,10,60,${(0.68 * alpha * attackBoost).toFixed(3)})`;
       ctx.lineWidth = ring ? 2.2 : 1.7;
-      for (let part = 0; part < 4; part++) {
-        const a0 = rotation + part * TAU / 4;
-        ctx.beginPath(); ctx.arc(0, 0, radius, a0, a0 + (ring ? 0.72 : 0.94)); ctx.stroke();
+      const ringParts = cgUltra() ? 2 : (cgLite() ? 3 : 4);
+      ctx.beginPath();
+      for (let part = 0; part < ringParts; part++) {
+        const a0 = rotation + part * TAU / ringParts;
+        ctx.moveTo(Math.cos(a0) * radius, Math.sin(a0) * radius);
+        ctx.arc(0, 0, radius, a0, a0 + (ring ? 0.72 : 0.94));
       }
+      ctx.stroke();
     }
     ctx.restore();
 
-    const particles = perfLevel === 0 ? cfg.particlesHigh : (perfLevel === 1 ? cfg.particlesMedium : cfg.particlesLow);
+    const particles = perfLevel === 0 ? cfg.particlesHigh : (perfLevel === 1 ? cfg.particlesMedium : (perfLevel === 2 ? cfg.particlesLow : cfg.particlesUltra));
     for (let i = 0; i < particles; i++) {
       const a = clone.phase + i * 2.399 + time * (i & 1 ? -0.62 : 0.88);
       const radius = lerp(cfg.ringInner, cfg.ringOuter + 8, (i % 4) / 3);
@@ -10343,7 +10490,7 @@
   }
   function drawCgCloneProjectionBands(key, x, y, alpha) {
     const dimensions = cgCloneSpriteDimensions(key, 1);
-    const bands = perfLevel === 0 ? 6 : (perfLevel === 1 ? 4 : 3);
+    const bands = perfLevel === 0 ? 6 : (perfLevel === 1 ? 3 : (cgUltra() ? 1 : 2));
     ctx.save();
     for (let band = 0; band < bands; band++) {
       const bandY = y - dimensions.height * 0.48 + (band + 0.5) * dimensions.height / bands;
@@ -10442,6 +10589,22 @@
     const metalKey = transitionFrame
       ? key('Metal')
       : `${prefix}Metal${1 + (Math.floor(time * 1000 / cfg.sheenFrameMs) % cfg.sheenFrames)}`;
+
+    if (cgLite()) {
+      // Neutral/overdrive silhouettes do not share the transition sheet's
+      // outline. Overlaying either one here reads as a second, misaligned ship.
+      if (transitionFrame) return;
+      const staticMetalKey = `${prefix}Metal1`;
+      drawCgAsset(`${prefix}Ao`, 0, 0, bodyW, null, { blend: 'multiply', alpha: cfg.aoAlpha * 0.92, glow: false });
+      drawCgAsset(staticMetalKey, 0, 0, bodyW, null, { blend: 'screen', alpha: cfg.sheenAlpha * (0.78 + pulse * 0.12), glow: false });
+      if (!cgUltra()) drawCgAsset(`${prefix}Wing`, 0, 0, bodyW, null, { blend: 'lighter', alpha: cfg.wingAlpha * 0.72 * (over ? 1.16 : 0.82), glow: false });
+      drawCgAsset(`${prefix}Engine`, 0, 0, bodyW, null, { blend: 'lighter', alpha: cfg.engineAlpha * (0.68 + enginePulse * 0.24), glow: false });
+      drawCgAsset(`${prefix}Crystal`, 0, 0, bodyW, null, { blend: 'lighter', alpha: cfg.crystalAlpha * (0.70 + pulse * 0.22), glow: false });
+      if (shotCharge > 0.01 || corruptGunState.ultimate.phase === 'cast') {
+        drawCgAsset(`${prefix}Muzzle`, 0, 0, bodyW, null, { blend: 'lighter', alpha: cfg.muzzleAlpha * (0.72 + shotCharge * 0.42), glow: false });
+      }
+      return;
+    }
 
     drawCgAsset(key('Ao'), 0, 0, bodyW, null, { blend: 'multiply', alpha: cfg.aoAlpha, glow: false });
     drawCgAsset(metalKey, 0, 0, bodyW, null, { blend: 'screen', alpha: cfg.sheenAlpha * (0.82 + pulse * 0.18), glow: false });
@@ -10542,17 +10705,16 @@
     ctx.restore();
   }
   function cgTrailPointsForShot(s, visualLength) {
-    const points = (s.cgTrail || []).slice().reverse().map(point => ({ x: point.x, y: point.y }));
     const speed = Math.max(1, Math.hypot(s.vx, s.vy));
     const dx = s.vx / speed, dy = s.vy / speed;
-    if (points.length < 2) points.unshift({ x: s.x - dx * visualLength, y: s.y - dy * visualLength });
-    const last = points[points.length - 1];
-    if (!last || dist2(last.x, last.y, s.x, s.y) > 1) points.push({ x: s.x, y: s.y });
     const clipped = [{ x: s.x, y: s.y }];
     let remaining = visualLength;
     let cursor = clipped[0];
-    for (let index = points.length - 2; index >= 0 && remaining > 0.01; index--) {
-      const point = points[index];
+    const history = s.cgTrail || [];
+    const historyLimit = Math.min(history.length, cgShotTrailNodeCap(s));
+    // cgTrail newest-first; its first point normally overlaps the current shot.
+    for (let index = history.length > 1 ? 1 : 0; index < historyLimit && remaining > 0.01; index++) {
+      const point = history[index];
       const segment = Math.hypot(point.x - cursor.x, point.y - cursor.y);
       if (segment <= 0.01) continue;
       if (segment <= remaining) {
@@ -10565,7 +10727,52 @@
         remaining = 0;
       }
     }
+    if (clipped.length < 2) clipped.push({ x: s.x - dx * visualLength, y: s.y - dy * visualLength });
     return clipped.reverse();
+  }
+  function cgShotTrailNodeCap(s) {
+    const base = s.kind === 'cgMain' || s.kind === 'cgMainOver'
+      ? CG_VFX_CONFIG.trailNodes.main
+      : (s.kind === 'cgClone' ? CG_VFX_CONFIG.trailNodes.clone : CG_VFX_CONFIG.trailNodes.side);
+    if (cgUltra()) return Math.min(base, s.kind === 'cgSide' || s.kind === 'cgSideOver' ? 3 : 4);
+    if (cgLite()) return Math.min(base, s.kind === 'cgSide' || s.kind === 'cgSideOver' ? 3 : 6);
+    if (perfLevel === 1) return Math.min(base, 8);
+    return base;
+  }
+  function drawCgLiteRibbon(points, visualWidth, cloneShot) {
+    if (points.length < 2) return;
+    const last = points.length - 1;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = cloneShot ? 'rgba(2,0,7,.80)' : 'rgba(5,0,9,.74)';
+    ctx.beginPath();
+    for (let i = 0; i <= last; i++) {
+      const prev = points[Math.max(0, i - 1)], next = points[Math.min(last, i + 1)];
+      const tx = next.x - prev.x, ty = next.y - prev.y;
+      const inv = 1 / Math.max(0.001, Math.hypot(tx, ty));
+      const width = Math.max(0.45, visualWidth * 0.42 * Math.pow(i / last, 1.28));
+      const x = points[i].x - ty * inv * width, y = points[i].y + tx * inv * width;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    for (let i = last; i >= 0; i--) {
+      const prev = points[Math.max(0, i - 1)], next = points[Math.min(last, i + 1)];
+      const tx = next.x - prev.x, ty = next.y - prev.y;
+      const inv = 1 / Math.max(0.001, Math.hypot(tx, ty));
+      const width = Math.max(0.45, visualWidth * 0.42 * Math.pow(i / last, 1.28));
+      ctx.lineTo(points[i].x + ty * inv * width, points[i].y - tx * inv * width);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = cloneShot ? 'rgba(126,7,49,.70)' : 'rgba(230,18,69,.66)';
+    ctx.lineWidth = Math.max(1, visualWidth * (cgUltra() ? 0.055 : 0.075));
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (let i = 0; i <= last; i++) {
+      if (i === 0) ctx.moveTo(points[i].x, points[i].y); else ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
   function drawCgCanvasTrail(s, visualLength, visualWidth, points) {
     const speed = Math.max(1, Math.hypot(s.vx, s.vy));
@@ -10637,6 +10844,12 @@
     }
 
     if (points.length < 2) return;
+    // 手机低/极低画质保留黑刃底、裂焰和清晰亮芯，但把三层逐段
+    // 四边形收敛为两条连续路径，避免多分身齐射时 Canvas 路径爆量。
+    if (cgLite()) {
+      drawCgLiteRibbon(points, visualWidth, cloneShot);
+      return;
+    }
     // 仅保留轻微流体扰动，主轮廓必须维持高速直刺感。
     points = points.map((point, i) => ({
       x: point.x + tnx * CG_VFX_CONFIG.trailStyle.pathWobble * Math.sin(time * 8 + i * 1.7 + phase * 9),
@@ -10805,6 +11018,25 @@
     const phase = s.cgPhase || 0;
     const seed = s.cgOrbitSeed || 0;
     const spinDir = (Math.floor(seed * 997) & 1) ? 1 : -1;
+    if (cgLite()) {
+      const spec = clone ? CG_VFX_CONFIG.atlas.cloneOrb : CG_VFX_CONFIG.atlas.mainOrb;
+      const frame = cgLoopFrame(spec, s.cgFlowPhase || 0);
+      drawCgOrbUnderDisc(s.x, s.y, size * 1.06, clone ? 0.94 : 0.86);
+      const atlasOk = drawCgAtlasPair(spec, frame, s.x, s.y, size, size, {
+        baseAlpha: 0.98,
+        energyAlpha: clone ? 0.66 : 0.76,
+      });
+      if (clone) {
+        drawCgAtlasFrame(spec.base, frame, spec.cols, spec.rows, s.x + 2.2, s.y, size, size, {
+          blend: 'lighter', alpha: cgUltra() ? 0.10 : 0.16,
+        });
+        drawCgCloneOrbVoidShade(s.x, s.y, size, phase);
+      }
+      drawCgAsset(clone ? 'cgDotR3' : 'cgDotW1', s.x, s.y, size * (clone ? 0.16 : 0.22), null, {
+        blend: 'lighter', alpha: clone ? 0.64 : 0.78, glow: false,
+      });
+      return atlasOk;
+    }
     drawCgOrbUnderDisc(s.x, s.y, size * 1.04, clone ? 0.92 : 0.88);
     const bodyPrefix = clone ? 'cgCloneOrb' : (s.kind === 'cgMainOver' ? 'cgOrbOver' : 'cgOrbMain');
     const bodyKey = `${bodyPrefix}${1 + (Math.floor((time + phase) / (clone ? 0.08 : 0.07)) & 1)}`;
@@ -10868,6 +11100,16 @@
       ctx.closePath(); ctx.fill();
       ctx.restore();
     }
+    const deferBody = cgVfxRenderer.frameActive && !bodyOnly;
+    if (deferBody) {
+      if (cgVfxRenderer.engine.drawUltimateOrb) {
+        cgVfxRenderer.engine.drawUltimateOrb({
+          layer: 'front', x: s.x, y: s.y, diameter: config.size * 1.12,
+          phase: s.cgFlowPhase || 0, seed: s.cgOrbitSeed || 0, opacity: 0.58,
+        });
+      }
+      return;
+    }
     drawCgOrbUnderDisc(s.x, s.y, config.size * 1.05, 0.96);
     const roll = CG_ULT_CONFIG.atlas.orbRoll;
     const frame = Math.floor((time * 1000 + (s.cgFlowPhase || 0) * 700) / roll.frameMs) % roll.frames;
@@ -10877,7 +11119,7 @@
     drawCgAtlasFrame(roll.energy, frame, roll.cols, roll.rows, s.x, s.y, config.size * 1.06, config.size * 1.06, { rot: rotation, blend: 'lighter', alpha: 0.62 });
     drawCgAsset(cgFrameKey('cgCorePulse', 6, 0.14, s.cgFlowPhase || 0), s.x, s.y, config.size * 1.12, null, { rot: -time * 1.2, blend: 'lighter', alpha: 0.46, glow: false });
     drawCgAsset('cgDotR3', s.x - 5, s.y - 6, 20, null, { blend: 'lighter', alpha: 0.84, glow: false });
-    if (cgVfxRenderer.frameActive && cgVfxRenderer.engine.drawUltimateOrb) {
+    if (cgVfxRenderer.frameActive && !bodyOnly && cgVfxRenderer.engine.drawUltimateOrb) {
       cgVfxRenderer.engine.drawUltimateOrb({
         layer: 'front', x: s.x, y: s.y, diameter: config.size * 1.12,
         phase: s.cgFlowPhase || 0, seed: s.cgOrbitSeed || 0, opacity: 0.58,
@@ -10919,7 +11161,7 @@
   }
   function drawCgUltimateSpirals(alpha = 1, collapseK = 0) {
     const u = corruptGunState.ultimate;
-    const count = CG_ULT_CONFIG.quality.spirals[Math.min(2, perfLevel)] || 2;
+    const count = CG_ULT_CONFIG.quality.spirals[cgQualityIndex()] || 1;
     const outerRadius = CG_ULT_CONFIG.wheel.flowOuterRadius * (1 - collapseK * 0.55);
     const innerRadius = CG_ULT_CONFIG.wheel.flowInnerRadius * (1 - collapseK * 0.38);
     ctx.save();
@@ -11140,7 +11382,7 @@
   function drawCgUltimateBladeWake(angle, radius, index, scale, collapseK = 0) {
     const u = corruptGunState.ultimate;
     const cfg = CG_ULT_CONFIG.wheel;
-    const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+    const qualityIndex = cgQualityIndex();
     const variant = index & 1 ? 3 : 2;
     const profile = CG_ULT_BLADE_PROFILES[variant];
     const width = cfg.bladeBodyWidth * (variant === 3 ? 1.06 : 1) * scale;
@@ -11209,7 +11451,7 @@
   function drawCgUltimateHarvestBlade(x, y, angle, index, scale, alpha = 1) {
     const u = corruptGunState.ultimate;
     const cfg = CG_ULT_CONFIG.wheel;
-    const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+    const qualityIndex = cgQualityIndex();
     const variant = index & 1 ? 3 : 2;
     const profile = CG_ULT_BLADE_PROFILES[variant];
     const width = cfg.bladeBodyWidth * (variant === 3 ? 1.06 : 1) * scale;
@@ -11657,6 +11899,8 @@
     if (!sh.active || !cgVfxRenderer.frameActive || !cgVfxRenderer.engine.drawUltimateSoul) return;
     for (const soul of sh.souls) {
       if (soul.state !== 'seek' && soul.state !== 'possess' && soul.state !== 'dissolve') continue;
+      if (perfLevel >= 1 && soul.state === 'seek') continue;
+      if (!cgSoulVisible(soul)) continue;
       const point = cgSoulRenderPoint(soul);
       const possess = soul.state === 'possess';
       const dissolving = soul.state === 'dissolve';
@@ -11686,6 +11930,7 @@
     drawCgUltimateCentralEmerge(true);
     for (const soul of sh.souls) {
       if (soul.state === 'delay' || soul.state === 'done') continue;
+      if (!cgSoulVisible(soul)) continue;
       if (soul.state === 'seek') drawCgSoulTrail(soul, 0.94);
       if (soul.state === 'emerge') {
         const p = clamp(soul.stateT / cfg.emergeTime, 0, 1);
@@ -11703,6 +11948,28 @@
   }
   function drawCgSoulParticles() {
     const sh = corruptGunState.ultimate.soulhunt;
+    if (cgLite()) {
+      ctx.save();
+      for (const family of ['R', 'P']) {
+        ctx.globalCompositeOperation = family === 'P' ? 'source-over' : 'lighter';
+        for (let bucket = 0; bucket < 3; bucket++) {
+          const bucketAlpha = family === 'P' ? 0.22 + bucket * 0.16 : 0.26 + bucket * 0.18;
+          ctx.fillStyle = family === 'P' ? `rgba(105,8,54,${bucketAlpha})` : `rgba(214,20,76,${bucketAlpha})`;
+          ctx.beginPath();
+          for (const particle of sh.particles) {
+            if (particle.family !== family || particle.x < -20 || particle.x > W + 20 || particle.y < -20 || particle.y > H + 20) continue;
+            const alpha = clamp(particle.life / Math.max(0.001, particle.maxLife), 0, 1);
+            if (Math.min(2, Math.floor(alpha * 3)) !== bucket) continue;
+            const radius = Math.max(0.8, particle.size * (0.20 + alpha * 0.28));
+            ctx.moveTo(particle.x + radius, particle.y);
+            ctx.arc(particle.x, particle.y, radius, 0, TAU);
+          }
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+      return;
+    }
     for (const particle of sh.particles) {
       const alpha = clamp(particle.life / Math.max(0.001, particle.maxLife), 0, 1);
       drawCgAsset(particle.family === 'P' ? 'cgDotP2' : 'cgDotR2', particle.x, particle.y, particle.size, null, {
@@ -11716,6 +11983,7 @@
     drawCgUltimateSoulBridge(false);
     drawCgUltimateCentralEmerge(false);
     for (const soul of sh.souls) {
+      if (!cgSoulVisible(soul)) continue;
       if (soul.state === 'emerge') {
         const p = clamp(soul.stateT / cfg.emergeTime, 0, 1);
         const peek = easeOutCubic(clamp(p / 0.32, 0, 1));
@@ -11797,6 +12065,9 @@
     }
     drawCgSoulParticles();
   }
+  function cgSoulVisible(soul, padding = 220) {
+    return !!soul && soul.x >= -padding && soul.x <= W + padding && soul.y >= -padding && soul.y <= H + padding;
+  }
   function drawCgUltimateBack() {
     const u = corruptGunState.ultimate;
     if (!u.active) return;
@@ -11825,7 +12096,7 @@
       const size = CG_ULT_CONFIG.wheel.discSize * scale;
       // V1.5 空间透镜扭曲（桌面）：轮盘周边画面自采样后微旋内缩重绘——
       // 每帧叠加形成"背景被拧进黑洞"的连续扭曲拖拽
-      if (!cgLite()) {
+      if (!IS_MOBILE_RUNTIME && !cgLite()) {
         const band = size * 1.45;
         const bsx = Math.max(0, (u.x - band / 2) * renderScale), bsy = Math.max(0, (u.y - band / 2) * renderScale);
         const bsw = Math.min(canvas.width - bsx, band * renderScale), bsh = Math.min(canvas.height - bsy, band * renderScale);
@@ -12010,7 +12281,7 @@
       drawCgAsset(`cgUltHole${1 + ((holeFrame + 1) % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.innerFlowScale * scale, null, { rot: u.totalT * 2.6, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.innerFlowAlpha, glow: false });
       drawCgUltimateShadowFlames(size, (1 - collapseK * 0.30) * 0.64, 1 + collapseK * 1.5);
       // 等比月牙负责连续切痕；暗色刀身与窄亮刃分层，禁止再次拉成 300x150。
-      const slashCount = CG_ULT_CONFIG.quality.slashes[Math.min(2, perfLevel)];
+      const slashCount = CG_ULT_CONFIG.quality.slashes[cgQualityIndex()];
       for (let index = 0; index < slashCount; index++) {
         const angle = u.totalT * CG_ULT_CONFIG.wheel.bladeSpeed * 1.12 + index * TAU / slashCount;
         const radius = (CG_ULT_CONFIG.wheel.slashRadius + (index % 2 ? 12 : -8)) * scale;
@@ -12026,7 +12297,7 @@
       drawCgUltimateSpaceCuts(scale);
       // 外缘收割模组分两遍绘制：先画解析式切向拖光，再画独立金属刀身。
       // 金属层不做贴图残影；只有能量、刃线和空间裂口保留运动轨迹。
-      const bladeCount = CG_ULT_CONFIG.quality.blades[Math.min(2, perfLevel)];
+      const bladeCount = CG_ULT_CONFIG.quality.blades[cgQualityIndex()];
       for (let index = 0; index < bladeCount; index++) {
         const angle = cgUltimateBladeAngle(index, bladeCount);
         const radius = (CG_ULT_CONFIG.wheel.bladeRadius + ((index % 3) - 1) * 13) * scale;
@@ -12039,13 +12310,13 @@
         drawCgUltimateHarvestBlade(bx, by, angle + Math.PI * 0.5, index, scale, 1 - collapseK * 0.12);
       }
       // 内圈金属齿反向高速旋转，与外刃形成机械咬合。
-      const dartCount = CG_ULT_CONFIG.quality.darts[Math.min(2, perfLevel)];
+      const dartCount = CG_ULT_CONFIG.quality.darts[cgQualityIndex()];
       for (let index = 0; index < dartCount; index++) {
         const angle = u.totalT * CG_ULT_CONFIG.wheel.innerSpeed * 1.14 + index * TAU / dartCount;
         const radius = CG_ULT_CONFIG.wheel.dartRadius * scale;
         drawCgAsset(`cgUltDartS${1 + (index % 4)}`, u.x + Math.cos(angle) * radius, u.y + Math.sin(angle) * radius, CG_ULT_CONFIG.wheel.dartSize * scale, null, { rot: angle - Math.PI * 0.5, blend: 'source-over', alpha: 0.94, glow: false });
       }
-      const runeCount = CG_ULT_CONFIG.quality.runes[Math.min(2, perfLevel)];
+      const runeCount = CG_ULT_CONFIG.quality.runes[cgQualityIndex()];
       for (let index = 0; index < runeCount; index++) {
         const radius = lerp(CG_ULT_CONFIG.wheel.runeMinRadius, CG_ULT_CONFIG.wheel.runeMaxRadius, (index % 3) / 2) * scale;
         const angle = u.totalT * 0.40 + index * TAU / Math.max(1, runeCount);
@@ -12120,7 +12391,8 @@
     const shaderTrailPoints = heavyScene && trailPoints.length > 4
       ? trailPoints.filter((point, index) => index === 0 || index === trailPoints.length - 1 || index % 2 === 0)
       : trailPoints;
-    if (cgVfxRenderer.frameActive && !(heavyScene && side)) {
+    const shaderTrailAllowed = perfLevel === 0 ? !(heavyScene && side) : (main && !heavyScene);
+    if (cgVfxRenderer.frameActive && shaderTrailAllowed) {
       cgVfxRenderer.engine.drawTrail({
         layer: 'back', points: shaderTrailPoints, headWidth: trailWidth,
         tailWidth: Math.max(3, trailWidth * 0.20), seed: s.cgOrbitSeed || 0,
@@ -12128,13 +12400,14 @@
       });
     }
 
+    const deferHead = cgVfxRenderer.frameActive && !side;
     let sourceOk = false;
     if (side) {
       // 侧弹：贴图画法 + 暗托底/泛光两层（省预算）
       const key = `${s.kind === 'cgSideOver' ? 'cgOrbPierce' : 'cgOrbSide'}${s.cgVariant || 1}`;
       drawCgOrbUnderDisc(s.x, s.y, visualSize * 0.70, 0.50);
       sourceOk = drawCgAsset(key, s.x, s.y, visualSize, visualSize * 0.48, { rot: angle + Math.PI, blend: 'source-over', alpha: 0.98, glow: true, glowScale: 1.25, glowAlpha: 0.30 });
-    } else {
+    } else if (!deferHead) {
       sourceOk = drawCgLayeredOrb(s, visualSize, visualOver, clone);
     }
     if (cgVfxRenderer.frameActive) {
@@ -12145,7 +12418,7 @@
         power: visualOver ? 1.18 : 1,
         opacity: side ? CG_VFX_CONFIG.orbShaderOpacity.side : (clone ? (cloneOver ? CG_VFX_CONFIG.orbShaderOpacity.cloneOver : CG_VFX_CONFIG.orbShaderOpacity.clone) : (over ? CG_VFX_CONFIG.orbShaderOpacity.over : CG_VFX_CONFIG.orbShaderOpacity.normal)),
       });
-    } else if (!side) {
+    } else if (!side && !cgLite()) {
       const spec = clone ? CG_VFX_CONFIG.atlas.cloneOrb : CG_VFX_CONFIG.atlas.mainOrb;
       const frame = cgLoopFrame(spec, s.cgFlowPhase || 0);
       const atlasOk = drawCgAtlasPair(spec, frame, s.x, s.y, visualSize, visualSize, {
@@ -12154,6 +12427,8 @@
       });
       if (clone) drawCgCloneOrbVoidShade(s.x, s.y, visualSize, s.cgPhase || 0);
       if (!sourceOk && !atlasOk) drawCgTechOrbFallback(s.x, s.y, visualSize, s.cgFlowPhase || 0, visualOver ? 1.1 : 1);
+    } else if (!side && !sourceOk) {
+      drawCgTechOrbFallback(s.x, s.y, visualSize, s.cgFlowPhase || 0, visualOver ? 1.1 : 1);
     } else if (!sourceOk) {
       drawCgTechOrbFallback(s.x, s.y, visualSize * 0.72, s.cgFlowPhase || 0, 1);
     }
@@ -22975,14 +23250,17 @@
   }
 
   function dmgText(x, y, text, color = '#fff2a8', size = 24) {
-    if (cgLite() && damageTexts.length > 26 && (arguments.length < 5 || arguments[4] < 22)) return;
+    const compactCap = cgUltra() ? 12 : (cgLite() ? 18 : 90);
+    if (damageTexts.length >= compactCap && size < 26) return;
     damageTexts.push({ x, y, vx: rand(-20, 20), vy: rand(-85, -45), life: 0.78, maxLife: 0.78, text, color, size });
-    if (damageTexts.length > 90) damageTexts.splice(0, damageTexts.length - 90);
+    const hardCap = cgUltra() ? 18 : (cgLite() ? 30 : 90);
+    if (damageTexts.length > hardCap) damageTexts.splice(0, damageTexts.length - hardCap);
   }
 
   function addEnemyBullet(x, y, vx, vy, r = 7, color = '#ffd46a', damage = 8, life = 7, kind = 'orb', threat) {
-    if (enemyBullets.length >= perfBudget().enemyBulletMax) cullEnemyBullets();
-    if (enemyBullets.length >= perfBudget().enemyBulletMax) enforceRuntimePerfBudget('spawn');
+    const budget = perfBudget();
+    if (enemyBullets.length >= budget.enemyBulletMax) cullEnemyBullets(budget.enemyBulletMax);
+    if (enemyBullets.length >= budget.enemyBulletMax) enforceRuntimePerfBudget('spawn');
     const speedHint = Math.hypot(vx || 0, vy || 0);
     const b = {
       x, y, vx, vy, ax: 0, ay: 0, r, color, damage, life, maxLife: life, kind,
@@ -23233,9 +23511,8 @@
   }
 
   function selectNearestEnemies(px, py, limit, maxY = Infinity) {
-    const src = spatial.enemies.length ? spatial.enemies : enemies;
     const out = [];
-    for (const e of src) {
+    for (const e of enemies) {
       if (!e || e.hp <= 0 || e.y > maxY) continue;
       const d = dist2(px, py, e.x, e.y);
       let pos = out.length;
@@ -24669,6 +24946,7 @@
     }
 
     updatePlayer(dt);
+    maybePrefetchCorruptgunDeferredAssets();
     updateCorruptGun(dt);
     updateDragonBreath(dt);
     updatePlayerShots(dt);
@@ -24689,7 +24967,6 @@
         if (killStreakT <= 0) killStreakN = 0;
       }
     }
-    rebuildSpatialIndex();
     updateWarnings(dt);
     updateLasers(dt);
     updateParticles(dt);
@@ -31499,9 +31776,10 @@
       if (!b) continue;
       b.vx += b.ax * dt;
       b.vy += b.ay * dt;
-      const suiyiCustomMove = updateSuiyiEnemyBullet(b, dt);
-      updateSuiyiTechEnemyBullet(b, dt);
-      const miguaCustomMove = updateMiguaEnemyBullet(b, dt);
+      // 普通弹占绝大多数，不再为每一颗都调用三套专属行为更新器。
+      const suiyiCustomMove = b.suiyi ? updateSuiyiEnemyBullet(b, dt) : false;
+      if (b.suiyiTech) updateSuiyiTechEnemyBullet(b, dt);
+      const miguaCustomMove = b.migua ? updateMiguaEnemyBullet(b, dt) : false;
       // 追踪魂弹：缓慢转向玩家后加速（暗夜女王专属）
       if (b.homingSoul) {
         b.homeT = (b.homeT || 0) + dt;
@@ -31675,14 +31953,15 @@
   }
 
   function updateParticles(dt) {
+    const drag = Math.pow(0.025, dt);
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       p.life -= dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.vx *= Math.pow(0.025, dt);
-      p.vy *= Math.pow(0.025, dt);
-      if (p.life <= 0) particles.splice(i, 1);
+      p.vx *= drag;
+      p.vy *= drag;
+      if (p.life <= 0) removeUnordered(particles, i);
     }
   }
 
@@ -34200,6 +34479,42 @@
     const useThreat = shouldApplyThreatPalette(b);
     const edge = useThreat ? bulletThreatEdge(b.threat) : HOSTILE_BULLET_RED_EDGE;
     const decoMul = useThreat && b.threat === 'deco' ? 0.72 : 1;
+    if (IS_MOBILE_RUNTIME && perfLevel >= 2) {
+      const threatKey = useThreat ? (b.threat || 'hazard') : 'default';
+      const sprite = cachedSprite(`hostile_edge_${threatKey}`, 96, 64, (c2, sw, sh) => {
+        c2.save();
+        c2.translate(sw * 0.5, sh * 0.5);
+        c2.globalCompositeOperation = 'source-over';
+        c2.strokeStyle = HOSTILE_BULLET_READABILITY.darkOutlineSoft;
+        c2.lineWidth = 5;
+        c2.beginPath(); c2.ellipse(0, 0, sw * 0.34, sh * 0.31, 0, 0, TAU); c2.stroke();
+        c2.globalCompositeOperation = 'lighter';
+        c2.fillStyle = edge.fill;
+        c2.beginPath(); c2.ellipse(0, 0, sw * 0.42, sh * 0.39, 0, 0, TAU); c2.fill();
+        c2.strokeStyle = edge.stroke;
+        c2.lineWidth = 3;
+        c2.beginPath(); c2.ellipse(0, 0, sw * 0.27, sh * 0.27, 0, 0, TAU); c2.stroke();
+        c2.strokeStyle = edge.hot;
+        c2.lineWidth = 2;
+        c2.beginPath(); c2.moveTo(sw * 0.18, 0); c2.lineTo(sw * 0.36, 0); c2.stroke();
+        c2.restore();
+      });
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(ang);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = alpha * decoMul;
+      ctx.drawImage(sprite, -long * 1.14, -wide * 1.18, long * 2.28, wide * 2.36);
+      // Keep one cheap additive hot edge live. Baking every layer into a
+      // source-over sprite made dense barrages too dull against player VFX.
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * 0.52 * decoMul;
+      ctx.strokeStyle = edge.hot;
+      ctx.lineWidth = Math.max(0.9, r * 0.10);
+      ctx.beginPath(); ctx.moveTo(long * 0.42, 0); ctx.lineTo(long * 0.84, 0); ctx.stroke();
+      ctx.restore();
+      return;
+    }
     ctx.save();
     ctx.translate(b.x, b.y);
     ctx.rotate(ang);
@@ -34448,6 +34763,8 @@
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
     ctx.setTransform(renderScale, 0, 0, renderScale, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = cgLite() ? 'medium' : 'high';
     touchControls.length = 0;
     const shake = effectiveScreenShake();
     const sx = shake > 0 ? rand(-shake, shake) : 0;
@@ -41147,17 +41464,21 @@
     // The rAF re-schedule MUST happen no matter what, otherwise a single thrown
     // exception (e.g. on player death) would permanently freeze the game.
     try {
+      const cgCaptureLocked = !!corruptGunState.captureScene;
+      if (!cgCaptureLocked && !mobileFrameDue(now)) {
+        requestAnimationFrame(loop);
+        return;
+      }
       const rawMs = (now - last) || 16.7;
       const dt = Math.min(0.033, (now - last) / 1000 || 0.016);
       last = now;
       // 平滑帧时 + 自适应降级（连续偏慢降一级，连续流畅回升一级）。
       // 验收捕获固定画质，避免无头浏览器的双重绘制误触发运行时降级。
-      const cgCaptureLocked = !!corruptGunState.captureScene;
       if (!cgCaptureLocked) {
         if (rawMs > 0 && rawMs < 200) smoothFrameMs += (rawMs - smoothFrameMs) * 0.1;
         // 背板升档：需连续流畅 8s 且距上次变更 8s（一次一小步，杜绝振荡）
         {
-          const rsBase = IS_MOBILE_RUNTIME ? 0.85 : 1;
+          const rsBase = IS_MOBILE_RUNTIME ? 0.80 : 1;
           if (renderScale < rsBase && smoothFrameMs < targetFrameMs() * 0.82) {
             rsFastHoldSec += dt;
             const nowSec = performance.now() * 0.001;
@@ -41173,7 +41494,7 @@
 	        if (smoothFrameMs > hardSlowMs && perfLevel < 3) { perfLevel++; perfHoldT = 0; }
 	        else if (smoothFrameMs > hardSlowMs && perfLevel >= 3) {
 	          const nowSec = performance.now() * 0.001;
-	          if (nowSec > 6 && nowSec - rsLastChangeSec > 4) applyRenderScale(renderScale - 0.10);
+	          if (nowSec > 2 && nowSec - rsLastChangeSec > 2) applyRenderScale(renderScale - 0.10);
 	          perfHoldT = 0;
 	        }
 	        else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
@@ -41181,7 +41502,7 @@
 	          if (smoothFrameMs > softSlowMs && perfLevel < 3) perfLevel++;
 	          else if (smoothFrameMs > softSlowMs && perfLevel >= 3) {
 	            const nowSec = performance.now() * 0.001;
-	            if (nowSec > 6 && nowSec - rsLastChangeSec > 4) applyRenderScale(renderScale - 0.08);
+	            if (nowSec > 3 && nowSec - rsLastChangeSec > 3) applyRenderScale(renderScale - 0.08);
 	          }
 	          else if (smoothFrameMs < recoverMs && perfLevel > targetPerf) perfLevel--;
 	          if (perfLevel < targetPerf) perfLevel = targetPerf;
@@ -41593,6 +41914,12 @@
         sourceFolders: ['7号战机 开发文件夹_副本', 'moon-bullet-main/7号战机 开发文件夹'],
         runtimeRoot: 'assets/player/corrupt_gun',
         keys: [...CORRUPTGUN_ASSET_KEYS],
+        mobileGroups: {
+          core: CORRUPTGUN_CORE_ASSET_KEYS.length,
+          materialAnimation: CG_MATERIAL_ANIM_ASSET_KEYS.length,
+          ultimatePhase1: CG_ULT_PHASE1_ASSET_KEYS.length,
+          ultimatePhase2: CG_ULT_PHASE2_ASSET_KEYS.length,
+        },
         processors: ['tools/import_corruptgun_assets.py', 'tools/generate_corruptgun_vfx_v2.py', 'tools/process_corruptgun_infection_assets.py', 'tools/process_corruptgun_ultimate_assets.py'],
         pipeline: 'concept-split-despill-layered-atlas-lossless-webp-plus-live-ogl-psrd-plus-warped-infection-sprites',
         vfxManifest: 'assets/player/corrupt_gun/cg_vfx_v2_manifest.json',
@@ -41631,6 +41958,23 @@
         projection: CG_VFX_CONFIG.projection,
         materials: CG_VFX_CONFIG.materials,
       })),
+      mobilePerformanceSpec: () => ({
+        framePacing: 'deadline-30-45-60',
+        renderScale: { base: 0.80, min: 0.62 },
+        webgl: { stableResizeGuard: true, lazyLayerClear: true, dirtyLayerComposite: true, syncsMainRenderScale: true },
+        deferredAssets: {
+          core: CORRUPTGUN_CORE_ASSET_KEYS.length,
+          materialAnimation: CG_MATERIAL_ANIM_ASSET_KEYS.length,
+          ultimatePhase1: CG_ULT_PHASE1_ASSET_KEYS.length,
+          ultimatePhase2: CG_ULT_PHASE2_ASSET_KEYS.length,
+          ultimatePrefetchEnergyRatio: 0.55,
+        },
+        cgFxCaps: [...CG_VFX_CONFIG.fxCaps],
+        ultimateFxCaps: [...CG_ULT_CONFIG.fxCaps],
+        soulParticleCaps: [...CG_ULT_SECOND_CONFIG.particleCaps],
+        ultra: { trailNodes: 4, impactConcurrent: 3, projectionParticles: CG_VFX_CONFIG.projection.particlesUltra },
+        preserves: ['enemy-bullet-readability', 'orb-dark-face-and-core', 'sharp-trail', 'corruption-mark', 'four-harvester-blades', 'all-logical-souls'],
+      }),
       infectionSpec: () => JSON.parse(JSON.stringify({
         ...CG_VFX_CONFIG.infection,
         maxTargets: CG_CONFIG.spreadMaxTargets,
@@ -44292,6 +44636,10 @@
     touchMoveMode: TOUCH_RELATIVE_MOVE.mode,
     targetFpsOptions: [...TARGET_FPS_OPTIONS],
     get targetFps() { return targetFps; },
+    get renderScale() { return renderScale; },
+    get perfLevel() { return perfLevel; },
+    get skippedAnimationFrames() { return mobileSkippedRaf; },
+    get frameStats() { return { ...perfStats, smoothFrameMs }; },
     get fullscreenMode() { return mobileFullscreenMode; },
     get targetFpsQualityFloor() { return targetFpsPerfFloor(); },
     get perfHudEnabled() { return perfHudEnabled; },

@@ -1,6 +1,6 @@
 {
-  "version": "ce4b7a55fe8d",
-  "builtAt": 1783828931,
+  "version": "10d03cf3de45",
+  "builtAt": 1783850221,
   "referencedMedia": 1749,
   "mobileVariants": 1717,
   "losslessCorruptgunVfxVariants": 14,
@@ -20,7 +20,7 @@
     "assets/player/corrupt_gun/ult/cg_ultimate_manifest.json",
     "THIRD_PARTY_NOTICES.md"
   ],
-  "copiedBytes": 274158080,
+  "copiedBytes": 274158304,
   "excluded": [
     "assets/_backup_before_user_import/**",
     "assets_backup_*/**",

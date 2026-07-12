@@ -1014,10 +1014,17 @@ class CorruptGunVfxEngine {
   }
 
   resize(width, height, dpr = this.deviceDpr) {
-    this.width = Math.max(1, finiteOr(width, this.width));
-    this.height = Math.max(1, finiteOr(height, this.height));
-    this.deviceDpr = clamp(finiteOr(dpr, this.deviceDpr), 0.5, 3);
+    const nextWidth = Math.max(1, finiteOr(width, this.width));
+    const nextHeight = Math.max(1, finiteOr(height, this.height));
+    const nextDpr = clamp(finiteOr(dpr, this.deviceDpr), 0.5, 3);
+    const unchanged = nextWidth === this.width && nextHeight === this.height && nextDpr === this.deviceDpr;
+    this.width = nextWidth;
+    this.height = nextHeight;
+    this.deviceDpr = nextDpr;
     if (this.quality === 'low') return false;
+    // beginFrame supplies the current viewport every frame. OGL setSize rewrites the
+    // drawing buffer, so calling it when nothing changed is a major mobile GPU stall.
+    if (unchanged) return false;
     const effectiveDpr = this._effectiveDpr();
     for (const layer of this.layers.values()) {
       layer.renderer.dpr = effectiveDpr;
@@ -1047,7 +1054,9 @@ class CorruptGunVfxEngine {
     this.drawCalls = 0;
     this.droppedDrawCalls = 0;
     if (!this.available || this.destroyed) return false;
-    for (const layer of this.layers.values()) this._clearLayer(layer);
+    // Clear lazily on the first primitive. Empty back/front layers then cost no
+    // GPU clear and no full-canvas composite in ordinary fire-free frames.
+    for (const layer of this.layers.values()) layer.frameDirty = false;
     return true;
   }
 
@@ -1067,6 +1076,10 @@ class CorruptGunVfxEngine {
     }
     const layer = this.layers.get(layerName) || this.layers.get('front');
     if (!layer || layer.lost || layer.gl.isContextLost()) return false;
+    if (!layer.frameDirty) {
+      this._clearLayer(layer);
+      layer.frameDirty = true;
+    }
     const center = options.center || [options.x, options.y];
     const size = options.size || [options.width, options.height];
     const cx = finiteOr(center[0], this.width * 0.5);
@@ -1121,6 +1134,10 @@ class CorruptGunVfxEngine {
     const headWidth = Math.max(tailWidth, finiteOr(options.headWidth, finiteOr(options.width, 18)));
     let drew = false;
     for (let index = 0; index < points.length - 1; index += 1) {
+      if (this.drawCalls >= this.profile.maxDrawCalls) {
+        this.droppedDrawCalls += points.length - 1 - index;
+        break;
+      }
       const a = pointXY(points[index]);
       const b = pointXY(points[index + 1]);
       const dx = b[0] - a[0];
@@ -1243,7 +1260,7 @@ class CorruptGunVfxEngine {
 
   compositeTo(context, layerName = 'back', options = {}) {
     const layer = this.layers.get(layerName);
-    if (!this.available || !layer || !context || typeof context.drawImage !== 'function') return false;
+    if (!this.available || !layer || !layer.frameDirty || !context || typeof context.drawImage !== 'function') return false;
     context.save();
     context.globalAlpha = clamp(finiteOr(options.opacity, 1), 0, 1);
     context.globalCompositeOperation = options.compositeOperation || 'source-over';

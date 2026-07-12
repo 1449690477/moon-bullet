@@ -116,10 +116,24 @@ describe('seventh fighter corruption gun', () => {
     expect(cg.visualSpec()).toMatchObject({
       sizes: { main: 58, mainOver: 74, clone: 58, cloneOver: 74, trail: 196, trailOver: 244, trailClone: 196, trailCloneOver: 244, trailWidth: 72, trailWidthOver: 88, impact: 124, impactOver: 144, impactClone: 124, impactCloneOver: 144, cloneField: 232 },
       trailNodes: { main: 14, clone: 14, side: 4 },
-      fxCaps: [180, 132, 90],
+      fxCaps: [180, 132, 72, 42],
       qualityModes: ['high-webgl', 'medium-webgl-0.7', 'low-lossless-atlas'],
     });
     expect(cg.visualSpec().layers).toEqual(expect.arrayContaining(['source-over-volume', 'sharp-spear-plume', 'void-orbit-filaments', 'flow-energy', 'counter-rotating-rings', 'orbit-particles']));
+  });
+
+  it('uses mobile deadline pacing, deferred asset groups, and a distinct ultra VFX budget', () => {
+    const perf = cg.mobilePerformanceSpec();
+    expect(perf).toMatchObject({
+      framePacing: 'deadline-30-45-60',
+      renderScale: { base: 0.8, min: 0.62 },
+      webgl: { stableResizeGuard: true, lazyLayerClear: true, dirtyLayerComposite: true, syncsMainRenderScale: true },
+      cgFxCaps: [180, 132, 72, 42],
+      ultra: { trailNodes: 4, impactConcurrent: 3 },
+    });
+    const assets = cg.assetSpec();
+    expect(Object.values(assets.mobileGroups).reduce((sum, count) => sum + count, 0)).toBe(assets.keys.length);
+    expect(perf.preserves).toEqual(expect.arrayContaining(['enemy-bullet-readability', 'sharp-trail', 'corruption-mark', 'all-logical-souls']));
   });
 
   it('stacks persistent boss corrosion to 200 with +3% damage and max-HP percentage damage', () => {
@@ -439,20 +453,26 @@ describe('seventh fighter corruption gun', () => {
     expect(source).toContain('drawCgUltimateHarvestBlade');
     expect(source).toContain('traceCgUltimateBladeWakeBand');
     expect(source).toContain('traceCgUltimateBladeSpine');
-    expect(source).toContain('bladeTrailSegments: Object.freeze([7, 5, 3])');
-    expect(source).toContain('bladeAfterimages: Object.freeze([2, 1, 1])');
-    expect(source).toContain('bladeSpinePackets: Object.freeze([3, 2, 1])');
-    expect(source).toContain('bladeRootArcs: Object.freeze([2, 1, 1])');
-    expect(source).toContain('bladeDust: Object.freeze([4, 2, 1])');
-    expect(source).toContain('bladeHubParticles: Object.freeze([3, 2, 1])');
-    expect(source).toContain('bladeTipParticles: Object.freeze([2, 1, 1])');
-    expect(source).toContain('bladeEdgeGlints: Object.freeze([2, 1, 1])');
+    expect(source).toContain('bladeTrailSegments: Object.freeze([7, 5, 3, 2])');
+    expect(source).toContain('blades: Object.freeze([6, 5, 4, 4])');
+    expect(source).toContain('bladeAfterimages: Object.freeze([2, 1, 1, 0])');
+    expect(source).toContain('bladeSpinePackets: Object.freeze([3, 2, 1, 1])');
+    expect(source).toContain('bladeRootArcs: Object.freeze([2, 1, 1, 1])');
+    expect(source).toContain('bladeDust: Object.freeze([4, 2, 1, 0])');
+    expect(source).toContain('bladeHubParticles: Object.freeze([3, 2, 1, 1])');
+    expect(source).toContain('bladeTipParticles: Object.freeze([2, 1, 1, 1])');
+    expect(source).toContain('bladeEdgeGlints: Object.freeze([2, 1, 1, 1])');
     expect(source).toContain("type: 'wheelHitCut'");
     expect(source).not.toContain('const key = `cgUltScythe${1 + (index % 8)}`');
     expect(source).not.toContain('const blades = []');
     expect(source).not.toContain('const point = { x: u.x + Math.cos(a) * r');
     expect(source).toContain('const localTipX = profile.tipX * width, localTipY = profile.tipY * height');
     expect(source).toContain('* 0.22;');
+    expect(source).toContain('if (transitionFrame) return;');
+
+    const castBlock = source.slice(source.indexOf('function castDarkWheel()'), source.indexOf('function launchCgUltimateOrb()'));
+    expect(castBlock).toContain('prefetchCorruptgunUltimatePhase1()');
+    expect(castBlock).toContain('prefetchCorruptgunUltimatePhase2()');
 
     const lifecycle = source.slice(
       source.indexOf('function updateCgUltimateSpaceCuts'),
