@@ -56,13 +56,48 @@ function browserExecutablePath() {
   return candidates.find((p) => p && fs.existsSync(p));
 }
 
-// 三种测试场景
+const MOBILE_SAFARI_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+
+function mobileFullscreenScenario(width, height, activation) {
+  const persisted = activation === 'persisted';
+  const activationLabel = persisted ? '持久化 fullscreen=1 首访' : '显式 ?fullscreen=1';
+  return {
+    name: `📱 手机竖屏 ${width}×${height} · ${activationLabel}`,
+    width,
+    height,
+    userAgent: MOBILE_SAFARI_UA,
+    isTouch: true,
+    emulateMobile: true,
+    expectMobile: true,
+    initialFullscreenStorage: persisted ? '1' : '0',
+    urlSuffix: persisted ? '' : '?fullscreen=1',
+    checks: [
+      { label: '竖屏触控识别为移动端', test: (r) => r.isMobileRuntime === true },
+      { label: '首帧已进入沉浸全屏', test: (r) => r.fullscreenMode === true && r.fullscreenClass },
+      {
+        label: persisted ? '全屏由持久化设置触发' : '全屏由 URL 强制参数触发',
+        test: (r) => persisted
+          ? r.fullscreenStorage === '1' && !r.locationSearch.includes('fullscreen=1')
+          : r.fullscreenStorage === '0' && r.locationSearch.includes('fullscreen=1'),
+      },
+      { label: 'Canvas 完整落在可视区', test: (r) => r.canvasWithinViewport },
+      { label: 'Canvas CSS 比例为 9:16', test: (r) => r.canvasAspect916 },
+      { label: 'Canvas 无横向裁切或溢出', test: (r) => r.noHorizontalClipping },
+      { label: 'Canvas backing 与 2D render transform 一致', test: (r) => r.renderTransformMatchesBacking },
+      { label: 'Canvas 非空', test: (r) => r.canvasNonBlank },
+      { label: '无 404', test: (r) => !r.has404 },
+      { label: '无 JS 错误', test: (r) => r.jsErrors.length === 0 },
+    ],
+  };
+}
+
+// 基础资源烟测 + 手机竖屏全屏回归矩阵。
 const SCENARIOS = [
   {
     name: '📱 手机横屏 1280×720',
     width: 1280,
     height: 720,
-    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+    userAgent: MOBILE_SAFARI_UA,
     isTouch: true,
     expectMobile: true,
     checks: [
@@ -105,13 +140,18 @@ const SCENARIOS = [
       { label: '无 JS 错误', test: (r) => r.jsErrors.length === 0 },
     ],
   },
+  mobileFullscreenScenario(390, 844, 'persisted'),
+  mobileFullscreenScenario(430, 932, 'persisted'),
+  mobileFullscreenScenario(390, 844, 'forced'),
+  mobileFullscreenScenario(430, 932, 'forced'),
 ];
 
 // ─── 静态文件服务器 ────────────────────────────────
 function startServer(dir, port) {
   return new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
-      let filePath = path.join(dir, req.url === '/' ? 'index.html' : req.url);
+      const requestPath = new URL(req.url, `http://${req.headers.host || 'localhost'}`).pathname;
+      let filePath = path.join(dir, requestPath === '/' ? 'index.html' : decodeURIComponent(requestPath));
       // 安全：防止目录穿越
       if (!filePath.startsWith(dir)) { res.writeHead(403); res.end('Forbidden'); return; }
       fs.stat(filePath, (err, stat) => {
@@ -159,13 +199,30 @@ async function runScenario(browser, scenario, baseUrl) {
     isMobileRuntime: null,
     hasCoarsePointer: null,
     canvasNonBlank: false,
+    fullscreenMode: null,
+    fullscreenClass: false,
+    fullscreenStorage: null,
+    locationSearch: '',
+    canvasGeometry: null,
+    canvasWithinViewport: false,
+    canvasAspect916: false,
+    noHorizontalClipping: false,
+    canvasBacking: null,
+    canvasTransform: null,
+    renderTransformMatchesBacking: false,
     passed: 0,
     failed: 0,
     details: [],
   };
 
   const page = await browser.newPage();
-  await page.setViewport({ width: scenario.width, height: scenario.height });
+  await page.setViewport({
+    width: scenario.width,
+    height: scenario.height,
+    isMobile: !!scenario.emulateMobile,
+    hasTouch: !!scenario.isTouch,
+    deviceScaleFactor: 1,
+  });
   await page.setUserAgent(scenario.userAgent);
 
   // 触摸模拟
@@ -173,6 +230,12 @@ async function runScenario(browser, scenario, baseUrl) {
     await page.evaluateOnNewDocument(() => {
       Object.defineProperty(navigator, 'maxTouchPoints', { value: 5, writable: false });
     });
+  }
+
+  if (scenario.initialFullscreenStorage !== undefined) {
+    await page.evaluateOnNewDocument((value) => {
+      try { window.localStorage.setItem('moonBulletMobileFullscreen', value); } catch (e) { /* ignore */ }
+    }, scenario.initialFullscreenStorage);
   }
 
   // 收集控制台消息
@@ -198,7 +261,7 @@ async function runScenario(browser, scenario, baseUrl) {
   });
 
   try {
-    await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
+    await page.goto(`${baseUrl}${scenario.urlSuffix || ''}`, { waitUntil: 'domcontentloaded', timeout: TIMEOUT });
     await page.waitForFunction(() => !!window.__mobileRuntimeInfo__, { timeout: 15000 }).catch(() => {});
 
     // 提取运行时信息
@@ -209,6 +272,44 @@ async function runScenario(browser, scenario, baseUrl) {
     });
     result.isMobileRuntime = runtimeInfo.isMobile;
     result.hasCoarsePointer = runtimeInfo.coarsePointer;
+    result.fullscreenMode = runtimeInfo.fullscreenMode;
+
+    const layoutInfo = await page.evaluate(() => {
+      const canvas = document.querySelector('canvas');
+      const vv = window.visualViewport;
+      const viewportWidth = (vv && vv.width) || window.innerWidth || document.documentElement.clientWidth;
+      const viewportHeight = (vv && vv.height) || window.innerHeight || document.documentElement.clientHeight;
+      const rect = canvas ? canvas.getBoundingClientRect() : null;
+      const tolerance = 1.5;
+      const aspect = rect && rect.height > 0 ? rect.width / rect.height : 0;
+      const within = !!rect && rect.width > 0 && rect.height > 0 &&
+        rect.left >= -tolerance && rect.top >= -tolerance &&
+        rect.right <= viewportWidth + tolerance && rect.bottom <= viewportHeight + tolerance;
+      const horizontal = !!rect && rect.left >= -tolerance && rect.right <= viewportWidth + tolerance &&
+        rect.width <= viewportWidth + tolerance &&
+        document.documentElement.scrollWidth <= Math.ceil(viewportWidth + tolerance) &&
+        document.body.scrollWidth <= Math.ceil(viewportWidth + tolerance);
+      return {
+        fullscreenClass: document.documentElement.classList.contains('mobile-game-fullscreen') &&
+          document.body.classList.contains('mobile-game-fullscreen'),
+        fullscreenStorage: (() => { try { return localStorage.getItem('moonBulletMobileFullscreen'); } catch (e) { return null; } })(),
+        locationSearch: location.search,
+        geometry: rect ? {
+          left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom,
+          width: rect.width, height: rect.height, viewportWidth, viewportHeight, aspect,
+        } : null,
+        within,
+        aspect916: Math.abs(aspect - 9 / 16) <= 0.002,
+        horizontal,
+      };
+    });
+    result.fullscreenClass = layoutInfo.fullscreenClass;
+    result.fullscreenStorage = layoutInfo.fullscreenStorage;
+    result.locationSearch = layoutInfo.locationSearch;
+    result.canvasGeometry = layoutInfo.geometry;
+    result.canvasWithinViewport = layoutInfo.within;
+    result.canvasAspect916 = layoutInfo.aspect916;
+    result.noHorizontalClipping = layoutInfo.horizontal;
 
     // 检查 asset-mobile-manifest 是否被使用
     result.hasMobileManifest = await page.evaluate(() => {
@@ -231,6 +332,32 @@ async function runScenario(browser, scenario, baseUrl) {
       }
       return false;
     });
+
+    const renderTransformInfo = await page.evaluate(() => {
+      const canvas = document.querySelector('canvas');
+      const context = canvas && canvas.getContext('2d');
+      if (!canvas || !context || typeof context.getTransform !== 'function') return null;
+      const transform = context.getTransform();
+      const expectedA = canvas.width / 720;
+      const expectedD = canvas.height / 1280;
+      const tolerance = 0.015;
+      return {
+        backing: { width: canvas.width, height: canvas.height, expectedA, expectedD },
+        transform: {
+          a: transform.a, b: transform.b, c: transform.c,
+          d: transform.d, e: transform.e, f: transform.f,
+        },
+        matches: Math.abs(transform.a - expectedA) <= tolerance &&
+          Math.abs(transform.d - expectedD) <= tolerance &&
+          Math.abs(transform.a - transform.d) <= tolerance &&
+          Math.abs(transform.b) <= 0.001 && Math.abs(transform.c) <= 0.001,
+      };
+    });
+    if (renderTransformInfo) {
+      result.canvasBacking = renderTransformInfo.backing;
+      result.canvasTransform = renderTransformInfo.transform;
+      result.renderTransformMatchesBacking = renderTransformInfo.matches;
+    }
 
     // 尝试点击开始
     await page.click('canvas', { timeout: 5000 }).catch(() => {});
@@ -299,6 +426,13 @@ async function main() {
       const r = await runScenario(browser, s, baseUrl);
       results.push(r);
       for (const d of r.details) console.log(d);
+      if (r.canvasBacking && r.canvasTransform) {
+        console.log(
+          `  backing=${r.canvasBacking.width}×${r.canvasBacking.height}` +
+          ` expected=(${r.canvasBacking.expectedA.toFixed(3)},${r.canvasBacking.expectedD.toFixed(3)})` +
+          ` transform=(${r.canvasTransform.a.toFixed(3)},${r.canvasTransform.d.toFixed(3)})`,
+        );
+      }
       console.log(`  结果: ${r.passed}/${r.passed + r.failed} 通过${r.failed > 0 ? ` (${r.failed} 失败)` : ''}\n`);
     }
 
