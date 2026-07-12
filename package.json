@@ -29,6 +29,7 @@
     "capture:corruptgun": "node tools/capture_corruptgun_acceptance.js",
     "capture:corruptgun-phase2": "node tools/capture_corruptgun_ultimate_phase2.js",
     "capture:corruptgun-blades": "node tools/capture_corruptgun_blades_v2.js",
+    "capture:corruptgun-ribbons": "node tools/capture_corruptgun_ribbon_vortex.js",
     "perf:corruptgun-mobile": "node tools/capture_corruptgun_mobile_perf.js",
     "capture:dragon": "node tools/capture_dragon_breath_acceptance.js",
     "render:dragon": "node tools/headless_dragon_render.js"

@@ -395,7 +395,8 @@ describe('seventh fighter corruption gun', () => {
     const ultimate = cg.ultimateSpec();
     expect(ultimate.render).toMatchObject({ spinMaster: 'cgUltWheelSteadyBase', spinMasterPixels: 768, visualEnvelope: 696, continuousRotation: true });
     expect(ultimate.render.passes).toEqual(expect.arrayContaining([
-      'world-front-root-aligned-tapered-wakes-phase-afterimages-and-detached-dust',
+      'world-back-green-free-turbulent-fog-and-glossy-black-ribbon-bodies',
+      'world-front-single-hot-edge-torn-tips-tangential-whip-strands-lightning-and-core-flash',
       'world-front-harvester-metal-root-spine-edge-tip-material-passes',
     ]));
     const source = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
@@ -404,6 +405,48 @@ describe('seventh fighter corruption gun', () => {
     const shader = readFileSync(new URL('../../tools/corruptgun_vfx/cg_vfx_engine.mjs', import.meta.url), 'utf8');
     expect(shader).toContain('outerP = rotate2d(-uPhase * 2.24) * p');
     expect(shader).toContain('innerP = rotate2d(uPhase * 3.24) * p');
+  });
+
+  it('renders the phase-one vortex as deforming melt-flow ribbons instead of a flat concentric decal', () => {
+    const ribbon = cg.ribbonVortexSpec();
+    expect(ribbon).toMatchObject({
+      name: '熔流绸带涡',
+      referenceVideo: '28220131220-1-192.mp4',
+      config: {
+        counts: [6, 5, 4, 3],
+        segments: [32, 24, 14, 10],
+        tangentStrands: [1, 1, 1, 1],
+        surgeStrands: [2, 2, 1, 1],
+        surgeEdgeEchoes: [2, 2, 1, 1],
+        surgePeriod: 0.8,
+        surgeDuration: 0.2,
+        lightningLife: 0.11,
+      },
+      layerPolicy: {
+        hostileBullets: 'last',
+        back: expect.arrayContaining(['open-spiral-glossy-ribbon-bodies']),
+        front: expect.arrayContaining(['near-side-single-molten-edges', 'tangential-whip-strands', 'short-white-hot-lightning', 'asymmetric-core-flash']),
+      },
+      motion: { coherentRotation: true, nonUniformSurge: true, transportedStriations: true, liveDeformation: true },
+      allocation: 'typed-ribbon-geometry-reused-per-cast-plus-capped-tear-pool',
+      phaseTwoChanged: false,
+      damageChanged: false,
+      spinScreenShake: 0,
+    });
+    const source = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+    const flowBlock = source.slice(source.indexOf('function cgUltimateInitRibbons'), source.indexOf('function drawCgUltimateSuctionStreaks'));
+    expect(flowBlock).toContain('new Float32Array');
+    expect(flowBlock).toContain("hotSide: 1");
+    expect(flowBlock).toContain("ctx.setLineDash([18, 11, 4, 17])");
+    expect(flowBlock).toContain('u.ribbonQualityIndex !== cgQualityIndex()');
+    expect(flowBlock).toContain('band.geomFlow === u.ribbonFlowT');
+    expect(flowBlock).toContain('cgUltimateBuildBoltGeometry(u.bolt)');
+    expect(flowBlock).not.toContain('screenShake');
+    expect(source).not.toContain('CG_RIBBON_FRACS');
+    expect(source).not.toContain('cgUltHole${fogFrame}');
+    expect(source).not.toContain('ctx.moveTo(u.x - 78 * scale, u.y)');
+    expect(source).toContain('setUltimateRibbonMoment');
+    expect(source).toContain('ribbonAudit');
   });
 
   it('keeps the V2 harvester blades material-separated with bounded trail and cut lifecycles', () => {
