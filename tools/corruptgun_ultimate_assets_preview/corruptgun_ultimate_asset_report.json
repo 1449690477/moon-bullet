@@ -1,15 +1,89 @@
 {
   "manifest": "assets/player/corrupt_gun/ult/cg_ultimate_manifest.json",
-  "sourceCopiesVerified": [
-    "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹",
-    "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹"
-  ],
-  "sequenceCount": 9,
-  "runtimeAssetCount": 56,
+  "sourceCopiesVerified": {
+    "base": {
+      "folders": [
+        "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹",
+        "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹"
+      ],
+      "hashes": {
+        "光球细节.png": "7e3ff5da7f1efc9f4c1bcfc3f2c7b5da5f17844157cf1d470fc81990f44a06fe",
+        "光球 飞行轨迹 刀刃.png": "ffa1857d6510483e45756b8fd629e8cf4eb377c3a69162185ba963670693cd4d",
+        "光球飞行轨迹.png": "d37a8d5385e78b0b17cbd2f8dd64288552d9398414fd57246300d95c24a7b01b",
+        "光球破碎细节.png": "807e233f075df43c265406adba365416091def2a7b30f99a5a5222ad3ffa9fa1",
+        "影刃漩涡形成.png": "dedf1abe78b0d9da7d884c71e9993930091285c37d7ee19bb831b78375975a49",
+        "漩涡形成细节.png": "535dce89090ac72b9b5585d568c0592050a10ba790d5b6ad3ad36b89dd801094",
+        "影刃漩涡旋转.png": "08f292fc6ce69c565286432922ae1b2f308dccd253f9f8e4fb4dfe9fea712c70",
+        "影刃漩涡细节.png": "a8db9f97e364fe310f7fd40c02f03acfe9edbb03c1ca0384f896e37e1c9df379",
+        "合集素材 光球 漩涡 影刃 特效.png": "375e20d1c4873c53b73f7b045961e57abf9b953b6d8b8fdc9d10662ca48b4216",
+        "概念图一览.png": "f6329763449001a6a91e56cce76e0b4d56f63a58527fc8840ec1d689c71cd3de"
+      },
+      "documentationHashes": {
+        "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹/大招_暗蚀轮回_实现文档V1.md": "15f2c0aab248be0d3f9d7c14885569f7c10828e18122d451e827c470e6cda5a8",
+        "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹/大招_暗蚀轮回_实现文档V1.md": "3d356535abf1f32e418f7563cc294c780447fc3b27d77cff12d20af859eb9929"
+      }
+    },
+    "phase2": {
+      "folders": [
+        "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹/大招二段开发文件夹",
+        "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹/大招二段开发文件夹"
+      ],
+      "hashes": {
+        "幽魂从爆炸中心爬出.png": "1cac1025016fd08974f322ae2e373738ca145239de85b23c782c7fd6978d1bee",
+        "幽魂飞行寻敌.png": "71ec68c1a3f8ee68cb94aad1f09bf87bdc93bc1b8cf4ce56617a439f93861859",
+        "游魂形象.png": "fece89145e4709e63304b687ca5f6b01d98184bdcfbb935e9ca50064afa4a351",
+        "游魂爆炸素材.png": "d5f44cb0c15798b28bad05ee2e18defa4a99095dd3df4e7df8807e5f71466bb6",
+        "黑洞爆炸过渡特效.png": "c2340a8d0e9899182dee96b816a3e7d7def4ef664c450ca542f756a5d4023d98"
+      }
+    }
+  },
+  "sequenceCount": 14,
+  "runtimeAssetCount": 124,
+  "assetGroupCounts": {
+    "base": 62,
+    "opt": 30,
+    "phase2": 32
+  },
   "qa": {
     "status": "pass",
     "residualGreen": {},
-    "residualCyan": {}
+    "residualCyan": {},
+    "phase2ResidualGreenPixels": 0,
+    "phase2ResidualCyanPixels": 0,
+    "optPreserved": true,
+    "optHashes": {
+      "cg_ult_bladewheel_1.png": "6ba239d8047db053ca3fb991a61ff2c3455134f477a6af3bd90e45206bb0248e",
+      "cg_ult_bladewheel_2.png": "2b5aee59c0a69b2de60c0c802d64de46199e83864f1bb2adab552b5ee8573b8c",
+      "cg_ult_bladewheel_3.png": "249ced0c578dec01dac4e595609a4669c81486a547a489fff3bb6e7609a65d88",
+      "cg_ult_bladewheel_4.png": "e7e01af6af06cee72265d16bdee5ce26efdc4c2da1c8340efbeaba61d015f1c2",
+      "cg_ult_bladewheel_5.png": "201c6abadac7e7daca1d0c2c3a6746a4bd2f56bf4daca9af306e262d6858bc47",
+      "cg_ult_bladewheel_6.png": "b6ec4d64d3b6baa59a84a51d33b1b7cf515064a1e9a52c2db90f6fd0422da27b",
+      "cg_ult_bladewheel_7.png": "42b1b328864fe1475d2ac7758b4c9effd313036866de71b8ea5e5f18dbf23842",
+      "cg_ult_bladewheel_8.png": "34786292cfa3467155d9837418e0c3353d8ddbebdd9a9a5b359ec7e70d23af7c",
+      "cg_ult_hole_1.png": "8b430fa51b097470b010083044fefc1b4f7cf55b7419ee17190970a7b2ffb5f7",
+      "cg_ult_hole_10.png": "9f5ed33295077dcfe796f4584af5cb0e0b2436e09d32b80df91aefbd2ace230f",
+      "cg_ult_hole_11.png": "e960bfc98897f518b5d653f2cb7be796e084b44ac37738621c6be63a49d963c7",
+      "cg_ult_hole_12.png": "2be15ebe96b4db8061b5f11cbc9970de18e636c41466646280b4f99e1af74e4b",
+      "cg_ult_hole_2.png": "5110912100f613fbea5dbd1d3194c9b9d9ec4704d278b15c0373928db09d982a",
+      "cg_ult_hole_3.png": "8a24337962dfa3fca4125eb6f5684539b46c1cdc0066e67ffeee13357a23c7ea",
+      "cg_ult_hole_4.png": "d395ac4a1d37212d8b664eb69d5b161453a2d4e4d15f5fbf86033f9103194e94",
+      "cg_ult_hole_5.png": "42d39cb3b5fbf96fbf795b3038dc9bd266893c8a6591dd1cb5155a5ddbcca30c",
+      "cg_ult_hole_6.png": "920f16aa7e0e0d3e6e67daab160fe76d602203037c7cf1a236fd0d0607e06e4e",
+      "cg_ult_hole_7.png": "1af3d45f1d541d1f028317a45da503414f656997ae7b12f76c252ef280737d71",
+      "cg_ult_hole_8.png": "bd912befe1ae47d4dce175e8f98d41bd9d86e6ee769357aae2a9b7d3145eff45",
+      "cg_ult_hole_9.png": "02652b7a241d511a02baa232e46442e08e978ae54ea91b84a1ffa7b5987a18b5",
+      "cg_ult_rimring_1.png": "d1f25f579e35afb5a1997a58dca6ecaa95a3e35edf8371ceb1969440486aa598",
+      "cg_ult_rimring_2.png": "ac8d1677476f99cb0898779c6a7e6e7dd2347df1ae6a829396fc51555a1d706f",
+      "cg_ult_scythe_1.png": "00fc653150984bd5728ee124776ec9d129b686823289ad62ed66f08622b3c1d3",
+      "cg_ult_scythe_2.png": "6f7cebf579559d201799caee00a815a643039d0c922c4ad68d9d97bc3e07e7fa",
+      "cg_ult_scythe_3.png": "22200d0c471b9b95f4f972f247ca810b7e749e5f98c8919547e8834ce64f8807",
+      "cg_ult_scythe_4.png": "b8b8aa0fafa8c8469e40e1cbf942f73b7d3ade6b04ca8aa88024e7b184f2064d",
+      "cg_ult_scythe_5.png": "c965f944439d86310767668625b22c47bb4cb76b4197c2defa3954d7951c12bb",
+      "cg_ult_scythe_6.png": "461e7c63c61c8ce022709f5f95b2c99766f5c02b878c033e941416e17f043eab",
+      "cg_ult_scythe_7.png": "da2b10647ecf58757f05d4978984cb48cba6ac6029c4ec76ec4c80d785a78387",
+      "cg_ult_scythe_8.png": "47120ec1e5961d6367e699e961dbe7fbb051291b03a92b98f537b1da7baec3a4"
+    }
   },
-  "contactSheet": "tools/corruptgun_ultimate_assets_preview/corruptgun_ultimate_contact_sheet.png"
+  "contactSheet": "tools/corruptgun_ultimate_assets_preview/corruptgun_ultimate_contact_sheet.png",
+  "phase2ContactSheet": "tools/corruptgun_ultimate_assets_preview/corruptgun_ultimate_phase2_contact_sheet.png"
 }

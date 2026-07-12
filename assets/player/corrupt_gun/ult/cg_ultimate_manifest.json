@@ -1,23 +1,43 @@
 {
-  "formatVersion": 1,
+  "formatVersion": 2,
   "character": "corruptgun",
   "ultimate": "darkWheel",
-  "sourceFolders": [
-    "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹",
-    "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹"
-  ],
-  "sourceHashes": {
-    "光球细节.png": "7e3ff5da7f1efc9f4c1bcfc3f2c7b5da5f17844157cf1d470fc81990f44a06fe",
-    "光球 飞行轨迹 刀刃.png": "ffa1857d6510483e45756b8fd629e8cf4eb377c3a69162185ba963670693cd4d",
-    "光球飞行轨迹.png": "d37a8d5385e78b0b17cbd2f8dd64288552d9398414fd57246300d95c24a7b01b",
-    "光球破碎细节.png": "807e233f075df43c265406adba365416091def2a7b30f99a5a5222ad3ffa9fa1",
-    "影刃漩涡形成.png": "dedf1abe78b0d9da7d884c71e9993930091285c37d7ee19bb831b78375975a49",
-    "漩涡形成细节.png": "535dce89090ac72b9b5585d568c0592050a10ba790d5b6ad3ad36b89dd801094",
-    "影刃漩涡旋转.png": "08f292fc6ce69c565286432922ae1b2f308dccd253f9f8e4fb4dfe9fea712c70",
-    "影刃漩涡细节.png": "a8db9f97e364fe310f7fd40c02f03acfe9edbb03c1ca0384f896e37e1c9df379",
-    "合集素材 光球 漩涡 影刃 特效.png": "375e20d1c4873c53b73f7b045961e57abf9b953b6d8b8fdc9d10662ca48b4216",
-    "概念图一览.png": "f6329763449001a6a91e56cce76e0b4d56f63a58527fc8840ec1d689c71cd3de",
-    "大招_暗蚀轮回_实现文档V1.md": "15f2c0aab248be0d3f9d7c14885569f7c10828e18122d451e827c470e6cda5a8"
+  "sourceSets": {
+    "base": {
+      "folders": [
+        "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹",
+        "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹"
+      ],
+      "hashes": {
+        "光球细节.png": "7e3ff5da7f1efc9f4c1bcfc3f2c7b5da5f17844157cf1d470fc81990f44a06fe",
+        "光球 飞行轨迹 刀刃.png": "ffa1857d6510483e45756b8fd629e8cf4eb377c3a69162185ba963670693cd4d",
+        "光球飞行轨迹.png": "d37a8d5385e78b0b17cbd2f8dd64288552d9398414fd57246300d95c24a7b01b",
+        "光球破碎细节.png": "807e233f075df43c265406adba365416091def2a7b30f99a5a5222ad3ffa9fa1",
+        "影刃漩涡形成.png": "dedf1abe78b0d9da7d884c71e9993930091285c37d7ee19bb831b78375975a49",
+        "漩涡形成细节.png": "535dce89090ac72b9b5585d568c0592050a10ba790d5b6ad3ad36b89dd801094",
+        "影刃漩涡旋转.png": "08f292fc6ce69c565286432922ae1b2f308dccd253f9f8e4fb4dfe9fea712c70",
+        "影刃漩涡细节.png": "a8db9f97e364fe310f7fd40c02f03acfe9edbb03c1ca0384f896e37e1c9df379",
+        "合集素材 光球 漩涡 影刃 特效.png": "375e20d1c4873c53b73f7b045961e57abf9b953b6d8b8fdc9d10662ca48b4216",
+        "概念图一览.png": "f6329763449001a6a91e56cce76e0b4d56f63a58527fc8840ec1d689c71cd3de"
+      },
+      "documentationHashes": {
+        "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹/大招_暗蚀轮回_实现文档V1.md": "15f2c0aab248be0d3f9d7c14885569f7c10828e18122d451e827c470e6cda5a8",
+        "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹/大招_暗蚀轮回_实现文档V1.md": "3d356535abf1f32e418f7563cc294c780447fc3b27d77cff12d20af859eb9929"
+      }
+    },
+    "phase2": {
+      "folders": [
+        "7号战机 开发文件夹_副本/大招 炼狱影刃 开发文件夹/大招二段开发文件夹",
+        "moon-bullet-main/7号战机 开发文件夹/大招 炼狱影刃 开发文件夹/大招二段开发文件夹"
+      ],
+      "hashes": {
+        "幽魂从爆炸中心爬出.png": "1cac1025016fd08974f322ae2e373738ca145239de85b23c782c7fd6978d1bee",
+        "幽魂飞行寻敌.png": "71ec68c1a3f8ee68cb94aad1f09bf87bdc93bc1b8cf4ce56617a439f93861859",
+        "游魂形象.png": "fece89145e4709e63304b687ca5f6b01d98184bdcfbb935e9ca50064afa4a351",
+        "游魂爆炸素材.png": "d5f44cb0c15798b28bad05ee2e18defa4a99095dd3df4e7df8807e5f71466bb6",
+        "黑洞爆炸过渡特效.png": "c2340a8d0e9899182dee96b816a3e7d7def4ef664c450ca542f756a5d4023d98"
+      }
+    }
   },
   "sequences": {
     "orb_stage": {
@@ -127,6 +147,86 @@
       "anchor": "center",
       "base": "atlas/cg_ult_wheel_inner_base_atlas.png",
       "energy": "atlas/cg_ult_wheel_inner_energy_atlas.png"
+    },
+    "soul_emerge": {
+      "frames": 6,
+      "cols": 3,
+      "rows": 2,
+      "cell": [
+        512,
+        512
+      ],
+      "anchor": "bottom",
+      "base": "phase2/atlas/cg_ult_soul_emerge_base_atlas.png",
+      "energy": "phase2/atlas/cg_ult_soul_emerge_energy_atlas.png",
+      "runtimeKeys": {
+        "base": "cgUltSoulEmergeBase",
+        "energy": "cgUltSoulEmergeEnergy"
+      }
+    },
+    "soul_flight": {
+      "frames": 6,
+      "cols": 3,
+      "rows": 2,
+      "cell": [
+        512,
+        512
+      ],
+      "anchor": "center",
+      "base": "phase2/atlas/cg_ult_soul_flight_base_atlas.png",
+      "energy": "phase2/atlas/cg_ult_soul_flight_energy_atlas.png",
+      "runtimeKeys": {
+        "base": "cgUltSoulFlightBase",
+        "energy": "cgUltSoulFlightEnergy"
+      }
+    },
+    "soul_variants": {
+      "frames": 7,
+      "cols": 4,
+      "rows": 2,
+      "cell": [
+        512,
+        512
+      ],
+      "anchor": "center",
+      "base": "phase2/atlas/cg_ult_soul_variants_base_atlas.png",
+      "energy": "phase2/atlas/cg_ult_soul_variants_energy_atlas.png",
+      "runtimeKeys": {
+        "base": "cgUltSoulVariantsBase",
+        "energy": "cgUltSoulVariantsEnergy"
+      }
+    },
+    "soul_burst": {
+      "frames": 8,
+      "cols": 4,
+      "rows": 2,
+      "cell": [
+        512,
+        512
+      ],
+      "anchor": "center",
+      "base": "phase2/atlas/cg_ult_soul_burst_base_atlas.png",
+      "energy": "phase2/atlas/cg_ult_soul_burst_energy_atlas.png",
+      "runtimeKeys": {
+        "base": "cgUltSoulBurstBase",
+        "energy": "cgUltSoulBurstEnergy"
+      }
+    },
+    "soul_transition": {
+      "frames": 11,
+      "cols": 4,
+      "rows": 3,
+      "cell": [
+        512,
+        512
+      ],
+      "anchor": "center",
+      "base": "phase2/atlas/cg_ult_soul_transition_base_atlas.png",
+      "energy": "phase2/atlas/cg_ult_soul_transition_energy_atlas.png",
+      "runtimeKeys": {
+        "base": "cgUltSoulTransitionBase",
+        "energy": "cgUltSoulTransitionEnergy"
+      }
     }
   },
   "assets": {
@@ -402,6 +502,102 @@
       ],
       "residualGreenPixels": 0,
       "residualCyanPixels": 0
+    },
+    "parts/cg_ult_harvester_base_1.png": {
+      "width": 384,
+      "height": 192,
+      "sha256": "1b3a1b0194af0ef4824a717d8da2c0870db7f0e7e980260b8ee1b26e11e8ed99",
+      "alphaBounds": [
+        119,
+        24,
+        264,
+        168
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "derivedFrom": "opt/cg_ult_scythe_4.png",
+      "sourceSha256": "b8b8aa0fafa8c8469e40e1cbf942f73b7d3ade6b04ca8aa88024e7b184f2064d",
+      "orientation": "tip-local-positive-x"
+    },
+    "parts/cg_ult_harvester_energy_1.png": {
+      "width": 384,
+      "height": 192,
+      "sha256": "c23a9d3d23838b07ec31d94ae726dfc0cf75ad28b09b7c070d857734c4eedcfe",
+      "alphaBounds": [
+        119,
+        23,
+        264,
+        168
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "derivedFrom": "opt/cg_ult_scythe_4.png",
+      "sourceSha256": "b8b8aa0fafa8c8469e40e1cbf942f73b7d3ade6b04ca8aa88024e7b184f2064d",
+      "orientation": "tip-local-positive-x"
+    },
+    "parts/cg_ult_harvester_base_2.png": {
+      "width": 384,
+      "height": 192,
+      "sha256": "993436734471a467d39b41f686396d4d2e1c55b71353a8f70e87c8dfd08c4860",
+      "alphaBounds": [
+        25,
+        24,
+        359,
+        168
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "derivedFrom": "opt/cg_ult_scythe_5.png",
+      "sourceSha256": "c965f944439d86310767668625b22c47bb4cb76b4197c2defa3954d7951c12bb",
+      "orientation": "tip-local-positive-x"
+    },
+    "parts/cg_ult_harvester_energy_2.png": {
+      "width": 384,
+      "height": 192,
+      "sha256": "6ce537444758b0121a543c962fc80581b16d14e75188bdfcab1be27f4eca39c8",
+      "alphaBounds": [
+        25,
+        24,
+        359,
+        168
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "derivedFrom": "opt/cg_ult_scythe_5.png",
+      "sourceSha256": "c965f944439d86310767668625b22c47bb4cb76b4197c2defa3954d7951c12bb",
+      "orientation": "tip-local-positive-x"
+    },
+    "parts/cg_ult_harvester_base_3.png": {
+      "width": 384,
+      "height": 192,
+      "sha256": "ce25c3ebcb5ecc437e20d8f78a1a587db4d91d562a0c7105c128735dbd8831ff",
+      "alphaBounds": [
+        24,
+        51,
+        360,
+        140
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "derivedFrom": "opt/cg_ult_scythe_7.png",
+      "sourceSha256": "da2b10647ecf58757f05d4978984cb48cba6ac6029c4ec76ec4c80d785a78387",
+      "orientation": "tip-local-positive-x"
+    },
+    "parts/cg_ult_harvester_energy_3.png": {
+      "width": 384,
+      "height": 192,
+      "sha256": "f8c4dc781fbe70aec9209f43e9c0d7381f5617bf24f80ea6006f7200aecc976d",
+      "alphaBounds": [
+        26,
+        53,
+        360,
+        139
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0,
+      "derivedFrom": "opt/cg_ult_scythe_7.png",
+      "sourceSha256": "da2b10647ecf58757f05d4978984cb48cba6ac6029c4ec76ec4c80d785a78387",
+      "orientation": "tip-local-positive-x"
     },
     "parts/cg_ult_blade_a_1.png": {
       "width": 192,
@@ -850,18 +1046,1034 @@
       "height": 1086,
       "sha256": "f6329763449001a6a91e56cce76e0b4d56f63a58527fc8840ec1d689c71cd3de",
       "referenceOnly": true
+    },
+    "phase2/atlas/cg_ult_soul_emerge_base_atlas.png": {
+      "width": 1536,
+      "height": 1024,
+      "sha256": "ee6dbd7a05be3117265ede22ec2738c085412a8948ea83aab323bfe39debeac4",
+      "alphaBounds": [
+        55,
+        243,
+        1506,
+        994
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_emerge_energy_atlas.png": {
+      "width": 1536,
+      "height": 1024,
+      "sha256": "49f6e741494298a1514e0d1443d64dfd8017bdd62530901223d0cd419229f98a",
+      "alphaBounds": [
+        55,
+        243,
+        1506,
+        994
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_flight_base_atlas.png": {
+      "width": 1536,
+      "height": 1024,
+      "sha256": "86f8b819386ea5cac939bf01f98042bb0e5662f87d7b445add8e1a854d77bbad",
+      "alphaBounds": [
+        156,
+        193,
+        1470,
+        838
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_flight_energy_atlas.png": {
+      "width": 1536,
+      "height": 1024,
+      "sha256": "9ba832dba91b47adc939bbd464e4c489c4f5e8328d1b797fabc66741cf349341",
+      "alphaBounds": [
+        157,
+        193,
+        1470,
+        838
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_variants_base_atlas.png": {
+      "width": 2048,
+      "height": 1024,
+      "sha256": "ff1f104baedfaddd83b914882059e9fc6032a1415afc52bf7c3442ab0fbd9d75",
+      "alphaBounds": [
+        63,
+        111,
+        1976,
+        919
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_variants_energy_atlas.png": {
+      "width": 2048,
+      "height": 1024,
+      "sha256": "2d3823142080fa90da41d65bc2e020516e2550ca29eafbdf273cf807f70d9fd8",
+      "alphaBounds": [
+        64,
+        111,
+        1976,
+        918
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_burst_base_atlas.png": {
+      "width": 2048,
+      "height": 1024,
+      "sha256": "fa86877a60765667170a74ca37509949b257451de16cf77151353667d2cd2cd9",
+      "alphaBounds": [
+        87,
+        59,
+        1930,
+        994
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_burst_energy_atlas.png": {
+      "width": 2048,
+      "height": 1024,
+      "sha256": "50e9ffb1faea83c66c6aba6ecce9aabd9e565d674c6725dd95281ac1bdb5fcc8",
+      "alphaBounds": [
+        87,
+        59,
+        1930,
+        994
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_transition_base_atlas.png": {
+      "width": 2048,
+      "height": 1536,
+      "sha256": "fc6adf713c1c7141406d8c147fcb6ff52d89f984a21d2de162bd3640976f5ee0",
+      "alphaBounds": [
+        47,
+        30,
+        1971,
+        1408
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/atlas/cg_ult_soul_transition_energy_atlas.png": {
+      "width": 2048,
+      "height": 1536,
+      "sha256": "dc76e9d61d5f16184734e82022b62182fb148ac668bc1557c08043fe92802260",
+      "alphaBounds": [
+        47,
+        31,
+        1971,
+        1408
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_1.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "122cc8c8563c2e22b44479216e108c2fc2150c7919b046a7ecfc3e61d2e662e8",
+      "alphaBounds": [
+        54,
+        30,
+        458,
+        482
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_1.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "f199055982f883a10e258a7900961fa2dc23e248cf13d1f2d19d907ca1457d86",
+      "alphaBounds": [
+        58,
+        31,
+        452,
+        477
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_2.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "add3c497c0d548280b81877c8893349243db65c5de71cce96b78655b913b26d2",
+      "alphaBounds": [
+        74,
+        73,
+        437,
+        439
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_2.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "1bdd5882ed9e3c20be8c70c87d539995f568ff8bf8cacd3eabd00e067d4e9307",
+      "alphaBounds": [
+        74,
+        73,
+        436,
+        439
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_3.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "c2b80f565b0b436ea5fa01b02b4ce3ab69c1da30dc8085708cb87239cea94a32",
+      "alphaBounds": [
+        69,
+        68,
+        443,
+        443
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_3.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "ed2f4ff31d33993d7616b43aec26f2fdeaf328140773e479cce1d4806b5572a7",
+      "alphaBounds": [
+        69,
+        68,
+        443,
+        443
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_4.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "a73afc145143c65afb08325cfef4ba7ef57a2f7155d23562d38fc7c480906865",
+      "alphaBounds": [
+        75,
+        71,
+        435,
+        441
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_4.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "3c78df0e0042ade450ddb1debb1e77ec4ea6ea134e092be2c2894572819534f6",
+      "alphaBounds": [
+        75,
+        72,
+        435,
+        440
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_5.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "104b6fbfcbdecb7cff521de0923adf7600fb1fb463ea162b8a29431675eb1946",
+      "alphaBounds": [
+        47,
+        41,
+        464,
+        471
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_5.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "61cdd3e621c298005166879263d22b9b8d73cd8baee1477d03a45c4d07c5f9e1",
+      "alphaBounds": [
+        47,
+        41,
+        464,
+        470
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_6.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "430244e4a850dd3e4d60b0c146a36d347abfb07d85c3746c624a8ec54bd37517",
+      "alphaBounds": [
+        63,
+        44,
+        448,
+        468
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_6.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "7fb923c9b6958f9f23a693500dc465ed79b8deb2cdbfd6cb5494bc45b58d77e9",
+      "alphaBounds": [
+        63,
+        45,
+        448,
+        467
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_7.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "a770a0e9bd0464c53f823e02d035bfea8d8eb0ec697a580d364ff60d8b16361f",
+      "alphaBounds": [
+        128,
+        164,
+        384,
+        347
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_7.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "cf06de9a0c14659ab6e3ccb74210a1691177d1dc7142a0f4c63854088ac8d2b1",
+      "alphaBounds": [
+        131,
+        164,
+        384,
+        346
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_8.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "7269fe14aa0416233ca42e676ab6d48f83c5575a4c9507f0e838690133b91a77",
+      "alphaBounds": [
+        184,
+        125,
+        328,
+        386
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_8.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "c9c67cff2980cdf8d003d83028b9786f7439511599c0bdf91b4c6fb9fcb33245",
+      "alphaBounds": [
+        185,
+        128,
+        328,
+        384
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_9.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "171f1322f98840c4ef895fc6b4a05bb4fa680ccaf2bbbf7e1f34041496fb1dbb",
+      "alphaBounds": [
+        136,
+        154,
+        375,
+        358
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_9.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "083d2de1e882da714bdb2881a67d1bed008158ea0835ec3b9a06407b7a0c41c7",
+      "alphaBounds": [
+        137,
+        162,
+        375,
+        358
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_10.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "6a888fe08a0727ea73aadd80493d2ff1bc52f1517b7df05618f3d52b4aca0286",
+      "alphaBounds": [
+        163,
+        161,
+        349,
+        350
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_10.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "9b407194a7c9066de2d134d8f78a8218d53bf3e568fc7d70ec79c9e38c30994b",
+      "alphaBounds": [
+        163,
+        161,
+        349,
+        349
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_base_11.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "0b95da651b6b4476e1660911c780019305ff7ef0b42b7273c559da3946b84351",
+      "alphaBounds": [
+        116,
+        128,
+        395,
+        384
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "phase2/parts/cg_ult_soul_transition_energy_11.png": {
+      "width": 512,
+      "height": 512,
+      "sha256": "a78adb614fc1a741d62b1a766009e7cf44ded7fde4aa5e789d50488abcf91a36",
+      "alphaBounds": [
+        116,
+        128,
+        395,
+        384
+      ],
+      "residualGreenPixels": 0,
+      "residualCyanPixels": 0
+    },
+    "opt/cg_ult_bladewheel_1.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "6ba239d8047db053ca3fb991a61ff2c3455134f477a6af3bd90e45206bb0248e",
+      "alphaBounds": [
+        45,
+        20,
+        417,
+        417
+      ],
+      "residualGreenPixels": 4130,
+      "residualCyanPixels": 264,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_2.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "2b5aee59c0a69b2de60c0c802d64de46199e83864f1bb2adab552b5ee8573b8c",
+      "alphaBounds": [
+        1,
+        15,
+        417,
+        416
+      ],
+      "residualGreenPixels": 3721,
+      "residualCyanPixels": 454,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_3.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "249ced0c578dec01dac4e595609a4669c81486a547a489fff3bb6e7609a65d88",
+      "alphaBounds": [
+        1,
+        30,
+        377,
+        417
+      ],
+      "residualGreenPixels": 4410,
+      "residualCyanPixels": 302,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_4.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "e7e01af6af06cee72265d16bdee5ce26efdc4c2da1c8340efbeaba61d015f1c2",
+      "alphaBounds": [
+        31,
+        15,
+        417,
+        417
+      ],
+      "residualGreenPixels": 3517,
+      "residualCyanPixels": 468,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_5.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "201c6abadac7e7daca1d0c2c3a6746a4bd2f56bf4daca9af306e262d6858bc47",
+      "alphaBounds": [
+        1,
+        14,
+        417,
+        417
+      ],
+      "residualGreenPixels": 3770,
+      "residualCyanPixels": 344,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_6.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "b6ec4d64d3b6baa59a84a51d33b1b7cf515064a1e9a52c2db90f6fd0422da27b",
+      "alphaBounds": [
+        12,
+        17,
+        375,
+        417
+      ],
+      "residualGreenPixels": 5194,
+      "residualCyanPixels": 417,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_7.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "42b1b328864fe1475d2ac7758b4c9effd313036866de71b8ea5e5f18dbf23842",
+      "alphaBounds": [
+        162,
+        1,
+        417,
+        364
+      ],
+      "residualGreenPixels": 1511,
+      "residualCyanPixels": 160,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_bladewheel_8.png": {
+      "width": 418,
+      "height": 418,
+      "sha256": "34786292cfa3467155d9837418e0c3353d8ddbebdd9a9a5b359ec7e70d23af7c",
+      "alphaBounds": [
+        1,
+        1,
+        417,
+        379
+      ],
+      "residualGreenPixels": 3874,
+      "residualCyanPixels": 284,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_1.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "8b430fa51b097470b010083044fefc1b4f7cf55b7419ee17190970a7b2ffb5f7",
+      "alphaBounds": [
+        1,
+        120,
+        312,
+        417
+      ],
+      "residualGreenPixels": 4358,
+      "residualCyanPixels": 81,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_10.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "9f5ed33295077dcfe796f4584af5cb0e0b2436e09d32b80df91aefbd2ace230f",
+      "alphaBounds": [
+        7,
+        1,
+        308,
+        301
+      ],
+      "residualGreenPixels": 5282,
+      "residualCyanPixels": 99,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_11.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "e960bfc98897f518b5d653f2cb7be796e084b44ac37738621c6be63a49d963c7",
+      "alphaBounds": [
+        4,
+        7,
+        299,
+        301
+      ],
+      "residualGreenPixels": 5709,
+      "residualCyanPixels": 57,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_12.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "2be15ebe96b4db8061b5f11cbc9970de18e636c41466646280b4f99e1af74e4b",
+      "alphaBounds": [
+        4,
+        3,
+        299,
+        304
+      ],
+      "residualGreenPixels": 7383,
+      "residualCyanPixels": 170,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_2.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "5110912100f613fbea5dbd1d3194c9b9d9ec4704d278b15c0373928db09d982a",
+      "alphaBounds": [
+        14,
+        130,
+        309,
+        417
+      ],
+      "residualGreenPixels": 2346,
+      "residualCyanPixels": 63,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_3.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "8a24337962dfa3fca4125eb6f5684539b46c1cdc0066e67ffeee13357a23c7ea",
+      "alphaBounds": [
+        9,
+        123,
+        304,
+        417
+      ],
+      "residualGreenPixels": 9265,
+      "residualCyanPixels": 118,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_4.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "d395ac4a1d37212d8b664eb69d5b161453a2d4e4d15f5fbf86033f9103194e94",
+      "alphaBounds": [
+        2,
+        138,
+        307,
+        417
+      ],
+      "residualGreenPixels": 5966,
+      "residualCyanPixels": 64,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_5.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "42d39cb3b5fbf96fbf795b3038dc9bd266893c8a6591dd1cb5155a5ddbcca30c",
+      "alphaBounds": [
+        11,
+        1,
+        309,
+        363
+      ],
+      "residualGreenPixels": 14764,
+      "residualCyanPixels": 425,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_6.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "920f16aa7e0e0d3e6e67daab160fe76d602203037c7cf1a236fd0d0607e06e4e",
+      "alphaBounds": [
+        8,
+        1,
+        309,
+        361
+      ],
+      "residualGreenPixels": 12162,
+      "residualCyanPixels": 186,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_7.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "1af3d45f1d541d1f028317a45da503414f656997ae7b12f76c252ef280737d71",
+      "alphaBounds": [
+        1,
+        1,
+        306,
+        368
+      ],
+      "residualGreenPixels": 10100,
+      "residualCyanPixels": 107,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_8.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "bd912befe1ae47d4dce175e8f98d41bd9d86e6ee769357aae2a9b7d3145eff45",
+      "alphaBounds": [
+        11,
+        1,
+        301,
+        359
+      ],
+      "residualGreenPixels": 7906,
+      "residualCyanPixels": 54,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_hole_9.png": {
+      "width": 313,
+      "height": 418,
+      "sha256": "02652b7a241d511a02baa232e46442e08e978ae54ea91b84a1ffa7b5987a18b5",
+      "alphaBounds": [
+        16,
+        4,
+        302,
+        290
+      ],
+      "residualGreenPixels": 4594,
+      "residualCyanPixels": 86,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_rimring_1.png": {
+      "width": 325,
+      "height": 325,
+      "sha256": "d1f25f579e35afb5a1997a58dca6ecaa95a3e35edf8371ceb1969440486aa598",
+      "alphaBounds": [
+        17,
+        31,
+        308,
+        293
+      ],
+      "residualGreenPixels": 2126,
+      "residualCyanPixels": 79,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_rimring_2.png": {
+      "width": 300,
+      "height": 300,
+      "sha256": "ac8d1677476f99cb0898779c6a7e6e7dd2347df1ae6a829396fc51555a1d706f",
+      "alphaBounds": [
+        17,
+        19,
+        284,
+        280
+      ],
+      "residualGreenPixels": 6321,
+      "residualCyanPixels": 62,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_1.png": {
+      "width": 751,
+      "height": 751,
+      "sha256": "00fc653150984bd5728ee124776ec9d129b686823289ad62ed66f08622b3c1d3",
+      "alphaBounds": [
+        21,
+        178,
+        750,
+        584
+      ],
+      "residualGreenPixels": 8379,
+      "residualCyanPixels": 312,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_2.png": {
+      "width": 457,
+      "height": 457,
+      "sha256": "6f7cebf579559d201799caee00a815a643039d0c922c4ad68d9d97bc3e07e7fa",
+      "alphaBounds": [
+        50,
+        21,
+        406,
+        451
+      ],
+      "residualGreenPixels": 6208,
+      "residualCyanPixels": 163,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_3.png": {
+      "width": 400,
+      "height": 400,
+      "sha256": "22200d0c471b9b95f4f972f247ca810b7e749e5f98c8919547e8834ce64f8807",
+      "alphaBounds": [
+        21,
+        26,
+        379,
+        374
+      ],
+      "residualGreenPixels": 4873,
+      "residualCyanPixels": 144,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_4.png": {
+      "width": 377,
+      "height": 377,
+      "sha256": "b8b8aa0fafa8c8469e40e1cbf942f73b7d3ade6b04ca8aa88024e7b184f2064d",
+      "alphaBounds": [
+        53,
+        20,
+        324,
+        376
+      ],
+      "residualGreenPixels": 2791,
+      "residualCyanPixels": 136,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_5.png": {
+      "width": 422,
+      "height": 422,
+      "sha256": "c965f944439d86310767668625b22c47bb4cb76b4197c2defa3954d7951c12bb",
+      "alphaBounds": [
+        41,
+        1,
+        381,
+        421
+      ],
+      "residualGreenPixels": 4049,
+      "residualCyanPixels": 246,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_6.png": {
+      "width": 513,
+      "height": 513,
+      "sha256": "461e7c63c61c8ce022709f5f95b2c99766f5c02b878c033e941416e17f043eab",
+      "alphaBounds": [
+        1,
+        93,
+        512,
+        439
+      ],
+      "residualGreenPixels": 5139,
+      "residualCyanPixels": 112,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_7.png": {
+      "width": 474,
+      "height": 474,
+      "sha256": "da2b10647ecf58757f05d4978984cb48cba6ac6029c4ec76ec4c80d785a78387",
+      "alphaBounds": [
+        29,
+        1,
+        436,
+        453
+      ],
+      "residualGreenPixels": 6288,
+      "residualCyanPixels": 299,
+      "preservedUnmodified": true
+    },
+    "opt/cg_ult_scythe_8.png": {
+      "width": 340,
+      "height": 340,
+      "sha256": "47120ec1e5961d6367e699e961dbe7fbb051291b03a92b98f537b1da7baec3a4",
+      "alphaBounds": [
+        3,
+        1,
+        317,
+        320
+      ],
+      "residualGreenPixels": 3801,
+      "residualCyanPixels": 172,
+      "preservedUnmodified": true
+    }
+  },
+  "assetGroups": {
+    "base": {
+      "paths": [
+        "atlas/cg_ult_comet_base_atlas.png",
+        "atlas/cg_ult_comet_energy_atlas.png",
+        "atlas/cg_ult_form_b_base_atlas.png",
+        "atlas/cg_ult_form_b_energy_atlas.png",
+        "atlas/cg_ult_form_base_atlas.png",
+        "atlas/cg_ult_form_energy_atlas.png",
+        "atlas/cg_ult_orb_dart_base_atlas.png",
+        "atlas/cg_ult_orb_dart_energy_atlas.png",
+        "atlas/cg_ult_orb_roll_base_atlas.png",
+        "atlas/cg_ult_orb_roll_energy_atlas.png",
+        "atlas/cg_ult_orb_stage_base_atlas.png",
+        "atlas/cg_ult_orb_stage_energy_atlas.png",
+        "atlas/cg_ult_shatter_base_atlas.png",
+        "atlas/cg_ult_shatter_energy_atlas.png",
+        "atlas/cg_ult_wheel_base_atlas.png",
+        "atlas/cg_ult_wheel_energy_atlas.png",
+        "atlas/cg_ult_wheel_inner_base_atlas.png",
+        "atlas/cg_ult_wheel_inner_energy_atlas.png",
+        "parts/cg_ult_blade_a_1.png",
+        "parts/cg_ult_blade_a_2.png",
+        "parts/cg_ult_blade_a_3.png",
+        "parts/cg_ult_blade_a_4.png",
+        "parts/cg_ult_crescent_1.png",
+        "parts/cg_ult_crescent_2.png",
+        "parts/cg_ult_crescent_3.png",
+        "parts/cg_ult_crescent_4.png",
+        "parts/cg_ult_crescent_5.png",
+        "parts/cg_ult_crescent_6.png",
+        "parts/cg_ult_crescent_7.png",
+        "parts/cg_ult_crescent_8.png",
+        "parts/cg_ult_dart_s_1.png",
+        "parts/cg_ult_dart_s_2.png",
+        "parts/cg_ult_dart_s_3.png",
+        "parts/cg_ult_dart_s_4.png",
+        "parts/cg_ult_harvester_base_1.png",
+        "parts/cg_ult_harvester_base_2.png",
+        "parts/cg_ult_harvester_base_3.png",
+        "parts/cg_ult_harvester_energy_1.png",
+        "parts/cg_ult_harvester_energy_2.png",
+        "parts/cg_ult_harvester_energy_3.png",
+        "parts/cg_ult_ring_thin_1.png",
+        "parts/cg_ult_ring_thin_2.png",
+        "parts/cg_ult_ring_thin_3.png",
+        "parts/cg_ult_rune_1.png",
+        "parts/cg_ult_rune_2.png",
+        "parts/cg_ult_rune_3.png",
+        "parts/cg_ult_rune_4.png",
+        "parts/cg_ult_rune_5.png",
+        "parts/cg_ult_rune_6.png",
+        "parts/cg_ult_swirl_1.png",
+        "parts/cg_ult_swirl_2.png",
+        "parts/cg_ult_swirl_3.png",
+        "parts/cg_ult_vortex_s_1.png",
+        "parts/cg_ult_vortex_s_2.png",
+        "parts/cg_ult_vortex_s_3.png",
+        "parts/cg_ult_vortex_s_4.png",
+        "reference/cg_ult_concept.png",
+        "steady/cg_ult_wheel_steady_base.png",
+        "steady/cg_ult_wheel_steady_detail.png",
+        "steady/cg_ult_wheel_steady_energy.png",
+        "ui/cg_ult_icon.png",
+        "ui/cg_ult_slow_mark.png"
+      ]
+    },
+    "opt": {
+      "paths": [
+        "opt/cg_ult_bladewheel_1.png",
+        "opt/cg_ult_bladewheel_2.png",
+        "opt/cg_ult_bladewheel_3.png",
+        "opt/cg_ult_bladewheel_4.png",
+        "opt/cg_ult_bladewheel_5.png",
+        "opt/cg_ult_bladewheel_6.png",
+        "opt/cg_ult_bladewheel_7.png",
+        "opt/cg_ult_bladewheel_8.png",
+        "opt/cg_ult_hole_1.png",
+        "opt/cg_ult_hole_10.png",
+        "opt/cg_ult_hole_11.png",
+        "opt/cg_ult_hole_12.png",
+        "opt/cg_ult_hole_2.png",
+        "opt/cg_ult_hole_3.png",
+        "opt/cg_ult_hole_4.png",
+        "opt/cg_ult_hole_5.png",
+        "opt/cg_ult_hole_6.png",
+        "opt/cg_ult_hole_7.png",
+        "opt/cg_ult_hole_8.png",
+        "opt/cg_ult_hole_9.png",
+        "opt/cg_ult_rimring_1.png",
+        "opt/cg_ult_rimring_2.png",
+        "opt/cg_ult_scythe_1.png",
+        "opt/cg_ult_scythe_2.png",
+        "opt/cg_ult_scythe_3.png",
+        "opt/cg_ult_scythe_4.png",
+        "opt/cg_ult_scythe_5.png",
+        "opt/cg_ult_scythe_6.png",
+        "opt/cg_ult_scythe_7.png",
+        "opt/cg_ult_scythe_8.png"
+      ],
+      "preservedUnmodified": true
+    },
+    "phase2": {
+      "paths": [
+        "phase2/atlas/cg_ult_soul_burst_base_atlas.png",
+        "phase2/atlas/cg_ult_soul_burst_energy_atlas.png",
+        "phase2/atlas/cg_ult_soul_emerge_base_atlas.png",
+        "phase2/atlas/cg_ult_soul_emerge_energy_atlas.png",
+        "phase2/atlas/cg_ult_soul_flight_base_atlas.png",
+        "phase2/atlas/cg_ult_soul_flight_energy_atlas.png",
+        "phase2/atlas/cg_ult_soul_transition_base_atlas.png",
+        "phase2/atlas/cg_ult_soul_transition_energy_atlas.png",
+        "phase2/atlas/cg_ult_soul_variants_base_atlas.png",
+        "phase2/atlas/cg_ult_soul_variants_energy_atlas.png",
+        "phase2/parts/cg_ult_soul_transition_base_1.png",
+        "phase2/parts/cg_ult_soul_transition_base_10.png",
+        "phase2/parts/cg_ult_soul_transition_base_11.png",
+        "phase2/parts/cg_ult_soul_transition_base_2.png",
+        "phase2/parts/cg_ult_soul_transition_base_3.png",
+        "phase2/parts/cg_ult_soul_transition_base_4.png",
+        "phase2/parts/cg_ult_soul_transition_base_5.png",
+        "phase2/parts/cg_ult_soul_transition_base_6.png",
+        "phase2/parts/cg_ult_soul_transition_base_7.png",
+        "phase2/parts/cg_ult_soul_transition_base_8.png",
+        "phase2/parts/cg_ult_soul_transition_base_9.png",
+        "phase2/parts/cg_ult_soul_transition_energy_1.png",
+        "phase2/parts/cg_ult_soul_transition_energy_10.png",
+        "phase2/parts/cg_ult_soul_transition_energy_11.png",
+        "phase2/parts/cg_ult_soul_transition_energy_2.png",
+        "phase2/parts/cg_ult_soul_transition_energy_3.png",
+        "phase2/parts/cg_ult_soul_transition_energy_4.png",
+        "phase2/parts/cg_ult_soul_transition_energy_5.png",
+        "phase2/parts/cg_ult_soul_transition_energy_6.png",
+        "phase2/parts/cg_ult_soul_transition_energy_7.png",
+        "phase2/parts/cg_ult_soul_transition_energy_8.png",
+        "phase2/parts/cg_ult_soul_transition_energy_9.png"
+      ]
     }
   },
   "renderContract": {
     "baseBlend": "source-over",
     "energyBlend": "lighter",
     "spinMaster": "768px registered single frame",
+    "phase2AtlasCell": [
+      512,
+      512
+    ],
+    "phase2TransparentPadding": 30,
+    "optHashPolicy": "preserve-byte-for-byte",
     "fallbackIsVisuallyComplete": true,
     "mobileEncoding": "lossless WebP"
   },
   "qa": {
     "status": "pass",
     "residualGreen": {},
-    "residualCyan": {}
+    "residualCyan": {},
+    "phase2ResidualGreenPixels": 0,
+    "phase2ResidualCyanPixels": 0,
+    "optPreserved": true,
+    "optHashes": {
+      "cg_ult_bladewheel_1.png": "6ba239d8047db053ca3fb991a61ff2c3455134f477a6af3bd90e45206bb0248e",
+      "cg_ult_bladewheel_2.png": "2b5aee59c0a69b2de60c0c802d64de46199e83864f1bb2adab552b5ee8573b8c",
+      "cg_ult_bladewheel_3.png": "249ced0c578dec01dac4e595609a4669c81486a547a489fff3bb6e7609a65d88",
+      "cg_ult_bladewheel_4.png": "e7e01af6af06cee72265d16bdee5ce26efdc4c2da1c8340efbeaba61d015f1c2",
+      "cg_ult_bladewheel_5.png": "201c6abadac7e7daca1d0c2c3a6746a4bd2f56bf4daca9af306e262d6858bc47",
+      "cg_ult_bladewheel_6.png": "b6ec4d64d3b6baa59a84a51d33b1b7cf515064a1e9a52c2db90f6fd0422da27b",
+      "cg_ult_bladewheel_7.png": "42b1b328864fe1475d2ac7758b4c9effd313036866de71b8ea5e5f18dbf23842",
+      "cg_ult_bladewheel_8.png": "34786292cfa3467155d9837418e0c3353d8ddbebdd9a9a5b359ec7e70d23af7c",
+      "cg_ult_hole_1.png": "8b430fa51b097470b010083044fefc1b4f7cf55b7419ee17190970a7b2ffb5f7",
+      "cg_ult_hole_10.png": "9f5ed33295077dcfe796f4584af5cb0e0b2436e09d32b80df91aefbd2ace230f",
+      "cg_ult_hole_11.png": "e960bfc98897f518b5d653f2cb7be796e084b44ac37738621c6be63a49d963c7",
+      "cg_ult_hole_12.png": "2be15ebe96b4db8061b5f11cbc9970de18e636c41466646280b4f99e1af74e4b",
+      "cg_ult_hole_2.png": "5110912100f613fbea5dbd1d3194c9b9d9ec4704d278b15c0373928db09d982a",
+      "cg_ult_hole_3.png": "8a24337962dfa3fca4125eb6f5684539b46c1cdc0066e67ffeee13357a23c7ea",
+      "cg_ult_hole_4.png": "d395ac4a1d37212d8b664eb69d5b161453a2d4e4d15f5fbf86033f9103194e94",
+      "cg_ult_hole_5.png": "42d39cb3b5fbf96fbf795b3038dc9bd266893c8a6591dd1cb5155a5ddbcca30c",
+      "cg_ult_hole_6.png": "920f16aa7e0e0d3e6e67daab160fe76d602203037c7cf1a236fd0d0607e06e4e",
+      "cg_ult_hole_7.png": "1af3d45f1d541d1f028317a45da503414f656997ae7b12f76c252ef280737d71",
+      "cg_ult_hole_8.png": "bd912befe1ae47d4dce175e8f98d41bd9d86e6ee769357aae2a9b7d3145eff45",
+      "cg_ult_hole_9.png": "02652b7a241d511a02baa232e46442e08e978ae54ea91b84a1ffa7b5987a18b5",
+      "cg_ult_rimring_1.png": "d1f25f579e35afb5a1997a58dca6ecaa95a3e35edf8371ceb1969440486aa598",
+      "cg_ult_rimring_2.png": "ac8d1677476f99cb0898779c6a7e6e7dd2347df1ae6a829396fc51555a1d706f",
+      "cg_ult_scythe_1.png": "00fc653150984bd5728ee124776ec9d129b686823289ad62ed66f08622b3c1d3",
+      "cg_ult_scythe_2.png": "6f7cebf579559d201799caee00a815a643039d0c922c4ad68d9d97bc3e07e7fa",
+      "cg_ult_scythe_3.png": "22200d0c471b9b95f4f972f247ca810b7e749e5f98c8919547e8834ce64f8807",
+      "cg_ult_scythe_4.png": "b8b8aa0fafa8c8469e40e1cbf942f73b7d3ade6b04ca8aa88024e7b184f2064d",
+      "cg_ult_scythe_5.png": "c965f944439d86310767668625b22c47bb4cb76b4197c2defa3954d7951c12bb",
+      "cg_ult_scythe_6.png": "461e7c63c61c8ce022709f5f95b2c99766f5c02b878c033e941416e17f043eab",
+      "cg_ult_scythe_7.png": "da2b10647ecf58757f05d4978984cb48cba6ac6029c4ec76ec4c80d785a78387",
+      "cg_ult_scythe_8.png": "47120ec1e5961d6367e699e961dbe7fbb051291b03a92b98f537b1da7baec3a4"
+    }
   }
 }

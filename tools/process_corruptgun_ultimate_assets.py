@@ -25,6 +25,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DEV_SUBDIR = Path("大招 炼狱影刃 开发文件夹")
 ROOT_DEV = ROOT / "7号战机 开发文件夹_副本" / DEV_SUBDIR
 MAIN_DEV = ROOT / "moon-bullet-main/7号战机 开发文件夹" / DEV_SUBDIR
+PHASE2_SUBDIR = Path("大招二段开发文件夹")
+ROOT_PHASE2_DEV = ROOT_DEV / PHASE2_SUBDIR
+MAIN_PHASE2_DEV = MAIN_DEV / PHASE2_SUBDIR
 OUT = ROOT / "assets/player/corrupt_gun/ult"
 PREVIEW = ROOT / "tools/corruptgun_ultimate_assets_preview"
 ALPHA_THRESHOLD = 8
@@ -44,6 +47,14 @@ REQUIRED_FILES = (
     "大招_暗蚀轮回_实现文档V1.md",
 )
 
+PHASE2_REQUIRED_FILES = (
+    "幽魂从爆炸中心爬出.png",
+    "幽魂飞行寻敌.png",
+    "游魂形象.png",
+    "游魂爆炸素材.png",
+    "黑洞爆炸过渡特效.png",
+)
+
 
 @dataclass(frozen=True)
 class SequenceSpec:
@@ -59,7 +70,31 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def ensure_source_copies() -> tuple[Path, Path]:
+def ensure_mirrored_files(first: Path, second: Path, names: Iterable[str], label: str) -> None:
+    first.mkdir(parents=True, exist_ok=True)
+    second.mkdir(parents=True, exist_ok=True)
+    missing: list[str] = []
+    mismatched: list[str] = []
+    for name in names:
+        first_file = first / name
+        second_file = second / name
+        if first_file.is_file() and second_file.is_file():
+            if sha256(first_file) != sha256(second_file):
+                mismatched.append(name)
+            continue
+        if first_file.is_file():
+            shutil.copy2(first_file, second_file)
+        elif second_file.is_file():
+            shutil.copy2(second_file, first_file)
+        else:
+            missing.append(name)
+    if missing:
+        raise SystemExit(f"{label}缺失：\n" + "\n".join(missing))
+    if mismatched:
+        raise SystemExit(f"两份{label}哈希不一致，停止处理：" + ", ".join(mismatched))
+
+
+def ensure_source_copies() -> tuple[Path, Path, Path, Path]:
     if not MAIN_DEV.is_dir() and not ROOT_DEV.is_dir():
         raise SystemExit("找不到大招开发文件夹")
     if not ROOT_DEV.is_dir():
@@ -67,21 +102,15 @@ def ensure_source_copies() -> tuple[Path, Path]:
     if not MAIN_DEV.is_dir():
         shutil.copytree(ROOT_DEV, MAIN_DEV)
 
-    missing: list[str] = []
+    # The main-folder guide contains the user's newer V1.4 notes while the
+    # historical copy still has V1.1. Neither document drives pixel output, so
+    # preserve both instead of overwriting a current user edit.
+    ensure_mirrored_files(ROOT_DEV, MAIN_DEV, REQUIRED_FILES[:-1], "大招素材")
     for folder in (ROOT_DEV, MAIN_DEV):
-        for name in REQUIRED_FILES:
-            if not (folder / name).is_file():
-                missing.append(f"{folder.relative_to(ROOT)}/{name}")
-    if missing:
-        raise SystemExit("大招素材缺失：\n" + "\n".join(missing))
-
-    mismatched = [
-        name for name in REQUIRED_FILES
-        if sha256(ROOT_DEV / name) != sha256(MAIN_DEV / name)
-    ]
-    if mismatched:
-        raise SystemExit("两份大招开发素材不一致，停止处理：" + ", ".join(mismatched))
-    return ROOT_DEV, MAIN_DEV
+        if not (folder / REQUIRED_FILES[-1]).is_file():
+            raise SystemExit(f"大招开发文档缺失：{folder.relative_to(ROOT) / REQUIRED_FILES[-1]}")
+    ensure_mirrored_files(ROOT_PHASE2_DEV, MAIN_PHASE2_DEV, PHASE2_REQUIRED_FILES, "大招二段素材")
+    return ROOT_DEV, MAIN_DEV, ROOT_PHASE2_DEV, MAIN_PHASE2_DEV
 
 
 def grid_cells(image: Image.Image, rows: int, cols: int) -> list[Image.Image]:
@@ -245,6 +274,141 @@ def clean_palette(image: Image.Image) -> Image.Image:
     return Image.fromarray(px, "RGBA")
 
 
+def clean_phase2_palette(image: Image.Image) -> Image.Image:
+    """Turn the phase-two green key/energy into dark crimson-violet energy.
+
+    These five sheets use green both as a generated rim and as inner flame.
+    Removing every green pixel destroys the authored wisps, so the phase-two
+    path recolours it before applying the same one-pixel edge contraction.
+    """
+    px = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
+    r, g, b, a = (px[:, :, index] for index in range(4))
+    a[a <= EDGE_ALPHA_FLOOR] = 0
+    green, cyan, saturation = spill_masks(r, g, b, a)
+    contaminated = green | cyan
+    if np.any(contaminated):
+        energy = np.maximum.reduce([r, g, b])
+        # Keep black volume while converting the green flame into a controlled
+        # red-violet rim. The green channel is deliberately bounded below the
+        # final hue audit threshold.
+        r[contaminated] = np.maximum(r[contaminated], energy[contaminated] * 0.72)
+        g[contaminated] = np.minimum(g[contaminated] * 0.10, r[contaminated] * 0.10)
+        b[contaminated] = np.minimum(
+            np.maximum(b[contaminated] * 0.42, r[contaminated] * (0.30 + saturation[contaminated] * 0.12)),
+            r[contaminated] * 0.62,
+        )
+        hard_key = contaminated & (saturation > 0.50)
+        a[hard_key] *= 0.84
+
+    solid = a > EDGE_ALPHA_FLOOR
+    if np.any(solid):
+        eroded = ndimage.binary_erosion(solid, iterations=1, border_value=0)
+        a[solid & ~eroded] = 0
+        a = ndimage.gaussian_filter(a, sigma=0.55)
+        a[a <= EDGE_ALPHA_FLOOR] = 0
+
+    visible = a > 0
+    g[visible] = np.minimum(g[visible], np.maximum(r[visible], b[visible]))
+    px[:, :, 0] = r
+    px[:, :, 1] = g
+    px[:, :, 2] = b
+    px[:, :, 3] = a
+    px = np.clip(px, 0, 255).astype(np.uint8)
+    px[px[:, :, 3] == 0, :3] = 0
+    return final_palette_guard(Image.fromarray(px, "RGBA"))
+
+
+def remove_sheet_guides(image: Image.Image) -> Image.Image:
+    """Remove only border/grid guide components without touching sprite wisps."""
+    px = np.asarray(image.convert("RGBA")).copy()
+    alpha = px[:, :, 3].copy()
+    alpha[:6, :] = 0
+    alpha[-6:, :] = 0
+    alpha[:, :6] = 0
+    alpha[:, -6:] = 0
+    labels, count = ndimage.label(alpha > ALPHA_THRESHOLD)
+    for label_index, obj in enumerate(ndimage.find_objects(labels), 1):
+        if obj is None:
+            continue
+        ys, xs = obj
+        width, height = xs.stop - xs.start, ys.stop - ys.start
+        if min(width, height) <= 2 and max(width, height) >= 80:
+            alpha[labels == label_index] = 0
+    px[:, :, 3] = alpha
+    px[alpha == 0, :3] = 0
+    return Image.fromarray(px, "RGBA")
+
+
+def phase2_component_frames(image: Image.Image, row_counts: Iterable[int]) -> list[Image.Image]:
+    """Extract irregular authored sprites by connected body, not fragile grid cuts."""
+    row_counts = tuple(row_counts)
+    expected = sum(row_counts)
+    cleaned = remove_sheet_guides(clean_phase2_palette(image))
+    px = np.asarray(cleaned.convert("RGBA")).copy()
+    alpha_mask = px[:, :, 3] > ALPHA_THRESHOLD
+    labels, count = ndimage.label(alpha_mask)
+    objects = ndimage.find_objects(labels)
+    components: list[dict] = []
+    for label_index, obj in enumerate(objects, 1):
+        if obj is None:
+            continue
+        ys, xs = obj
+        area = int(np.count_nonzero(labels[ys, xs] == label_index))
+        if area < 12:
+            continue
+        components.append({
+            "label": label_index,
+            "area": area,
+            "bbox": (xs.start, ys.start, xs.stop, ys.stop),
+            "cx": (xs.start + xs.stop) * 0.5,
+            "cy": (ys.start + ys.stop) * 0.5,
+        })
+    main = sorted(components, key=lambda item: item["area"], reverse=True)[:expected]
+    if len(main) != expected:
+        raise RuntimeError(f"二段素材应有 {expected} 个主体，实际仅识别 {len(main)} 个")
+
+    ordered: list[dict] = []
+    by_y = sorted(main, key=lambda item: item["cy"])
+    offset = 0
+    for count_in_row in row_counts:
+        row = sorted(by_y[offset : offset + count_in_row], key=lambda item: item["cx"])
+        ordered.extend(row)
+        offset += count_in_row
+
+    main_labels = {item["label"] for item in main}
+    assignments: dict[int, list[int]] = {item["label"]: [item["label"]] for item in main}
+
+    def bbox_distance(component: dict, target: dict) -> float:
+        left, top, right, bottom = target["bbox"]
+        dx = max(left - component["cx"], 0, component["cx"] - right)
+        dy = max(top - component["cy"], 0, component["cy"] - bottom)
+        return math.hypot(dx, dy)
+
+    # Reattach nearby authored shards/ashes once. Large bodies remain isolated,
+    # which also makes overlapping rows in the source sheet safe to extract.
+    for component in components:
+        if component["label"] in main_labels:
+            continue
+        nearest = min(main, key=lambda item: bbox_distance(component, item))
+        if bbox_distance(component, nearest) <= 72:
+            assignments[nearest["label"]].append(component["label"])
+
+    frames: list[Image.Image] = []
+    for item in ordered:
+        selected = np.isin(labels, assignments[item["label"]])
+        ys, xs = np.where(selected)
+        if len(xs) == 0:
+            raise RuntimeError("二段素材主体提取为空")
+        left, right = max(0, int(xs.min()) - 3), min(cleaned.width, int(xs.max()) + 4)
+        top, bottom = max(0, int(ys.min()) - 3), min(cleaned.height, int(ys.max()) + 4)
+        isolated = px[top:bottom, left:right].copy()
+        local_mask = selected[top:bottom, left:right]
+        isolated[~local_mask, 3] = 0
+        isolated[isolated[:, :, 3] == 0, :3] = 0
+        frames.append(Image.fromarray(isolated, "RGBA"))
+    return frames
+
+
 def content_bbox(image: Image.Image) -> tuple[int, int, int, int]:
     alpha = np.asarray(image.getchannel("A"))
     ys, xs = np.where(alpha > ALPHA_THRESHOLD)
@@ -258,8 +422,9 @@ def normalize_group(
     cell: tuple[int, int],
     anchor: str = "center",
     padding: int = 22,
+    cleaner=clean_palette,
 ) -> tuple[Image.Image, ...]:
-    cleaned = tuple(clean_palette(frame) for frame in frames)
+    cleaned = tuple(cleaner(frame) for frame in frames)
     bounds = tuple(content_bbox(frame) for frame in cleaned)
     max_w = max(right - left for left, _, right, _ in bounds)
     max_h = max(bottom - top for _, top, _, bottom in bounds)
@@ -280,7 +445,10 @@ def normalize_group(
             x = cell[0] - padding - cropped.width
         else:
             x = (cell[0] - cropped.width) // 2
-        y = (cell[1] - cropped.height) // 2
+        if anchor == "bottom":
+            y = cell[1] - padding - cropped.height
+        else:
+            y = (cell[1] - cropped.height) // 2
         canvas.alpha_composite(cropped, (x, y))
         normalized.append(canvas)
     return tuple(normalized)
@@ -422,6 +590,51 @@ def save_asset(image: Image.Image, relative: str, records: dict[str, dict]) -> P
     return target
 
 
+def audit_existing_asset(path: Path, records: dict[str, dict], preserved: bool = False) -> None:
+    image = Image.open(path).convert("RGBA")
+    relative = path.relative_to(OUT).as_posix()
+    green, cyan = residual_counts(image)
+    records[relative] = {
+        "width": image.width,
+        "height": image.height,
+        "sha256": sha256(path),
+        "alphaBounds": list(content_bbox(image)),
+        "residualGreenPixels": green,
+        "residualCyanPixels": cyan,
+        "preservedUnmodified": preserved,
+    }
+
+
+def tree_hashes(folder: Path) -> dict[str, str]:
+    if not folder.is_dir():
+        return {}
+    return {
+        path.relative_to(folder).as_posix(): sha256(path)
+        for path in sorted(folder.rglob("*"))
+        if path.is_file()
+    }
+
+
+def prepare_output() -> dict[str, str]:
+    """Clear generator-owned outputs while preserving the user's opt pass byte-for-byte."""
+    protected = OUT / "opt"
+    before = tree_hashes(protected)
+    if len(before) != 30:
+        raise RuntimeError(f"ult/opt 应保留30件素材，当前为 {len(before)}")
+    OUT.mkdir(parents=True, exist_ok=True)
+    for child in OUT.iterdir():
+        if child.name == "opt":
+            continue
+        if child.is_dir():
+            shutil.rmtree(child)
+        else:
+            child.unlink()
+    after = tree_hashes(protected)
+    if after != before:
+        raise RuntimeError("ult/opt 在清理阶段发生变化，已停止")
+    return before
+
+
 def save_sequence(spec: SequenceSpec, records: dict[str, dict], sequences: dict[str, dict]) -> None:
     frames = normalize_group(spec.frames, spec.cell, spec.anchor)
     base = pack_atlas(frames, spec.cols, spec.rows)
@@ -441,6 +654,56 @@ def save_sequence(spec: SequenceSpec, records: dict[str, dict], sequences: dict[
     }
 
 
+PHASE2_RUNTIME_KEYS = {
+    "soul_emerge": {"base": "cgUltSoulEmergeBase", "energy": "cgUltSoulEmergeEnergy"},
+    "soul_flight": {"base": "cgUltSoulFlightBase", "energy": "cgUltSoulFlightEnergy"},
+    "soul_variants": {"base": "cgUltSoulVariantsBase", "energy": "cgUltSoulVariantsEnergy"},
+    "soul_burst": {"base": "cgUltSoulBurstBase", "energy": "cgUltSoulBurstEnergy"},
+    "soul_transition": {"base": "cgUltSoulTransitionBase", "energy": "cgUltSoulTransitionEnergy"},
+}
+
+
+def save_phase2_sequence(spec: SequenceSpec, records: dict[str, dict], sequences: dict[str, dict]) -> tuple[Image.Image, ...]:
+    frames = normalize_group(
+        spec.frames,
+        spec.cell,
+        spec.anchor,
+        padding=30,
+        cleaner=lambda image: image.convert("RGBA"),
+    )
+    base = pack_atlas(frames, spec.cols, spec.rows)
+    energy_frames = tuple(energy_layer(frame) for frame in frames)
+    energy = pack_atlas(energy_frames, spec.cols, spec.rows)
+    base_rel = f"phase2/atlas/cg_ult_{spec.name}_base_atlas.png"
+    energy_rel = f"phase2/atlas/cg_ult_{spec.name}_energy_atlas.png"
+    save_asset(base, base_rel, records)
+    save_asset(energy, energy_rel, records)
+    sequences[spec.name] = {
+        "frames": len(frames),
+        "cols": spec.cols,
+        "rows": spec.rows,
+        "cell": list(spec.cell),
+        "anchor": spec.anchor,
+        "base": base_rel,
+        "energy": energy_rel,
+        "runtimeKeys": PHASE2_RUNTIME_KEYS[spec.name],
+    }
+    return frames
+
+
+def save_phase2_transition_parts(
+    frames: Iterable[Image.Image],
+    records: dict[str, dict],
+) -> None:
+    for index, frame in enumerate(frames, 1):
+        save_asset(frame, f"phase2/parts/cg_ult_soul_transition_base_{index}.png", records)
+        save_asset(
+            energy_layer(frame),
+            f"phase2/parts/cg_ult_soul_transition_energy_{index}.png",
+            records,
+        )
+
+
 def save_loose_group(
     frames: Iterable[Image.Image],
     prefix: str,
@@ -451,6 +714,76 @@ def save_loose_group(
     for index, frame in enumerate(normalized, 1):
         save_asset(frame, f"parts/cg_ult_{prefix}_{index}.png", records)
     return list(normalized)
+
+
+def extract_primary_component(image: Image.Image) -> Image.Image:
+    """Keep the authored main blade while dropping neighbouring blades and loose crumbs."""
+    source = image.convert("RGBA")
+    alpha = np.asarray(source.getchannel("A"), dtype=np.uint8)
+    labels, count = ndimage.label(alpha > ALPHA_THRESHOLD)
+    if count <= 0:
+        raise RuntimeError("无法从优化素材提取独立刀刃")
+    areas = np.bincount(labels.ravel())
+    areas[0] = 0
+    primary = int(np.argmax(areas))
+    keep = ndimage.binary_dilation(labels == primary, iterations=5) & (alpha > 0)
+    pixels = np.asarray(source, dtype=np.uint8).copy()
+    pixels[:, :, 3] = np.where(keep, pixels[:, :, 3], 0).astype(np.uint8)
+    isolated = Image.fromarray(pixels, "RGBA")
+    bbox = content_bbox(isolated)
+    pad = 12
+    return isolated.crop((
+        max(0, bbox[0] - pad),
+        max(0, bbox[1] - pad),
+        min(isolated.width, bbox[2] + pad),
+        min(isolated.height, bbox[3] + pad),
+    ))
+
+
+def normalize_harvester_blade(image: Image.Image) -> Image.Image:
+    """Orient every blade toward local +X and place it on a stable 2:1 canvas."""
+    isolated = extract_primary_component(image)
+    rotated = isolated.rotate(-45, resample=Image.Resampling.BICUBIC, expand=True)
+    bbox = content_bbox(rotated)
+    rotated = rotated.crop(bbox)
+    rotated.thumbnail((336, 144), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (384, 192), (0, 0, 0, 0))
+    canvas.alpha_composite(rotated, ((canvas.width - rotated.width) // 2, (canvas.height - rotated.height) // 2))
+    return canvas
+
+
+def harvester_base_layer(image: Image.Image) -> Image.Image:
+    """Retain black-steel texture while leaving the brightest fissures to the energy layer."""
+    pixels = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
+    alpha = pixels[:, :, 3]
+    visible = alpha > 0
+    rgb = pixels[:, :, :3]
+    luminance = rgb[:, :, 0] * 0.299 + rgb[:, :, 1] * 0.587 + rgb[:, :, 2] * 0.114
+    emissive = visible & (rgb[:, :, 0] > rgb[:, :, 1] * 1.35) & (rgb[:, :, 0] > 96) & (luminance > 48)
+    rgb[visible] *= 0.78
+    rgb[emissive] *= 0.72
+    pixels[:, :, :3] = np.clip(rgb, 0, 255)
+    return Image.fromarray(pixels.astype(np.uint8), "RGBA")
+
+
+def save_harvester_blades(records: dict[str, dict]) -> None:
+    """Derive clean single-blade layers without modifying the protected ult/opt files."""
+    sources = ("cg_ult_scythe_4.png", "cg_ult_scythe_5.png", "cg_ult_scythe_7.png")
+    for index, name in enumerate(sources, 1):
+        source_path = OUT / "opt" / name
+        normalized = normalize_harvester_blade(Image.open(source_path).convert("RGBA"))
+        # The spear source is authored tip-left; normalize it so every runtime
+        # blade leads the positive local X direction used by the moving edge.
+        if index == 3:
+            normalized = normalized.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+        base_rel = f"parts/cg_ult_harvester_base_{index}.png"
+        energy_rel = f"parts/cg_ult_harvester_energy_{index}.png"
+        save_asset(harvester_base_layer(normalized), base_rel, records)
+        save_asset(energy_layer(normalized), energy_rel, records)
+        for relative in (base_rel, energy_rel):
+            records[relative]["derivedFrom"] = f"opt/{name}"
+            records[relative]["sourceSha256"] = sha256(source_path)
+            records[relative]["orientation"] = "tip-local-positive-x"
 
 
 def build_slow_mark(rune: Image.Image, ring: Image.Image) -> Image.Image:
@@ -483,8 +816,12 @@ def build_icon(wheel: Image.Image, energy: Image.Image) -> Image.Image:
     return canvas
 
 
-def make_contact_sheet(records: dict[str, dict]) -> Path:
-    keys = sorted(records)
+def make_contact_sheet(
+    records: dict[str, dict],
+    keys: Iterable[str] | None = None,
+    filename: str = "corruptgun_ultimate_contact_sheet.png",
+) -> Path:
+    keys = sorted(keys if keys is not None else records)
     cols, thumb_w, thumb_h = 5, 224, 186
     rows = math.ceil(len(keys) / cols)
     sheet = Image.new("RGB", (cols * thumb_w, rows * thumb_h), "#100d12")
@@ -499,20 +836,21 @@ def make_contact_sheet(records: dict[str, dict]) -> Path:
         label = key if len(key) < 34 else "..." + key[-31:]
         draw.text((x + 6, y + 151), label, fill="#f6c8d6", font=font)
     PREVIEW.mkdir(parents=True, exist_ok=True)
-    target = PREVIEW / "corruptgun_ultimate_contact_sheet.png"
+    target = PREVIEW / filename
     sheet.save(target, optimize=True)
     return target
 
 
 def main() -> None:
-    root_source, main_source = ensure_source_copies()
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir(parents=True, exist_ok=True)
+    root_source, main_source, root_phase2, main_phase2 = ensure_source_copies()
+    opt_hashes_before = prepare_output()
     PREVIEW.mkdir(parents=True, exist_ok=True)
 
     def open_sheet(name: str) -> Image.Image:
         return Image.open(root_source / name).convert("RGBA")
+
+    def open_phase2_sheet(name: str) -> Image.Image:
+        return Image.open(root_phase2 / name).convert("RGBA")
 
     records: dict[str, dict] = {}
     sequences: dict[str, dict] = {}
@@ -543,6 +881,7 @@ def main() -> None:
     save_asset(wheel_master_base, "steady/cg_ult_wheel_steady_base.png", records)
     save_asset(wheel_master_energy, "steady/cg_ult_wheel_steady_energy.png", records)
     save_asset(wheel_master_detail, "steady/cg_ult_wheel_steady_detail.png", records)
+    save_harvester_blades(records)
 
     blade_frames = save_loose_group(blades, "blade_a", (192, 192), records)
     save_loose_group(swirls, "swirl", (224, 224), records)
@@ -584,49 +923,161 @@ def main() -> None:
         "referenceOnly": True,
     }
 
-    source_hashes = {name: sha256(root_source / name) for name in REQUIRED_FILES}
-    qa_green = {key: value.get("residualGreenPixels", 0) for key, value in records.items() if value.get("residualGreenPixels", 0)}
-    qa_cyan = {key: value.get("residualCyanPixels", 0) for key, value in records.items() if value.get("residualCyanPixels", 0)}
+    base_asset_paths = set(records)
+
+    phase2_specs = (
+        SequenceSpec(
+            "soul_emerge",
+            tuple(phase2_component_frames(open_phase2_sheet("幽魂从爆炸中心爬出.png"), (2, 2, 2))),
+            3,
+            2,
+            (512, 512),
+            "bottom",
+        ),
+        SequenceSpec(
+            "soul_flight",
+            tuple(phase2_component_frames(open_phase2_sheet("幽魂飞行寻敌.png"), (2, 2, 1, 1))),
+            3,
+            2,
+            (512, 512),
+        ),
+        SequenceSpec(
+            "soul_variants",
+            tuple(phase2_component_frames(open_phase2_sheet("游魂形象.png"), (2, 2, 1, 2))),
+            4,
+            2,
+            (512, 512),
+        ),
+        SequenceSpec(
+            "soul_burst",
+            tuple(phase2_component_frames(open_phase2_sheet("游魂爆炸素材.png"), (4, 4))),
+            4,
+            2,
+            (512, 512),
+        ),
+        SequenceSpec(
+            "soul_transition",
+            tuple(phase2_component_frames(open_phase2_sheet("黑洞爆炸过渡特效.png"), (3, 3, 5))),
+            4,
+            3,
+            (512, 512),
+        ),
+    )
+    transition_frames: tuple[Image.Image, ...] = ()
+    for spec in phase2_specs:
+        normalized = save_phase2_sequence(spec, records, sequences)
+        if spec.name == "soul_transition":
+            transition_frames = normalized
+    save_phase2_transition_parts(transition_frames, records)
+    phase2_asset_paths = set(records) - base_asset_paths
+
+    opt_dir = OUT / "opt"
+    for path in sorted(opt_dir.glob("*.png")):
+        audit_existing_asset(path, records, preserved=True)
+    opt_asset_paths = {f"opt/{relative}" for relative in opt_hashes_before}
+    if tree_hashes(opt_dir) != opt_hashes_before:
+        raise RuntimeError("ult/opt 在素材生成阶段发生变化，已停止")
+
+    source_hashes = {name: sha256(root_source / name) for name in REQUIRED_FILES[:-1]}
+    phase2_source_hashes = {name: sha256(root_phase2 / name) for name in PHASE2_REQUIRED_FILES}
+    audited_clean_paths = base_asset_paths | phase2_asset_paths
+    qa_green = {
+        key: records[key].get("residualGreenPixels", 0)
+        for key in sorted(audited_clean_paths)
+        if records[key].get("residualGreenPixels", 0)
+    }
+    qa_cyan = {
+        key: records[key].get("residualCyanPixels", 0)
+        for key in sorted(audited_clean_paths)
+        if records[key].get("residualCyanPixels", 0)
+    }
+    opt_unchanged = tree_hashes(opt_dir) == opt_hashes_before
     payload = {
-        "formatVersion": 1,
+        "formatVersion": 2,
         "character": "corruptgun",
         "ultimate": "darkWheel",
-        "sourceFolders": [str(root_source.relative_to(ROOT)), str(main_source.relative_to(ROOT))],
-        "sourceHashes": source_hashes,
+        "sourceSets": {
+            "base": {
+                "folders": [str(root_source.relative_to(ROOT)), str(main_source.relative_to(ROOT))],
+                "hashes": source_hashes,
+                "documentationHashes": {
+                    str((root_source / REQUIRED_FILES[-1]).relative_to(ROOT)): sha256(root_source / REQUIRED_FILES[-1]),
+                    str((main_source / REQUIRED_FILES[-1]).relative_to(ROOT)): sha256(main_source / REQUIRED_FILES[-1]),
+                },
+            },
+            "phase2": {
+                "folders": [str(root_phase2.relative_to(ROOT)), str(main_phase2.relative_to(ROOT))],
+                "hashes": phase2_source_hashes,
+            },
+        },
         "sequences": sequences,
         "assets": records,
+        "assetGroups": {
+            "base": {"paths": sorted(base_asset_paths)},
+            "opt": {"paths": sorted(opt_asset_paths), "preservedUnmodified": True},
+            "phase2": {"paths": sorted(phase2_asset_paths)},
+        },
         "renderContract": {
             "baseBlend": "source-over",
             "energyBlend": "lighter",
             "spinMaster": "768px registered single frame",
+            "phase2AtlasCell": [512, 512],
+            "phase2TransparentPadding": 30,
+            "optHashPolicy": "preserve-byte-for-byte",
             "fallbackIsVisuallyComplete": True,
             "mobileEncoding": "lossless WebP",
         },
         "qa": {
-            "status": "pass" if not qa_green and not qa_cyan else "fail",
+            "status": "pass" if not qa_green and not qa_cyan and opt_unchanged else "fail",
             "residualGreen": qa_green,
             "residualCyan": qa_cyan,
+            "phase2ResidualGreenPixels": sum(records[key].get("residualGreenPixels", 0) for key in phase2_asset_paths),
+            "phase2ResidualCyanPixels": sum(records[key].get("residualCyanPixels", 0) for key in phase2_asset_paths),
+            "optPreserved": opt_unchanged,
+            "optHashes": opt_hashes_before,
         },
     }
     manifest = OUT / "cg_ultimate_manifest.json"
     manifest.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     contact = make_contact_sheet(records)
+    phase2_contact = make_contact_sheet(
+        records,
+        phase2_asset_paths,
+        "corruptgun_ultimate_phase2_contact_sheet.png",
+    )
     report = {
         "manifest": str(manifest.relative_to(ROOT)),
-        "sourceCopiesVerified": payload["sourceFolders"],
+        "sourceCopiesVerified": payload["sourceSets"],
         "sequenceCount": len(sequences),
         "runtimeAssetCount": len(records),
+        "assetGroupCounts": {name: len(group["paths"]) for name, group in payload["assetGroups"].items()},
         "qa": payload["qa"],
         "contactSheet": str(contact.relative_to(ROOT)),
+        "phase2ContactSheet": str(phase2_contact.relative_to(ROOT)),
     }
-    (PREVIEW / "corruptgun_ultimate_asset_report.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    report_bytes = json.dumps(report, ensure_ascii=False, indent=2).encode("utf-8")
+    (PREVIEW / "corruptgun_ultimate_asset_report.json").write_bytes(report_bytes)
+    phase2_report = {
+        "manifest": report["manifest"],
+        "sourceHashes": phase2_source_hashes,
+        "sequences": {spec.name: sequences[spec.name] for spec in phase2_specs},
+        "runtimeAssetCount": len(phase2_asset_paths),
+        "residualGreenPixels": payload["qa"]["phase2ResidualGreenPixels"],
+        "residualCyanPixels": payload["qa"]["phase2ResidualCyanPixels"],
+        "optPreserved": opt_unchanged,
+        "optHashes": opt_hashes_before,
+        "contactSheet": phase2_contact.name,
+    }
+    phase2_report_bytes = json.dumps(phase2_report, ensure_ascii=False, indent=2).encode("utf-8")
+    (PREVIEW / "corruptgun_ultimate_phase2_asset_report.json").write_bytes(phase2_report_bytes)
+    for folder in (root_phase2, main_phase2):
+        (folder / "cg_ultimate_phase2_asset_report.json").write_bytes(phase2_report_bytes)
+        shutil.copy2(phase2_contact, folder / phase2_contact.name)
     if payload["qa"]["status"] != "pass":
         raise SystemExit("大招素材仍有绿/青残留，请检查素材报告")
     print(
         f"[corruptgun-ultimate] sequences={len(sequences)} assets={len(records)} "
-        f"contact={contact.relative_to(ROOT)}"
+        f"phase2={len(phase2_asset_paths)} contact={contact.relative_to(ROOT)}"
     )
 
 

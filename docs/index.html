@@ -239,6 +239,18 @@
   const ctx = canvas.getContext('2d', { alpha: false, desynchronized: !IS_WINDOWS_PLATFORM });
   const W = canvas.width;
   const H = canvas.height;
+  // ===== 动态渲染分辨率：低端设备兜底（逻辑坐标恒 720x1280，仅缩小像素背板，CSS 显示尺寸不变）=====
+  let renderScale = 1;
+  let rsLastChangeSec = -999;   // 上次背板变更时刻（防抖动振荡）
+  let rsFastHoldSec = 0;        // 连续流畅累计时长（升档条件）
+  function applyRenderScale(rs) {
+    rs = Math.max(0.70, Math.min(1, rs));
+    if (Math.abs(rs - renderScale) < 0.01) return;
+    renderScale = rs;
+    rsLastChangeSec = performance.now() * 0.001;
+    canvas.width = Math.round(W * rs);
+    canvas.height = Math.round(H * rs);
+  }
   const TAU = Math.PI * 2;
   const UA = navigator.userAgent || '';
   const HAS_COARSE_POINTER = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
@@ -263,6 +275,7 @@
   );
   const MOBILE_BEST_PERF_LEVEL = 0; // perfLevel: 0=high, 1=medium, 2=low. Mobile auto usually starts lower, but manual high is allowed.
   const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 2 : 0;
+  if (IS_MOBILE_RUNTIME) applyRenderScale(0.85);
   let perfHudEnabled = /(?:[?&])perf(?:=1|=true|&|$)/.test((typeof location !== 'undefined' && location.search) || '');
   const FORCE_MOBILE_FULLSCREEN = /(?:[?&])fullscreen(?:=1|=true|&|$)/.test(SEARCH_PARAMS);
   const TARGET_FPS_STORAGE_KEY = 'moonBulletTargetFps';
@@ -1631,6 +1644,16 @@
     cgUltWheelSteadyDetail: 'assets/player/corrupt_gun/ult/steady/cg_ult_wheel_steady_detail.png',
     cgUltIcon: 'assets/player/corrupt_gun/ult/ui/cg_ult_icon.png',
     cgUltSlowMark: 'assets/player/corrupt_gun/ult/ui/cg_ult_slow_mark.png',
+    cgUltSoulEmergeBase: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_emerge_base_atlas.png',
+    cgUltSoulEmergeEnergy: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_emerge_energy_atlas.png',
+    cgUltSoulFlightBase: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_flight_base_atlas.png',
+    cgUltSoulFlightEnergy: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_flight_energy_atlas.png',
+    cgUltSoulVariantsBase: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_variants_base_atlas.png',
+    cgUltSoulVariantsEnergy: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_variants_energy_atlas.png',
+    cgUltSoulBurstBase: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_burst_base_atlas.png',
+    cgUltSoulBurstEnergy: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_burst_energy_atlas.png',
+    cgUltSoulTransitionBase: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_transition_base_atlas.png',
+    cgUltSoulTransitionEnergy: 'assets/player/corrupt_gun/ult/phase2/atlas/cg_ult_soul_transition_energy_atlas.png',
     cgMatNormalAo: 'assets/player/corrupt_gun/body/material/cg_mat_normal_ao.png',
     cgMatNormalCrystal: 'assets/player/corrupt_gun/body/material/cg_mat_normal_crystal.png',
     cgMatNormalMuzzle: 'assets/player/corrupt_gun/body/material/cg_mat_normal_muzzle.png',
@@ -1681,10 +1704,17 @@
   addCgAssetFrames('cgDotP', 'fx/cg_dot_p', 3);
   addCgAssetFrames('cgDotW', 'fx/cg_dot_w', 3);
   addCgAssetFrames('cgUltBladeA', 'ult/parts/cg_ult_blade_a', 4);
+  addCgAssetFrames('cgUltHarvesterBase', 'ult/parts/cg_ult_harvester_base', 3);
+  addCgAssetFrames('cgUltHarvesterEnergy', 'ult/parts/cg_ult_harvester_energy', 3);
   addCgAssetFrames('cgUltSwirl', 'ult/parts/cg_ult_swirl', 3);
   addCgAssetFrames('cgUltDartS', 'ult/parts/cg_ult_dart_s', 4);
   addCgAssetFrames('cgUltRingThin', 'ult/parts/cg_ult_ring_thin', 3);
   addCgAssetFrames('cgUltCrescent', 'ult/parts/cg_ult_crescent', 8);
+  // V1.4 刀锋炼狱优化素材（大招优化文件夹）
+  addCgAssetFrames('cgUltScythe', 'ult/opt/cg_ult_scythe', 8);       // 大型金属镰刃
+  addCgAssetFrames('cgUltBladeWheel', 'ult/opt/cg_ult_bladewheel', 8); // 整体刀锋轮盘帧
+  addCgAssetFrames('cgUltHole', 'ult/opt/cg_ult_hole', 12);          // 黑洞吸积盘/爆发
+  addCgAssetFrames('cgUltRimRing', 'ult/opt/cg_ult_rimring', 2);     // 事件视界细环
   addCgAssetFrames('cgUltVortexS', 'ult/parts/cg_ult_vortex_s', 4);
   addCgAssetFrames('cgUltRune', 'ult/parts/cg_ult_rune', 6);
   addCgAssetFrames('cgMatNormalMetal', 'body/material/cg_mat_normal_metal', 8);
@@ -2255,9 +2285,19 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-  const UPDATE_NOTICE_VERSION = '2026-07-11-dark-wheel-crisp-mobile-v30';
+  const UPDATE_NOTICE_VERSION = '2026-07-12-dark-wheel-soul-harvester-v31';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-12',
+      items: [
+        '7号战机大招「暗蚀轮回」收割影刃 V3.31：外围刀刃不再依靠整张复合贴图和同图残影旋转，改为黑钢本体、低亮裂纹能量、刀根核心、刀脊流光、刃口扫光和针状刀尖逐层绘制。',
+        '每种影刃都按真实素材锚点校正：弯镰与长枪刃分别对齐轮毂、金属脊、刃口和刀尖，去掉错位的额外贴片，金属纹理保持清晰，发光只覆盖能量与锋刃区域。',
+        '旋转切割感全面强化：新增从刀根自然接出的黑红锥形曳光、错相刃影、刀尖碎光、轮毂环绕粒子和世界坐标脱落刃屑；刀身经过后空间裂痕会继续粒子化消散。',
+        '高、中、低画质都保留刀根、刀脊、刃口、刀尖、曳光和至少一层错位刀影；低配仅减少残影与粒子数量，不再退化成普通黑红贴图。',
+        '新增大招二段「万魂蚀附」：终爆残核会裂开虚空魂口，冤魂错相爬出并飞扑附近敌人，完成附身后触发局部腐蚀爆裂；游魂数量会随一段吸收的弹幕和敌人增加。',
+      ],
+    },
     {
       date: '2026-07-11',
       items: [
@@ -3758,8 +3798,8 @@
     dangerDimMax: 0.18,
     hurtVignetteSeconds: 0.42,
     hurtVignetteAlpha: 0.24,
-    uiStripMul: 0.78,
-    uiScanMul: 0.55,
+    uiStripMul: 0.88,
+    uiScanMul: 0.66,
     uiCornerMul: 0.72,
     uiWashMul: 0.58,
   });
@@ -7518,7 +7558,7 @@
   });
   const CG_ULT_CONFIG = Object.freeze({
     name: '暗蚀轮回',
-    bombLock: 11.5,
+    bombLock: 18.8,
     cast: 0.50,
     flightMax: 0.603,
     burst: 0.30,
@@ -7537,12 +7577,25 @@
       discSize: 540, innerDiscSize: 358,
       coreRadius: 112, coreBreath: 2, corePeriod: 0.90,
       outerSpeed: 2.24, innerSpeed: -3.24, bladeSpeed: 4.10,
-      bladeRadius: 282, bladeSize: 126, metalBladeSize: 154, bladeGhostAngle: 0.18,
+      bladeRadius: 314,
+      bladeBodyWidth: 216, bladeBodyHeight: 104,
+      bladeTrailSweep: 0.58, bladeTrailWidth: 26,
+      bladeEnergyBaseAlpha: 0.17, bladeEnergyPulseAlpha: 0.10,
+      bladeGlintPeriod: 0.42, bladeGlintSpan: 0.10,
+      bladeGhostLag: 0.14, bladeGhostAlpha: 0.16,
+      bladeRootRingSpeed: 2.10, bladeSpineFlowSpeed: 1.55,
+      bladeTipBaseLength: 12, bladeTipPeakLength: 26,
+      spaceCutLife: 0.46, spaceCutRadiusMin: 272, spaceCutRadiusMax: 382,
       slashRadius: 246, slashSize: 132,
       dartRadius: 188, dartSize: 90,
       runeMinRadius: 166, runeMaxRadius: 238,
       flowOuterRadius: 338, flowInnerRadius: 88,
       crispRimRadius: 250, crispRimTeeth: 36,
+      coreFlowScale: 3.3, coreFlowAlpha: 0.28,
+      innerFlowScale: 2.2, innerFlowAlpha: 0.36,
+      eventRimScale: 2.9, eventRimAlpha: 0.34, eventRimAbsorbedBoost: 0.12,
+      warpOuterRadius: 520, warpInnerRadius: 275,
+      warpStripLength: 92, warpStripWidth: 1.6,
     }),
     absorption: Object.freeze({
       farPull: 520, nearPull: 900, nearRadius: 680, consumeRadius: 120,
@@ -7558,11 +7611,22 @@
     vignette: Object.freeze({ castPeak: 0.30, flight: 0.12, spin: 0.22 }),
     fxCaps: Object.freeze([96, 64, 36]),
     quality: Object.freeze({
-      blades: Object.freeze([9, 8, 8]),
-      darts: Object.freeze([7, 6, 5]),
-      slashes: Object.freeze([5, 4, 4]),
+      blades: Object.freeze([6, 5, 4]),
+      darts: Object.freeze([7, 6, 4]),
+      slashes: Object.freeze([3, 2, 1]),
       runes: Object.freeze([6, 4, 0]),
       spirals: Object.freeze([3, 2, 2]),
+      warpStrips: Object.freeze([7, 5, 3]),
+      bladeTrailSegments: Object.freeze([7, 5, 3]),
+      bladeAfterimages: Object.freeze([2, 1, 1]),
+      bladeSpinePackets: Object.freeze([3, 2, 1]),
+      bladeRootArcs: Object.freeze([2, 1, 1]),
+      bladeDust: Object.freeze([4, 2, 1]),
+      bladeHubParticles: Object.freeze([3, 2, 1]),
+      bladeTipParticles: Object.freeze([2, 1, 1]),
+      bladeEdgeGlints: Object.freeze([2, 1, 1]),
+      spaceCuts: Object.freeze([5, 3, 2]),
+      spaceCutInterval: Object.freeze([0.11, 0.16, 0.22]),
     }),
     atlas: Object.freeze({
       orbStage: Object.freeze({ base: 'cgUltOrbStageBase', energy: 'cgUltOrbStageEnergy', frames: 6, cols: 3, rows: 2, frameMs: 83 }),
@@ -7574,6 +7638,94 @@
       formB: Object.freeze({ base: 'cgUltFormBBase', energy: 'cgUltFormBEnergy', frames: 8, cols: 4, rows: 2, frameMs: 100 }),
       wheel: Object.freeze({ base: 'cgUltWheelBase', energy: 'cgUltWheelEnergy', frames: 8, cols: 4, rows: 2, frameMs: 90, steadyFrame: 2 }),
       wheelInner: Object.freeze({ base: 'cgUltWheelInnerBase', energy: 'cgUltWheelInnerEnergy', frames: 8, cols: 4, rows: 2, frameMs: 80, steadyFrame: 2 }),
+    }),
+  });
+  const CG_ULT_BLADE_PROFILES = Object.freeze({
+    2: Object.freeze({
+      hubX: -0.190, hubY: -0.010, rootX: -0.430, rootY: 0.333, tipX: 0.435, tipY: 0.052,
+      edge: Object.freeze([-0.430, 0.333, -0.340, 0.050, -0.200, -0.270, 0.005, -0.365, 0.200, -0.340, 0.370, -0.130, 0.435, 0.052]),
+      spine: Object.freeze([-0.300, 0.120, -0.130, -0.120, 0.120, -0.230, 0.350, -0.015]),
+      ribX1: -0.02, ribY1: -0.22, ribX2: 0.20, ribY2: -0.18,
+    }),
+    3: Object.freeze({
+      hubX: 0.195, hubY: 0, rootX: -0.432, rootY: -0.068, tipX: 0.435, tipY: 0.047,
+      edge: Object.freeze([-0.432, -0.068, -0.185, -0.130, 0.100, -0.145, 0.232, -0.083, 0.339, -0.047, 0.396, 0.016, 0.435, 0.047]),
+      spine: Object.freeze([-0.360, 0.005, -0.100, -0.055, 0.170, -0.050, 0.370, 0.012]),
+      ribX1: 0.27, ribY1: -0.04, ribX2: 0.36, ribY2: 0.01,
+    }),
+  });
+  const CG_ULT_SECOND_CONFIG = Object.freeze({
+    name: '万魂蚀附',
+    duration: 7.2,
+    transition: 0.45,
+    bridgeLead: 0.88,
+    portalHold: 2.20,
+    portalFadeEnd: 2.80,
+    bridgeTextureFloor: 0.36,
+    centralEmergeTime: 1.20,
+    centralEmergeFadeStart: 1.18,
+    centralEmergeFadeEnd: 1.72,
+    spawnStart: 0.54,
+    spawnWaveSize: 5,
+    spawnWaveInterval: 0.28,
+    spawnJitter: 0.045,
+    bridgeKeyframes: Object.freeze([
+      Object.freeze({ t: 0.00, frame: 3, width: 620, height: 620 }),
+      Object.freeze({ t: 0.12, frame: 4, width: 520, height: 520 }),
+      Object.freeze({ t: 0.22, frame: 4, width: 500, height: 500 }),
+      Object.freeze({ t: 0.48, frame: 4, width: 490, height: 490 }),
+      Object.freeze({ t: 0.62, frame: 5, width: 420, height: 420 }),
+      Object.freeze({ t: 0.76, frame: 8, width: 410, height: 410 }),
+      Object.freeze({ t: 0.88, frame: 8, width: 380, height: 380 }),
+    ]),
+    centralKeyframes: Object.freeze([
+      Object.freeze({ t: 0.00, frame: 0, width: 320, height: 220, y: 8 }),
+      Object.freeze({ t: 0.14, frame: 1, width: 340, height: 238, y: 0 }),
+      Object.freeze({ t: 0.32, frame: 2, width: 270, height: 330, y: -64 }),
+      Object.freeze({ t: 0.50, frame: 3, width: 330, height: 292, y: -52 }),
+      Object.freeze({ t: 0.70, frame: 4, width: 360, height: 312, y: -48 }),
+      Object.freeze({ t: 0.94, frame: 5, width: 372, height: 276, y: -42 }),
+      Object.freeze({ t: 1.20, frame: 5, width: 372, height: 276, y: -42 }),
+    ]),
+    baseSouls: 8,
+    bulletDivisor: 8,
+    soulsPerEnemy: 2,
+    maxSouls: 30,
+    captureRadius: 184,
+    targetRadius: 840,
+    emergeTime: 0.78,
+    seekTime: 3.2,
+    possessTime: 0.52,
+    burstTime: 0.62,
+    dissolveTime: 0.50,
+    forceDissolveAt: 6.65,
+    stopPossessingAt: 6.05,
+    retargetInterval: 0.12,
+    targetBurstSpacing: 0.10,
+    minPounceTime: 0.36,
+    pounceMorphTime: 0.20,
+    pounceDistance: 190,
+    possessMorphTime: 0.15,
+    speedStart: 130,
+    speedMax: 500,
+    speedRush: 720,
+    acceleration: 520,
+    turnRate: 4.8,
+    contactPadding: 34,
+    primaryDamage: 140,
+    splashDamage: 70,
+    splashRadius: 108,
+    bossMultiplier: 0.55,
+    burstVisualSize: 236,
+    trailNodes: Object.freeze([7, 5, 3]),
+    particleCounts: Object.freeze([6, 4, 2]),
+    particleCaps: Object.freeze([180, 120, 72]),
+    atlas: Object.freeze({
+      emerge: Object.freeze({ base: 'cgUltSoulEmergeBase', energy: 'cgUltSoulEmergeEnergy', frames: 6, cols: 3, rows: 2 }),
+      flight: Object.freeze({ base: 'cgUltSoulFlightBase', energy: 'cgUltSoulFlightEnergy', frames: 6, cols: 3, rows: 2 }),
+      variants: Object.freeze({ base: 'cgUltSoulVariantsBase', energy: 'cgUltSoulVariantsEnergy', frames: 7, cols: 4, rows: 2 }),
+      burst: Object.freeze({ base: 'cgUltSoulBurstBase', energy: 'cgUltSoulBurstEnergy', frames: 8, cols: 4, rows: 2 }),
+      transition: Object.freeze({ base: 'cgUltSoulTransitionBase', energy: 'cgUltSoulTransitionEnergy', frames: 11, cols: 4, rows: 3 }),
     }),
   });
   const CG_VFX_CONFIG = Object.freeze({
@@ -7618,7 +7770,7 @@
       life: 0.86, growEnd: 0.20, holdEnd: 0.48, fadeStart: 0.48, fadeEnd: 0.82,
       residueLife: 0.30, particlesHigh: 2, particlesMedium: 1, particlesLow: 1,
       pathSegments: 18, curveMain: 28, curveClone: 34,
-      linkSpacing: 18, maxLinks: 16, maxLinksMedium: 12, maxLinksLow: 9,
+      linkSpacing: 18, maxLinks: 16, maxLinksMedium: 12, maxLinksLow: 6,
       spineStride: 2, barbStride: 3,
       linkWidth: 44, linkHeight: 22, spineWidth: 62, spineHeight: 26,
       barbWidth: 38, barbHeight: 30, headMain: 72, headClone: 78,
@@ -7643,7 +7795,35 @@
     cgUltOrb: Object.freeze({ damage: 220, pierce: 99, speed: 730, r: 20, size: 96, source: 'ultimate' }),
   });
   const CG_SHOT_KINDS = Object.freeze(Object.keys(CG_BULLET_CONFIG));
-  const CG_ULT_CORRUPTION_KINDS = Object.freeze(['cgUltOrb', 'cgUltBurst', 'cgUltWheel', 'cgUltFinale']);
+  // ===== 性能基建：渐变/精灵缓存 =====
+  // 实测手机端主要 CPU/GC 热点是"每帧 createLinear/RadialGradient 300+ 次"（UI糖果面板+暗盘+黑核）。
+  // 原则：渐变对象按定位键缓存复用；径向暗盘/气泡/光带烘焙成离屏精灵，用 drawImage+globalAlpha 替代。
+  const gradientCache = new Map();
+  function cachedGradient(key, maker) {
+    let g = gradientCache.get(key);
+    if (g === undefined) {
+      if (gradientCache.size > 220) gradientCache.clear();
+      g = maker();
+      gradientCache.set(key, g);
+    }
+    return g;
+  }
+  const spriteCache = new Map();
+  function cachedSprite(key, w, h, painter) {
+    let cv = spriteCache.get(key);
+    if (!cv) {
+      if (spriteCache.size > 128) spriteCache.clear();
+      cv = document.createElement('canvas');
+      cv.width = Math.max(2, Math.ceil(w));
+      cv.height = Math.max(2, Math.ceil(h));
+      painter(cv.getContext('2d'), cv.width, cv.height);
+      spriteCache.set(key, cv);
+    }
+    return cv;
+  }
+  // 移动端/低画质轻量档（IS_MOBILE_RUNTIME 默认 perfLevel=2）
+  function cgLite() { return perfLevel >= 2; }
+  const CG_ULT_CORRUPTION_KINDS = Object.freeze(['cgUltOrb', 'cgUltBurst', 'cgUltWheel', 'cgUltFinale', 'cgUltSoul']);
   const corruptGunState = {
     t: 0,
     pendingShot: null,
@@ -7671,7 +7851,15 @@
       absorbed: 0, damageMul: 1, orbRef: null, burstApplied: false,
       finaleApplied: false, intakeDone: false, launchDone: false,
       bossWheelStacks: 0,
-      absorptionFx: [], residueFx: [], castRefunded: false,
+      absorptionFx: [], residueFx: [], spaceCuts: [], bladeCutT: 0, bladeCutSerial: 0,
+      bladeAcceptance: false, castRefunded: false,
+      soulhunt: {
+        active: false, t: 0, planned: 0, spawned: 0, possessing: 0,
+        burst: 0, dissolving: 0, completed: 0, absorbedEnemies: 0,
+        originX: 0, originY: 0, souls: [], particles: [],
+        devouredEnemies: new Set(), targetClaims: new Map(), targetIds: new Map(),
+        nextTargetId: 1, nextBurstAt: new Map(), lastSfxT: -99,
+      },
     },
   };
   const cgVfxRenderer = {
@@ -7713,7 +7901,7 @@
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(image, -width / 2, top, width, h);
-    if (options.glow && perfLevel < 3) {
+    if (options.glow && perfLevel < 2) {
       ctx.globalCompositeOperation = 'lighter';
       ctx.globalAlpha = alpha * (options.glowAlpha === undefined ? 0.35 : options.glowAlpha);
       const scale = options.glowScale || 1.30;
@@ -7885,7 +8073,7 @@
     return cgVfxRenderer.frameActive;
   }
   function cgVfxSceneActive() {
-    if (corruptgunActive() || corruptGunState.clones.length || corruptGunState.fx.length) return true;
+    if (corruptgunActive() || corruptGunState.clones.length || corruptGunState.fx.length || corruptGunState.ultimate.active) return true;
     if (playerShots.some(isCgShot)) return true;
     if (boss && boss._cgMark) return true;
     return enemies.some(enemy => !!(enemy && enemy._cgMark));
@@ -7950,6 +8138,12 @@
     return spawnCgSequence('cgShockring', 6, life / 6, x, y, fromSize, { scaleFrom: 1, scaleTo: toSize / Math.max(1, fromSize), glow: true });
   }
   function spawnCgImpactV2(x, y, size, variant = 'normal', power = 1, follow = null) {
+    if (cgLite()) {
+      // lite：冲击特效并发上限 6（伤害不受影响，只限演出）
+      let liveImpacts = 0;
+      for (const fx of corruptGunState.fx) if (fx.type === 'impactV2') liveImpacts++;
+      if (liveImpacts >= 6) return null;
+    }
     return pushCgFx({
       type: 'impactV2', x, y, size, variant, power, follow,
       seed: Math.random(), life: CG_VFX_CONFIG.impact.life, maxLife: CG_VFX_CONFIG.impact.life,
@@ -8119,19 +8313,32 @@
         ctx.lineTo(fx.x + lx * lineLen, fx.y + ly * lineLen);
         ctx.stroke();
         ctx.restore();
+      } else if (fx.type === 'wheelHitCut') {
+        const p = clamp(age / fx.maxLife, 0, 1);
+        const textureEnv = Math.sin(clamp(p / 0.42, 0, 1) * Math.PI) * (1 - clamp((p - 0.58) / 0.42, 0, 1));
+        drawCgAsset(fx.key, fx.x, fx.y, fx.length * lerp(0.72, 1.08, p), null, {
+          rot: fx.rot, blend: 'source-over', alpha: textureEnv * 0.28, glow: false,
+        });
+        drawCgUltimateCutRift(
+          fx.x, fx.y, fx.rot, fx.length, fx.width, fx.bend,
+          age, fx.maxLife, 1, true,
+        );
       } else if (fx.type === 'dark') {
-        // 湮灭暗盘：source-over 径向渐变，给亮特效"暗的一半"
+        // 湮灭暗盘（缓存精灵版）
         const p = clamp(age / fx.maxLife, 0, 1);
         const radius = Math.max(2, lerp(fx.r0, fx.r1, p));
         const darkAlpha = fx.alpha * clamp(fx.life / Math.max(0.001, fx.maxLife * 0.55), 0, 1);
+        const cv = cachedSprite('cg_darkdisc', 160, 160, (c2, s) => {
+          const g = c2.createRadialGradient(s / 2, s / 2, s * 0.06, s / 2, s / 2, s / 2);
+          g.addColorStop(0, 'rgba(10,1,8,1)');
+          g.addColorStop(0.72, 'rgba(16,2,10,0.82)');
+          g.addColorStop(1, 'rgba(16,2,10,0)');
+          c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+        });
         ctx.save();
         ctx.globalCompositeOperation = 'source-over';
-        const g = ctx.createRadialGradient(fx.x, fx.y, radius * 0.12, fx.x, fx.y, radius);
-        g.addColorStop(0, `rgba(10,1,8,${darkAlpha.toFixed(3)})`);
-        g.addColorStop(0.72, `rgba(16,2,10,${(darkAlpha * 0.82).toFixed(3)})`);
-        g.addColorStop(1, 'rgba(16,2,10,0)');
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(fx.x, fx.y, radius, 0, TAU); ctx.fill();
+        ctx.globalAlpha = darkAlpha;
+        ctx.drawImage(cv, fx.x - radius, fx.y - radius, radius * 2, radius * 2);
         ctx.restore();
       } else if (fx.type === 'infectionHit') {
         const p = clamp(age / fx.maxLife, 0, 1);
@@ -8219,12 +8426,16 @@
     ctx.globalCompositeOperation = 'source-over';
     if (implosion > 0.01) {
       const ir = radius * lerp(0.38, 0.12, open(0, 0.30, p));
-      const voidGradient = ctx.createRadialGradient(0, 0, ir * 0.18, 0, 0, ir);
-      voidGradient.addColorStop(0, `rgba(1,0,5,${((cloneImpact ? 0.98 : 0.92) * implosion).toFixed(3)})`);
-      voidGradient.addColorStop(0.70, cloneImpact ? `rgba(7,0,8,${(0.94 * implosion).toFixed(3)})` : `rgba(15,0,13,${(0.88 * implosion).toFixed(3)})`);
-      voidGradient.addColorStop(1, cloneImpact ? 'rgba(41,0,21,0)' : 'rgba(92,0,34,0)');
-      ctx.fillStyle = voidGradient;
-      ctx.beginPath(); ctx.arc(0, 0, ir, 0, TAU); ctx.fill();
+      const voidCv = cachedSprite(cloneImpact ? 'cg_imp_void_c' : 'cg_imp_void', 128, 128, (c2, s) => {
+        const g = c2.createRadialGradient(s / 2, s / 2, s * 0.09, s / 2, s / 2, s / 2);
+        g.addColorStop(0, cloneImpact ? 'rgba(1,0,5,0.98)' : 'rgba(1,0,5,0.92)');
+        g.addColorStop(0.70, cloneImpact ? 'rgba(7,0,8,0.94)' : 'rgba(15,0,13,0.88)');
+        g.addColorStop(1, cloneImpact ? 'rgba(41,0,21,0)' : 'rgba(92,0,34,0)');
+        c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+      });
+      ctx.globalAlpha = implosion;
+      ctx.drawImage(voidCv, -ir, -ir, ir * 2, ir * 2);
+      ctx.globalAlpha = 1;
     }
     ctx.globalCompositeOperation = 'lighter';
     if (burst > 0.01) {
@@ -8240,11 +8451,16 @@
         ctx.beginPath(); ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner); ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer); ctx.stroke();
       }
       const coreRadius = radius * (0.13 + burst * 0.05);
-      const core = ctx.createRadialGradient(0, 0, 0, 0, 0, coreRadius);
-      core.addColorStop(0, cloneImpact ? `rgba(205,30,78,${Math.min(0.82, burst).toFixed(3)})` : `rgba(255,249,252,${Math.min(1, burst * 1.2).toFixed(3)})`);
-      core.addColorStop(0.30, cloneImpact ? `rgba(105,3,39,${(0.88 * burst).toFixed(3)})` : `rgba(255,108,148,${(0.92 * burst).toFixed(3)})`);
-      core.addColorStop(1, cloneImpact ? 'rgba(35,0,19,0)' : 'rgba(221,7,65,0)');
-      ctx.fillStyle = core; ctx.beginPath(); ctx.arc(0, 0, coreRadius, 0, TAU); ctx.fill();
+      const coreCv = cachedSprite(cloneImpact ? 'cg_imp_core_c' : 'cg_imp_core', 96, 96, (c2, s) => {
+        const g = c2.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+        g.addColorStop(0, cloneImpact ? 'rgba(205,30,78,0.82)' : 'rgba(255,249,252,1)');
+        g.addColorStop(0.30, cloneImpact ? 'rgba(105,3,39,0.88)' : 'rgba(255,108,148,0.92)');
+        g.addColorStop(1, cloneImpact ? 'rgba(35,0,19,0)' : 'rgba(221,7,65,0)');
+        c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+      });
+      ctx.globalAlpha = Math.min(1, burst * (cloneImpact ? 1 : 1.1));
+      ctx.drawImage(coreCv, -coreRadius, -coreRadius, coreRadius * 2, coreRadius * 2);
+      ctx.globalAlpha = 1;
     }
     if (rings > 0.01) {
       ctx.lineCap = 'butt';
@@ -8371,7 +8587,7 @@
     s.hitIds.push(target);
     return true;
   }
-  function corruptDamageForHit(s, target, isBoss = false) {
+  function corruptDamageForHit(s, target, isBoss = false, options = {}) {
     const previous = target._cgMark || null;
     const result = corruptHitPreview(s, previous, isBoss);
     if (!result.eligible) return result.damage;
@@ -8382,8 +8598,9 @@
     s.cgBossDamageMul = bossDamageMul;
     target._cgMark = result.mark;
     const cgTheme = s.kind === 'cgClone' || s.cgSource === 'clone' || s.cgTheme === 'clone' ? 'clone' : 'main';
-    queueCgSpread(target, result.damage, isBoss, cgTheme);
+    if (!options.skipSpread) queueCgSpread(target, result.damage, isBoss, cgTheme);
     if (isBoss) addCgBossCorrosionStack(target, s);
+    if (options.skipDefaultFx) return actualDamage;
     const hitVariant = cgTheme === 'clone' ? 'clone' : (s.kind === 'cgMainOver' || s.kind === 'cgSideOver' ? 'over' : 'normal');
     const hitSize = hitVariant === 'clone'
       ? (s.cgCloneOver ? CG_VFX_CONFIG.sizes.impactCloneOver : CG_VFX_CONFIG.sizes.impactClone)
@@ -8743,7 +8960,8 @@
     const alpha = mark.t < 1 ? lerp(0.34, 0.82, mark.t) : 0.88;
     drawCgOrbUnderDisc(target.x, target.y, size * 1.15, 0.30 * (alpha / 0.88)); // 标记暗盘：腐蚀吞噬的"暗一半"
     const atlasOk = drawCgAtlasPair(spec, frame, target.x, target.y, size, size * 0.72, { baseAlpha: alpha * 0.84, energyAlpha: alpha });
-    // 蠕动弧：2 段 40° 圆弧沿标记环往复爬行（±1.4rad/s）——"腐蚀在活动"
+    // 蠕动弧：2 段 40° 圆弧沿标记环往复爬行（±1.4rad/s）——"腐蚀在活动"（lite 关闭）
+    if (cgLite()) return;
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     ctx.strokeStyle = `rgba(236,63,112,${(alpha * 0.5).toFixed(3)})`;
@@ -8817,6 +9035,292 @@
     if (shot.t >= 0.18) corruptGunState.pendingShot = null;
   }
 
+  function cgUltimateSoulCount(absorbedBullets = 0, absorbedEnemies = 0) {
+    const cfg = CG_ULT_SECOND_CONFIG;
+    return clamp(
+      cfg.baseSouls + Math.floor(Math.max(0, absorbedBullets | 0) / cfg.bulletDivisor) + Math.max(0, absorbedEnemies | 0) * cfg.soulsPerEnemy,
+      cfg.baseSouls,
+      cfg.maxSouls,
+    );
+  }
+  function cgSoulhuntState() { return corruptGunState.ultimate.soulhunt; }
+  function resetCgUltimateSoulhunt(clearDevoured = true) {
+    const sh = cgSoulhuntState();
+    sh.active = false; sh.t = 0; sh.planned = 0; sh.spawned = 0;
+    sh.possessing = 0; sh.burst = 0; sh.dissolving = 0; sh.completed = 0; sh.exploded = 0;
+    sh.absorbedEnemies = 0; sh.originX = 0; sh.originY = 0;
+    sh.souls.length = 0; sh.particles.length = 0;
+    sh.targetClaims.clear(); sh.targetIds.clear(); sh.nextBurstAt.clear(); sh.nextTargetId = 1;
+    sh.lastSfxT = -99; sh.killedTargetId = null;
+    if (clearDevoured) sh.devouredEnemies.clear();
+  }
+  function cgUltimateRecordDevouredEnemy(target, reason = 'core') {
+    const u = corruptGunState.ultimate;
+    const sh = u.soulhunt;
+    if (!u.active || u.phase === 'soulhunt' || !target || target === boss || target.isBoss || target.dead) return false;
+    if (sh.devouredEnemies.has(target)) return false;
+    sh.devouredEnemies.add(target);
+    target._cgUltDevouredReason = reason;
+    return true;
+  }
+  function cgSoulTargetValid(target) {
+    if (!target || target.dead || !(target.hp > 0) || target.inv > 0) return false;
+    if (target === boss) return state === 'boss' && !!boss && !boss.dead;
+    return enemies.includes(target) && target.y > -90 && target.y < H + 90;
+  }
+  function cgSoulTargetId(target) {
+    if (!target) return null;
+    if (target === boss) return 'boss';
+    const sh = cgSoulhuntState();
+    if (!sh.targetIds.has(target)) sh.targetIds.set(target, `target-${sh.nextTargetId++}`);
+    return sh.targetIds.get(target);
+  }
+  function cgSoulTargetPool() {
+    const sh = cgSoulhuntState(), radius2 = CG_ULT_SECOND_CONFIG.targetRadius ** 2;
+    const pool = enemies.filter(target => cgSoulTargetValid(target) && dist2(sh.originX, sh.originY, target.x, target.y) <= radius2);
+    if (boss && cgSoulTargetValid(boss) && dist2(sh.originX, sh.originY, boss.x, boss.y) <= radius2) pool.push(boss);
+    return pool;
+  }
+  function cgSoulReleaseTarget(soul) {
+    const sh = cgSoulhuntState(), target = soul && soul.target;
+    if (target) {
+      const count = Math.max(0, (sh.targetClaims.get(target) || 0) - 1);
+      if (count > 0) sh.targetClaims.set(target, count); else sh.targetClaims.delete(target);
+    }
+    if (soul) { soul.target = null; soul.targetId = null; }
+  }
+  function cgSoulAssignTarget(soul) {
+    const sh = cgSoulhuntState();
+    const pool = cgSoulTargetPool();
+    if (!pool.length) { cgSoulReleaseTarget(soul); return null; }
+    pool.sort((a, b) => {
+      const claimDelta = (sh.targetClaims.get(a) || 0) - (sh.targetClaims.get(b) || 0);
+      if (claimDelta) return claimDelta;
+      const distanceDelta = dist2(soul.x, soul.y, a.x, a.y) - dist2(soul.x, soul.y, b.x, b.y);
+      if (Math.abs(distanceDelta) > 0.001) return distanceDelta;
+      return String(cgSoulTargetId(a)).localeCompare(String(cgSoulTargetId(b)));
+    });
+    const target = pool[0];
+    if (soul.target !== target) {
+      cgSoulReleaseTarget(soul);
+      soul.target = target;
+      soul.targetId = cgSoulTargetId(target);
+      sh.targetClaims.set(target, (sh.targetClaims.get(target) || 0) + 1);
+    }
+    return target;
+  }
+  function cgSoulAngleDelta(from, to) {
+    let delta = (to - from + Math.PI) % TAU;
+    if (delta < 0) delta += TAU;
+    return delta - Math.PI;
+  }
+  function cgSoulTrailCap() {
+    return CG_ULT_SECOND_CONFIG.trailNodes[Math.min(2, Math.max(0, perfLevel | 0))] || 3;
+  }
+  function pushCgSoulParticle(particle) {
+    const sh = cgSoulhuntState();
+    const cap = CG_ULT_SECOND_CONFIG.particleCaps[Math.min(2, Math.max(0, perfLevel | 0))] || 72;
+    if (sh.particles.length >= cap) sh.particles.shift();
+    sh.particles.push(particle);
+  }
+  function spawnCgSoulAsh(x, y, count, outward = 1) {
+    for (let index = 0; index < count; index++) {
+      const angle = rand(0, TAU), speed = rand(48, 190) * outward, life = rand(0.38, 0.72);
+      pushCgSoulParticle({
+        x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - rand(12, 54),
+        life, maxLife: life, size: rand(5, 12), rot: angle, spin: rand(-5, 5),
+        family: index % 3 === 0 ? 'P' : 'R',
+      });
+    }
+  }
+  function beginCgSoulDissolve(soul) {
+    if (!soul || soul.state === 'dissolve' || soul.state === 'done') return;
+    cgSoulReleaseTarget(soul);
+    soul.state = 'dissolve'; soul.stateT = 0;
+    spawnCgSoulAsh(soul.x, soul.y, CG_ULT_SECOND_CONFIG.particleCounts[Math.min(2, perfLevel)] || 2, 0.55);
+  }
+  function beginCgSoulPossess(soul) {
+    if (!soul || !cgSoulTargetValid(soul.target)) return false;
+    const sh = cgSoulhuntState();
+    soul.possessStartAngle = soul.angle;
+    soul.state = 'possess'; soul.stateT = 0;
+    soul.lastTargetX = soul.target.x; soul.lastTargetY = soul.target.y;
+    const earliest = Math.max(sh.t + CG_ULT_SECOND_CONFIG.possessTime, sh.nextBurstAt.get(soul.target) || 0);
+    soul.burstAt = earliest;
+    sh.nextBurstAt.set(soul.target, earliest + CG_ULT_SECOND_CONFIG.targetBurstSpacing);
+    return true;
+  }
+  function cgUltimateSoulHitTarget(soul, target, isBoss) {
+    if (!target || target.dead || !(target.hp > 0) || target.inv > 0) return 0;
+    const u = corruptGunState.ultimate, cfg = CG_ULT_SECOND_CONFIG;
+    const source = cgUltimateSource('cgUltSoul', cfg.primaryDamage * u.damageMul);
+    source.x = soul.x; source.y = soul.y; source.vx = Math.cos(soul.angle); source.vy = Math.sin(soul.angle);
+    const damage = corruptDamageForHit(source, target, isBoss, { skipSpread: true, skipDefaultFx: true });
+    if (isBoss) {
+      hitBoss(damage * cfg.bossMultiplier, soul.x, soul.y, false, source.cgBossDamageMul || 1);
+      dmgText(target.x + rand(-20, 20), target.y - 24, Math.round(damage * cfg.bossMultiplier), '#b80f48', 19);
+      return damage * cfg.bossMultiplier;
+    }
+    const applied = damage * grindDmg();
+    const before = target.hp;
+    target.hp -= applied;
+    target.hitFlash = Math.max(target.hitFlash || 0, 0.18);
+    if (before > 0 && target.hp <= 0) target._cgSoulFatal = true;
+    dmgText(target.x, target.y - 18, Math.round(applied), '#b80f48', 19);
+    return applied;
+  }
+  function cgUltimateSoulApplySplash(x, y, exclude = null) {
+    const u = corruptGunState.ultimate, cfg = CG_ULT_SECOND_CONFIG;
+    const radius2 = cfg.splashRadius * cfg.splashRadius;
+    for (const target of enemies) {
+      if (!target || target === exclude || !(target.hp > 0) || dist2(x, y, target.x, target.y) > radius2) continue;
+      const damage = cfg.splashDamage * u.damageMul * grindDmg();
+      const before = target.hp;
+      target.hp -= damage;
+      target.hitFlash = Math.max(target.hitFlash || 0, 0.13);
+      if (before > 0 && target.hp <= 0) target._cgSoulFatal = true;
+      dmgText(target.x, target.y - 10, Math.round(damage), '#7d1238', 15);
+    }
+    if (boss && boss !== exclude && cgSoulTargetValid(boss) && dist2(x, y, boss.x, boss.y) <= radius2) {
+      const corrosionMul = cgBossCorrosionDamageMultiplier(cgBossCorrosionStacks(boss));
+      const damage = cfg.splashDamage * u.damageMul * cfg.bossMultiplier * corrosionMul;
+      hitBoss(damage, x, y, false, corrosionMul);
+    }
+  }
+  function cgUltimateSoulExplode(soul) {
+    if (!soul || soul.damageDone) return;
+    const sh = cgSoulhuntState();
+    soul.damageDone = true;
+    soul.lastTargetX = soul.target && soul.target.x !== undefined ? soul.target.x : soul.lastTargetX;
+    soul.lastTargetY = soul.target && soul.target.y !== undefined ? soul.target.y : soul.lastTargetY;
+    soul.x = Number.isFinite(soul.lastTargetX) ? soul.lastTargetX : soul.x;
+    soul.y = Number.isFinite(soul.lastTargetY) ? soul.lastTargetY : soul.y;
+    const target = cgSoulTargetValid(soul.target) ? soul.target : null;
+    if (target) cgUltimateSoulHitTarget(soul, target, target === boss);
+    cgUltimateSoulApplySplash(soul.x, soul.y, target);
+    cgSoulReleaseTarget(soul);
+    soul.state = 'burst'; soul.stateT = 0;
+    sh.exploded = (sh.exploded || 0) + 1;
+    const count = CG_ULT_SECOND_CONFIG.particleCounts[Math.min(2, perfLevel)] || 2;
+    spawnCgSoulAsh(soul.x, soul.y, count, 1);
+    if (sh.t - sh.lastSfxT >= 0.12) {
+      sh.lastSfxT = sh.t;
+      playSfx('skillBomb', 0.18, 0.04);
+    }
+  }
+  function startCgUltimateSoulhunt(options = {}) {
+    const u = corruptGunState.ultimate, sh = u.soulhunt, cfg = CG_ULT_SECOND_CONFIG;
+    const absorbedEnemies = Math.max(0, options.absorbedEnemies === undefined ? sh.devouredEnemies.size : options.absorbedEnemies | 0);
+    sh.active = true; sh.t = 0; sh.originX = u.x; sh.originY = u.y;
+    sh.absorbedEnemies = absorbedEnemies;
+    sh.planned = cgUltimateSoulCount(u.absorbed, absorbedEnemies);
+    sh.spawned = 0; sh.possessing = 0; sh.burst = 0; sh.dissolving = 0; sh.completed = 0; sh.exploded = 0;
+    sh.souls.length = 0; sh.particles.length = 0; sh.targetClaims.clear(); sh.targetIds.clear(); sh.nextBurstAt.clear(); sh.nextTargetId = 1;
+    sh.lastSfxT = -99; sh.killedTargetId = null;
+    for (let index = 0; index < sh.planned; index++) {
+      const wave = Math.floor(index / cfg.spawnWaveSize), lane = index % cfg.spawnWaveSize;
+      const angle = -Math.PI * 0.5 + (index * 2.399963229728653) % TAU;
+      const radius = 104 + (index % 5) * 34;
+      const x = sh.originX + Math.cos(angle) * radius, y = sh.originY + Math.sin(angle) * radius * 0.72;
+      sh.souls.push({
+        index, state: 'delay', stateT: 0,
+        delay: cfg.spawnStart + wave * cfg.spawnWaveInterval + lane * cfg.spawnJitter,
+        x, y, spawnX: x, spawnY: y, angle, speed: cfg.speedStart,
+        seed: (index * 0.61803398875 + 0.17) % 1, variant: index % cfg.atlas.variants.frames,
+        flightVariant: [1, 2, 4][index % 3], target: null, targetId: null,
+        retargetT: 0, seekAge: 0, trailT: 0, trail: [], damageDone: false,
+        lastTargetX: x, lastTargetY: y, burstAt: 0,
+      });
+    }
+    u.phase = 'soulhunt'; u.t = 0;
+    playSfx('graze', 0.28, 0.04);
+    return sh.planned;
+  }
+  function updateCgUltimateSoulhunt(dt) {
+    const u = corruptGunState.ultimate, sh = u.soulhunt, cfg = CG_ULT_SECOND_CONFIG;
+    if (!sh.active) return;
+    sh.t += dt;
+    for (let index = sh.particles.length - 1; index >= 0; index--) {
+      const particle = sh.particles[index];
+      particle.life -= dt;
+      particle.x += particle.vx * dt; particle.y += particle.vy * dt;
+      particle.vx *= Math.max(0, 1 - dt * 2.2); particle.vy *= Math.max(0, 1 - dt * 1.5); particle.vy -= 12 * dt;
+      particle.rot += particle.spin * dt;
+      if (particle.life <= 0) sh.particles.splice(index, 1);
+    }
+    for (let index = sh.souls.length - 1; index >= 0; index--) {
+      const soul = sh.souls[index];
+      if (soul.state === 'delay') {
+        if (sh.t < soul.delay) continue;
+        soul.state = 'emerge'; soul.stateT = 0; sh.spawned++;
+      } else soul.stateT += dt;
+
+      if (soul.state === 'emerge') {
+        const p = clamp(soul.stateT / cfg.emergeTime, 0, 1);
+        const crawl = easeOutCubic(p);
+        soul.x = lerp(sh.originX + Math.cos(soul.angle) * 12, soul.spawnX, crawl);
+        soul.y = lerp(sh.originY + Math.sin(soul.angle) * 8, soul.spawnY, crawl);
+        if (p >= 1) { soul.state = 'seek'; soul.stateT = 0; soul.seekAge = 0; cgSoulAssignTarget(soul); }
+      } else if (soul.state === 'seek') {
+        soul.seekAge += dt; soul.retargetT -= dt;
+        if (sh.t >= cfg.forceDissolveAt) { beginCgSoulDissolve(soul); continue; }
+        if (!cgSoulTargetValid(soul.target) || soul.retargetT <= 0) {
+          soul.retargetT = cfg.retargetInterval;
+          cgSoulAssignTarget(soul);
+        }
+        if (soul.target && cgSoulTargetValid(soul.target)) {
+          const desired = Math.atan2(soul.target.y - soul.y, soul.target.x - soul.x);
+          const delta = cgSoulAngleDelta(soul.angle, desired);
+          soul.angle += clamp(delta, -cfg.turnRate * dt, cfg.turnRate * dt);
+          const maxSpeed = soul.seekAge > cfg.seekTime * 0.78 ? cfg.speedRush : cfg.speedMax;
+          soul.speed = Math.min(maxSpeed, soul.speed + cfg.acceleration * dt);
+          soul.x += Math.cos(soul.angle) * soul.speed * dt;
+          soul.y += Math.sin(soul.angle) * soul.speed * dt;
+          const contact = (soul.target.r || 22) + cfg.contactPadding;
+          const reachedTarget = soul.seekAge >= cfg.minPounceTime
+            && dist2(soul.x, soul.y, soul.target.x, soul.target.y) <= contact * contact;
+          if (sh.t < cfg.stopPossessingAt && (reachedTarget || soul.seekAge >= cfg.seekTime)) {
+            if (soul.seekAge >= cfg.seekTime) { soul.x = soul.target.x; soul.y = soul.target.y; }
+            beginCgSoulPossess(soul);
+          }
+        } else {
+          const orbit = soul.angle + dt * (0.55 + soul.seed * 0.45);
+          soul.angle = orbit;
+          soul.x += Math.cos(orbit) * 42 * dt; soul.y += Math.sin(orbit) * 28 * dt;
+        }
+        soul.trailT += dt;
+        if (soul.trailT >= 0.045) {
+          soul.trailT = 0;
+          soul.trail.unshift({ x: soul.x, y: soul.y });
+          if (soul.trail.length > cgSoulTrailCap()) soul.trail.pop();
+        }
+      } else if (soul.state === 'possess') {
+        const valid = cgSoulTargetValid(soul.target);
+        const progress = clamp(soul.stateT / cfg.possessTime, 0, 1);
+        if (!valid && progress < 0.5) {
+          cgSoulReleaseTarget(soul); soul.state = 'seek'; soul.stateT = 0; soul.seekAge = 0; soul.speed = cfg.speedStart; continue;
+        }
+        if (valid) {
+          soul.lastTargetX = soul.target.x; soul.lastTargetY = soul.target.y;
+          const radius = (1 - progress) * ((soul.target.r || 22) + 30);
+          const angle = soul.seed * TAU + soul.stateT * 8.4;
+          soul.x = soul.target.x + Math.cos(angle) * radius;
+          soul.y = soul.target.y + Math.sin(angle) * radius * 0.62;
+        }
+        if (soul.stateT >= cfg.possessTime && sh.t >= soul.burstAt) cgUltimateSoulExplode(soul);
+      } else if (soul.state === 'burst') {
+        if (soul.stateT >= cfg.burstTime) { soul.state = 'done'; sh.completed++; }
+      } else if (soul.state === 'dissolve') {
+        if (soul.stateT >= cfg.dissolveTime) { soul.state = 'done'; sh.completed++; }
+      }
+      if (soul.state === 'done') sh.souls.splice(index, 1);
+    }
+    sh.possessing = sh.souls.filter(soul => soul.state === 'possess').length;
+    sh.burst = sh.souls.filter(soul => soul.state === 'burst').length;
+    sh.dissolving = sh.souls.filter(soul => soul.state === 'dissolve').length;
+    if (sh.t >= cfg.duration) resetCgUltimate();
+  }
+
   function cgUltimatePhaseDuration(phase) {
     return phase === 'cast' ? CG_ULT_CONFIG.cast
       : phase === 'flight' ? CG_ULT_CONFIG.flightMax
@@ -8825,6 +9329,7 @@
       : phase === 'spin' ? CG_ULT_CONFIG.spin
       : phase === 'collapse' ? CG_ULT_CONFIG.collapse
       : phase === 'finale' ? CG_ULT_CONFIG.finale
+      : phase === 'soulhunt' ? CG_ULT_SECOND_CONFIG.duration
       : 0;
   }
   function cgUltimateMuzzle() {
@@ -8841,6 +9346,8 @@
       delete target._cgUltTickT;
       delete target._cgUltSlowT;
       delete target._cgUltSlowMul;
+      delete target._cgUltDevouredReason;
+      delete target._cgSoulFatal;
     }
   }
   function resetCgUltimate(options = {}) {
@@ -8871,7 +9378,12 @@
     u.bossWheelStacks = 0;
     u.absorptionFx.length = 0;
     u.residueFx.length = 0;
+    u.spaceCuts.length = 0;
+    u.bladeCutT = 0;
+    u.bladeCutSerial = 0;
+    u.bladeAcceptance = false;
     u.castRefunded = false;
+    resetCgUltimateSoulhunt(true);
   }
   function castDarkWheel() {
     if (!corruptgunActive() || corruptGunState.ultimate.active) return false;
@@ -8950,7 +9462,10 @@
     const before = target.hp;
     target.hp -= applied;
     target.hitFlash = Math.max(target.hitFlash || 0, big ? 0.22 : 0.14);
-    if (before > 0 && target.hp <= 0) target._cgFatalCorruptDamage = applied;
+    if (before > 0 && target.hp <= 0) {
+      target._cgFatalCorruptDamage = applied;
+      cgUltimateRecordDevouredEnemy(target, 'ultimate-kill');
+    }
     return applied;
   }
   function cgUltimateApplyArea(baseDamage, radius, kind, bossMultiplier = 1, big = false) {
@@ -8996,15 +9511,23 @@
   }
   // 切割反馈：大尺寸月牙沿轮盘切线掠出，金属刃线与碎屑把每次 tick 读成实际剐切。
   function spawnCgUltCutFx(target) {
-    if (perfLevel >= 2 && Math.random() < 0.5) return;
     const u = corruptGunState.ultimate;
-    const tangent = Math.atan2(target.y - u.y, target.x - u.x) + Math.PI / 2;
-    const life = perfLevel >= 2 ? 0.28 : 0.34;
+    const qualityIndex = Math.min(2, perfLevel);
+    const bladeCount = CG_ULT_CONFIG.quality.blades[qualityIndex];
+    const targetAngle = Math.atan2(target.y - u.y, target.x - u.x);
+    const phase = u.totalT * CG_ULT_CONFIG.wheel.bladeSpeed;
+    const spacing = TAU / Math.max(1, bladeCount);
+    const bladeIndex = Math.round((targetAngle - phase) / spacing);
+    const bladeAngle = phase + bladeIndex * spacing;
+    const tangent = bladeAngle + Math.PI / 2;
+    const life = 0.42;
     pushCgFx({
-      type: 'slash', key: `cgUltCrescent${1 + ((Math.random() * 8) | 0)}`,
-      x: target.x, y: target.y,
-      vx: Math.cos(tangent) * 230, vy: Math.sin(tangent) * 230,
-      rot: tangent, life, maxLife: life, size: perfLevel >= 2 ? 96 : 124,
+      type: 'wheelHitCut', key: `cgUltCrescent${1 + (Math.abs(bladeIndex) % 8)}`,
+      x: target.x, y: target.y, follow: target,
+      rot: tangent, life, maxLife: life,
+      length: perfLevel >= 2 ? 104 : 136,
+      width: perfLevel >= 2 ? 18 : 24,
+      bend: (bladeIndex & 1 ? -1 : 1) * 14,
     });
     const sparksN = perfLevel >= 2 ? 2 : (perfLevel >= 1 ? 4 : 6);
     for (let index = 0; index < sparksN; index++) {
@@ -9032,6 +9555,9 @@
       const tangentStep = cfg.tangentialPull * (0.35 + 0.65 * (1 - k)) * phaseMul * dt;
       enemy.x += inwardX * step + tangentX * tangentStep;
       enemy.y += inwardY * step + tangentY * tangentStep;
+      if (Math.hypot(u.x - enemy.x, u.y - enemy.y) <= CG_ULT_SECOND_CONFIG.captureRadius) {
+        cgUltimateRecordDevouredEnemy(enemy, 'core');
+      }
     }
   }
   function cgUltimateApplySlow() {
@@ -9058,6 +9584,16 @@
     lasers.length = 0;
     spawnCgShockring(u.x, u.y, 100, 520, 0.35);
     spawnCgDelayed(0.08, () => spawnCgShockring(u.x, u.y, 80, 470, 0.35));
+    // V1.4 终爆黑洞爆发帧（大招优化素材04 第11格）
+    spawnCgSequence('cgUltHole1', 1, 0.42, u.x, u.y, 640, { alpha: 0.92, scaleFrom: 0.55, scaleTo: 1.2, glow: false });
+    // V1.5 终爆演出补强：全向刃光射线 + 扩张暗浪 + 白炽核闪
+    const streakN = perfLevel >= 2 ? 8 : 14;
+    for (let index = 0; index < streakN; index++) {
+      const a = index / streakN * TAU + rand(-0.1, 0.1);
+      pushCgFx({ type: 'slash', key: `cgUltCrescent${1 + (index % 8)}`, x: u.x + Math.cos(a) * 60, y: u.y + Math.sin(a) * 60, vx: Math.cos(a) * rand(620, 880), vy: Math.sin(a) * rand(620, 880), rot: a, life: 0.30, maxLife: 0.30, size: 64 });
+    }
+    spawnCgDark(u.x, u.y, 30, 320, 0.50, 0.85);
+    spawnCgSequence('cgHitSpark', 6, 0.05, u.x, u.y, 300, { alpha: 0.95, scaleFrom: 0.5, scaleTo: 1.6, glow: perfLevel < 2 });
     spawnCgDark(u.x, u.y, 180, 180, 0.90, 0.50);
     const shardCount = perfLevel >= 2 ? 7 : 12;
     for (let index = 0; index < shardCount; index++) {
@@ -9079,6 +9615,132 @@
     if (audio.nrVoidBurst) audio.nrVoidBurst();
     dmgText(u.x, u.y - 18, `暗蚀轮回 · 吞噬${u.absorbed}`, CG_CONFIG.colorText, 30);
   }
+  // V1.5b 吸入光线：从外围沿加速螺旋被拉进视界的拖尾光线（用户指定的"线条"吸入表达）
+  function cgUltimateUpdateStreaks(dt, mul = 1) {
+    const u = corruptGunState.ultimate;
+    u.streaks = u.streaks || [];
+    const streakMax = cgLite() ? 5 : 10;
+    u.streakT = (u.streakT || 0) - dt;
+    if (u.streakT <= 0 && u.streaks.length < streakMax) {
+      u.streakT = 0.07;
+      u.streaks.push({ a: rand(0, TAU), r: rand(420, 560), v: rand(280, 420) * mul, w: rand(1.2, 2.4), spin: rand(1.6, 2.6) * mul });
+    }
+    for (let i = u.streaks.length - 1; i >= 0; i--) {
+      const st = u.streaks[i];
+      st.v += 520 * mul * dt;                                   // 越近越快
+      st.r -= st.v * dt;
+      st.a += st.spin * dt * (1 + (520 - Math.max(0, st.r)) / 520); // 越近角速度越大
+      if (st.r <= CG_ULT_CONFIG.wheel.coreRadius * 1.08) u.streaks.splice(i, 1);
+    }
+  }
+  function cgUltimateBladeAngle(index, count, totalT = corruptGunState.ultimate.totalT) {
+    return totalT * CG_ULT_CONFIG.wheel.bladeSpeed + index * TAU / Math.max(1, count);
+  }
+  function updateCgUltimateSpaceCuts(dt, spawn = false, speedMul = 1) {
+    const u = corruptGunState.ultimate;
+    for (let index = u.spaceCuts.length - 1; index >= 0; index--) {
+      const cut = u.spaceCuts[index];
+      cut.age += dt;
+      cut.life -= dt;
+      if (cut.life <= 0) u.spaceCuts.splice(index, 1);
+    }
+    if (!spawn) return;
+    const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+    const cap = CG_ULT_CONFIG.quality.spaceCuts[qualityIndex];
+    u.bladeCutT -= dt * speedMul;
+    if (u.bladeCutT > 0 || u.spaceCuts.length >= cap) return;
+    u.bladeCutT += CG_ULT_CONFIG.quality.spaceCutInterval[qualityIndex];
+    const serial = u.bladeCutSerial++;
+    const seed = (serial * 0.61803398875 + 0.17) % 1;
+    const bladeCount = CG_ULT_CONFIG.quality.blades[qualityIndex];
+    const bladeIndex = serial % Math.max(1, bladeCount);
+    const orbitAngle = cgUltimateBladeAngle(bladeIndex, bladeCount) - 0.05 - seed * 0.12;
+    const radius = lerp(CG_ULT_CONFIG.wheel.spaceCutRadiusMin, CG_ULT_CONFIG.wheel.spaceCutRadiusMax, seed);
+    const life = CG_ULT_CONFIG.wheel.spaceCutLife * lerp(0.88, 1.08, seed);
+    u.spaceCuts.push({
+      x: u.x + Math.cos(orbitAngle) * radius,
+      y: u.y + Math.sin(orbitAngle) * radius,
+      rot: orbitAngle + Math.PI * 0.5,
+      length: lerp(146, 204, seed),
+      width: lerp(10, 17, 1 - seed),
+      bend: (serial & 1 ? -1 : 1) * lerp(9, 20, seed),
+      seed, age: 0, life, maxLife: life,
+    });
+  }
+  function drawCgUltimateSuctionStreaks(scale, collapseK) {
+    const u = corruptGunState.ultimate;
+    const lite = cgLite();
+    const wheel = CG_ULT_CONFIG.wheel;
+    ctx.save();
+    ctx.lineCap = 'round';
+    for (const st of (u.streaks || [])) {
+      const fade = clamp((st.r - CG_ULT_CONFIG.wheel.coreRadius) / 300, 0.12, 1);
+      ctx.beginPath();
+      for (let k = 0; k <= 7; k++) {
+        const tt = k / 7;
+        const rr = (st.r + st.v * 0.17 * tt) * scale;
+        const aa = st.a - st.spin * 0.17 * tt * (1 + (520 - rr) / 520);
+        const px = u.x + Math.cos(aa) * rr;
+        const py = u.y + Math.sin(aa) * rr * (1 - collapseK * 0.10);
+        if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.setLineDash([]);
+      ctx.strokeStyle = `rgba(1,0,6,${(0.72 * fade).toFixed(3)})`;
+      ctx.lineWidth = st.w * 4.4 * scale;
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = `rgba(214,10,67,${(0.44 * fade).toFixed(3)})`;
+      ctx.lineWidth = st.w * 2.2 * scale;
+      ctx.stroke();
+      ctx.setLineDash([16 * scale, 7 * scale, 3 * scale, 9 * scale]);
+      ctx.lineDashOffset = -u.totalT * 96 - st.a * 13;
+      ctx.strokeStyle = `rgba(255,226,236,${(0.72 * fade).toFixed(3)})`;
+      ctx.lineWidth = Math.max(0.9, st.w * 0.72 * scale);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if (!lite) drawCgAsset('cgDotW1', u.x + Math.cos(st.a) * st.r * scale, u.y + Math.sin(st.a) * st.r * scale, 10, null, { blend: 'lighter', alpha: 0.9 * fade, glow: false });
+    }
+
+    // 短而断续的空间跳线沿螺旋向内滑动，只表达吸入，不闭合成第二个圆环。
+    const stripCount = CG_ULT_CONFIG.quality.warpStrips[Math.min(2, perfLevel)] || 5;
+    const golden = 2.399963229728653;
+    for (let index = 0; index < stripCount; index++) {
+      const phase = (u.totalT * (0.34 + (index % 3) * 0.035) + index * 0.173) % 1;
+      const env = Math.sin(Math.PI * phase);
+      const radius = lerp(wheel.warpOuterRadius, wheel.warpInnerRadius, easeOutCubic(phase)) * scale;
+      const angle = index * golden + u.totalT * (0.62 + (index & 1) * 0.10) + phase * 0.72;
+      const length = wheel.warpStripLength * lerp(0.72, 1.18, phase) * scale;
+      const outerR = radius + length * 0.58, innerR = radius - length * 0.42;
+      const x0 = u.x + Math.cos(angle - 0.16) * outerR;
+      const y0 = u.y + Math.sin(angle - 0.16) * outerR;
+      const x1 = u.x + Math.cos(angle + 0.10) * innerR;
+      const y1 = u.y + Math.sin(angle + 0.10) * innerR;
+      const cx = u.x + Math.cos(angle + 0.02) * radius;
+      const cy = u.y + Math.sin(angle + 0.02) * radius;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(cx, cy, x1, y1);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.setLineDash([]);
+      ctx.strokeStyle = `rgba(1,0,7,${(0.68 * env).toFixed(3)})`;
+      ctx.lineWidth = wheel.warpStripWidth * 4.2 * scale;
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.setLineDash([18 * scale, 8 * scale, 4 * scale, 10 * scale]);
+      ctx.lineDashOffset = -u.totalT * 112 - index * 11;
+      ctx.strokeStyle = `rgba(221,12,72,${(0.58 * env).toFixed(3)})`;
+      ctx.lineWidth = wheel.warpStripWidth * scale;
+      ctx.stroke();
+      if (!lite && index % 3 === 0) {
+        ctx.setLineDash([7 * scale, 20 * scale]);
+        ctx.lineDashOffset = -u.totalT * 150;
+        ctx.strokeStyle = `rgba(255,225,236,${(0.62 * env).toFixed(3)})`;
+        ctx.lineWidth = 0.9 * scale;
+        ctx.stroke();
+      }
+    }
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
   function updateCgUltimate(dt) {
     const u = corruptGunState.ultimate;
     if (!u.active) return;
@@ -9089,6 +9751,11 @@
       const fx = u.absorptionFx[index];
       fx.life -= dt;
       if (fx.life <= 0) u.absorptionFx.splice(index, 1);
+    }
+    if (u.phase !== 'spin' && u.phase !== 'collapse') updateCgUltimateSpaceCuts(dt, false);
+    if (u.phase === 'soulhunt') {
+      updateCgUltimateSoulhunt(dt);
+      return;
     }
     if (u.phase === 'cast') {
       const muzzle = cgUltimateMuzzle();
@@ -9133,20 +9800,51 @@
     }
     if (u.phase === 'spin') {
       if (u.t >= CG_ULT_CONFIG.spin) { u.phase = 'collapse'; u.t = 0; return; }
-      cgUltimateApplySlow();
-      cgUltimateApplyEnemyPull(dt, 1);
-      for (const enemy of enemies) cgUltimateTickTarget(enemy, false, dt);
-      if (boss && state === 'boss' && !boss.dead) cgUltimateTickTarget(boss, true, dt);
+      updateCgUltimateSpaceCuts(dt, true, 1);
+      if (!u.bladeAcceptance) {
+        cgUltimateApplySlow();
+        cgUltimateApplyEnemyPull(dt, 1);
+      // V1.5 轮缘刃屑：轮盘边缘持续沿切线剥落火花/碎屑——硬边缘的粒子过渡
+      u.rimT = (u.rimT || 0) - dt;
+      if (u.rimT <= 0) {
+        u.rimT = cgLite() ? 0.10 : 0.05;
+        const a = rand(0, TAU);
+        const rr = CG_ULT_CONFIG.wheel.discSize * 0.5 * (0.96 + rand(-0.04, 0.04));
+        const px = u.x + Math.cos(a) * rr, py = u.y + Math.sin(a) * rr;
+        const tangent = a + Math.PI / 2;
+        spawnCgDot(px, py, Math.cos(tangent) * rand(120, 220) + Math.cos(a) * 40, Math.sin(tangent) * rand(120, 220) + Math.sin(a) * 40, rand(0.24, 0.42), rand(4, 8), Math.random() < 0.6 ? 'R' : 'P');
+        if (!cgLite() && Math.random() < 0.5) pushCgFx({ type: 'shard', key: `cgSpark${1 + ((Math.random() * 8) | 0)}`, x: px, y: py, vx: Math.cos(tangent) * rand(160, 300), vy: Math.sin(tangent) * rand(160, 300), life: rand(0.20, 0.35), maxLife: 0.35, size: rand(8, 14), rot: tangent, spin: 0 });
+      }
+      // V1.5 环境吸入流：四周尘埃被持续螺旋卷入——"吸收周围一切"的常驻视觉
+      u.inhaleT = (u.inhaleT || 0) - dt;
+      if (u.inhaleT <= 0) {
+        u.inhaleT = cgLite() ? 0.09 : 0.045;
+        const a = rand(0, TAU);
+        const rr = rand(430, 640);
+        const px = u.x + Math.cos(a) * rr, py = u.y + Math.sin(a) * rr;
+        const inward = rand(260, 420), swirl = rand(180, 300);
+        spawnCgDot(px, py,
+          -Math.cos(a) * inward + Math.cos(a + Math.PI / 2) * swirl,
+          -Math.sin(a) * inward + Math.sin(a + Math.PI / 2) * swirl,
+          rand(0.5, 0.8), rand(3, 6), Math.random() < 0.5 ? 'P' : 'W');
+      }
+        cgUltimateUpdateStreaks(dt, 1);
+        for (const enemy of enemies) cgUltimateTickTarget(enemy, false, dt);
+        if (boss && state === 'boss' && !boss.dead) cgUltimateTickTarget(boss, true, dt);
+      }
       return;
     }
     if (u.phase === 'collapse') {
+      updateCgUltimateSpaceCuts(dt, true, 1.7);
       cgUltimateApplyEnemyPull(dt, CG_ULT_CONFIG.enemyPull.collapseMultiplier);
+      cgUltimateUpdateStreaks(dt, 1.7);
       if (u.t >= CG_ULT_CONFIG.collapse) { u.phase = 'finale'; u.t = 0; cgUltimateApplyFinale(); }
       return;
     }
     if (u.phase === 'finale') {
+      updateCgUltimateSpaceCuts(dt, false, 1);
       cgUltimateApplyFinale();
-      if (u.t >= CG_ULT_CONFIG.finale) resetCgUltimate();
+      if (u.t >= CG_ULT_CONFIG.finale) startCgUltimateSoulhunt();
     }
   }
   function updateCgUltimateBulletField(dt) {
@@ -9182,7 +9880,7 @@
       const startX = bullet.x, startY = bullet.y;
       enemyBullets.splice(index, 1);
       u.absorbed++;
-      if (visualGroups < cfg.visualGroupsPerFrame) {
+      if (visualGroups < (cgLite() ? 3 : cfg.visualGroupsPerFrame)) {
         visualGroups++;
         const life = 0.32;
         const angle = Math.atan2(u.y - startY, u.x - startX);
@@ -9563,12 +10261,16 @@
       if (h > 2 && colAlpha > 0.01) {
         ctx.save();
         ctx.globalCompositeOperation = 'source-over';
-        const g = ctx.createLinearGradient(0, footY, 0, footY - h);
-        g.addColorStop(0, `rgba(25,0,15,${(colAlpha * 0.92).toFixed(3)})`);
-        g.addColorStop(0.34, `rgba(91,2,38,${(colAlpha * 0.62).toFixed(3)})`);
-        g.addColorStop(1, 'rgba(30,0,22,0)');
-        ctx.fillStyle = g;
-        ctx.fillRect(x - bodyHeight * 0.14, footY - h, bodyHeight * 0.28, h);
+        const colCv = cachedSprite('cg_summon_col', 8, 128, (c2, sw, sh) => {
+          const g = c2.createLinearGradient(0, sh, 0, 0);
+          g.addColorStop(0, 'rgba(25,0,15,0.92)');
+          g.addColorStop(0.34, 'rgba(91,2,38,0.62)');
+          g.addColorStop(1, 'rgba(30,0,22,0)');
+          c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+        });
+        ctx.globalAlpha = colAlpha;
+        ctx.drawImage(colCv, x - bodyHeight * 0.14, footY - h, bodyHeight * 0.28, h);
+        ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = 'lighter';
         ctx.fillStyle = `rgba(165,8,57,${(colAlpha * 0.52).toFixed(3)})`;
         const bands = CG_VFX_CONFIG.projection.scanBandCount;
@@ -9594,11 +10296,16 @@
     ctx.translate(x, fieldY);
     ctx.globalCompositeOperation = 'source-over';
     const voidRadius = cfg.voidDiameter * 0.5;
-    const voidGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, voidRadius);
-    voidGradient.addColorStop(0, `rgba(2,0,6,${(0.66 * alpha).toFixed(3)})`);
-    voidGradient.addColorStop(0.62, `rgba(12,0,12,${(0.52 * alpha).toFixed(3)})`);
-    voidGradient.addColorStop(1, 'rgba(42,0,25,0)');
-    ctx.fillStyle = voidGradient; ctx.beginPath(); ctx.arc(0, 0, voidRadius, 0, TAU); ctx.fill();
+    const voidCv = cachedSprite('cg_projvoid', 160, 160, (c2, s) => {
+      const g = c2.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      g.addColorStop(0, 'rgba(2,0,6,0.66)');
+      g.addColorStop(0.62, 'rgba(12,0,12,0.52)');
+      g.addColorStop(1, 'rgba(42,0,25,0)');
+      c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+    });
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(voidCv, -voidRadius, -voidRadius, voidRadius * 2, voidRadius * 2);
+    ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'lighter';
     ctx.lineCap = 'butt';
     for (let ring = 0; ring < 2; ring++) {
@@ -9628,7 +10335,7 @@
     const spec = CG_VFX_CONFIG.atlas.cloneField;
     const frame = cgLoopFrame(spec, clone.phase || 0);
     drawCgProjectionRings(clone, x, y, alpha);
-    drawCgAtlasPair(spec, frame, x, y, CG_VFX_CONFIG.sizes.cloneField, CG_VFX_CONFIG.sizes.cloneField, {
+    if (!cgLite()) drawCgAtlasPair(spec, frame, x, y, CG_VFX_CONFIG.sizes.cloneField, CG_VFX_CONFIG.sizes.cloneField, {
       baseAlpha: CG_VFX_CONFIG.cloneFieldOpacity.base * alpha * 0.72,
       energyAlpha: CG_VFX_CONFIG.cloneFieldOpacity.energy * alpha * 0.68,
     });
@@ -9997,29 +10704,34 @@
     ctx.restore();
   }
   function drawCgOrbUnderDisc(x, y, diameter, alpha) {
-    // O1 暗色托底：亮背景上撑出光球体积
-    const radius = Math.max(2, diameter * 0.5);
+    // O1 暗色托底（缓存精灵版：原实现每弹每帧建一次径向渐变，是手机端热点）
+    const size = Math.max(4, diameter);
+    const cv = cachedSprite('cg_underdisc', 160, 160, (c2, s) => {
+      const g = c2.createRadialGradient(s / 2, s / 2, s * 0.05, s / 2, s / 2, s / 2);
+      g.addColorStop(0, 'rgba(16,2,10,1)');
+      g.addColorStop(0.66, 'rgba(16,2,10,0.78)');
+      g.addColorStop(1, 'rgba(16,2,10,0)');
+      c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+    });
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    const g = ctx.createRadialGradient(x, y, radius * 0.10, x, y, radius);
-    g.addColorStop(0, `rgba(16,2,10,${alpha.toFixed(3)})`);
-    g.addColorStop(0.66, `rgba(16,2,10,${(alpha * 0.78).toFixed(3)})`);
-    g.addColorStop(1, 'rgba(16,2,10,0)');
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(x, y, radius, 0, TAU); ctx.fill();
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, x - size / 2, y - size / 2, size, size);
     ctx.restore();
   }
   function drawCgCloneOrbVoidShade(x, y, size, phase) {
     const radius = size * 0.46;
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    const shade = ctx.createRadialGradient(x - radius * 0.18, y - radius * 0.16, radius * 0.06, x, y, radius);
-    shade.addColorStop(0, 'rgba(126,6,43,.18)');
-    shade.addColorStop(0.42, 'rgba(18,0,12,.42)');
-    shade.addColorStop(0.82, 'rgba(2,0,6,.70)');
-    shade.addColorStop(1, 'rgba(1,0,4,0)');
-    ctx.fillStyle = shade;
-    ctx.beginPath(); ctx.arc(x, y, radius, 0, TAU); ctx.fill();
+    const shadeCv = cachedSprite('cg_cloneshade', 160, 160, (c2, s) => {
+      const g = c2.createRadialGradient(s / 2 - s * 0.09, s / 2 - s * 0.08, s * 0.03, s / 2, s / 2, s / 2);
+      g.addColorStop(0, 'rgba(126,6,43,.18)');
+      g.addColorStop(0.42, 'rgba(18,0,12,.42)');
+      g.addColorStop(0.82, 'rgba(2,0,6,.70)');
+      g.addColorStop(1, 'rgba(1,0,4,0)');
+      c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+    });
+    ctx.drawImage(shadeCv, x - radius, y - radius, radius * 2, radius * 2);
     ctx.globalCompositeOperation = 'lighter';
     ctx.globalAlpha = 0.72 + 0.14 * Math.sin(time * 7 + phase * 11);
     ctx.strokeStyle = '#b60c49';
@@ -10105,8 +10817,10 @@
       drawCgCloneOrbProjection(s.x, s.y, size, phase);
     }
     const ringKey = clone ? 'cgInfectSourceNodeClone' : cgFrameKey('cgCorePulse', 6, 0.14, phase);
-    drawCgAsset(ringKey, s.x, s.y, size * 1.02, null, { rot: time * 0.9 + seed, blend: 'lighter', alpha: clone ? 0.46 : 0.50, glow: false });
-    if (over) drawCgAsset(ringKey, s.x, s.y, size * 1.14, null, { rot: -time * 0.9 - seed, blend: 'lighter', alpha: clone ? 0.30 : 0.32, glow: false });
+    if (clone || !cgLite()) {
+      drawCgAsset(ringKey, s.x, s.y, size * 1.02, null, { rot: time * 0.9 + seed, blend: 'lighter', alpha: clone ? 0.46 : 0.50, glow: false });
+      if (over) drawCgAsset(ringKey, s.x, s.y, size * 1.14, null, { rot: -time * 0.9 - seed, blend: 'lighter', alpha: clone ? 0.30 : 0.32, glow: false });
+    }
     drawCgAsset(clone ? 'cgDotR3' : 'cgDotW1', s.x, s.y, size * (clone ? 0.18 : 0.26), null, { blend: 'lighter', alpha: (clone ? 0.52 : 0.68) + (clone ? 0.12 : 0.20) * Math.sin(time * 11 + phase * 7), glow: false });
     if (clone) drawCgAsset('cgDotP1', s.x, s.y, size * 0.15, null, { blend: 'lighter', alpha: 0.78 + 0.18 * Math.sin(time * 13 + phase * 5), glow: false });
     if (perfLevel < 2) {
@@ -10118,7 +10832,7 @@
         drawCgAsset(i & 1 ? 'cgDotP1' : 'cgDotR2', sx, sy, over ? 8 : 6, null, { blend: 'lighter', alpha: clone ? 0.80 : 0.82, glow: false });
       }
     }
-    if (sourceOk) drawCgAsset(bodyKey, s.x, s.y, size * 1.16, null, { rot: bodyRot, blend: 'lighter', alpha: clone ? 0.26 : 0.30, glow: false });
+    if (sourceOk && !cgLite()) drawCgAsset(bodyKey, s.x, s.y, size * 1.16, null, { rot: bodyRot, blend: 'lighter', alpha: clone ? 0.26 : 0.30, glow: false });
     return sourceOk;
   }
   function drawCgUltimateOrbShot(s, bodyOnly = false) {
@@ -10136,10 +10850,13 @@
       ctx.save();
       ctx.translate(s.x, s.y);
       ctx.rotate(angle);
-      const voidTrail = ctx.createLinearGradient(-config.trailLength, 0, 8, 0);
-      voidTrail.addColorStop(0, 'rgba(1,0,5,0)');
-      voidTrail.addColorStop(0.55, 'rgba(3,0,8,.52)');
-      voidTrail.addColorStop(1, 'rgba(24,0,13,.88)');
+      const voidTrail = cachedGradient('cg_ult_voidtrail', () => {
+        const g = ctx.createLinearGradient(-config.trailLength, 0, 8, 0);
+        g.addColorStop(0, 'rgba(1,0,5,0)');
+        g.addColorStop(0.55, 'rgba(3,0,8,.52)');
+        g.addColorStop(1, 'rgba(24,0,13,.88)');
+        return g;
+      });
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = voidTrail;
       ctx.beginPath();
@@ -10175,6 +10892,11 @@
     if (u.phase === 'spin') return CG_ULT_CONFIG.vignette.spin;
     if (u.phase === 'collapse') return lerp(CG_ULT_CONFIG.vignette.spin, 0.16, clamp(u.t / CG_ULT_CONFIG.collapse, 0, 1));
     if (u.phase === 'finale') return CG_ULT_CONFIG.vignette.spin * (1 - clamp(u.t / CG_ULT_CONFIG.finale, 0, 1));
+    if (u.phase === 'soulhunt') {
+      const sh = u.soulhunt;
+      const open = lerp(0.12, 0.055, clamp(sh.t / 1.2, 0, 1));
+      return open * (1 - clamp((sh.t - 6.45) / 0.75, 0, 1));
+    }
     return 0;
   }
   function drawCgUltimateVignette() {
@@ -10182,12 +10904,16 @@
     if (alpha <= 0.001) return;
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    const gradient = ctx.createRadialGradient(W * 0.5, H * 0.44, W * 0.12, W * 0.5, H * 0.44, Math.max(W, H) * 0.72);
-    gradient.addColorStop(0, 'rgba(5,2,8,0)');
-    gradient.addColorStop(0.55, `rgba(5,2,8,${(alpha * 0.32).toFixed(3)})`);
-    gradient.addColorStop(1, `rgba(2,0,6,${alpha.toFixed(3)})`);
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, W, H);
+    const cv = cachedSprite(`cg_vignette_${W}x${H}`, W, H, (c2, sw, sh) => {
+      const g = c2.createRadialGradient(sw * 0.5, sh * 0.44, sw * 0.12, sw * 0.5, sh * 0.44, Math.max(sw, sh) * 0.72);
+      g.addColorStop(0, 'rgba(5,2,8,0)');
+      g.addColorStop(0.55, 'rgba(5,2,8,0.32)');
+      g.addColorStop(1, 'rgba(2,0,6,1)');
+      c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+    });
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, 0, 0, W, H);
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
   function drawCgUltimateSpirals(alpha = 1, collapseK = 0) {
@@ -10243,13 +10969,18 @@
     const r = Math.max(1, radius + breathe);
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    const gradient = ctx.createRadialGradient(u.x - r * 0.12, u.y - r * 0.16, 2, u.x, u.y, r * 1.36);
-    gradient.addColorStop(0, `rgba(0,0,2,${(0.99 * alpha).toFixed(3)})`);
-    gradient.addColorStop(0.56, `rgba(5,2,8,${(0.98 * alpha).toFixed(3)})`);
-    gradient.addColorStop(0.82, `rgba(21,1,12,${(0.72 * alpha).toFixed(3)})`);
-    gradient.addColorStop(1, 'rgba(58,3,20,0)');
-    ctx.fillStyle = gradient;
-    ctx.beginPath(); ctx.arc(u.x, u.y, r * 1.36, 0, TAU); ctx.fill();
+    const cv = cachedSprite('cg_blackcore', 288, 288, (c2, s) => {
+      const cr = s / 2 / 1.36;
+      const g = c2.createRadialGradient(s / 2 - cr * 0.12, s / 2 - cr * 0.16, 2, s / 2, s / 2, s / 2);
+      g.addColorStop(0, 'rgba(0,0,2,0.99)');
+      g.addColorStop(0.56, 'rgba(5,2,8,0.98)');
+      g.addColorStop(0.82, 'rgba(21,1,12,0.72)');
+      g.addColorStop(1, 'rgba(58,3,20,0)');
+      c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+    });
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, u.x - r * 1.36, u.y - r * 1.36, r * 2.72, r * 2.72);
+    ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'lighter';
     ctx.strokeStyle = `rgba(218,18,66,${(0.48 * alpha).toFixed(3)})`;
     ctx.lineWidth = 2.4;
@@ -10298,34 +11029,778 @@
     }
     ctx.restore();
   }
-  function drawCgUltimateBladeEdge(x, y, angle, length, alpha = 1) {
+  function drawCgUltimateCutRift(x, y, rot, length, width, bend, age, maxLife, alpha = 1, hit = false) {
+    const open = easeOutCubic(clamp(age / 0.055, 0, 1));
+    const closeP = clamp((age - maxLife * 0.52) / Math.max(0.001, maxLife * 0.48), 0, 1);
+    const close = 1 - closeP * closeP * closeP;
+    const env = open * close * alpha;
+    if (env <= 0.002) return;
+    const half = length * 0.5;
+    const peak = Math.sin(clamp(age / Math.max(0.001, maxLife * 0.38), 0, 1) * Math.PI);
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(angle);
-    const half = length * 0.5;
+    ctx.rotate(rot);
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'round';
+    const trace = () => {
+      ctx.beginPath();
+      ctx.moveTo(-half, 0);
+      ctx.quadraticCurveTo(0, bend, half, 0);
+    };
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = `rgba(3,0,7,${(0.52 * alpha).toFixed(3)})`;
-    ctx.strokeStyle = `rgba(126,5,36,${(0.84 * alpha).toFixed(3)})`;
-    ctx.lineWidth = 2;
+    ctx.fillStyle = `rgba(0,0,4,${(0.92 * env).toFixed(3)})`;
     ctx.beginPath();
-    ctx.moveTo(-half * 0.70, -length * 0.065);
-    ctx.quadraticCurveTo(half * 0.10, -length * 0.11, half, 0);
-    ctx.quadraticCurveTo(half * 0.05, length * 0.075, -half * 0.70, length * 0.04);
-    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.moveTo(-half, 0);
+    ctx.quadraticCurveTo(0, bend - width * (0.42 + peak * 0.18), half, 0);
+    ctx.quadraticCurveTo(0, bend + width * (0.42 + peak * 0.18), -half, 0);
+    ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = `rgba(49,1,22,${(0.84 * env).toFixed(3)})`;
+    ctx.lineWidth = width * 0.30;
+    trace(); ctx.stroke();
     ctx.globalCompositeOperation = 'lighter';
-    ctx.strokeStyle = `rgba(255,43,91,${(0.80 * alpha).toFixed(3)})`;
-    ctx.lineWidth = 1.15;
-    ctx.beginPath(); ctx.moveTo(-half * 0.42, -length * 0.055); ctx.quadraticCurveTo(half * 0.30, -length * 0.08, half, 0); ctx.stroke();
+    ctx.strokeStyle = `rgba(221,10,62,${((0.48 + peak * 0.34) * env).toFixed(3)})`;
+    ctx.lineWidth = Math.max(1.6, width * 0.17);
+    trace(); ctx.stroke();
+    ctx.setLineDash([length * 0.13, length * 0.09, length * 0.035, length * 0.16]);
+    ctx.lineDashOffset = -age * 210;
+    ctx.strokeStyle = `rgba(255,235,242,${((hit ? 0.94 : 0.72) * peak * env).toFixed(3)})`;
+    ctx.lineWidth = Math.max(0.8, width * 0.052);
+    trace(); ctx.stroke();
+    ctx.setLineDash([]);
+    const fragments = hit ? 5 : 3;
+    for (let index = 0; index < fragments; index++) {
+      const seed = (index * 0.61803398875 + 0.11) % 1;
+      const px = lerp(-half * 0.72, half * 0.82, seed);
+      const py = bend * (1 - (px / half) ** 2);
+      const spread = (1 - close) * (8 + seed * 18);
+      ctx.strokeStyle = `rgba(242,24,78,${(env * (0.34 + seed * 0.35)).toFixed(3)})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(px + (seed - 0.5) * 18, py + (seed > 0.5 ? 1 : -1) * spread);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function drawCgUltimateSpaceCuts(scale = 1) {
+    for (const cut of corruptGunState.ultimate.spaceCuts) {
+      drawCgUltimateCutRift(
+        cut.x, cut.y, cut.rot, cut.length * scale, cut.width * scale, cut.bend * scale,
+        cut.age, cut.maxLife, 0.92, false,
+      );
+    }
+  }
+  function cgCubic(a, b, c, d, t) {
+    const u = 1 - t;
+    return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d;
+  }
+  function cgCubicDerivative(a, b, c, d, t) {
+    const u = 1 - t;
+    return 3 * u * u * (b - a) + 6 * u * t * (c - b) + 3 * t * t * (d - c);
+  }
+  function traceCgUltimateBladeEdge(profile, width, height) {
+    const edge = profile.edge;
+    ctx.beginPath();
+    ctx.moveTo(edge[0] * width, edge[1] * height);
+    ctx.bezierCurveTo(edge[2] * width, edge[3] * height, edge[4] * width, edge[5] * height, edge[6] * width, edge[7] * height);
+    ctx.bezierCurveTo(edge[8] * width, edge[9] * height, edge[10] * width, edge[11] * height, edge[12] * width, edge[13] * height);
+  }
+  function traceCgUltimateBladeSpine(profile, width, height) {
+    const spine = profile.spine;
+    ctx.beginPath();
+    ctx.moveTo(spine[0] * width, spine[1] * height);
+    ctx.bezierCurveTo(spine[2] * width, spine[3] * height, spine[4] * width, spine[5] * height, spine[6] * width, spine[7] * height);
+  }
+  let cgBladeWakePointX = 0, cgBladeWakePointY = 0;
+  function setCgUltimateBladeWakePoint(u, angle, radius, profile, width, height, t, sweep, scale, side, bandWidth) {
+    const a = angle - t * sweep;
+    const nx = Math.cos(a), ny = Math.sin(a), tx = -ny, ty = nx;
+    const r = radius - Math.sin(t * Math.PI) * 7 * scale;
+    const px = u.x + nx * r + tx * profile.rootX * width - nx * profile.rootY * height;
+    const py = u.y + ny * r + ty * profile.rootX * width - ny * profile.rootY * height;
+    const half = bandWidth * 0.5 * Math.pow(1 - t, 1.35) + 0.25;
+    cgBladeWakePointX = side > 0 ? px + nx * half : px - nx * half;
+    cgBladeWakePointY = side > 0 ? py + ny * half : py - ny * half;
+  }
+  function traceCgUltimateBladeWakeBand(u, angle, radius, profile, width, height, segments, sweep, scale, bandWidth) {
+    ctx.beginPath();
+    for (let segment = 0; segment < segments; segment++) {
+      const t = segment / Math.max(1, segments - 1);
+      setCgUltimateBladeWakePoint(u, angle, radius, profile, width, height, t, sweep, scale, 1, bandWidth);
+      if (segment === 0) ctx.moveTo(cgBladeWakePointX, cgBladeWakePointY); else ctx.lineTo(cgBladeWakePointX, cgBladeWakePointY);
+    }
+    for (let segment = segments - 1; segment >= 0; segment--) {
+      const t = segment / Math.max(1, segments - 1);
+      setCgUltimateBladeWakePoint(u, angle, radius, profile, width, height, t, sweep, scale, -1, bandWidth);
+      ctx.lineTo(cgBladeWakePointX, cgBladeWakePointY);
+    }
+    ctx.closePath();
+  }
+  function drawCgUltimateBladeWake(angle, radius, index, scale, collapseK = 0) {
+    const u = corruptGunState.ultimate;
+    const cfg = CG_ULT_CONFIG.wheel;
+    const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+    const variant = index & 1 ? 3 : 2;
+    const profile = CG_ULT_BLADE_PROFILES[variant];
+    const width = cfg.bladeBodyWidth * (variant === 3 ? 1.06 : 1) * scale;
+    const height = cfg.bladeBodyHeight * (variant === 3 ? 0.82 : 1) * scale;
+    const segments = CG_ULT_CONFIG.quality.bladeTrailSegments[qualityIndex];
+    const sweep = cfg.bladeTrailSweep * (1 + collapseK * 0.35);
+
+    ctx.save();
+    traceCgUltimateBladeWakeBand(u, angle, radius, profile, width, height, segments, sweep, scale, cfg.bladeTrailWidth * scale);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = 'rgba(0,0,5,0.76)'; ctx.fill();
+    traceCgUltimateBladeWakeBand(u, angle, radius, profile, width, height, segments, sweep, scale, cfg.bladeTrailWidth * 0.28 * scale);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = 'rgba(174,4,46,0.52)'; ctx.fill();
+
+    const brightSegments = Math.max(2, Math.ceil(segments * 0.34));
+    ctx.beginPath();
+    for (let segment = 0; segment < brightSegments; segment++) {
+      const t = segment / Math.max(1, brightSegments - 1) * 0.22;
+      setCgUltimateBladeWakePoint(u, angle, radius, profile, width, height, t, sweep, scale, 1, 0);
+      if (segment === 0) ctx.moveTo(cgBladeWakePointX, cgBladeWakePointY); else ctx.lineTo(cgBladeWakePointX, cgBladeWakePointY);
+    }
+    ctx.lineCap = 'butt';
+    ctx.strokeStyle = 'rgba(236,22,72,0.74)'; ctx.lineWidth = 2.2 * scale; ctx.stroke();
+    if (qualityIndex < 2) {
+      ctx.strokeStyle = 'rgba(255,223,232,0.56)'; ctx.lineWidth = 0.9 * scale; ctx.stroke();
+    }
+
+    const echoCount = CG_ULT_CONFIG.quality.bladeAfterimages[qualityIndex];
+    for (let echo = 0; echo < echoCount; echo++) {
+      const ghostAngle = angle - cfg.bladeGhostLag * (echo + 1);
+      const gx = u.x + Math.cos(ghostAngle) * radius;
+      const gy = u.y + Math.sin(ghostAngle) * radius;
+      const ghostAlpha = cfg.bladeGhostAlpha * Math.pow(0.48, echo);
+      ctx.save(); ctx.translate(gx, gy); ctx.rotate(ghostAngle + Math.PI * 0.5);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = `rgba(0,0,4,${(ghostAlpha * 2.8).toFixed(3)})`; ctx.lineWidth = (6 - echo) * scale;
+      traceCgUltimateBladeEdge(profile, width, height); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = `rgba(190,5,50,${ghostAlpha.toFixed(3)})`; ctx.lineWidth = (2.4 - echo * 0.5) * scale; ctx.stroke();
+      ctx.restore();
+    }
+
+    const dustCount = CG_ULT_CONFIG.quality.bladeDust[qualityIndex];
+    for (let particle = 0; particle < dustCount; particle++) {
+      const seed = (particle * 0.61803398875 + index * 0.173 + 0.11) % 1;
+      const age = (u.totalT * (1.45 + seed * 0.35) + seed + index * 0.19) % 1;
+      const env = Math.pow(Math.sin(Math.PI * age), 2);
+      const a = angle - (0.06 + age * sweep * 1.08);
+      const nx = Math.cos(a), ny = Math.sin(a), tx = -ny, ty = nx;
+      const r = radius + (seed - 0.5) * 30 + age * 10;
+      const px = u.x + nx * r + tx * profile.rootX * width * (1 - age * 0.35) - nx * profile.rootY * height;
+      const py = u.y + ny * r + ty * profile.rootX * width * (1 - age * 0.35) - ny * profile.rootY * height;
+      const length = lerp(7, 2, age) * scale;
+      ctx.save(); ctx.translate(px, py); ctx.rotate(a + Math.PI * 0.5 + (seed - 0.5) * 0.55);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = `rgba(3,0,6,${(0.86 * env).toFixed(3)})`; ctx.lineWidth = 3.2 * scale;
+      ctx.beginPath(); ctx.moveTo(-length, 0); ctx.lineTo(length, 0); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = `rgba(${particle & 1 ? 155 : 225},${particle & 1 ? 4 : 13},${particle & 1 ? 43 : 67},${(0.72 * env).toFixed(3)})`;
+      ctx.lineWidth = 1.1 * scale; ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  function drawCgUltimateHarvestBlade(x, y, angle, index, scale, alpha = 1) {
+    const u = corruptGunState.ultimate;
+    const cfg = CG_ULT_CONFIG.wheel;
+    const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+    const variant = index & 1 ? 3 : 2;
+    const profile = CG_ULT_BLADE_PROFILES[variant];
+    const width = cfg.bladeBodyWidth * (variant === 3 ? 1.06 : 1) * scale;
+    const height = cfg.bladeBodyHeight * (variant === 3 ? 0.82 : 1) * scale;
+    const hubX = profile.hubX * width, hubY = profile.hubY * height;
+    const hubRadius = height * (variant === 3 ? 0.105 : 0.115);
+
+    ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.lineCap = 'round';
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgba(0,0,4,${(0.88 * alpha).toFixed(3)})`;
+    ctx.beginPath(); ctx.arc(hubX, hubY, hubRadius * 0.86, 0, TAU); ctx.fill();
+    ctx.strokeStyle = `rgba(0,0,4,${(0.94 * alpha).toFixed(3)})`; ctx.lineWidth = 13 * scale;
+    traceCgUltimateBladeEdge(profile, width, height); ctx.stroke();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(112,2,34,${(0.20 * alpha).toFixed(3)})`; ctx.lineWidth = 10 * scale; ctx.stroke();
+    ctx.strokeStyle = `rgba(225,8,56,${(0.13 * alpha).toFixed(3)})`; ctx.lineWidth = 17 * scale; ctx.stroke();
+    ctx.restore();
+
+    drawCgAsset(`cgUltHarvesterBase${variant}`, x, y, width, height, {
+      rot: angle, blend: 'source-over', alpha: 0.90 * alpha, glow: false,
+    });
+    const energyPulse = 0.5 + 0.5 * Math.sin(u.totalT * 7.4 + index * 1.7);
+    drawCgAsset(`cgUltHarvesterEnergy${variant}`, x, y, width, height, {
+      rot: angle, blend: 'lighter', alpha: (cfg.bladeEnergyBaseAlpha + energyPulse * cfg.bladeEnergyPulseAlpha) * alpha, glow: false,
+    });
+
+    ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.lineCap = 'round';
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = `rgba(0,0,3,${(0.94 * alpha).toFixed(3)})`; ctx.lineWidth = 5.4 * scale;
+    traceCgUltimateBladeEdge(profile, width, height); ctx.stroke();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(210,8,54,${(0.76 * alpha).toFixed(3)})`; ctx.lineWidth = 2.1 * scale; ctx.stroke();
+
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = `rgba(0,0,4,${(0.86 * alpha).toFixed(3)})`; ctx.lineWidth = 5 * scale;
+    traceCgUltimateBladeSpine(profile, width, height); ctx.stroke();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(132,4,39,${(0.52 * alpha).toFixed(3)})`; ctx.lineWidth = 1.25 * scale; ctx.stroke();
+
+    const rootPulse = 0.5 + 0.5 * Math.sin(u.totalT * 4.6 + index * 1.91);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(218,10,58,${((0.48 + rootPulse * 0.28) * alpha).toFixed(3)})`;
+    ctx.lineWidth = 1.45 * scale; ctx.beginPath(); ctx.arc(hubX, hubY, hubRadius * 0.68, 0, TAU); ctx.stroke();
+    const rootArcs = CG_ULT_CONFIG.quality.bladeRootArcs[qualityIndex];
+    for (let arc = 0; arc < rootArcs; arc++) {
+      const start = u.totalT * cfg.bladeRootRingSpeed * (arc ? -0.72 : 1) + index * 0.9 + arc * Math.PI;
+      ctx.strokeStyle = `rgba(${arc ? 142 : 236},${arc ? 3 : 16},${arc ? 44 : 73},${((0.48 - arc * 0.12) * alpha).toFixed(3)})`;
+      ctx.lineWidth = (1.25 - arc * 0.2) * scale;
+      ctx.beginPath(); ctx.arc(hubX, hubY, hubRadius * (1.05 + arc * 0.32), start, start + 1.05); ctx.stroke();
+    }
+    const hubParticles = CG_ULT_CONFIG.quality.bladeHubParticles[qualityIndex];
+    for (let particle = 0; particle < hubParticles; particle++) {
+      const orbit = u.totalT * (2.4 + particle * 0.37) + index * 1.13 + particle * TAU / hubParticles;
+      const orbitRadius = hubRadius * (1.32 + particle * 0.14);
+      const px = hubX + Math.cos(orbit) * orbitRadius;
+      const py = hubY + Math.sin(orbit) * orbitRadius * 0.72;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = `rgba(0,0,4,${(0.90 * alpha).toFixed(3)})`;
+      ctx.beginPath(); ctx.arc(px, py, (2.4 - particle * 0.25) * scale, 0, TAU); ctx.fill();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = `rgba(${particle ? 206 : 255},${particle ? 8 : 34},${particle ? 58 : 94},${((0.66 - particle * 0.08) * alpha).toFixed(3)})`;
+      ctx.beginPath(); ctx.arc(px, py, (1.25 - particle * 0.12) * scale, 0, TAU); ctx.fill();
+    }
+    const rootX = profile.rootX * width, rootY = profile.rootY * height;
+    for (let ray = 0; ray < (qualityIndex === 0 ? 3 : 2); ray++) {
+      const phase = 0.5 + 0.5 * Math.sin(u.totalT * (7.2 + ray) + index * 2.1 + ray * 1.8);
+      ctx.strokeStyle = `rgba(185,5,48,${((0.28 + phase * 0.32) * alpha).toFixed(3)})`;
+      ctx.lineWidth = (2.2 - ray * 0.45) * scale;
+      ctx.beginPath();
+      ctx.moveTo(rootX + 4 * scale, rootY + (ray - 1) * 4 * scale);
+      ctx.lineTo(rootX - (14 + phase * 18 + ray * 5) * scale, rootY + (ray - 1) * 7 * scale);
+      ctx.stroke();
+    }
+
+    const spine = profile.spine;
+    const spinePackets = CG_ULT_CONFIG.quality.bladeSpinePackets[qualityIndex];
+    for (let packet = 0; packet < spinePackets; packet++) {
+      const t = (u.totalT * cfg.bladeSpineFlowSpeed + index * 0.173 + packet / spinePackets) % 1;
+      const sx = cgCubic(spine[0], spine[2], spine[4], spine[6], t) * width;
+      const sy = cgCubic(spine[1], spine[3], spine[5], spine[7], t) * height;
+      const sdx = cgCubicDerivative(spine[0], spine[2], spine[4], spine[6], t) * width;
+      const sdy = cgCubicDerivative(spine[1], spine[3], spine[5], spine[7], t) * height;
+      const packetLength = width * (packet === 0 ? 0.075 : 0.045);
+      ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.atan2(sdy, sdx));
+      ctx.strokeStyle = `rgba(237,10,62,${((0.55 - packet * 0.10) * alpha).toFixed(3)})`;
+      ctx.lineWidth = (2.1 - packet * 0.3) * scale;
+      ctx.beginPath(); ctx.moveTo(-packetLength * 0.5, 0); ctx.lineTo(packetLength * 0.5, 0); ctx.stroke();
+      if (qualityIndex === 0 && packet === 0) {
+        ctx.strokeStyle = `rgba(255,225,234,${(0.62 * alpha).toFixed(3)})`; ctx.lineWidth = 0.8 * scale; ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    const edge = profile.edge;
+    const glintCount = CG_ULT_CONFIG.quality.bladeEdgeGlints[qualityIndex];
+    const baseGlintPhase = (u.totalT / cfg.bladeGlintPeriod + index * 0.217) % 1;
+    for (let glint = 0; glint < glintCount; glint++) {
+      const t = (baseGlintPhase + glint * 0.43) % 1;
+      const second = t >= 0.5, localT = second ? (t - 0.5) * 2 : t * 2;
+      const offset = second ? 6 : 0;
+      const gx = cgCubic(edge[offset], edge[offset + 2], edge[offset + 4], edge[offset + 6], localT) * width;
+      const gy = cgCubic(edge[offset + 1], edge[offset + 3], edge[offset + 5], edge[offset + 7], localT) * height;
+      const gdx = cgCubicDerivative(edge[offset], edge[offset + 2], edge[offset + 4], edge[offset + 6], localT) * width;
+      const gdy = cgCubicDerivative(edge[offset + 1], edge[offset + 3], edge[offset + 5], edge[offset + 7], localT) * height;
+      const glintLength = width * cfg.bladeGlintSpan * (glint ? 0.72 : 1);
+      ctx.save(); ctx.translate(gx, gy); ctx.rotate(Math.atan2(gdy, gdx));
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = `rgba(0,0,3,${(0.90 * alpha).toFixed(3)})`; ctx.lineWidth = 6.5 * scale;
+      ctx.beginPath(); ctx.moveTo(-glintLength * 0.5, 0); ctx.lineTo(glintLength * 0.5, 0); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = `rgba(240,18,69,${((0.80 - glint * 0.18) * alpha).toFixed(3)})`; ctx.lineWidth = 3.2 * scale; ctx.stroke();
+      ctx.strokeStyle = `rgba(255,239,244,${((0.88 - glint * 0.24) * alpha).toFixed(3)})`; ctx.lineWidth = 0.95 * scale; ctx.stroke();
+      ctx.restore();
+    }
+
+    ctx.strokeStyle = `rgba(173,9,48,${(0.35 * alpha).toFixed(3)})`; ctx.lineWidth = 0.9 * scale;
+    ctx.beginPath(); ctx.moveTo(profile.ribX1 * width - 6 * scale, profile.ribY1 * height + 5 * scale); ctx.lineTo(profile.ribX1 * width + 7 * scale, profile.ribY1 * height - 5 * scale); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(profile.ribX2 * width - 5 * scale, profile.ribY2 * height + 4 * scale); ctx.lineTo(profile.ribX2 * width + 6 * scale, profile.ribY2 * height - 4 * scale); ctx.stroke();
+
+    const tipX = profile.tipX * width, tipY = profile.tipY * height;
+    const tipWave = Math.max(0, Math.sin(u.totalT * 11.6 + index * 2.37));
+    const tipPulse = Math.pow(tipWave, 6);
+    const tipLength = lerp(cfg.bladeTipBaseLength, cfg.bladeTipPeakLength, tipPulse) * scale;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = `rgba(0,0,3,${(0.90 * alpha).toFixed(3)})`; ctx.lineWidth = 5 * scale;
+    ctx.beginPath(); ctx.moveTo(tipX - 4 * scale, tipY); ctx.lineTo(tipX + tipLength, tipY); ctx.stroke();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(236,14,65,${((0.58 + tipPulse * 0.30) * alpha).toFixed(3)})`; ctx.lineWidth = 2.1 * scale; ctx.stroke();
+    ctx.strokeStyle = `rgba(255,241,246,${((0.38 + tipPulse * 0.55) * alpha).toFixed(3)})`; ctx.lineWidth = 0.8 * scale; ctx.stroke();
+    if (tipPulse > 0.18) {
+      ctx.beginPath(); ctx.moveTo(tipX, tipY - 4 * scale); ctx.lineTo(tipX, tipY + 4 * scale); ctx.stroke();
+    }
+    const tipParticles = CG_ULT_CONFIG.quality.bladeTipParticles[qualityIndex];
+    for (let particle = 0; particle < tipParticles; particle++) {
+      const age = (u.totalT * (2.9 + particle * 0.43) + index * 0.27 + particle * 0.51) % 1;
+      const env = Math.pow(Math.sin(Math.PI * age), 2);
+      const px = tipX - age * (18 + particle * 9) * scale;
+      const py = tipY + (particle & 1 ? 1 : -1) * (4 + age * 10) * scale;
+      const size = (2.6 - age * 1.3) * scale;
+      ctx.save(); ctx.translate(px, py); ctx.rotate((particle & 1 ? -0.5 : 0.5) + age * 0.8);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = `rgba(0,0,4,${(0.84 * env * alpha).toFixed(3)})`;
+      ctx.beginPath(); ctx.moveTo(-size * 1.8, 0); ctx.lineTo(0, -size); ctx.lineTo(size * 1.8, 0); ctx.lineTo(0, size); ctx.closePath(); ctx.fill();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = `rgba(232,12,65,${(0.72 * env * alpha).toFixed(3)})`;
+      ctx.beginPath(); ctx.moveTo(-size, 0); ctx.lineTo(0, -size * 0.45); ctx.lineTo(size, 0); ctx.lineTo(0, size * 0.45); ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
     ctx.restore();
   }
   function cgUltimateWheelFrame(spec) {
     if (Number.isFinite(spec.steadyFrame)) return clamp(spec.steadyFrame | 0, 0, spec.frames - 1);
     return Math.floor(corruptGunState.ultimate.totalT * 1000 / spec.frameMs) % spec.frames;
   }
+  function cgSoulEnvelope(value, openEnd = 0.18, closeStart = 0.72) {
+    const p = clamp(value, 0, 1);
+    const open = clamp(p / Math.max(0.001, openEnd), 0, 1);
+    const close = clamp((1 - p) / Math.max(0.001, 1 - closeStart), 0, 1);
+    return Math.min(open, close);
+  }
+  function cgSoulRenderPoint(soul) {
+    if (!soul) return { x: 0, y: 0 };
+    if (soul.state === 'possess' || soul.state === 'burst') {
+      return {
+        x: Number.isFinite(soul.lastTargetX) ? soul.lastTargetX : soul.x,
+        y: Number.isFinite(soul.lastTargetY) ? soul.lastTargetY : soul.y,
+      };
+    }
+    return { x: soul.x, y: soul.y };
+  }
+  function drawCgSoulVoidDisc(x, y, size, alpha = 1) {
+    const disc = cachedSprite('cg_soul_void_disc', 256, 256, (c2, s) => {
+      const g = c2.createRadialGradient(s * 0.5, s * 0.5, s * 0.04, s * 0.5, s * 0.5, s * 0.5);
+      g.addColorStop(0, 'rgba(0,0,3,0.98)');
+      g.addColorStop(0.42, 'rgba(7,0,10,0.94)');
+      g.addColorStop(0.70, 'rgba(27,1,19,0.70)');
+      g.addColorStop(1, 'rgba(63,2,31,0)');
+      c2.fillStyle = g;
+      c2.fillRect(0, 0, s, s);
+    });
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(disc, x - size * 0.5, y - size * 0.5, size, size);
+    ctx.restore();
+  }
+  function drawCgSoulVoidEllipse(x, y, width, height, alpha = 1) {
+    const disc = cachedSprite('cg_soul_void_disc', 256, 256, (c2, s) => {
+      const g = c2.createRadialGradient(s * 0.5, s * 0.5, s * 0.04, s * 0.5, s * 0.5, s * 0.5);
+      g.addColorStop(0, 'rgba(0,0,3,0.99)');
+      g.addColorStop(0.44, 'rgba(7,0,10,0.96)');
+      g.addColorStop(0.72, 'rgba(31,1,22,0.72)');
+      g.addColorStop(1, 'rgba(63,2,31,0)');
+      c2.fillStyle = g;
+      c2.fillRect(0, 0, s, s);
+    });
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(disc, x - width * 0.5, y - height * 0.5, width, height);
+    ctx.restore();
+  }
+  function cgSoulBridgeAge() {
+    const u = corruptGunState.ultimate, cfg = CG_ULT_SECOND_CONFIG;
+    if (!u.active) return -1;
+    if (u.phase === 'finale') return u.t - Math.max(0, CG_ULT_CONFIG.finale - cfg.bridgeLead);
+    if (u.phase === 'soulhunt' && u.soulhunt.active) return cfg.bridgeLead + u.soulhunt.t;
+    return -1;
+  }
+  function cgSoulBridgeVisual() {
+    const cfg = CG_ULT_SECOND_CONFIG, age = cgSoulBridgeAge();
+    if (age < 0) return null;
+    const soulTime = Math.max(0, age - cfg.bridgeLead);
+    const fade = soulTime <= cfg.portalHold
+      ? 1
+      : 1 - clamp((soulTime - cfg.portalHold) / Math.max(0.001, cfg.portalFadeEnd - cfg.portalHold), 0, 1);
+    const open = clamp(age / 0.08, 0, 1);
+    const alpha = open * fade;
+    if (alpha <= 0) return null;
+    const keys = cfg.bridgeKeyframes;
+    let from = keys[keys.length - 1], to = from, mix = 0;
+    for (let index = 0; index < keys.length - 1; index++) {
+      if (age <= keys[index + 1].t) {
+        from = keys[index]; to = keys[index + 1];
+        mix = clamp((age - from.t) / Math.max(0.001, to.t - from.t), 0, 1);
+        break;
+      }
+    }
+    const closeK = soulTime <= cfg.portalHold ? 0 : clamp((soulTime - cfg.portalHold) / Math.max(0.001, cfg.portalFadeEnd - cfg.portalHold), 0, 1);
+    const width = lerp(from.width, to.width, easeOutCubic(mix)) * lerp(1, 0.38, closeK);
+    const height = lerp(from.height, to.height, easeOutCubic(mix)) * lerp(1, 0.42, closeK);
+    const layers = [{ frame: from.frame, alpha: 1 - mix }];
+    if (to.frame !== from.frame && mix > 0) layers.push({ frame: to.frame, alpha: mix });
+    return { age, soulTime, alpha, closeK, width, height, layers };
+  }
+  function drawCgUltimateSoulBridge(backLayer) {
+    const visual = cgSoulBridgeVisual();
+    if (!visual) return;
+    const u = corruptGunState.ultimate, spec = CG_ULT_SECOND_CONFIG.atlas.transition;
+    const centralBlend = u.phase === 'soulhunt'
+      ? clamp((u.soulhunt.t - 0.08) / 0.28, 0, 1)
+      : 0;
+    const textureAlpha = lerp(1, CG_ULT_SECOND_CONFIG.bridgeTextureFloor, centralBlend);
+    if (backLayer) {
+      const breachK = clamp((visual.age - 0.44) / 0.30, 0, 1);
+      const voidHeight = visual.height * lerp(0.62, 0.42, breachK);
+      drawCgSoulVoidEllipse(u.x, u.y + voidHeight * 0.10, visual.width * lerp(0.78, 1.04, breachK), voidHeight, 0.84 * visual.alpha);
+    }
+    for (const layer of visual.layers) {
+      if (layer.alpha <= 0.001) continue;
+      const skullBoost = layer.frame === 4 ? (backLayer ? 1.04 : 1.82) : 1;
+      const breachBoost = !backLayer && layer.frame === 8 && u.phase === 'soulhunt' && u.soulhunt.t < 0.18 ? 1.42 : 1;
+      if (!backLayer && layer.frame === 4) {
+        // 骷髅显形阶段补一层受控的材质提亮，避免只剩暗红轮廓而读不出脸部。
+        drawCgAtlasFrame(spec.base, layer.frame, spec.cols, spec.rows, u.x, u.y, visual.width, visual.height, {
+          rot: 0,
+          blend: 'screen',
+          alpha: visual.alpha * textureAlpha * layer.alpha * 0.34,
+        });
+      }
+      if (!backLayer && layer.frame === 8 && u.phase === 'soulhunt' && u.soulhunt.t < 0.18) {
+        // 二段起始保留爆炸点的红色裂纹，填平终爆裂口到爬出序列之间的亮度凹谷。
+        drawCgAtlasFrame(spec.base, layer.frame, spec.cols, spec.rows, u.x, u.y, visual.width, visual.height, {
+          rot: 0,
+          blend: 'screen',
+          alpha: visual.alpha * textureAlpha * layer.alpha * 0.30,
+        });
+      }
+      drawCgAtlasFrame(backLayer ? spec.base : spec.energy, layer.frame, spec.cols, spec.rows, u.x, u.y, visual.width, visual.height, {
+        rot: 0,
+        blend: backLayer ? 'source-over' : 'lighter',
+        alpha: visual.alpha * textureAlpha * layer.alpha * (backLayer ? 0.96 : 0.34) * skullBoost * breachBoost,
+      });
+    }
+    if (!backLayer && visual.closeK > 0) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (let index = 0; index < (cgLite() ? 6 : 11); index++) {
+        const seed = (index * 0.61803398875 + 0.13) % 1;
+        const angle = seed * TAU + visual.soulTime * (0.8 + (index % 3) * 0.18);
+        const radius = visual.width * (0.18 + seed * 0.34) * (1 - visual.closeK * 0.55);
+        const x = u.x + Math.cos(angle) * radius;
+        const y = u.y + Math.sin(angle) * radius * 0.52 - visual.closeK * (18 + seed * 36);
+        ctx.fillStyle = `rgba(${index & 1 ? 176 : 232},${index & 1 ? 8 : 18},${index & 1 ? 70 : 88},${(visual.alpha * (0.34 + seed * 0.36)).toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(x, y, 1.4 + seed * 2.6, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
+  }
+  function cgSoulCentralEmergeVisual() {
+    const sh = corruptGunState.ultimate.soulhunt, cfg = CG_ULT_SECOND_CONFIG;
+    const keys = cfg.centralKeyframes;
+    if (!sh.active || sh.t < keys[0].t || sh.t >= cfg.centralEmergeFadeEnd) return null;
+    let from = keys[keys.length - 1], to = from, mix = 0;
+    for (let index = 0; index < keys.length - 1; index++) {
+      if (sh.t <= keys[index + 1].t) {
+        from = keys[index]; to = keys[index + 1];
+        mix = clamp((sh.t - from.t) / Math.max(0.001, to.t - from.t), 0, 1);
+        break;
+      }
+    }
+    const eased = easeOutCubic(mix);
+    const open = lerp(0.44, 1, clamp((sh.t - keys[0].t) / 0.10, 0, 1));
+    const close = sh.t <= cfg.centralEmergeFadeStart
+      ? 1
+      : 1 - clamp((sh.t - cfg.centralEmergeFadeStart) / Math.max(0.001, cfg.centralEmergeFadeEnd - cfg.centralEmergeFadeStart), 0, 1);
+    const layers = [{ frame: from.frame, alpha: 1 - mix }];
+    if (to.frame !== from.frame && mix > 0) layers.push({ frame: to.frame, alpha: mix });
+    return {
+      frame: mix < 0.5 ? from.frame : to.frame,
+      layers,
+      alpha: open * close,
+      width: lerp(from.width, to.width, eased),
+      height: lerp(from.height, to.height, eased),
+      y: sh.originY + lerp(from.y, to.y, eased),
+    };
+  }
+  function drawCgUltimateCentralEmerge(backLayer) {
+    const visual = cgSoulCentralEmergeVisual();
+    if (!visual) return;
+    const sh = corruptGunState.ultimate.soulhunt, spec = CG_ULT_SECOND_CONFIG.atlas.emerge;
+    for (const layer of visual.layers) {
+      if (layer.alpha <= 0.001) continue;
+      drawCgAtlasFrame(backLayer ? spec.base : spec.energy, layer.frame, spec.cols, spec.rows, sh.originX, visual.y, visual.width, visual.height, {
+        rot: 0,
+        blend: backLayer ? 'source-over' : 'lighter',
+        alpha: visual.alpha * layer.alpha * (backLayer ? 0.96 : 0.42),
+      });
+    }
+  }
+  function drawCgSoulCrawlTether(soul, alpha = 1) {
+    const sh = corruptGunState.ultimate.soulhunt;
+    const dx = soul.x - sh.originX, dy = soul.y - sh.originY;
+    const length = Math.max(1, Math.hypot(dx, dy));
+    const nx = -dy / length, ny = dx / length;
+    const bend = ((soul.index & 1) ? -1 : 1) * (14 + soul.seed * 18);
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(sh.originX, sh.originY);
+    ctx.quadraticCurveTo(sh.originX + dx * 0.46 + nx * bend, sh.originY + dy * 0.46 + ny * bend, soul.x, soul.y);
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = `rgba(1,0,5,${(0.74 * alpha).toFixed(3)})`;
+    ctx.lineWidth = 9;
+    ctx.stroke();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(126,4,47,${(0.42 * alpha).toFixed(3)})`;
+    ctx.lineWidth = 2.1;
+    ctx.stroke();
+    ctx.restore();
+  }
+  function drawCgSoulTrail(soul, alpha = 1) {
+    if (!soul || !soul.trail || soul.trail.length < 2) return;
+    const points = [{ x: soul.x, y: soul.y }, ...soul.trail];
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    for (let index = points.length - 2; index >= 0; index--) {
+      const from = points[index + 1], to = points[index];
+      const headK = 1 - index / Math.max(1, points.length - 2);
+      const voidWidth = lerp(5, 18, headK);
+      const bloodWidth = lerp(1.8, 6.2, headK);
+      ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = `rgba(1,0,5,${(0.88 * alpha).toFixed(3)})`;
+      ctx.lineWidth = voidWidth;
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = `rgba(102,3,42,${((0.54 + headK * 0.16) * alpha).toFixed(3)})`;
+      ctx.lineWidth = bloodWidth;
+      ctx.stroke();
+      ctx.strokeStyle = `rgba(224,13,70,${((0.34 + headK * 0.24) * alpha).toFixed(3)})`;
+      ctx.lineWidth = lerp(0.7, 1.8, headK);
+      ctx.stroke();
+      if ((index & 1) === 0) {
+        const dx = to.x - from.x, dy = to.y - from.y, length = Math.max(1, Math.hypot(dx, dy));
+        const nx = -dy / length, ny = dx / length;
+        const side = (soul.index + index) & 1 ? -1 : 1;
+        const thorn = lerp(5, 13, headK);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = `rgba(16,0,12,${(0.82 * alpha).toFixed(3)})`;
+        ctx.strokeStyle = `rgba(128,4,48,${(0.60 * alpha).toFixed(3)})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(to.x - dx / length * thorn * 0.45, to.y - dy / length * thorn * 0.45);
+        ctx.lineTo(to.x + nx * thorn * side, to.y + ny * thorn * side);
+        ctx.lineTo(to.x + dx / length * thorn * 0.34, to.y + dy / length * thorn * 0.34);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+  function drawCgSoulFallback(soul, alpha = 1, possess = false, dissolve = 0) {
+    const point = cgSoulRenderPoint(soul);
+    const pulse = 1 + Math.sin(time * 8.4 + soul.seed * TAU) * 0.06;
+    const length = possess ? 74 : 126;
+    const width = possess ? 74 : 58;
+    ctx.save();
+    ctx.translate(point.x, point.y);
+    ctx.rotate(possess ? -time * 3.2 - soul.seed * TAU : soul.angle);
+    ctx.scale(pulse * (1 - dissolve * 0.28), pulse * (1 + dissolve * 0.15));
+    ctx.globalAlpha = alpha;
+    if (possess) {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(1,0,5,0.90)';
+      ctx.strokeStyle = 'rgba(117,4,47,0.92)';
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      ctx.arc(0, 0, width * 0.36, 0, TAU);
+      ctx.fill(); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(226,13,73,0.78)';
+      ctx.lineWidth = 2;
+      for (let arm = 0; arm < 5; arm++) {
+        const angle = arm * TAU / 5;
+        ctx.beginPath();
+        ctx.arc(0, 0, width * (0.32 + arm * 0.015), angle, angle + 0.78);
+        ctx.stroke();
+      }
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(1,0,5,0.94)';
+      ctx.strokeStyle = 'rgba(91,3,39,0.96)';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(length * 0.54, 0);
+      ctx.bezierCurveTo(length * 0.18, -width * 0.52, -length * 0.08, -width * 0.32, -length * 0.54, -width * 0.09);
+      ctx.bezierCurveTo(-length * 0.18, width * 0.08, -length * 0.38, width * 0.30, -length * 0.12, width * 0.20);
+      ctx.bezierCurveTo(length * 0.16, width * 0.42, length * 0.36, width * 0.18, length * 0.54, 0);
+      ctx.fill(); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = 'rgba(223,12,72,0.78)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-length * 0.42, 0);
+      ctx.bezierCurveTo(-length * 0.05, -width * 0.08, length * 0.18, width * 0.10, length * 0.46, 0);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(255,37,92,0.92)';
+      ctx.beginPath(); ctx.arc(length * 0.29, -width * 0.07, 3.5, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function queueCgUltimateSoulFields() {
+    const sh = corruptGunState.ultimate.soulhunt;
+    if (!sh.active || !cgVfxRenderer.frameActive || !cgVfxRenderer.engine.drawUltimateSoul) return;
+    for (const soul of sh.souls) {
+      if (soul.state !== 'seek' && soul.state !== 'possess' && soul.state !== 'dissolve') continue;
+      const point = cgSoulRenderPoint(soul);
+      const possess = soul.state === 'possess';
+      const dissolving = soul.state === 'dissolve';
+      const progress = possess
+        ? clamp(soul.stateT / CG_ULT_SECOND_CONFIG.possessTime, 0, 1)
+        : dissolving
+          ? clamp(soul.stateT / CG_ULT_SECOND_CONFIG.dissolveTime, 0, 1)
+          : clamp(soul.seekAge / CG_ULT_SECOND_CONFIG.seekTime, 0, 1);
+      cgVfxRenderer.engine.drawUltimateSoul({
+        layer: possess ? 'front' : 'back',
+        x: point.x, y: point.y,
+        width: possess ? 160 : 188,
+        height: possess ? 160 : 112,
+        rotation: possess ? -time * 2.8 : soul.angle,
+        phase: soul.seed + soul.index * 0.071,
+        progress,
+        power: dissolving ? 1 - progress : 1,
+        opacity: possess ? 0.34 : (dissolving ? 0.22 * (1 - progress) : 0.20),
+        variant: possess ? 'possess' : (dissolving ? 'dissolve' : 'seek'),
+      });
+    }
+  }
+  function drawCgUltimateSoulhuntBack() {
+    const sh = corruptGunState.ultimate.soulhunt, cfg = CG_ULT_SECOND_CONFIG;
+    if (!sh.active) return;
+    drawCgUltimateSoulBridge(true);
+    drawCgUltimateCentralEmerge(true);
+    for (const soul of sh.souls) {
+      if (soul.state === 'delay' || soul.state === 'done') continue;
+      if (soul.state === 'seek') drawCgSoulTrail(soul, 0.94);
+      if (soul.state === 'emerge') {
+        const p = clamp(soul.stateT / cfg.emergeTime, 0, 1);
+        drawCgSoulCrawlTether(soul, (1 - p * 0.62) * clamp(p / 0.10, 0, 1));
+      } else if (soul.state === 'burst') {
+        const p = clamp(soul.stateT / cfg.burstTime, 0, 1);
+        const frame = clamp(Math.floor(p * cfg.atlas.burst.frames), 0, cfg.atlas.burst.frames - 1);
+        const env = cgSoulEnvelope(p, 0.07, 0.82);
+        drawCgSoulVoidDisc(soul.x, soul.y, cfg.burstVisualSize * lerp(0.54, 1.04, easeOutCubic(p)), 0.86 * env);
+        drawCgAtlasFrame(cfg.atlas.burst.base, frame, cfg.atlas.burst.cols, cfg.atlas.burst.rows, soul.x, soul.y, cfg.burstVisualSize, cfg.burstVisualSize, {
+          rot: soul.seed * TAU, blend: 'source-over', alpha: Math.max(0.34, env),
+        });
+      }
+    }
+  }
+  function drawCgSoulParticles() {
+    const sh = corruptGunState.ultimate.soulhunt;
+    for (const particle of sh.particles) {
+      const alpha = clamp(particle.life / Math.max(0.001, particle.maxLife), 0, 1);
+      drawCgAsset(particle.family === 'P' ? 'cgDotP2' : 'cgDotR2', particle.x, particle.y, particle.size, null, {
+        rot: particle.rot, blend: particle.family === 'P' ? 'source-over' : 'lighter', alpha: 0.90 * alpha, glow: false,
+      });
+    }
+  }
+  function drawCgUltimateSoulhuntFront() {
+    const sh = corruptGunState.ultimate.soulhunt, cfg = CG_ULT_SECOND_CONFIG;
+    if (!sh.active) return;
+    drawCgUltimateSoulBridge(false);
+    drawCgUltimateCentralEmerge(false);
+    for (const soul of sh.souls) {
+      if (soul.state === 'emerge') {
+        const p = clamp(soul.stateT / cfg.emergeTime, 0, 1);
+        const peek = easeOutCubic(clamp(p / 0.32, 0, 1));
+        const crawl = easeOutCubic(clamp((p - 0.24) / 0.76, 0, 1));
+        const alpha = clamp(p / 0.12, 0, 1);
+        const width = lerp(42, 92, peek) + crawl * 46;
+        const height = lerp(34, 64, peek) + crawl * 32;
+        const crawlRot = soul.angle + Math.sin(p * Math.PI * 3 + soul.seed * TAU) * 0.06 * (1 - p);
+        const drawn = drawCgAtlasFrame(cfg.atlas.variants.base, soul.variant, cfg.atlas.variants.cols, cfg.atlas.variants.rows, soul.x, soul.y, width, height, {
+          rot: crawlRot, blend: 'source-over', alpha: 0.96 * alpha,
+        });
+        drawCgAtlasFrame(cfg.atlas.variants.energy, soul.variant, cfg.atlas.variants.cols, cfg.atlas.variants.rows, soul.x, soul.y, width * 1.02, height * 1.02, {
+          rot: crawlRot, blend: 'lighter', alpha: 0.34 * alpha,
+        });
+        if (!drawn) drawCgSoulFallback(soul, 0.92 * alpha, false, 0);
+      } else if (soul.state === 'seek') {
+        const morph = clamp(soul.seekAge / cfg.pounceMorphTime, 0, 1);
+        const distance = cgSoulTargetValid(soul.target)
+          ? Math.hypot(soul.target.x - soul.x, soul.target.y - soul.y)
+          : cfg.pounceDistance;
+        const lunge = 1 - clamp((distance - 74) / Math.max(1, cfg.pounceDistance - 74), 0, 1);
+        if (morph < 1) {
+          drawCgAtlasFrame(cfg.atlas.variants.base, soul.variant, cfg.atlas.variants.cols, cfg.atlas.variants.rows, soul.x, soul.y, 150, 104, {
+            rot: soul.angle, blend: 'source-over', alpha: 0.94 * (1 - morph),
+          });
+          drawCgAtlasFrame(cfg.atlas.variants.energy, soul.variant, cfg.atlas.variants.cols, cfg.atlas.variants.rows, soul.x, soul.y, 153, 107, {
+            rot: soul.angle, blend: 'lighter', alpha: 0.30 * (1 - morph),
+          });
+        }
+        const width = lerp(164, 198, easeOutCubic(lunge));
+        const height = lerp(98, 104, lunge);
+        const drawn = drawCgAtlasFrame(cfg.atlas.flight.base, soul.flightVariant, cfg.atlas.flight.cols, cfg.atlas.flight.rows, soul.x, soul.y, width, height, {
+          rot: soul.angle, blend: 'source-over', alpha: 0.98 * morph,
+        });
+        drawCgAtlasFrame(cfg.atlas.flight.energy, soul.flightVariant, cfg.atlas.flight.cols, cfg.atlas.flight.rows, soul.x, soul.y, width * 1.02, height * 1.02, {
+          rot: soul.angle, blend: 'lighter', alpha: (0.30 + lunge * 0.14) * morph,
+        });
+        if (!drawn) drawCgSoulFallback(soul, 0.94, false, 0);
+      } else if (soul.state === 'possess') {
+        const p = clamp(soul.stateT / cfg.possessTime, 0, 1);
+        const morph = easeOutCubic(clamp(soul.stateT / cfg.possessMorphTime, 0, 1));
+        const wrapAngle = -time * 3.2 - soul.seed * TAU;
+        const startAngle = Number.isFinite(soul.possessStartAngle) ? soul.possessStartAngle : soul.angle;
+        const rot = startAngle + cgSoulAngleDelta(startAngle, wrapAngle) * morph;
+        const width = lerp(198, lerp(174, 132, p), morph);
+        const height = lerp(104, lerp(150, 116, p), morph);
+        drawCgSoulVoidDisc(soul.x, soul.y, lerp(118, 84, p), 0.70 * morph);
+        drawCgAtlasFrame(cfg.atlas.flight.base, 5, cfg.atlas.flight.cols, cfg.atlas.flight.rows, soul.x, soul.y, width, height, {
+          rot, blend: 'source-over', alpha: 0.94,
+        });
+        drawCgAtlasFrame(cfg.atlas.flight.energy, 5, cfg.atlas.flight.cols, cfg.atlas.flight.rows, soul.x, soul.y, width * 1.03, height * 1.03, {
+          rot, blend: 'lighter', alpha: 0.38 + p * 0.14,
+        });
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.strokeStyle = `rgba(230,16,73,${(0.36 + p * 0.44).toFixed(3)})`;
+        ctx.lineWidth = 2.4;
+        for (let ring = 0; ring < 3; ring++) {
+          const radius = lerp(62 + ring * 9, 26 + ring * 4, p);
+          ctx.beginPath(); ctx.arc(soul.x, soul.y, radius, time * (2.4 + ring), time * (2.4 + ring) + Math.PI * 1.22); ctx.stroke();
+        }
+        ctx.restore();
+      } else if (soul.state === 'burst') {
+        const p = clamp(soul.stateT / cfg.burstTime, 0, 1);
+        const frame = clamp(Math.floor(p * cfg.atlas.burst.frames), 0, cfg.atlas.burst.frames - 1);
+        drawCgAtlasFrame(cfg.atlas.burst.energy, frame, cfg.atlas.burst.cols, cfg.atlas.burst.rows, soul.x, soul.y, cfg.burstVisualSize * 1.04, cfg.burstVisualSize * 1.04, {
+          rot: soul.seed * TAU, blend: 'lighter', alpha: 0.76 * (1 - p * 0.42),
+        });
+      } else if (soul.state === 'dissolve') {
+        const p = clamp(soul.stateT / cfg.dissolveTime, 0, 1);
+        const drawn = drawCgAtlasFrame(cfg.atlas.variants.base, soul.variant, cfg.atlas.variants.cols, cfg.atlas.variants.rows, soul.x, soul.y, 154 * (1 + p * 0.18), 106 * (1 - p * 0.28), {
+          rot: soul.angle, blend: 'source-over', alpha: 0.88 * (1 - p),
+        });
+        drawCgAtlasFrame(cfg.atlas.variants.energy, soul.variant, cfg.atlas.variants.cols, cfg.atlas.variants.rows, soul.x, soul.y, 158 * (1 + p * 0.20), 110 * (1 - p * 0.30), {
+          rot: soul.angle, blend: 'lighter', alpha: 0.30 * (1 - p),
+        });
+        if (!drawn) drawCgSoulFallback(soul, 0.82 * (1 - p), false, p);
+      }
+    }
+    drawCgSoulParticles();
+  }
   function drawCgUltimateBack() {
     const u = corruptGunState.ultimate;
     if (!u.active) return;
     drawCgUltimateVignette();
+    if (u.phase === 'soulhunt') { drawCgUltimateSoulhuntBack(); return; }
     if (u.phase === 'cast' || u.phase === 'flight') return;
     if (u.phase === 'burst') {
       const spec = CG_ULT_CONFIG.atlas.shatter;
@@ -10347,13 +11822,31 @@
       const collapseK = u.phase === 'collapse' ? clamp(u.t / CG_ULT_CONFIG.collapse, 0, 1) : 0;
       const scale = u.phase === 'collapse' ? lerp(1, 0.30, collapseK * collapseK * collapseK) : 1;
       const size = CG_ULT_CONFIG.wheel.discSize * scale;
+      // V1.5 空间透镜扭曲（桌面）：轮盘周边画面自采样后微旋内缩重绘——
+      // 每帧叠加形成"背景被拧进黑洞"的连续扭曲拖拽
+      if (!cgLite()) {
+        const band = size * 1.45;
+        const bsx = Math.max(0, (u.x - band / 2) * renderScale), bsy = Math.max(0, (u.y - band / 2) * renderScale);
+        const bsw = Math.min(canvas.width - bsx, band * renderScale), bsh = Math.min(canvas.height - bsy, band * renderScale);
+        if (bsw > 8 && bsh > 8) {
+          ctx.save();
+          ctx.translate(u.x, u.y);
+          ctx.rotate(0.035 + collapseK * 0.06);
+          ctx.scale(0.965, 0.965);
+          ctx.globalAlpha = 0.55;
+          ctx.drawImage(canvas, bsx, bsy, bsw, bsh, bsx / renderScale - u.x, bsy / renderScale - u.y, bsw / renderScale, bsh / renderScale);
+          ctx.restore();
+        }
+      }
+      // V1.5 轮盘接地暗盘：把整轮"压"进背景，消除贴图硬边
+      drawCgOrbUnderDisc(u.x, u.y, size * 1.18, 0.52);
       drawCgUltimateSpirals(1 - collapseK * 0.45, collapseK);
       drawCgUltimateBlackCore(CG_ULT_CONFIG.wheel.coreRadius * scale, 1 - collapseK * 0.18);
       const inner = CG_ULT_CONFIG.atlas.wheelInner;
       const outerAngle = u.totalT * lerp(CG_ULT_CONFIG.wheel.outerSpeed, 4.8, collapseK);
-      drawCgAtlasFrame(inner.base, cgUltimateWheelFrame(inner), inner.cols, inner.rows, u.x, u.y, CG_ULT_CONFIG.wheel.innerDiscSize * scale, CG_ULT_CONFIG.wheel.innerDiscSize * scale, { rot: u.totalT * CG_ULT_CONFIG.wheel.innerSpeed, blend: 'source-over', alpha: 0.82 });
+      // 内圈原本整张 source-over 贴在主轮上，会被读成第二个黑洞；只保留前层低亮能量纹理。
       drawCgAsset('cgUltWheelSteadyBase', u.x, u.y, size, size, { rot: outerAngle, blend: 'source-over', alpha: 0.98, glow: false });
-      drawCgUltimateCrispRim(scale, Math.min(u.absorbed, 80) / 80, collapseK);
+      if (!cgLite()) drawCgUltimateCrispRim(scale, Math.min(u.absorbed, 80) / 80, collapseK);
       if (u.phase === 'collapse') {
         const formB = CG_ULT_CONFIG.atlas.formB;
         const frame = clamp(7 - Math.floor(collapseK * 4), 4, 7);
@@ -10361,34 +11854,43 @@
       }
       return;
     }
-    if (u.phase === 'finale' && u.t < 0.32) {
-      const spec = CG_ULT_CONFIG.atlas.shatter;
-      const p = clamp(u.t / 0.32, 0, 1);
-      const frame = clamp(4 + Math.floor(p * 4), 4, 7);
-      drawCgAtlasFrame(spec.base, frame, spec.cols, spec.rows, u.x, u.y, CG_ULT_CONFIG.finaleHit.visualSize * (0.86 + p * 0.14), CG_ULT_CONFIG.finaleHit.visualSize * (0.86 + p * 0.14), { blend: 'source-over', alpha: 1 - p * 0.28 });
+    if (u.phase === 'finale') {
+      if (u.t < 0.32) {
+        const spec = CG_ULT_CONFIG.atlas.shatter;
+        const p = clamp(u.t / 0.32, 0, 1);
+        const frame = clamp(4 + Math.floor(p * 4), 4, 7);
+        drawCgAtlasFrame(spec.base, frame, spec.cols, spec.rows, u.x, u.y, CG_ULT_CONFIG.finaleHit.visualSize * (0.86 + p * 0.14), CG_ULT_CONFIG.finaleHit.visualSize * (0.86 + p * 0.14), { blend: 'source-over', alpha: 1 - p * 0.28 });
+      }
+      drawCgUltimateSoulBridge(true);
     }
   }
   function drawCgUltimateShadowFlames(size, alpha, speedMul = 1) {
+    if (cgLite()) return; // 移动端/低画质：暗焰层关闭（原为每帧 8 次线性渐变创建）
     const u = corruptGunState.ultimate;
+    // 火舌形状+渐变烘焙成 2 个变体精灵，旋转贴图替代逐帧渐变
+    const flameCv = variant => cachedSprite(`cg_flame_tongue_${variant}`, 72, 30, (c2, sw, sh) => {
+      const g = c2.createLinearGradient(4, 0, sw - 2, 0);
+      g.addColorStop(0, 'rgba(202,11,55,0.48)');
+      g.addColorStop(0.62, 'rgba(58,7,20,0.38)');
+      g.addColorStop(1, 'rgba(5,2,8,0)');
+      c2.fillStyle = g;
+      c2.beginPath();
+      c2.moveTo(2, sh * 0.24);
+      c2.quadraticCurveTo(sw * 0.44, variant ? 0 : 3, sw - 4, sh * 0.5 + (variant ? 3 : -2));
+      c2.quadraticCurveTo(sw * 0.46, sh - (variant ? 2 : 5), 2, sh * 0.76);
+      c2.closePath(); c2.fill();
+    });
     ctx.save();
     ctx.translate(u.x, u.y);
     ctx.globalCompositeOperation = 'lighter';
-    const tongues = perfLevel >= 2 ? 5 : 8;
+    const tongues = 6;
     for (let index = 0; index < tongues; index++) {
       const angle = u.totalT * 0.52 * speedMul + index * TAU / tongues;
       const baseRadius = size * 0.46;
       const height = 34 + (index % 4) * 9 + Math.sin(u.totalT * 11 + index) * 6;
       ctx.save(); ctx.rotate(angle);
-      const gradient = ctx.createLinearGradient(baseRadius, 0, baseRadius + height, 0);
-      gradient.addColorStop(0, `rgba(202,11,55,${(0.48 * alpha).toFixed(3)})`);
-      gradient.addColorStop(0.62, `rgba(58,7,20,${(0.38 * alpha).toFixed(3)})`);
-      gradient.addColorStop(1, 'rgba(5,2,8,0)');
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.moveTo(baseRadius - 4, -8);
-      ctx.quadraticCurveTo(baseRadius + height * 0.42, -14 - (index % 3) * 4, baseRadius + height, Math.sin(u.totalT * 9 + index) * 5);
-      ctx.quadraticCurveTo(baseRadius + height * 0.46, 12 + (index % 2) * 5, baseRadius - 4, 8);
-      ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(flameCv(index & 1), baseRadius - 4, -15, height + 8, 30);
       ctx.restore();
     }
     ctx.restore();
@@ -10458,12 +11960,14 @@
       const pulse = 1 + 0.14 * Math.sin(time * TAU / 0.8 + target.x * 0.01);
       const size = clamp((target.r || 20) * 1.35, 30, 58) * pulse;
       drawCgAsset('cgUltSlowMark', target.x, target.y + (target.r || 20) * 0.82, size, size, { rot: -time * 0.72, blend: 'source-over', alpha: 0.68, glow: false });
-      drawCgAsset('cgUltSlowMark', target.x, target.y + (target.r || 20) * 0.82, size * 1.05, size * 1.05, { rot: time * 0.44, blend: 'lighter', alpha: 0.28, glow: false });
+      if (!cgLite()) drawCgAsset('cgUltSlowMark', target.x, target.y + (target.r || 20) * 0.82, size * 1.05, size * 1.05, { rot: time * 0.44, blend: 'lighter', alpha: 0.28, glow: false });
     }
   }
   function drawCgUltimateFront() {
     const u = corruptGunState.ultimate;
-    if (!u.active || u.phase === 'cast' || u.phase === 'flight') return;
+    if (!u.active) return;
+    if (u.phase === 'soulhunt') { drawCgUltimateSoulhuntFront(); return; }
+    if (u.phase === 'cast' || u.phase === 'flight') return;
     if (u.phase === 'burst') {
       const spec = CG_ULT_CONFIG.atlas.shatter;
       const frame = clamp(Math.floor(u.t * 1000 / spec.frameMs), 0, spec.frames - 1);
@@ -10485,21 +11989,25 @@
       const scale = u.phase === 'collapse' ? lerp(1, 0.30, collapseK * collapseK * collapseK) : 1;
       const size = CG_ULT_CONFIG.wheel.discSize * scale;
       const inner = CG_ULT_CONFIG.atlas.wheelInner;
-      if (perfLevel < 2 || cgVfxRenderer.status.mode !== 'webgl') {
+      const lite = cgLite();
+      if (!lite && (perfLevel < 2 || cgVfxRenderer.status.mode !== 'webgl')) {
         drawCgAtlasFrame(inner.energy, cgUltimateWheelFrame(inner), inner.cols, inner.rows, u.x, u.y, CG_ULT_CONFIG.wheel.innerDiscSize * 1.02 * scale, CG_ULT_CONFIG.wheel.innerDiscSize * 1.02 * scale, { rot: u.totalT * CG_ULT_CONFIG.wheel.innerSpeed, blend: 'lighter', alpha: 0.38 });
       }
       const absorbedK = Math.min(u.absorbed, 80) / 80;
       const outerAngle = u.totalT * lerp(CG_ULT_CONFIG.wheel.outerSpeed, 4.8, collapseK);
-      drawCgAsset('cgUltWheelSteadyEnergy', u.x, u.y, size, size, { rot: outerAngle, blend: 'lighter', alpha: 0.22 + absorbedK * 0.10, glow: false });
-      drawCgAsset('cgUltWheelSteadyDetail', u.x, u.y, size, size, { rot: outerAngle, blend: 'lighter', alpha: 0.10 + absorbedK * 0.04, glow: false });
-      drawCgUltimateBlackCore(CG_ULT_CONFIG.wheel.coreRadius * 0.88 * scale, 0.96 - collapseK * 0.18);
-      drawCgUltimateShadowFlames(size, (1 - collapseK * 0.30) * 0.64, 1 + collapseK * 1.5);
-      for (let ring = 0; ring < 3; ring++) {
-        const ringSize = size * (0.84 - ring * 0.07);
-        const ringAngle = (ring & 1 ? -1 : 1) * u.totalT * (2.7 + ring * 0.42) + ring * 1.4;
-        drawCgAsset(`cgUltRingThin${ring + 1}`, u.x, u.y, ringSize, ringSize, { rot: ringAngle, blend: 'source-over', alpha: 0.46, glow: false });
-        drawCgAsset(`cgUltRingThin${ring + 1}`, u.x, u.y, ringSize, ringSize, { rot: ringAngle, blend: 'lighter', alpha: 0.12 + absorbedK * 0.06, glow: false });
+      if (!lite) {
+        drawCgAsset('cgUltWheelSteadyEnergy', u.x, u.y, size, size, { rot: outerAngle, blend: 'lighter', alpha: 0.22 + absorbedK * 0.10, glow: false });
+        drawCgAsset('cgUltWheelSteadyDetail', u.x, u.y, size, size, { rot: outerAngle, blend: 'lighter', alpha: 0.10 + absorbedK * 0.04, glow: false });
       }
+      // 中心只保留一组暗流和事件视界；完整大涡流会与机械刀轮重叠成两个黑洞。
+      const holeFrame = 1 + (Math.floor(u.totalT * 1000 / 90) % 4);
+      if (!lite) drawCgAsset(`cgUltHole${1 + (holeFrame % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.coreFlowScale * scale, null, { rot: -u.totalT * 1.3, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.coreFlowAlpha, glow: false });
+      drawCgUltimateBlackCore(CG_ULT_CONFIG.wheel.coreRadius * 0.88 * scale, 0.96 - collapseK * 0.18);
+      // V1.4 事件视界细环（素材03）：黑核边缘的锋利亮环，反向慢旋
+      drawCgAsset('cgUltRimRing1', u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.eventRimScale * scale, null, { rot: -u.totalT * 1.1, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.eventRimAlpha + absorbedK * CG_ULT_CONFIG.wheel.eventRimAbsorbedBoost, glow: false });
+      // V1.5b 内圈高速涡流：贴着视界的物质坠入层（与外吸积盘反向、更快）
+      drawCgAsset(`cgUltHole${1 + ((holeFrame + 1) % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.innerFlowScale * scale, null, { rot: u.totalT * 2.6, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.innerFlowAlpha, glow: false });
+      drawCgUltimateShadowFlames(size, (1 - collapseK * 0.30) * 0.64, 1 + collapseK * 1.5);
       // 等比月牙负责连续切痕；暗色刀身与窄亮刃分层，禁止再次拉成 300x150。
       const slashCount = CG_ULT_CONFIG.quality.slashes[Math.min(2, perfLevel)];
       for (let index = 0; index < slashCount; index++) {
@@ -10509,38 +12017,25 @@
         const crescentFrame = [3, 4, 5, 8][index % 4];
         const crescentKey = `cgUltCrescent${crescentFrame}`;
         const slashSize = CG_ULT_CONFIG.wheel.slashSize * scale * (index % 3 === 0 ? 1.06 : 0.94);
-        drawCgAsset(crescentKey, cx, cy, slashSize, null, { rot: angle + Math.PI * 0.5, blend: 'source-over', alpha: 0.64, glow: false });
-        drawCgAsset(crescentKey, cx, cy, slashSize * 0.96, null, { rot: angle + Math.PI * 0.5, blend: 'lighter', alpha: 0.20, glow: false });
-        const ga = angle - CG_ULT_CONFIG.wheel.bladeGhostAngle * 1.35;
-        drawCgAsset(crescentKey, u.x + Math.cos(ga) * radius, u.y + Math.sin(ga) * radius, slashSize * 0.92, null, { rot: ga + Math.PI * 0.5, blend: 'lighter', alpha: 0.12, glow: false });
+        drawCgAsset(crescentKey, cx, cy, slashSize, null, { rot: angle + Math.PI * 0.5, blend: 'source-over', alpha: 0.46, glow: false });
+        if (!lite) {
+          drawCgAsset(crescentKey, cx, cy, slashSize * 0.96, null, { rot: angle + Math.PI * 0.5, blend: 'lighter', alpha: 0.10, glow: false });
+        }
       }
-      // 外缘收割模组：羽状能量尾与真正金属刀片组合，持续沿同一方向公转。
+      drawCgUltimateSpaceCuts(scale);
+      // 外缘收割模组分两遍绘制：先画解析式切向拖光，再画独立金属刀身。
+      // 金属层不做贴图残影；只有能量、刃线和空间裂口保留运动轨迹。
       const bladeCount = CG_ULT_CONFIG.quality.blades[Math.min(2, perfLevel)];
       for (let index = 0; index < bladeCount; index++) {
-        const angle = u.totalT * CG_ULT_CONFIG.wheel.bladeSpeed + index * TAU / bladeCount;
+        const angle = cgUltimateBladeAngle(index, bladeCount);
         const radius = (CG_ULT_CONFIG.wheel.bladeRadius + ((index % 3) - 1) * 13) * scale;
-        const bladeKey = `cgUltBladeA${1 + (index % 4)}`;
-        const metalKey = `cgUltDartS${1 + (index % 4)}`;
-        const wobble = Math.sin(u.totalT * 4.2 + index * 1.7) * 0.035;
-        const ghostAngle = angle - CG_ULT_CONFIG.wheel.bladeGhostAngle;
-        drawCgAsset(bladeKey, u.x + Math.cos(ghostAngle) * (radius - 18 * scale), u.y + Math.sin(ghostAngle) * (radius - 18 * scale), CG_ULT_CONFIG.wheel.bladeSize * 0.84 * scale, null, {
-          rot: ghostAngle + Math.PI * 0.5 + wobble, blend: 'lighter', alpha: 0.12, glow: false,
-        });
-        const bx = u.x + Math.cos(angle) * (radius - 14 * scale), by = u.y + Math.sin(angle) * (radius - 14 * scale);
-        drawCgAsset(bladeKey, bx, by, CG_ULT_CONFIG.wheel.bladeSize * scale, null, {
-          rot: angle + Math.PI * 0.5 + wobble, blend: 'source-over', alpha: 0.34, glow: false,
-        });
-        drawCgAsset(bladeKey, bx, by, CG_ULT_CONFIG.wheel.bladeSize * 0.96 * scale, null, {
-          rot: angle + Math.PI * 0.5 + wobble, blend: 'lighter', alpha: 0.10, glow: false,
-        });
-        const mx = u.x + Math.cos(angle) * radius, my = u.y + Math.sin(angle) * radius;
-        drawCgUltimateBladeEdge(mx, my, angle + Math.PI * 0.5, CG_ULT_CONFIG.wheel.metalBladeSize * 1.06 * scale, 0.74);
-        drawCgAsset(metalKey, mx, my, CG_ULT_CONFIG.wheel.metalBladeSize * scale, null, {
-          rot: angle + Math.PI * 0.5, blend: 'source-over', alpha: 0.98, glow: false,
-        });
-        drawCgAsset(metalKey, mx, my, CG_ULT_CONFIG.wheel.metalBladeSize * 0.96 * scale, null, {
-          rot: angle + Math.PI * 0.5, blend: 'lighter', alpha: 0.22, glow: false,
-        });
+        drawCgUltimateBladeWake(angle, radius, index, scale, collapseK);
+      }
+      for (let index = 0; index < bladeCount; index++) {
+        const angle = cgUltimateBladeAngle(index, bladeCount);
+        const radius = (CG_ULT_CONFIG.wheel.bladeRadius + ((index % 3) - 1) * 13) * scale;
+        const bx = u.x + Math.cos(angle) * radius, by = u.y + Math.sin(angle) * radius;
+        drawCgUltimateHarvestBlade(bx, by, angle + Math.PI * 0.5, index, scale, 1 - collapseK * 0.12);
       }
       // 内圈金属齿反向高速旋转，与外刃形成机械咬合。
       const dartCount = CG_ULT_CONFIG.quality.darts[Math.min(2, perfLevel)];
@@ -10555,10 +12050,11 @@
         const angle = u.totalT * 0.40 + index * TAU / Math.max(1, runeCount);
         drawCgAsset(`cgUltRune${1 + (index % 6)}`, u.x + Math.cos(angle) * radius, u.y + Math.sin(angle) * radius * 0.72, 24 * scale, null, { rot: -angle + time * 0.5, blend: 'lighter', alpha: 0.55 + 0.25 * Math.sin(time * 3 + index), glow: false });
       }
+      drawCgUltimateSuctionStreaks(scale, collapseK);
       drawCgUltimateInboundTrails();
       drawCgUltimateAbsorptionFx();
       drawCgUltimateSlowMarks();
-      if (cgVfxRenderer.frameActive && cgVfxRenderer.engine.drawUltimateWheel) {
+      if (!lite && cgVfxRenderer.frameActive && cgVfxRenderer.engine.drawUltimateWheel) {
         cgVfxRenderer.engine.drawUltimateWheel({
           layer: 'front', x: u.x, y: u.y, diameter: size * 1.02,
           phase: u.totalT, absorbed: Math.min(u.absorbed, 80) / 80,
@@ -10575,6 +12071,8 @@
         drawCgAtlasFrame(spec.energy, frame, spec.cols, spec.rows, u.x, u.y, CG_ULT_CONFIG.finaleHit.visualSize * (0.92 + p * 0.16), CG_ULT_CONFIG.finaleHit.visualSize * (0.92 + p * 0.16), { blend: 'lighter', alpha: 0.76 - p * 0.12 });
         drawCgUltimateBlackCore(32 + p * 24, 0.88 - p * 0.18);
       }
+      drawCgUltimateSpaceCuts(1);
+      drawCgUltimateSoulBridge(false);
       drawCgUltimateAbsorptionFx();
       drawCgUltimateSlowMarks();
     }
@@ -21476,6 +22974,7 @@
   }
 
   function dmgText(x, y, text, color = '#fff2a8', size = 24) {
+    if (cgLite() && damageTexts.length > 26 && (arguments.length < 5 || arguments[4] < 22)) return;
     damageTexts.push({ x, y, vx: rand(-20, 20), vy: rand(-85, -45), life: 0.78, maxLife: 0.78, text, color, size });
     if (damageTexts.length > 90) damageTexts.splice(0, damageTexts.length - 90);
   }
@@ -28249,7 +29748,10 @@
 	            const appliedShotDamage = actualShotDamage * grindDmg();
 	            const hpBeforeShot = e.hp;
 	            e.hp -= appliedShotDamage;
-	            if (isCgShot(s) && hpBeforeShot > 0 && e.hp <= 0) e._cgFatalCorruptDamage = appliedShotDamage;
+	            if (isCgShot(s) && hpBeforeShot > 0 && e.hp <= 0) {
+                e._cgFatalCorruptDamage = appliedShotDamage;
+                if (s.kind === 'cgUltOrb') cgUltimateRecordDevouredEnemy(e, 'ultimate-orb-kill');
+              }
           e.hitFlash = 0.13;
           // 僚机弹：圣击音效 + 程序化命中爆点（无贴图）
           if (s.kind === 'wmfeather' || s.kind === 'wmcrescent') {
@@ -29950,7 +31452,8 @@
         }
       }
       if (e.hp <= 0) {
-        const corruptDeath = !!(e._cgMark && e._cgMark.n >= 1);
+        const soulDeath = !!e._cgSoulFatal;
+        const corruptDeath = !!(e._cgMark && e._cgMark.n >= 1) && !soulDeath;
         const fatalCorruptDamage = Math.max(0, Number(e._cgFatalCorruptDamage) || 0);
         if (corruptDeath) {
           spawnCgDeathFx(e);
@@ -29958,6 +31461,7 @@
         }
         delete e._cgMark;
         delete e._cgFatalCorruptDamage;
+        delete e._cgSoulFatal;
         killCount++;
         score += e.score;
         // 刷怪提升火力（已移除火力掉落物，改由击杀直接给予，数值上调补偿）
@@ -29969,12 +31473,12 @@
         killStreakN = Math.min(killStreakN + 1, 12);
         killStreakT = 0.9;
         audio.enemyKill(heavy, killStreakN);
-        if (heavy) {
+        if (heavy && !soulDeath) {
           screenShake = Math.max(screenShake, 3.5);
           addRingFx(e.x, e.y, 16, 96, 0.34, 'rgba(255,220,180,', 3);
         }
         const fxMul = perfBudget().killBurstMul;
-        if (!corruptDeath) {
+        if (!corruptDeath && !soulDeath) {
           addSpriteFx(heavy ? 'vfxExplosionLarge' : 'vfxExplosionSmall', e.x, e.y, heavy ? 132 : 78, heavy ? 0.5 : 0.32, rand(0, TAU), 0.36, heavy ? 0.74 : 0.62);
           burst(e.x, e.y, e.color, Math.max(4, Math.round((heavy ? 36 : 18) * fxMul)), heavy ? 260 : 180, true);
         } }
@@ -32754,6 +34258,7 @@
 	  }
 
   function drawHostileBulletRimOverlay(b, scale = 1.18, alpha = 0.78) {
+    if (cgLite()) return; // lite：装饰性弹缘叠层关闭（每弹 1-2 次贴图）
     const r = Math.max(3, b.r || 6);
     const speed = Math.hypot(b.vx || 0, b.vy || 0);
     const ang = speed > 0.01 ? Math.atan2(b.vy, b.vx) : (b.rot || 0);
@@ -32933,6 +34438,7 @@
   }
 
   function draw() {
+    ctx.setTransform(renderScale, 0, 0, renderScale, 0, 0);
     // ★ 防御性重置：如果上一帧 draw() 内部异常被 try/catch 吞掉，
     // ctx.save() 没有对应 restore() → globalCompositeOperation 可能卡在 'lighter'
     // → 清屏 fillRect 在 lighter 模式下无效 → 画面累积 → 白屏冻结。
@@ -32961,6 +34467,7 @@
     if (cgVfxSceneActive()) beginCgVfxFrame();
     else cgVfxRenderer.frameActive = false;
     queueCgCloneFields();
+    queueCgUltimateSoulFields();
     drawCorruptionMarks();
     drawMotherLifeRibbons('under'); // 飘带底光位于敌人上方，领域底纹仍留在敌人下方
     drawSaintField('actor');  // 天使本体保留在战斗单位上层
@@ -33054,11 +34561,13 @@
     } else if (assetReady('bgStageBase')) {
       ctx.drawImage(assets.bgStageBase, 0, 0, W, H);
     } else {
-      const g = ctx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, '#101126');
-      g.addColorStop(0.42, '#060716');
-      g.addColorStop(1, '#020208');
-      ctx.fillStyle = g;
+      ctx.fillStyle = cachedGradient('bg_fallback', () => {
+        const g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#101126');
+        g.addColorStop(0.42, '#060716');
+        g.addColorStop(1, '#020208');
+        return g;
+      });
       ctx.fillRect(0, 0, W, H);
     }
     drawSuiyiBackgroundOverlay();
@@ -33085,9 +34594,10 @@
         const c1 = readyClouds[(Math.floor(time * 0.08) + 2) % readyClouds.length];
         const sy0 = (time * 18) % (H + 200);
         const sy1 = (time * 11 + 180) % (H + 240);
-        ctx.drawImage(assets[c0], -40, sy0 - 200, W + 80, 220);
+        const cloud0 = assets[c0], cloud1 = assets[c1];
+        if (cloud0 instanceof HTMLImageElement) ctx.drawImage(cloud0, -40, sy0 - 200, W + 80, 220);
         ctx.globalAlpha = state === 'boss' ? 0.16 : 0.20;
-        ctx.drawImage(assets[c1], -60, H - sy1, W + 120, 260);
+        if (cloud1 instanceof HTMLImageElement) ctx.drawImage(cloud1, -60, H - sy1, W + 120, 260);
         ctx.restore();
       }
     }
@@ -33109,13 +34619,17 @@
       ctx.drawImage(assets.bgFog, 0, scroll, W, H);
       ctx.restore();
     }
+    const fogCv = cachedSprite('bg_fog', 128, 128, (c2, s) => {
+      const g = c2.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      g.addColorStop(0, 'rgba(205,180,255,1)');
+      g.addColorStop(1, 'rgba(205,180,255,0)');
+      c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+    });
     for (const f of fog) {
-      const fg = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
-      fg.addColorStop(0, `rgba(205,180,255,${f.a * 0.72})`);
-      fg.addColorStop(1, 'rgba(205,180,255,0)');
-      ctx.fillStyle = fg;
-      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, TAU); ctx.fill();
+      ctx.globalAlpha = f.a * 0.72;
+      ctx.drawImage(fogCv, f.x - f.r, f.y - f.r, f.r * 2, f.r * 2);
     }
+    ctx.globalAlpha = 1;
     if (assetReady('bgParticles')) {
       ctx.save();
       ctx.globalAlpha = 0.38;
@@ -33132,10 +34646,13 @@
       ctx.restore();
     }
 
-    const vg = ctx.createRadialGradient(W * 0.5, H * 0.45, 180, W * 0.5, H * 0.48, 850);
-    vg.addColorStop(0, 'rgba(0,0,0,0)');
-    vg.addColorStop(1, state === 'boss' && bossPhase >= 3 ? 'rgba(0,0,0,.72)' : 'rgba(0,0,0,.62)');
-    ctx.fillStyle = vg;
+    const deepBoss = state === 'boss' && bossPhase >= 3;
+    ctx.fillStyle = cachedGradient(deepBoss ? 'bg_vig_boss' : 'bg_vig', () => {
+      const vg = ctx.createRadialGradient(W * 0.5, H * 0.45, 180, W * 0.5, H * 0.48, 850);
+      vg.addColorStop(0, 'rgba(0,0,0,0)');
+      vg.addColorStop(1, deepBoss ? 'rgba(0,0,0,.72)' : 'rgba(0,0,0,.62)');
+      return vg;
+    });
     ctx.fillRect(0, 0, W, H);
   }
 
@@ -33442,11 +34959,15 @@
       const hpRate = clamp(e.hp / e.maxHp, 0, 1);
       const bob = Math.sin(time * 6 + e.t) * 4;
       const size = e.size || 86;
-      const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, e.r * 3.0);
-      const glowCol = e.tier >= 4 ? 'rgba(255,120,160,.28)' : (e.tier === 3 ? 'rgba(255,210,120,.26)' : 'rgba(170,130,255,.24)');
-      glow.addColorStop(0, glowCol);
-      glow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(0, bob, e.r * 3.0, 0, TAU); ctx.fill();
+      const glowTier = e.tier >= 4 ? 'a' : (e.tier === 3 ? 'b' : 'c');
+      const glowCv = cachedSprite(`eglow_${glowTier}`, 128, 128, (c2, s) => {
+        const g = c2.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+        g.addColorStop(0, glowTier === 'a' ? 'rgba(255,120,160,.28)' : (glowTier === 'b' ? 'rgba(255,210,120,.26)' : 'rgba(170,130,255,.24)'));
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        c2.fillStyle = g; c2.fillRect(0, 0, s, s);
+      });
+      const glowR = e.r * 3.0;
+      ctx.drawImage(glowCv, -glowR, bob - glowR, glowR * 2, glowR * 2);
       if (isSuiyiTechMobType(e.type)) drawSuiyiTechEnemyAura(e, bob, size, hpRate);
       if (isMiguaMobType(e.type)) drawMiguaEnemyAura(e, bob, size, hpRate);
 
@@ -37036,9 +38557,9 @@
   const TY_UI_THEME = Object.freeze({
     panelTop: 'rgba(234,248,247,.88)',
     panelBottom: 'rgba(255,238,247,.88)',
-    panelEdge: 'rgba(120,190,245,.78)',
+    panelEdge: 'rgba(120,190,245,.85)',
     panelEdgeHot: 'rgba(255,140,195,.88)',
-    textMain: '#24415f',
+    textMain: '#1f3a58',
     textMuted: 'rgba(67,94,122,.95)',
     cyan: 'rgba(90,185,245,.95)',
     violet: 'rgba(200,160,255,.88)',
@@ -37048,13 +38569,17 @@
     gold: 'rgba(240,180,70,.92)',
     barBg: 'rgba(150,185,225,.38)',
   });
+  const tyBarPulseMap = new Map(); // 血条/能量条数值变化脉冲状态
 
   function tyUiGradient(x, y, w, h, a = 1) {
-    const g = ctx.createLinearGradient(x, y, x + w, y + h);
-    g.addColorStop(0, `rgba(150,215,255,${0.28 * a})`);
-    g.addColorStop(0.5, `rgba(255,200,230,${0.24 * a})`);
-    g.addColorStop(1, `rgba(255,180,220,${0.20 * a})`);
-    return g;
+    // UI 面板位置尺寸稳定 → 渐变对象按定位键缓存（原为每帧新建）
+    return cachedGradient(`tyui_${x | 0}_${y | 0}_${w | 0}_${h | 0}_${Math.round(a * 24)}`, () => {
+      const g = ctx.createLinearGradient(x, y, x + w, y + h);
+      g.addColorStop(0, `rgba(150,215,255,${0.28 * a})`);
+      g.addColorStop(0.5, `rgba(255,200,230,${0.24 * a})`);
+      g.addColorStop(1, `rgba(255,180,220,${0.20 * a})`);
+      return g;
+    });
   }
 
   // 可爱风程序化动效借鉴 Sparkle.graphics 与 Open Props 的轻量星光、气泡节奏。
@@ -37077,16 +38602,22 @@
   }
 
   function drawCuteBubble(cx, cy, r, alpha, tint = '180,230,255') {
+    // 气泡烘焙精灵（原为每帧每泡一次径向渐变，HUD 全程 80+次/帧）
+    const rb = Math.max(2, Math.round(r));
+    const s = rb * 2 + 4;
+    const cv = cachedSprite(`bub_${tint}_${rb}`, s, s, (c2) => {
+      const g = c2.createRadialGradient(s / 2 - rb * 0.35, s / 2 - rb * 0.4, 0.5, s / 2, s / 2, rb);
+      g.addColorStop(0, 'rgba(255,255,255,.95)');
+      g.addColorStop(0.45, `rgba(${tint},.55)`);
+      g.addColorStop(1, `rgba(${tint},0)`);
+      c2.fillStyle = g;
+      c2.beginPath(); c2.arc(s / 2, s / 2, rb, 0, Math.PI * 2); c2.fill();
+      c2.fillStyle = 'rgba(255,255,255,.85)';
+      c2.beginPath(); c2.arc(s / 2 - rb * 0.28, s / 2 - rb * 0.32, Math.max(0.8, rb * 0.22), 0, Math.PI * 2); c2.fill();
+    });
     ctx.save();
     ctx.globalAlpha = alpha;
-    const g = ctx.createRadialGradient(cx - r * 0.35, cy - r * 0.4, 0.5, cx, cy, r);
-    g.addColorStop(0, 'rgba(255,255,255,.95)');
-    g.addColorStop(0.45, `rgba(${tint},.55)`);
-    g.addColorStop(1, `rgba(${tint},0)`);
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,.85)';
-    ctx.beginPath(); ctx.arc(cx - r * 0.28, cy - r * 0.32, Math.max(0.8, r * 0.22), 0, Math.PI * 2); ctx.fill();
+    ctx.drawImage(cv, cx - s / 2, cy - s / 2);
     ctx.restore();
   }
 
@@ -37099,22 +38630,30 @@
     const bandH = Math.max(4, h * 0.72);
     const by = y + (h - bandH) * 0.5;
     const drift = ((time * speed * 0.35) + phase) % (w + 120);
+    // 缎带波形+渐变烘焙成精灵，每帧 4 次渐变创建 → 4 次 drawImage
+    const bandKey = Math.round(bandH);
+    const bandCv = cachedSprite(`ribbon_${bandKey}`, 132, bandKey + 8, (c2, sw, sh) => {
+      const bh = bandKey, byy = 3;
+      const g = c2.createLinearGradient(0, byy, 110, byy + bh);
+      g.addColorStop(0, 'rgba(150,220,255,0)');
+      g.addColorStop(0.35, 'rgba(150,220,255,0.55)');
+      g.addColorStop(0.55, 'rgba(255,190,220,0.70)');
+      g.addColorStop(0.75, 'rgba(255,220,245,0.45)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      c2.fillStyle = g;
+      c2.beginPath();
+      c2.moveTo(0, byy + bh);
+      c2.bezierCurveTo(28, byy - 2, 55, byy + bh + 4, 90, byy + 2);
+      c2.bezierCurveTo(105, byy + bh * 0.4, 118, byy + bh, 130, byy + bh);
+      c2.lineTo(0, byy + bh);
+      c2.fill();
+    });
+    ctx.globalAlpha = finalAlpha;
     for (let k = -1; k <= 2; k++) {
       const bx = x - 80 + drift + k * (w * 0.55);
-      const g = ctx.createLinearGradient(bx, by, bx + 110, by + bandH);
-      g.addColorStop(0, 'rgba(150,220,255,0)');
-      g.addColorStop(0.35, `rgba(150,220,255,${0.55 * finalAlpha})`);
-      g.addColorStop(0.55, `rgba(255,190,220,${0.70 * finalAlpha})`);
-      g.addColorStop(0.75, `rgba(255,220,245,${0.45 * finalAlpha})`);
-      g.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.moveTo(bx, by + bandH);
-      ctx.bezierCurveTo(bx + 28, by - 2, bx + 55, by + bandH + 4, bx + 90, by + 2);
-      ctx.bezierCurveTo(bx + 105, by + bandH * 0.4, bx + 118, by + bandH, bx + 130, by + bandH);
-      ctx.lineTo(bx, by + bandH);
-      ctx.fill();
+      ctx.drawImage(bandCv, bx, by - 3);
     }
+    ctx.globalAlpha = 1;
     // tiny sparkles riding the ribbon
     const n = Math.max(3, Math.floor(w / 70));
     for (let i = 0; i < n; i++) {
@@ -37175,10 +38714,13 @@
     const hot = opts.hot ? 1 : 0;
     ctx.save();
     roundRect(x, y, w, h, r);
-    const pg = ctx.createLinearGradient(0, y, 0, y + h);
-    pg.addColorStop(0, opts.top || TY_UI_THEME.panelTop);
-    pg.addColorStop(0.54, opts.mid || 'rgba(245,250,255,.82)');
-    pg.addColorStop(1, opts.bottom || TY_UI_THEME.panelBottom);
+    const pg = cachedGradient(`typnl_${y | 0}_${h | 0}_${opts.top || ''}_${opts.mid || ''}_${opts.bottom || ''}`, () => {
+      const g = ctx.createLinearGradient(0, y, 0, y + h);
+      g.addColorStop(0, opts.top || TY_UI_THEME.panelTop);
+      g.addColorStop(0.54, opts.mid || 'rgba(245,250,255,.82)');
+      g.addColorStop(1, opts.bottom || TY_UI_THEME.panelBottom);
+      return g;
+    });
     ctx.fillStyle = pg;
     ctx.fill();
     ctx.save();
@@ -37189,14 +38731,18 @@
     drawCuteCandyRibbon(x + 8, y + 3, w - 16, Math.min(18, h * 0.32), opts.stripAlpha ?? 0.13, opts.stripSpeed || 46, opts.phase || 0);
     // soft candy sheen (not tech scanline)
     const sx = x + ((time * (opts.scanSpeed || 64) + (opts.phase || 0)) % (w + 120)) - 120;
-    const sg = ctx.createLinearGradient(sx, 0, sx + 120, 0);
-    sg.addColorStop(0, 'rgba(160,230,255,0)');
-    sg.addColorStop(0.45, `rgba(255,200,230,${(opts.scanAlpha ?? 0.12) * FEEL_V3_TUNING.uiScanMul})`);
-    sg.addColorStop(0.7, `rgba(180,230,255,${(opts.scanAlpha ?? 0.12) * FEEL_V3_TUNING.uiScanMul * 0.8})`);
-    sg.addColorStop(1, 'rgba(255,255,255,0)');
+    const scanCv = cachedSprite('typnl_scan', 120, 4, (c2, sw, sh) => {
+      const g = c2.createLinearGradient(0, 0, sw, 0);
+      g.addColorStop(0, 'rgba(160,230,255,0)');
+      g.addColorStop(0.45, 'rgba(255,200,230,1)');
+      g.addColorStop(0.7, 'rgba(180,230,255,0.8)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+    });
     ctx.globalCompositeOperation = 'lighter';
-    ctx.fillStyle = sg;
-    ctx.fillRect(sx, y, 120, h);
+    ctx.globalAlpha = (opts.scanAlpha ?? 0.12) * FEEL_V3_TUNING.uiScanMul;
+    ctx.drawImage(scanCv, sx, y, 120, h);
+    ctx.globalAlpha = 1;
     // floating micro-bubbles inside panel
     const bn = Math.min(7, Math.max(2, Math.floor(w / 90)));
     for (let i = 0; i < bn; i++) {
@@ -37205,10 +38751,20 @@
       drawCuteBubble(bx, by, 2 + (i % 3), 0.18 + (hot ? 0.12 : 0), i % 2 ? '255,180,220' : '150,220,255');
     }
     ctx.restore();
+    ctx.save();
+    ctx.globalAlpha = 0.82 + 0.18 * Math.sin(time * 2.2 + x * 0.07 + y * 0.05); // 可爱呼吸边框
     ctx.lineWidth = opts.lineWidth || 1.8;
     ctx.strokeStyle = hot ? TY_UI_THEME.panelEdgeHot : (opts.edge || TY_UI_THEME.panelEdge);
     roundRect(x, y, w, h, r);
     ctx.stroke();
+    ctx.restore();
+    if (!cgLite()) {
+      // 角落星闪：低频闪烁的小星星，不遮内容
+      const tw = 0.5 + 0.5 * Math.sin(time * 2.6 + x * 0.31 + y * 0.17);
+      if (tw > 0.55) drawCuteSparkle(x + r * 0.7, y + r * 0.7, 3.2, (tw - 0.55) * 1.4, time * 1.2);
+      const tw2 = 0.5 + 0.5 * Math.sin(time * 2.1 + x * 0.19 + y * 0.23 + 2.6);
+      if (tw2 > 0.55) drawCuteSparkle(x + w - r * 0.7, y + h - r * 0.7, 2.8, (tw2 - 0.55) * 1.3, -time);
+    }
     ctx.lineWidth = 1.0;
     ctx.strokeStyle = 'rgba(255,255,255,.62)';
     roundRect(x + 2, y + 2, w - 4, h - 4, Math.max(2, r - 3));
@@ -37232,22 +38788,29 @@
       ctx.save();
       roundRect(x, y, liveW, h, r);
       ctx.clip();
-      const g = ctx.createLinearGradient(x, y, x + w, y);
       const base = fill || '#8fd8ff';
-      g.addColorStop(0, opts.start || 'rgba(150,230,255,.95)');
-      g.addColorStop(0.48, base);
-      g.addColorStop(1, opts.end || 'rgba(255,170,210,.96)');
+      const g = cachedGradient(`tybar_${x | 0}_${w | 0}_${base}_${opts.start || ''}_${opts.end || ''}`, () => {
+        const grad = ctx.createLinearGradient(x, y, x + w, y);
+        grad.addColorStop(0, opts.start || 'rgba(150,230,255,.95)');
+        grad.addColorStop(0.48, base);
+        grad.addColorStop(1, opts.end || 'rgba(255,170,210,.96)');
+        return grad;
+      });
       ctx.fillStyle = g;
       ctx.fillRect(x, y, w, h);
       drawTyAssetStrip(x, y - h * 0.18, liveW, h * 1.36, opts.stripAlpha ?? 0.28, opts.stripKey || 'uiTyFlowBright', opts.stripSpeed || 96);
       const glintX = x + ((time * (opts.scanSpeed || 120)) % (w + 76)) - 76;
-      const gg = ctx.createLinearGradient(glintX, 0, glintX + 76, 0);
-      gg.addColorStop(0, 'rgba(255,255,255,0)');
-      gg.addColorStop(0.48, `rgba(255,255,255,${(opts.glintAlpha ?? 0.34) * 0.62})`);
-      gg.addColorStop(1, 'rgba(255,255,255,0)');
+      const glintCv = cachedSprite('tybar_glint', 76, 4, (c2, sw, sh) => {
+        const g = c2.createLinearGradient(0, 0, sw, 0);
+        g.addColorStop(0, 'rgba(255,255,255,0)');
+        g.addColorStop(0.48, 'rgba(255,255,255,1)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+      });
       ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = gg;
-      ctx.fillRect(glintX, y, 76, h);
+      ctx.globalAlpha = (opts.glintAlpha ?? 0.34) * 0.62;
+      ctx.drawImage(glintCv, glintX, y, 76, h);
+      ctx.globalAlpha = 1;
       ctx.restore();
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
@@ -37256,6 +38819,32 @@
       roundRect(x + 0.5, y + 0.5, Math.max(0, liveW - 1), Math.max(1, h - 1), r);
       ctx.stroke();
       ctx.restore();
+      // —— 可爱动效：填充头呼吸光点 + 数值变化脉冲（回复=薄荷星光 / 受损=粉闪）+ 条内上浮气泡 ——
+      const pulseKey = `${x | 0}_${y | 0}`;
+      let pulse = tyBarPulseMap.get(pulseKey);
+      if (!pulse) { pulse = { r: live, t: 0, dir: 0 }; tyBarPulseMap.set(pulseKey, pulse); }
+      if (Math.abs(live - pulse.r) > 0.004) { pulse.t = 1; pulse.dir = live > pulse.r ? 1 : -1; pulse.r = live; }
+      else pulse.t = Math.max(0, pulse.t - 0.055);
+      const headX = Math.min(x + liveW, x + w - 2), headY = y + h / 2;
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.42 + 0.20 * Math.sin(time * 5 + x * 0.13);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(headX, headY, Math.max(1.4, h * 0.22), 0, TAU); ctx.fill();
+      if (pulse.t > 0.02) {
+        ctx.globalAlpha = 0.5 * pulse.t;
+        ctx.fillStyle = pulse.dir >= 0 ? 'rgba(150,235,210,1)' : 'rgba(255,150,200,1)';
+        ctx.beginPath(); ctx.arc(headX, headY, h * (0.5 + (1 - pulse.t) * 1.6), 0, TAU); ctx.fill();
+        if (!cgLite()) drawCuteSparkle(headX, y - 2, 3 + pulse.t * 3, 0.85 * pulse.t, time * 3);
+      }
+      ctx.restore();
+      if (!cgLite() && h >= 8) {
+        for (let bi = 0; bi < 2; bi++) {
+          const cyc = (time * (14 + bi * 6) + bi * 40 + x * 0.31) % Math.max(8, liveW - 8);
+          const byy = y + h - 2 - ((time * (9 + bi * 4) + bi * 23) % Math.max(3, h - 4));
+          drawCuteBubble(x + 4 + cyc, byy, 1.6 + bi, 0.20, bi ? '255,190,225' : '170,225,255');
+        }
+      }
     }
     if (opts.ticks !== false && w > 60 && h >= 7) {
       ctx.save();
@@ -37702,7 +39291,7 @@
       ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(255,255,255,0.78)';
       ctx.strokeText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
       ctx.fillStyle = '#2f4a72'; ctx.fillText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
-      ctx.font = '11px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 2.4; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
       const info = `轮回 ${loopCount + 1}   强度 ×${diffMul().toFixed(1)}   击杀 ${killCount}`;
       ctx.strokeText(info, W / 2, barY + barH + 12);
@@ -37748,7 +39337,7 @@
       ctx.textAlign = 'left';
       // 火力等级与复活数收进名字行，给技能图标留出稳定空间。
       const lv = powerLevel();
-      ctx.fillStyle = '#2f7ec8'; ctx.font = '800 12px Nunito, Arial, sans-serif';
+      ctx.fillStyle = '#2f7ec8'; ctx.font = '800 13px Nunito, Arial, sans-serif';
       ctx.fillText(`LV.${lv}`, 218, H - 93);
       for (let s = 0; s < 5; s++) {
         ctx.fillStyle = s < lv ? 'rgba(130,210,255,.95)' : 'rgba(160,190,230,.22)';
@@ -37853,7 +39442,7 @@
     ctx.beginPath(); ctx.arc(-rr + 8, -rr + 8, 12, 0, TAU); ctx.fill();
     ctx.strokeStyle = ready ? 'rgba(90,185,245,.95)' : 'rgba(255,150,200,.80)';
     ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(-rr + 8, -rr + 8, 12, 0, TAU); ctx.stroke();
-    ctx.font = '800 12px Nunito, Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '800 13px Nunito, Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillStyle = ready ? '#2f4a72' : '#e060a0';
     ctx.fillText(key === 'Space' ? 'S' : key, -rr + 8, -rr + 9);
     ctx.textBaseline = 'alphabetic';
@@ -37937,7 +39526,7 @@
         ctx.drawImage(assets[ch.avatar], railX - R + 3, cy - R + 3, (R - 3) * 2, (R - 3) * 2);
       }
       ctx.restore();
-      ctx.font = '800 13px Nunito, Arial, sans-serif';
+      ctx.font = '800 14px Nunito, Arial, sans-serif';
       ctx.fillStyle = active ? '#2f4a72' : 'rgba(70,105,145,.72)';
       ctx.fillText(card.tag, railX + 31, cy + 5);
       if (active) {
@@ -38010,7 +39599,7 @@
     ctx.fillStyle = 'rgba(255,248,252,.95)';
     ctx.fillText(`Score ${currentLeaderboardScore()}`, W - 20, 42);
     if (grazeScore > 0) {
-      ctx.fillStyle = '#7ec8ff'; ctx.font = '800 13px Nunito, Arial, sans-serif';
+      ctx.fillStyle = '#7ec8ff'; ctx.font = '800 14px Nunito, Arial, sans-serif';
       ctx.fillText(`擦弹 +${Math.floor(grazeScore)}`, W - 20, 62);
     }
     if (player.combo > 8) {
@@ -38125,10 +39714,10 @@
     }
     ctx.textAlign = 'center';
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.82)';
-    ctx.font = '800 13px Nunito, Arial, sans-serif';
+    ctx.font = '800 14px Nunito, Arial, sans-serif';
     ctx.strokeText(key, cx, cy - R - 8); 
     ctx.fillStyle = ready ? '#2f4a72' : '#e060a0'; ctx.fillText(key, cx, cy - R - 8);
-    ctx.font = '11px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(0,0,0,.55)';
     ctx.strokeText(name, cx, cy + R + 16);
     ctx.fillStyle = ready ? '#7ec8ff' : '#ff9ec8'; ctx.fillText(name, cx, cy + R + 16);
@@ -38279,10 +39868,10 @@
     ctx.restore();
     ctx.textAlign = 'center';
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.82)';
-    ctx.font = '800 13px Nunito, Arial, sans-serif';
+    ctx.font = '800 14px Nunito, Arial, sans-serif';
     ctx.strokeText('Space', cx, cy - R - 8);
     ctx.fillStyle = ready ? '#2f4a72' : '#e060a0'; ctx.fillText('Space', cx, cy - R - 8);
-    ctx.font = '11px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(0,0,0,.58)';
     ctx.strokeText(SKYWARD_STELLAR_BLINK.name, cx, cy + R + 16);
     ctx.fillStyle = ready ? '#7ec8ff' : '#ff9ec8'; ctx.fillText(SKYWARD_STELLAR_BLINK.name, cx, cy + R + 16);
@@ -38486,7 +40075,7 @@
     const badgeX = cx - R + 4, badgeY = cy - R + 4;
     ctx.fillStyle = 'rgba(255,255,255,0.94)'; ctx.beginPath(); ctx.arc(badgeX, badgeY, 10, 0, TAU); ctx.fill();
     ctx.strokeStyle = skill.accent; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(badgeX, badgeY, 10, 0, TAU); ctx.stroke();
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '800 12px Nunito, Arial, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '800 13px Nunito, Arial, sans-serif';
     ctx.fillStyle = '#2f4a72'; ctx.fillText(skill.key, badgeX, badgeY + 0.5);
 
     ctx.textBaseline = 'alphabetic';
@@ -39564,6 +41153,15 @@
       const cgCaptureLocked = !!corruptGunState.captureScene;
       if (!cgCaptureLocked) {
         if (rawMs > 0 && rawMs < 200) smoothFrameMs += (rawMs - smoothFrameMs) * 0.1;
+        // 背板升档：需连续流畅 8s 且距上次变更 8s（一次一小步，杜绝振荡）
+        {
+          const rsBase = IS_MOBILE_RUNTIME ? 0.85 : 1;
+          if (renderScale < rsBase && smoothFrameMs < targetFrameMs() * 0.82) {
+            rsFastHoldSec += dt;
+            const nowSec = performance.now() * 0.001;
+            if (rsFastHoldSec > 8 && nowSec - rsLastChangeSec > 8) { applyRenderScale(Math.min(rsBase, renderScale + 0.08)); rsFastHoldSec = 0; }
+          } else rsFastHoldSec = 0;
+        }
         perfHoldT += dt;
 	        const targetPerf = qualityTargetPerfLevel();
 	        const wantFrameMs = targetFrameMs();
@@ -39571,9 +41169,18 @@
 	        const softSlowMs = IS_MOBILE_RUNTIME ? Math.max(18, wantFrameMs * 1.16) : Math.max(24, wantFrameMs * 1.28);
 	        const recoverMs = IS_MOBILE_RUNTIME ? Math.max(11, wantFrameMs * 0.76) : Math.max(12, wantFrameMs * 0.82);
 	        if (smoothFrameMs > hardSlowMs && perfLevel < 3) { perfLevel++; perfHoldT = 0; }
+	        else if (smoothFrameMs > hardSlowMs && perfLevel >= 3) {
+	          const nowSec = performance.now() * 0.001;
+	          if (nowSec > 6 && nowSec - rsLastChangeSec > 4) applyRenderScale(renderScale - 0.10);
+	          perfHoldT = 0;
+	        }
 	        else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
 	          perfHoldT = 0;
 	          if (smoothFrameMs > softSlowMs && perfLevel < 3) perfLevel++;
+	          else if (smoothFrameMs > softSlowMs && perfLevel >= 3) {
+	            const nowSec = performance.now() * 0.001;
+	            if (nowSec > 6 && nowSec - rsLastChangeSec > 4) applyRenderScale(renderScale - 0.08);
+	          }
 	          else if (smoothFrameMs < recoverMs && perfLevel > targetPerf) perfLevel--;
 	          if (perfLevel < targetPerf) perfLevel = targetPerf;
 	        }
@@ -40037,6 +41644,7 @@
       cameraFeedbackSpec: () => ({
         damageShake: 0, directHitShake: 0, infectionHitShake: 0, corruptionDeathShake: 0,
         ultimateLaunchShake: 0, ultimateBurstShake: 0, ultimateFinaleShake: CG_ULT_CONFIG.finaleHit.shake,
+        ultimateSoulShake: 0, ultimateSoulHitStop: 0,
         summonShake: 2, keepsLocalHitStop: true,
       }),
       materialSpec: () => ({
@@ -40068,8 +41676,8 @@
         timeline: {
           cast: CG_ULT_CONFIG.cast, flightMax: CG_ULT_CONFIG.flightMax, burst: CG_ULT_CONFIG.burst,
           form: CG_ULT_CONFIG.form, spin: CG_ULT_CONFIG.spin, collapse: CG_ULT_CONFIG.collapse,
-          finale: CG_ULT_CONFIG.finale,
-          totalMax: CG_ULT_CONFIG.cast + CG_ULT_CONFIG.flightMax + CG_ULT_CONFIG.burst + CG_ULT_CONFIG.form + CG_ULT_CONFIG.spin + CG_ULT_CONFIG.collapse + CG_ULT_CONFIG.finale,
+          finale: CG_ULT_CONFIG.finale, soulhunt: CG_ULT_SECOND_CONFIG.duration,
+          totalMax: CG_ULT_CONFIG.cast + CG_ULT_CONFIG.flightMax + CG_ULT_CONFIG.burst + CG_ULT_CONFIG.form + CG_ULT_CONFIG.spin + CG_ULT_CONFIG.collapse + CG_ULT_CONFIG.finale + CG_ULT_SECOND_CONFIG.duration,
         },
         bombCd: CG_ULT_CONFIG.bombLock,
         travel: CG_ULT_CONFIG.travel,
@@ -40079,18 +41687,110 @@
         absorption: CG_ULT_CONFIG.absorption,
         finale: CG_ULT_CONFIG.finaleHit,
         bossStackSources: [...CG_ULT_CORRUPTION_KINDS],
-        fullBossSequenceStacks: 19,
+        phaseOneBossSequenceStacks: 19,
+        fullBossSequenceStacks: 19 + CG_ULT_SECOND_CONFIG.maxSouls,
         deathPolicy: { cast: 'cancel-refund', postLaunchWithRevive: 'continue', noRevive: 'cleanup' },
         render: {
-          passes: ['world-back-dark-core-and-crisp-metal-wheel', 'world-front-counter-rotating-harvester-blades-and-spiral-absorption', 'hostile-bullets-last'],
+          passes: ['world-back-dark-core-and-crisp-metal-wheel', 'world-front-root-aligned-tapered-wakes-phase-afterimages-and-detached-dust', 'world-front-harvester-metal-root-spine-edge-tip-material-passes', 'phase2-rift-soul-bodies-and-continuous-trails', 'world-front-possession-burst-and-embers', 'hostile-bullets-last'],
           spinMaster: 'cgUltWheelSteadyBase',
           spinMasterPixels: 768,
           visualEnvelope: 696,
           mobileLosslessMaster: true,
           continuousRotation: true,
-          lowQualityKeeps: ['black-core', 'counter-rotating-inner-wheel', 'mechanical-outer-wheel', 'metal-harvester-blades', 'spiral-absorption-streams'],
+          harvesterAssets: ['cgUltHarvesterBase1-3', 'cgUltHarvesterEnergy1-3'],
+          harvesterLayers: ['black-steel-base', 'variant-anchored-root-core', 'low-alpha-red-fissure-energy', 'transported-spine-packets', 'independent-moving-edge-glints', 'needle-tip-and-tip-shards', 'root-aligned-tapered-wake', 'phase-displaced-energy-edge-shadows', 'detached-void-dust'],
+          textureGhosts: false,
+          spaceCutLifecycle: CG_ULT_CONFIG.wheel.spaceCutLife,
+          lowQualityKeeps: ['black-core', 'counter-rotating-inner-wheel', 'mechanical-outer-wheel', 'metal-harvester-blades', 'root-core', 'spine-flow', 'moving-edge-glint', 'needle-tip', 'one-phase-afterimage', 'one-detached-particle', 'three-segment-blade-wake', 'space-cut-rifts', 'spiral-absorption-streams'],
         },
       })),
+      ultimateSecondSpec: () => JSON.parse(JSON.stringify({
+        name: CG_ULT_SECOND_CONFIG.name,
+        duration: CG_ULT_SECOND_CONFIG.duration,
+        countFormula: '8 + floor(absorbedBullets / 8) + absorbedEnemies * 2; cap 30',
+        maxSouls: CG_ULT_SECOND_CONFIG.maxSouls,
+        maxBossStacksAdded: CG_ULT_SECOND_CONFIG.maxSouls,
+        fullSequenceMaxStacks: 19 + CG_ULT_SECOND_CONFIG.maxSouls,
+        coreCaptureRadius: CG_ULT_SECOND_CONFIG.captureRadius,
+        seekRadius: CG_ULT_SECOND_CONFIG.targetRadius,
+        spawn: {
+          start: CG_ULT_SECOND_CONFIG.spawnStart,
+          batchSize: CG_ULT_SECOND_CONFIG.spawnWaveSize,
+          batchInterval: CG_ULT_SECOND_CONFIG.spawnWaveInterval,
+          emergeDuration: CG_ULT_SECOND_CONFIG.emergeTime,
+        },
+        transition: {
+          duration: CG_ULT_SECOND_CONFIG.transition,
+          phaseOneOverlap: CG_ULT_SECOND_CONFIG.bridgeLead,
+          portalHold: CG_ULT_SECOND_CONFIG.portalHold,
+          portalFadeEnd: CG_ULT_SECOND_CONFIG.portalFadeEnd,
+          steadyFrame: 8,
+          portalPasses: 1,
+          alignedBaseEnergy: true,
+        },
+        pounce: {
+          minimumVisibleTime: CG_ULT_SECOND_CONFIG.minPounceTime,
+          morphDuration: CG_ULT_SECOND_CONFIG.pounceMorphTime,
+          possessMorphDuration: CG_ULT_SECOND_CONFIG.possessMorphTime,
+        },
+        possession: { duration: CG_ULT_SECOND_CONFIG.possessTime, bossStagger: CG_ULT_SECOND_CONFIG.targetBurstSpacing },
+        burst: { duration: CG_ULT_SECOND_CONFIG.burstTime, visualSize: CG_ULT_SECOND_CONFIG.burstVisualSize },
+        damage: {
+          primary: CG_ULT_SECOND_CONFIG.primaryDamage,
+          splash: CG_ULT_SECOND_CONFIG.splashDamage,
+          splashRadius: CG_ULT_SECOND_CONFIG.splashRadius,
+          bossMultiplier: CG_ULT_SECOND_CONFIG.bossMultiplier,
+          primaryAppliesMark: true,
+          primaryAddsBossStack: true,
+          splashAppliesMark: false,
+          splashAddsBossStack: false,
+          infection: false,
+          deathSpread: false,
+          recursive: false,
+          excludesPrimaryFromSplash: true,
+        },
+        feedback: { screenShake: 0, hitStop: 0 },
+        lifecycle: ['delay', 'emerge', 'seek', 'possess', 'burst', 'dissolve'],
+        quality: {
+          high: { trailNodes: CG_ULT_SECOND_CONFIG.trailNodes[0], burstParticles: CG_ULT_SECOND_CONFIG.particleCounts[0], logicalSoulCap: CG_ULT_SECOND_CONFIG.maxSouls },
+          medium: { trailNodes: CG_ULT_SECOND_CONFIG.trailNodes[1], burstParticles: CG_ULT_SECOND_CONFIG.particleCounts[1], logicalSoulCap: CG_ULT_SECOND_CONFIG.maxSouls },
+          low: { trailNodes: CG_ULT_SECOND_CONFIG.trailNodes[2], burstParticles: CG_ULT_SECOND_CONFIG.particleCounts[2], logicalSoulCap: CG_ULT_SECOND_CONFIG.maxSouls },
+        },
+        assets: Object.values(CG_ULT_SECOND_CONFIG.atlas).flatMap(spec => [spec.base, spec.energy]),
+        render: 'single-aligned-breach-plus-shared-emergence-and-front-layer-pounce-with-ogl-psrd-contour',
+      })),
+      ultimateSoulCountForTest: (absorbedBullets = 0, absorbedEnemies = 0) => cgUltimateSoulCount(absorbedBullets, absorbedEnemies),
+      ultimateSoulAbsorbEnemyForTest: (events = []) => {
+        const ids = [];
+        const seen = new Set();
+        for (const event of events) {
+          if (!event || event.isBoss || (!event.enteredCore && !event.killedByUltimate) || seen.has(event.id)) continue;
+          seen.add(event.id); ids.push(event.id);
+        }
+        return { count: ids.length, ids };
+      },
+      ultimateSoulTargetsForTest: (soulCount = 0, targetList = [], bossTarget = null) => {
+        const count = Math.max(0, soulCount | 0);
+        if (bossTarget && !bossTarget.dead && bossTarget.hp > 0) return Array(count).fill(bossTarget.id);
+        const valid = targetList.filter(target => target && !target.dead && target.hp > 0);
+        if (!valid.length) return Array(count).fill(null);
+        return Array.from({ length: count }, (_, index) => valid[index % valid.length].id);
+      },
+      ultimateSoulDamageForTest: ({ boss: isBoss = false, stacks = 0 } = {}) => {
+        const stackBefore = clamp(stacks | 0, 0, CG_CONFIG.bossCorrosionCap);
+        const bossMultiplier = isBoss ? CG_ULT_SECOND_CONFIG.bossMultiplier * cgBossCorrosionDamageMultiplier(stackBefore) : 1;
+        return {
+          primary: CG_ULT_SECOND_CONFIG.primaryDamage * bossMultiplier,
+          splash: CG_ULT_SECOND_CONFIG.splashDamage * bossMultiplier,
+          bossMultiplier,
+          stackBefore,
+        };
+      },
+      ultimateSoulCleanupForTest: (phase = 'soulhunt', { revive = false, switchCharacter = false, result = false, restart = false } = {}) => {
+        if (switchCharacter || result || restart) return 'cleanup';
+        if (phase === 'cast') return 'cancel-refund';
+        return revive ? 'continue' : 'cleanup';
+      },
       ultimateFinaleDamageForTest: (absorbed = 0, isBoss = false) => {
         const damage = CG_ULT_CONFIG.finaleHit.baseDamage + Math.max(0, absorbed | 0) * CG_ULT_CONFIG.finaleHit.damagePerAbsorbed;
         return damage * (isBoss ? CG_ULT_CONFIG.finaleHit.bossMultiplier : 1);
@@ -40121,8 +41821,8 @@
         return 'pierce';
       },
       ultimateTickCountForTest: (duration = CG_ULT_CONFIG.spin) => Math.max(0, Math.ceil(Math.max(0, Number(duration) || 0) / CG_ULT_CONFIG.wheel.tick)),
-      ultimateBossStackCountForTest: (initial = 0, includeOrb = true, wheelTicks = 16, includeBurst = true, includeFinale = true) => clamp(
-        (initial | 0) + (includeOrb ? 1 : 0) + (includeBurst ? 1 : 0) + clamp(wheelTicks | 0, 0, 16) + (includeFinale ? 1 : 0),
+      ultimateBossStackCountForTest: (initial = 0, includeOrb = true, wheelTicks = 16, includeBurst = true, includeFinale = true, soulHits = 0) => clamp(
+        (initial | 0) + (includeOrb ? 1 : 0) + (includeBurst ? 1 : 0) + clamp(wheelTicks | 0, 0, 16) + (includeFinale ? 1 : 0) + clamp(soulHits | 0, 0, CG_ULT_SECOND_CONFIG.maxSouls),
         0, CG_CONFIG.bossCorrosionCap,
       ),
       ultimateSlowForTest: (strongestMultiplier = 1, inside = true, elapsedOutside = 0) => ({
@@ -40488,6 +42188,129 @@
         draw();
         return window.__corruptgunCapture__.snapshot();
       },
+      setUltimateBladeAcceptance({ elapsedSeconds = 1.20, quality = 'high', targetMode = 'none', targetAngle = -0.25, targetRadius = 314 } = {}) {
+        perfLevel = quality === 'low' ? 2 : (quality === 'medium' ? 1 : 0);
+        window.__corruptgunCapture__.setUltimatePhase('spin', elapsedSeconds, 80, false, 0);
+        const u = corruptGunState.ultimate;
+        u.bladeAcceptance = true;
+        u.spaceCuts.length = 0;
+        u.bladeCutT = 0;
+        u.bladeCutSerial = 0;
+        enemies.length = 0; enemyBullets.length = 0; damageTexts.length = 0;
+        particles.length = 0; spriteFx.length = 0; procRings.length = 0;
+        corruptGunState.fx.length = 0; u.absorptionFx.length = 0;
+        if (targetMode === 'orbitDummy') {
+          const radius = clamp(Number(targetRadius) || CG_ULT_CONFIG.wheel.bladeRadius, 220, 420);
+          const angle = Number(targetAngle) || 0;
+          const x = u.x + Math.cos(angle) * radius, y = u.y + Math.sin(angle) * radius;
+          const target = spawnEnemy('familiar', x, y, undefined, y);
+          if (target) {
+            target.x = target.homeX = x; target.y = y; target.vx = target.vy = 0;
+            target.hp = target.maxHp = 999999; target.r = 28; target.fireTimer = 999;
+          }
+        }
+        draw();
+        return window.__corruptgunCapture__.snapshot();
+      },
+      spawnUltimateBladeHit(elapsedMs = 0) {
+        const u = corruptGunState.ultimate;
+        let target = enemies.find(enemy => enemy && enemy.hp > 0);
+        if (!target) {
+          const angle = -0.20, radius = CG_ULT_CONFIG.wheel.bladeRadius;
+          target = spawnEnemy('familiar', u.x + Math.cos(angle) * radius, u.y + Math.sin(angle) * radius, undefined, u.y + Math.sin(angle) * radius);
+          if (target) {
+            target.hp = target.maxHp = 999999; target.r = 28; target.vx = target.vy = 0; target.fireTimer = 999;
+          }
+        }
+        corruptGunState.fx.length = 0;
+        if (target) spawnCgUltCutFx(target);
+        let remaining = clamp(Number(elapsedMs) || 0, 0, 500) / 1000;
+        while (remaining > 0) {
+          const step = Math.min(1 / 120, remaining);
+          updateCorruptGunFx(step);
+          remaining -= step;
+        }
+        draw();
+        return window.__corruptgunCapture__.snapshot();
+      },
+      setUltimateSpaceCut(elapsedMs = 0, quality = 'high') {
+        window.__corruptgunCapture__.setUltimateBladeAcceptance({ elapsedSeconds: 1.36, quality, targetMode: 'none' });
+        const u = corruptGunState.ultimate;
+        const maxLife = CG_ULT_CONFIG.wheel.spaceCutLife;
+        const age = clamp(Number(elapsedMs) || 0, 0, maxLife * 1000) / 1000;
+        if (age < maxLife) {
+          const auditAngle = 0.86, auditRadius = 305;
+          u.spaceCuts.push({
+            x: u.x + Math.cos(auditAngle) * auditRadius,
+            y: u.y + Math.sin(auditAngle) * auditRadius,
+            rot: auditAngle + Math.PI * 0.5,
+            length: 184, width: 15, bend: -16, seed: 0.42,
+            age, life: Math.max(0.001, maxLife - age), maxLife,
+          });
+        }
+        draw();
+        return window.__corruptgunCapture__.snapshot();
+      },
+      setUltimateSoulhunt({ elapsedSeconds = 0, absorbedBullets = 80, absorbedEnemies = 6, withBoss = false, targetCount = 8, quality = 'high', noTargets = false, killFirstTargetAt = null } = {}) {
+        perfLevel = quality === 'low' ? 2 : (quality === 'medium' ? 1 : 0);
+        resetCgUltimate();
+        playerShots.length = 0; enemyBullets.length = 0; enemies.length = 0;
+        warnings.length = 0; lasers.length = 0; corruptGunState.fx.length = 0;
+        particles.length = 0; spriteFx.length = 0; procRings.length = 0; damageTexts.length = 0;
+        boss = null; bossPhase = 2; screenShake = 0;
+        state = withBoss ? 'boss' : 'mobs';
+        const u = corruptGunState.ultimate;
+        u.active = true; u.phase = 'finale'; u.t = CG_ULT_CONFIG.finale;
+        u.totalT = CG_ULT_CONFIG.cast + CG_ULT_CONFIG.flightMax + CG_ULT_CONFIG.burst + CG_ULT_CONFIG.form + CG_ULT_CONFIG.spin + CG_ULT_CONFIG.collapse + CG_ULT_CONFIG.finale;
+        u.x = u.lastOrbX = W * 0.5;
+        u.y = u.lastOrbY = Math.max(300, H * 0.40);
+        u.originX = W * 0.5; u.originY = player.y - 60;
+        u.absorbed = Math.max(0, absorbedBullets | 0); u.damageMul = 1;
+        u.launchDone = true; u.burstApplied = true; u.finaleApplied = true;
+
+        if (withBoss && !noTargets) {
+          boss = {
+            x: u.x, y: Math.max(190, u.y - 150), targetY: Math.max(190, u.y - 150),
+            hp: 10000000, maxHp: 10000000, r: 78, t: 0,
+            name: '万魂蚀附测试核心', kind: 'eclipseboss', scale: 0.86,
+            spritePrefix: 'boss', inv: 0, dead: false, hitFlash: 0,
+            _cgBossCorrosion: { stacks: 0, tickT: 0, pulse: 0, totalDotDamage: 0, lastTickDamage: 0, lastSource: 'ultimate' },
+          };
+        } else if (!noTargets) {
+          const count = clamp(targetCount | 0, 0, 16);
+          for (let index = 0; index < count; index++) {
+            const angle = -Math.PI * 0.5 + index * TAU / Math.max(1, count);
+            const radiusX = 210 + (index % 2) * 66;
+            const radiusY = 150 + (index % 3) * 34;
+            const x = clamp(u.x + Math.cos(angle) * radiusX, 70, W - 70);
+            const y = clamp(u.y + Math.sin(angle) * radiusY, 130, H - 280);
+            const target = spawnEnemy('familiar', x, y, undefined, y);
+            if (!target) continue;
+            target.x = target.homeX = x; target.y = y; target.vx = target.vy = 0;
+            target.hp = target.maxHp = 999999; target.r = 28; target.fireTimer = 999;
+          }
+        }
+
+        startCgUltimateSoulhunt({ absorbedEnemies: Math.max(0, absorbedEnemies | 0) });
+        const firstTarget = !withBoss && enemies.length ? enemies[0] : null;
+        const firstTargetId = firstTarget ? cgSoulTargetId(firstTarget) : null;
+        const targetElapsed = clamp(Number(elapsedSeconds) || 0, 0, CG_ULT_SECOND_CONFIG.duration - 0.0001);
+        const killAt = killFirstTargetAt == null ? Infinity : Math.max(0, Number(killFirstTargetAt) || 0);
+        let simulated = 0;
+        while (simulated < targetElapsed) {
+          const step = Math.min(1 / 120, targetElapsed - simulated);
+          if (firstTarget && firstTarget.hp > 0 && simulated < killAt && simulated + step >= killAt) {
+            firstTarget.hp = 0;
+            u.soulhunt.killedTargetId = firstTargetId;
+          }
+          time += step; stateTimer += step; simulated += step;
+          updateCgUltimate(step);
+          updateCorruptGunFx(step);
+          updateParticles(step); updateSpriteFx(step); updateDamageTexts(step);
+        }
+        draw();
+        return window.__corruptgunCapture__.snapshot();
+      },
       castUltimate() {
         player.energy = player.maxEnergy;
         const cast = castDarkWheel();
@@ -40631,6 +42454,73 @@
           absorbed: corruptGunState.ultimate.absorbed,
           tickDamageMultiplier: 1 + Math.min(corruptGunState.ultimate.absorbed, CG_ULT_CONFIG.absorption.tickBonusCap) * CG_ULT_CONFIG.absorption.tickBonusPerBullet,
           finaleDamage: CG_ULT_CONFIG.finaleHit.baseDamage + corruptGunState.ultimate.absorbed * CG_ULT_CONFIG.finaleHit.damagePerAbsorbed,
+          soulhunt: {
+            active: corruptGunState.ultimate.soulhunt.active,
+            t: corruptGunState.ultimate.soulhunt.t,
+            planned: corruptGunState.ultimate.soulhunt.planned,
+            spawned: corruptGunState.ultimate.soulhunt.spawned,
+            possessing: corruptGunState.ultimate.soulhunt.possessing,
+            burst: corruptGunState.ultimate.soulhunt.burst,
+            dissolving: corruptGunState.ultimate.soulhunt.dissolving,
+            completed: corruptGunState.ultimate.soulhunt.completed,
+            exploded: corruptGunState.ultimate.soulhunt.exploded || 0,
+            absorbedEnemies: corruptGunState.ultimate.soulhunt.absorbedEnemies,
+            killedTargetId: corruptGunState.ultimate.soulhunt.killedTargetId || null,
+            particles: corruptGunState.ultimate.soulhunt.particles.length,
+            bridge: (() => {
+              const visual = cgSoulBridgeVisual();
+              return visual ? {
+                age: visual.age, alpha: visual.alpha, width: visual.width, height: visual.height,
+                frames: visual.layers.map(layer => layer.frame), portalPasses: 1,
+              } : null;
+            })(),
+            centralEmerge: cgSoulCentralEmergeVisual(),
+            souls: corruptGunState.ultimate.soulhunt.souls.map(soul => ({
+              index: soul.index, state: soul.state, targetId: soul.targetId,
+              x: soul.x, y: soul.y, seekAge: soul.seekAge, trailNodes: (soul.trail || []).length,
+            })),
+          },
+          bladeAudit: (() => {
+            const u = corruptGunState.ultimate;
+            const qualityIndex = Math.min(2, Math.max(0, perfLevel | 0));
+            const count = CG_ULT_CONFIG.quality.blades[qualityIndex];
+            const blades = Array.from({ length: count }, (_, index) => {
+              const orbitAngle = cgUltimateBladeAngle(index, count);
+              const radius = CG_ULT_CONFIG.wheel.bladeRadius + ((index % 3) - 1) * 13;
+              const tangent = orbitAngle + Math.PI * 0.5;
+              const x = u.x + Math.cos(orbitAngle) * radius;
+              const y = u.y + Math.sin(orbitAngle) * radius;
+              const variant = index & 1 ? 3 : 2;
+              const profile = CG_ULT_BLADE_PROFILES[variant];
+              const width = CG_ULT_CONFIG.wheel.bladeBodyWidth * (variant === 3 ? 1.06 : 1);
+              const height = CG_ULT_CONFIG.wheel.bladeBodyHeight * (variant === 3 ? 0.82 : 1);
+              const localTipX = profile.tipX * width, localTipY = profile.tipY * height;
+              return {
+                index, orbitAngle, tangent, radius, x, y,
+                variant,
+                edgePhase: (u.totalT / CG_ULT_CONFIG.wheel.bladeGlintPeriod + index * 0.217) % 1,
+                tipX: x + Math.cos(tangent) * localTipX - Math.sin(tangent) * localTipY,
+                tipY: y + Math.sin(tangent) * localTipX + Math.cos(tangent) * localTipY,
+              };
+            });
+            return {
+              acceptance: !!u.bladeAcceptance,
+              count, noTextureGhost: true,
+              bodySize: [CG_ULT_CONFIG.wheel.bladeBodyWidth, CG_ULT_CONFIG.wheel.bladeBodyHeight],
+              trailSegments: CG_ULT_CONFIG.quality.bladeTrailSegments[qualityIndex],
+              afterimages: CG_ULT_CONFIG.quality.bladeAfterimages[qualityIndex],
+              spinePackets: CG_ULT_CONFIG.quality.bladeSpinePackets[qualityIndex],
+              rootArcs: CG_ULT_CONFIG.quality.bladeRootArcs[qualityIndex],
+              detachedDust: CG_ULT_CONFIG.quality.bladeDust[qualityIndex],
+              hubParticles: CG_ULT_CONFIG.quality.bladeHubParticles[qualityIndex],
+              tipParticles: CG_ULT_CONFIG.quality.bladeTipParticles[qualityIndex],
+              edgeGlints: CG_ULT_CONFIG.quality.bladeEdgeGlints[qualityIndex],
+              componentPasses: ['metal-base', 'root-core', 'spine-flow', 'edge-light', 'tip-needle', 'tapered-wake', 'phase-afterimage', 'detached-particles'],
+              blades,
+              spaceCuts: u.spaceCuts.map(cut => ({ x: cut.x, y: cut.y, rot: cut.rot, age: cut.age, maxLife: cut.maxLife, length: cut.length })),
+              hitCuts: corruptGunState.fx.filter(fx => fx.type === 'wheelHitCut').map(fx => ({ x: fx.x, y: fx.y, rot: fx.rot, age: fx.maxLife - fx.life, maxLife: fx.maxLife })),
+            };
+          })(),
         },
         charges: corruptGunState.charges,
         regenT: corruptGunState.regenT,

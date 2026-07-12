@@ -27,6 +27,8 @@
     "capture:tianyao": "node tools/capture_tianyao_acceptance.js",
     "capture:skyward": "node tools/capture_skyward_acceptance.js",
     "capture:corruptgun": "node tools/capture_corruptgun_acceptance.js",
+    "capture:corruptgun-phase2": "node tools/capture_corruptgun_ultimate_phase2.js",
+    "capture:corruptgun-blades": "node tools/capture_corruptgun_blades_v2.js",
     "capture:dragon": "node tools/capture_dragon_breath_acceptance.js",
     "render:dragon": "node tools/headless_dragon_render.js"
   },

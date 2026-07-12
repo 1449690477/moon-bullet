@@ -11,6 +11,7 @@ const EFFECT_KIND = Object.freeze({
   muzzle: 5,
   ultimateOrb: 6,
   ultimateWheel: 7,
+  ultimateSoul: 8,
 });
 
 const QUALITY_PROFILES = Object.freeze({
@@ -605,6 +606,120 @@ const FRAGMENT_SHADER = /* glsl */ `
     return vec4(color, clamp(alpha, 0.0, 1.0) * uOpacity);
   }
 
+  vec4 shadeUltimateSoul(vec2 p) {
+    float progress = clamp(uProgress, 0.0, 1.0);
+    float seekVariant = 1.0 - step(0.5, uVariant);
+    float possessVariant = step(0.5, uVariant) * (1.0 - step(1.5, uVariant));
+    float dissolveVariant = step(1.5, uVariant);
+    float intensity = clamp(uPower, 0.0, 1.0);
+
+    vec2 gradientA;
+    float flowA = psrdnoise(
+      vec2(p.x * 3.25 - uTime * 1.72, p.y * 4.15 + uPhase * 2.7),
+      vec2(0.0),
+      uTime * 0.92 + uPhase * 5.0,
+      gradientA
+    );
+    vec2 domainWarp = gradientA * mix(0.035, 0.095, uQuality);
+    vec2 gradientB;
+    float flowB = psrdnoise(
+      p * vec2(7.4, 8.8) + domainWarp + vec2(uTime * 0.56, -uTime * 0.78),
+      vec2(0.0),
+      -uTime * 1.34 + uPhase * 9.0,
+      gradientB
+    );
+    vec2 gradientC;
+    float flowC = psrdnoise(
+      p * 14.5 + gradientB * 0.045,
+      vec2(0.0),
+      uTime * 1.78 - uPhase * 3.0,
+      gradientC
+    );
+
+    // Seek is a stretched, direction-facing spectre. The noisy spine stays dark while the
+    // displaced rim and veins carry the readable blood-red motion.
+    float along = p.x * 0.5 + 0.5;
+    float head = 1.0 - smoothstep(0.12, 0.55, length(vec2((p.x - 0.42) * 1.32, p.y * 1.18)));
+    float spineOffset = sin(p.x * 4.6 - uTime * 3.2 + uPhase * 11.0) * 0.075
+      + flowA * mix(0.025, 0.065, uQuality);
+    float taper = mix(0.055, 0.36, smoothstep(0.0, 0.76, along));
+    taper *= 0.86 + head * 0.42;
+    float seekDistance = abs(p.y - spineOffset);
+    float seekBody = (1.0 - smoothstep(taper * 0.68, taper, seekDistance))
+      * smoothstep(-1.03, -0.82, p.x)
+      * (1.0 - smoothstep(0.72, 1.02, p.x));
+    float seekRim = (1.0 - smoothstep(taper, taper + 0.10, seekDistance)) - seekBody * 0.76;
+    float tailTear = smoothstep(0.10, 0.86, flowB + sin(p.x * 18.0 - uTime * 4.4) * 0.23);
+    seekBody *= 1.0 - (1.0 - along) * tailTear * 0.72;
+    float seekVeins = pow(smoothstep(0.36, 0.84, abs(flowB * 0.76 + flowC * 0.42)), 2.1)
+      * seekBody;
+    float eye = (1.0 - smoothstep(0.018, 0.060, length(vec2(p.x - 0.51, p.y - spineOffset + 0.025))))
+      * seekVariant;
+
+    // Possession coils around the victim instead of looking like another projectile.
+    vec2 coilP = rotate2d(-uTime * (1.25 + intensity * 0.72) - uPhase * 3.0) * p;
+    float coilRadius = length(coilP);
+    float coilAngle = atan(coilP.y, coilP.x);
+    float close = smoothstep(0.0, 0.66, progress);
+    float shellRadius = mix(0.82, 0.42, close);
+    float shell = 1.0 - smoothstep(shellRadius * 0.76, shellRadius, coilRadius);
+    float shellEdge = band(coilRadius, shellRadius, 0.028, 0.060);
+    float coilSignal = sin(coilAngle * 5.0 + coilRadius * 18.0 - uTime * 5.2 + flowA * 2.4);
+    float coils = pow(smoothstep(0.05, 0.76, coilSignal), 1.45)
+      * smoothstep(0.08, 0.22, coilRadius)
+      * (1.0 - smoothstep(shellRadius * 0.78, shellRadius + 0.08, coilRadius));
+    float claws = smoothstep(0.38, 0.84, sin(coilAngle * 9.0 - uTime * 3.4 + flowB * 1.8))
+      * band(coilRadius, shellRadius * 0.88, 0.045, 0.075);
+    float corePulse = (1.0 - smoothstep(0.055, 0.20, coilRadius))
+      * (0.72 + 0.28 * sin(uTime * 8.2 + uPhase * 13.0));
+
+    // Dissolve erases the body from the trailing side and carries its edge into finite dust.
+    float dissolveFront = mix(-1.10, 1.18, progress);
+    float breakup = flowA * 0.18 + flowB * 0.08;
+    float remaining = 1.0 - smoothstep(dissolveFront - 0.18, dissolveFront + 0.12, p.x + breakup);
+    float dissolveEdge = band(p.x + breakup, dissolveFront, 0.045, 0.11)
+      * (1.0 - smoothstep(0.24, 0.96, abs(p.y)));
+    float dustCell = hash21(floor(vec2((p.x + uTime * 0.52) * 18.0, (p.y - uTime * 0.26) * 15.0)) + uPhase * 47.0);
+    float dust = step(mix(0.89, 0.75, uParticleDensity), dustCell)
+      * (1.0 - smoothstep(0.08, 0.78, abs(p.x - dissolveFront)))
+      * (1.0 - smoothstep(0.18, 1.02, abs(p.y)))
+      * (1.0 - smoothstep(0.82, 1.0, progress));
+
+    float body = seekBody * seekVariant;
+    float rim = seekRim * seekVariant;
+    float veins = seekVeins * seekVariant;
+    body += shell * possessVariant * 0.82;
+    rim += max(shellEdge, claws) * possessVariant;
+    veins += coils * possessVariant;
+
+    float dissolveShape = max(seekBody, seekRim * 0.82) * remaining;
+    body += dissolveShape * dissolveVariant * 0.86;
+    rim += dissolveEdge * dissolveVariant;
+    veins += seekVeins * remaining * dissolveVariant;
+
+    vec3 voidColor = vec3(0.0012, 0.0001, 0.0045);
+    vec3 abyssColor = vec3(0.020, 0.0002, 0.028);
+    vec3 bloodColor = vec3(0.52, 0.003, 0.075);
+    vec3 edgeColor = vec3(0.92, 0.018, 0.145);
+    vec3 hotColor = vec3(1.0, 0.16, 0.25);
+    vec3 color = mix(voidColor, abyssColor, smoothstep(-0.50, 0.56, flowA)) * body * 1.55;
+    color += bloodColor * veins * (1.18 + intensity * 0.42);
+    color += edgeColor * rim * (0.88 + intensity * 0.38);
+    color += vec3(0.32, 0.001, 0.085) * max(0.0, flowC) * body * 0.56;
+    color += hotColor * eye * 1.45;
+    color += edgeColor * corePulse * possessVariant * 1.22;
+    color += vec3(0.68, 0.008, 0.14) * dissolveEdge * dissolveVariant * 1.32;
+    color += vec3(0.78, 0.025, 0.18) * dust * dissolveVariant * 1.25;
+
+    float alpha = max(body * 0.90, max(rim * 0.88, veins * 0.78));
+    alpha = max(alpha, eye);
+    alpha = max(alpha, corePulse * possessVariant * 0.82);
+    alpha = max(alpha, dissolveEdge * dissolveVariant);
+    alpha = max(alpha, dust * dissolveVariant);
+    float phaseEnvelope = mix(1.0, 1.0 - smoothstep(0.84, 1.0, progress), dissolveVariant);
+    return vec4(color, clamp(alpha * phaseEnvelope, 0.0, 1.0) * uOpacity);
+  }
+
   void main() {
     vec4 color;
     if (uKind < 0.5) {
@@ -621,8 +736,10 @@ const FRAGMENT_SHADER = /* glsl */ `
       color = shadeMuzzle(vLocal);
     } else if (uKind < 6.5) {
       color = shadeUltimateOrb(vLocal);
-    } else {
+    } else if (uKind < 7.5) {
       color = shadeUltimateWheel(vLocal);
+    } else {
+      color = shadeUltimateSoul(vLocal);
     }
     if (color.a <= 0.002) discard;
     gl_FragColor = color;
@@ -1099,6 +1216,28 @@ class CorruptGunVfxEngine {
       phase: finiteOr(options.phase, 0),
       power: clamp(finiteOr(options.absorbed, finiteOr(options.power, 0)), 0, 1),
       progress: clamp(finiteOr(options.collapse, finiteOr(options.progress, 0)), 0, 1),
+    });
+  }
+
+  drawUltimateSoul(options = {}) {
+    const variant = options.variant === 'possess' || options.variant === 1
+      ? 1
+      : options.variant === 'dissolve' || options.variant === 2
+        ? 2
+        : 0;
+    const defaultWidth = variant === 1 ? 156 : 188;
+    const defaultHeight = variant === 1 ? 156 : 112;
+    const width = Math.max(1, finiteOr(options.width, finiteOr(options.size, defaultWidth)));
+    const height = Math.max(1, finiteOr(options.height, variant === 1 ? width : defaultHeight));
+    return this._drawPrimitive(options.layer || 'front', EFFECT_KIND.ultimateSoul, {
+      ...options,
+      center: [finiteOr(options.x, 0), finiteOr(options.y, 0)],
+      size: [width, height],
+      rotation: finiteOr(options.rotation, finiteOr(options.angle, 0)),
+      phase: finiteOr(options.phase, finiteOr(options.seed, 0) * 0.41421356),
+      progress: clamp(finiteOr(options.progress, 0), 0, 1),
+      power: clamp(finiteOr(options.power, 1), 0, 1),
+      variant,
     });
   }
 

@@ -132,7 +132,7 @@ describe('seventh fighter corruption gun', () => {
       maxDotMaxHpPercentPerSecond: 1,
       tickInterval: 0.25,
       directCorruptGunProjectilesOnly: false,
-      stackingSources: ['main-projectile', 'clone-projectile', 'cgUltOrb', 'cgUltBurst', 'cgUltWheel', 'cgUltFinale'],
+      stackingSources: ['main-projectile', 'clone-projectile', 'cgUltOrb', 'cgUltBurst', 'cgUltWheel', 'cgUltFinale', 'cgUltSoul'],
       ui: { width: 184, height: 66 },
     });
     expect(cg.bossCorrosionPreviewForTest(0, 1_000_000)).toEqual({ stacks: 0, damageMultiplier: 1, damageBonusPercent: 0, dotPerSecond: 0, dotPerTick: 0 });
@@ -214,6 +214,8 @@ describe('seventh fighter corruption gun', () => {
       ultimateLaunchShake: 0,
       ultimateBurstShake: 0,
       ultimateFinaleShake: 14,
+      ultimateSoulShake: 0,
+      ultimateSoulHitStop: 0,
       summonShake: 2,
       keepsLocalHitStop: true,
     });
@@ -227,26 +229,128 @@ describe('seventh fighter corruption gun', () => {
   it('implements the complete Dark Wheel timeline, damage and boss stacking contract', () => {
     const ultimate = cg.ultimateSpec();
     expect(ultimate).toMatchObject({
-      kind: 'darkWheel', name: '暗蚀轮回', bombCd: 11.5, travel: 440,
-      timeline: { cast: 0.5, flightMax: 0.603, burst: 0.3, form: 0.6, spin: 8, collapse: 0.4, finale: 1, totalMax: 11.403 },
+      kind: 'darkWheel', name: '暗蚀轮回', bombCd: 18.8, travel: 440,
+      timeline: { cast: 0.5, flightMax: 0.603, burst: 0.3, form: 0.6, spin: 8, collapse: 0.4, finale: 1, soulhunt: 7.2, totalMax: 18.603 },
       orb: { damage: 220, speed: 730, r: 20, size: 96, pierce: 99 },
       burst: { radius: 430, damage: 650, hitStop: 0.06 },
       wheel: {
         size: 900, discSize: 540, innerDiscSize: 358,
         damageRadius: 500, damage: 250, tick: 0.4,
         slowRadius: 620, slowMultiplier: 0.3, slowLinger: 0.6,
-        bladeSpeed: 4.1, bladeSize: 126, metalBladeSize: 154,
+        bladeSpeed: 4.1, bladeBodyWidth: 216, bladeBodyHeight: 104,
       },
       finale: { radius: 680, baseDamage: 900, damagePerAbsorbed: 20, bossMultiplier: 0.8, hitStop: 0.1, shake: 14 },
-      fullBossSequenceStacks: 19,
+      phaseOneBossSequenceStacks: 19,
+      fullBossSequenceStacks: 49,
     });
     expect(cg.ultimateTickCountForTest()).toBe(20);
     expect(cg.ultimateBossStackCountForTest()).toBe(19);
+    expect(cg.ultimateBossStackCountForTest(0, true, 16, true, true, 30)).toBe(49);
     expect(cg.ultimateBossStackCountForTest(195)).toBe(200);
     expect(ultimate.render).toMatchObject({ spinMaster: 'cgUltWheelSteadyBase', spinMasterPixels: 768, visualEnvelope: 696, mobileLosslessMaster: true });
     expect(cg.ultimateFinaleDamageForTest(0)).toBe(900);
     expect(cg.ultimateFinaleDamageForTest(80)).toBe(2500);
     expect(cg.ultimateFinaleDamageForTest(80, true)).toBe(2000);
+  });
+
+  it('derives the second-stage soul count from bullets and unique absorbed enemies', () => {
+    expect(cg.ultimateSoulCountForTest(0, 0)).toBe(8);
+    expect(cg.ultimateSoulCountForTest(7, 0)).toBe(8);
+    expect(cg.ultimateSoulCountForTest(8, 0)).toBe(9);
+    expect(cg.ultimateSoulCountForTest(80, 2)).toBe(22);
+    expect(cg.ultimateSoulCountForTest(999, 999)).toBe(30);
+    expect(cg.ultimateSoulCountForTest(-10, -4)).toBe(8);
+
+    expect(cg.ultimateSoulAbsorbEnemyForTest([
+      { id: 'entered-and-killed', enteredCore: true, killedByUltimate: false },
+      { id: 'entered-and-killed', enteredCore: false, killedByUltimate: true },
+      { id: 'ultimate-kill', enteredCore: false, killedByUltimate: true },
+      { id: 'boss', enteredCore: true, killedByUltimate: true, isBoss: true },
+      { id: 'unrelated', enteredCore: false, killedByUltimate: false },
+    ])).toEqual({ count: 2, ids: ['entered-and-killed', 'ultimate-kill'] });
+  });
+
+  it('publishes the complete 7.2-second soul-hunt visual and gameplay contract', () => {
+    expect(cg.ultimateSecondSpec()).toMatchObject({
+      name: '万魂蚀附',
+      duration: 7.2,
+      countFormula: '8 + floor(absorbedBullets / 8) + absorbedEnemies * 2; cap 30',
+      maxSouls: 30,
+      maxBossStacksAdded: 30,
+      fullSequenceMaxStacks: 49,
+      coreCaptureRadius: 184,
+      seekRadius: 840,
+      spawn: { start: 0.54, batchSize: 5, batchInterval: 0.28, emergeDuration: 0.78 },
+      transition: { duration: 0.45, phaseOneOverlap: 0.88, portalHold: 2.2, portalFadeEnd: 2.8 },
+      possession: { duration: 0.52, bossStagger: 0.1 },
+      burst: { duration: 0.62, visualSize: 236 },
+      damage: {
+        primary: 140,
+        splash: 70,
+        splashRadius: 108,
+        bossMultiplier: 0.55,
+        primaryAppliesMark: true,
+        primaryAddsBossStack: true,
+        splashAppliesMark: false,
+        splashAddsBossStack: false,
+        infection: false,
+        deathSpread: false,
+        recursive: false,
+        excludesPrimaryFromSplash: true,
+      },
+      feedback: { screenShake: 0, hitStop: 0 },
+      lifecycle: ['delay', 'emerge', 'seek', 'possess', 'burst', 'dissolve'],
+      quality: {
+        high: { trailNodes: 7, burstParticles: 6, logicalSoulCap: 30 },
+        medium: { trailNodes: 5, burstParticles: 4, logicalSoulCap: 30 },
+        low: { trailNodes: 3, burstParticles: 2, logicalSoulCap: 30 },
+      },
+    });
+  });
+
+  it('shares soul targets evenly, ignores dead targets and lets every soul focus the Boss', () => {
+    const targets = [
+      { id: 'near', x: 360, y: 280, hp: 100 },
+      { id: 'left', x: 160, y: 300, hp: 100 },
+      { id: 'right', x: 560, y: 300, hp: 100 },
+      { id: 'dead', x: 360, y: 240, hp: 0, dead: true },
+    ];
+    const assigned = cg.ultimateSoulTargetsForTest(8, targets);
+    expect(assigned).toHaveLength(8);
+    expect(new Set(assigned.slice(0, 3))).toEqual(new Set(['near', 'left', 'right']));
+    expect(assigned).not.toContain('dead');
+    const claims = assigned.reduce((result, id) => ({ ...result, [id]: (result[id] || 0) + 1 }), {});
+    expect(Math.max(...Object.values(claims)) - Math.min(...Object.values(claims))).toBeLessThanOrEqual(1);
+    expect(cg.ultimateSoulTargetsForTest(6, targets, { id: 'boss', hp: 1000000, isBoss: true })).toEqual(Array(6).fill('boss'));
+  });
+
+  it('uses the pre-hit Boss corrosion multiplier and keeps splash isolated', () => {
+    expect(cg.ultimateSoulDamageForTest()).toEqual({ primary: 140, splash: 70, bossMultiplier: 1, stackBefore: 0 });
+    expect(cg.ultimateSoulDamageForTest({ boss: true, stacks: 0 })).toEqual({ primary: 77, splash: 38.5, bossMultiplier: 0.55, stackBefore: 0 });
+    const half = cg.ultimateSoulDamageForTest({ boss: true, stacks: 100 });
+    expect(half).toMatchObject({ stackBefore: 100 });
+    expect(half.primary).toBeCloseTo(308, 8);
+    expect(half.splash).toBeCloseTo(154, 8);
+    expect(half.bossMultiplier).toBeCloseTo(2.2, 8);
+    const capped = cg.ultimateSoulDamageForTest({ boss: true, stacks: 999 });
+    expect(capped).toMatchObject({ stackBefore: 200 });
+    expect(capped.primary).toBeCloseTo(539, 8);
+    expect(capped.splash).toBeCloseTo(269.5, 8);
+    expect(capped.bossMultiplier).toBeCloseTo(3.85, 8);
+    expect(cg.bossCorrosionStacksForTest('cgUltSoul', 30, 180)).toBe(200);
+    expect(cg.bossCorrosionSpec().stackingSources).toContain('cgUltSoul');
+  });
+
+  it('continues launched soul-hunt across revival and cleans it at every hard boundary', () => {
+    expect(cg.ultimateSoulCleanupForTest('cast', { revive: true })).toBe('cancel-refund');
+    expect(cg.ultimateSoulCleanupForTest('soulhunt', { revive: true })).toBe('continue');
+    expect(cg.ultimateSoulCleanupForTest('soulhunt', { switchCharacter: true })).toBe('cleanup');
+    expect(cg.ultimateSoulCleanupForTest('soulhunt', { result: true })).toBe('cleanup');
+    expect(cg.ultimateSoulCleanupForTest('soulhunt', { restart: true })).toBe('cleanup');
+    expect(cg.ultimateSoulCleanupForTest('soulhunt')).toBe('cleanup');
+
+    const source = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+    expect(source).toContain('setUltimateSoulhunt(');
   });
 
   it('detonates on 440px, elite or Boss and otherwise keeps piercing ordinary enemies', () => {
@@ -276,13 +380,96 @@ describe('seventh fighter corruption gun', () => {
   it('renders a stable crisp disc with continuous counter-rotating blade layers', () => {
     const ultimate = cg.ultimateSpec();
     expect(ultimate.render).toMatchObject({ spinMaster: 'cgUltWheelSteadyBase', spinMasterPixels: 768, visualEnvelope: 696, continuousRotation: true });
-    expect(ultimate.render.passes).toContain('world-front-counter-rotating-harvester-blades-and-spiral-absorption');
+    expect(ultimate.render.passes).toEqual(expect.arrayContaining([
+      'world-front-root-aligned-tapered-wakes-phase-afterimages-and-detached-dust',
+      'world-front-harvester-metal-root-spine-edge-tip-material-passes',
+    ]));
     const source = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
     expect(source).toContain('if (Number.isFinite(spec.steadyFrame))');
     expect(source).toContain('drawCgUltimateInboundTrails');
     const shader = readFileSync(new URL('../../tools/corruptgun_vfx/cg_vfx_engine.mjs', import.meta.url), 'utf8');
     expect(shader).toContain('outerP = rotate2d(-uPhase * 2.24) * p');
     expect(shader).toContain('innerP = rotate2d(uPhase * 3.24) * p');
+  });
+
+  it('keeps the V2 harvester blades material-separated with bounded trail and cut lifecycles', () => {
+    const ultimate = cg.ultimateSpec();
+    expect(ultimate.wheel).toMatchObject({
+      bladeRadius: 314,
+      bladeBodyWidth: 216,
+      bladeBodyHeight: 104,
+      bladeTrailSweep: 0.58,
+      bladeTrailWidth: 26,
+      bladeEnergyBaseAlpha: 0.17,
+      bladeEnergyPulseAlpha: 0.10,
+      bladeGlintPeriod: 0.42,
+      bladeGlintSpan: 0.10,
+      bladeGhostLag: 0.14,
+      bladeGhostAlpha: 0.16,
+      bladeRootRingSpeed: 2.1,
+      bladeSpineFlowSpeed: 1.55,
+      bladeTipBaseLength: 12,
+      bladeTipPeakLength: 26,
+      spaceCutLife: 0.46,
+      spaceCutRadiusMin: 272,
+      spaceCutRadiusMax: 382,
+    });
+    expect(ultimate.render).toMatchObject({
+      textureGhosts: false,
+      harvesterLayers: expect.arrayContaining([
+        'black-steel-base',
+        'variant-anchored-root-core',
+        'transported-spine-packets',
+        'independent-moving-edge-glints',
+        'needle-tip-and-tip-shards',
+        'root-aligned-tapered-wake',
+        'phase-displaced-energy-edge-shadows',
+        'detached-void-dust',
+      ]),
+      lowQualityKeeps: expect.arrayContaining([
+        'root-core', 'spine-flow', 'moving-edge-glint', 'needle-tip',
+        'one-phase-afterimage', 'one-detached-particle', 'three-segment-blade-wake',
+      ]),
+    });
+
+    const source = readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
+    expect(source).toContain("addCgAssetFrames('cgUltHarvesterBase', 'ult/parts/cg_ult_harvester_base', 3)");
+    expect(source).toContain("addCgAssetFrames('cgUltHarvesterEnergy', 'ult/parts/cg_ult_harvester_energy', 3)");
+    expect(source).toContain('drawCgUltimateBladeWake');
+    expect(source).toContain('drawCgUltimateHarvestBlade');
+    expect(source).toContain('traceCgUltimateBladeWakeBand');
+    expect(source).toContain('traceCgUltimateBladeSpine');
+    expect(source).toContain('bladeTrailSegments: Object.freeze([7, 5, 3])');
+    expect(source).toContain('bladeAfterimages: Object.freeze([2, 1, 1])');
+    expect(source).toContain('bladeSpinePackets: Object.freeze([3, 2, 1])');
+    expect(source).toContain('bladeRootArcs: Object.freeze([2, 1, 1])');
+    expect(source).toContain('bladeDust: Object.freeze([4, 2, 1])');
+    expect(source).toContain('bladeHubParticles: Object.freeze([3, 2, 1])');
+    expect(source).toContain('bladeTipParticles: Object.freeze([2, 1, 1])');
+    expect(source).toContain('bladeEdgeGlints: Object.freeze([2, 1, 1])');
+    expect(source).toContain("type: 'wheelHitCut'");
+    expect(source).not.toContain('const key = `cgUltScythe${1 + (index % 8)}`');
+    expect(source).not.toContain('const blades = []');
+    expect(source).not.toContain('const point = { x: u.x + Math.cos(a) * r');
+    expect(source).toContain('const localTipX = profile.tipX * width, localTipY = profile.tipY * height');
+    expect(source).toContain('* 0.22;');
+
+    const lifecycle = source.slice(
+      source.indexOf('function updateCgUltimateSpaceCuts'),
+      source.indexOf('function drawCgUltimateSuctionStreaks'),
+    );
+    expect(lifecycle).toContain('cut.age += dt');
+    expect(lifecycle).toContain('cut.life -= dt');
+    expect(lifecycle).toContain('if (cut.life <= 0)');
+    expect(lifecycle).toContain('u.spaceCuts.length >= cap');
+    const reset = source.slice(source.indexOf('function resetCgUltimate'), source.indexOf('function castDarkWheel'));
+    expect(reset).toContain('u.spaceCuts.length = 0');
+    expect(reset).toContain('u.bladeCutT = 0');
+    expect(reset).toContain('u.bladeCutSerial = 0');
+
+    const pagesBuilder = readFileSync(new URL('../../tools/build_pages.py', import.meta.url), 'utf8');
+    expect(pagesBuilder).toContain('(\"cgUltHarvesterBase\", \"ult/parts/cg_ult_harvester_base\", 3)');
+    expect(pagesBuilder).toContain('(\"cgUltHarvesterEnergy\", \"ult/parts/cg_ult_harvester_energy\", 3)');
   });
 
   it('uses strongest-slow semantics, preserves post-launch revival, and clears only finale hazards', () => {
@@ -297,19 +484,31 @@ describe('seventh fighter corruption gun', () => {
     expect(cg.ultimateHazardPolicyForTest('finale')).toEqual({ enemyBullets: 'clear', warnings: 'clear', lasers: 'clear' });
   });
 
-  it('publishes a 56-asset audited ultimate manifest with a registered high-resolution spin master', () => {
+  it('publishes grouped base, preserved optimization and second-stage ultimate assets', () => {
     const manifest = JSON.parse(readFileSync(new URL('../../assets/player/corrupt_gun/ult/cg_ultimate_manifest.json', import.meta.url), 'utf8'));
-    expect(manifest).toMatchObject({ formatVersion: 1, character: 'corruptgun', ultimate: 'darkWheel' });
-    expect(Object.keys(manifest.assets)).toHaveLength(56);
+    expect(manifest).toMatchObject({ formatVersion: 2, character: 'corruptgun', ultimate: 'darkWheel' });
     expect(manifest.renderContract.spinMaster).toContain('768px');
     expect(manifest.assets['steady/cg_ult_wheel_steady_base.png']).toBeTruthy();
     expect(manifest.assets['steady/cg_ult_wheel_steady_energy.png']).toBeTruthy();
     expect(manifest.assets['steady/cg_ult_wheel_steady_detail.png']).toBeTruthy();
-    const runtimeAssets = Object.entries(manifest.assets).filter(([rel]) => !rel.startsWith('reference/'));
-    expect(runtimeAssets.every(([, item]) => item.residualGreenPixels === 0 && item.residualCyanPixels === 0)).toBe(true);
+    expect(Object.keys(manifest.assetGroups)).toEqual(expect.arrayContaining(['base', 'opt', 'phase2']));
+    expect(manifest.assetGroups.opt.paths).toHaveLength(30);
+    expect(manifest.assetGroups.phase2.paths.length).toBeGreaterThanOrEqual(32);
+    const groupedPaths = Object.values(manifest.assetGroups).flatMap(group => group.paths);
+    expect(new Set(groupedPaths).size).toBe(groupedPaths.length);
+    expect(new Set(groupedPaths)).toEqual(new Set(Object.keys(manifest.assets)));
+    const auditedRuntimePaths = [...manifest.assetGroups.base.paths, ...manifest.assetGroups.phase2.paths]
+      .filter(rel => !rel.startsWith('reference/'));
+    expect(auditedRuntimePaths.every(rel => {
+      const item = manifest.assets[rel];
+      return item.residualGreenPixels === 0 && item.residualCyanPixels === 0;
+    })).toBe(true);
+    expect(manifest.assetGroups.opt.paths.every(rel => manifest.assets[rel].preservedUnmodified === true)).toBe(true);
     expect(manifest.sequences).toMatchObject({
       orb_stage: { frames: 6 }, orb_roll: { frames: 6 }, comet: { frames: 6 },
       shatter: { frames: 8 }, form: { frames: 8 }, form_b: { frames: 8 }, wheel: { frames: 8 }, wheel_inner: { frames: 8 },
+      soul_emerge: { frames: 6 }, soul_flight: { frames: 6 }, soul_variants: { frames: 7 },
+      soul_burst: { frames: 8 }, soul_transition: { frames: 11 },
     });
   });
 

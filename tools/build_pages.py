@@ -190,6 +190,14 @@ def augment_corruptgun_assets(asset_paths: dict[str, str]) -> dict[str, str]:
         ("cgUltCrescent", "ult/parts/cg_ult_crescent", 8),
         ("cgUltVortexS", "ult/parts/cg_ult_vortex_s", 4),
         ("cgUltRune", "ult/parts/cg_ult_rune", 6),
+        ("cgUltHarvesterBase", "ult/parts/cg_ult_harvester_base", 3),
+        ("cgUltHarvesterEnergy", "ult/parts/cg_ult_harvester_energy", 3),
+        ("cgUltScythe", "ult/opt/cg_ult_scythe", 8),
+        ("cgUltBladeWheel", "ult/opt/cg_ult_bladewheel", 8),
+        ("cgUltHole", "ult/opt/cg_ult_hole", 12),
+        ("cgUltRimRing", "ult/opt/cg_ult_rimring", 2),
+        ("cgUltSoulTransitionBase", "ult/phase2/parts/cg_ult_soul_transition_base", 11),
+        ("cgUltSoulTransitionEnergy", "ult/phase2/parts/cg_ult_soul_transition_energy", 11),
     )
     for key_prefix, path_prefix, count in groups:
         for index in range(1, count + 1):
@@ -322,7 +330,7 @@ def validate_corruptgun_material_assets(asset_paths: dict[str, str]) -> int:
     return len(assets)
 
 
-def validate_corruptgun_ultimate_assets(asset_paths: dict[str, str]) -> int:
+def validate_corruptgun_ultimate_assets(asset_paths: dict[str, str]) -> dict[str, int]:
     manifest_path = ROOT / CORRUPTGUN_ULTIMATE_MANIFEST_REL
     if not manifest_path.is_file():
         raise RuntimeError(f"Missing Corrupt Gun ultimate manifest: {CORRUPTGUN_ULTIMATE_MANIFEST_REL}")
@@ -330,11 +338,31 @@ def validate_corruptgun_ultimate_assets(asset_paths: dict[str, str]) -> int:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except Exception as error:
         raise RuntimeError(f"Invalid Corrupt Gun ultimate manifest: {error}") from error
-    if manifest.get("formatVersion") != 1 or manifest.get("character") != "corruptgun" or manifest.get("ultimate") != "darkWheel":
+    if manifest.get("formatVersion") != 2 or manifest.get("character") != "corruptgun" or manifest.get("ultimate") != "darkWheel":
         raise RuntimeError("Corrupt Gun ultimate manifest has an unsupported identity or format")
     assets = manifest.get("assets")
-    if not isinstance(assets, dict) or len(assets) != 56:
-        raise RuntimeError("Corrupt Gun ultimate manifest does not contain the expected 56 audited assets")
+    if not isinstance(assets, dict) or not assets:
+        raise RuntimeError("Corrupt Gun ultimate manifest has no audited assets")
+    groups = manifest.get("assetGroups")
+    if not isinstance(groups, dict) or set(groups) != {"base", "opt", "phase2"}:
+        raise RuntimeError("Corrupt Gun ultimate manifest must declare base/opt/phase2 groups")
+    grouped_paths: dict[str, str] = {}
+    group_counts: dict[str, int] = {}
+    for group_name, group in groups.items():
+        paths = group.get("paths") if isinstance(group, dict) else None
+        if not isinstance(paths, list) or not all(isinstance(path, str) for path in paths):
+            raise RuntimeError(f"Corrupt Gun ultimate group {group_name} has invalid paths")
+        if len(paths) != len(set(paths)):
+            raise RuntimeError(f"Corrupt Gun ultimate group {group_name} contains duplicate paths")
+        for path in paths:
+            if path in grouped_paths:
+                raise RuntimeError(f"Corrupt Gun ultimate asset belongs to multiple groups: {path}")
+            grouped_paths[path] = group_name
+        group_counts[group_name] = len(paths)
+    if set(grouped_paths) != set(assets):
+        raise RuntimeError("Corrupt Gun ultimate groups do not exactly partition the audited assets")
+    if group_counts["opt"] != 30 or groups["opt"].get("preservedUnmodified") is not True:
+        raise RuntimeError("Corrupt Gun ultimate opt group must preserve the current 30 assets")
     declared_paths = set(asset_paths.values())
     for relative_asset, item in assets.items():
         rel = f"assets/player/corrupt_gun/ult/{relative_asset}"
@@ -344,18 +372,41 @@ def validate_corruptgun_ultimate_assets(asset_paths: dict[str, str]) -> int:
         is_reference = relative_asset == "reference/cg_ult_concept.png"
         if not is_reference and rel not in declared_paths:
             raise RuntimeError(f"Undeclared Corrupt Gun ultimate runtime asset: {rel}")
-        if not is_reference and (item.get("residualGreenPixels") != 0 or item.get("residualCyanPixels") != 0):
+        group_name = grouped_paths[relative_asset]
+        if group_name != "opt" and not is_reference and (
+            item.get("residualGreenPixels") != 0 or item.get("residualCyanPixels") != 0
+        ):
             raise RuntimeError(f"Corrupt Gun ultimate asset still contains green/cyan spill: {rel}")
+        if group_name == "opt" and item.get("preservedUnmodified") is not True:
+            raise RuntimeError(f"Corrupt Gun ultimate opt asset is not marked preserved: {rel}")
         if hashlib.sha256(path.read_bytes()).hexdigest() != item.get("sha256"):
             raise RuntimeError(f"Corrupt Gun ultimate asset hash mismatch: {rel}")
     sequences = manifest.get("sequences")
     expected_frames = {
         "orb_stage": 6, "orb_roll": 6, "orb_dart": 5, "comet": 6,
         "shatter": 8, "form": 8, "form_b": 8, "wheel": 8, "wheel_inner": 8,
+        "soul_emerge": 6, "soul_flight": 6, "soul_variants": 7,
+        "soul_burst": 8, "soul_transition": 11,
     }
-    if not isinstance(sequences, dict) or {key: value.get("frames") for key, value in sequences.items()} != expected_frames:
+    if not isinstance(sequences, dict) or any(
+        not isinstance(sequences.get(key), dict) or sequences[key].get("frames") != frames
+        for key, frames in expected_frames.items()
+    ):
         raise RuntimeError("Corrupt Gun ultimate sequence mapping does not match the audited frame contract")
-    return len(assets)
+    for key in ("soul_emerge", "soul_flight", "soul_variants", "soul_burst", "soul_transition"):
+        sequence = sequences[key]
+        for layer in ("base", "energy"):
+            runtime_key = sequence.get("runtimeKeys", {}).get(layer)
+            relative_asset = sequence.get(layer)
+            rel = f"assets/player/corrupt_gun/ult/{relative_asset}"
+            if not isinstance(runtime_key, str) or asset_paths.get(runtime_key) != rel:
+                raise RuntimeError(f"Corrupt Gun ultimate {key}.{layer} runtime key is missing or mismatched")
+    qa = manifest.get("qa", {})
+    if qa.get("status") != "pass" or qa.get("phase2ResidualGreenPixels") != 0 or qa.get("phase2ResidualCyanPixels") != 0:
+        raise RuntimeError("Corrupt Gun ultimate phase-two asset QA is not passing")
+    if qa.get("optPreserved") is not True:
+        raise RuntimeError("Corrupt Gun ultimate opt assets were not preserved")
+    return {"total": len(assets), **group_counts}
 
 
 def clean_dist() -> None:
@@ -648,7 +699,11 @@ def main() -> None:
         "losslessCorruptgunVfxVariants": len(corruptgun_lossless_sources),
         "losslessCorruptgunInfectionVariants": corruptgun_infection_assets,
         "corruptgunMaterialLayers": corruptgun_material_assets,
-        "corruptgunUltimateAssets": corruptgun_ultimate_assets,
+        "corruptgunUltimateAssets": corruptgun_ultimate_assets["total"],
+        "corruptgunUltimateAssetGroups": {
+            name: corruptgun_ultimate_assets[name]
+            for name in ("base", "opt", "phase2")
+        },
         "runtimeSupportFiles": list(CORRUPTGUN_VERSION_INPUTS),
         "copiedBytes": bytes_copied,
         "excluded": [

@@ -128,6 +128,31 @@ function readJsonAssignment(source, name) {
   return JSON.parse(line.slice(prefix.length, -1));
 }
 
+function extractConstObject(source, name) {
+  const marker = `const ${name} = {`;
+  const markerIndex = source.indexOf(marker);
+  if (markerIndex < 0) throw new Error(`缺少 ${name}`);
+  const start = source.indexOf('{', markerIndex);
+  let depth = 0;
+  let end = -1;
+  for (let index = start; index < source.length; index++) {
+    if (source[index] === '{') depth++;
+    else if (source[index] === '}') {
+      depth--;
+      if (depth === 0) {
+        end = index;
+        break;
+      }
+    }
+  }
+  if (end < 0) throw new Error(`无法解析 ${name}`);
+  const pairs = {};
+  const pattern = /\n\s*([A-Za-z0-9_]+):\s*['"]([^'"]+)['"]/g;
+  const body = source.slice(start + 1, end);
+  for (const match of body.matchAll(pattern)) pairs[match[1]] = match[2];
+  return pairs;
+}
+
 function countManifestTags(html) {
   return (html.match(/asset-mobile-manifest\.js/g) || []).length;
 }
@@ -188,8 +213,10 @@ if (!docsSw.includes(`moon-bullet-pages-${expectedVersion}`)) {
   errors.push(`docs/sw.js 缓存版本不是当前 index.html 的 ${expectedVersion}`);
 }
 
+let parsedPagesAssetManifest = null;
 try {
   const manifestJson = JSON.parse(read(FILES.docsAssetManifest));
+  parsedPagesAssetManifest = manifestJson;
   if (manifestJson.version !== expectedVersion) {
     errors.push(`docs/pages-asset-manifest.json version=${manifestJson.version}，应为 ${expectedVersion}`);
   }
@@ -206,8 +233,14 @@ try {
   if (manifestJson.corruptgunMaterialLayers !== 84) {
     errors.push(`docs/pages-asset-manifest.json 腐化枪材质分层应为 84，当前为 ${manifestJson.corruptgunMaterialLayers}`);
   }
-  if (manifestJson.corruptgunUltimateAssets !== 56) {
-    errors.push(`docs/pages-asset-manifest.json 暗蚀轮回素材应为 56，当前为 ${manifestJson.corruptgunUltimateAssets}`);
+  if (!Number.isInteger(manifestJson.corruptgunUltimateAssets) || manifestJson.corruptgunUltimateAssets <= 0) {
+    errors.push('docs/pages-asset-manifest.json 未记录暗蚀轮回素材总数');
+  }
+  const ultimateGroups = manifestJson.corruptgunUltimateAssetGroups;
+  if (!ultimateGroups || Object.keys(ultimateGroups).sort().join(',') !== 'base,opt,phase2') {
+    errors.push('docs/pages-asset-manifest.json 未记录 base/opt/phase2 大招素材组');
+  } else if (ultimateGroups.opt !== 30 || ultimateGroups.base <= 0 || ultimateGroups.phase2 <= 0) {
+    errors.push(`docs/pages-asset-manifest.json 大招素材组数量异常：${JSON.stringify(ultimateGroups)}`);
   }
 } catch (error) {
   errors.push(`docs/pages-asset-manifest.json 无法解析：${error.message}`);
@@ -377,13 +410,51 @@ try {
 let parsedUltimateManifest = null;
 try {
   parsedUltimateManifest = JSON.parse(read(FILES.sourceUltimateManifest));
-  if (parsedUltimateManifest.formatVersion !== 1 || parsedUltimateManifest.character !== 'corruptgun' || parsedUltimateManifest.ultimate !== 'darkWheel') {
+  if (parsedUltimateManifest.formatVersion !== 2 || parsedUltimateManifest.character !== 'corruptgun' || parsedUltimateManifest.ultimate !== 'darkWheel') {
     errors.push('cg_ultimate_manifest.json 身份或格式不正确');
   }
   const ultimateAssets = parsedUltimateManifest.assets || {};
-  if (Object.keys(ultimateAssets).length !== 56) {
-    errors.push(`cg_ultimate_manifest.json 应包含 56 个素材，当前为 ${Object.keys(ultimateAssets).length}`);
+  const ultimateGroups = parsedUltimateManifest.assetGroups || {};
+  if (Object.keys(ultimateGroups).sort().join(',') !== 'base,opt,phase2') {
+    errors.push('cg_ultimate_manifest.json 必须声明 base/opt/phase2 素材组');
   }
+  const groupedAssets = new Map();
+  for (const [groupName, group] of Object.entries(ultimateGroups)) {
+    if (!Array.isArray(group?.paths) || new Set(group.paths).size !== group.paths.length) {
+      errors.push(`cg_ultimate_manifest.json ${groupName} 素材组路径无效或重复`);
+      continue;
+    }
+    for (const relativeAsset of group.paths) {
+      if (groupedAssets.has(relativeAsset)) errors.push(`暗蚀轮回素材被重复分组：${relativeAsset}`);
+      groupedAssets.set(relativeAsset, groupName);
+    }
+  }
+  if (groupedAssets.size !== Object.keys(ultimateAssets).length || Object.keys(ultimateAssets).some(rel => !groupedAssets.has(rel))) {
+    errors.push('cg_ultimate_manifest.json 素材组没有完整且唯一地覆盖 assets');
+  }
+  if (ultimateGroups.opt?.paths?.length !== 30 || ultimateGroups.opt?.preservedUnmodified !== true) {
+    errors.push('cg_ultimate_manifest.json 必须原样保留30件 opt 素材');
+  }
+  const expectedSoulSequences = { soul_emerge: 6, soul_flight: 6, soul_variants: 7, soul_burst: 8, soul_transition: 11 };
+  for (const [sequenceName, frameCount] of Object.entries(expectedSoulSequences)) {
+    const sequence = parsedUltimateManifest.sequences?.[sequenceName];
+    if (!sequence || sequence.frames !== frameCount) {
+      errors.push(`cg_ultimate_manifest.json ${sequenceName} 帧数应为 ${frameCount}`);
+      continue;
+    }
+    for (const layerName of ['base', 'energy']) {
+      const runtimeKey = sequence.runtimeKeys?.[layerName];
+      const expectedSource = `assets/player/corrupt_gun/ult/${sequence[layerName]}`;
+      const sourceAssetMap = { ...extractConstObject(source, 'ASSET_PATHS'), ...extractConstObject(source, 'CG_ASSET_PATHS') };
+      if (typeof runtimeKey !== 'string' || sourceAssetMap[runtimeKey] !== expectedSource) {
+        errors.push(`${sequenceName}.${layerName} 运行时键缺失或路径不一致`);
+      }
+    }
+  }
+  if (parsedUltimateManifest.qa?.status !== 'pass' || parsedUltimateManifest.qa?.phase2ResidualGreenPixels !== 0 || parsedUltimateManifest.qa?.phase2ResidualCyanPixels !== 0) {
+    errors.push('cg_ultimate_manifest.json 二段素材绿青残留 QA 未通过');
+  }
+  if (parsedUltimateManifest.qa?.optPreserved !== true) errors.push('cg_ultimate_manifest.json 未确认 opt 素材哈希保持不变');
   for (const [relativeAsset, item] of Object.entries(ultimateAssets)) {
     const rel = `assets/player/corrupt_gun/ult/${relativeAsset}`;
     const sourceFile = path.join(ROOT, rel);
@@ -394,7 +465,9 @@ try {
     }
     const sourceBytes = fs.readFileSync(sourceFile);
     if (!sourceBytes.equals(fs.readFileSync(docsFile))) errors.push(`docs 暗蚀轮回素材与源文件不一致：${rel}`);
-    if (relativeAsset !== 'reference/cg_ult_concept.png' && (item.residualGreenPixels !== 0 || item.residualCyanPixels !== 0)) errors.push(`暗蚀轮回素材仍有绿青残留：${rel}`);
+    const groupName = groupedAssets.get(relativeAsset);
+    if (groupName !== 'opt' && relativeAsset !== 'reference/cg_ult_concept.png' && (item.residualGreenPixels !== 0 || item.residualCyanPixels !== 0)) errors.push(`暗蚀轮回素材仍有绿青残留：${rel}`);
+    if (groupName === 'opt' && item.preservedUnmodified !== true) errors.push(`opt素材未标记原样保留：${rel}`);
     if (sha256(sourceBytes) !== item.sha256) errors.push(`暗蚀轮回素材哈希不一致：${rel}`);
     if (relativeAsset === 'reference/cg_ult_concept.png') continue;
     const runtimeEntry = Object.entries(readJsonAssignment(docsManifest, '__MOBILE_ASSET_PATHS__'))
@@ -404,6 +477,15 @@ try {
     const mobileFile = path.join(ROOT, 'docs', mobileRel);
     if (!exists(mobileFile)) errors.push(`缺少暗蚀轮回移动素材：${mobileRel}`);
     else if (fs.readFileSync(mobileFile).subarray(12, 16).toString('ascii') !== 'VP8L') errors.push(`暗蚀轮回移动素材不是 lossless VP8L：${mobileRel}`);
+  }
+  const groupCounts = Object.fromEntries(Object.entries(ultimateGroups).map(([name, group]) => [name, group?.paths?.length || 0]));
+  if (parsedPagesAssetManifest) {
+    if (parsedPagesAssetManifest.corruptgunUltimateAssets !== Object.keys(ultimateAssets).length) {
+      errors.push('docs/pages-asset-manifest.json 大招素材总数与审计Manifest不一致');
+    }
+    if (JSON.stringify(parsedPagesAssetManifest.corruptgunUltimateAssetGroups) !== JSON.stringify(groupCounts)) {
+      errors.push('docs/pages-asset-manifest.json 大招素材组数量与审计Manifest不一致');
+    }
   }
 } catch (error) {
   errors.push(`cg_ultimate_manifest.json 无法验证：${error.message}`);
