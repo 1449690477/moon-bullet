@@ -7,7 +7,8 @@
 //   supabase secrets set LB_SALT="随便一段长随机字符串"
 //   # SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY 由平台自动注入，无需手动设。
 //
-// 四个端点：
+// 五个端点：
+//   POST /functions/v1/leaderboard-run/health  生产能力与梦境表就绪状态（只读）
 //   POST /functions/v1/leaderboard-run/start   开局领令牌 → { run_id, run_token, expires_at }
 //   POST /functions/v1/leaderboard-run/submit  交分校验   → { ok, status, reasons? }
 //   POST /functions/v1/leaderboard-run/dream-start   梦境开局令牌（绑定关卡/谱面/编队）
@@ -22,12 +23,14 @@ const SALT         = Deno.env.get("LB_SALT") ?? "CHANGE_ME";
 
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
+const EDGE_VERSION = "leaderboard-run-2026-07-13-dream-v2";
 const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife", "skyward", "corruptgun"]);
 const TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 令牌有效期 2 小时
-const DREAM_TOKEN_TTL_MS = 45 * 60 * 1000;
+const DREAM_ACTIVE_CLEAR_VERSION = "dream-01-v2";
+const DREAM_TOKEN_TTL_MS = 90 * 60 * 1000;
 const DREAM_WINGS = new Set(["moonfeather", "reaverwing", "saintcrown", "nightcoffin", "skyglory", "motherhive"]);
 const DREAM_STAGES = new Map([
-  ["dream-01-seraph", { clearVersion: "dream-01-v1", seed: 7130101 }],
+  ["dream-01-seraph", { clearVersion: DREAM_ACTIVE_CLEAR_VERSION, seed: 7130101 }],
 ]);
 
 const cors = {
@@ -77,9 +80,41 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
 
-  const action = new URL(req.url).pathname.split("/").pop(); // start | submit
+  const action = new URL(req.url).pathname.split("/").pop(); // health | start | submit | dream-start | dream-submit
 
   try {
+    // ---------------- /health ----------------
+    // 生产验收专用，只读检查函数版本、7号白名单与梦境 V2 迁移。
+    if (action === "health") {
+      const [tableResult, schemaResult] = await Promise.all([
+        admin.from("dream_leaderboard").select("id", { head: true, count: "exact" }),
+        admin.rpc("dream_leaderboard_schema_version"),
+      ]);
+      const dreamTableError = tableResult.error;
+      const dreamTableReady = !dreamTableError;
+      const dreamSchemaVersion = typeof schemaResult.data === "string" ? schemaResult.data : null;
+      const dreamSchemaReady = !schemaResult.error && dreamSchemaVersion === DREAM_ACTIVE_CLEAR_VERSION;
+      const dreamLeaderboardReady = dreamTableReady && dreamSchemaReady;
+      return json({
+        ok: dreamLeaderboardReady,
+        edge_version: EDGE_VERSION,
+        capabilities: {
+          normal_leaderboard: true,
+          corruptgun: CHARACTERS.has("corruptgun"),
+          dream_leaderboard: dreamLeaderboardReady,
+          dream_stage: "dream-01-seraph",
+          dream_clear_version: DREAM_ACTIVE_CLEAR_VERSION,
+          dream_token_ttl_ms: DREAM_TOKEN_TTL_MS,
+        },
+        database: {
+          dream_leaderboard: dreamTableReady,
+          dream_schema_version: dreamSchemaVersion,
+          table_error_code: dreamTableError?.code ?? null,
+          schema_error_code: schemaResult.error?.code ?? null,
+        },
+      }, dreamLeaderboardReady ? 200 : 503);
+    }
+
     // ---------------- /dream-start ----------------
     if (action === "dream-start") {
       const body = await req.json();
@@ -120,7 +155,7 @@ Deno.serve(async (req) => {
         .single();
 
       if (error) return json({ ok: false, error: error.message }, 500);
-      return json({ ok: true, run_token: token, ...data });
+      return json({ ok: true, edge_version: EDGE_VERSION, run_token: token, ...data });
     }
 
     // ---------------- /dream-submit ----------------
@@ -245,7 +280,7 @@ Deno.serve(async (req) => {
         .single();
 
       if (error) return json({ ok: false, error: error.message }, 500);
-      return json({ ok: true, run_id: data.run_id, run_token: token, expires_at: data.expires_at });
+      return json({ ok: true, edge_version: EDGE_VERSION, run_id: data.run_id, run_token: token, expires_at: data.expires_at });
     }
 
     // ---------------- /submit ----------------
@@ -325,7 +360,7 @@ Deno.serve(async (req) => {
       return json({ ok: true, status: "accepted" });
     }
 
-    return json({ ok: false, error: "unknown action, use /start, /submit, /dream-start or /dream-submit" }, 404);
+    return json({ ok: false, error: "unknown action, use /health, /start, /submit, /dream-start or /dream-submit" }, 404);
   } catch (e) {
     return json({ ok: false, error: String((e as Error)?.message ?? e) }, 500);
   }

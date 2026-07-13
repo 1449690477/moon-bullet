@@ -7,8 +7,15 @@ const { spawnSync } = require('child_process');
 const puppeteer = require('puppeteer-core');
 
 const ROOT = path.resolve(__dirname, '..');
-const SOURCE_DIR = process.env.DREAM_CAPTURE_SOURCE === 'docs' ? path.join(ROOT, 'docs') : ROOT;
-const OUT_DIR = path.join(ROOT, 'tools', 'dream_mode_acceptance');
+const SOURCE_KIND = String(process.env.DREAM_CAPTURE_SOURCE || 'root').toLowerCase();
+const SOURCE_DIR = SOURCE_KIND === 'docs'
+  ? path.join(ROOT, 'docs')
+  : SOURCE_KIND === 'main'
+    ? path.join(ROOT, 'moon-bullet-main')
+    : ROOT;
+const OUT_DIR = process.env.DREAM_CAPTURE_OUT
+  ? path.resolve(ROOT, process.env.DREAM_CAPTURE_OUT)
+  : path.join(ROOT, 'tools', 'dream_mode_acceptance');
 const PORT = Number(process.env.DREAM_CAPTURE_PORT || 18786);
 const PERF_SECONDS = Math.max(1, Number(process.env.DREAM_PERF_SECONDS || 60));
 const PERF_CPU_RATE = Math.max(1, Number(process.env.DREAM_PERF_CPU_RATE || 1));
@@ -69,12 +76,22 @@ function startServer() {
         return;
       }
       fs.stat(filePath, (error, stat) => {
-        if (error || !stat.isFile()) {
-          res.writeHead(404);
-          res.end('Not Found');
+        if (!error && stat?.isFile()) {
+          serveFile(filePath, res);
           return;
         }
-        serveFile(filePath, res);
+        // The source-root preview intentionally reuses the lossless mobile variants
+        // produced by build:pages. They live under docs/ until the main mirror syncs.
+        const builtMobilePath = relative.startsWith('assets_mobile/')
+          ? path.resolve(ROOT, 'docs', relative)
+          : null;
+        if (builtMobilePath && builtMobilePath.startsWith(`${path.join(ROOT, 'docs')}${path.sep}`)
+            && fs.existsSync(builtMobilePath) && fs.statSync(builtMobilePath).isFile()) {
+          serveFile(builtMobilePath, res);
+          return;
+        }
+        res.writeHead(404);
+        res.end('Not Found');
       });
     });
     server.once('error', reject);
@@ -109,13 +126,23 @@ async function createPage(browser, viewport, diagnostics) {
   }
   page.on('pageerror', (error) => diagnostics.errors.push(`${viewport.id}: ${error.stack || error.message}`));
   page.on('console', (message) => {
-    if (message.type() === 'error') diagnostics.errors.push(`${viewport.id}: ${message.text()}`);
+    if (message.type() !== 'error') return;
+    const text = message.text();
+    // response() below records the concrete 404 URL; Chromium's generic duplicate
+    // provides no actionable information and can repeat dozens of times.
+    if (/404 \(Not Found\)|bad HTTP response code \(404\)/i.test(text)) return;
+    diagnostics.errors.push(`${viewport.id}: ${text}`);
   });
   page.on('response', (response) => {
     if (response.status() === 404 && response.url().startsWith(`http://127.0.0.1:${PORT}/`) && !response.url().endsWith('/favicon.ico')) diagnostics.missing.push(response.url());
   });
   page.on('requestfailed', (request) => {
-    if (request.url().startsWith(`http://127.0.0.1:${PORT}/`)) diagnostics.requestFailures.push(`${request.url()} :: ${request.failure()?.errorText || 'failed'}`);
+    if (!request.url().startsWith(`http://127.0.0.1:${PORT}/`)) return;
+    const reason = request.failure()?.errorText || 'failed';
+    // Responsive image replacement deliberately aborts the original PNG request
+    // after selecting a lossless WebP. Real missing files still surface as 404s.
+    if (reason === 'net::ERR_ABORTED') return;
+    diagnostics.requestFailures.push(`${request.url()} :: ${reason}`);
   });
   await page.goto(`http://127.0.0.1:${PORT}/?dream-acceptance=1`, { waitUntil: 'networkidle0', timeout: 60000 });
   await page.waitForFunction(() => window.__dreamModeCapture__ && window.__dreamModeInternals__, { timeout: 30000 });
@@ -231,23 +258,98 @@ async function captureTimeline(page, viewport, scene, options, framePoints, repo
   }
 }
 
+async function captureHitFeedback(page, viewport, report) {
+  const prefix = 'hit_feedback';
+  const record = async (frame, snapshot, phase) => {
+    const label = `${viewport.id}/${prefix}/${phase}`;
+    const validation = validateSnapshot(snapshot, label);
+    report.failures.push(...validation.failures);
+    const file = `${viewport.id}_${prefix}_f${String(frame).padStart(3, '0')}_${phase}.png`;
+    await screenshotCanvas(page, file);
+    const visual = await canvasMetrics(page);
+    if (visual.visibleRatio < 0.02) report.failures.push(`${label}: canvas is visually blank (${visual.visibleRatio})`);
+    report.frames.push({ label, file, scene: 'hit-feedback', options: {}, frame, snapshot, counts: validation.counts, visual });
+    report.hitFeedback.push({ viewport: viewport.id, phase, frame, snapshot });
+  };
+  const fail = (message) => report.failures.push(`${viewport.id}/hit feedback: ${message}`);
+
+  const baseline = await prepare(page, 'hit-feedback', { wave: 1, elapsed: 0.1, quality: viewport.mobile ? 'ultra' : 'high' });
+  if (baseline.playerInv !== 0 || baseline.hits !== 0) fail(`baseline is not hittable (${JSON.stringify({ playerInv: baseline.playerInv, hits: baseline.hits })})`);
+  const first = await page.evaluate(() => window.__dreamModeCapture__.triggerHit());
+  if (!first.applied || first.hits !== 1 || first.stars !== 2) fail(`first hit did not apply exactly once (${JSON.stringify({ applied: first.applied, hits: first.hits, stars: first.stars })})`);
+  if (first.playerInv < 0.99 || first.playerInv > 1.001) fail(`first hit invulnerability ${first.playerInv} is not 1.0s`);
+  if (first.screenShake < 11.9) fail(`screen shake ${first.screenShake} is below 12px`);
+  if (first.vignetteRemaining < 0.71) fail(`red vignette ${first.vignetteRemaining}s is below 0.72s`);
+  if (first.hitStopRemaining < 0.05) fail(`hit-stop ${first.hitStopRemaining}s is below 0.055s`);
+  if (first.feedbackSerial !== baseline.feedbackSerial + 1) fail('feedback serial did not advance on the first hit');
+  await record(0, first, 'impact');
+
+  const immediateRetry = await page.evaluate(() => window.__dreamModeCapture__.triggerHit());
+  if (immediateRetry.applied || immediateRetry.hits !== 1) fail('an immediate retry bypassed invulnerability');
+  const at200 = await step(page, 12);
+  await record(12, at200, 'red-edge');
+  const retry200 = await page.evaluate(() => window.__dreamModeCapture__.triggerHit());
+  if (retry200.applied || retry200.hits !== 1) fail('a 0.20s retry bypassed invulnerability');
+
+  const at500 = await step(page, 18);
+  await record(30, at500, 'blink');
+  const retry500 = await page.evaluate(() => window.__dreamModeCapture__.triggerHit());
+  if (retry500.applied || retry500.hits !== 1) fail('a 0.50s retry bypassed invulnerability');
+
+  const ready = await step(page, 31);
+  if (ready.playerInv > 0.001) fail(`invulnerability still active after 1.01s (${ready.playerInv})`);
+  await record(61, ready, 'ready');
+  const second = await page.evaluate(() => window.__dreamModeCapture__.triggerHit());
+  if (!second.applied || second.hits !== 2 || second.stars !== 1) fail(`second hit was not accepted after 1.01s (${JSON.stringify({ applied: second.applied, hits: second.hits, stars: second.stars })})`);
+  if (second.feedbackSerial !== first.feedbackSerial + 1) fail('feedback serial did not advance on the second hit');
+  await record(62, second, 'second-impact');
+}
+
 async function captureQualityParity(page, report) {
   const samples = [];
-  for (const quality of ['high', 'medium', 'low', 'ultra']) {
-    const snapshot = await prepare(page, 'wave', { wave: 9, elapsed: 12.5, quality });
-    const settled = await step(page, 1);
-    samples.push({
-      quality,
-      logicalCount: count(settled || snapshot, ['logicalBulletCount', 'enemyBulletCount', 'enemyBullets', 'bullets']),
-      logicHash: (settled || snapshot).logicHash || (settled || snapshot).bulletLogicHash,
-    });
-  }
-  const expected = samples[0];
-  for (const sample of samples.slice(1)) {
-    if (sample.logicalCount !== expected.logicalCount) report.failures.push(`quality ${sample.quality}: logical count ${sample.logicalCount} != ${expected.logicalCount}`);
-    if (!sample.logicHash || sample.logicHash !== expected.logicHash) report.failures.push(`quality ${sample.quality}: logic hash ${sample.logicHash} != ${expected.logicHash}`);
+  const allCombos = new Set();
+  const waveCombos = new Map();
+  const qualities = ['high', 'medium', 'low', 'ultra'];
+  for (let wave = 1; wave <= 10; wave += 1) {
+    for (const elapsed of [2.4, 8.5, 13.7]) {
+      const group = [];
+      for (const quality of qualities) {
+        const snapshot = await prepare(page, 'wave', { wave, elapsed, quality });
+        const settled = await step(page, 1);
+        const current = settled || snapshot;
+        group.push({
+          wave,
+          elapsed,
+          quality,
+          logicalCount: count(current, ['logicalBulletCount', 'enemyBulletCount', 'enemyBullets', 'bullets']),
+          logicHash: current.logicHash || current.bulletLogicHash,
+          bulletStyles: [...(current.bulletStyles || [])].sort(),
+        });
+      }
+      const expected = group[0];
+      for (const sample of group.slice(1)) {
+        const label = `wave ${wave} @ ${elapsed}s quality ${sample.quality}`;
+        if (sample.logicalCount !== expected.logicalCount) report.failures.push(`${label}: logical count ${sample.logicalCount} != ${expected.logicalCount}`);
+        if (!sample.logicHash || sample.logicHash !== expected.logicHash) report.failures.push(`${label}: logic hash ${sample.logicHash} != ${expected.logicHash}`);
+        if (JSON.stringify(sample.bulletStyles) !== JSON.stringify(expected.bulletStyles)) report.failures.push(`${label}: style/shape set differs from high quality`);
+      }
+      if (!waveCombos.has(wave)) waveCombos.set(wave, new Set());
+      for (const combo of expected.bulletStyles) {
+        allCombos.add(combo);
+        waveCombos.get(wave).add(combo);
+      }
+      samples.push(...group);
+    }
   }
   report.qualityParity = samples;
+  report.patternDiversity = {
+    uniqueStyleShapeCombos: [...allCombos].sort(),
+    perWave: Object.fromEntries([...waveCombos].map(([wave, combos]) => [wave, [...combos].sort()])),
+  };
+  if (allCombos.size < 12) report.failures.push(`pattern diversity: only ${allCombos.size} style/shape combinations < 12`);
+  for (const [wave, combos] of waveCombos) {
+    if (combos.size < 2) report.failures.push(`wave ${wave}: only ${combos.size} style/shape combinations < 2`);
+  }
 }
 
 function percentile(values, ratio) {
@@ -343,6 +445,7 @@ async function main() {
     runtime: { node: process.version, chrome: '', executablePath },
     frames: [],
     qualityParity: [],
+    hitFeedback: [],
     performance: null,
     gifs: [],
     failures: [],
@@ -372,6 +475,7 @@ async function main() {
         await captureTimeline(page, viewport, 'boss', { phase: 4, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 45, 120], report, 'boss05');
         await captureTimeline(page, viewport, 'result', { stars: 3, elapsedMs: 390000 }, [0, 30, 90], report, 'result_3star');
         await captureTimeline(page, viewport, 'result', { stars: 0, elapsedMs: 450000 }, [0, 30, 90], report, 'result_0star');
+        await captureHitFeedback(page, viewport, report);
         if (!viewport.mobile) {
           await captureTimeline(page, viewport, 'leaderboard', { level: 1 }, [0, 30, 90], report, 'leaderboard');
           for (let wave = 2; wave <= 9; wave += 1) {
@@ -417,8 +521,10 @@ async function main() {
     .map((entry) => entry.file);
   const waveFrames = numberedFrames('wave');
   const bossFrames = numberedFrames('boss');
+  const hitFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/hit_feedback/')).map((entry) => entry.file);
   report.gifs.push(buildGif('dream_wave_patterns', waveFrames));
   report.gifs.push(buildGif('dream_seraph_phases', bossFrames));
+  report.gifs.push(buildGif('dream_hit_feedback', hitFrames));
 
   fs.writeFileSync(path.join(OUT_DIR, 'report.json'), JSON.stringify(report, null, 2));
   writeHtml(report);

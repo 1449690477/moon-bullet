@@ -48,7 +48,7 @@ BEGIN
 
   -- 角色白名单
   IF NEW.character IS NULL
-     OR NEW.character NOT IN ('witch','yanuxiya','anna','reaver','motherlife','skyward') THEN
+     OR NEW.character NOT IN ('witch','yanuxiya','anna','reaver','motherlife','skyward','corruptgun') THEN
     RAISE EXCEPTION 'leaderboard guard: invalid character %', NEW.character;
   END IF;
 
