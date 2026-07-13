@@ -2,6 +2,7 @@
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const puppeteer = require('puppeteer-core');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -114,6 +115,45 @@ async function screenshotCanvas(page, name) {
   await canvas.screenshot({ path: path.join(OUT_DIR, `${name}.png`) });
 }
 
+async function screenshotCanvasOnly(page, file) {
+  const canvas = await page.$('canvas');
+  if (!canvas) throw new Error('Canvas element missing');
+  await canvas.screenshot({ path: file });
+}
+
+function buildGif(frameDir, output) {
+  const result = spawnSync('ffmpeg', [
+    '-y', '-framerate', '15', '-i', path.join(frameDir, 'frame_%03d.png'),
+    '-vf', 'split[s0][s1];[s0]palettegen=max_colors=160[p];[s1][p]paletteuse=dither=sierra2_4a',
+    '-loop', '0', output,
+  ], { encoding: 'utf8' });
+  if (result.status !== 0) throw new Error(result.stderr || result.stdout || 'ffmpeg failed');
+}
+
+async function captureCuteInteraction(page, prefix, controlId = 'title:start') {
+  const frameDir = path.join(OUT_DIR, `${prefix}_cute_motion_frames`);
+  fs.rmSync(frameDir, { recursive: true, force: true });
+  fs.mkdirSync(frameDir, { recursive: true });
+  const samples = [];
+  await page.evaluate((id) => window.__leaderboardCapture__.pressCuteControl(id), controlId);
+  for (let frame = 0; frame < 24; frame++) {
+    if (frame === 5) await page.evaluate((id) => window.__leaderboardCapture__.releaseCuteControl(id), controlId);
+    if (frame > 0) await page.evaluate(() => window.__leaderboardCapture__.step(1, 1 / 60));
+    const sample = await page.evaluate((id) => {
+      const snapshot = window.__leaderboardCapture__.cuteMotionSnapshot();
+      return { ...snapshot.controls[id], particles: snapshot.activeParticles, pressedId: snapshot.pressedId };
+    }, controlId);
+    samples.push(sample);
+    await screenshotCanvasOnly(page, path.join(frameDir, `frame_${String(frame).padStart(3, '0')}.png`));
+  }
+  buildGif(frameDir, path.join(OUT_DIR, `${prefix}_cute_motion.gif`));
+  const scales = samples.map(item => item.scale);
+  if (Math.min(...scales.slice(0, 7)) > 0.985) throw new Error(`${prefix} cute press was not visible`);
+  if (Math.max(...scales.slice(6)) < 1.003) throw new Error(`${prefix} cute release bounce was not visible`);
+  if (!samples.some(item => item.particles > 0)) throw new Error(`${prefix} cute particle burst was not visible`);
+  fs.writeFileSync(path.join(OUT_DIR, `${prefix}_cute_motion.json`), JSON.stringify({ controlId, samples }, null, 2));
+}
+
 async function clickCanvasLogical(page, x, y) {
   const canvas = await page.$('canvas');
   if (!canvas) throw new Error('Canvas element missing');
@@ -144,6 +184,7 @@ async function captureScenario(browser, config) {
     await screenshotCanvas(page, `${config.prefix}_title_start`);
     await page.evaluate(() => window.__leaderboardCapture__.step(60, 1 / 60));
     await screenshotCanvas(page, `${config.prefix}_title_motion`);
+    if (config.interaction) await captureCuteInteraction(page, config.prefix, 'title:start');
 
     if (config.extra === 'panel') {
       await verifyDesktopStartHitArea(page);
@@ -185,9 +226,11 @@ async function main() {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--autoplay-policy=no-user-gesture-required'],
     });
-    await captureScenario(browser, { prefix: '01_desktop_1280x720', width: 1280, height: 720, mobile: false, extra: 'panel' });
-    await captureScenario(browser, { prefix: '02_mobile_390x844', width: 390, height: 844, mobile: true, extra: 'profile' });
+    await captureScenario(browser, { prefix: '01_desktop_1280x720', width: 1280, height: 720, mobile: false, extra: 'panel', interaction: true });
+    await captureScenario(browser, { prefix: '02_mobile_390x844', width: 390, height: 844, mobile: true, extra: 'profile', interaction: true });
     await captureScenario(browser, { prefix: '03_mobile_battle_390x844', width: 390, height: 844, mobile: true, extra: 'battle' });
+    await captureScenario(browser, { prefix: '04_mobile_430x932', width: 430, height: 932, mobile: true, extra: '', interaction: true });
+    await captureScenario(browser, { prefix: '05_mobile_battle_430x932', width: 430, height: 932, mobile: true, extra: 'battle' });
   } finally {
     if (browser) await browser.close().catch(() => {});
     if (server) await new Promise((resolve) => server.close(resolve));

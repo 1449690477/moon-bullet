@@ -110,6 +110,8 @@
         radial-gradient(circle at 86% 12%, rgba(150, 220, 255, .34), transparent 38%),
         linear-gradient(180deg, rgba(248,252,255,.96), rgba(232,244,255,.96));
       box-shadow: 0 18px 50px rgba(120, 170, 220, .28), inset 0 0 24px rgba(255,255,255,.45);
+      transform-origin: 50% 46%;
+      animation: cute-dialog-pop .28s cubic-bezier(.2,.86,.28,1.18) both;
     }
     .leaderboard-dialog h2 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; color: #3a6aa8; }
     .leaderboard-dialog p { margin: 0 0 14px; color: rgba(70, 100, 140, .82); font-size: 16px; line-height: 1.55; }
@@ -142,6 +144,22 @@
       background: linear-gradient(180deg, #9fe0ff 0%, #7ec8ff 48%, #ff9ec8 100%);
       font: 800 14px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
       box-shadow: 0 8px 20px rgba(140, 190, 255, .32); cursor: pointer;
+      transform: translateY(0) scale(1);
+      transition: transform .18s cubic-bezier(.2,.85,.28,1.28), box-shadow .18s ease, filter .18s ease;
+    }
+    .leaderboard-dialog button:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 24px rgba(140, 190, 255, .36), 0 0 14px rgba(255, 170, 220, .18);
+      filter: saturate(1.06) brightness(1.02);
+    }
+    .leaderboard-dialog button:active {
+      transform: translateY(1px) scale(.95);
+      transition-duration: .07s;
+    }
+    .leaderboard-dialog input[type="text"]:focus,
+    .leaderboard-dialog textarea:focus {
+      border-color: rgba(255, 150, 205, .84);
+      box-shadow: 0 0 0 3px rgba(150, 220, 255, .18), 0 8px 22px rgba(255, 175, 220, .12);
     }
     .leaderboard-dialog button.secondary {
       color: #3a6aa8;
@@ -200,7 +218,7 @@
       #wrap { padding:0; }
       canvas { border:none; border-radius:0; }
       #tip, #badge, #musicStatus { display:none; }
-      .leaderboard-dialog-backdrop { align-items: flex-start; padding: 12px; }
+      .leaderboard-dialog-backdrop { align-items: flex-start; padding: 12px; backdrop-filter: blur(4px); }
       .leaderboard-dialog { width: min(94vw, 420px); max-height: calc(100dvh - 24px); padding: 16px; border-radius: 24px; }
       .update-notice-dialog { max-height: calc(100dvh - 24px); padding-bottom: max(16px, env(safe-area-inset-bottom)); }
       .leaderboard-dialog h2 { font-size: 26px; }
@@ -215,6 +233,15 @@
     }
     @media (max-aspect-ratio: 16/10) {
       #tip, #badge, #musicStatus { display:none; }
+    }
+    @keyframes cute-dialog-pop {
+      0% { opacity: 0; transform: translateY(12px) scale(.94); }
+      68% { opacity: 1; transform: translateY(-2px) scale(1.018); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .leaderboard-dialog { animation: none; }
+      .leaderboard-dialog button { transition: none; }
     }
   </style>
 </head>
@@ -2331,9 +2358,18 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-12-void-maw-v41';
+     const UPDATE_NOTICE_VERSION = '2026-07-13-void-blade-cute-ui-v42';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-13',
+      items: [
+        '7号战机「暗蚀轮回」黑刃吸蚀涡 V3.41：黑色熔流刀身与金属收割刀头合并为同一组等距旋转刃，暗面加厚并加入冷侧倒角、猩红窄刃与移动高光；持续转速保持可读，短促加速负责爆发张力。',
+        '吸收与切割反馈重排：删除重复黑洞与常驻白色线圈，改为弯曲黑色吸入帘、向心灰烬、刀背余烬、刀尖碎片和脉冲式白热闪；黑色压迫感更强，敌弹和刀形仍保持清楚。',
+        '全局 UI 清新可爱动效升级：角色卡、僚机、画质、开始按钮、排行榜和技能按钮加入悬停、按压、释放回弹；标题与战斗 HUD 共用限量蓝白粉气泡星屑，弹窗按钮增加轻量弹入与互动反馈。',
+        '移动端性能同步收紧：低画质减少吸入光条、空间切痕、刀刃碎屑和 UI 粒子，并降低弹窗背景模糊；逻辑、伤害和命中范围不变。',
+      ],
+    },
     {
       date: '2026-07-12',
       items: [
@@ -3709,6 +3745,7 @@
   }
   function selectQualityPreset(preset) {
     const next = applyQualityPreset(preset, true);
+    cuteUiBurst(`title:quality:${next}`);
     setMessage(`画质：${QUALITY_PRESETS[next].label} · ${QUALITY_PRESETS[next].desc}`, 1.6);
   }
 
@@ -7662,7 +7699,7 @@
       slowRadius: 620, slowMultiplier: 0.30, slowLinger: 0.60,
       discSize: 540, innerDiscSize: 358,
       coreRadius: 118, coreBreath: 3.2, corePeriod: 0.78,
-      outerSpeed: 2.70, innerSpeed: -3.90, bladeSpeed: 6.40,
+      outerSpeed: 2.45, innerSpeed: -3.55, bladeSpeed: 4.80,
       bladeRadius: 318,
       bladeBodyWidth: 220, bladeBodyHeight: 102,
       // Short wake + sparse ghosts keep adjacent blades visually separated.
@@ -7700,21 +7737,21 @@
     quality: Object.freeze({
       blades: Object.freeze([6, 5, 4, 4]),
       darts: Object.freeze([7, 6, 4, 3]),
-      slashes: Object.freeze([3, 2, 1, 1]),
-      runes: Object.freeze([6, 4, 0, 0]),
-      spirals: Object.freeze([5, 4, 3, 2]),
-      warpStrips: Object.freeze([14, 10, 6, 4]),
+      slashes: Object.freeze([1, 1, 0, 0]),
+      runes: Object.freeze([3, 2, 0, 0]),
+      spirals: Object.freeze([3, 2, 2, 1]),
+      warpStrips: Object.freeze([8, 6, 4, 3]),
       bladeTrailSegments: Object.freeze([7, 5, 3, 2]),
       // At most one ghost — many afterimages were visually merging blades into one arc.
       bladeAfterimages: Object.freeze([1, 1, 0, 0]),
       bladeSpinePackets: Object.freeze([3, 2, 1, 1]),
       bladeRootArcs: Object.freeze([2, 1, 1, 1]),
-      bladeDust: Object.freeze([6, 4, 2, 1]),
+      bladeDust: Object.freeze([3, 2, 1, 1]),
       bladeHubParticles: Object.freeze([3, 2, 1, 1]),
-      bladeTipParticles: Object.freeze([4, 3, 2, 1]),
-      bladeEdgeGlints: Object.freeze([3, 2, 1, 1]),
-      spaceCuts: Object.freeze([8, 5, 3, 2]),
-      spaceCutInterval: Object.freeze([0.055, 0.085, 0.13, 0.20]),
+      bladeTipParticles: Object.freeze([2, 2, 1, 1]),
+      bladeEdgeGlints: Object.freeze([2, 2, 1, 1]),
+      spaceCuts: Object.freeze([4, 3, 2, 1]),
+      spaceCutInterval: Object.freeze([0.12, 0.16, 0.22, 0.30]),
     }),
     atlas: Object.freeze({
       orbStage: Object.freeze({ base: 'cgUltOrbStageBase', energy: 'cgUltOrbStageEnergy', frames: 6, cols: 3, rows: 2, frameMs: 83 }),
@@ -7731,39 +7768,41 @@
   const CG_ULT_RIBBON_CONFIG = Object.freeze({
     // The reference reads as a few broad, glossy streams rather than a closed
     // fan. Bodies stay behind enemies; only their hot cutting edges cross front.
-    counts: Object.freeze([6, 5, 4, 3]),
+    counts: Object.freeze([6, 5, 4, 4]),
     segments: Object.freeze([32, 24, 14, 10]),
-    tangentStrands: Object.freeze([3, 2, 2, 1]),
-    surgeStrands: Object.freeze([4, 3, 2, 1]),
-    surgeEdgeEchoes: Object.freeze([4, 3, 2, 1]),
+    tangentStrands: Object.freeze([1, 1, 1, 0]),
+    surgeStrands: Object.freeze([3, 2, 1, 1]),
+    surgeEdgeEchoes: Object.freeze([2, 2, 1, 1]),
     // Sparse orbit wakes — too many lag copies filled the gaps between blades.
-    orbitWakeEchoes: Object.freeze([3, 2, 1, 1]),
+    orbitWakeEchoes: Object.freeze([1, 1, 0, 0]),
     orbitWakeLag: 0.038,
-    edgeSparks: Object.freeze([12, 8, 5, 3]),
-    sparkCaps: Object.freeze([36, 24, 14, 8]),
-    sparkInterval: Object.freeze([0.022, 0.034, 0.052, 0.080]),
-    tipFlashCaps: Object.freeze([12, 8, 5, 3]),
-    tipFlashInterval: Object.freeze([0.045, 0.065, 0.100, 0.145]),
-    innerRadius: 58,
+    edgeSparks: Object.freeze([4, 3, 2, 1]),
+    sparkCaps: Object.freeze([18, 12, 8, 4]),
+    sparkInterval: Object.freeze([0.060, 0.090, 0.130, 0.200]),
+    tipFlashCaps: Object.freeze([6, 4, 2, 1]),
+    tipFlashInterval: Object.freeze([0.120, 0.180, 0.240, 0.320]),
+    voidCurtains: Object.freeze([5, 4, 3, 3]),
+    voidAsh: Object.freeze([12, 8, 5, 3]),
+    innerRadius: 66,
     outerRadius: 318,
-    outerJitter: 36,
-    width: 48,
-    widthJitter: 8,
-    arcMin: Math.PI * 0.58,
-    arcJitter: Math.PI * 0.22,
-    baseAngularSpeed: 5.90,
-    speedSpread: 0.04,
-    surgePeriod: 0.68,
+    outerJitter: 0,
+    width: 62,
+    widthJitter: 10,
+    arcMin: Math.PI * 0.64,
+    arcJitter: Math.PI * 0.12,
+    baseAngularSpeed: 4.80,
+    speedSpread: 0,
+    surgePeriod: 0.80,
     surgeDuration: 0.20,
-    surgeBoost: 0.95,
+    surgeBoost: 0.42,
     bodyAlpha: 1,
     farBodyAlpha: 0.98,
-    sheenAlpha: 0.78,
-    hotEdgeAlpha: 1.0,
-    frontEdgeAlpha: 0.70,
+    sheenAlpha: 0.46,
+    hotEdgeAlpha: 0.72,
+    frontEdgeAlpha: 0.54,
     fogAlpha: 0.14,
-    tearInterval: Object.freeze([0.08, 0.11, 0.16, 0.24]),
-    tearCaps: Object.freeze([12, 9, 6, 4]),
+    tearInterval: Object.freeze([0.12, 0.16, 0.22, 0.30]),
+    tearCaps: Object.freeze([6, 5, 3, 2]),
     lightningInterval: Object.freeze([
       Object.freeze([0.65, 1.15]),
       Object.freeze([0.78, 1.28]),
@@ -7990,7 +8029,7 @@
       absorptionFx: [], residueFx: [], spaceCuts: [], bladeCutT: 0, bladeCutSerial: 0,
       bladeAcceptance: false, castRefunded: false,
       ribbons: null, ribbonQualityIndex: -1, ribbonOrbit: 0, ribbonFlowT: 0, ribbonSurge: 0,
-      bladeSpinAngle: 0, bladePowerSharp: 1, bladePowerBurst: 0, bladePowerOrbit: 1, bladeBurstT: 0,
+      bladeSpinAngle: 0, bladePowerSharp: 1, bladePowerBurst: 0, bladePowerOrbit: 1, bladeBurstT: 0, voidPulse: 0,
       tears: [], tearT: 0, sparks: [], sparkT: 0, tipFlashes: [], tipFlashT: 0,
       boltT: 0, bolt: null, boltFired: false, flashT: 0,
       soulhunt: {
@@ -9579,6 +9618,7 @@
     u.bladePowerBurst = 0;
     u.bladePowerOrbit = 1;
     u.bladeBurstT = 0;
+    u.voidPulse = 0;
     u.tears.length = 0;
     u.tearT = 0;
     if (Array.isArray(u.sparks)) u.sparks.length = 0;
@@ -9855,13 +9895,15 @@
   function cgUltimateUpdateStreaks(dt, mul = 1) {
     const u = corruptGunState.ultimate;
     u.streaks = u.streaks || [];
-    const streakMax = cgLite() ? 10 : 22;
+    // A few broad, dark streams read as suction. Many thin white streaks read
+    // as a second glowing wheel and are substantially more expensive on phones.
+    const streakMax = cgUltra() ? 4 : (cgLite() ? 6 : (perfLevel === 1 ? 8 : 10));
     u.streakT = (u.streakT || 0) - dt * Math.max(1, mul);
     if (u.streakT <= 0 && u.streaks.length < streakMax) {
-      u.streakT = mul > 1.5 ? 0.022 : 0.038;
+      u.streakT = (cgLite() ? 0.12 : 0.075) / Math.min(1.65, Math.max(1, mul));
       u.streaks.push({
         a: rand(0, TAU), r: rand(500, 700),
-        v: rand(380, 620) * mul, w: rand(1.6, 3.2),
+        v: rand(380, 620) * mul, w: rand(2.0, 3.8),
         spin: rand(2.2, 3.8) * mul,
       });
     }
@@ -9881,7 +9923,8 @@
       : totalT * CG_ULT_CONFIG.wheel.bladeSpeed;
     return base + index * TAU / Math.max(1, count);
   }
-  // Blade orbit stays FIXED. Speed + sharpness climb. Late collapse / finale explode outward.
+  // Keep the silhouette readable: sustained speed stays near one turn/second;
+  // brief surges, dark wakes and particles carry the sense of violence.
   function cgUltimateBladePower() {
     const u = corruptGunState.ultimate;
     if (u.phase === 'spin') {
@@ -9889,9 +9932,8 @@
       const ease = p * p;
       return {
         orbit: 1,
-        // Start already fast; climb harder toward the end.
-        spinMul: 1.45 + ease * 1.25,
-        sharp: 1.15 + ease * 0.85,
+        spinMul: 1.18 + ease * 0.27,
+        sharp: 1.12 + ease * 0.43,
         burst: 0,
         disc: 1,
       };
@@ -9900,9 +9942,9 @@
       const k = clamp(u.t / CG_ULT_CONFIG.collapse, 0, 1);
       const burst = k > 0.58 ? Math.pow((k - 0.58) / 0.42, 1.15) : 0;
       return {
-        orbit: 1 + burst * 0.72,
-        spinMul: 2.70 + k * 2.6,
-        sharp: 1.85 + k * 1.05,
+        orbit: 1 + burst * 0.30,
+        spinMul: 1.45 + k * 0.55,
+        sharp: 1.55 + k * 0.35,
         burst,
         disc: lerp(1, 0.84, k),
       };
@@ -9910,14 +9952,14 @@
     if (u.phase === 'finale') {
       const p = clamp(u.t / 0.42, 0, 1);
       return {
-        orbit: 1.72 + easeOutCubic(p) * 2.35,
-        spinMul: 6.2 + p * 2.4,
-        sharp: 1.55,
+        orbit: 1.30 + easeOutCubic(p) * 0.35,
+        spinMul: 2.0 + p * 0.6,
+        sharp: 1.68,
         burst: 1,
         disc: lerp(0.84, 0.42, p),
       };
     }
-    return { orbit: 1, spinMul: 1.45, sharp: 1.15, burst: 0, disc: 1 };
+    return { orbit: 1, spinMul: 1.18, sharp: 1.12, burst: 0, disc: 1 };
   }
   function cgUltimateCollapseScales(collapseK) {
     const power = cgUltimateBladePower();
@@ -9936,7 +9978,8 @@
     if (!Number.isFinite(u.bladeSpinAngle)) {
       u.bladeSpinAngle = u.totalT * CG_ULT_CONFIG.wheel.bladeSpeed;
     }
-    u.bladeSpinAngle += dt * CG_ULT_CONFIG.wheel.bladeSpeed * power.spinMul;
+    const surgeMul = 1 + CG_ULT_RIBBON_CONFIG.surgeBoost * (u.ribbonSurge || 0);
+    u.bladeSpinAngle += dt * CG_ULT_CONFIG.wheel.bladeSpeed * power.spinMul * surgeMul;
     u.bladePowerSharp = power.sharp;
     u.bladePowerBurst = power.burst;
     u.bladePowerOrbit = power.orbit;
@@ -9960,7 +10003,7 @@
     // Prefer ribbon tips when available so space rifts follow the molten knife-light.
     if (u.ribbons && u.ribbons.length && Math.random() < 0.62) {
       const band = u.ribbons[serial % u.ribbons.length];
-      const sample = cgUltimateSampleRibbon(band, rand(0.78, 0.96), 1, 0);
+      const sample = cgUltimateSampleRibbon(band, rand(0.78, 0.96), cgUltimateBladePower().orbit, 0);
       const life = CG_ULT_CONFIG.wheel.spaceCutLife * lerp(0.88, 1.12, seed);
       u.spaceCuts.push({
         x: sample[0], y: sample[1],
@@ -10002,15 +10045,18 @@
     u.ribbonQualityIndex = qualityIndex;
     for (let index = 0; index < count; index++) {
       const seed = (index * 0.61803398875 + 0.173) % 1;
+      const arc = cfg.arcMin + cfg.arcJitter * ((seed * 2.731) % 1);
       const pointCount = segments + 1;
       u.ribbons.push({
         index, seed, segments,
-        phase: index * 2.399963229728653 + (index & 1 ? 0.16 : -0.08),
-        arc: cfg.arcMin + cfg.arcJitter * ((seed * 2.731) % 1),
+        // The outer tip lands exactly on its matching metal harvester blade.
+        // One shared orbit removes the old twelve-blade visual collision.
+        phase: index * TAU / count - arc,
+        arc,
         innerRadius: cfg.innerRadius + ((index % 3) - 1) * 15,
         outerRadius: cfg.outerRadius + (seed - 0.5) * cfg.outerJitter * 2,
         width: cfg.width + (((seed * 5.173) % 1) - 0.5) * cfg.widthJitter * 2,
-        speed: 1 + (seed - 0.5) * cfg.speedSpread * 2,
+        speed: 1,
         // Every stream burns on the same trailing face. Alternating faces read
         // as two concentric wheels instead of one coherent cutting vortex.
         hotSide: 1,
@@ -10050,7 +10096,7 @@
     const twistPhase = t * Math.PI * 2.15 + band.seed * TAU + u.ribbonFlowT * (0.72 + band.seed * 0.18);
     const angularWarp = (Math.sin(twistPhase) * 0.16
       + Math.sin(t * Math.PI * 4.3 - u.ribbonFlowT * 0.48 + band.seed * 17.0) * 0.055) * envelope;
-    const theta = band.phase + u.ribbonOrbit * band.speed + band.arc * t + angularWarp;
+    const theta = band.phase + u.bladeSpinAngle + band.arc * t + angularWarp;
     const wave = Math.sin(t * Math.PI * 2.4 + u.ribbonFlowT * (0.92 + band.seed * 0.34) + band.seed * 11.0);
     const radius = (lerp(band.innerRadius, band.outerRadius, eased) + wave * 18 * envelope) * scale;
     const safeT = Math.max(0.018, t);
@@ -10067,11 +10113,11 @@
     const widthPulse = 0.76 + 0.24 * Math.sin(u.ribbonFlowT * 3.1 + band.seed * 13.0 + t * 4.0);
     // Tip taper hardens into a needle so the stream reads as a cutting blade,
     // not a soft smoke ribbon that fades out bluntly.
-    const tipTaper = t > 0.46
-      ? Math.pow(1 - (t - 0.46) / 0.54, 2.05)
+    const tipTaper = t > 0.68
+      ? Math.pow(1 - (t - 0.68) / 0.32, 2.35)
       : 1;
-    const tornTip = t > 0.70
-      ? 0.70 + 0.30 * Math.sin((t - 0.70) * 92 + band.seed * 29.0 + u.ribbonFlowT * 2.4)
+    const tornTip = t > 0.78
+      ? 0.76 + 0.24 * Math.sin((t - 0.78) * 92 + band.seed * 29.0 + u.ribbonFlowT * 2.4)
       : 1;
     const halfWidth = band.width * 0.5 * Math.pow(Math.max(0, envelope), 0.78)
       * widthPulse * tipTaper * tornTip * (1 - collapseK * 0.12) * scale;
@@ -10086,9 +10132,9 @@
   }
   function cgUltimateBuildRibbonGeometry(band, scale, collapseK) {
     const u = corruptGunState.ultimate;
-    if (band.geomTime === u.ribbonOrbit && band.geomFlow === u.ribbonFlowT
+    if (band.geomTime === u.bladeSpinAngle && band.geomFlow === u.ribbonFlowT
       && band.geomScale === scale && band.geomCollapse === collapseK) return;
-    band.geomTime = u.ribbonOrbit;
+    band.geomTime = u.bladeSpinAngle;
     band.geomFlow = u.ribbonFlowT;
     band.geomScale = scale;
     band.geomCollapse = collapseK;
@@ -10145,7 +10191,7 @@
     const depthAlpha = band.index & 1 ? CG_ULT_RIBBON_CONFIG.farBodyAlpha : CG_ULT_RIBBON_CONFIG.bodyAlpha;
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = depthAlpha * endFade;
-    ctx.fillStyle = band.index & 1 ? '#070104' : '#100206';
+    ctx.fillStyle = band.index & 1 ? '#020104' : '#070208';
     ctx.beginPath();
     traceCgUltimateRibbonArray(band.left, 0, last);
     traceCgUltimateRibbonArray(band.right, 0, last, true, true);
@@ -10162,8 +10208,8 @@
     traceCgUltimateRibbonOffset(band, -0.36, bevelStart, bevelEnd, true, true);
     ctx.closePath(); ctx.fill();
     // Secondary mid-bevel ridge: hard shadow terminator for metal volume.
-    ctx.globalAlpha = 0.42 * endFade;
-    ctx.fillStyle = '#180308';
+    ctx.globalAlpha = 0.55 * endFade;
+    ctx.fillStyle = '#100207';
     ctx.beginPath();
     traceCgUltimateRibbonOffset(band, -0.22, bevelStart, bevelEnd);
     traceCgUltimateRibbonOffset(band, 0.08, bevelStart, bevelEnd, true, true);
@@ -10173,19 +10219,19 @@
     const sheenStart = Math.max(1, Math.floor(last * 0.10));
     const sheenEnd = Math.min(last - 1, Math.ceil(last * 0.86));
     ctx.globalAlpha = CG_ULT_RIBBON_CONFIG.sheenAlpha * endFade * (0.86 + absorbedK * 0.14);
-    ctx.fillStyle = band.index & 1 ? '#4a0c16' : '#6e141c';
+    ctx.fillStyle = band.index & 1 ? '#300811' : '#470b14';
     ctx.beginPath();
-    traceCgUltimateRibbonOffset(band, -0.04, sheenStart, sheenEnd);
-    traceCgUltimateRibbonOffset(band, 0.62, sheenStart, sheenEnd, true, true);
+    traceCgUltimateRibbonOffset(band, -0.10, sheenStart, sheenEnd);
+    traceCgUltimateRibbonOffset(band, 0.46, sheenStart, sheenEnd, true, true);
     ctx.closePath(); ctx.fill();
 
     // Hard specular ridge near the hot face: metal-like catch light.
-    ctx.globalAlpha = (0.42 + corruptGunState.ultimate.ribbonSurge * 0.22) * endFade;
-    ctx.fillStyle = '#c0281c';
+    ctx.globalAlpha = (0.22 + corruptGunState.ultimate.ribbonSurge * 0.16) * endFade;
+    ctx.fillStyle = '#7e1419';
     ctx.beginPath();
     const shineStart = Math.floor(last * 0.22), shineEnd = Math.ceil(last * 0.74);
-    traceCgUltimateRibbonOffset(band, 0.48, shineStart, shineEnd);
-    traceCgUltimateRibbonOffset(band, 0.74, shineStart, shineEnd, true, true);
+    traceCgUltimateRibbonOffset(band, 0.36, shineStart, shineEnd);
+    traceCgUltimateRibbonOffset(band, 0.58, shineStart, shineEnd, true, true);
     ctx.closePath(); ctx.fill();
 
     ctx.globalAlpha = 0.78 * endFade;
@@ -10195,8 +10241,8 @@
 
     // Transported striations make the satin surface flow instead of rotating
     // like a rigid decal.
-    ctx.globalAlpha = 0.22 * endFade;
-    ctx.strokeStyle = '#8a1a22';
+    ctx.globalAlpha = 0.16 * endFade;
+    ctx.strokeStyle = '#5e101a';
     ctx.lineWidth = 1.15;
     ctx.setLineDash([18, 11, 4, 17]);
     ctx.lineDashOffset = -corruptGunState.ultimate.ribbonFlowT * 112 - band.seed * 73;
@@ -10211,36 +10257,39 @@
   function drawCgUltimateRibbonEdge(band, scale, endFade, absorbedK) {
     const last = band.segments;
     const hot = band.hotSide > 0 ? band.right : band.left;
-    const start = Math.max(1, Math.floor(last * 0.14));
-    const end = Math.min(last - 1, Math.ceil(last * 0.92));
+    const start = Math.max(1, Math.floor(last * 0.16));
+    const end = Math.min(last - 1, Math.ceil(last * 0.88));
     const surge = corruptGunState.ultimate.ribbonSurge;
-    const energy = Math.min(1.28, 0.92 + absorbedK * 0.28 + surge * 0.22);
+    const energy = Math.min(1.16, 0.84 + absorbedK * 0.18 + surge * 0.18);
     ctx.globalCompositeOperation = 'lighter';
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     // Soft under-glow then a thinner, hotter core — sells a lightsaber edge.
     ctx.globalAlpha = CG_ULT_RIBBON_CONFIG.frontEdgeAlpha * endFade * energy;
-    ctx.strokeStyle = '#7a0a18';
-    ctx.lineWidth = (4.6 + surge * 1.4) * scale;
+    ctx.strokeStyle = '#580711';
+    ctx.lineWidth = (5.4 + surge * 1.2) * scale;
     ctx.beginPath(); traceCgUltimateRibbonArray(hot, start, end); ctx.stroke();
     ctx.globalAlpha = CG_ULT_RIBBON_CONFIG.hotEdgeAlpha * endFade * energy;
-    ctx.strokeStyle = '#ff241c';
-    ctx.lineWidth = (1.85 + surge * 0.45) * scale;
+    ctx.strokeStyle = '#c8262e';
+    ctx.lineWidth = (2.15 + surge * 0.40) * scale;
     ctx.beginPath(); traceCgUltimateRibbonArray(hot, start, end); ctx.stroke();
     const hotStart = Math.floor(last * 0.30), hotEnd = Math.ceil(last * 0.82);
-    ctx.globalAlpha = (0.88 + surge * 0.12) * endFade;
-    ctx.strokeStyle = '#ff9a42';
-    ctx.lineWidth = (0.85 + surge * 0.28) * scale;
+    ctx.globalAlpha = (0.28 + surge * 0.46) * endFade;
+    ctx.strokeStyle = '#f06a38';
+    ctx.lineWidth = (0.75 + surge * 0.30) * scale;
     ctx.beginPath(); traceCgUltimateRibbonArray(hot, hotStart, hotEnd); ctx.stroke();
-    // Needle white core: the actual "sharp" read.
-    ctx.globalAlpha = (0.92 + surge * 0.08) * endFade;
-    ctx.strokeStyle = '#fffaf2';
-    ctx.lineWidth = (0.42 + surge * 0.22) * scale;
-    const whiteStart = Math.floor(last * 0.34), whiteEnd = Math.ceil(last * 0.80);
-    ctx.beginPath(); traceCgUltimateRibbonArray(hot, whiteStart, whiteEnd); ctx.stroke();
+    // White heat is an event, not a permanent wire. The readable blade is the
+    // black volume plus scarlet edge; only the speed crest exposes a pale core.
+    const whiteStart = Math.floor(last * 0.48), whiteEnd = Math.ceil(last * 0.62);
+    if (surge > 0.12) {
+      ctx.globalAlpha = (0.12 + surge * 0.38) * endFade;
+      ctx.strokeStyle = '#fff0da';
+      ctx.lineWidth = (0.46 + surge * 0.16) * scale;
+      ctx.beginPath(); traceCgUltimateRibbonArray(hot, whiteStart, whiteEnd); ctx.stroke();
+    }
     if (!cgLite()) {
       // Traveling specular glints chase along the cutting face.
-      const glintCount = surge > 0.08 ? 4 : 3;
+      const glintCount = surge > 0.08 ? 2 : 1;
       for (let g = 0; g < glintCount; g++) {
         const gt = (corruptGunState.ultimate.ribbonFlowT * (1.9 + g * 0.38) + band.seed * 4.1 + g * 0.37) % 1;
         if (gt < 0.10 || gt > 0.90) continue;
@@ -10250,9 +10299,9 @@
         const dx = gx - px, dy = gy - py;
         const inv = 1 / Math.max(0.001, Math.hypot(dx, dy));
         const len = (16 + g * 7 + surge * 12) * scale;
-        ctx.globalAlpha = (0.62 + surge * 0.32) * endFade;
-        ctx.strokeStyle = g === 0 ? '#ffffff' : '#ffd9a0';
-        ctx.lineWidth = (g === 0 ? 1.45 : 0.9) * scale;
+        ctx.globalAlpha = (0.32 + surge * 0.46) * endFade;
+        ctx.strokeStyle = g === 0 ? '#fff1df' : '#f68a4c';
+        ctx.lineWidth = (g === 0 ? 0.95 : 0.75) * scale;
         ctx.beginPath();
         ctx.moveTo(gx - dx * inv * len * 0.5, gy - dy * inv * len * 0.5);
         ctx.lineTo(gx + dx * inv * len * 0.5, gy + dy * inv * len * 0.5);
@@ -10285,10 +10334,10 @@
       ctx.strokeStyle = echo === 1 ? '#ff3a2e' : '#9a1020';
       ctx.lineWidth = (2.6 - echo * 0.28) * scale;
       ctx.beginPath(); traceCgUltimateRibbonArray(hot, start, end); ctx.stroke();
-      if (echo <= 2) {
-        ctx.globalAlpha = fade * 0.85;
-        ctx.strokeStyle = '#ffe8d0';
-        ctx.lineWidth = 0.65 * scale;
+      if (echo === 1 && surge > 0.32) {
+        ctx.globalAlpha = fade * surge * 0.60;
+        ctx.strokeStyle = '#f6b080';
+        ctx.lineWidth = 0.55 * scale;
         ctx.beginPath(); traceCgUltimateRibbonArray(hot, whiteStart, whiteEnd); ctx.stroke();
       }
       ctx.restore();
@@ -10367,27 +10416,21 @@
         tipX + dx * length + nx * fork * 5.0, tipY + dy * length + ny * fork * 5.0);
       ctx.stroke();
     }
-    ctx.globalAlpha = (0.90 + surge * 0.10) * endFade * tipPulse;
-    ctx.strokeStyle = '#fff8f0';
-    ctx.lineWidth = (0.95 + tipPulse * 0.35) * scale;
+    ctx.globalAlpha = (0.18 + surge * 0.48) * endFade * tipPulse;
+    ctx.strokeStyle = surge > 0.25 ? '#ffe2c8' : '#c42a2e';
+    ctx.lineWidth = (0.72 + surge * 0.30) * scale;
     const tipLen = (54 + surge * 26 + tipPulse * 16) * scale;
     ctx.beginPath();
     ctx.moveTo(tipX - dx * 2 * scale, tipY - dy * 2 * scale);
     ctx.lineTo(tipX + dx * tipLen, tipY + dy * tipLen);
     ctx.stroke();
-    // Cross star + bloom disc at the tip: pierce / slash impact read.
-    const cross = (12 + surge * 10 + tipPulse * 8) * scale;
-    ctx.globalAlpha = (0.58 + surge * 0.28) * endFade * tipPulse;
-    ctx.lineWidth = 0.75 * scale;
-    ctx.beginPath();
-    ctx.moveTo(tipX + dx * tipLen * 0.55 - nx * cross, tipY + dy * tipLen * 0.55 - ny * cross);
-    ctx.lineTo(tipX + dx * tipLen * 0.55 + nx * cross, tipY + dy * tipLen * 0.55 + ny * cross);
-    ctx.stroke();
-    ctx.globalAlpha = 0.55 * endFade * tipPulse;
-    ctx.fillStyle = '#fff6ea';
-    ctx.beginPath();
-    ctx.arc(tipX + dx * tipLen * 0.72, tipY + dy * tipLen * 0.72, (2.2 + tipPulse * 2.4) * scale, 0, TAU);
-    ctx.fill();
+    if (surge > 0.42) {
+      ctx.globalAlpha = surge * 0.44 * endFade;
+      ctx.fillStyle = '#ffe9d3';
+      ctx.beginPath();
+      ctx.arc(tipX + dx * tipLen * 0.72, tipY + dy * tipLen * 0.72, (1.6 + surge * 1.8) * scale, 0, TAU);
+      ctx.fill();
+    }
   }
   function drawCgUltimateRibbons(scale, collapseK, absorbedK, pass = 'back') {
     const u = corruptGunState.ultimate;
@@ -10397,9 +10440,10 @@
       ? clamp(1 - u.t / 0.42, 0, 1)
       : 1;
     if (endFade <= 0.01) return;
-    // Orbit radius is locked; only sharpness / light intensity climb.
-    const orbitScale = scale * power.orbit;
-    const sharpScale = orbitScale * (0.92 + power.sharp * 0.12);
+    // The caller already supplies the single orbit multiplier. Applying it a
+    // second time made collapse/finale radii grow quadratically.
+    const orbitScale = scale;
+    const sharpScale = Math.min(1.25, scale) * (0.94 + power.sharp * 0.08);
     ctx.save();
     for (const band of u.ribbons) {
       const growth = clamp((u.ribbonFlowT - band.born) / 0.28, 0, 1);
@@ -10440,9 +10484,10 @@
     bolt.branchBend = rand(-8, 8);
   }
   function cgUltimateBuildBoltGeometry(bolt) {
-    const source = cgUltimateSampleRibbon(bolt.sourceBand, bolt.startT, 1, 0);
+    const sampleScale = cgUltimateBladePower().orbit;
+    const source = cgUltimateSampleRibbon(bolt.sourceBand, bolt.startT, sampleScale, 0);
     const sourceX = source[0], sourceY = source[1];
-    const target = cgUltimateSampleRibbon(bolt.targetBand, bolt.endT, 1, 0);
+    const target = cgUltimateSampleRibbon(bolt.targetBand, bolt.endT, sampleScale, 0);
     const targetX = target[0], targetY = target[1];
     const acrossX = targetX - sourceX, acrossY = targetY - sourceY;
     const acrossInv = 1 / Math.max(0.001, Math.hypot(acrossX, acrossY));
@@ -10473,24 +10518,23 @@
       ? Math.pow(Math.sin(Math.PI * u.flashT / cfg.surgeDuration), 2)
       : 0;
     const power = cgUltimateBladePower();
-    const collapseSpeed = power.spinMul;
-    u.ribbonOrbit += dt * cfg.baseAngularSpeed * collapseSpeed * (1 + cfg.surgeBoost * u.ribbonSurge);
+    u.ribbonOrbit = u.bladeSpinAngle;
+    u.voidPulse = Math.max(0, (u.voidPulse || 0) - dt * 5.5);
     // Collapse intensifies knife-light; never shrink ribbon orbit via scale.
     u.ribbonSurge = Math.max(u.ribbonSurge, power.burst > 0 ? 0.35 + power.burst * 0.65 : (u.phase === 'collapse' ? 0.18 : 0));
-    // 冲击节拍外化：每个 surge 拍点（flashT 回绕瞬间）给一次可感知的"重击"——
-    // 轻震屏 + 冲击环 + 撕裂丝爆发 + （桌面）提前引爆一道闪电
+    // The beat compresses only the local maw. Moving the whole camera every
+    // 0.8s weakened mobile readability and made the HUD feel unstable.
     if (allowTransient && prevFlashT > u.flashT) {
-      screenShake = Math.max(screenShake, 3);
-      spawnCgShockring(u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * 1.5, CG_ULT_CONFIG.wheel.discSize * 1.02, 0.26);
-      const beatBurst = cgLite() ? 2 : 4;
+      u.voidPulse = 1;
+      const beatBurst = cgLite() ? 1 : 3;
       const beatCap = cfg.tearCaps[cgQualityIndex()] + 2;
       for (let k = 0; k < beatBurst && u.tears.length < beatCap; k++) {
         const band = u.ribbons[(Math.random() * u.ribbons.length) | 0];
-        const sample = cgUltimateSampleRibbon(band, rand(0.72, 0.96), 1, 0);
-        const speed = rand(520, 780);
+        const sample = cgUltimateSampleRibbon(band, rand(0.72, 0.96), power.orbit, 0);
+        const speed = rand(440, 680);
         u.tears.push({
           x: sample[0], y: sample[1], vx: sample[5] * speed, vy: sample[6] * speed,
-          rot: Math.atan2(sample[6], sample[5]), len: rand(200, 420),
+          rot: Math.atan2(sample[6], sample[5]), len: rand(170, 320),
           life: 0.18, maxLife: 0.25,
         });
       }
@@ -10509,7 +10553,7 @@
     if (u.tearT <= 0 && u.tears.length < cfg.tearCaps[qualityIndex]) {
       u.tearT += cfg.tearInterval[qualityIndex];
       const band = u.ribbons[(Math.random() * u.ribbons.length) | 0];
-      const sample = cgUltimateSampleRibbon(band, rand(0.66, 0.94), 1, 0);
+      const sample = cgUltimateSampleRibbon(band, rand(0.66, 0.94), power.orbit, 0);
       const speed = rand(320, 720);
       u.tears.push({
         x: sample[0], y: sample[1], vx: sample[5] * speed, vy: sample[6] * speed,
@@ -10532,7 +10576,7 @@
       const burst = Math.min(cfg.edgeSparks[qualityIndex], sparkCap - u.sparks.length);
       for (let s = 0; s < burst; s++) {
         const band = u.ribbons[(Math.random() * u.ribbons.length) | 0];
-        const sample = cgUltimateSampleRibbon(band, rand(0.38, 0.96), 1, 0);
+        const sample = cgUltimateSampleRibbon(band, rand(0.38, 0.96), power.orbit, 0);
         const nx = -sample[6], ny = sample[5];
         const side = band.hotSide > 0 ? 1 : -1;
         const speed = rand(220, 620) * (0.75 + u.ribbonSurge * 0.55);
@@ -10542,7 +10586,7 @@
           vx: sample[5] * speed * 0.35 + nx * side * rand(60, 220),
           vy: sample[6] * speed * 0.35 + ny * side * rand(60, 220),
           life: rand(0.10, 0.24), maxLife: 0.24,
-          size: rand(1.2, 3.2), hot: Math.random() < 0.42,
+          size: rand(2.8, 6.4), hot: Math.random() < 0.16,
         });
       }
     }
@@ -10563,7 +10607,7 @@
     if (u.tipFlashT <= 0 && u.tipFlashes.length < tipCap) {
       u.tipFlashT += cfg.tipFlashInterval[qualityIndex] * (u.ribbonSurge > 0.2 ? 0.5 : 1);
       const band = u.ribbons[(Math.random() * u.ribbons.length) | 0];
-      const sample = cgUltimateSampleRibbon(band, rand(0.90, 0.995), 1, 0);
+      const sample = cgUltimateSampleRibbon(band, rand(0.90, 0.995), power.orbit, 0);
       const nx = -sample[6], ny = sample[5];
       const burst = Math.min(3, tipCap - u.tipFlashes.length);
       for (let i = 0; i < burst; i++) {
@@ -10677,9 +10721,10 @@
       ctx.strokeStyle = '#8a0618';
       ctx.lineWidth = 1.6 * scale;
       ctx.beginPath(); ctx.moveTo(tear.x, tear.y); ctx.lineTo(tear.x - dx * tear.len * 0.9, tear.y - dy * tear.len * 0.9); ctx.stroke();
-      ctx.globalAlpha = fade * 0.95;
-      ctx.strokeStyle = '#ffe6d2';
-      ctx.lineWidth = 0.85 * scale;
+      const tearCrest = (u.ribbonSurge || 0) > 0.35;
+      ctx.globalAlpha = fade * (tearCrest ? 0.58 : 0.34);
+      ctx.strokeStyle = tearCrest ? '#ffd0ad' : '#b41632';
+      ctx.lineWidth = (tearCrest ? 0.72 : 0.92) * scale;
       ctx.beginPath(); ctx.moveTo(tear.x, tear.y); ctx.lineTo(tear.x - dx * tear.len, tear.y - dy * tear.len); ctx.stroke();
     }
     for (const spark of (u.sparks || [])) {
@@ -10693,10 +10738,11 @@
       ctx.globalAlpha = fade * (spark.hot ? 0.95 : 0.72);
       ctx.fillStyle = spark.hot ? '#ffd8c0' : '#7a0414';
       ctx.beginPath(); ctx.arc(spark.x, spark.y, r, 0, TAU); ctx.fill();
-      if (spark.hot || fade > 0.55) {
-        ctx.globalAlpha = fade * 0.6;
-        ctx.strokeStyle = '#ffe8c8';
-        ctx.lineWidth = 0.65 * scale;
+      const sparkCrest = spark.hot && (u.ribbonSurge || 0) > 0.25;
+      if (sparkCrest || (!spark.hot && fade > 0.72)) {
+        ctx.globalAlpha = fade * (sparkCrest ? 0.58 : 0.34);
+        ctx.strokeStyle = sparkCrest ? '#ffd6bd' : '#b71935';
+        ctx.lineWidth = (sparkCrest ? 0.65 : 0.82) * scale;
         const sx = spark.vx * 0.018, sy = spark.vy * 0.018;
         ctx.beginPath(); ctx.moveTo(spark.x - sx, spark.y - sy); ctx.lineTo(spark.x + sx, spark.y + sy); ctx.stroke();
       }
@@ -10720,16 +10766,17 @@
       ctx.moveTo(flash.x, flash.y);
       ctx.lineTo(flash.x - dx * flash.len * 0.85, flash.y - dy * flash.len * 0.85);
       ctx.stroke();
-      ctx.globalAlpha = fade * 0.95;
-      ctx.strokeStyle = '#fff4e8';
-      ctx.lineWidth = 0.85 * scale;
+      const tipCrest = (u.ribbonSurge || 0) > 0.35;
+      ctx.globalAlpha = fade * (tipCrest ? 0.72 : 0.38);
+      ctx.strokeStyle = tipCrest ? '#ffe2c8' : '#bb1634';
+      ctx.lineWidth = (tipCrest ? 0.72 : 0.92) * scale;
       ctx.beginPath();
       ctx.moveTo(flash.x, flash.y);
       ctx.lineTo(flash.x - dx * flash.len, flash.y - dy * flash.len);
       ctx.stroke();
-      ctx.globalAlpha = fade * 0.9;
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath(); ctx.arc(flash.x, flash.y, flash.size * scale * fade, 0, TAU); ctx.fill();
+      ctx.globalAlpha = fade * (tipCrest ? 0.62 : 0.42);
+      ctx.fillStyle = tipCrest ? '#ffe9d8' : '#9d102a';
+      ctx.beginPath(); ctx.arc(flash.x, flash.y, flash.size * scale * fade * 0.76, 0, TAU); ctx.fill();
     }
     if (u.bolt) {
       const fade = clamp(u.bolt.life / u.bolt.maxLife, 0, 1);
@@ -10829,17 +10876,17 @@
       ctx.strokeStyle = `rgba(214,10,67,${Math.min(0.82, 0.55 * fade).toFixed(3)})`;
       ctx.lineWidth = st.w * 2.5 * scale;
       ctx.stroke();
-      ctx.setLineDash([14 * scale, 6 * scale, 3 * scale, 8 * scale]);
+      ctx.setLineDash([18 * scale, 9 * scale, 3 * scale, 12 * scale]);
       ctx.lineDashOffset = -u.totalT * (120 + collapseK * 80) - st.a * 13;
-      ctx.strokeStyle = `rgba(255,232,240,${Math.min(0.95, 0.82 * fade).toFixed(3)})`;
-      ctx.lineWidth = Math.max(0.9, st.w * 0.85 * scale);
+      ctx.strokeStyle = `rgba(236,50,93,${Math.min(0.62, 0.44 * fade).toFixed(3)})`;
+      ctx.lineWidth = Math.max(0.8, st.w * 0.62 * scale);
       ctx.stroke();
       ctx.setLineDash([]);
-      if (!lite) drawCgAsset('cgDotW1', u.x + Math.cos(st.a) * st.r * scale, u.y + Math.sin(st.a) * st.r * scale, 12, null, { blend: 'lighter', alpha: Math.min(1, 0.95 * fade), glow: false });
+      if (!lite) drawCgAsset('cgDotR2', u.x + Math.cos(st.a) * st.r * scale, u.y + Math.sin(st.a) * st.r * scale, 9, null, { blend: 'lighter', alpha: Math.min(0.72, 0.56 * fade), glow: false });
     }
 
     // 短而断续的空间跳线沿螺旋向内滑动，只表达吸入，不闭合成第二个圆环。
-    const stripCount = (CG_ULT_CONFIG.quality.warpStrips[cgQualityIndex()] || 2) + (collapseK > 0.05 ? 3 : 0);
+    const stripCount = (CG_ULT_CONFIG.quality.warpStrips[cgQualityIndex()] || 2) + (collapseK > 0.05 ? 1 : 0);
     const golden = 2.399963229728653;
     for (let index = 0; index < stripCount; index++) {
       const phase = (u.totalT * (0.42 + (index % 3) * 0.045 + collapseK * 0.25) + index * 0.173) % 1;
@@ -10866,10 +10913,10 @@
       ctx.strokeStyle = `rgba(221,12,72,${Math.min(0.88, 0.68 * env).toFixed(3)})`;
       ctx.lineWidth = wheel.warpStripWidth * 1.15 * scale;
       ctx.stroke();
-      if (!lite && index % 2 === 0) {
+      if (!lite && index % 3 === 0 && (u.ribbonSurge || 0) > 0.28) {
         ctx.setLineDash([6 * scale, 16 * scale]);
         ctx.lineDashOffset = -u.totalT * 180;
-        ctx.strokeStyle = `rgba(255,236,242,${Math.min(0.9, 0.72 * env).toFixed(3)})`;
+        ctx.strokeStyle = `rgba(255,184,196,${Math.min(0.62, 0.46 * env).toFixed(3)})`;
         ctx.lineWidth = 1.05 * scale;
         ctx.stroke();
       }
@@ -10947,27 +10994,27 @@
         return;
       }
       cgUltimateUpdateBladeSpin(dt);
-      updateCgUltimateSpaceCuts(dt, true, 1);
       cgUltimateUpdateFlowFx(dt, 1);
+      updateCgUltimateSpaceCuts(dt, u.ribbonSurge > 0.32, 1);
       if (!u.bladeAcceptance) {
         cgUltimateApplySlow();
         cgUltimateApplyEnemyPull(dt, 1);
       // V1.5 轮缘刃屑：轮盘边缘持续沿切线剥落火花/碎屑——硬边缘的粒子过渡
       u.rimT = (u.rimT || 0) - dt;
       if (u.rimT <= 0) {
-        u.rimT = cgLite() ? 0.10 : 0.05;
+        u.rimT = cgLite() ? 0.16 : 0.10;
         const a = rand(0, TAU);
         const rr = CG_ULT_CONFIG.wheel.discSize * 0.5 * (0.96 + rand(-0.04, 0.04));
         const px = u.x + Math.cos(a) * rr, py = u.y + Math.sin(a) * rr;
         const tangent = a + Math.PI / 2;
         spawnCgDot(px, py, Math.cos(tangent) * rand(120, 220) + Math.cos(a) * 40, Math.sin(tangent) * rand(120, 220) + Math.sin(a) * 40, rand(0.24, 0.42), rand(4, 8), Math.random() < 0.6 ? 'R' : 'P');
-        if (!cgLite() && Math.random() < 0.5) pushCgFx({ type: 'shard', key: `cgSpark${1 + ((Math.random() * 8) | 0)}`, x: px, y: py, vx: Math.cos(tangent) * rand(160, 300), vy: Math.sin(tangent) * rand(160, 300), life: rand(0.20, 0.35), maxLife: 0.35, size: rand(8, 14), rot: tangent, spin: 0 });
+        if (!cgLite() && Math.random() < 0.30) pushCgFx({ type: 'shard', key: `cgSpark${1 + ((Math.random() * 8) | 0)}`, x: px, y: py, vx: Math.cos(tangent) * rand(160, 300), vy: Math.sin(tangent) * rand(160, 300), life: rand(0.20, 0.35), maxLife: 0.35, size: rand(8, 14), rot: tangent, spin: 0 });
       }
       // V1.5 环境吸入流：四周尘埃被持续螺旋卷入——"吸收周围一切"的常驻视觉
       u.inhaleT = (u.inhaleT || 0) - dt;
       if (u.inhaleT <= 0) {
-        u.inhaleT = cgLite() ? 0.055 : 0.028;
-        const burst = cgLite() ? 2 : 4;
+        u.inhaleT = cgLite() ? 0.16 : 0.08;
+        const burst = 1;
         for (let n = 0; n < burst; n++) {
           const a = rand(0, TAU);
           const rr = rand(480, 720);
@@ -10987,9 +11034,9 @@
     }
     if (u.phase === 'collapse') {
       cgUltimateUpdateBladeSpin(dt);
-      updateCgUltimateSpaceCuts(dt, true, 2.4);
       // Keep knife-light FX alive through collapse — more power, not fewer blades.
       cgUltimateUpdateFlowFx(dt, 2.4, true);
+      updateCgUltimateSpaceCuts(dt, u.bladePowerBurst > 0.10 || u.ribbonSurge > 0.40, 2.4);
       cgUltimateApplyEnemyPull(dt, CG_ULT_CONFIG.enemyPull.collapseMultiplier);
       cgUltimateUpdateStreaks(dt, 2.4);
       // Late collapse: blades hold radius then fling sparks/knife-light outward.
@@ -10997,7 +11044,7 @@
       if (power.burst > 0.08) {
         u.bladeBurstT = (u.bladeBurstT || 0) - dt;
         if (u.bladeBurstT <= 0) {
-          u.bladeBurstT = cgLite() ? 0.06 : 0.03;
+          u.bladeBurstT = cgLite() ? 0.14 : 0.09;
           const bladeCount = CG_ULT_CONFIG.quality.blades[cgQualityIndex()];
           const bladeOrbitR = CG_ULT_CONFIG.wheel.bladeRadius * power.orbit;
           for (let index = 0; index < bladeCount; index++) {
@@ -11009,7 +11056,7 @@
               Math.cos(angle) * out + Math.cos(tangent) * rand(80, 220),
               Math.sin(angle) * out + Math.sin(tangent) * rand(80, 220),
               rand(0.18, 0.32), rand(3, 7), Math.random() < 0.55 ? 'P' : 'R');
-            if (!cgLite() && Math.random() < 0.55) {
+            if (!cgLite() && Math.random() < 0.20) {
               pushCgFx({
                 type: 'slash', key: `cgUltCrescent${1 + (index % 8)}`,
                 x: bx, y: by,
@@ -12328,70 +12375,98 @@
     }
     ctx.restore();
   }
-  // Hell maw: void spokes + inward devour streams radiating from the black core.
+  // Curved void curtains make the direction of absorption legible. Broad
+  // near-black bodies carry pressure; a thin crimson seam marks their flow.
   function drawCgUltimateVoidMaw(scale = 1, absorbedK = 0, collapseK = 0) {
     const u = corruptGunState.ultimate;
+    const cfg = CG_ULT_RIBBON_CONFIG;
+    const qualityIndex = cgQualityIndex();
     const core = CG_ULT_CONFIG.wheel.coreRadius * scale;
-    const power = 0.78 + absorbedK * 0.35 + collapseK * 0.45;
-    const spokeCount = cgLite() ? 8 : 14;
+    const power = 0.78 + absorbedK * 0.25 + collapseK * 0.28 + (u.voidPulse || 0) * 0.16;
+    const curtainCount = cfg.voidCurtains[qualityIndex];
     ctx.save();
     ctx.lineCap = 'round';
-    // Inward devour spokes — black bodies with scarlet cores racing into the maw.
-    for (let i = 0; i < spokeCount; i++) {
-      const base = u.totalT * (1.35 + (i & 1) * 0.45) + i * TAU / spokeCount;
-      const pulse = (u.totalT * (1.8 + i * 0.07) + i * 0.31) % 1;
-      const outer = core * lerp(4.8, 2.2, Math.pow(pulse, 0.72));
-      const inner = core * lerp(1.35, 1.05, pulse);
-      const swirl = base + pulse * 0.55;
-      const x0 = u.x + Math.cos(swirl) * outer;
-      const y0 = u.y + Math.sin(swirl) * outer * 0.92;
-      const x1 = u.x + Math.cos(swirl + 0.18) * inner;
-      const y1 = u.y + Math.sin(swirl + 0.18) * inner * 0.92;
-      const env = Math.sin(Math.PI * pulse) * power;
+    for (let index = 0; index < curtainCount; index++) {
+      const seed = (index * 0.61803398875 + 0.19) % 1;
+      const angle = u.bladeSpinAngle * 0.18 + index * TAU / curtainCount + seed * 0.24;
+      const outerRadius = core * (4.25 + seed * 0.35);
+      const x0 = u.x + Math.cos(angle) * outerRadius;
+      const y0 = u.y + Math.sin(angle) * outerRadius * 0.92;
+      const x1 = u.x + Math.cos(angle + 0.40) * outerRadius * 0.76;
+      const y1 = u.y + Math.sin(angle + 0.40) * outerRadius * 0.76 * 0.92;
+      const x2 = u.x + Math.cos(angle + 1.02) * core * 1.85;
+      const y2 = u.y + Math.sin(angle + 1.02) * core * 1.85 * 0.92;
+      const x3 = u.x + Math.cos(angle + 1.34) * core * 1.03;
+      const y3 = u.y + Math.sin(angle + 1.34) * core * 1.03 * 0.92;
       ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = `rgba(0,0,2,${(0.78 * env).toFixed(3)})`;
-      ctx.lineWidth = (5.5 - pulse * 2.2) * scale;
-      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = `rgba(110,4,24,${(0.55 * env).toFixed(3)})`;
-      ctx.lineWidth = (1.8 - pulse * 0.7) * scale;
+      ctx.globalAlpha = 0.72 * power;
+      ctx.strokeStyle = '#010003';
+      ctx.lineWidth = (13 + seed * 5) * scale;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.bezierCurveTo(x1, y1, x2, y2, x3, y3); ctx.stroke();
+      ctx.globalAlpha = 0.44 * power;
+      ctx.strokeStyle = '#25040c';
+      ctx.lineWidth = (5.2 + seed * 1.8) * scale;
       ctx.stroke();
-      if (pulse > 0.55) {
-        ctx.strokeStyle = `rgba(255,220,190,${(0.42 * env).toFixed(3)})`;
-        ctx.lineWidth = 0.7 * scale;
-        ctx.stroke();
-      }
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = 0.30 * power;
+      ctx.strokeStyle = '#7e0a20';
+      ctx.lineWidth = 1.25 * scale;
+      ctx.stroke();
+
+      const packet = (u.totalT * (0.92 + seed * 0.28) + seed) % 1;
+      const p = Math.pow(packet, 0.68);
+      const px = cgCubic(x0, x1, x2, x3, p);
+      const py = cgCubic(y0, y1, y2, y3, p);
+      const dx = cgCubicDerivative(x0, x1, x2, x3, p);
+      const dy = cgCubicDerivative(y0, y1, y2, y3, p);
+      const inv = 1 / Math.max(0.001, Math.hypot(dx, dy));
+      const tail = lerp(52, 18, p) * scale;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = Math.sin(Math.PI * packet) * 0.86;
+      ctx.strokeStyle = '#000002';
+      ctx.lineWidth = lerp(8, 13, p) * scale;
+      ctx.beginPath(); ctx.moveTo(px - dx * inv * tail, py - dy * inv * tail); ctx.lineTo(px, py); ctx.stroke();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha *= 0.58;
+      ctx.strokeStyle = '#b2122f';
+      ctx.lineWidth = lerp(1.7, 0.85, p) * scale;
+      ctx.stroke();
     }
-    // Orbiting void ash flakes falling into the event horizon.
-    const ashN = cgLite() ? 10 : 22;
-    for (let i = 0; i < ashN; i++) {
-      const seed = (i * 0.61803398875 + 0.13) % 1;
-      const fall = (u.totalT * (0.55 + seed * 0.85) + seed) % 1;
-      const a = seed * TAU + u.totalT * (0.7 + seed * 0.4) + fall * 1.8;
-      const rr = core * lerp(4.4, 1.15, Math.pow(fall, 0.7));
-      const px = u.x + Math.cos(a) * rr;
-      const py = u.y + Math.sin(a) * rr * 0.90;
+
+    const ashCount = cfg.voidAsh[qualityIndex];
+    for (let index = 0; index < ashCount; index++) {
+      const seed = (index * 0.61803398875 + 0.13) % 1;
+      const fall = (u.totalT * (0.52 + seed * 0.58) + seed) % 1;
+      const angle = seed * TAU + u.totalT * (0.38 + seed * 0.22) + fall * 1.55;
+      const radius = core * lerp(4.2, 1.10, Math.pow(fall, 0.68));
+      const x = u.x + Math.cos(angle) * radius;
+      const y = u.y + Math.sin(angle) * radius * 0.90;
       const env = Math.sin(Math.PI * fall) * power;
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `rgba(2,0,4,${(0.85 * env).toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(px, py, (2.6 - fall * 1.2) * scale, 0, TAU); ctx.fill();
+      ctx.globalAlpha = 0.86 * env;
+      ctx.fillStyle = '#020003';
+      ctx.beginPath(); ctx.arc(x, y, lerp(4.8, 1.8, fall) * scale, 0, TAU); ctx.fill();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = `rgba(${i & 1 ? 70 : 150},${i & 1 ? 0 : 5},${i & 1 ? 14 : 32},${(0.55 * env).toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(px, py, (1.3 - fall * 0.5) * scale, 0, TAU); ctx.fill();
+      ctx.globalAlpha = 0.42 * env;
+      ctx.fillStyle = index & 1 ? '#3c0612' : '#8e0d25';
+      ctx.beginPath(); ctx.arc(x, y, lerp(2.2, 0.7, fall) * scale, 0, TAU); ctx.fill();
     }
-    // Pulsing dark corona rings that collapse inward.
-    for (let ring = 0; ring < 3; ring++) {
-      const t = (u.totalT * (0.62 + ring * 0.11) + ring * 0.33) % 1;
-      const rr = core * lerp(3.6 - ring * 0.35, 1.2, easeOutCubic(t));
-      const env = Math.sin(Math.PI * t) * power;
+
+    const pulse = clamp(u.voidPulse || 0, 0, 1);
+    if (pulse > 0.001) {
+      const progress = 1 - pulse;
+      const radius = lerp(core * 3.7, core * 1.18, easeOutCubic(progress));
+      const env = Math.sin(Math.PI * progress);
       ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = `rgba(0,0,0,${(0.55 * env).toFixed(3)})`;
-      ctx.lineWidth = (4.5 - ring) * scale;
-      ctx.beginPath(); ctx.arc(u.x, u.y, rr, 0, TAU); ctx.stroke();
+      ctx.globalAlpha = env * 0.82;
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 11 * scale;
+      ctx.beginPath(); ctx.arc(u.x, u.y, radius, 0, TAU); ctx.stroke();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = `rgba(90,2,20,${(0.32 * env).toFixed(3)})`;
-      ctx.lineWidth = 1.2 * scale;
-      ctx.beginPath(); ctx.arc(u.x, u.y, rr, -u.totalT + ring, -u.totalT + ring + 2.4); ctx.stroke();
+      ctx.globalAlpha = env * 0.34;
+      ctx.strokeStyle = '#7d0a20';
+      ctx.lineWidth = 1.3 * scale;
+      ctx.beginPath(); ctx.arc(u.x, u.y, radius, -u.bladeSpinAngle, -u.bladeSpinAngle + 3.6); ctx.stroke();
     }
     ctx.restore();
   }
@@ -13467,18 +13542,16 @@
       }
       // 中心只保留一组暗流和事件视界；完整大涡流会与机械刀轮重叠成两个黑洞。
       const holeFrame = 1 + (Math.floor(u.totalT * 1000 / 90) % 4);
-      if (!lite) drawCgAsset(`cgUltHole${1 + (holeFrame % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.coreFlowScale * scale, null, { rot: -u.totalT * 1.3, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.coreFlowAlpha * 0.72, glow: false });
-      drawCgUltimateVoidMaw(scale, absorbedK, collapseK);
-      drawCgUltimateBlackCore(CG_ULT_CONFIG.wheel.coreRadius * 0.92 * scale, 0.98);
+      if (!lite) drawCgAsset(`cgUltHole${1 + (holeFrame % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.coreFlowScale * scale, null, { rot: -u.totalT * 1.3, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.coreFlowAlpha * 0.34, glow: false });
       // V1.4 事件视界细环（素材03）：黑核边缘的锋利亮环，反向慢旋
-      drawCgAsset('cgUltRimRing1', u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.eventRimScale * scale, null, { rot: -u.totalT * 1.1, blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.eventRimAlpha + absorbedK * CG_ULT_CONFIG.wheel.eventRimAbsorbedBoost + collapseK * 0.16, glow: false });
+      drawCgAsset('cgUltRimRing1', u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.eventRimScale * scale, null, { rot: -u.totalT * 1.1, blend: 'lighter', alpha: 0.32 + absorbedK * 0.10 + collapseK * 0.08, glow: false });
       // V1.5b 内圈高速涡流：贴着视界的物质坠入层（与外吸积盘反向、更快）
-      drawCgAsset(`cgUltHole${1 + ((holeFrame + 1) % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.innerFlowScale * scale, null, { rot: u.totalT * (2.8 + collapseK * 1.6), blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.innerFlowAlpha * (0.72 + collapseK * 0.22), glow: false });
-      drawCgUltimateShadowFlames(size, 0.78 + collapseK * 0.28, 1.2 + collapseK * 2.0);
+      drawCgAsset(`cgUltHole${1 + ((holeFrame + 1) % 4)}`, u.x, u.y, CG_ULT_CONFIG.wheel.coreRadius * CG_ULT_CONFIG.wheel.innerFlowScale * scale, null, { rot: u.totalT * (2.8 + collapseK * 1.6), blend: 'lighter', alpha: CG_ULT_CONFIG.wheel.innerFlowAlpha * (0.46 + collapseK * 0.12), glow: false });
+      drawCgUltimateShadowFlames(size, 0.42 + collapseK * 0.18, 1.1 + collapseK * 1.1);
       // Only the molten edge crosses actors; the wide black bodies stay behind.
       drawCgUltimateRibbons(bladeScale, collapseK, absorbedK, 'front');
       // 等比月牙负责连续切痕；暗色刀身与窄亮刃分层，禁止再次拉成 300x150。
-      const slashCount = CG_ULT_CONFIG.quality.slashes[cgQualityIndex()];
+      const slashCount = (u.ribbonSurge > 0.32 || collapseK > 0.62) ? CG_ULT_CONFIG.quality.slashes[cgQualityIndex()] : 0;
       for (let index = 0; index < slashCount; index++) {
         const angle = u.totalT * CG_ULT_CONFIG.wheel.bladeSpeed * (1.12 + collapseK * 0.55) + index * TAU / slashCount;
         const radius = (CG_ULT_CONFIG.wheel.slashRadius + (index % 2 ? 12 : -8)) * bladeScale;
@@ -13492,7 +13565,6 @@
         }
       }
       drawCgUltimateSpaceCuts(bladeScale);
-      drawCgUltimateRazorRing(bladeScale, 0); // 轨道半径固定，不随 collapse 内缩
       // 外缘收割模组分两遍绘制：先画解析式切向拖光，再画独立金属刀身。
       // 金属层不做贴图残影；只有能量、刃线和空间裂口保留运动轨迹。
       const bladeCount = CG_ULT_CONFIG.quality.blades[cgQualityIndex()];
@@ -13543,7 +13615,6 @@
       if (u.t < 0.42) {
         drawCgUltimateRibbons(bladeScale, 1, Math.min(u.absorbed, 80) / 80, 'back');
         drawCgUltimateRibbons(bladeScale, 1, Math.min(u.absorbed, 80) / 80, 'front');
-        drawCgUltimateRazorRing(bladeScale, 0);
         const bladeCount = CG_ULT_CONFIG.quality.blades[cgQualityIndex()];
         const bladeOrbitR = CG_ULT_CONFIG.wheel.bladeRadius * bladeScale;
         for (let index = 0; index < bladeCount; index++) {
@@ -23230,6 +23301,7 @@
   function toggleWingSelection(key) {
     if (!(key in equippedWings)) return;
     equippedWings[key] = !equippedWings[key];
+    cuteUiBurst(`title:wing:${key}`);
     if (equippedWings[key]) loadAssetGroup(WING_ASSET_GROUPS[key] || []);
     const opt = WING_OPTIONS.find(o => o.key === key);
     setMessage((equippedWings[key] ? '已装备：' : '已卸下：') + (opt ? opt.name : key), 1.6);
@@ -23243,6 +23315,7 @@
   function selectChar(which) {
     if (!CHARACTERS[which] || which === selectedChar) return;
     prefetchCharacterAssets(which);
+    cuteUiBurst(`title:char:${which}`);
     if (state === 'title') {
       resetCorruptGunState(false);
       selectedChar = which;
@@ -26140,6 +26213,7 @@
   }
 
   function update(dt) {
+    updateCuteUiMotion(dt);
     if (paused) {
       audio.update(dt, false);
       return;
@@ -40108,7 +40182,144 @@
     gold: 'rgba(240,180,70,.92)',
     barBg: 'rgba(150,185,225,.38)',
   });
+  const CUTE_UI_MOTION_CONFIG = Object.freeze({
+    spring: 250,
+    damping: 25,
+    hoverScale: 1.015,
+    selectedScale: 1.012,
+    pressedScale: 0.94,
+    hoverLift: -2,
+    selectedLift: -1,
+    releaseKick: 1.35,
+    burstCounts: Object.freeze([3, 3, 2, 2]),
+    poolCaps: Object.freeze([12, 10, 6, 4]),
+    ambientTitle: Object.freeze([12, 8, 4, 2]),
+    ambientBattle: Object.freeze([8, 6, 4, 2]),
+    particleLife: Object.freeze([0.46, 0.38]),
+  });
+  const CUTE_UI_CONTROL_KEYS = Object.freeze([
+    'title:start',
+    'title:char:witch', 'title:char:yanuxiya', 'title:char:anna', 'title:char:reaver',
+    'title:char:motherlife', 'title:char:skyward', 'title:char:corruptgun',
+    'title:wing:moonfeather', 'title:wing:reaverwing', 'title:wing:saintcrown',
+    'title:wing:nightcoffin', 'title:wing:skyglory', 'title:wing:motherhive',
+    'title:quality:high', 'title:quality:medium', 'title:quality:low', 'title:quality:ultra',
+    'skill:Y', 'skill:Space', 'skill:X', 'skill:Q', 'skill:E', 'skill:T',
+    'mobile:targetFps', 'mobile:fullscreen', 'mobile:pauseGame', 'mobile:restartGame',
+    'leaderboard:open', 'leaderboard:profile', 'leaderboard:updateNotice', 'leaderboard:close',
+    'leaderboard:retry', 'leaderboard:refresh', 'leaderboard:leaderboardPrev',
+    'leaderboard:leaderboardNext', 'leaderboard:sideGuestbook', 'leaderboard:sideHistory',
+    'leaderboard:guestbookRefresh', 'leaderboard:guestbookCompose',
+  ]);
+  const cuteUiMotionStates = Object.create(null);
+  for (const id of CUTE_UI_CONTROL_KEYS) {
+    cuteUiMotionStates[id] = { scale: 1, scaleV: 0, lift: 0, liftV: 0, hover: false, pressed: false, selected: false, rect: null };
+  }
+  const cuteUiParticles = Array.from({ length: CUTE_UI_MOTION_CONFIG.poolCaps[0] }, () => ({
+    active: false, scene: 'title', kind: 0, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 0, size: 0, spin: 0, rot: 0, tint: '150,220,255',
+  }));
+  let cuteUiPressedId = '';
+  let cuteUiPointerId = null;
   const tyBarPulseMap = new Map(); // 血条/能量条数值变化脉冲状态
+
+  function cuteUiQualityIndex() { return Math.max(0, Math.min(3, perfLevel | 0)); }
+  function cuteUiState(id) { return cuteUiMotionStates[id] || null; }
+  function cuteUiRectContains(rect, point) {
+    return !!rect && !!point && point.x >= rect.x && point.x <= rect.x + rect.w && point.y >= rect.y && point.y <= rect.y + rect.h;
+  }
+  function observeCuteUiControl(id, x, y, w, h, selected = false) {
+    const s = cuteUiState(id);
+    if (!s) return null;
+    s.rect = { x, y, w, h };
+    s.hover = !IS_MOBILE_RUNTIME && cuteUiRectContains(s.rect, lastCanvasPointer);
+    s.pressed = cuteUiPressedId === id;
+    s.selected = !!selected;
+    return s;
+  }
+  function applyCuteUiMotion(s, x, y, w, h) {
+    if (!s) return;
+    const cx = x + w / 2, cy = y + h / 2;
+    ctx.translate(cx, cy + s.lift);
+    ctx.scale(s.scale, s.scale);
+    ctx.translate(-cx, -cy);
+  }
+  function cuteUiBurst(id, x = null, y = null) {
+    const s = cuteUiState(id);
+    const rect = s && s.rect;
+    const cx = Number.isFinite(x) ? x : rect ? rect.x + rect.w / 2 : W / 2;
+    const cy = Number.isFinite(y) ? y : rect ? rect.y + rect.h / 2 : H / 2;
+    const q = cuteUiQualityIndex();
+    const cap = CUTE_UI_MOTION_CONFIG.poolCaps[q];
+    const count = CUTE_UI_MOTION_CONFIG.burstCounts[q];
+    for (let i = 0; i < count; i++) {
+      let p = null;
+      for (let j = 0; j < cap; j++) {
+        if (!cuteUiParticles[j].active) { p = cuteUiParticles[j]; break; }
+      }
+      if (!p) break;
+      const a = -Math.PI / 2 + (i - (count - 1) / 2) * 0.82 + rand(-0.16, 0.16);
+      const edgeX = rect ? Math.min(34, rect.w * 0.34) : 12;
+      const edgeY = rect ? Math.min(22, rect.h * 0.30) : 10;
+      p.active = true;
+      p.scene = state === 'title' ? 'title' : 'hud';
+      p.kind = i & 1;
+      p.x = cx + Math.cos(a) * edgeX;
+      p.y = cy + Math.sin(a) * edgeY;
+      p.vx = Math.cos(a) * rand(24, 48);
+      p.vy = Math.sin(a) * rand(28, 55) - 18;
+      p.maxLife = rand(CUTE_UI_MOTION_CONFIG.particleLife[1], CUTE_UI_MOTION_CONFIG.particleLife[0]);
+      p.life = p.maxLife;
+      p.size = rand(2.8, 4.6);
+      p.spin = rand(-4, 4);
+      p.rot = rand(0, TAU);
+      p.tint = i % 3 === 0 ? '255,180,220' : (i % 3 === 1 ? '150,220,255' : '155,230,205');
+    }
+  }
+  function pressCuteUi(id, pointerId = null, x = null, y = null) {
+    const s = cuteUiState(id);
+    if (!s) return false;
+    cuteUiPressedId = id;
+    cuteUiPointerId = pointerId;
+    s.pressed = true;
+    if (Number.isFinite(x) && Number.isFinite(y)) cuteUiBurst(id, x, y);
+    return true;
+  }
+  function releaseCuteUi(pointerId = null, id = '') {
+    if (pointerId !== null && cuteUiPointerId !== null && pointerId !== cuteUiPointerId) return;
+    const key = id || cuteUiPressedId;
+    const s = cuteUiState(key);
+    if (s) {
+      s.pressed = false;
+      s.scaleV += CUTE_UI_MOTION_CONFIG.releaseKick;
+    }
+    cuteUiPressedId = '';
+    cuteUiPointerId = null;
+  }
+  function updateCuteUiMotion(dt) {
+    const safeDt = Math.min(1 / 20, Math.max(0, dt || 0));
+    const cfg = CUTE_UI_MOTION_CONFIG;
+    for (const id of CUTE_UI_CONTROL_KEYS) {
+      const s = cuteUiMotionStates[id];
+      const targetScale = s.pressed ? cfg.pressedScale : (s.hover ? cfg.hoverScale : (s.selected ? cfg.selectedScale : 1));
+      const targetLift = s.pressed ? 1 : (s.hover ? cfg.hoverLift : (s.selected ? cfg.selectedLift : 0));
+      s.scaleV += (targetScale - s.scale) * cfg.spring * safeDt;
+      s.liftV += (targetLift - s.lift) * cfg.spring * safeDt;
+      const drag = Math.exp(-cfg.damping * safeDt);
+      s.scaleV *= drag; s.liftV *= drag;
+      s.scale += s.scaleV * safeDt; s.lift += s.liftV * safeDt;
+    }
+    const cap = cfg.poolCaps[cuteUiQualityIndex()];
+    for (let i = 0; i < cuteUiParticles.length; i++) {
+      const p = cuteUiParticles[i];
+      if (i >= cap) { p.active = false; continue; }
+      if (!p.active) continue;
+      p.life -= safeDt;
+      p.x += p.vx * safeDt; p.y += p.vy * safeDt;
+      p.vx *= Math.exp(-2.8 * safeDt); p.vy = p.vy * Math.exp(-2.0 * safeDt) - 8 * safeDt;
+      p.rot += p.spin * safeDt;
+      if (p.life <= 0) p.active = false;
+    }
+  }
 
   function tyUiGradient(x, y, w, h, a = 1) {
     // UI 面板位置尺寸稳定 → 渐变对象按定位键缓存（原为每帧新建）
@@ -40157,6 +40368,44 @@
     ctx.save();
     ctx.globalAlpha = alpha;
     ctx.drawImage(cv, cx - s / 2, cy - s / 2);
+    ctx.restore();
+  }
+
+  function drawCuteUiAmbient(scene = 'title') {
+    const q = cuteUiQualityIndex();
+    const count = scene === 'title' ? CUTE_UI_MOTION_CONFIG.ambientTitle[q] : CUTE_UI_MOTION_CONFIG.ambientBattle[q];
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < count; i++) {
+      const phase = time * (scene === 'title' ? 0.38 : 0.24) + i * 1.731;
+      let x, y;
+      if (scene === 'title') {
+        x = 30 + ((i * 83 + time * 9) % (W - 60));
+        y = 58 + ((i * 137) % Math.max(120, H - 150)) + Math.sin(phase * 1.7) * 9;
+      } else {
+        const left = (i & 1) === 0;
+        x = left ? 16 + (i % 3) * 18 : W - 18 - (i % 3) * 18;
+        y = 106 + ((i * 173) % Math.max(140, H - 280)) + Math.sin(phase) * 8;
+      }
+      const twinkle = 0.45 + 0.55 * Math.abs(Math.sin(phase * 2.4));
+      if (i & 1) drawCuteBubble(x, y, 2.2 + (i % 3), (scene === 'title' ? 0.20 : 0.12) * twinkle, i % 3 ? '150,220,255' : '255,180,220');
+      else drawCuteSparkle(x, y, 2.6 + (i % 2), (scene === 'title' ? 0.30 : 0.16) * twinkle, phase);
+    }
+    ctx.restore();
+  }
+
+  function drawCuteUiParticles(scene = 'title') {
+    const cap = CUTE_UI_MOTION_CONFIG.poolCaps[cuteUiQualityIndex()];
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < cap; i++) {
+      const p = cuteUiParticles[i];
+      if (!p.active || p.scene !== scene) continue;
+      const life = clamp(p.life / Math.max(0.001, p.maxLife), 0, 1);
+      const env = Math.min(1, (1 - life) * 8) * life;
+      if (p.kind) drawCuteBubble(p.x, p.y, p.size * (0.65 + (1 - life) * 0.45), 0.62 * env, p.tint);
+      else drawCuteSparkle(p.x, p.y, p.size * (0.72 + life * 0.35), 0.84 * env, p.rot);
+    }
     ctx.restore();
   }
 
@@ -40791,6 +41040,7 @@
 
   function drawUI() {
     ctx.save();
+    if (state !== 'title') drawCuteUiAmbient('battle');
     // Top boss bar
     if (state === 'boss' && boss) {
       if (boss.kind === 'migua') {
@@ -40840,6 +41090,7 @@
     if (state !== 'title') {
       if (IS_MOBILE_RUNTIME) {
         drawMobileBattleHud();
+        drawCuteUiParticles('hud');
         ctx.restore();
         return;
       }
@@ -40917,15 +41168,19 @@
         ctx.fillText(`Graze / Combo ×${player.combo}`, W - 24, grazeScore > 0 ? 90 : 72);
       }
     }
+    if (state !== 'title') drawCuteUiParticles('hud');
     ctx.restore();
   }
 
   function drawMobileSkillButton(cx, cy, R, key, name, cdRate, ready, iconKey, color = '255,216,128') {
-    const pressed = isTouchControlActive('skill', key);
-    const rr = pressed ? R * 0.94 : R;
+    const motionId = `skill:${key}`;
+    const motion = observeCuteUiControl(motionId, cx - R - 8, cy - R - 8, (R + 8) * 2, (R + 8) * 2, ready);
+    const pressed = isTouchControlActive('skill', key) || cuteUiPressedId === motionId;
+    const rr = R;
     registerTouchSkill(cx, cy, R + 18, key, name);
     ctx.save();
-    ctx.translate(cx, cy);
+    ctx.translate(cx, cy + (motion ? motion.lift : 0));
+    if (motion) ctx.scale(motion.scale, motion.scale);
     const base = ctx.createRadialGradient(-rr * 0.28, -rr * 0.32, 2, 0, 0, rr * 1.14);
     base.addColorStop(0, ready ? 'rgba(180,230,255,.78)' : 'rgba(255,255,255,.72)');
     base.addColorStop(0.58, ready ? 'rgba(255,210,235,.80)' : 'rgba(220,238,255,.84)');
@@ -40985,7 +41240,7 @@
     ctx.fillStyle = ready ? '#2f4a72' : '#e060a0';
     ctx.fillText(key === 'Space' ? 'S' : key, -rr + 8, -rr + 9);
     ctx.textBaseline = 'alphabetic';
-    ctx.font = '800 12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
+    useFittedCuteFont(name, 800, 15, 14, R * 2 + 38);
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.80)';
     ctx.strokeText(name, 0, rr + 18);
     ctx.fillStyle = ready ? '#2f6aa8' : '#e060a0';
@@ -41003,6 +41258,8 @@
     registerTouchRect(type, x - 8, y - 8, w + 16, h + 16, key);
     const pressed = activeTouchControl && activeTouchControl.type === type && (!key || activeTouchControl.key === key);
     ctx.save();
+    const motion = observeCuteUiControl(`mobile:${type}`, x, y, w, h, hot);
+    applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, { r: 14, hot: pressed || hot, stripAlpha: pressed || hot ? 0.09 : 0.035, scanAlpha: pressed || hot ? 0.09 : 0.035, cornerAlpha: pressed || hot ? 0.58 : 0.24 });
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -41198,6 +41455,8 @@
   function drawSkill(x, y, key, name, cdRate, ready = false, iconOverride = null) {
     ctx.save();
     const cx = x + 36, cy = y + 26, R = 30;
+    const motion = observeCuteUiControl(`skill:${key}`, cx - R - 8, cy - R - 8, (R + 8) * 2, (R + 8) * 2, ready);
+    applyCuteUiMotion(motion, cx - R - 8, cy - R - 8, (R + 8) * 2, (R + 8) * 2);
     registerTouchSkill(cx, cy, R + 20, key, name);
     ctx.fillStyle = ready ? 'rgba(180,230,255,.82)' : 'rgba(255,255,255,.74)';
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.fill();
@@ -41256,7 +41515,7 @@
     ctx.font = '800 14px Nunito, Arial, sans-serif';
     ctx.strokeText(key, cx, cy - R - 8); 
     ctx.fillStyle = ready ? '#2f4a72' : '#e060a0'; ctx.fillText(key, cx, cy - R - 8);
-    ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
+    useFittedCuteFont(name, 800, 15, 14, 86);
     ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(0,0,0,.55)';
     ctx.strokeText(name, cx, cy + R + 16);
     ctx.fillStyle = ready ? '#7ec8ff' : '#ff9ec8'; ctx.fillText(name, cx, cy + R + 16);
@@ -41756,11 +42015,15 @@
       const on = key === qualityPreset;
       qualityCards.push({ key, x, y, w: bw, h: bh });
       if (IS_MOBILE_RUNTIME) registerTouchRect('titleQuality', x - 5, y - 5, bw + 10, bh + 10, key);
+      ctx.save();
+      const motion = observeCuteUiControl(`title:quality:${key}`, x, y, bw, bh, on);
+      applyCuteUiMotion(motion, x, y, bw, bh);
       drawTyTechPanel(x, y, bw, bh, { r: 10, hot: on, stripAlpha: on ? 0.14 : 0.06, scanAlpha: on ? 0.14 : 0.05, cornerAlpha: on ? 0.85 : 0.35 });
       ctx.fillStyle = on ? '#2f4a72' : 'rgba(70,105,145,.78)';
       ctx.font = `900 ${compact ? 22 : 24}px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif`;
       ctx.textBaseline = 'middle';
       ctx.fillText(q.label, x + bw * 0.5, y + bh * 0.5 + 0.5);
+      ctx.restore();
     }
     ctx.restore();
   }
@@ -41768,6 +42031,8 @@
   function drawLeaderboardButton(x, y, w, h, label, action, active = false) {
     registerLeaderboardHit(action, x, y, w, h);
     ctx.save();
+    const motion = observeCuteUiControl(`leaderboard:${action}`, x, y, w, h, active);
+    applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, { r: Math.min(14, h / 2), hot: active, stripAlpha: active ? 0.16 : 0.08, scanAlpha: active ? 0.16 : 0.07 });
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -42258,6 +42523,8 @@
     const tone = TITLE_CARD_TONES[index % TITLE_CARD_TONES.length];
     const copy = TITLE_CHARACTER_COPY[key] || { detail: '', hint: '点击选择' };
     ctx.save();
+    const motion = observeCuteUiControl(`title:char:${key}`, x, y, w, h, selected);
+    applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 18,
       hot: selected,
@@ -42313,6 +42580,8 @@
 
   function drawTitleWingCard(option, x, y, w, h, enabled) {
     ctx.save();
+    const motion = observeCuteUiControl(`title:wing:${option.key}`, x, y, w, h, enabled);
+    applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 14,
       hot: enabled,
@@ -42342,6 +42611,8 @@
     titleStartRect = { x, y, w, h };
     if (mobile) registerTouchRect('startGame', x - 10, y - 8, w + 20, h + 16);
     ctx.save();
+    const motion = observeCuteUiControl('title:start', x, y, w, h, true);
+    applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 22,
       hot: true,
@@ -42378,13 +42649,7 @@
     bloom.addColorStop(0.46, 'rgba(154,224,255,.18)');
     bloom.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = bloom; ctx.fillRect(0, 0, W, 280);
-    for (let i = 0; i < 14; i++) {
-      const sx = W * 0.10 + (i * 51 + Math.sin(time * 0.8 + i) * 18) % (W * 0.80);
-      const sy = 30 + (Math.sin(time * 1.3 + i * 0.9) * 0.5 + 0.5) * 122;
-      const tw = 0.45 + 0.55 * Math.abs(Math.sin(time * 3.2 + i));
-      if (i % 2) drawCuteBubble(sx, sy, 3 + (i % 3), 0.24 * tw, i % 3 ? '255,180,220' : '150,220,255');
-      else drawCuteSparkle(sx, sy, 2.8 + (i % 3), 0.36 * tw, time * 0.7 + i);
-    }
+    drawCuteUiAmbient('title');
     ctx.restore();
 
     const cc = curChar();
@@ -42447,6 +42712,7 @@
     ctx.fillStyle = '#fff7fb';
     ctx.fillText('战斗中：左侧换人 · 右侧技能 · 空白处拖动', W / 2, layout.hintY);
     ctx.restore();
+    drawCuteUiParticles('title');
     ctx.restore();
   }
 
@@ -42473,13 +42739,7 @@
     bloom.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = bloom;
     ctx.fillRect(0, H * 0.07, W, H * 0.39);
-    for (let i = 0; i < 16; i++) {
-      const sx = W * 0.09 + (i * 49 + Math.sin(time * 0.7 + i) * 20) % (W * 0.82);
-      const sy = H * 0.12 + (Math.sin(time * 1.1 + i) * 0.5 + 0.5) * H * 0.23;
-      const tw = 0.45 + 0.55 * Math.abs(Math.sin(time * 3 + i));
-      if (i % 2) drawCuteBubble(sx, sy, 3.2 + (i % 3), 0.22 * tw, i % 3 ? '255,180,220' : '150,220,255');
-      else drawCuteSparkle(sx, sy, 3 + (i % 3), 0.34 * tw, time * 0.6 + i);
-    }
+    drawCuteUiAmbient('title');
     ctx.restore();
 
     const cc = curChar();
@@ -42540,6 +42800,7 @@
     drawTitleStartButton(layout.startY, layout.startH, false);
 	    drawQualitySelector(W / 2, layout.qualityY, false);
 	    drawLeaderboardTitleActions(W / 2, layout.actionsY, false);
+	    drawCuteUiParticles('title');
 	    ctx.restore();
 	  }
 
@@ -42868,6 +43129,42 @@
     return !!activeTouchControl && activeTouchControl.type === type && activeTouchControl.key === key;
   }
 
+  function cuteUiIdForTouchControl(ctrl) {
+    if (!ctrl) return '';
+    if (ctrl.type === 'skill') return `skill:${ctrl.key}`;
+    if (ctrl.type === 'titleCharacter') return `title:char:${ctrl.key}`;
+    if (ctrl.type === 'titleWing') return `title:wing:${ctrl.key}`;
+    if (ctrl.type === 'titleQuality') return `title:quality:${ctrl.key}`;
+    if (ctrl.type === 'startGame') return 'title:start';
+    if (ctrl.type === 'targetFps' || ctrl.type === 'fullscreen' || ctrl.type === 'pauseGame' || ctrl.type === 'restartGame') return `mobile:${ctrl.type}`;
+    return '';
+  }
+  function cuteUiControlAtPoint(pt) {
+    for (let i = leaderboardHitCards.length - 1; i >= 0; i--) {
+      const c = leaderboardHitCards[i];
+      if (cuteUiRectContains(c, pt)) return `leaderboard:${c.action}`;
+    }
+    const touch = hitTouchControl(pt);
+    const touchId = cuteUiIdForTouchControl(touch);
+    if (touchId) return touchId;
+    if (state === 'title') {
+      for (const c of characterCards) if (cuteUiRectContains(c, pt)) return `title:char:${c.key}`;
+      for (const c of wingCards) if (cuteUiRectContains(c, pt)) return `title:wing:${c.key}`;
+      for (const c of qualityCards) if (cuteUiRectContains(c, pt)) return `title:quality:${c.key}`;
+      if (cuteUiRectContains(titleStartRect, pt)) return 'title:start';
+    }
+    return '';
+  }
+  function cuteUiSkillIdForCode(code) {
+    if (code === 'Space') return 'skill:Space';
+    if (code === 'KeyX') return 'skill:X';
+    if (code === 'KeyY') return 'skill:Y';
+    if (code === 'KeyQ') return 'skill:Q';
+    if (code === 'KeyE') return 'skill:E';
+    if (code === 'KeyT') return 'skill:T';
+    return '';
+  }
+
   function triggerVirtualSkill(key) {
     if (state === 'title') return false;
     unlockAudio();
@@ -42976,7 +43273,12 @@
       e.preventDefault();
       return;
     }
-    keys[e.code] = true;
+	    keys[e.code] = true;
+    const cuteSkillId = cuteUiSkillIdForCode(e.code);
+    if (cuteSkillId && !e.repeat && state !== 'title') {
+      pressCuteUi(cuteSkillId);
+      cuteUiBurst(cuteSkillId);
+    }
     unlockAudio();   // 首个按键即解锁音频（满足自动播放策略）
     if (e.code === 'Space' && skywardActive() && state !== 'title') {
       if (!e.repeat) beginSkywardBlinkAim(lastCanvasPointer);
@@ -43011,6 +43313,8 @@
   }, { passive: false });
   window.addEventListener('keyup', (e) => {
     keys[e.code] = false;
+    const cuteSkillId = cuteUiSkillIdForCode(e.code);
+    if (cuteSkillId) releaseCuteUi(null, cuteSkillId);
     if (e.code === 'Space' && skywardBlinkAiming()) {
       finishSkywardBlinkAim(false);
       e.preventDefault();
@@ -43024,8 +43328,10 @@
       e.preventDefault();
       return;
     }
-    const rawPt = rawCanvasPos(e);
-    lastCanvasPointer = rawPt;
+	    const rawPt = rawCanvasPos(e);
+	    lastCanvasPointer = rawPt;
+    const cuteControlId = cuteUiControlAtPoint(rawPt);
+    if (cuteControlId) pressCuteUi(cuteControlId, e.pointerId, rawPt.x, rawPt.y);
     if (handleLeaderboardPointer(rawPt)) {
       e.preventDefault();
       return;
@@ -43076,10 +43382,12 @@
     if (pointerDown && pointerMovePointerId === e.pointerId) setPointerTarget(e, true);
   });
   canvas.addEventListener('pointerup', (e) => {
+    releaseCuteUi(e.pointerId);
     if (activeTouchButtonPointer === e.pointerId) { activeTouchButtonPointer = null; activeTouchControl = null; }
     if (pointerMovePointerId === e.pointerId) clearMovePointer();
   });
   canvas.addEventListener('pointercancel', (e) => {
+    releaseCuteUi(e.pointerId);
     if (activeTouchButtonPointer === e.pointerId) { activeTouchButtonPointer = null; activeTouchControl = null; }
     if (pointerMovePointerId === e.pointerId) clearMovePointer();
   });
@@ -43122,6 +43430,7 @@
   });
   window.addEventListener('blur', () => {
     keys.Space = false;
+    releaseCuteUi();
     cancelSkywardBlinkAim();
   });
 
@@ -43715,7 +44024,8 @@
           u.ribbonSurge = u.flashT < CG_ULT_RIBBON_CONFIG.surgeDuration
             ? Math.pow(Math.sin(Math.PI * u.flashT / CG_ULT_RIBBON_CONFIG.surgeDuration), 2)
             : 0;
-          u.ribbonOrbit = ribbonElapsed * CG_ULT_RIBBON_CONFIG.baseAngularSpeed;
+          u.bladeSpinAngle = ribbonElapsed * CG_ULT_CONFIG.wheel.bladeSpeed * 1.18;
+          u.ribbonOrbit = u.bladeSpinAngle;
         }
         if (chosen === 'cast') {
           const muzzle = cgUltimateMuzzle();
@@ -45891,9 +46201,33 @@
         for (let i = 0; i < frames; i++) {
           time += dt;
           titlePulse += dt;
+          updateCuteUiMotion(dt);
         }
         draw();
         return { rows: leaderboardData.length, status: leaderboardFetchStatus, view: leaderboardView };
+      },
+      pressCuteControl(id = 'title:start') {
+        pressCuteUi(id);
+        cuteUiBurst(id);
+        draw();
+        return cuteUiState(id) ? { ...cuteUiState(id) } : null;
+      },
+      releaseCuteControl(id = 'title:start') {
+        releaseCuteUi(null, id);
+        draw();
+        return cuteUiState(id) ? { ...cuteUiState(id) } : null;
+      },
+      cuteMotionSnapshot() {
+        return {
+          config: JSON.parse(JSON.stringify(CUTE_UI_MOTION_CONFIG)),
+          activeParticles: cuteUiParticles.filter(p => p.active).length,
+          pressedId: cuteUiPressedId,
+          controls: Object.fromEntries(CUTE_UI_CONTROL_KEYS.map(id => [id, {
+            scale: cuteUiMotionStates[id].scale,
+            lift: cuteUiMotionStates[id].lift,
+            selected: cuteUiMotionStates[id].selected,
+          }])),
+        };
       },
     };
 	  }

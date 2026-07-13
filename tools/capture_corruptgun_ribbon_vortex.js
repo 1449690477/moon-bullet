@@ -111,11 +111,11 @@ function syncAcceptance() {
     path.join(ROOT, 'moon-bullet-main', '7号战机 开发文件夹', '大招 炼狱影刃 开发文件夹', '验收截图'),
   ];
   const files = [
-    ['reference_vs_game.png', 'V3.34_熔流绸带涡_参考并排.png'],
-    ['ribbon_vortex.gif', 'V3.34_熔流绸带涡_完整动效.gif'],
-    ['game_flash_lightning.png', 'V3.34_熔流绸带涡_炽闪放电.png'],
-    ['game_low_quality.png', 'V3.34_熔流绸带涡_低画质.png'],
-    ['report.json', 'V3.34_熔流绸带涡_验收报告.json'],
+    ['reference_vs_game.png', 'V3.41_黑刃吸蚀涡_参考并排.png'],
+    ['ribbon_vortex.gif', 'V3.41_黑刃吸蚀涡_完整动效.gif'],
+    ['game_flash_lightning.png', 'V3.41_黑刃吸蚀涡_炽闪放电.png'],
+    ['game_low_quality.png', 'V3.41_黑刃吸蚀涡_低画质.png'],
+    ['report.json', 'V3.41_黑刃吸蚀涡_验收报告.json'],
   ];
   for (const folder of folders) {
     fs.mkdirSync(folder, { recursive: true });
@@ -226,9 +226,9 @@ async function main() {
     if (qualityRebuild.low.segments.some(value => value !== 14) || qualityRebuild.restored.segments.some(value => value !== 32)) {
       throw new Error(`adaptive ribbon segments failed: ${JSON.stringify(qualityRebuild)}`);
     }
-    if (middle.nearBlack < 0.18 || middle.nearBlack > 0.90) throw new Error(`near-black coverage out of range: ${middle.nearBlack}`);
-    if (middle.hot < 0.003 || middle.hot > 0.10) throw new Error(`hot-edge coverage out of range: ${middle.hot}`);
-    if (peak.metrics.whiteHot < 0.0002 || peak.metrics.whiteHot > 0.035) throw new Error(`white-hot peak out of range: ${peak.metrics.whiteHot}`);
+    if (middle.nearBlack < 0.58 || middle.nearBlack > 0.84) throw new Error(`near-black coverage out of range: ${middle.nearBlack}`);
+    if (middle.hot < 0.012 || middle.hot > 0.065) throw new Error(`hot-edge coverage out of range: ${middle.hot}`);
+    if (peak.metrics.whiteHot < 0.0002 || peak.metrics.whiteHot > 0.020) throw new Error(`white-hot peak out of range: ${peak.metrics.whiteHot}`);
     if (report.errors.length || report.missing.length) throw new Error(`runtime errors=${report.errors.length}, 404=${report.missing.length}`);
     console.log(`[ribbon-vortex] ${uniqueFrames}/36 unique | black ${(middle.nearBlack * 100).toFixed(1)}% | hot ${(middle.hot * 100).toFixed(1)}% | white ${(peak.metrics.whiteHot * 100).toFixed(2)}%`);
     console.log(`[ribbon-vortex] ${path.relative(ROOT, OUT)}`);

@@ -187,19 +187,21 @@ async function main() {
     for (let index = 1; index < angles.length; index++) {
       const rawDelta = angles[index] - angles[index - 1];
       const delta = Math.atan2(Math.sin(rawDelta), Math.cos(rawDelta));
-      if (delta < 0.17 || delta > 0.24) throw new Error(`unexpected per-frame blade motion: ${delta}`);
+      // V3.41 keeps the blades readable at roughly one revolution per second,
+      // with a short surge window instead of the old slow, uniform orbit.
+      if (delta < 0.25 || delta > 0.46) throw new Error(`unexpected per-frame blade motion: ${delta}`);
       totalAngle += delta;
     }
     const radii = rotation.frames.map(frame => frame.snapshot.ultimate.bladeAudit.blades[0].radius);
     const uniqueFrames = new Set(rotation.frames.map(frame => hashDataUrl(frame.preview))).size;
     const edgePhases = new Set(rotation.frames.map(frame => frame.snapshot.ultimate.bladeAudit.blades[0].edgePhase.toFixed(3))).size;
     if (rotation.ready.length !== 6) throw new Error(`harvester assets missing: ${rotation.ready.join(',')}`);
-    if (totalAngle < 6.20 || totalAngle > 6.50) throw new Error(`blade orbit incomplete or unstable: ${totalAngle}`);
+    if (totalAngle < 8.30 || totalAngle > 10.35) throw new Error(`blade orbit incomplete or unstable: ${totalAngle}`);
     if (Math.max(...radii) - Math.min(...radii) > 0.5) throw new Error('blade orbit radius drifted');
     if (uniqueFrames < 28 || edgePhases < 12) throw new Error(`blade motion too static: frames=${uniqueFrames} glints=${edgePhases}`);
     if (rotation.frames.some(frame => !frame.snapshot.ultimate.bladeAudit.noTextureGhost)) throw new Error('texture ghost path is still active');
 
-    const cutTimes = [0, 45, 90, 170, 300, 430, 520];
+    const cutTimes = [0, 45, 90, 170, 300, 430, 580];
     const cutEntries = [];
     for (const ms of cutTimes) {
       const capture = await page.evaluate(value => {
@@ -268,7 +270,7 @@ async function main() {
     }
     makeContact(path.join(OUT, 'blade_quality_contact.png'), 'HARVEST BLADE QUALITY MODES', qualityEntries, 3, 260, 480);
     const qualityCounts = qualityEntries.map(entry => [entry.audit.count, entry.audit.trailSegments, entry.audit.afterimages, entry.audit.detachedDust]);
-    if (JSON.stringify(qualityCounts) !== JSON.stringify([[6, 7, 2, 4], [5, 5, 1, 2], [4, 3, 1, 1]])) throw new Error(`quality blade budget mismatch: ${JSON.stringify(qualityCounts)}`);
+    if (JSON.stringify(qualityCounts) !== JSON.stringify([[6, 7, 1, 3], [5, 5, 1, 2], [4, 3, 0, 1]])) throw new Error(`quality blade budget mismatch: ${JSON.stringify(qualityCounts)}`);
 
     const report = {
       generatedAt: new Date().toISOString(), source: path.relative(ROOT, SERVE_DIR) || '.',

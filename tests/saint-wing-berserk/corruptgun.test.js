@@ -251,7 +251,7 @@ describe('seventh fighter corruption gun', () => {
         size: 900, discSize: 540, innerDiscSize: 358,
         damageRadius: 500, damage: 250, tick: 0.4,
         slowRadius: 620, slowMultiplier: 0.3, slowLinger: 0.6,
-        bladeSpeed: 4.1, bladeBodyWidth: 216, bladeBodyHeight: 104,
+        bladeSpeed: 4.8, bladeBodyWidth: 220, bladeBodyHeight: 102,
       },
       finale: { radius: 680, baseDamage: 900, damagePerAbsorbed: 20, bossMultiplier: 0.8, hitStop: 0.1, shake: 14 },
       phaseOneBossSequenceStacks: 19,
@@ -382,13 +382,16 @@ describe('seventh fighter corruption gun', () => {
     expect(cg.ultimateAbsorbBonusForTest(80)).toBe(1.8);
     expect(cg.ultimateAbsorbBonusForTest(180)).toBe(1.8);
     expect(cg.ultimateFinaleDamageForTest(180)).toBe(4500);
-    expect(cg.ultimatePullForTest(700, false)).toBe(520);
-    expect(cg.ultimatePullForTest(679, false)).toBe(900);
-    expect(cg.ultimatePullForTest(679, true)).toBe(1620);
-    expect(cg.ultimateSpiralPullForTest(680, 'bullet', false)).toEqual({ radial: 520, tangential: 455, direction: 'clockwise' });
+    expect(cg.ultimatePullForTest(700, false)).toBe(1320);
+    expect(cg.ultimatePullForTest(679, false)).toBe(1320);
+    expect(cg.ultimatePullForTest(679, true)).toBe(3498);
+    const bulletSpiral = cg.ultimateSpiralPullForTest(680, 'bullet', false);
+    expect(bulletSpiral).toMatchObject({ radial: 1320, direction: 'clockwise' });
+    expect(bulletSpiral.tangential).toBeCloseTo(572.6315789473684, 6);
     const enemySpiral = cg.ultimateSpiralPullForTest(320, 'enemy', false);
-    expect(enemySpiral).toMatchObject({ radial: 200, direction: 'clockwise' });
-    expect(enemySpiral.tangential).toBeCloseTo(97.875, 6);
+    expect(enemySpiral).toMatchObject({ direction: 'clockwise' });
+    expect(enemySpiral.radial).toBeCloseTo(345.94594594594594, 6);
+    expect(enemySpiral.tangential).toBeCloseTo(151.45945945945945, 6);
   });
 
   it('renders a stable crisp disc with continuous counter-rotating blade layers', () => {
@@ -413,10 +416,10 @@ describe('seventh fighter corruption gun', () => {
       name: '熔流绸带涡',
       referenceVideo: '28220131220-1-192.mp4',
       config: {
-        counts: [6, 5, 4, 3],
+        counts: [6, 5, 4, 4],
         segments: [32, 24, 14, 10],
-        tangentStrands: [1, 1, 1, 1],
-        surgeStrands: [2, 2, 1, 1],
+        tangentStrands: [1, 1, 1, 0],
+        surgeStrands: [3, 2, 1, 1],
         surgeEdgeEchoes: [2, 2, 1, 1],
         surgePeriod: 0.8,
         surgeDuration: 0.2,
@@ -452,24 +455,24 @@ describe('seventh fighter corruption gun', () => {
   it('keeps the V2 harvester blades material-separated with bounded trail and cut lifecycles', () => {
     const ultimate = cg.ultimateSpec();
     expect(ultimate.wheel).toMatchObject({
-      bladeRadius: 314,
-      bladeBodyWidth: 216,
-      bladeBodyHeight: 104,
-      bladeTrailSweep: 0.58,
-      bladeTrailWidth: 26,
-      bladeEnergyBaseAlpha: 0.17,
-      bladeEnergyPulseAlpha: 0.10,
-      bladeGlintPeriod: 0.42,
-      bladeGlintSpan: 0.10,
-      bladeGhostLag: 0.14,
-      bladeGhostAlpha: 0.16,
-      bladeRootRingSpeed: 2.1,
-      bladeSpineFlowSpeed: 1.55,
-      bladeTipBaseLength: 12,
-      bladeTipPeakLength: 26,
-      spaceCutLife: 0.46,
-      spaceCutRadiusMin: 272,
-      spaceCutRadiusMax: 382,
+      bladeRadius: 318,
+      bladeBodyWidth: 220,
+      bladeBodyHeight: 102,
+      bladeTrailSweep: 0.38,
+      bladeTrailWidth: 18,
+      bladeEnergyBaseAlpha: 0.24,
+      bladeEnergyPulseAlpha: 0.16,
+      bladeGlintPeriod: 0.32,
+      bladeGlintSpan: 0.11,
+      bladeGhostLag: 0.10,
+      bladeGhostAlpha: 0.14,
+      bladeRootRingSpeed: 2.6,
+      bladeSpineFlowSpeed: 2.05,
+      bladeTipBaseLength: 30,
+      bladeTipPeakLength: 64,
+      spaceCutLife: 0.58,
+      spaceCutRadiusMin: 260,
+      spaceCutRadiusMax: 400,
     });
     expect(ultimate.render).toMatchObject({
       textureGhosts: false,
@@ -498,13 +501,13 @@ describe('seventh fighter corruption gun', () => {
     expect(source).toContain('traceCgUltimateBladeSpine');
     expect(source).toContain('bladeTrailSegments: Object.freeze([7, 5, 3, 2])');
     expect(source).toContain('blades: Object.freeze([6, 5, 4, 4])');
-    expect(source).toContain('bladeAfterimages: Object.freeze([2, 1, 1, 0])');
+    expect(source).toContain('bladeAfterimages: Object.freeze([1, 1, 0, 0])');
     expect(source).toContain('bladeSpinePackets: Object.freeze([3, 2, 1, 1])');
     expect(source).toContain('bladeRootArcs: Object.freeze([2, 1, 1, 1])');
-    expect(source).toContain('bladeDust: Object.freeze([4, 2, 1, 0])');
+    expect(source).toContain('bladeDust: Object.freeze([3, 2, 1, 1])');
     expect(source).toContain('bladeHubParticles: Object.freeze([3, 2, 1, 1])');
-    expect(source).toContain('bladeTipParticles: Object.freeze([2, 1, 1, 1])');
-    expect(source).toContain('bladeEdgeGlints: Object.freeze([2, 1, 1, 1])');
+    expect(source).toContain('bladeTipParticles: Object.freeze([2, 2, 1, 1])');
+    expect(source).toContain('bladeEdgeGlints: Object.freeze([2, 2, 1, 1])');
     expect(source).toContain("type: 'wheelHitCut'");
     expect(source).not.toContain('const key = `cgUltScythe${1 + (index % 8)}`');
     expect(source).not.toContain('const blades = []');
