@@ -13,6 +13,7 @@ let cachedLeaderboardInternals = null;
 let cachedSkywardInternals = null;
 let cachedDragonBreathInternals = null;
 let cachedCorruptGunInternals = null;
+let cachedDreamModeInternals = null;
 
 function makeGradient() {
   return { addColorStop() {} };
@@ -142,6 +143,7 @@ export function loadInternals() {
   cachedSkywardInternals = context.window.__skywardInternals__;
   cachedDragonBreathInternals = context.window.__dragonBreathInternals__;
   cachedCorruptGunInternals = context.window.__corruptgunInternals__;
+  cachedDreamModeInternals = context.window.__dreamModeInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
   return cachedInternals;
 }
@@ -214,6 +216,13 @@ export function loadCorruptGunInternals() {
   loadInternals();
   if (!cachedCorruptGunInternals) throw new Error('window.__corruptgunInternals__ was not exposed');
   return cachedCorruptGunInternals;
+}
+
+export function loadDreamModeInternals() {
+  if (cachedDreamModeInternals) return cachedDreamModeInternals;
+  loadInternals();
+  if (!cachedDreamModeInternals) throw new Error('window.__dreamModeInternals__ was not exposed');
+  return cachedDreamModeInternals;
 }
 
 export function makeCtxIn(opts = {}) {

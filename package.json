@@ -32,6 +32,7 @@
     "capture:corruptgun-ribbons": "node tools/capture_corruptgun_ribbon_vortex.js",
     "perf:corruptgun-mobile": "node tools/capture_corruptgun_mobile_perf.js",
     "capture:dragon": "node tools/capture_dragon_breath_acceptance.js",
+    "capture:dream": "node tools/capture_dream_mode_acceptance.js",
     "render:dragon": "node tools/headless_dragon_render.js"
   },
   "keywords": [],
