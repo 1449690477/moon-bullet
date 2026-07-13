@@ -13,6 +13,7 @@ code = code.replace(/\}\)\(\);\s*$/,
   "\nglobalThis.__DREAM_TEST__ = {\n" +
   "  enemyPositions: () => enemies.filter(e => e && e.dream).map(e => ({ x: e.x, y: e.y })),\n" +
   "  bulletStyles: () => enemyBullets.filter(b => b && b.dream).map(b => b.dreamStyle),\n" +
+  "  bulletDetails: () => enemyBullets.filter(b => b && b.dream).map(b => ({ style: b.dreamStyle, shape: b.dreamShape, skin: b.dreamSkin, assetKey: b.dreamAssetKey, emitter: b.dreamEmitter, motion: b.dreamMotion, fallback: b.dreamFallback })),\n" +
   "};\n})();");
 
 const failures = [];
@@ -76,7 +77,15 @@ const documentStub = {
   body: elStub(),
   hidden: false,
 };
-function ImageStub() { this.onload = null; this.onerror = null; Object.defineProperty(this, 'src', { set() {} }); }
+function ImageStub() {
+  this.onload = null; this.onerror = null;
+  this.width = this.naturalWidth = 96;
+  this.height = this.naturalHeight = 96;
+  Object.defineProperty(this, 'src', {
+    set(value) { this._src = value; if (typeof this.onload === 'function') this.onload(); },
+    get() { return this._src || ''; },
+  });
+}
 function AudioContextStub() {
   const gain = { gain: { value: 0, setValueAtTime: noop, exponentialRampToValueAtTime: noop }, connect: noop };
   return {
@@ -99,6 +108,7 @@ const sandbox = {
   document: documentStub,
   window: null,
   Image: ImageStub,
+  HTMLImageElement: ImageStub,
   Audio: elStub,
   AudioContext: AudioContextStub,
   webkitAudioContext: AudioContextStub,
@@ -183,19 +193,37 @@ if (cap && internals) {
   // ── 3. 十波弹幕：预算 + 多样性 + 确定性 ────────────────────
   const budget = internals.patternBudgetSpec();
   assert(budget.logicalBulletCap === 96 && budget.enemyCap === 6, '性能预算保持：96 弹上限 / 6 敌上限');
+  const skinSpec = typeof internals.bulletSkinSpec === 'function' ? internals.bulletSkinSpec() : [];
+  const assetStatus = typeof internals.bulletAssetStatus === 'function' ? internals.bulletAssetStatus() : null;
+  const diversitySpec = typeof internals.patternDiversitySpec === 'function' ? internals.patternDiversitySpec() : null;
+  assert(skinSpec.length >= 12 && new Set(skinSpec.map(s => s.assetKey)).size >= 12, `真实敌弹素材 ≥ 12（${skinSpec.length} 皮肤 / ${new Set(skinSpec.map(s => s.assetKey)).size} 素材）`);
+  assert(assetStatus && Array.isArray(assetStatus.missing) && assetStatus.missing.length === 0, '敌弹素材路径对账无缺失');
+  assert(diversitySpec && diversitySpec.motionFamilies.length >= 10, `运动族 ≥ 10（${diversitySpec?.motionFamilies?.length || 0}）`);
+  assert(diversitySpec && diversitySpec.emitterKeys.length >= 28, `发射器 ≥ 28（${diversitySpec?.emitterKeys?.length || 0}）`);
+  assert(diversitySpec && diversitySpec.runtimeFallbackReporting === true, '运行时 fallback 会真实上报');
   const waveStyleSets = [];
+  const allAssets = new Set(), allMotions = new Set(), allEmitters = new Set();
   let everBullets = 0;
   for (let wave = 1; wave <= 10; wave++) {
     cap.prepare('mobs', { wave, elapsed: 0.1 });
     let maxBullets = 0, maxWarnings = 0, maxLasers = 0, maxEnemies = 0;
     const styles = new Set();
+    const assets = new Set(), motions = new Set(), emitters = new Set(), fallbacks = new Set();
     for (let chunk = 0; chunk < 90; chunk++) {   // 90 × 6帧 = 9 秒实战推进
       const s = cap.step(6);
       maxBullets = Math.max(maxBullets, s.logicalBulletCount);
       maxWarnings = Math.max(maxWarnings, s.warningCount);
       maxLasers = Math.max(maxLasers, s.laserCount);
       maxEnemies = Math.max(maxEnemies, s.enemyCount);
-      if (chunk % 5 === 0) hooks.bulletStyles().forEach(x => styles.add(x));
+      if (chunk % 5 === 0) {
+        hooks.bulletStyles().forEach(x => styles.add(x));
+        hooks.bulletDetails().forEach((bullet) => {
+          if (bullet.assetKey) { assets.add(bullet.assetKey); allAssets.add(bullet.assetKey); }
+          if (bullet.motion) { motions.add(bullet.motion); allMotions.add(bullet.motion); }
+          if (bullet.emitter) { emitters.add(bullet.emitter); allEmitters.add(bullet.emitter); }
+          if (bullet.fallback) fallbacks.add(bullet.skin || bullet.assetKey || 'unknown');
+        });
+      }
     }
     everBullets = Math.max(everBullets, maxBullets);
     console.log(`  wave${wave}: 峰值弹量 ${maxBullets}, styles=[${[...styles].sort().join('+')}]`);
@@ -204,9 +232,16 @@ if (cap && internals) {
     assert(maxWarnings <= 4 && maxLasers <= 4, `第${wave}波 预警/激光 ≤ 4 (${maxWarnings}/${maxLasers})`);
     assert(maxEnemies <= 6, `第${wave}波 敌数 ${maxEnemies} ≤ 6`);
     assert(maxBullets >= 18, `第${wave}波 有足量弹幕输出（峰值 ${maxBullets} ≥ 18）`);
+    assert(assets.size >= 4, `第${wave}波 真实贴图 ≥ 4（${assets.size}）`);
+    assert(motions.size >= 3, `第${wave}波 运动族 ≥ 3（${motions.size}）`);
+    assert(emitters.size >= 4, `第${wave}波 实测发射器 ≥ 4（${emitters.size}）`);
+    assert(fallbacks.size === 0, `第${wave}波 无静默敌弹 fallback`);
   }
   const uniqueCombos = new Set(waveStyleSets).size;
-  assert(uniqueCombos >= 5, `十波风格组合多样（${uniqueCombos} 种不同 style 组合 ≥ 5）`);
+  assert(uniqueCombos >= 3, `十波威胁色组合有区分（${uniqueCombos} 种不同 style 组合 ≥ 3）`);
+  assert(allAssets.size >= 12, `十波实测真实贴图 ≥ 12（${allAssets.size}）`);
+  assert(allMotions.size >= 10, `十波实测运动族 ≥ 10（${allMotions.size}）`);
+  assert(allEmitters.size >= 24, `十波实测发射器 ≥ 24（${allEmitters.size}）`);
   notes.push('全程弹量峰值: ' + everBullets + ' / 96');
 
   // 确定性：同一波同种子两次快照 hash 一致

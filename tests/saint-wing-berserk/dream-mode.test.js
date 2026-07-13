@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { loadDreamModeInternals } from './setup.js';
 
 describe('dream mode level one: Fallen Radiance Sanctuary', () => {
@@ -40,7 +40,8 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       hud: ['wave', 'active-time', 'stars', 'hits', 'damage-multiplier'],
     });
     expect(dream.previewSpec()).toMatchObject({
-      usesRuntimePatternSampler: true,
+      usesRuntimePatternSampler: false,
+      usesSharedPatternAndMotionCatalog: true,
       showsMobs: 6,
       showsBossPhases: 5,
       showsWaveRules: true,
@@ -115,9 +116,9 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       laserCap: 4,
       poolSize: 128,
       activeCountStrategy: 'once-per-frame-plus-o1-release',
-      primaryReserve: 18,
-      secondaryReserve: 8,
-      accentThreshold: 72,
+      primaryReserve: 14,
+      secondaryReserve: 6,
+      accentThreshold: 84,
       aimedWarningMin: 0.45,
       laserWarningMin: 0.75,
       corridorGapMin: 96,
@@ -148,16 +149,18 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     const emitters = source.slice(start, end);
     expect(start).toBeGreaterThan(0);
     expect(end).toBeGreaterThan(start);
-    expect(emitters.match(/function dreamEmit/g)?.length).toBeGreaterThanOrEqual(23);
-    expect(emitters.match(/dreamTryAtomicBulletGroup/g)?.length).toBeGreaterThanOrEqual(23);
+    expect(emitters.match(/function dreamEmit/g)?.length).toBeGreaterThanOrEqual(28);
+    expect(emitters.match(/dreamTryAtomicBulletGroup/g)?.length).toBeGreaterThanOrEqual(28);
     expect(emitters).toContain('addDreamBullet(');
     expect(emitters).not.toContain('addEnemyBullet(');
 
     const poolStart = source.indexOf('const dreamBulletPool = []');
     const poolEnd = source.indexOf('function addEnemyBullet(', poolStart);
     const pool = source.slice(poolStart, poolEnd);
-    expect(pool).toContain('dreamBulletPool.pop() || {}');
+    expect(pool).toContain('let b = dreamBulletPool.pop()');
+    expect(pool).toContain('if (!b) { b = {}; dreamBulletAllocations++; }');
     expect(pool).toContain('dreamBulletPool.push(bullet)');
+    expect(pool).toContain('dreamBulletAllocations');
     expect(pool).toContain('let dreamActiveBulletCount = 0');
     expect(pool).toContain('function dreamSyncBulletBudget(force = false)');
     expect(pool).toContain('dreamSyncBulletBudget() >= DREAM_PERF_CONFIG.bulletCap');
@@ -168,12 +171,69 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(pool).toContain('slotReserve');
   });
 
+  it('uses a broad real-asset skin catalogue with no missing source files', () => {
+    expect(typeof dream.bulletSkinSpec).toBe('function');
+    expect(typeof dream.bulletAssetStatus).toBe('function');
+    const skins = dream.bulletSkinSpec();
+    const assetKeys = new Set(skins.map((skin) => skin.assetKey));
+    const families = new Set(skins.map((skin) => skin.family));
+    expect(skins.length).toBeGreaterThanOrEqual(12);
+    expect(assetKeys.size).toBeGreaterThanOrEqual(12);
+    expect(families.size).toBeGreaterThanOrEqual(8);
+    for (const skin of skins) {
+      expect(skin).toMatchObject({
+        key: expect.any(String),
+        assetKey: expect.any(String),
+        assetPath: expect.stringMatching(/^assets\/bullets(?:_v\d+|_dream)?\/.+\.(?:png|webp)$/),
+        family: expect.any(String),
+      });
+      expect(existsSync(new URL(`../../${skin.assetPath}`, import.meta.url)), `${skin.key}: ${skin.assetPath}`).toBe(true);
+    }
+    expect(dream.bulletAssetStatus()).toMatchObject({ expected: assetKeys.size, missing: [], decodeFailed: [], fallbackKeys: [] });
+  });
+
+  it('exposes at least ten motion families and twenty-eight bounded emitters', () => {
+    expect(typeof dream.patternDiversitySpec).toBe('function');
+    const diversity = dream.patternDiversitySpec();
+    expect(diversity.realAssetCount).toBeGreaterThanOrEqual(12);
+    expect(diversity.motionFamilies.length).toBeGreaterThanOrEqual(10);
+    expect(new Set(diversity.motionFamilies).size).toBe(diversity.motionFamilies.length);
+    expect(diversity.emitterKeys.length).toBeGreaterThanOrEqual(28);
+    expect(new Set(diversity.emitterKeys).size).toBe(diversity.emitterKeys.length);
+    expect(diversity.runtimeFallbackReporting).toBe(true);
+  });
+
+  it('bakes clarity once per skin and keeps the per-bullet draw path allocation-free', () => {
+    const bakeStart = source.indexOf('function getDreamBulletSkinSprite');
+    const bakeEnd = source.indexOf('function drawDreamBulletFast', bakeStart);
+    const drawEnd = source.indexOf('function drawEnemyBullets', bakeEnd);
+    const bake = source.slice(bakeStart, bakeEnd);
+    const draw = source.slice(bakeEnd, drawEnd);
+    expect(bakeStart).toBeGreaterThan(0);
+    expect(bakeEnd).toBeGreaterThan(bakeStart);
+    expect(drawEnd).toBeGreaterThan(bakeEnd);
+    expect(bake).toContain('dreamBulletSkinCache.get');
+    expect(bake).toContain('dreamBulletSkinCache.set');
+    expect(bake).toContain('drawImage');
+    expect(draw).toContain('getDreamBulletSkinSprite');
+    expect(draw).toContain('ctx.drawImage');
+    expect(draw).not.toContain('createRadialGradient');
+    expect(draw).not.toContain('createLinearGradient');
+    expect(draw).not.toContain('new Image');
+  });
+
   it('keeps every wave logical barrage identical in all four quality modes', () => {
     const qualities = ['high', 'medium', 'low', 'ultra'];
     const visualCombos = new Set();
+    const globalAssets = new Set();
+    const globalMotions = new Set();
+    const globalEmitters = new Set();
     const shapes = new Set();
     const styles = new Set();
     for (let wave = 1; wave <= 10; wave += 1) {
+      const waveAssets = new Set();
+      const waveMotions = new Set();
+      const waveEmitters = new Set();
       for (const elapsed of [2.4, 8.5, 13.7]) {
         const samples = qualities.map((quality) => dream.bulletSnapshotForTest({ wave, elapsed, quality }));
         expect(samples.map((sample) => sample.logicalCount)).toEqual(qualities.map(() => samples[0].logicalCount));
@@ -184,12 +244,28 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
           visualCombos.add(`${bullet.style}:${bullet.shape}`);
           shapes.add(bullet.shape);
           styles.add(bullet.style);
+          expect(bullet.assetKey).toEqual(expect.any(String));
+          expect(bullet.skin).toEqual(expect.any(String));
+          expect(bullet.motion).toEqual(expect.any(String));
+          expect(bullet.emitter).toEqual(expect.any(String));
+          waveAssets.add(bullet.assetKey);
+          waveMotions.add(bullet.motion);
+          waveEmitters.add(bullet.emitter);
+          globalAssets.add(bullet.assetKey);
+          globalMotions.add(bullet.motion);
+          globalEmitters.add(bullet.emitter);
         }
       }
+      expect(waveAssets.size, `wave ${wave} real bullet assets`).toBeGreaterThanOrEqual(4);
+      expect(waveMotions.size, `wave ${wave} motion families`).toBeGreaterThanOrEqual(3);
+      expect(waveEmitters.size, `wave ${wave} emitter voices`).toBeGreaterThanOrEqual(4);
     }
     expect([...shapes].sort()).toEqual(['crescent', 'diamond', 'needle', 'orb', 'shard', 'star']);
     expect([...styles].sort()).toEqual(['aimed', 'deco', 'hazard', 'spread']);
     expect(visualCombos.size).toBeGreaterThanOrEqual(14);
+    expect(globalAssets.size).toBeGreaterThanOrEqual(12);
+    expect(globalMotions.size).toBeGreaterThanOrEqual(10);
+    expect(globalEmitters.size).toBeGreaterThanOrEqual(24);
     expect(dream.patternBudgetSpec().decorationScale).toEqual([1, 0.6, 0.35, 0.2]);
   });
 

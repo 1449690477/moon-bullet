@@ -22,10 +22,13 @@ const PERF_CPU_RATE = Math.max(1, Number(process.env.DREAM_PERF_CPU_RATE || 1));
 const EXPECTED = { enemyCap: 6, bulletCap: 96, warningCap: 4, laserCap: 4 };
 
 const VIEWPORTS = [
-  { id: 'desktop_1280x720', width: 1280, height: 720, mobile: false },
-  { id: 'mobile_390x844', width: 390, height: 844, mobile: true },
-  { id: 'mobile_430x932', width: 430, height: 932, mobile: true },
+  { id: 'desktop_1280x720', width: 1280, height: 720, mobile: false, dpr: 1 },
+  { id: 'mobile_390x844_dpr3', width: 390, height: 844, mobile: true, dpr: 3 },
+  { id: 'mobile_430x932_dpr3', width: 430, height: 932, mobile: true, dpr: 3 },
 ];
+const VIEWPORT_FILTER = new Set(String(process.env.DREAM_CAPTURE_VIEWPORTS || '').split(',').map((value) => value.trim()).filter(Boolean));
+const ACTIVE_VIEWPORTS = VIEWPORT_FILTER.size ? VIEWPORTS.filter((viewport) => VIEWPORT_FILTER.has(viewport.id)) : VIEWPORTS;
+if (!ACTIVE_VIEWPORTS.length) throw new Error(`DREAM_CAPTURE_VIEWPORTS did not match: ${[...VIEWPORT_FILTER].join(', ')}`);
 
 const MOBILE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
 const DESKTOP_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
@@ -113,7 +116,7 @@ async function createPage(browser, viewport, diagnostics) {
   await page.setViewport({
     width: viewport.width,
     height: viewport.height,
-    deviceScaleFactor: 1,
+    deviceScaleFactor: viewport.dpr || 1,
     isMobile: viewport.mobile,
     hasTouch: viewport.mobile,
   });
@@ -172,8 +175,64 @@ function validateSnapshot(snapshot, label) {
   if (Array.isArray(snapshot?.layoutIssues) && snapshot.layoutIssues.length) {
     failures.push(`${label}: UI layout issues: ${snapshot.layoutIssues.join(', ')}`);
   }
-  if (snapshot?.fallbacks?.length) failures.push(`${label}: visual fallbacks active: ${snapshot.fallbacks.join(', ')}`);
+  if (snapshot?.fallbacks?.length) {
+    const labels = snapshot.fallbacks.map((entry) => typeof entry === 'string' ? entry : JSON.stringify(entry));
+    failures.push(`${label}: visual fallbacks active: ${labels.join(', ')}`);
+  }
   return { failures, counts: { enemies, bullets, warnings, lasers } };
+}
+
+function stringSet(snapshot, directNames, bulletName) {
+  for (const name of directNames) {
+    if (Array.isArray(snapshot?.[name])) return new Set(snapshot[name].filter(Boolean).map(String));
+  }
+  const bullets = Array.isArray(snapshot?.bullets) ? snapshot.bullets : [];
+  return new Set(bullets.map((bullet) => bullet?.[bulletName]).filter(Boolean).map(String));
+}
+
+async function auditDreamAssets(page, viewport, report) {
+  await page.evaluate(() => window.__dreamModeCapture__.prepare('lobby', { level: 1 }));
+  await page.waitForFunction(() => {
+    const fn = window.__dreamModeInternals__?.bulletAssetStatus;
+    if (typeof fn !== 'function') return true;
+    const status = fn();
+    const pending = Array.isArray(status?.pending) ? status.pending.length : Number(status?.pending || 0);
+    return pending === 0;
+  }, { timeout: 15000 }).catch(() => {
+    report.failures.push(`${viewport.id}/asset-audit: bullet textures did not settle within 15s`);
+  });
+  const api = await page.evaluate(() => {
+    const internals = window.__dreamModeInternals__;
+    return {
+      hasSkinSpec: typeof internals?.bulletSkinSpec === 'function',
+      hasAssetStatus: typeof internals?.bulletAssetStatus === 'function',
+      hasDiversitySpec: typeof internals?.patternDiversitySpec === 'function',
+      skins: typeof internals?.bulletSkinSpec === 'function' ? internals.bulletSkinSpec() : [],
+      status: typeof internals?.bulletAssetStatus === 'function' ? internals.bulletAssetStatus() : null,
+      diversity: typeof internals?.patternDiversitySpec === 'function' ? internals.patternDiversitySpec() : null,
+    };
+  });
+  const label = `${viewport.id}/asset-audit`;
+  if (!api.hasSkinSpec || !api.hasAssetStatus || !api.hasDiversitySpec) {
+    report.failures.push(`${label}: missing bulletSkinSpec/bulletAssetStatus/patternDiversitySpec acceptance API`);
+    return;
+  }
+  const assets = new Set(api.skins.map((skin) => skin.assetKey).filter(Boolean));
+  const families = new Set(api.skins.map((skin) => skin.family).filter(Boolean));
+  if (api.skins.length < 12) report.failures.push(`${label}: ${api.skins.length} declared skins < 12`);
+  if (assets.size < 12) report.failures.push(`${label}: ${assets.size} real assets < 12`);
+  if (families.size < 8) report.failures.push(`${label}: ${families.size} visual families < 8`);
+  if (Number.isFinite(api.status?.expected) && api.status.expected !== assets.size) report.failures.push(`${label}: status expects ${api.status.expected} assets for ${assets.size} unique skin assets`);
+  const pendingAssets = Array.isArray(api.status?.pending) ? api.status.pending : (Number(api.status?.pending || 0) ? ['unknown'] : []);
+  if (pendingAssets.length) report.failures.push(`${label}: pending assets ${pendingAssets.join(', ')}`);
+  if (api.status?.missing?.length) report.failures.push(`${label}: missing assets ${api.status.missing.join(', ')}`);
+  const failedAssets = api.status?.failed || api.status?.decodeFailed || [];
+  if (failedAssets.length) report.failures.push(`${label}: failed assets ${failedAssets.join(', ')}`);
+  if (api.status?.fallbackKeys?.length) report.failures.push(`${label}: runtime fallback keys ${api.status.fallbackKeys.join(', ')}`);
+  if ((api.diversity?.motionFamilies?.length || 0) < 10) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < 10`);
+  if ((api.diversity?.emitterKeys?.length || 0) < 28) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < 28`);
+  if (api.diversity?.runtimeFallbackReporting !== true) report.failures.push(`${label}: runtime fallback reporting is not enabled`);
+  report.assetAudit.push({ viewport: viewport.id, ...api, realAssetCount: assets.size, familyCount: families.size });
 }
 
 async function canvasMetrics(page) {
@@ -210,6 +269,7 @@ async function canvasMetrics(page) {
     return {
       canvas: { width: canvas.width, height: canvas.height },
       client: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+      viewport: { width: window.innerWidth, height: window.innerHeight, dpr: window.devicePixelRatio || 1 },
       visibleRatio: samples ? visible / samples : 0,
       brightRatio: samples ? bright / samples : 0,
       darkRatio: samples ? darkOutline / samples : 0,
@@ -218,10 +278,14 @@ async function canvasMetrics(page) {
   });
 }
 
-async function screenshotCanvas(page, fileName) {
-  const canvas = await page.$('#game, canvas');
-  if (!canvas) throw new Error('game canvas missing');
-  await canvas.screenshot({ path: path.join(OUT_DIR, fileName) });
+async function screenshotViewport(page, fileName) {
+  const screenshot = await page.screenshot({ captureBeyondViewport: false, fullPage: false });
+  const buffer = Buffer.from(screenshot);
+  fs.writeFileSync(path.join(OUT_DIR, fileName), buffer);
+  return {
+    width: buffer.subarray(12, 16).toString('ascii') === 'IHDR' ? buffer.readUInt32BE(16) : 0,
+    height: buffer.subarray(12, 16).toString('ascii') === 'IHDR' ? buffer.readUInt32BE(20) : 0,
+  };
 }
 
 async function prepare(page, scene, options = {}) {
@@ -251,10 +315,21 @@ async function captureTimeline(page, viewport, scene, options, framePoints, repo
     const validation = validateSnapshot(snapshot, label);
     report.failures.push(...validation.failures);
     const file = `${viewport.id}_${filePrefix}_f${String(frame).padStart(3, '0')}.png`;
-    await screenshotCanvas(page, file);
+    const screenshot = await screenshotViewport(page, file);
     const visual = await canvasMetrics(page);
     if (visual.visibleRatio < 0.02) report.failures.push(`${label}: canvas is visually blank (${visual.visibleRatio})`);
-    report.frames.push({ label, file, scene, options, frame, snapshot, counts: validation.counts, visual });
+    const expectedWidth = viewport.width * viewport.dpr;
+    const expectedHeight = viewport.height * viewport.dpr;
+    if (screenshot.width !== expectedWidth || screenshot.height !== expectedHeight) {
+      report.failures.push(`${label}: viewport capture ${screenshot.width}x${screenshot.height} != ${expectedWidth}x${expectedHeight}`);
+    }
+    if (Math.abs(visual.viewport.dpr - viewport.dpr) > 0.01) report.failures.push(`${label}: DPR ${visual.viewport.dpr} != ${viewport.dpr}`);
+    const right = visual.client.x + visual.client.width;
+    const bottom = visual.client.y + visual.client.height;
+    if (visual.client.x < -1 || visual.client.y < -1 || right > visual.viewport.width + 1 || bottom > visual.viewport.height + 1) {
+      report.failures.push(`${label}: canvas shifted or clipped (${JSON.stringify(visual.client)} in ${JSON.stringify(visual.viewport)})`);
+    }
+    report.frames.push({ label, file, shotKind: 'full-viewport', screenshot, scene, options, frame, snapshot, counts: validation.counts, visual });
   }
 }
 
@@ -265,10 +340,10 @@ async function captureHitFeedback(page, viewport, report) {
     const validation = validateSnapshot(snapshot, label);
     report.failures.push(...validation.failures);
     const file = `${viewport.id}_${prefix}_f${String(frame).padStart(3, '0')}_${phase}.png`;
-    await screenshotCanvas(page, file);
+    const screenshot = await screenshotViewport(page, file);
     const visual = await canvasMetrics(page);
     if (visual.visibleRatio < 0.02) report.failures.push(`${label}: canvas is visually blank (${visual.visibleRatio})`);
-    report.frames.push({ label, file, scene: 'hit-feedback', options: {}, frame, snapshot, counts: validation.counts, visual });
+    report.frames.push({ label, file, shotKind: 'full-viewport', screenshot, scene: 'hit-feedback', options: {}, frame, snapshot, counts: validation.counts, visual });
     report.hitFeedback.push({ viewport: viewport.id, phase, frame, snapshot });
   };
   const fail = (message) => report.failures.push(`${viewport.id}/hit feedback: ${message}`);
@@ -308,7 +383,14 @@ async function captureHitFeedback(page, viewport, report) {
 async function captureQualityParity(page, report) {
   const samples = [];
   const allCombos = new Set();
+  const allAssets = new Set();
+  const allSkins = new Set();
+  const allMotions = new Set();
+  const allEmitters = new Set();
   const waveCombos = new Map();
+  const waveAssets = new Map();
+  const waveMotions = new Map();
+  const waveEmitters = new Map();
   const qualities = ['high', 'medium', 'low', 'ultra'];
   for (let wave = 1; wave <= 10; wave += 1) {
     for (const elapsed of [2.4, 8.5, 13.7]) {
@@ -323,7 +405,13 @@ async function captureQualityParity(page, report) {
           quality,
           logicalCount: count(current, ['logicalBulletCount', 'enemyBulletCount', 'enemyBullets', 'bullets']),
           logicHash: current.logicHash || current.bulletLogicHash,
+          visualHash: current.visualHash || current.bulletVisualHash,
           bulletStyles: [...(current.bulletStyles || [])].sort(),
+          bulletAssets: [...stringSet(current, ['bulletAssets', 'bulletAssetKeys'], 'assetKey')].sort(),
+          bulletSkins: [...stringSet(current, ['bulletSkins'], 'skin')].sort(),
+          bulletMotions: [...stringSet(current, ['bulletMotions'], 'motion')].sort(),
+          bulletEmitters: [...stringSet(current, ['bulletEmitters'], 'emitter')].sort(),
+          fallbacks: [...(current.fallbacks || [])],
         });
       }
       const expected = group[0];
@@ -332,23 +420,46 @@ async function captureQualityParity(page, report) {
         if (sample.logicalCount !== expected.logicalCount) report.failures.push(`${label}: logical count ${sample.logicalCount} != ${expected.logicalCount}`);
         if (!sample.logicHash || sample.logicHash !== expected.logicHash) report.failures.push(`${label}: logic hash ${sample.logicHash} != ${expected.logicHash}`);
         if (JSON.stringify(sample.bulletStyles) !== JSON.stringify(expected.bulletStyles)) report.failures.push(`${label}: style/shape set differs from high quality`);
+        if (JSON.stringify(sample.bulletAssets) !== JSON.stringify(expected.bulletAssets)) report.failures.push(`${label}: real asset set differs from high quality`);
+        if (JSON.stringify(sample.bulletMotions) !== JSON.stringify(expected.bulletMotions)) report.failures.push(`${label}: motion set differs from high quality`);
+        if (sample.fallbacks.length) report.failures.push(`${label}: visual fallback active (${sample.fallbacks.map(String).join(', ')})`);
       }
       if (!waveCombos.has(wave)) waveCombos.set(wave, new Set());
+      if (!waveAssets.has(wave)) waveAssets.set(wave, new Set());
+      if (!waveMotions.has(wave)) waveMotions.set(wave, new Set());
+      if (!waveEmitters.has(wave)) waveEmitters.set(wave, new Set());
       for (const combo of expected.bulletStyles) {
         allCombos.add(combo);
         waveCombos.get(wave).add(combo);
       }
+      for (const asset of expected.bulletAssets) { allAssets.add(asset); waveAssets.get(wave).add(asset); }
+      for (const skin of expected.bulletSkins) allSkins.add(skin);
+      for (const motion of expected.bulletMotions) { allMotions.add(motion); waveMotions.get(wave).add(motion); }
+      for (const emitter of expected.bulletEmitters) { allEmitters.add(emitter); waveEmitters.get(wave).add(emitter); }
       samples.push(...group);
     }
   }
   report.qualityParity = samples;
   report.patternDiversity = {
     uniqueStyleShapeCombos: [...allCombos].sort(),
+    realAssets: [...allAssets].sort(),
+    skins: [...allSkins].sort(),
+    motionFamilies: [...allMotions].sort(),
+    emitters: [...allEmitters].sort(),
     perWave: Object.fromEntries([...waveCombos].map(([wave, combos]) => [wave, [...combos].sort()])),
+    assetsPerWave: Object.fromEntries([...waveAssets].map(([wave, values]) => [wave, [...values].sort()])),
+    motionsPerWave: Object.fromEntries([...waveMotions].map(([wave, values]) => [wave, [...values].sort()])),
+    emittersPerWave: Object.fromEntries([...waveEmitters].map(([wave, values]) => [wave, [...values].sort()])),
   };
   if (allCombos.size < 12) report.failures.push(`pattern diversity: only ${allCombos.size} style/shape combinations < 12`);
+  if (allAssets.size < 12) report.failures.push(`pattern diversity: only ${allAssets.size} real bullet assets < 12`);
+  if (allMotions.size < 10) report.failures.push(`pattern diversity: only ${allMotions.size} motion families < 10`);
+  if (allEmitters.size < 24) report.failures.push(`pattern diversity: only ${allEmitters.size} observed emitters < 24`);
   for (const [wave, combos] of waveCombos) {
     if (combos.size < 2) report.failures.push(`wave ${wave}: only ${combos.size} style/shape combinations < 2`);
+    if ((waveAssets.get(wave)?.size || 0) < 4) report.failures.push(`wave ${wave}: only ${waveAssets.get(wave)?.size || 0} real bullet assets < 4`);
+    if ((waveMotions.get(wave)?.size || 0) < 3) report.failures.push(`wave ${wave}: only ${waveMotions.get(wave)?.size || 0} motion families < 3`);
+    if ((waveEmitters.get(wave)?.size || 0) < 4) report.failures.push(`wave ${wave}: only ${waveEmitters.get(wave)?.size || 0} observed emitters < 4`);
   }
 }
 
@@ -397,6 +508,7 @@ async function runPerformance(page, report) {
 }
 
 function buildGif(prefix, frameFiles) {
+  if (!frameFiles.length) return { built: false, reason: 'no matching frames' };
   const listPath = path.join(OUT_DIR, `${prefix}.ffconcat`);
   const lines = ['ffconcat version 1.0'];
   for (const file of frameFiles) {
@@ -420,7 +532,7 @@ function writeHtml(report) {
   const sections = report.frames.map((entry) => `
     <figure>
       <img src="${entry.file}" alt="${entry.label}">
-      <figcaption><b>${entry.label}</b><br>enemy ${entry.counts.enemies} · bullet ${entry.counts.bullets} · warning ${entry.counts.warnings} · laser ${entry.counts.lasers}<br>hash ${entry.visual.pixelHash}</figcaption>
+      <figcaption><b>${entry.label}</b><br>full viewport ${entry.screenshot?.width || 0}×${entry.screenshot?.height || 0} · DPR ${entry.visual.viewport.dpr}<br>enemy ${entry.counts.enemies} · bullet ${entry.counts.bullets} · warning ${entry.counts.warnings} · laser ${entry.counts.lasers}<br>hash ${entry.visual.pixelHash}</figcaption>
     </figure>`).join('\n');
   const performance = report.performance ? `<p>Performance ${report.performance.durationSeconds}s: average <b>${report.performance.averageFps} FPS</b>, 1% low <b>${report.performance.onePercentLowFps} FPS</b>, CPU ${report.performance.averageCpuMs}ms</p>` : '';
   const html = `<!doctype html><meta charset="utf-8"><title>梦境模式第一关视觉验收</title>
@@ -445,6 +557,7 @@ async function main() {
     runtime: { node: process.version, chrome: '', executablePath },
     frames: [],
     qualityParity: [],
+    assetAudit: [],
     hitFeedback: [],
     performance: null,
     gifs: [],
@@ -461,17 +574,18 @@ async function main() {
       args: [
         '--no-sandbox', '--disable-setuid-sandbox', '--autoplay-policy=no-user-gesture-required',
         '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding', '--force-device-scale-factor=1',
+        '--disable-renderer-backgrounding',
       ],
     });
     report.runtime.chrome = await browser.version();
 
-    for (const viewport of VIEWPORTS) {
+    for (const viewport of ACTIVE_VIEWPORTS) {
       const page = await createPage(browser, viewport, diagnostics);
       try {
+        await auditDreamAssets(page, viewport, report);
         await captureTimeline(page, viewport, 'lobby', { level: 1 }, [0, 20, 60], report, 'lobby');
-        await captureTimeline(page, viewport, 'wave', { wave: 1, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 30, 90], report, 'wave01');
-        await captureTimeline(page, viewport, 'wave', { wave: 10, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 30, 90], report, 'wave10');
+        await captureTimeline(page, viewport, 'wave', { wave: 1, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 36, 84, 144], report, 'wave01');
+        await captureTimeline(page, viewport, 'wave', { wave: 10, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 36, 84, 144], report, 'wave10');
         await captureTimeline(page, viewport, 'boss', { phase: 4, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 45, 120], report, 'boss05');
         await captureTimeline(page, viewport, 'result', { stars: 3, elapsedMs: 390000 }, [0, 30, 90], report, 'result_3star');
         await captureTimeline(page, viewport, 'result', { stars: 0, elapsedMs: 450000 }, [0, 30, 90], report, 'result_0star');
@@ -479,7 +593,7 @@ async function main() {
         if (!viewport.mobile) {
           await captureTimeline(page, viewport, 'leaderboard', { level: 1 }, [0, 30, 90], report, 'leaderboard');
           for (let wave = 2; wave <= 9; wave += 1) {
-            await captureTimeline(page, viewport, 'wave', { wave, quality: 'high' }, [45], report, `wave${String(wave).padStart(2, '0')}`);
+            await captureTimeline(page, viewport, 'wave', { wave, quality: 'high' }, [0, 36, 84, 144], report, `wave${String(wave).padStart(2, '0')}`);
           }
           for (let phase = 0; phase < 4; phase += 1) {
             await captureTimeline(page, viewport, 'boss', { phase, quality: 'high' }, [0, 45, 120], report, `boss${String(phase + 1).padStart(2, '0')}`);
@@ -491,16 +605,16 @@ async function main() {
           await captureQualityParity(page, report);
         }
       } finally {
-        await page.close();
+        await page.close().catch(() => {});
       }
     }
 
     const performancePage = await createPage(browser, VIEWPORTS[1], diagnostics);
     try {
       await runPerformance(performancePage, report);
-      await screenshotCanvas(performancePage, 'mobile_390x844_performance_final.png');
+      await screenshotViewport(performancePage, 'mobile_390x844_dpr3_performance_final.png');
     } finally {
-      await performancePage.close();
+      await performancePage.close().catch(() => {});
     }
   } finally {
     if (browser) await browser.close().catch(() => {});

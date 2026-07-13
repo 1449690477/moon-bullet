@@ -1,0 +1,337 @@
+{
+  "asset_count": 8,
+  "assets": [
+    {
+      "canvas": [
+        112,
+        112
+      ],
+      "collision_outline_px": 3,
+      "key": "tri_blade_violet",
+      "motion_hint": "counter-rotating blade wheel",
+      "output": "assets/bullets_dream/tri_blade_violet.png",
+      "output_alpha_bbox": [
+        11,
+        11,
+        101,
+        96
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 5245
+      },
+      "output_sha256": "cca93bb694f4921d88c63585cb2c44a6b30a848202d20ddcc58f9ceecada4d52",
+      "role": "three-prong rotating cutter",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/1007_N__Sprite.png",
+      "source_alpha_bbox": [
+        0,
+        0,
+        128,
+        118
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 8793
+      },
+      "source_sha256": "84e17655354f1c6fc08d858d806f37201267675ace177720db8fe5f7384f2766",
+      "source_size": [
+        128,
+        128
+      ],
+      "transparent_padding_px": 12
+    },
+    {
+      "canvas": [
+        112,
+        112
+      ],
+      "collision_outline_px": 3,
+      "key": "spiral_halo_gold",
+      "motion_hint": "pulsing halo / orbit release",
+      "output": "assets/bullets_dream/spiral_halo_gold.png",
+      "output_alpha_bbox": [
+        13,
+        12,
+        100,
+        100
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 5805
+      },
+      "output_sha256": "76fb51f0801e923973707330cb375e6b6285f84f481be384cfd917a80437a1b5",
+      "role": "spiral halo pressure node",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/1019_N_2__Sprite.png",
+      "source_alpha_bbox": [
+        3,
+        1,
+        63,
+        62
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 2311
+      },
+      "source_sha256": "1efbe527c4065dbce4294796241896b2b12d7b0d2997bce64feb15d6066db926",
+      "source_size": [
+        64,
+        64
+      ],
+      "transparent_padding_px": 12
+    },
+    {
+      "canvas": [
+        112,
+        112
+      ],
+      "collision_outline_px": 3,
+      "key": "galaxy_vortex_white",
+      "motion_hint": "slow drift with tangent release",
+      "output": "assets/bullets_dream/galaxy_vortex_white.png",
+      "output_alpha_bbox": [
+        8,
+        12,
+        103,
+        103
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 6690
+      },
+      "output_sha256": "859f8ae42b540ca8045e71623729e088b784220a39894142b2129586a1810ee6",
+      "role": "vortex attractor core",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/1030_N__Sprite.png",
+      "source_alpha_bbox": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 11718
+      },
+      "source_sha256": "cb7ce75ef55c8ecb6effe0b233fb9a9c95f011a0fb1859a0bf1961234e1c781a",
+      "source_size": [
+        128,
+        128
+      ],
+      "transparent_padding_px": 12
+    },
+    {
+      "canvas": [
+        96,
+        96
+      ],
+      "collision_outline_px": 3,
+      "key": "trinity_orb_violet",
+      "motion_hint": "brake, split, then chase",
+      "output": "assets/bullets_dream/trinity_orb_violet.png",
+      "output_alpha_bbox": [
+        11,
+        11,
+        85,
+        83
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 4241
+      },
+      "output_sha256": "31ea7a6af81ca8abf5daa23adbc82d5a518b9b0f63108c62a7accf1da542cbfd",
+      "role": "three-core delayed orb",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/gw01__Sprite.png",
+      "source_alpha_bbox": [
+        15,
+        17,
+        115,
+        113
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 6398
+      },
+      "source_sha256": "0278b8c9759ddce8dfad6c60edbfd8642738bfe9cef3cace014f19ef5b1fe9db",
+      "source_size": [
+        128,
+        128
+      ],
+      "transparent_padding_px": 10
+    },
+    {
+      "canvas": [
+        112,
+        112
+      ],
+      "collision_outline_px": 3,
+      "key": "skull_sigil_white",
+      "motion_hint": "hold, flash, then charge",
+      "output": "assets/bullets_dream/skull_sigil_white.png",
+      "output_alpha_bbox": [
+        21,
+        8,
+        91,
+        103
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 4032
+      },
+      "output_sha256": "52f27a18c76776ad1d5e42affca888999a4d241d5b9e56507b28d78a1d391eb7",
+      "role": "telegraphed curse marker",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/Boss11_timgxx__Sprite.png",
+      "source_alpha_bbox": [
+        0,
+        0,
+        72,
+        101
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 1235
+      },
+      "source_sha256": "0531299601e03465a545d16caababf3da5b189fc2e098c175f887b1279290467",
+      "source_size": [
+        72,
+        102
+      ],
+      "transparent_padding_px": 12
+    },
+    {
+      "canvas": [
+        96,
+        96
+      ],
+      "collision_outline_px": 3,
+      "key": "chain_link_steel",
+      "motion_hint": "sine chain wall",
+      "output": "assets/bullets_dream/chain_link_steel.png",
+      "output_alpha_bbox": [
+        23,
+        6,
+        72,
+        89
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 3445
+      },
+      "output_sha256": "bb32a8920a19f2e9de6957759914e74f86d7e030a17e2ba885af5b34a74c7898",
+      "role": "linked moving gate segment",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/Boss19_hs_sk01__Sprite.png",
+      "source_alpha_bbox": [
+        15,
+        0,
+        49,
+        63
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 440,
+        "green_residue_pixels": 0,
+        "visible_pixels": 1530
+      },
+      "source_sha256": "c4e0b337cdb97a7aebb938ce6b421e17ab1e366d95828a541c54545c8db19eb1",
+      "source_size": [
+        64,
+        64
+      ],
+      "transparent_padding_px": 10
+    },
+    {
+      "canvas": [
+        96,
+        96
+      ],
+      "collision_outline_px": 3,
+      "key": "tentacle_shard_crimson",
+      "motion_hint": "twin snake / curved pursuit",
+      "output": "assets/bullets_dream/tentacle_shard_crimson.png",
+      "output_alpha_bbox": [
+        35,
+        8,
+        60,
+        89
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 1478
+      },
+      "output_sha256": "2c975eadab2ada113cc52dbeddb42132348041e7e9bb8379dbabdb6298f6385e",
+      "role": "segmented crimson ribbon",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/Boss03_Z_qidai01__Sprite.png",
+      "source_alpha_bbox": [
+        4,
+        13,
+        29,
+        121
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 1394
+      },
+      "source_sha256": "720563edbe161af56c2b551268af50d1dd193cfe351056b51fa1ed9bb711ada3",
+      "source_size": [
+        32,
+        128
+      ],
+      "transparent_padding_px": 10
+    },
+    {
+      "canvas": [
+        112,
+        112
+      ],
+      "collision_outline_px": 3,
+      "key": "wire_orb_silver",
+      "motion_hint": "nested orbit, then radial release",
+      "output": "assets/bullets_dream/wire_orb_silver.png",
+      "output_alpha_bbox": [
+        12,
+        12,
+        99,
+        100
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 4557
+      },
+      "output_sha256": "6b396a90912bfe95f46669b0afb7fc0a2cdf9a300c74b63589f8d493d70c9e16",
+      "role": "wireframe orbit anchor",
+      "source": "素材文件夹 一定优先使用！/sprites_png/source_barrage/bulletsource/texture/barragetex/barragetexinfo/ray04_lj_djs__Sprite.png",
+      "source_alpha_bbox": [
+        8,
+        8,
+        121,
+        120
+      ],
+      "source_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 6069
+      },
+      "source_sha256": "8f6f5ff83e88dc6942f2904fef679464304949cc38b4089b99cadd59e7b3206b",
+      "source_size": [
+        128,
+        128
+      ],
+      "transparent_padding_px": 12
+    }
+  ],
+  "pipeline": "tools/process_dream_bullet_assets.py",
+  "render_policy": "single-draw RGBA with baked 3px dark collision edge",
+  "schema": "moon-bullet/dream-bullet-assets/v1",
+  "source_policy": "user-provided barrage sprites; inputs are read-only"
+}
