@@ -1131,6 +1131,10 @@
     dreamChainLinkSteel: 'assets/bullets_dream/chain_link_steel.png',
     dreamTentacleShardCrimson: 'assets/bullets_dream/tentacle_shard_crimson.png',
     dreamWireOrbSilver: 'assets/bullets_dream/wire_orb_silver.png',
+    dreamSharedVolumeCore: 'assets/bullets_dream/shared_volume_core_atlas.png',
+    dreamSharedSpecularStreak: 'assets/bullets_dream/shared_specular_streak_atlas.png',
+    dreamSharedVelocityTrail: 'assets/bullets_dream/shared_velocity_trail_atlas.png',
+    dreamSharedImpactGlint: 'assets/bullets_dream/shared_impact_glint_atlas.png',
     enSeaturtleElite: 'assets/enemies_v2/seaturtle_elite.png',
     enTrilobiteElite: 'assets/enemies_v2/trilobite_elite.png',
     enLobsterElite: 'assets/enemies_v2/lobster_elite.png',
@@ -2399,6 +2403,40 @@
     wireOrb: Object.freeze({ asset: 'dreamWireOrbSilver', family: 'orb', spin: true, sourceScale: 0.94, edge: '#dce7ff', preoutlined: true }),
   });
   const DREAM_BULLET_ASSET_KEYS = Object.freeze([...new Set(Object.values(DREAM_BULLET_SKINS).map(skin => skin.asset))]);
+  const DREAM_BULLET_MATERIAL_ASSET_KEYS = Object.freeze([
+    'dreamSharedVolumeCore', 'dreamSharedSpecularStreak',
+    'dreamSharedVelocityTrail', 'dreamSharedImpactGlint',
+  ]);
+  const DREAM_BULLET_ALL_ASSET_KEYS = Object.freeze([...DREAM_BULLET_ASSET_KEYS, ...DREAM_BULLET_MATERIAL_ASSET_KEYS]);
+  const DREAM_BULLET_MATERIAL_CONFIG = Object.freeze({
+    version: 'V47-material-depth',
+    phaseCount: 4,
+    phaseRate: 9,
+    cacheFrame: Object.freeze({ width: 112, height: 128, anchorX: 56, anchorY: 47 }),
+    bodyFit: Object.freeze({ directional: 96, round: 88, blade: 94 }),
+    drawScale: 8.2,
+    speedStretch: Object.freeze({ start: 120, full: 420, max: 1.16 }),
+    facingResponse: 13,
+    prewarmPerFrame: 3,
+    trailSpeedMin: 48,
+    trailLengthScale: Object.freeze([1.05, 2.20]),
+    trailWidthScale: Object.freeze([0.92, 0.40]),
+    themes: Object.freeze([
+      Object.freeze({ key: 'violet', edge: '#a98cff', trail: 'rgba(118,73,230,.58)', hot: 'rgba(225,205,255,.92)' }),
+      Object.freeze({ key: 'crimson', edge: '#ff5f82', trail: 'rgba(202,36,74,.62)', hot: 'rgba(255,205,215,.92)' }),
+      Object.freeze({ key: 'gold', edge: '#ffc862', trail: 'rgba(218,137,42,.60)', hot: 'rgba(255,241,195,.94)' }),
+      Object.freeze({ key: 'silver', edge: '#9edcff', trail: 'rgba(91,157,220,.58)', hot: 'rgba(224,244,255,.94)' }),
+    ]),
+    orbFamilies: Object.freeze(['orb', 'halo', 'vortex', 'sigil', 'bloom', 'wisp', 'star', 'burst']),
+    hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, drawImagesPerBullet: 1 }),
+  });
+  const DREAM_BULLET_THEME_OVERRIDES = Object.freeze({
+    judgmentSpear: 2, firecracker: 2, spiralHalo: 2,
+    seraphArrowRed: 1, fireCore: 1, soulEmber: 1, bladeDome: 1, crescentWave: 1,
+    crossSlash: 1, daoWave: 1, bossStar: 1, tentacleShard: 1,
+    stormCore: 3, raySphere: 3, pathRibbon: 3, prismLance: 3, crystalBar: 3,
+    galaxyVortex: 3, chainLink: 3, wireOrb: 3,
+  });
   const DREAM_BULLET_SKIN_FAMILIES = Object.freeze({
     aimed: Object.freeze(['seraphArrowViolet', 'judgmentSpear', 'seraphArrowRed', 'firecracker', 'skullSigil', 'trinityOrb']),
     spread: Object.freeze(['raySphere', 'stormCore', 'prismLance', 'crystalBar', 'pathRibbon', 'spiralHalo', 'wireOrb']),
@@ -23673,7 +23711,7 @@
     dreamUi.select = false;
     dreamUi.tab = 'intel';
     dreamUi.selectedStage = 0;
-    loadAssetGroup(['bgSceneGothicCastle', 'bgSceneDarkHall', 'bgEclipse', 'seraphPhase1', 'seraphPhase2', 'seraphRage', 'droneIdle', 'nunIdle', 'holyshieldIdle', 'enBluecryst', 'reaperIdle', 'reaperAttack', 'reaperHit', 'voidchanterIdle', 'voidchanterAttack', 'voidchanterHit', ...DREAM_BULLET_ASSET_KEYS]);
+    loadAssetGroup(['bgSceneGothicCastle', 'bgSceneDarkHall', 'bgEclipse', 'seraphPhase1', 'seraphPhase2', 'seraphRage', 'droneIdle', 'nunIdle', 'holyshieldIdle', 'enBluecryst', 'reaperIdle', 'reaperAttack', 'reaperHit', 'voidchanterIdle', 'voidchanterAttack', 'voidchanterHit', ...DREAM_BULLET_ALL_ASSET_KEYS]);
   }
   function closeDreamMode() {
     dreamUi.open = false;
@@ -23735,7 +23773,7 @@
     leaderboardEligibleRun = false;
     audio.start();
     prefetchGameplayAssets();
-    loadAssetGroup(DREAM_BULLET_ASSET_KEYS);
+    loadAssetGroup(DREAM_BULLET_ALL_ASSET_KEYS);
     prefetchBossAssets('seraph');
     reset();
     resetDreamRunState();
@@ -25113,9 +25151,14 @@
   const dreamLiveBulletSet = new Set();
   const dreamBulletSkinCache = new Map();
   const dreamBulletFallbackKeys = new Set();
+  const dreamBulletMaterialFallbackKeys = new Set();
   let dreamBulletAllocations = 0;
   let dreamActiveBulletCount = 0;
   let dreamBulletBudgetStamp = Number.NaN;
+  let dreamBulletMaterialCacheBuilds = 0;
+  let dreamBulletMaterialPrewarmCursor = 0;
+  let dreamBulletMaterialWarmed = false;
+  const dreamBulletMaterialFrameStats = { trailBatches: 0, trailSegments: 0, bodyDraws: 0, materialPhases: 0 };
   function dreamPickBulletSkin(style = 'spread', shape = 'orb', salt = 0) {
     let list = DREAM_BULLET_SKIN_FAMILIES[style] || DREAM_BULLET_SKIN_FAMILIES.spread;
     if (shape === 'needle' || shape === 'shard') {
@@ -25132,6 +25175,7 @@
   }
   function dreamBulletAssetStatus() {
     const entries = DREAM_BULLET_ASSET_KEYS.map(key => ({ key, ready: !!(assets[key] && assets[key].ready), failed: !!(assets[key] && assets[key].failed), requested: !!(assets[key] && assets[key].requested) }));
+    const materials = DREAM_BULLET_MATERIAL_ASSET_KEYS.map(key => ({ key, ready: !!(assets[key] && assets[key].ready), failed: !!(assets[key] && assets[key].failed), requested: !!(assets[key] && assets[key].requested) }));
     return {
       expected: entries.length,
       loaded: entries.filter(entry => entry.ready).map(entry => entry.key),
@@ -25140,6 +25184,11 @@
       decodeFailed: entries.filter(entry => entry.failed).map(entry => entry.key),
       fallbackKeys: [...dreamBulletFallbackKeys],
       cacheEntries: dreamBulletSkinCache.size,
+      materialAssets: materials,
+      materialPending: materials.filter(entry => !entry.ready && !entry.failed).map(entry => entry.key),
+      materialMissing: materials.filter(entry => !assets[entry.key]).map(entry => entry.key),
+      materialDecodeFailed: materials.filter(entry => entry.failed).map(entry => entry.key),
+      materialFallbackKeys: [...dreamBulletMaterialFallbackKeys],
     };
   }
   function dreamSyncBulletBudget(force = false) {
@@ -25161,6 +25210,11 @@
     dreamBulletBudgetStamp = time;
     return count;
   }
+  function dreamCountTagged(list) {
+    let count = 0;
+    for (let i = 0; i < list.length; i++) if (list[i] && list[i].dream) count++;
+    return count;
+  }
   function releaseDreamBullet(bullet) {
     if (!bullet || !bullet.dream) return;
     if (bullet._dreamCounted) dreamActiveBulletCount = Math.max(0, dreamActiveBulletCount - 1);
@@ -25176,6 +25230,17 @@
     bullet.dreamAge = 0;
     bullet.dreamVisualDiameter = 0;
     bullet.dreamFallback = false;
+    bullet.dreamMaterialRef = null;
+    bullet.dreamMaterialTheme = 0;
+    bullet.dreamMaterialPhase = 0;
+    bullet.dreamVisualSeed = 0;
+    bullet.dreamFaceX = 0;
+    bullet.dreamFaceY = -1;
+    bullet.dreamDirX = 0;
+    bullet.dreamDirY = -1;
+    bullet.dreamSpeed = 0;
+    bullet.dreamTrailLength = 0;
+    bullet.dreamDepthScale = 1;
     bullet.dreamCurve = 0;
     bullet.dreamCurvePhase = 0;
     bullet.dreamDelay = 0;
@@ -25201,16 +25266,34 @@
     b.x = x; b.y = y; b.vx = vx; b.vy = vy; b.ax = options.ax || 0; b.ay = options.ay || 0;
     b.r = options.r || 6.5; b.color = options.color || '#ffd46c'; b.damage = options.damage || 8;
     b.life = options.life || 5.5; b.maxLife = b.life; b.kind = options.kind || 'orb';
-    b.grazed = false; b.rot = options.rot || 0; b.spin = options.spin || 0;
+    b.grazed = false; b.rot = options.rot || 0;
     b.threat = options.threat || 'spread'; b.dream = true; b.dreamStyle = options.style || b.threat;
     b.dreamShape = options.shape || options.kind || 'orb';
     b.dreamSkin = options.skin || dreamPickBulletSkin(b.dreamStyle, b.dreamShape, options.visualIndex == null ? enemyBullets.length : options.visualIndex);
     b.dreamAssetKey = (DREAM_BULLET_SKINS[b.dreamSkin] && DREAM_BULLET_SKINS[b.dreamSkin].asset) || '';
+    const skinSpec = DREAM_BULLET_SKINS[b.dreamSkin] || null;
+    const visualIndex = options.visualIndex == null ? enemyBullets.length : options.visualIndex;
+    b.dreamVisualSeed = Math.abs(((visualIndex | 0) * 37 + dreamConductor.serial * 19 + dreamRun.wave * 53) % 997) / 997;
+    b.dreamMaterialTheme = DREAM_BULLET_THEME_OVERRIDES[b.dreamSkin] == null ? 0 : DREAM_BULLET_THEME_OVERRIDES[b.dreamSkin];
+    const defaultSpin = skinSpec && skinSpec.spin ? (2.4 + b.dreamVisualSeed * 2.2) * (visualIndex & 1 ? -1 : 1) : 0;
+    b.spin = Number.isFinite(options.spin) ? options.spin : defaultSpin;
+    b.dreamMaterialRef = dreamBulletSkinCache.get(b.dreamSkin) || null;
     b.dreamEmitter = options.emitter || dreamConductor.activeVoice || 'runtime';
     b.dreamMotion = options.motion || dreamMotionForVoice(b.dreamEmitter) || (options.delay ? 'stasis-release' : (options.curve ? 'curved-flow' : 'linear'));
     b.dreamAge = 0;
-    b.dreamVisualDiameter = b.r * 6;
+    b.dreamVisualDiameter = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
     b.dreamFallback = false;
+    const startSpeed = Math.hypot(vx, vy);
+    b.dreamSpeed = startSpeed;
+    if (startSpeed > 0.01) {
+      b.dreamDirX = vx / startSpeed; b.dreamDirY = vy / startSpeed;
+    } else {
+      const initialAngle = Number.isFinite(options.aimAngle) ? options.aimAngle : -Math.PI / 2;
+      b.dreamDirX = Math.cos(initialAngle); b.dreamDirY = Math.sin(initialAngle);
+    }
+    b.dreamFaceX = b.dreamDirX; b.dreamFaceY = b.dreamDirY;
+    b.dreamTrailLength = 0;
+    b.dreamDepthScale = 1;
     b.dreamCurve = options.curve || 0; b.dreamCurvePhase = options.phase || 0;
     b.dreamDelay = options.delay || 0; b.dreamDelaySpeed = options.delaySpeed || 0;
     b.dreamAimAngle = options.aimAngle;
@@ -25225,6 +25308,7 @@
     b.depth = undefined; b.depthSpeed = 0; b.depthMin = undefined; b.depthMax = undefined;
     b.depthBounce = false; b.pseudo3d = false; b.perspectiveSquish = undefined; b.baseR = undefined;
     b.spinSaw = false; b.scalePulse = 1;
+    updateDreamBulletVisualMotion(b, 0);
     b._dreamCounted = true;
     dreamLiveBulletSet.add(b);
     enemyBullets.push(b);
@@ -34611,10 +34695,11 @@
         }
       }
       if (b.dreamCurve) {
-        const speed = Math.hypot(b.vx, b.vy);
-        const a = Math.atan2(b.vy, b.vx) + Math.sin(time * 2.2 + b.dreamCurvePhase) * b.dreamCurve * dt;
-        b.vx = Math.cos(a) * speed;
-        b.vy = Math.sin(a) * speed;
+        const turn = Math.sin(time * 2.2 + b.dreamCurvePhase) * b.dreamCurve * dt;
+        const turnCos = Math.cos(turn), turnSin = Math.sin(turn);
+        const vx = b.vx, vy = b.vy;
+        b.vx = vx * turnCos - vy * turnSin;
+        b.vy = vx * turnSin + vy * turnCos;
       }
       b.vx += b.ax * dt;
       b.vy += b.ay * dt;
@@ -34645,10 +34730,10 @@
       // 波浪弹：正弦轨迹侧向摆动
       if (b.wavePhase !== undefined) {
         b.wavePhase += dt * 3.5;
-        const perpAngle = Math.atan2(b.vy, b.vx) + Math.PI / 2;
         const waveDelta = Math.sin(b.wavePhase) * b.waveAmp * dt;
-        b.x += Math.cos(perpAngle) * waveDelta;
-        b.y += Math.sin(perpAngle) * waveDelta;
+        const waveSpeed = Math.sqrt(b.vx * b.vx + b.vy * b.vy) || 1;
+        b.x += (-b.vy / waveSpeed) * waveDelta;
+        b.y += (b.vx / waveSpeed) * waveDelta;
       }
       // 追击分叉：母弹飞行片刻后裂成对称子弹
       if (b.splitAfter !== undefined) {
@@ -34759,6 +34844,7 @@
         else if (b.y > H + wm) b.y = -wm;
       }
       b.rot += b.spin * dt;
+      if (b.dream) updateDreamBulletVisualMotion(b, dt);
       b.life -= dt;
       if (b.life <= 0 || b.x < -80 || b.x > W + 80 || b.y < -100 || b.y > H + 100) {
         removeUnordered(enemyBullets, i);
@@ -34872,8 +34958,8 @@
     }
     updateDreamConductor(dt);
     dreamRun.shotPeak = Math.max(dreamRun.shotPeak, dreamSyncBulletBudget());
-    dreamRun.warningPeak = Math.max(dreamRun.warningPeak, warnings.filter(w => w && w.dream).length);
-    dreamRun.laserPeak = Math.max(dreamRun.laserPeak, lasers.filter(l => l && l.dream).length);
+    dreamRun.warningPeak = Math.max(dreamRun.warningPeak, dreamCountTagged(warnings));
+    dreamRun.laserPeak = Math.max(dreamRun.laserPeak, dreamCountTagged(lasers));
     if (!dreamRun.batch2Spawned || enemies.some(e => e && e.dream)) {
       dreamRun.waveTransition = 0;
       return;
@@ -41474,6 +41560,25 @@
       }
     });
   }
+  function dreamBulletMaterialThemeIndex(skinKey) {
+    return DREAM_BULLET_THEME_OVERRIDES[skinKey] == null ? 0 : DREAM_BULLET_THEME_OVERRIDES[skinKey];
+  }
+  function drawDreamMaterialAtlasFrame(target, image, frameW, frameH, phase, row, dx, dy, dw, dh) {
+    target.drawImage(image, phase * frameW, row * frameH, frameW, frameH, dx, dy, dw, dh);
+  }
+  function dreamBulletMaterialAssetsReady() {
+    let ready = true;
+    for (const key of DREAM_BULLET_MATERIAL_ASSET_KEYS) {
+      if (assetReady(key)) continue;
+      ready = false;
+      const slot = assets[key];
+      if (slot && slot.failed && !dreamBulletMaterialFallbackKeys.has(key)) {
+        dreamBulletMaterialFallbackKeys.add(key);
+        console.error(`[Dream] 敌弹材质辅助图加载失败，启用完整程序化后备：${key}`);
+      }
+    }
+    return ready;
+  }
   function getDreamBulletSkinSprite(skinKey) {
     if (dreamBulletSkinCache.has(skinKey)) return dreamBulletSkinCache.get(skinKey);
     const skin = DREAM_BULLET_SKINS[skinKey];
@@ -41486,88 +41591,344 @@
       }
       return null;
     }
+    if (!dreamBulletMaterialAssetsReady()) return null;
+
+    const config = DREAM_BULLET_MATERIAL_CONFIG;
+    const frameW = config.cacheFrame.width;
+    const frameH = config.cacheFrame.height;
+    const anchorX = config.cacheFrame.anchorX;
+    const anchorY = config.cacheFrame.anchorY;
+    const phases = config.phaseCount;
     const img = assets[skin.asset];
-    const size = 96, center = size / 2, hitRadius = 16;
-    const canvas = document.createElement('canvas');
+    const volumeAtlas = assets.dreamSharedVolumeCore;
+    const specularAtlas = assets.dreamSharedSpecularStreak;
+    const trailAtlas = assets.dreamSharedVelocityTrail;
+    const themeIndex = dreamBulletMaterialThemeIndex(skinKey);
+    const theme = config.themes[themeIndex];
+    const roundBody = config.orbFamilies.includes(skin.family);
+    const fitBase = skin.directional ? config.bodyFit.directional : (skin.family === 'blade' ? config.bodyFit.blade : config.bodyFit.round);
+    const sourceFit = clamp((skin.sourceScale || 0.86) / 0.86, 0.98, 1.06);
+    const bodyFit = fitBase * sourceFit;
+    const naturalW = img.naturalWidth || img.width || frameW;
+    const naturalH = img.naturalHeight || img.height || frameW;
+    const imageScale = bodyFit / Math.max(1, Math.max(naturalW, naturalH));
+    const bodyW = naturalW * imageScale;
+    const bodyH = naturalH * imageScale;
+    const bodyX = anchorX - bodyW * 0.5;
+    const bodyY = anchorY - bodyH * 0.5;
+
+    const strip = document.createElement('canvas');
+    strip.width = frameW * phases;
+    strip.height = frameH;
+    const g = strip.getContext('2d');
     const mask = document.createElement('canvas');
-    canvas.width = canvas.height = mask.width = mask.height = size;
-    const g = canvas.getContext('2d');
+    const rim = document.createElement('canvas');
+    const shade = document.createElement('canvas');
+    const sheen = document.createElement('canvas');
+    for (const canvas of [mask, rim, shade, sheen]) { canvas.width = frameW; canvas.height = frameH; }
     const m = mask.getContext('2d');
-    const naturalW = img.naturalWidth || img.width || size;
-    const naturalH = img.naturalHeight || img.height || size;
-    const fit = 78 * (skin.sourceScale || 0.82);
-    const scale = Math.min(fit / Math.max(1, naturalW), fit / Math.max(1, naturalH));
-    const w = naturalW * scale, h = naturalH * scale;
-    const dx = center - w / 2, dy = center - h / 2;
+    const r = rim.getContext('2d');
+    const s = shade.getContext('2d');
+    const h = sheen.getContext('2d');
 
-    // 暗底判定盘在所有背景上保持边界清楚，素材本体仍保持正常混合与原始纹理。
-    g.globalCompositeOperation = 'source-over';
-    g.fillStyle = 'rgba(2,5,14,.82)';
-    g.beginPath(); g.arc(center, center, hitRadius + 2.3, 0, TAU); g.fill();
-    g.strokeStyle = 'rgba(1,3,10,.98)'; g.lineWidth = 3.5;
-    g.beginPath(); g.arc(center, center, hitRadius + 1.2, 0, TAU); g.stroke();
-    g.strokeStyle = skin.edge || '#9edcff'; g.lineWidth = 1.55;
-    g.beginPath(); g.arc(center, center, hitRadius, 0, TAU); g.stroke();
-
-    // 素材 alpha 先转为纯暗轮廓，八向错位一次烘焙，避免运行时逐弹描边和渐变。
-    m.drawImage(img, dx, dy, w, h);
+    // Alpha-following extrusion replaces the old universal black badge. The
+    // silhouette now carries its own depth, while the hit marker stays thin.
+    m.drawImage(img, bodyX, bodyY, bodyW, bodyH);
     m.globalCompositeOperation = 'source-in';
-    m.fillStyle = 'rgba(1,3,10,.98)'; m.fillRect(0, 0, size, size);
-    const outlineOffsets = skin.preoutlined
-      ? [[-1, 0], [1, 0], [0, -1], [0, 1]]
+    m.fillStyle = 'rgba(1,3,12,.98)';
+    m.fillRect(0, 0, frameW, frameH);
+    const rimOffsets = skin.preoutlined
+      ? [[-1.2, 0], [1.2, 0], [0, -1.2], [0, 1.2]]
       : [[-2, 0], [2, 0], [0, -2], [0, 2], [-1.4, -1.4], [1.4, -1.4], [-1.4, 1.4], [1.4, 1.4]];
-    for (const [ox, oy] of outlineOffsets) {
-      g.drawImage(mask, ox, oy);
-    }
-    g.save();
-    g.globalCompositeOperation = 'lighter'; g.globalAlpha = 0.34;
-    g.filter = 'blur(3px)'; g.drawImage(img, dx - 1, dy - 1, w + 2, h + 2);
-    g.restore();
-    g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1; g.filter = 'none';
-    g.drawImage(img, dx, dy, w, h);
+    for (const offset of rimOffsets) r.drawImage(mask, offset[0], offset[1]);
+    r.globalCompositeOperation = 'source-in';
+    r.fillStyle = theme.edge;
+    r.fillRect(0, 0, frameW, frameH);
+    r.globalCompositeOperation = 'destination-out';
+    r.drawImage(mask, 0, 0);
 
-    // 小型亮芯只标示弹心，不覆盖素材细节，也不会在低配档消失。
-    const core = g.createRadialGradient(center - 1.2, center - 1.4, 0, center, center, 5.6);
-    core.addColorStop(0, 'rgba(255,255,255,.98)');
-    core.addColorStop(0.34, (skin.edge || '#9edcff') + 'd8');
-    core.addColorStop(1, 'rgba(255,255,255,0)');
-    g.globalCompositeOperation = 'lighter'; g.fillStyle = core;
-    g.beginPath(); g.arc(center, center, 5.6, 0, TAU); g.fill();
-    g.globalCompositeOperation = 'source-over';
-    dreamBulletSkinCache.set(skinKey, canvas);
-    return canvas;
-  }
-  function drawDreamBulletFast(b) {
-    const shape = DREAM_BULLET_SHAPES.has(b.dreamShape) ? b.dreamShape : (DREAM_BULLET_SHAPES.has(b.kind) ? b.kind : 'orb');
-    const skinKey = b.dreamSkin || dreamPickBulletSkin(b.dreamStyle || b.threat || 'spread', shape, 0);
-    const skin = DREAM_BULLET_SKINS[skinKey];
-    const skinSprite = getDreamBulletSkinSprite(skinKey);
-    if (skin && skinSprite) {
-      b.dreamFallback = false;
-      const depthScale = b.depth != null ? bulletDepthScale(b) : 1;
-      const pulse = b.scalePulse || 1;
-      const drawSize = b.r * 7.1 * depthScale * pulse;
-      b.dreamVisualDiameter = drawSize;
-      const angle = skin.directional ? Math.atan2(b.vy, b.vx) + Math.PI / 2 : (skin.spin ? (b.rot || 0) : (b.rot || 0) * 0.18);
-      ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(angle);
-      ctx.drawImage(skinSprite, -drawSize / 2, -drawSize / 2, drawSize, drawSize);
-      ctx.restore();
-      return;
+    s.drawImage(img, bodyX, bodyY, bodyW, bodyH);
+    s.globalCompositeOperation = 'source-in';
+    const shadeGradient = s.createLinearGradient(anchorX - bodyW * 0.35, anchorY - bodyH * 0.45, anchorX + bodyW * 0.35, anchorY + bodyH * 0.48);
+    shadeGradient.addColorStop(0, 'rgba(0,0,0,0)');
+    shadeGradient.addColorStop(0.54, 'rgba(0,0,0,.08)');
+    shadeGradient.addColorStop(1, 'rgba(0,0,0,.58)');
+    s.fillStyle = shadeGradient;
+    s.fillRect(0, 0, frameW, frameH);
+
+    for (let phase = 0; phase < phases; phase++) {
+      const frameX = phase * frameW;
+      g.globalCompositeOperation = 'source-over';
+      g.globalAlpha = 1;
+      if (skin.directional) {
+        g.save();
+        g.translate(frameX + anchorX, anchorY + 3);
+        g.rotate(-Math.PI / 2);
+        g.globalAlpha = 0.74;
+        drawDreamMaterialAtlasFrame(g, trailAtlas, 96, 36, phase, themeIndex, -70, -12, 76, 24);
+        g.restore();
+      } else {
+        g.globalAlpha = roundBody ? 0.82 : 0.54;
+        drawDreamMaterialAtlasFrame(g, volumeAtlas, 48, 48, phase, themeIndex, frameX + anchorX - 25, anchorY - 25, 50, 50);
+      }
+      g.globalAlpha = 1;
+      for (const offset of rimOffsets) g.drawImage(mask, frameX + offset[0], offset[1]);
+      g.globalAlpha = 0.86;
+      g.drawImage(rim, frameX, 0);
+      g.globalAlpha = 1;
+      g.drawImage(img, frameX + bodyX, bodyY, bodyW, bodyH);
+      g.globalAlpha = 0.92;
+      g.drawImage(shade, frameX, 0);
+
+      h.clearRect(0, 0, frameW, frameH);
+      h.globalCompositeOperation = 'source-over';
+      h.drawImage(mask, 0, 0);
+      h.globalCompositeOperation = 'source-in';
+      h.save();
+      h.translate(anchorX, anchorY - bodyH * 0.08);
+      h.rotate(-0.18 + phase * 0.035);
+      drawDreamMaterialAtlasFrame(h, specularAtlas, 64, 24, phase, themeIndex, -bodyW * 0.52, -bodyH * 0.18, bodyW * 1.04, Math.max(13, bodyH * 0.34));
+      h.restore();
+      g.globalCompositeOperation = 'lighter';
+      g.globalAlpha = roundBody ? 0.82 : 0.68;
+      g.drawImage(sheen, frameX, 0);
+      g.globalCompositeOperation = 'source-over';
+      g.globalAlpha = 1;
+
+      const markerR = 12.2;
+      const drawMarker = () => {
+        g.beginPath();
+        if (skin.directional) {
+          g.arc(frameX + anchorX, anchorY, markerR, -0.78, 0.78);
+          g.moveTo(frameX + anchorX - markerR * 0.71, anchorY - markerR * 0.70);
+          g.arc(frameX + anchorX, anchorY, markerR, Math.PI - 0.78, Math.PI + 0.78);
+        } else {
+          for (let arc = 0; arc < 4; arc++) {
+            const start = arc * Math.PI / 2 + 0.12 + phase * 0.08;
+            g.moveTo(frameX + anchorX + Math.cos(start) * markerR, anchorY + Math.sin(start) * markerR);
+            g.arc(frameX + anchorX, anchorY, markerR, start, start + 0.62);
+          }
+        }
+      };
+      g.strokeStyle = 'rgba(1,3,10,.96)';
+      g.lineWidth = 4;
+      drawMarker(); g.stroke();
+      g.strokeStyle = theme.edge;
+      g.globalAlpha = 0.86;
+      g.lineWidth = 1.45;
+      drawMarker(); g.stroke();
+      g.globalAlpha = 1;
+      if (skin.directional) {
+        g.globalCompositeOperation = 'lighter';
+        g.strokeStyle = theme.hot;
+        g.lineWidth = 1.15;
+        g.beginPath();
+        g.moveTo(frameX + anchorX, anchorY - Math.min(34, bodyH * 0.38));
+        g.lineTo(frameX + anchorX, anchorY - Math.min(14, bodyH * 0.16));
+        g.stroke();
+        g.globalCompositeOperation = 'source-over';
+      }
     }
-    // 素材尚在解码或确实失败时保持完整暗边、材质、亮芯后备，绝不静默退成淡描线。
+    g.globalAlpha = 1;
+    g.globalCompositeOperation = 'source-over';
+    const entry = Object.freeze({
+      canvas: strip, frameWidth: frameW, frameHeight: frameH, phaseCount: phases,
+      anchorX, anchorY, bodyFit, bodyW, bodyH, directional: !!skin.directional,
+      spinning: !!skin.spin, roundBody, themeIndex, skinKey,
+    });
+    dreamBulletSkinCache.set(skinKey, entry);
+    dreamBulletMaterialCacheBuilds++;
+    dreamBulletMaterialWarmed = dreamBulletSkinCache.size === Object.keys(DREAM_BULLET_SKINS).length;
+    return entry;
+  }
+  function warmDreamBulletMaterialCache(limit = DREAM_BULLET_MATERIAL_CONFIG.prewarmPerFrame) {
+    loadAssetGroup(DREAM_BULLET_ALL_ASSET_KEYS);
+    if (!dreamBulletMaterialAssetsReady()) return 0;
+    const keys = Object.keys(DREAM_BULLET_SKINS);
+    let built = 0;
+    let scanned = 0;
+    while (scanned < keys.length && built < Math.max(1, limit | 0)) {
+      const index = (dreamBulletMaterialPrewarmCursor + scanned) % keys.length;
+      const key = keys[index];
+      if (!dreamBulletSkinCache.has(key) && assetReady(DREAM_BULLET_SKINS[key].asset) && getDreamBulletSkinSprite(key)) built++;
+      scanned++;
+    }
+    dreamBulletMaterialPrewarmCursor = (dreamBulletMaterialPrewarmCursor + Math.max(1, scanned)) % keys.length;
+    dreamBulletMaterialWarmed = dreamBulletSkinCache.size === keys.length;
+    return built;
+  }
+  function dreamBulletMaterialStatus() {
+    if (!dreamBulletMaterialWarmed && dreamUi.open) warmDreamBulletMaterialCache(6);
+    const materialAssets = DREAM_BULLET_MATERIAL_ASSET_KEYS.map(key => ({
+      key, path: ASSET_PATHS[key] || '', ready: !!assets[key]?.ready, failed: !!assets[key]?.failed,
+    }));
+    return {
+      cacheEntries: dreamBulletSkinCache.size,
+      expectedEntries: Object.keys(DREAM_BULLET_SKINS).length,
+      cacheBuilds: dreamBulletMaterialCacheBuilds,
+      warmed: dreamBulletMaterialWarmed,
+      materialAssets,
+      fallbacks: [...new Set([...dreamBulletFallbackKeys, ...dreamBulletMaterialFallbackKeys])],
+    };
+  }
+  function updateDreamBulletVisualMotion(b, dt) {
+    const speedSq = b.vx * b.vx + b.vy * b.vy;
+    const speed = speedSq > 0.0001 ? Math.sqrt(speedSq) : 0;
+    b.dreamSpeed = speed;
+    if (speed > 0.01) {
+      const invSpeed = 1 / speed;
+      b.dreamDirX = b.vx * invSpeed;
+      b.dreamDirY = b.vy * invSpeed;
+      const response = 1 - Math.exp(-DREAM_BULLET_MATERIAL_CONFIG.facingResponse * dt);
+      let faceX = b.dreamFaceX + (b.dreamDirX - b.dreamFaceX) * response;
+      let faceY = b.dreamFaceY + (b.dreamDirY - b.dreamFaceY) * response;
+      const faceLen = Math.sqrt(faceX * faceX + faceY * faceY) || 1;
+      b.dreamFaceX = faceX / faceLen;
+      b.dreamFaceY = faceY / faceLen;
+    }
+    b.dreamDepthScale = b.depth != null ? bulletDepthScale(b) : 1;
+    const bodySize = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * b.dreamDepthScale * (b.scalePulse || 1);
+    b.dreamVisualDiameter = bodySize;
+    const speedT = clamp((speed - DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin) / 340, 0, 1);
+    b.dreamTrailLength = bodySize * lerp(DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[0], DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[1], speedT);
+    b.dreamMaterialPhase = (Math.floor((b.dreamAge * DREAM_BULLET_MATERIAL_CONFIG.phaseRate) + b.dreamVisualSeed * DREAM_BULLET_MATERIAL_CONFIG.phaseCount)) & 3;
+  }
+  function traceDreamBulletTrail(b, widthMul, includeMotes) {
+    const length = b.dreamTrailLength || 0;
+    if (b.dreamSpeed < DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin || length <= 1) return false;
+    const ux = b.dreamDirX || 0;
+    const uy = b.dreamDirY || -1;
+    const px = -uy;
+    const py = ux;
+    const bodySize = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
+    const headX = b.x - ux * bodySize * 0.18;
+    const headY = b.y - uy * bodySize * 0.18;
+    const tailX = b.x - ux * length;
+    const tailY = b.y - uy * length;
+    const headWidth = Math.max(2.2, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[0] * widthMul);
+    const tailWidth = Math.max(0.45, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[1] * widthMul);
+    const bend = Math.sin(b.dreamAge * 7.4 + b.dreamVisualSeed * TAU) * Math.min(5, length * 0.055);
+    const midX = (headX + tailX) * 0.5 + px * bend;
+    const midY = (headY + tailY) * 0.5 + py * bend;
+    ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
+    ctx.quadraticCurveTo(midX + px * tailWidth, midY + py * tailWidth, tailX, tailY);
+    ctx.quadraticCurveTo(midX - px * tailWidth, midY - py * tailWidth, headX - px * headWidth, headY - py * headWidth);
+    ctx.closePath();
+    if (includeMotes) {
+      const moteT = 0.58 + 0.18 * Math.sin(b.dreamAge * 5.1 + b.dreamVisualSeed * 19);
+      const moteX = b.x - ux * length * moteT + px * bend * 1.35;
+      const moteY = b.y - uy * length * moteT + py * bend * 1.35;
+      const moteR = Math.max(0.75, b.r * 0.12);
+      ctx.moveTo(moteX, moteY - moteR * 1.7);
+      ctx.lineTo(moteX + moteR, moteY);
+      ctx.lineTo(moteX, moteY + moteR * 1.7);
+      ctx.lineTo(moteX - moteR, moteY);
+      ctx.closePath();
+    }
+    return true;
+  }
+  function drawDreamBulletFallback(b) {
+    const shape = DREAM_BULLET_SHAPES.has(b.dreamShape) ? b.dreamShape : (DREAM_BULLET_SHAPES.has(b.kind) ? b.kind : 'orb');
     b.dreamFallback = true;
     const fallback = getDreamBulletSprite(b.dreamStyle || b.threat || 'spread', b.r, shape);
     const faceVelocity = shape === 'needle' || shape === 'shard' || shape === 'crescent';
     const spin = shape === 'star' || shape === 'diamond' || shape === 'crescent' ? (b.rot || 0) : 0;
-    ctx.save(); ctx.translate(b.x, b.y); ctx.rotate((faceVelocity ? Math.atan2(b.vy, b.vx) : 0) + spin);
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate((faceVelocity ? Math.atan2(b.vy, b.vx) : 0) + spin);
     ctx.drawImage(fallback, -fallback.width / 2, -fallback.height / 2);
     ctx.restore();
+  }
+  function drawDreamBulletsBatch() {
+    dreamBulletMaterialFrameStats.trailBatches = 0;
+    dreamBulletMaterialFrameStats.trailSegments = 0;
+    dreamBulletMaterialFrameStats.bodyDraws = 0;
+    dreamBulletMaterialFrameStats.materialPhases = 0;
+    const qualityIndex = clamp(perfLevel | 0, 0, DREAM_PERF_CONFIG.visualMul.length - 1);
+    const visualMul = DREAM_PERF_CONFIG.visualMul[qualityIndex];
+    let segments = 0;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = visualMul <= 0.2 ? 'rgba(1,3,10,.66)' : 'rgba(1,3,12,.80)';
+    ctx.beginPath();
+    for (const b of enemyBullets) {
+      if (!b || !b.dream) continue;
+      if (traceDreamBulletTrail(b, 1.38, false)) segments++;
+    }
+    if (segments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+    dreamBulletMaterialFrameStats.trailSegments = segments;
+    for (let themeIndex = 0; themeIndex < DREAM_BULLET_MATERIAL_CONFIG.themes.length; themeIndex++) {
+      let themedSegments = 0;
+      ctx.fillStyle = DREAM_BULLET_MATERIAL_CONFIG.themes[themeIndex].trail;
+      ctx.beginPath();
+      for (const b of enemyBullets) {
+        if (!b || !b.dream || b.dreamMaterialTheme !== themeIndex) continue;
+        if (traceDreamBulletTrail(b, 0.64, visualMul >= 0.35 && b.dreamSpeed > 150)) themedSegments++;
+      }
+      if (themedSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+    }
+    let hotSegments = 0;
+    ctx.fillStyle = visualMul <= 0.2 ? 'rgba(224,236,255,.48)' : 'rgba(245,247,255,.72)';
+    ctx.beginPath();
+    for (const b of enemyBullets) {
+      if (!b || !b.dream) continue;
+      if (traceDreamBulletTrail(b, 0.30, false)) hotSegments++;
+    }
+    if (hotSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+
+    const base = ctx.getTransform();
+    for (const b of enemyBullets) {
+      if (!b || !b.dream) continue;
+      let material = b.dreamMaterialRef;
+      if (!material) {
+        material = getDreamBulletSkinSprite(b.dreamSkin);
+        b.dreamMaterialRef = material;
+      }
+      if (!material) {
+        ctx.setTransform(base);
+        drawDreamBulletFallback(b);
+        continue;
+      }
+      b.dreamFallback = false;
+      b.dreamMaterialTheme = material.themeIndex;
+      const phase = b.dreamMaterialPhase & (material.phaseCount - 1);
+      dreamBulletMaterialFrameStats.materialPhases |= (1 << phase);
+      const speedStretchT = clamp((b.dreamSpeed - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start) / Math.max(1, DREAM_BULLET_MATERIAL_CONFIG.speedStretch.full - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start), 0, 1);
+      const lengthStretch = 1 + speedStretchT * (DREAM_BULLET_MATERIAL_CONFIG.speedStretch.max - 1);
+      const widthStretch = 1 - speedStretchT * 0.08;
+      const bodySize = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
+      const sourceScale = bodySize / material.bodyFit;
+      let cos = 1, sin = 0;
+      if (material.directional) {
+        cos = -(b.dreamFaceY || -1);
+        sin = b.dreamFaceX || 0;
+      } else {
+        const angle = material.spinning ? (b.rot || 0) : (b.rot || 0) * 0.18;
+        cos = Math.cos(angle);
+        sin = Math.sin(angle);
+      }
+      const scaleX = sourceScale * widthStretch;
+      const scaleY = sourceScale * lengthStretch;
+      const a = base.a * cos * scaleX + base.c * sin * scaleX;
+      const bb = base.b * cos * scaleX + base.d * sin * scaleX;
+      const c = base.c * cos * scaleY - base.a * sin * scaleY;
+      const d = base.d * cos * scaleY - base.b * sin * scaleY;
+      const e = base.a * b.x + base.c * b.y + base.e;
+      const f = base.b * b.x + base.d * b.y + base.f;
+      ctx.setTransform(a, bb, c, d, e, f);
+      ctx.globalAlpha = b.depth != null ? bulletDepthAlpha(b) : 1;
+      ctx.drawImage(material.canvas, phase * material.frameWidth, 0, material.frameWidth, material.frameHeight, -material.anchorX, -material.anchorY, material.frameWidth, material.frameHeight);
+      dreamBulletMaterialFrameStats.bodyDraws++;
+    }
+    ctx.setTransform(base);
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
   }
 
   function drawEnemyBullets() {
     ctx.save();
     const budget = perfBudget();
     const drawExtraGlow = budget.bulletGlow && enemyBullets.length < budget.enemyBulletMax * 0.72;
+    if (dreamActive() && dreamSyncBulletBudget() > 0) drawDreamBulletsBatch();
     for (const b of enemyBullets) {
         ctx.globalAlpha = 1;
 	      const r = b.r;
@@ -41581,10 +41942,7 @@
         drawMiguaEnemyBullet(b);
         continue;
       }
-	      if (b.dream) {
-	        drawDreamBulletFast(b);
-	        continue;
-	      }
+	      if (b.dream) continue;
 	      if (b.suiyiTech) drawSuiyiTechBulletTrail(b);
 	      drawHostileBulletRedEdge(b, b.suiyiTech ? 1.92 : (DIRECTIONAL_BULLETS.has(b.kind) ? 1.66 : 1.48), b.suiyiTech ? 0.86 : (drawExtraGlow ? 0.74 : 0.58));
       // —— V2 海洋贴图弹：整套 drawImage（方向性按速度旋转，其余自旋）+ 加法底光 ——
@@ -43061,7 +43419,7 @@
       ctx.fillStyle = '#2f4a72'; ctx.fillText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
       ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 2.4; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-      const info = dreamActive() ? `场上 ${enemies.length}/6   敌弹 ${enemyBullets.filter(b => b && b.dream).length}/${DREAM_PERF_CONFIG.bulletCap}` : `轮回 ${loopCount + 1}   强度 ×${diffMul().toFixed(1)}   击杀 ${killCount}`;
+      const info = dreamActive() ? `场上 ${enemies.length}/6   敌弹 ${dreamSyncBulletBudget()}/${DREAM_PERF_CONFIG.bulletCap}` : `轮回 ${loopCount + 1}   强度 ×${diffMul().toFixed(1)}   击杀 ${killCount}`;
       ctx.strokeText(info, W / 2, barY + barH + 12);
       ctx.fillStyle = '#bfe0ff'; ctx.fillText(info, W / 2, barY + barH + 12);
     }
@@ -44016,10 +44374,21 @@
     const samples = dreamPatternSamples(patternIndex, time, x + 6, y + 6, w - 12, h - 12);
     for (const sample of samples) {
       const skin = DREAM_BULLET_SKINS[sample.skin];
-      const spr = getDreamBulletSkinSprite(sample.skin) || getDreamBulletSprite(sample.style, sample.r, sample.shape);
-      ctx.save(); ctx.translate(sample.x, sample.y); ctx.rotate(sample.angle || 0);
-      const size = skin ? sample.r * 6 : spr.width;
-      ctx.drawImage(spr, -size / 2, -size / 2, size, size); ctx.restore();
+      const material = getDreamBulletSkinSprite(sample.skin);
+      ctx.save(); ctx.translate(sample.x, sample.y);
+      if (material) {
+        const phase = (Math.floor(time * DREAM_BULLET_MATERIAL_CONFIG.phaseRate + sample.x * 0.03) & 3);
+        const size = sample.r * 7.5;
+        const scale = size / material.bodyFit;
+        ctx.rotate((sample.angle || 0) + (material.directional ? Math.PI / 2 : time * 0.8));
+        ctx.scale(scale, scale);
+        ctx.drawImage(material.canvas, phase * material.frameWidth, 0, material.frameWidth, material.frameHeight, -material.anchorX, -material.anchorY, material.frameWidth, material.frameHeight);
+      } else {
+        const fallback = getDreamBulletSprite(sample.style, sample.r, sample.shape);
+        ctx.rotate(sample.angle || 0);
+        ctx.drawImage(fallback, -fallback.width / 2, -fallback.height / 2);
+      }
+      ctx.restore();
     }
     ctx.restore();
     ctx.save(); ctx.textAlign = 'left'; ctx.font = cuteFont(800, DREAM_LOBBY_PORTRAIT ? 24 : 17); ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(0,0,0,.72)';
@@ -44139,6 +44508,7 @@
     }
   }
   function drawDreamModeLobby() {
+    warmDreamBulletMaterialCache();
     dreamUi.hitRects = [];
     drawDreamBackdrop();
     dreamUiButton(36, 38, 104, 52, '返回', 'back');
@@ -44222,6 +44592,7 @@
     ctx.restore();
   }
   function drawDreamLoadoutSelect() {
+    warmDreamBulletMaterialCache();
     dreamUi.hitRects = [];
     drawDreamBackdrop();
     dreamUiButton(36, 38, 104, 52, '返回', 'selBack');
@@ -48697,6 +49068,20 @@
       patternBudgetSpec: () => ({ enemyCap: 6, logicalBulletCap: 96, warningCap: 4, laserCap: 4, poolSize: 128, activeCountStrategy: 'once-per-frame-plus-o1-release', primaryReserve: DREAM_PERF_CONFIG.primaryReserve, secondaryReserve: DREAM_PERF_CONFIG.secondaryReserve, accentThreshold: DREAM_PERF_CONFIG.accentThreshold, aimedWarningMin: 0.45, laserWarningMin: 0.75, corridorGapMin: 96, cullsLogicalBulletsByQuality: false, decorationScale: [...DREAM_PERF_CONFIG.visualMul] }),
       bulletSkinSpec: () => Object.entries(DREAM_BULLET_SKINS).map(([key, skin]) => ({ key, assetKey: skin.asset, assetPath: ASSET_PATHS[skin.asset] || '', family: skin.family, directional: !!skin.directional, spin: !!skin.spin, preoutlined: !!skin.preoutlined })),
       bulletAssetStatus: dreamBulletAssetStatus,
+      bulletMaterialSpec: () => ({
+        version: DREAM_BULLET_MATERIAL_CONFIG.version,
+        phaseCount: DREAM_BULLET_MATERIAL_CONFIG.phaseCount,
+        prewarm: DREAM_BULLET_MATERIAL_CONFIG.hotPath.prewarm,
+        batchTrails: DREAM_BULLET_MATERIAL_CONFIG.hotPath.batchTrails,
+        allocationFreeHotPath: DREAM_BULLET_MATERIAL_CONFIG.hotPath.allocationFree,
+        drawImagesPerBullet: DREAM_BULLET_MATERIAL_CONFIG.hotPath.drawImagesPerBullet,
+        trailLengthScale: [...DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale],
+        materialAssets: DREAM_BULLET_MATERIAL_ASSET_KEYS.map(key => ({ key, path: ASSET_PATHS[key] || '' })),
+        universalBackingDisk: false,
+        shapeFollowingDepth: true,
+        smoothedVelocityFacing: true,
+      }),
+      bulletMaterialStatus: dreamBulletMaterialStatus,
       patternDiversitySpec: () => {
         const emitterKeys = [...new Set(DREAM_PATTERN_DEFS.flatMap(pattern => pattern.voices))];
         const motionFamilies = [...new Set(emitterKeys.map(dreamMotionForVoice).filter(Boolean))];
@@ -48744,8 +49129,10 @@
         emitter: b.dreamEmitter || '', motion: b.dreamMotion || '', age: Number((b.dreamAge || 0).toFixed(3)),
         x: Number(b.x.toFixed(2)), y: Number(b.y.toFixed(2)), drawDiameter: Number((b.dreamVisualDiameter || b.r * 7.1).toFixed(2)),
         collisionRadius: Number(b.r.toFixed(2)), fallback: !!b.dreamFallback,
+        materialPhase: b.dreamMaterialPhase | 0, materialTheme: b.dreamMaterialTheme | 0,
+        speed: Number((b.dreamSpeed || 0).toFixed(2)), trailLength: Number((b.dreamTrailLength || 0).toFixed(2)),
       }));
-      const fallbacks = [...new Set([...dreamBulletFallbackKeys, ...items.filter(item => item.fallback).map(item => item.assetKey || item.skin || 'programmatic')])];
+      const fallbacks = [...new Set([...dreamBulletFallbackKeys, ...dreamBulletMaterialFallbackKeys, ...items.filter(item => item.fallback).map(item => item.assetKey || item.skin || 'programmatic')])];
       return {
         runMode,
         state,
@@ -48784,6 +49171,15 @@
         visualHash: dreamVisualHash(items),
         bossPhase,
         quality: qualityPreset,
+        materialStats: {
+          cacheEntries: dreamBulletSkinCache.size,
+          cacheBuilds: dreamBulletMaterialCacheBuilds,
+          warmed: dreamBulletMaterialWarmed,
+          trailBatches: dreamBulletMaterialFrameStats.trailBatches,
+          trailSegments: dreamBulletMaterialFrameStats.trailSegments,
+          bodyDraws: dreamBulletMaterialFrameStats.bodyDraws,
+          materialPhases: items.map(item => item.materialPhase),
+        },
         layoutIssues: [],
         assetStatus: dreamBulletAssetStatus(),
         fallbacks,
@@ -48795,7 +49191,7 @@
         hideLeaderboardNameDialog();
         hideGuestbookDialog();
         leaderboardView = false;
-        loadAssetGroup(DREAM_BULLET_ASSET_KEYS);
+        loadAssetGroup(DREAM_BULLET_ALL_ASSET_KEYS);
         reset();
         resetDreamRunState();
         dreamRun.captureLocked = true;
@@ -48835,6 +49231,33 @@
             dreamLeaderboardStatus = 'ok';
             dreamLeaderboardMessage = '验收样例 · 星级优先';
             dreamLeaderboardData = Array.from({ length: 12 }, (_, i) => ({ player_name: `DREAM${String(i + 1).padStart(2, '0')}`, character: ['witch', 'anna', 'corruptgun'][i % 3], stars: Math.max(0, 3 - Math.floor(i / 4)), elapsed_ms: 245000 + i * 12340, hit_count: Math.min(3, Math.floor(i / 4)), created_at: new Date(1700000000000 + i * 1000).toISOString() }));
+          }
+        } else if (scene === 'material-lab') {
+          state = 'dreamMaterialLab';
+          dreamUi.open = false;
+          enemies.length = 0;
+          clearDreamBullets();
+          warnings.length = 0;
+          lasers.length = 0;
+          warmDreamBulletMaterialCache(999);
+          const labSkins = [
+            'seraphArrowViolet', 'judgmentSpear', 'choirBloom',
+            'oracleOrb', 'bladeDome', 'triBlade',
+            'galaxyVortex', 'trinityOrb', 'chainLink',
+            'tentacleShard', 'wireOrb', 'spiralHalo',
+          ];
+          for (let i = 0; i < labSkins.length; i++) {
+            const column = i % 3;
+            const row = Math.floor(i / 3);
+            const direction = column === 0 ? 1 : (column === 2 ? -1 : (row & 1 ? 0.72 : -0.72));
+            const angle = column === 1 ? (direction > 0 ? 0.42 : Math.PI - 0.42) : (direction > 0 ? 0 : Math.PI);
+            const speed = 92 + row * 12 + column * 7;
+            addDreamBullet(column === 0 ? 118 : (column === 2 ? W - 118 : W * 0.5), 236 + row * 205, Math.cos(angle) * speed, Math.sin(angle) * speed, {
+              r: 7.2, damage: 0, life: 20, skin: labSkins[i], visualIndex: i,
+              style: i % 4 === 0 ? 'aimed' : (i % 4 === 1 ? 'hazard' : (i % 4 === 2 ? 'spread' : 'deco')),
+              shape: DREAM_BULLET_SKINS[labSkins[i]].directional ? 'needle' : 'orb',
+              emitter: 'material-lab', motion: 'material-phase-demo',
+            });
           }
         } else if (scene === 'boss') {
           dreamUi.open = false;

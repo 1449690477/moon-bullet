@@ -330,8 +330,700 @@
       "transparent_padding_px": 12
     }
   ],
+  "helper_count": 4,
+  "helper_policy": "small shared atlases replace per-bullet gradients, trail histories, and persistent hit particles",
+  "helpers": [
+    {
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "blend_mode": "source-over",
+      "canvas": [
+        192,
+        192
+      ],
+      "decoded_rgba_bytes": 147456,
+      "file_bytes": 32794,
+      "frame_alpha_bboxes": [
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ],
+        [
+          5,
+          5,
+          43,
+          43
+        ]
+      ],
+      "frame_size": [
+        48,
+        48
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "grid_order": "phase columns, theme rows",
+      "key": "shared_volume_core_atlas",
+      "minimum_frame_padding_px": 5,
+      "output": "assets/bullets_dream/shared_volume_core_atlas.png",
+      "output_alpha_bbox": [
+        5,
+        5,
+        187,
+        187
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 14272
+      },
+      "output_sha256": "f9a316820a35d5323d209e237de1a0e2f91454869b8ed8c38b71d11f7625c372",
+      "palette_sources": {
+        "crimson": [
+          "tentacle_shard_crimson"
+        ],
+        "gold": [
+          "spiral_halo_gold"
+        ],
+        "silver": [
+          "galaxy_vortex_white",
+          "wire_orb_silver"
+        ],
+        "violet": [
+          "tri_blade_violet",
+          "trinity_orb_violet"
+        ]
+      },
+      "phase_count": 4,
+      "role": "shadowed faux-sphere core with moving caustic and Fresnel rim",
+      "runtime_intent": "pre-compose once into the per-skin cache; zero extra draws per bullet",
+      "theme_rows": [
+        "violet",
+        "crimson",
+        "gold",
+        "silver"
+      ]
+    },
+    {
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "blend_mode": "source-over",
+      "canvas": [
+        256,
+        96
+      ],
+      "decoded_rgba_bytes": 98304,
+      "file_bytes": 17735,
+      "frame_alpha_bboxes": [
+        [
+          4,
+          9,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          9,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          9,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          9,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ],
+        [
+          4,
+          8,
+          60,
+          20
+        ]
+      ],
+      "frame_size": [
+        64,
+        24
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "grid_order": "phase columns, theme rows",
+      "key": "shared_specular_streak_atlas",
+      "minimum_frame_padding_px": 4,
+      "output": "assets/bullets_dream/shared_specular_streak_atlas.png",
+      "output_alpha_bbox": [
+        4,
+        8,
+        252,
+        92
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 5516
+      },
+      "output_sha256": "fb35960a235d40e9ebb6cd762e14559bf773a066a35cd71e1b4e973b67bfeb71",
+      "palette_sources": {
+        "crimson": [
+          "tentacle_shard_crimson"
+        ],
+        "gold": [
+          "spiral_halo_gold"
+        ],
+        "silver": [
+          "galaxy_vortex_white",
+          "wire_orb_silver"
+        ],
+        "violet": [
+          "tri_blade_violet",
+          "trinity_orb_violet"
+        ]
+      },
+      "phase_count": 4,
+      "role": "narrow traveling highlight with a dark undercut for material relief",
+      "runtime_intent": "pre-compose into blade/crystal caches or draw only on phase changes",
+      "theme_rows": [
+        "violet",
+        "crimson",
+        "gold",
+        "silver"
+      ]
+    },
+    {
+      "anchor_normalized": [
+        0.94,
+        0.5
+      ],
+      "blend_mode": "source-over",
+      "canvas": [
+        384,
+        144
+      ],
+      "decoded_rgba_bytes": 221184,
+      "file_bytes": 74216,
+      "frame_alpha_bboxes": [
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ],
+        [
+          9,
+          3,
+          90,
+          33
+        ]
+      ],
+      "frame_size": [
+        96,
+        36
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "grid_order": "phase columns, theme rows",
+      "key": "shared_velocity_trail_atlas",
+      "minimum_frame_padding_px": 3,
+      "output": "assets/bullets_dream/shared_velocity_trail_atlas.png",
+      "output_alpha_bbox": [
+        9,
+        3,
+        378,
+        141
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 29668
+      },
+      "output_sha256": "9fde29ba910ca2d7944b5e2f843eecf618c1e1f1c10c4d5925663bccd69c6080",
+      "palette_sources": {
+        "crimson": [
+          "tentacle_shard_crimson"
+        ],
+        "gold": [
+          "spiral_halo_gold"
+        ],
+        "silver": [
+          "galaxy_vortex_white",
+          "wire_orb_silver"
+        ],
+        "violet": [
+          "tri_blade_violet",
+          "trinity_orb_violet"
+        ]
+      },
+      "phase_count": 4,
+      "role": "tapered dark mass, hot edge, filaments and baked fragments",
+      "runtime_intent": "one selective draw for fast or turning bullets; no trail history or particles",
+      "theme_rows": [
+        "violet",
+        "crimson",
+        "gold",
+        "silver"
+      ]
+    },
+    {
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "blend_mode": "source-over",
+      "canvas": [
+        384,
+        256
+      ],
+      "decoded_rgba_bytes": 393216,
+      "file_bytes": 93609,
+      "frame_alpha_bboxes": [
+        [
+          21,
+          22,
+          43,
+          43
+        ],
+        [
+          18,
+          18,
+          46,
+          46
+        ],
+        [
+          12,
+          12,
+          53,
+          53
+        ],
+        [
+          7,
+          7,
+          57,
+          57
+        ],
+        [
+          4,
+          4,
+          61,
+          61
+        ],
+        [
+          3,
+          4,
+          60,
+          60
+        ],
+        [
+          21,
+          22,
+          43,
+          43
+        ],
+        [
+          18,
+          18,
+          46,
+          46
+        ],
+        [
+          12,
+          12,
+          53,
+          53
+        ],
+        [
+          7,
+          7,
+          57,
+          57
+        ],
+        [
+          4,
+          4,
+          61,
+          61
+        ],
+        [
+          3,
+          4,
+          60,
+          60
+        ],
+        [
+          21,
+          22,
+          43,
+          43
+        ],
+        [
+          18,
+          18,
+          46,
+          46
+        ],
+        [
+          12,
+          12,
+          53,
+          53
+        ],
+        [
+          7,
+          7,
+          57,
+          57
+        ],
+        [
+          4,
+          4,
+          61,
+          61
+        ],
+        [
+          3,
+          4,
+          60,
+          60
+        ],
+        [
+          21,
+          22,
+          43,
+          43
+        ],
+        [
+          18,
+          18,
+          46,
+          46
+        ],
+        [
+          12,
+          12,
+          53,
+          53
+        ],
+        [
+          7,
+          7,
+          57,
+          57
+        ],
+        [
+          4,
+          4,
+          61,
+          61
+        ],
+        [
+          3,
+          4,
+          60,
+          60
+        ]
+      ],
+      "frame_size": [
+        64,
+        64
+      ],
+      "grid": [
+        6,
+        4
+      ],
+      "grid_order": "phase columns, theme rows",
+      "key": "shared_impact_glint_atlas",
+      "minimum_frame_padding_px": 3,
+      "output": "assets/bullets_dream/shared_impact_glint_atlas.png",
+      "output_alpha_bbox": [
+        21,
+        4,
+        380,
+        253
+      ],
+      "output_residue": {
+        "cyan_residue_pixels": 0,
+        "green_residue_pixels": 0,
+        "visible_pixels": 17828
+      },
+      "output_sha256": "0b8e079fbdc5ee91c7e929e12ade2344cf5abbcfc9de817622e10f5048b4ce99",
+      "palette_sources": {
+        "crimson": [
+          "tentacle_shard_crimson"
+        ],
+        "gold": [
+          "spiral_halo_gold"
+        ],
+        "silver": [
+          "galaxy_vortex_white",
+          "wire_orb_silver"
+        ],
+        "violet": [
+          "tri_blade_violet",
+          "trinity_orb_violet"
+        ]
+      },
+      "phase_count": 6,
+      "role": "six-frame impact envelope with dark core, broken ring and sharp glints",
+      "runtime_intent": "event-only pooled flipbook; destroy after phase six",
+      "theme_rows": [
+        "violet",
+        "crimson",
+        "gold",
+        "silver"
+      ]
+    }
+  ],
   "pipeline": "tools/process_dream_bullet_assets.py",
   "render_policy": "single-draw RGBA with baked 3px dark collision edge",
-  "schema": "moon-bullet/dream-bullet-assets/v1",
+  "schema": "moon-bullet/dream-bullet-assets/v2",
   "source_policy": "user-provided barrage sprites; inputs are read-only"
 }

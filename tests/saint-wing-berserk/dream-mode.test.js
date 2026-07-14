@@ -203,23 +203,52 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(diversity.runtimeFallbackReporting).toBe(true);
   });
 
-  it('bakes clarity once per skin and keeps the per-bullet draw path allocation-free', () => {
-    const bakeStart = source.indexOf('function getDreamBulletSkinSprite');
-    const bakeEnd = source.indexOf('function drawDreamBulletFast', bakeStart);
-    const drawEnd = source.indexOf('function drawEnemyBullets', bakeEnd);
-    const bake = source.slice(bakeStart, bakeEnd);
-    const draw = source.slice(bakeEnd, drawEnd);
-    expect(bakeStart).toBeGreaterThan(0);
-    expect(bakeEnd).toBeGreaterThan(bakeStart);
-    expect(drawEnd).toBeGreaterThan(bakeEnd);
-    expect(bake).toContain('dreamBulletSkinCache.get');
-    expect(bake).toContain('dreamBulletSkinCache.set');
-    expect(bake).toContain('drawImage');
-    expect(draw).toContain('getDreamBulletSkinSprite');
+  it('prebakes four material phases and batches weighted trails without hot-path allocations', () => {
+    expect(typeof dream.bulletMaterialSpec).toBe('function');
+    expect(typeof dream.bulletMaterialStatus).toBe('function');
+    expect(dream.bulletMaterialSpec()).toMatchObject({
+      phaseCount: 4,
+      prewarm: true,
+      batchTrails: true,
+      allocationFreeHotPath: true,
+      trailLengthScale: expect.anything(),
+    });
+    const materialStatus = dream.bulletMaterialStatus();
+    expect(typeof materialStatus.cacheEntries).toBe('number');
+    expect(typeof materialStatus.expectedEntries).toBe('number');
+    expect(typeof materialStatus.warmed).toBe('boolean');
+    expect(Array.isArray(materialStatus.materialAssets)).toBe(true);
+    expect(Array.from(materialStatus.fallbacks)).toEqual([]);
+
+    const manifest = JSON.parse(readFileSync(new URL('../../assets/bullets_dream/dream_bullet_manifest.json', import.meta.url), 'utf8'));
+    expect(manifest.helper_count).toBeGreaterThanOrEqual(4);
+    expect(manifest.helpers).toHaveLength(manifest.helper_count);
+    for (const helper of manifest.helpers) {
+      expect(helper).toMatchObject({
+        key: expect.any(String),
+        output: expect.stringMatching(/^assets\/bullets_dream\/.+\.png$/),
+        runtime_intent: expect.any(String),
+      });
+      expect(helper.phase_count).toBe(helper.key === 'shared_impact_glint_atlas' ? 6 : 4);
+      expect(existsSync(new URL(`../../${helper.output}`, import.meta.url)), `${helper.key}: ${helper.output}`).toBe(true);
+    }
+
+    const prewarmStart = source.indexOf('function warmDreamBulletMaterialCache');
+    const batchStart = source.indexOf('function drawDreamBulletsBatch');
+    const batchEnd = source.indexOf('function drawEnemyBullets', batchStart);
+    const draw = source.slice(batchStart, batchEnd);
+    expect(prewarmStart).toBeGreaterThan(0);
+    expect(batchStart).toBeGreaterThan(0);
+    expect(batchEnd).toBeGreaterThan(batchStart);
     expect(draw).toContain('ctx.drawImage');
+    expect(draw).toContain('ctx.setTransform');
     expect(draw).not.toContain('createRadialGradient');
     expect(draw).not.toContain('createLinearGradient');
     expect(draw).not.toContain('new Image');
+    expect(draw).not.toContain('ctx.filter');
+    expect(draw).not.toContain('ctx.shadowBlur');
+    expect(draw).not.toContain('ctx.save()');
+    expect(draw).not.toContain('ctx.restore()');
   });
 
   it('keeps every wave logical barrage identical in all four quality modes', () => {

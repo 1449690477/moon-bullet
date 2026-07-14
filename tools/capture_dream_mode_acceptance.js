@@ -201,20 +201,34 @@ async function auditDreamAssets(page, viewport, report) {
   }, { timeout: 15000 }).catch(() => {
     report.failures.push(`${viewport.id}/asset-audit: bullet textures did not settle within 15s`);
   });
+  await page.waitForFunction(() => {
+    const fn = window.__dreamModeInternals__?.bulletMaterialStatus;
+    if (typeof fn !== 'function') return false;
+    const status = fn();
+    return status?.warmed === true
+      && Number(status?.cacheEntries || 0) === Number(status?.expectedEntries || 0)
+      && !(status?.fallbacks?.length);
+  }, { timeout: 15000 }).catch(() => {
+    report.failures.push(`${viewport.id}/asset-audit: four-phase material cache did not prewarm within 15s`);
+  });
   const api = await page.evaluate(() => {
     const internals = window.__dreamModeInternals__;
     return {
       hasSkinSpec: typeof internals?.bulletSkinSpec === 'function',
       hasAssetStatus: typeof internals?.bulletAssetStatus === 'function',
       hasDiversitySpec: typeof internals?.patternDiversitySpec === 'function',
+      hasMaterialSpec: typeof internals?.bulletMaterialSpec === 'function',
+      hasMaterialStatus: typeof internals?.bulletMaterialStatus === 'function',
       skins: typeof internals?.bulletSkinSpec === 'function' ? internals.bulletSkinSpec() : [],
       status: typeof internals?.bulletAssetStatus === 'function' ? internals.bulletAssetStatus() : null,
       diversity: typeof internals?.patternDiversitySpec === 'function' ? internals.patternDiversitySpec() : null,
+      materialSpec: typeof internals?.bulletMaterialSpec === 'function' ? internals.bulletMaterialSpec() : null,
+      materialStatus: typeof internals?.bulletMaterialStatus === 'function' ? internals.bulletMaterialStatus() : null,
     };
   });
   const label = `${viewport.id}/asset-audit`;
-  if (!api.hasSkinSpec || !api.hasAssetStatus || !api.hasDiversitySpec) {
-    report.failures.push(`${label}: missing bulletSkinSpec/bulletAssetStatus/patternDiversitySpec acceptance API`);
+  if (!api.hasSkinSpec || !api.hasAssetStatus || !api.hasDiversitySpec || !api.hasMaterialSpec || !api.hasMaterialStatus) {
+    report.failures.push(`${label}: missing bullet skin/asset/diversity/material acceptance API`);
     return;
   }
   const assets = new Set(api.skins.map((skin) => skin.assetKey).filter(Boolean));
@@ -232,6 +246,12 @@ async function auditDreamAssets(page, viewport, report) {
   if ((api.diversity?.motionFamilies?.length || 0) < 10) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < 10`);
   if ((api.diversity?.emitterKeys?.length || 0) < 28) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < 28`);
   if (api.diversity?.runtimeFallbackReporting !== true) report.failures.push(`${label}: runtime fallback reporting is not enabled`);
+  if (api.materialSpec?.phaseCount !== 4) report.failures.push(`${label}: material phase count ${api.materialSpec?.phaseCount} != 4`);
+  if (!api.materialSpec?.prewarm || !api.materialSpec?.batchTrails || !api.materialSpec?.allocationFreeHotPath) report.failures.push(`${label}: prewarm/batch-trail/allocation-free material policy incomplete`);
+  if (api.materialSpec?.trailLengthScale == null) report.failures.push(`${label}: material trailLengthScale missing`);
+  if ((api.materialStatus?.materialAssets?.length || 0) < 4) report.failures.push(`${label}: ${(api.materialStatus?.materialAssets || []).length} material helper assets < 4`);
+  if (api.materialStatus?.fallbacks?.length) report.failures.push(`${label}: material fallbacks ${api.materialStatus.fallbacks.join(', ')}`);
+  if (!api.materialStatus?.warmed || Number(api.materialStatus?.cacheEntries || 0) !== Number(api.materialStatus?.expectedEntries || 0)) report.failures.push(`${label}: material cache not fully prewarmed (${api.materialStatus?.cacheEntries || 0}/${api.materialStatus?.expectedEntries || 0})`);
   report.assetAudit.push({ viewport: viewport.id, ...api, realAssetCount: assets.size, familyCount: families.size });
 }
 
@@ -331,6 +351,75 @@ async function captureTimeline(page, viewport, scene, options, framePoints, repo
     }
     report.frames.push({ label, file, shotKind: 'full-viewport', screenshot, scene, options, frame, snapshot, counts: validation.counts, visual });
   }
+}
+
+async function captureMaterialAnimation(page, viewport, report) {
+  const prefix = 'material_motion';
+  const selectedFrames = new Set([0, 3, 8, 15, 30, 60]);
+  const frameFiles = [];
+  const phaseSignatures = new Set();
+  let snapshot = await prepare(page, 'material-lab', { quality: viewport.mobile ? 'ultra' : 'high' });
+  const firstStats = snapshot.materialStats || {};
+  const firstCount = count(snapshot, ['logicalBulletCount', 'bullets']);
+  const cacheEntries = Number(firstStats.cacheEntries || 0);
+  const cacheBuilds = Number(firstStats.cacheBuilds || 0);
+  let maxTrailBatches = 0;
+  let maxTrailSegments = 0;
+  let finalSnapshot = snapshot;
+
+  for (let sample = 0; sample <= 60; sample += 1) {
+    if (sample) snapshot = await step(page, 2);
+    finalSnapshot = snapshot;
+    const stats = snapshot.materialStats || {};
+    phaseSignatures.add(JSON.stringify(stats.materialPhases || []));
+    maxTrailBatches = Math.max(maxTrailBatches, Number(stats.trailBatches || 0));
+    maxTrailSegments = Math.max(maxTrailSegments, Number(stats.trailSegments || 0));
+    const file = `${viewport.id}_${prefix}_f${String(sample).padStart(3, '0')}.png`;
+    await screenshotViewport(page, file);
+    frameFiles.push(file);
+
+    if (selectedFrames.has(sample)) {
+      const label = `${viewport.id}/${prefix}/f${sample * 2}`;
+      const validation = validateSnapshot(snapshot, label);
+      report.failures.push(...validation.failures);
+      const visual = await canvasMetrics(page);
+      if (visual.visibleRatio < 0.02) report.failures.push(`${label}: canvas is visually blank (${visual.visibleRatio})`);
+      report.frames.push({
+        label,
+        file,
+        shotKind: 'continuous-material-sequence',
+        screenshot: { width: viewport.width * viewport.dpr, height: viewport.height * viewport.dpr },
+        scene: 'material-lab',
+        options: { quality: viewport.mobile ? 'ultra' : 'high' },
+        frame: sample * 2,
+        snapshot,
+        counts: validation.counts,
+        visual,
+      });
+    }
+  }
+
+  const finalStats = finalSnapshot.materialStats || {};
+  const finalCount = count(finalSnapshot, ['logicalBulletCount', 'bullets']);
+  const label = `${viewport.id}/material-motion`;
+  if (firstCount < 8 || finalCount !== firstCount) report.failures.push(`${label}: same bullet group was not stable for 2s (${firstCount} -> ${finalCount})`);
+  if (phaseSignatures.size < 2) report.failures.push(`${label}: material phase did not change across 0/100/250/500ms`);
+  if (maxTrailBatches < 1 || maxTrailBatches > 8) report.failures.push(`${label}: trail batches ${maxTrailBatches} outside 1..8`);
+  if (maxTrailSegments < firstCount) report.failures.push(`${label}: trail segments ${maxTrailSegments} < bullet count ${firstCount}`);
+  if (Number(finalStats.cacheEntries || 0) !== cacheEntries) report.failures.push(`${label}: cache entries grew during 2s (${cacheEntries} -> ${finalStats.cacheEntries})`);
+  if (Number(finalStats.cacheBuilds || 0) !== cacheBuilds) report.failures.push(`${label}: cache builds grew during 2s (${cacheBuilds} -> ${finalStats.cacheBuilds})`);
+  report.materialAnimation = {
+    viewport: viewport.id,
+    durationSeconds: 2,
+    captureFps: 30,
+    frameCount: frameFiles.length,
+    frames: frameFiles,
+    phaseSignatures: [...phaseSignatures],
+    firstStats,
+    finalStats,
+    maxTrailBatches,
+    maxTrailSegments,
+  };
 }
 
 async function captureHitFeedback(page, viewport, report) {
@@ -470,11 +559,21 @@ function percentile(values, ratio) {
 }
 
 async function runPerformance(page, report) {
+  // Performance measures the stable hot path, not one-time texture decoding and
+  // per-skin material baking. A real player pays this cost incrementally in the lobby.
+  await prepare(page, 'lobby', { level: 1 });
+  await page.waitForFunction(() => {
+    const status = window.__dreamModeInternals__?.bulletMaterialStatus?.();
+    return status?.warmed === true
+      && Number(status?.cacheEntries || 0) === Number(status?.expectedEntries || 0)
+      && !(status?.fallbacks?.length);
+  }, { timeout: 15000 });
   await prepare(page, 'performance', { wave: 10, quality: 'ultra', enemies: 6, bullets: 96, warnings: 4, lasers: 4 });
   const sample = await page.evaluate(async ({ seconds }) => {
     const cap = window.__dreamModeCapture__;
     const intervals = [];
     const cpu = [];
+    const firstSnapshot = cap.snapshot();
     const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
     let previous = await nextFrame();
     const deadline = performance.now() + seconds * 1000;
@@ -486,7 +585,7 @@ async function runPerformance(page, report) {
       intervals.push(Math.max(0.001, now - previous));
       previous = now;
     }
-    return { intervals, cpu, snapshot: cap.snapshot() };
+    return { intervals, cpu, firstSnapshot, snapshot: cap.snapshot() };
   }, { seconds: PERF_SECONDS });
   const averageMs = sample.intervals.reduce((sum, value) => sum + value, 0) / Math.max(1, sample.intervals.length);
   const p99Ms = percentile(sample.intervals, 0.99);
@@ -499,27 +598,38 @@ async function runPerformance(page, report) {
     onePercentLowFps: Number((1000 / Math.max(0.001, p99Ms)).toFixed(1)),
     averageCpuMs: Number(cpuAverage.toFixed(3)),
     p99FrameMs: Number(p99Ms.toFixed(3)),
+    initialMaterialStats: sample.firstSnapshot?.materialStats || null,
+    finalMaterialStats: sample.snapshot?.materialStats || null,
     snapshot: sample.snapshot,
   };
   const validation = validateSnapshot(sample.snapshot, 'mobile performance');
   report.failures.push(...validation.failures);
+  const firstMaterial = sample.firstSnapshot?.materialStats || {};
+  const finalMaterial = sample.snapshot?.materialStats || {};
+  if (Number(firstMaterial.cacheEntries || 0) !== Number(finalMaterial.cacheEntries || 0)) report.failures.push(`performance material cache entries grew ${firstMaterial.cacheEntries || 0} -> ${finalMaterial.cacheEntries || 0}`);
+  if (Number(firstMaterial.cacheBuilds || 0) !== Number(finalMaterial.cacheBuilds || 0)) report.failures.push(`performance material cache builds grew ${firstMaterial.cacheBuilds || 0} -> ${finalMaterial.cacheBuilds || 0}`);
+  if (Number(finalMaterial.trailBatches || 0) < 1 || Number(finalMaterial.trailBatches || 0) > 8) report.failures.push(`performance trail batches ${finalMaterial.trailBatches || 0} outside 1..8`);
+  if (Number(finalMaterial.trailSegments || 0) < 1) report.failures.push('performance scene has no visible batched trail segments');
   if (report.performance.averageFps < 58) report.failures.push(`performance average ${report.performance.averageFps} FPS < 58`);
   if (report.performance.onePercentLowFps < 45) report.failures.push(`performance 1% low ${report.performance.onePercentLowFps} FPS < 45`);
 }
 
-function buildGif(prefix, frameFiles) {
+function buildGif(prefix, frameFiles, options = {}) {
   if (!frameFiles.length) return { built: false, reason: 'no matching frames' };
+  const frameDuration = Math.max(0.01, Number(options.frameDuration || 0.12));
+  const fps = Math.max(1, Number(options.fps || 12));
+  const width = Math.max(320, Number(options.width || 720));
   const listPath = path.join(OUT_DIR, `${prefix}.ffconcat`);
   const lines = ['ffconcat version 1.0'];
   for (const file of frameFiles) {
     lines.push(`file '${file.replaceAll("'", "'\\''")}'`);
-    lines.push('duration 0.12');
+    lines.push(`duration ${frameDuration}`);
   }
   if (frameFiles.length) lines.push(`file '${frameFiles.at(-1).replaceAll("'", "'\\''")}'`);
   fs.writeFileSync(listPath, `${lines.join('\n')}\n`);
   const result = spawnSync('ffmpeg', [
     '-y', '-f', 'concat', '-safe', '0', '-i', listPath,
-    '-vf', 'fps=12,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=192[p];[s1][p]paletteuse=dither=sierra2_4a',
+    '-vf', `fps=${fps},scale=${width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=192[p];[s1][p]paletteuse=dither=sierra2_4a`,
     '-loop', '0', path.join(OUT_DIR, `${prefix}.gif`),
   ], { encoding: 'utf8' });
   fs.rmSync(listPath, { force: true });
@@ -559,6 +669,7 @@ async function main() {
     qualityParity: [],
     assetAudit: [],
     hitFeedback: [],
+    materialAnimation: null,
     performance: null,
     gifs: [],
     failures: [],
@@ -602,6 +713,8 @@ async function main() {
             await captureTimeline(page, viewport, 'stars', { hits }, [0, 12, 60], report, `stars_hits${hits}`);
           }
           await captureTimeline(page, viewport, 'fail', { hits: 4 }, [0, 30, 90], report, 'fail_4hits');
+          await captureTimeline(page, viewport, 'material-lab', { quality: 'high' }, [0, 6, 15, 30], report, 'material_phases');
+          await captureMaterialAnimation(page, viewport, report);
           await captureQualityParity(page, report);
         }
       } finally {
@@ -639,6 +752,9 @@ async function main() {
   report.gifs.push(buildGif('dream_wave_patterns', waveFrames));
   report.gifs.push(buildGif('dream_seraph_phases', bossFrames));
   report.gifs.push(buildGif('dream_hit_feedback', hitFrames));
+  if (report.materialAnimation?.frames?.length) {
+    report.gifs.push(buildGif('dream_bullet_material_motion_2s', report.materialAnimation.frames, { frameDuration: 1 / 30, fps: 30, width: 720 }));
+  }
 
   fs.writeFileSync(path.join(OUT_DIR, 'report.json'), JSON.stringify(report, null, 2));
   writeHtml(report);

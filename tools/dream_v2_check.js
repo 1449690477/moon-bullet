@@ -13,7 +13,7 @@ code = code.replace(/\}\)\(\);\s*$/,
   "\nglobalThis.__DREAM_TEST__ = {\n" +
   "  enemyPositions: () => enemies.filter(e => e && e.dream).map(e => ({ x: e.x, y: e.y })),\n" +
   "  bulletStyles: () => enemyBullets.filter(b => b && b.dream).map(b => b.dreamStyle),\n" +
-  "  bulletDetails: () => enemyBullets.filter(b => b && b.dream).map(b => ({ style: b.dreamStyle, shape: b.dreamShape, skin: b.dreamSkin, assetKey: b.dreamAssetKey, emitter: b.dreamEmitter, motion: b.dreamMotion, fallback: b.dreamFallback })),\n" +
+  "  bulletDetails: () => enemyBullets.filter(b => b && b.dream).map(b => ({ style: b.dreamStyle, shape: b.dreamShape, skin: b.dreamSkin, assetKey: b.dreamAssetKey, emitter: b.dreamEmitter, motion: b.dreamMotion, fallback: b.dreamFallback, materialPhase: b.dreamMaterialPhase, visualSpin: b.dreamVisualSpin, facing: b.dreamFacing, trailLength: b.dreamTrailLength })),\n" +
   "};\n})();");
 
 const failures = [];
@@ -39,6 +39,7 @@ function makeCtx() {
       if (p === 'measureText') return cache[p] || (cache[p] = () => measureStub);
       if (p === 'createLinearGradient' || p === 'createRadialGradient') return cache[p] || (cache[p] = () => gradientStub);
       if (p === 'getImageData') return cache[p] || (cache[p] = () => ({ data: [] }));
+      if (p === 'getTransform') return cache[p] || (cache[p] = () => ({ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }));
       if (typeof p === 'string') return cache[p] || (cache[p] = noop);
       return undefined;
     },
@@ -201,6 +202,37 @@ if (cap && internals) {
   assert(diversitySpec && diversitySpec.motionFamilies.length >= 10, `运动族 ≥ 10（${diversitySpec?.motionFamilies?.length || 0}）`);
   assert(diversitySpec && diversitySpec.emitterKeys.length >= 28, `发射器 ≥ 28（${diversitySpec?.emitterKeys?.length || 0}）`);
   assert(diversitySpec && diversitySpec.runtimeFallbackReporting === true, '运行时 fallback 会真实上报');
+  const materialSpec = typeof internals.bulletMaterialSpec === 'function' ? internals.bulletMaterialSpec() : null;
+  assert(materialSpec && materialSpec.phaseCount === 4, '敌弹材质缓存为 4 相位动态高光');
+  assert(materialSpec && materialSpec.prewarm === true && materialSpec.allocationFreeHotPath === true, '材质缓存预热且实战热路径零分配');
+  assert(materialSpec && materialSpec.batchTrails === true, '速度尾迹按威胁色批量绘制');
+  assert(materialSpec && materialSpec.trailLengthScale != null, '高速敌弹公开重量感尾迹长度配置');
+  const materialStatusBeforeLab = typeof internals.bulletMaterialStatus === 'function' ? internals.bulletMaterialStatus() : null;
+  assert(materialStatusBeforeLab && Array.isArray(materialStatusBeforeLab.materialAssets) && materialStatusBeforeLab.materialAssets.length >= 4, '四类共享材质辅助图已注册');
+  assert(materialStatusBeforeLab && Array.isArray(materialStatusBeforeLab.fallbacks) && materialStatusBeforeLab.fallbacks.length === 0, '材质缓存无静默 fallback');
+
+  // ── 3a. 同一弹组连续 2 秒材质与速度尾迹验收 ────────────────
+  const lab0 = cap.prepare('material-lab', { quality: 'high' });
+  const labCacheEntries = Number(lab0.materialStats?.cacheEntries || 0);
+  const labCacheBuilds = Number(lab0.materialStats?.cacheBuilds || 0);
+  const phaseSignatures = new Set([JSON.stringify(lab0.materialStats?.materialPhases || [])]);
+  let trailBatches = Number(lab0.materialStats?.trailBatches || 0);
+  let trailSegments = Number(lab0.materialStats?.trailSegments || 0);
+  let labLast = lab0;
+  for (let sample = 0; sample < 20; sample++) {
+    labLast = cap.step(6);
+    phaseSignatures.add(JSON.stringify(labLast.materialStats?.materialPhases || []));
+    trailBatches = Math.max(trailBatches, Number(labLast.materialStats?.trailBatches || 0));
+    trailSegments = Math.max(trailSegments, Number(labLast.materialStats?.trailSegments || 0));
+  }
+  assert(lab0.logicalBulletCount >= 8 && labLast.logicalBulletCount === lab0.logicalBulletCount, `材质实验场同一弹组稳定存在 2 秒（${lab0.logicalBulletCount} 发）`);
+  assert(phaseSignatures.size >= 2, `0/100/250/500ms 可见材质相位变化（${phaseSignatures.size} 种相位签名）`);
+  assert(trailBatches > 0 && trailBatches <= 8, `尾迹批次有界（峰值 ${trailBatches}）`);
+  assert(trailSegments >= lab0.logicalBulletCount, `每发高速样弹都有可见速度尾迹（${trailSegments} 段 / ${lab0.logicalBulletCount} 发）`);
+  assert(Number(labLast.materialStats?.cacheEntries || 0) === labCacheEntries, '连续 2 秒材质缓存条目不增长');
+  assert(Number(labLast.materialStats?.cacheBuilds || 0) === labCacheBuilds, '连续 2 秒无临时材质重建');
+  const materialStatusAfterLab = typeof internals.bulletMaterialStatus === 'function' ? internals.bulletMaterialStatus() : null;
+  assert(materialStatusAfterLab && materialStatusAfterLab.warmed === true && materialStatusAfterLab.cacheEntries === materialStatusAfterLab.expectedEntries, `材质缓存完成预热（${materialStatusAfterLab?.cacheEntries || 0}/${materialStatusAfterLab?.expectedEntries || 0}）`);
   const waveStyleSets = [];
   const allAssets = new Set(), allMotions = new Set(), allEmitters = new Set();
   let everBullets = 0;
@@ -252,6 +284,13 @@ if (cap && internals) {
   // 性能场景：填满后不越界
   const perfSnap = cap.prepare('performance', { wave: 9, bullets: 96, warnings: 4 });
   assert(perfSnap.logicalBulletCount <= 96, `performance 场景填充后 ${perfSnap.logicalBulletCount} ≤ 96`);
+  const perfCacheEntries = Number(perfSnap.materialStats?.cacheEntries || 0);
+  const perfCacheBuilds = Number(perfSnap.materialStats?.cacheBuilds || 0);
+  const perfPoolAllocations = Number(perfSnap.poolAllocations || 0);
+  const perfAfter = cap.step(600);
+  assert(Number(perfAfter.materialStats?.cacheEntries || 0) === perfCacheEntries, '96 弹压力场 10 秒材质缓存不增长');
+  assert(Number(perfAfter.materialStats?.cacheBuilds || 0) === perfCacheBuilds, '96 弹压力场 10 秒无材质重建');
+  assert(Number(perfAfter.poolAllocations || 0) === perfPoolAllocations, '96 弹压力场 10 秒无新增弹体分配');
   const pool = internals.poolReuseForTest();
   assert(pool.capacity === 128 && pool.overflowed === false, '对象池容量 128 · 无溢出');
 
