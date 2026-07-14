@@ -2335,7 +2335,7 @@
     }),
   ]);
   const DREAM_PERF_CONFIG = Object.freeze({
-    enemyCap: 6,
+    enemyCap: 8,
     bulletCap: 96,
     poolSize: 128,
     primaryReserve: 14,
@@ -2353,14 +2353,26 @@
   // one large-type, touch-safe layout on desktop and mobile instead of shrinking a desktop dashboard.
   const DREAM_LOBBY_PORTRAIT = true;
   const DREAM_WAVE_HP_SCALE = Object.freeze([1, 1.10, 1.20, 1.32, 1.45, 1.58, 1.72, 1.86, 2.02, 2.20]);
+  const DREAM_WAVE_BATCHES = Object.freeze([3, 3, 2]);
+  const DREAM_WAVE_BATCH_DELAYS = Object.freeze([0, 5, 10]);
+  const DREAM_REWARD_CONFIG = Object.freeze({ powerPerKill: 3.75 });
+  const DREAM_FORMATION_PRESETS = Object.freeze([
+    Object.freeze([Object.freeze([[132, 214], [360, 196], [588, 214]]), Object.freeze([[208, 334], [512, 334], [360, 392]]), Object.freeze([[258, 484], [462, 484]])]),
+    Object.freeze([Object.freeze([[104, 246], [274, 194], [446, 194]]), Object.freeze([[616, 246], [530, 368], [190, 368]]), Object.freeze([[292, 474], [428, 474]])]),
+    Object.freeze([Object.freeze([[160, 202], [360, 270], [560, 202]]), Object.freeze([[102, 366], [360, 338], [618, 366]]), Object.freeze([[242, 486], [478, 486]])]),
+    Object.freeze([Object.freeze([[96, 214], [360, 214], [624, 214]]), Object.freeze([[184, 342], [536, 342], [360, 414]]), Object.freeze([[156, 500], [564, 500]])]),
+    Object.freeze([Object.freeze([[224, 208], [360, 174], [496, 208]]), Object.freeze([[112, 348], [360, 360], [608, 348]]), Object.freeze([[278, 494], [442, 494]])]),
+  ]);
   const DREAM_DAMAGE_STEPS = Object.freeze([1, 0.8, 0.6, 0.4]);
   const DREAM_MOB_DEFS = Object.freeze({
-    dream_seraph_wing: Object.freeze({ name: '曦翼星使', hp: 125000, r: 29, size: 118, sprite: 'drone', role: 'wing', color: '#88cfff', score: 4500 }),
-    dream_seraph_choir: Object.freeze({ name: '辉歌咏者', hp: 170000, r: 31, size: 126, sprite: 'nun', role: 'choir', color: '#b5a0ef', score: 5600 }),
-    dream_seraph_guard: Object.freeze({ name: '圣盾执刑者', hp: 235000, r: 35, size: 136, sprite: 'holyshield', role: 'guard', color: '#f2d38b', score: 7200 }),
-    dream_seraph_prism: Object.freeze({ name: '极光棱镜', hp: 185000, r: 32, size: 128, sprite: 'enBluecryst', role: 'prism', color: '#84e6ff', score: 6000 }),
-    dream_seraph_reaper: Object.freeze({ name: '堕辉镰侍', hp: 210000, r: 34, size: 134, sprite: 'reaper', role: 'reaper', color: '#d989ff', score: 6800 }),
-    dream_seraph_oracle: Object.freeze({ name: '虚星谕者', hp: 160000, r: 32, size: 130, sprite: 'voidchanter', role: 'oracle', color: '#a697ff', score: 5400 }),
+    dream_seraph_wing: Object.freeze({ name: '曦翼星使', hp: 90000, r: 29, size: 118, sprite: 'drone', role: 'wing', color: '#88cfff', score: 4500 }),
+    dream_seraph_choir: Object.freeze({ name: '辉歌咏者', hp: 122000, r: 31, size: 126, sprite: 'nun', role: 'choir', color: '#b5a0ef', score: 5600 }),
+    dream_seraph_guard: Object.freeze({ name: '圣盾执刑者', hp: 169000, r: 35, size: 136, sprite: 'holyshield', role: 'guard', color: '#f2d38b', score: 7200 }),
+    dream_seraph_prism: Object.freeze({ name: '极光棱镜', hp: 133000, r: 32, size: 128, sprite: 'enBluecryst', role: 'prism', color: '#84e6ff', score: 6000 }),
+    dream_seraph_reaper: Object.freeze({ name: '堕辉镰侍', hp: 151000, r: 34, size: 134, sprite: 'reaper', role: 'reaper', color: '#d989ff', score: 6800 }),
+    dream_seraph_oracle: Object.freeze({ name: '虚星谕者', hp: 115000, r: 32, size: 130, sprite: 'voidchanter', role: 'oracle', color: '#a697ff', score: 5400 }),
+    dream_seraph_lancer: Object.freeze({ name: '渊行枪使', hp: 105000, r: 31, size: 126, sprite: 'abyssrunner', role: 'lancer', color: '#7199ff', score: 5200 }),
+    dream_seraph_storm: Object.freeze({ name: '霆辉侍祭', hp: 118000, r: 30, size: 124, sprite: 'stormacolyte', role: 'storm', color: '#6ed6ff', score: 5400 }),
   });
   const DREAM_ROLE_COLORS = Object.freeze({
     wing: Object.freeze(['#4f9ef5', '#dff5ff']),
@@ -2369,6 +2381,8 @@
     prism: Object.freeze(['#35b8d8', '#d4fbff']),
     reaper: Object.freeze(['#a64bc5', '#ffd0f7']),
     oracle: Object.freeze(['#6657cc', '#ddd8ff']),
+    lancer: Object.freeze(['#4f70d9', '#d7e2ff']),
+    storm: Object.freeze(['#2da9cb', '#d9fbff']),
   });
   // 梦境敌弹优先复用普通模式已经验收过的 V3.26 PNG。每张素材只在进入梦境时预取，
   // 并烘焙一次暗边、判定环与亮芯，实战仍保持每颗敌弹一次 drawImage。
@@ -2401,15 +2415,28 @@
     chainLink: Object.freeze({ asset: 'dreamChainLinkSteel', family: 'chain', directional: true, sourceScale: 0.94, edge: '#ad9fff', preoutlined: true }),
     tentacleShard: Object.freeze({ asset: 'dreamTentacleShardCrimson', family: 'ribbon', directional: true, sourceScale: 0.94, edge: '#ff718f', preoutlined: true }),
     wireOrb: Object.freeze({ asset: 'dreamWireOrbSilver', family: 'orb', spin: true, sourceScale: 0.94, edge: '#dce7ff', preoutlined: true }),
+    cleaveViolet: Object.freeze({ asset: 'bv3CleaveViolet', family: 'blade', directional: true, sourceScale: 0.88, edge: '#bd8cff' }),
+    petalBladeViolet: Object.freeze({ asset: 'bv3PetalBladeViolet', family: 'petal', directional: true, sourceScale: 0.86, edge: '#d7a3ff' }),
+    ravenDive: Object.freeze({ asset: 'bv3RavenDive', family: 'arrow', directional: true, sourceScale: 0.86, edge: '#9db0ff' }),
+    galaxyTall: Object.freeze({ asset: 'bv3GalaxyTall', family: 'prism', directional: true, sourceScale: 0.88, edge: '#b6baff' }),
   });
   const DREAM_BULLET_ASSET_KEYS = Object.freeze([...new Set(Object.values(DREAM_BULLET_SKINS).map(skin => skin.asset))]);
-  const DREAM_BULLET_MATERIAL_ASSET_KEYS = Object.freeze([
-    'dreamSharedVolumeCore', 'dreamSharedSpecularStreak',
-    'dreamSharedVelocityTrail', 'dreamSharedImpactGlint',
-  ]);
+  const DREAM_BULLET_MATERIAL_REQUIRED_KEYS = Object.freeze(['dreamSharedVolumeCore', 'dreamSharedSpecularStreak']);
+  const DREAM_BULLET_MATERIAL_OPTIONAL_KEYS = Object.freeze(['dreamSharedImpactGlint']);
+  const DREAM_BULLET_MATERIAL_ASSET_KEYS = Object.freeze([...DREAM_BULLET_MATERIAL_REQUIRED_KEYS, ...DREAM_BULLET_MATERIAL_OPTIONAL_KEYS]);
   const DREAM_BULLET_ALL_ASSET_KEYS = Object.freeze([...DREAM_BULLET_ASSET_KEYS, ...DREAM_BULLET_MATERIAL_ASSET_KEYS]);
+  const DREAM_ENEMY_ASSET_KEYS = Object.freeze([
+    'droneIdle', 'droneAttack', 'droneHit', 'droneDeath',
+    'nunIdle', 'nunAttack', 'nunHit', 'nunDeath',
+    'holyshieldIdle', 'holyshieldAttack', 'holyshieldHit', 'holyshieldDeath',
+    'reaperIdle', 'reaperAttack', 'reaperHit', 'reaperDeath',
+    'voidchanterIdle', 'voidchanterAttack', 'voidchanterHit', 'voidchanterDeath',
+    'abyssrunnerIdle', 'abyssrunnerAttack', 'abyssrunnerHit', 'abyssrunnerDeath',
+    'stormacolyteIdle', 'stormacolyteAttack', 'stormacolyteHit', 'stormacolyteDeath',
+    'enBluecryst',
+  ]);
   const DREAM_BULLET_MATERIAL_CONFIG = Object.freeze({
-    version: 'V47-material-depth',
+    version: 'V48-transient-trail',
     phaseCount: 4,
     phaseRate: 9,
     cacheFrame: Object.freeze({ width: 112, height: 128, anchorX: 56, anchorY: 47 }),
@@ -2418,9 +2445,18 @@
     speedStretch: Object.freeze({ start: 120, full: 420, max: 1.16 }),
     facingResponse: 13,
     prewarmPerFrame: 3,
-    trailSpeedMin: 48,
-    trailLengthScale: Object.freeze([1.05, 2.20]),
-    trailWidthScale: Object.freeze([0.92, 0.40]),
+    trailSpeedMin: 132,
+    trailLengthScale: Object.freeze([0.48, 1.12]),
+    trailWidthScale: Object.freeze([0.74, 0.24]),
+    trail: Object.freeze({
+      launchDuration: 0.28,
+      transitionDuration: 0.18,
+      maxLengthDesktop: 96,
+      maxLengthMobile: 72,
+      damaging: false,
+      collisionRadius: 0,
+      families: Object.freeze(['arrow', 'spear', 'blade', 'ribbon', 'petal', 'prism', 'chain', 'burst']),
+    }),
     themes: Object.freeze([
       Object.freeze({ key: 'violet', edge: '#a98cff', trail: 'rgba(118,73,230,.58)', hot: 'rgba(225,205,255,.92)' }),
       Object.freeze({ key: 'crimson', edge: '#ff5f82', trail: 'rgba(202,36,74,.62)', hot: 'rgba(255,205,215,.92)' }),
@@ -2430,18 +2466,29 @@
     orbFamilies: Object.freeze(['orb', 'halo', 'vortex', 'sigil', 'bloom', 'wisp', 'star', 'burst']),
     hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, drawImagesPerBullet: 1 }),
   });
+  const DREAM_BULLET_MOTION_CONFIG = Object.freeze({
+    visibleLifeFloor: 8.5,
+    hardLife: 11,
+    dissolveDuration: 0.34,
+    curveFrequency: 2.2,
+    waveFrequency: 3.5,
+    offscreenMargin: 116,
+    depthMode: 'clamp-or-bounce-never-visible-cull',
+    policies: Object.freeze(['linear', 'boundedCurve', 'waveOffset', 'turnOnce', 'homing', 'bounce']),
+  });
   const DREAM_BULLET_THEME_OVERRIDES = Object.freeze({
     judgmentSpear: 2, firecracker: 2, spiralHalo: 2,
     seraphArrowRed: 1, fireCore: 1, soulEmber: 1, bladeDome: 1, crescentWave: 1,
     crossSlash: 1, daoWave: 1, bossStar: 1, tentacleShard: 1,
     stormCore: 3, raySphere: 3, pathRibbon: 3, prismLance: 3, crystalBar: 3,
     galaxyVortex: 3, chainLink: 3, wireOrb: 3,
+    galaxyTall: 3, ravenDive: 3,
   });
   const DREAM_BULLET_SKIN_FAMILIES = Object.freeze({
-    aimed: Object.freeze(['seraphArrowViolet', 'judgmentSpear', 'seraphArrowRed', 'firecracker', 'skullSigil', 'trinityOrb']),
-    spread: Object.freeze(['raySphere', 'stormCore', 'prismLance', 'crystalBar', 'pathRibbon', 'spiralHalo', 'wireOrb']),
-    hazard: Object.freeze(['bladeDome', 'crescentWave', 'crossSlash', 'daoWave', 'seraphArrowRed', 'triBlade', 'chainLink', 'tentacleShard']),
-    deco: Object.freeze(['choirBloom', 'choirPetal', 'voidWisp', 'soulEmber', 'oracleOrb', 'bossStar', 'galaxyVortex', 'wireOrb']),
+    aimed: Object.freeze(['seraphArrowViolet', 'judgmentSpear', 'seraphArrowRed', 'firecracker', 'skullSigil', 'trinityOrb', 'ravenDive']),
+    spread: Object.freeze(['raySphere', 'stormCore', 'prismLance', 'crystalBar', 'pathRibbon', 'spiralHalo', 'wireOrb', 'galaxyTall']),
+    hazard: Object.freeze(['bladeDome', 'crescentWave', 'crossSlash', 'daoWave', 'seraphArrowRed', 'triBlade', 'chainLink', 'tentacleShard', 'cleaveViolet']),
+    deco: Object.freeze(['choirBloom', 'choirPetal', 'voidWisp', 'soulEmber', 'oracleOrb', 'bossStar', 'galaxyVortex', 'wireOrb', 'petalBladeViolet']),
   });
   const DREAM_VOICE_MOTION = Object.freeze({
     wingFan: 'fan-sweep', ribbonHelix: 'helix-curve', boomerangFeathers: 'boomerang-brake', gapRing: 'gap-ring',
@@ -2453,7 +2500,8 @@
     twinSpiral: 'twin-spiral', depthJudgment: 'depth-lance', laneLaser: 'warned-laser', lattice: 'cross-lattice',
     crossWeave: 'cross-weave', meteorSweep: 'meteor-sweep', counterSpiral: 'counter-spiral', voidVortex: 'tangent-vortex',
     ghostOrbit: 'ghost-curve', sideSickles: 'side-sickle', bounceCrescents: 'edge-bounce', roseSpiral: 'rose-spiral',
-    breathRing: 'breath-brake', finaleCycle: 'finale-cycle',
+    breathRing: 'breath-brake', pendulumFan: 'bounded-pendulum', shutterRain: 'alternating-shutter',
+    clockLances: 'clock-wedge', stormRelay: 'telegraphed-relay', finaleCycle: 'finale-cycle',
   });
   function dreamMotionForVoice(voice) {
     const key = String(voice || '').replace(/^boss:/, '').replace(/:split$/, '');
@@ -2462,16 +2510,16 @@
   // 梦境十波谱面 V4：真实素材皮肤、低弹量多阶段运动与短乐句编排共同承担难度。
   // primary/secondary 预留池位，accent 只在存活弹 <=84 时发射，保证 96 发上限下大动作不被静默截断。
   const DREAM_PATTERN_DEFS = Object.freeze([
-    Object.freeze({ name: '六翼试奏', primary: ['wingFan', 'ribbonHelix', 'boomerangFeathers'], secondary: ['gapRing', 'twinSnake', 'stasisVolley'], accent: [], voices: ['wingFan', 'ribbonHelix', 'boomerangFeathers', 'gapRing', 'twinSnake', 'stasisVolley'] }),
-    Object.freeze({ name: '圣门回廊', primary: ['gateWall', 'prismGate', 'mirrorChoir'], secondary: ['aimedArrows', 'pincerSpears', 'chargeLances'], accent: [], voices: ['gateWall', 'prismGate', 'mirrorChoir', 'aimedArrows', 'pincerSpears', 'chargeLances'] }),
-    Object.freeze({ name: '堕辉雨幕', primary: ['crystalRain', 'snakeLanes', 'petalCascade'], secondary: ['delayArrows', 'orbitRelease', 'chaseFork'], accent: ['stasisVolley'], voices: ['crystalRain', 'snakeLanes', 'petalCascade', 'delayArrows', 'orbitRelease', 'chaseFork', 'stasisVolley'] }),
-    Object.freeze({ name: '双环绞杀', primary: ['counterRings', 'petalBloom', 'pulseHalo'], secondary: ['crossBlades', 'scytheCarousel', 'bladeWheel'], accent: ['orbitRelease'], voices: ['counterRings', 'petalBloom', 'pulseHalo', 'crossBlades', 'scytheCarousel', 'bladeWheel', 'orbitRelease'] }),
+    Object.freeze({ name: '六翼试奏', primary: ['wingFan', 'ribbonHelix', 'pendulumFan'], secondary: ['gapRing', 'twinSnake', 'stasisVolley'], accent: [], voices: ['wingFan', 'ribbonHelix', 'pendulumFan', 'gapRing', 'twinSnake', 'stasisVolley'] }),
+    Object.freeze({ name: '圣门回廊', primary: ['gateWall', 'prismGate', 'mirrorChoir'], secondary: ['aimedArrows', 'shutterRain', 'chargeLances'], accent: [], voices: ['gateWall', 'prismGate', 'mirrorChoir', 'aimedArrows', 'shutterRain', 'chargeLances'] }),
+    Object.freeze({ name: '堕辉雨幕', primary: ['crystalRain', 'snakeLanes', 'petalCascade'], secondary: ['delayArrows', 'stormRelay', 'chaseFork'], accent: ['stasisVolley'], voices: ['crystalRain', 'snakeLanes', 'petalCascade', 'delayArrows', 'stormRelay', 'chaseFork', 'stasisVolley'] }),
+    Object.freeze({ name: '双环绞杀', primary: ['counterRings', 'petalBloom', 'clockLances'], secondary: ['crossBlades', 'scytheCarousel', 'bladeWheel'], accent: ['orbitRelease'], voices: ['counterRings', 'petalBloom', 'clockLances', 'crossBlades', 'scytheCarousel', 'bladeWheel', 'orbitRelease'] }),
     Object.freeze({ name: '裁决棱镜', primary: ['twinSpiral', 'prismGate', 'depthJudgment'], secondary: ['laneLaser', 'wingFan', 'chargeLances'], accent: ['lattice'], voices: ['twinSpiral', 'prismGate', 'depthJudgment', 'laneLaser', 'wingFan', 'chargeLances', 'lattice'] }),
-    Object.freeze({ name: '翼门交响', primary: ['gateWall', 'crossWeave', 'mirrorChoir'], secondary: ['meteorSweep', 'pincerSpears', 'boomerangFeathers'], accent: ['ribbonHelix'], voices: ['gateWall', 'crossWeave', 'mirrorChoir', 'meteorSweep', 'pincerSpears', 'boomerangFeathers', 'ribbonHelix'] }),
+    Object.freeze({ name: '翼门交响', primary: ['gateWall', 'crossWeave', 'shutterRain'], secondary: ['meteorSweep', 'pendulumFan', 'boomerangFeathers'], accent: ['ribbonHelix'], voices: ['gateWall', 'crossWeave', 'shutterRain', 'meteorSweep', 'pendulumFan', 'boomerangFeathers', 'ribbonHelix'] }),
     Object.freeze({ name: '极光回廊', primary: ['counterSpiral', 'orbitRelease', 'voidVortex'], secondary: ['ghostOrbit', 'sideSickles', 'bounceCrescents'], accent: ['scytheCarousel'], voices: ['counterSpiral', 'orbitRelease', 'voidVortex', 'ghostOrbit', 'sideSickles', 'bounceCrescents', 'scytheCarousel'] }),
-    Object.freeze({ name: '圣痕轮舞', primary: ['petalBloom', 'roseSpiral', 'petalCascade'], secondary: ['breathRing', 'delayArrows', 'chaseFork'], accent: ['pulseHalo', 'stasisVolley'], voices: ['petalBloom', 'roseSpiral', 'petalCascade', 'breathRing', 'delayArrows', 'chaseFork', 'pulseHalo', 'stasisVolley'] }),
+    Object.freeze({ name: '圣痕轮舞', primary: ['petalBloom', 'roseSpiral', 'clockLances'], secondary: ['breathRing', 'stormRelay', 'chaseFork'], accent: ['pulseHalo', 'stasisVolley'], voices: ['petalBloom', 'roseSpiral', 'clockLances', 'breathRing', 'stormRelay', 'chaseFork', 'pulseHalo', 'stasisVolley'] }),
     Object.freeze({ name: '六翼裁决', primary: ['crossWeave', 'prismGate', 'depthJudgment'], secondary: ['laneLaser', 'meteorSweep', 'chargeLances'], accent: ['lattice', 'pincerSpears', 'bladeWheel'], voices: ['crossWeave', 'prismGate', 'depthJudgment', 'laneLaser', 'meteorSweep', 'chargeLances', 'lattice', 'pincerSpears', 'bladeWheel'] }),
-    Object.freeze({ name: '堕辉终奏', primary: ['finaleCycle', 'roseSpiral', 'voidVortex', 'depthJudgment'], secondary: ['counterRings', 'breathRing', 'orbitRelease', 'twinSnake'], accent: ['scytheCarousel', 'lattice', 'meteorSweep', 'bladeWheel', 'chaseFork'], voices: ['finaleCycle', 'roseSpiral', 'voidVortex', 'depthJudgment', 'counterRings', 'breathRing', 'orbitRelease', 'twinSnake', 'scytheCarousel', 'lattice', 'meteorSweep', 'bladeWheel', 'chaseFork'] }),
+    Object.freeze({ name: '堕辉终奏', primary: ['finaleCycle', 'roseSpiral', 'voidVortex', 'clockLances'], secondary: ['counterRings', 'shutterRain', 'stormRelay', 'twinSnake'], accent: ['scytheCarousel', 'lattice', 'meteorSweep', 'bladeWheel', 'chaseFork'], voices: ['finaleCycle', 'roseSpiral', 'voidVortex', 'clockLances', 'counterRings', 'shutterRain', 'stormRelay', 'twinSnake', 'scytheCarousel', 'lattice', 'meteorSweep', 'bladeWheel', 'chaseFork'] }),
   ]);
   const GUESTBOOK_TABLE = 'guestbook_messages';
   const GUESTBOOK_LIMIT = 20;
@@ -2529,9 +2577,19 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-13-dream-barrage-assets-v46';
+     const UPDATE_NOTICE_VERSION = '2026-07-14-dream-motion-v48';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-14',
+      items: [
+        '梦境弹幕 V4.8 修复异常变轨与屏内消失：曲线弹改为围绕出生朝向的有界摆角，波浪弹改为解析偏移；深度弹到边界后停止或反弹，呼吸环刹停后不再突然倒飞。',
+        '速度拖尾改为纯视觉瞬时演出：只在高速矢、枪、刃与棱柱弹发射、加速、变向时短暂出现，0伤害、0碰撞半径；移除弹体贴图中常驻尾巴，直线弹不再被弯曲尾迹伪装成乱飘。',
+        '每波敌群扩为8种精英、分3/3/2三批使用五套阵型入场；单体HP下调并加入渊行枪使、霆辉侍祭，整体约10分钟目标保持不变，击杀火力成长按每波总量重新平衡。',
+        '新增钟面缺口枪阵、交替闸雨、有界钟摆扇与预警接力四种声部，并接入鸦羽、花瓣刃、紫色横斩与纵向银河四种本地弹体；仍保持96逻辑弹、4预警、4激光和128槽固定池。',
+        '移动端减少常驻拖尾扫描与未使用材质图解码，梦境HP条改为无运行时渐变的双层色条；完整预取8种精英状态帧，避免攻击/受击时静默退回待机贴图。',
+      ],
+    },
     {
       date: '2026-07-13',
       items: [
@@ -4258,13 +4316,15 @@
     vignetteSeconds: 0.72,
     vignetteAlpha: 0.52,
     flash: 0.17,
+    impactDuration: 0.32,
+    impactSize: 168,
   });
   const DREAM_BALANCE_CONFIG = Object.freeze({
     targetTotalSeconds: 600,
     mobTargetSeconds: 480,
     bossTargetSeconds: 120,
-    mobDamageFloorSeconds: 40,
-    mobInitialCreditRatio: 0.045,
+    mobDamageFloorSeconds: 36,
+    mobInitialCreditRatio: 0.05,
     bossHp: 300000,
     bossDpsCap: 2500,
     bossCreditCap: 15000,
@@ -4272,6 +4332,10 @@
   });
   let dreamHitFeedbackT = 0;
   let dreamHitFeedbackSerial = 0;
+  let dreamHitGlintT = 0;
+  let dreamHitGlintX = 0;
+  let dreamHitGlintY = 0;
+  let dreamHitGlintTheme = 1;
   let killStreakN = 0;
   let killStreakT = 0;
   let lastCombo = 0;
@@ -4309,6 +4373,7 @@
     waveElapsed: 0,
     waveTransition: 0,
     batch2Spawned: false,
+    batch3Spawned: false,
     stars: 3,
     hitCount: 0,
     outgoingDamageMul: 1,
@@ -4451,7 +4516,7 @@
     return actual;
   }
   function estimateDreamClearSecondsForCharacter(character = selectedChar) {
-    const waveFloor = DREAM_BALANCE_CONFIG.mobDamageFloorSeconds + 6 + 1.4;
+    const waveFloor = DREAM_BALANCE_CONFIG.mobDamageFloorSeconds + DREAM_WAVE_BATCH_DELAYS[2] + 1.4;
     const mobSeconds = waveFloor * 10 - 1.4;
     const bossSeconds = Math.max(0, DREAM_BALANCE_CONFIG.bossHp - DREAM_BALANCE_CONFIG.bossCreditCap) / DREAM_BALANCE_CONFIG.bossDpsCap;
     const controlOverhead = character === 'skyward' ? 5 : (character === 'corruptgun' ? 7 : 12);
@@ -4494,6 +4559,7 @@
     dreamRun.waveElapsed = 0;
     dreamRun.waveTransition = 0;
     dreamRun.batch2Spawned = false;
+    dreamRun.batch3Spawned = false;
     dreamRun.stars = 3;
     dreamRun.hitCount = 0;
     dreamRun.outgoingDamageMul = 1;
@@ -4507,6 +4573,7 @@
     dreamRun.resultRank = null;
     dreamRun.captureLocked = false;
     dreamHitFeedbackT = 0;
+    dreamHitGlintT = 0;
     dreamConductor.reset();
   }
   function formatMobWaveStatus(
@@ -23711,7 +23778,7 @@
     dreamUi.select = false;
     dreamUi.tab = 'intel';
     dreamUi.selectedStage = 0;
-    loadAssetGroup(['bgSceneGothicCastle', 'bgSceneDarkHall', 'bgEclipse', 'seraphPhase1', 'seraphPhase2', 'seraphRage', 'droneIdle', 'nunIdle', 'holyshieldIdle', 'enBluecryst', 'reaperIdle', 'reaperAttack', 'reaperHit', 'voidchanterIdle', 'voidchanterAttack', 'voidchanterHit', ...DREAM_BULLET_ALL_ASSET_KEYS]);
+    loadAssetGroup(['bgSceneGothicCastle', 'bgSceneDarkHall', 'bgEclipse', 'seraphPhase1', 'seraphPhase2', 'seraphRage', ...DREAM_ENEMY_ASSET_KEYS, ...DREAM_BULLET_ALL_ASSET_KEYS]);
   }
   function closeDreamMode() {
     dreamUi.open = false;
@@ -25154,6 +25221,7 @@
   const dreamBulletMaterialFallbackKeys = new Set();
   let dreamBulletAllocations = 0;
   let dreamActiveBulletCount = 0;
+  let dreamDissolvingBulletCount = 0;
   let dreamBulletBudgetStamp = Number.NaN;
   let dreamBulletMaterialCacheBuilds = 0;
   let dreamBulletMaterialPrewarmCursor = 0;
@@ -25215,9 +25283,37 @@
     for (let i = 0; i < list.length; i++) if (list[i] && list[i].dream) count++;
     return count;
   }
+  function dreamTrailAllowed(bullet) {
+    if (bullet && bullet.dreamDissolving) return false;
+    const skin = bullet && DREAM_BULLET_SKINS[bullet.dreamSkin];
+    return !!(skin && skin.directional && DREAM_BULLET_MATERIAL_CONFIG.trail.families.includes(skin.family));
+  }
+  function dreamTriggerTrail(bullet, duration = DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration) {
+    if (!bullet || !dreamTrailAllowed(bullet)) {
+      if (bullet) { bullet.dreamTrailT = 0; bullet.dreamTrailMax = 0; }
+      return;
+    }
+    const nextDuration = Math.max(0, Number(duration) || 0);
+    if ((bullet.dreamTrailT || 0) <= 0) bullet.dreamTrailMax = nextDuration;
+    else bullet.dreamTrailMax = Math.max(bullet.dreamTrailMax || 0, nextDuration);
+    bullet.dreamTrailT = Math.max(bullet.dreamTrailT || 0, nextDuration);
+  }
+  function dreamSetBulletVelocity(bullet, vx, vy, trailDuration = 0) {
+    if (!bullet) return;
+    bullet.vx = vx;
+    bullet.vy = vy;
+    const speed = Math.hypot(vx, vy);
+    const angle = speed > 0.01 ? Math.atan2(vy, vx) : (Number.isFinite(bullet.dreamAimAngle) ? bullet.dreamAimAngle : -Math.PI / 2);
+    bullet.dreamBaseAngle = angle;
+    bullet.dreamBaseSpeed = speed;
+    bullet.dreamCurveElapsed = 0;
+    bullet.dreamWaveOffset = undefined;
+    if (trailDuration > 0 && speed >= DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin) dreamTriggerTrail(bullet, trailDuration);
+  }
   function releaseDreamBullet(bullet) {
     if (!bullet || !bullet.dream) return;
     if (bullet._dreamCounted) dreamActiveBulletCount = Math.max(0, dreamActiveBulletCount - 1);
+    if (bullet.dreamDissolving) dreamDissolvingBulletCount = Math.max(0, dreamDissolvingBulletCount - 1);
     bullet._dreamCounted = false;
     dreamLiveBulletSet.delete(bullet);
     bullet.dream = false;
@@ -25240,12 +25336,28 @@
     bullet.dreamDirY = -1;
     bullet.dreamSpeed = 0;
     bullet.dreamTrailLength = 0;
+    bullet.dreamTrailT = 0;
+    bullet.dreamTrailMax = 0;
+    bullet.dreamTrailEnv = 0;
+    bullet.dreamTrailDamaging = false;
+    bullet.dreamTrailCollisionRadius = 0;
+    bullet.dreamBaseAngle = 0;
+    bullet.dreamBaseSpeed = 0;
+    bullet.dreamCurveElapsed = 0;
+    bullet.dreamWaveOffset = undefined;
+    bullet.dreamHardLife = 0;
+    bullet.dreamDissolving = false;
+    bullet.dreamDissolveT = 0;
+    bullet.dreamDissolveMax = 0;
+    bullet.dreamDissolveReason = '';
     bullet.dreamDepthScale = 1;
     bullet.dreamCurve = 0;
     bullet.dreamCurvePhase = 0;
     bullet.dreamDelay = 0;
     bullet.dreamDelaySpeed = 0;
     bullet.dreamAimAngle = undefined;
+    bullet._cgUltTrail = undefined;
+    bullet._cgUltTrailT = 0;
     if (dreamBulletPool.length < DREAM_PERF_CONFIG.poolSize) dreamBulletPool.push(bullet);
   }
   function clearDreamBullets() {
@@ -25256,7 +25368,34 @@
       releaseDreamBullet(bullet);
     }
     dreamActiveBulletCount = 0;
+    dreamDissolvingBulletCount = 0;
     dreamBulletBudgetStamp = time;
+  }
+  function beginDreamBulletDissolve(bullet, duration = DREAM_BULLET_MOTION_CONFIG.dissolveDuration, reason = 'cleanup') {
+    if (!bullet || !bullet.dream || bullet.dreamDissolving) return false;
+    const life = Math.max(0.2, Number(duration) || DREAM_BULLET_MOTION_CONFIG.dissolveDuration);
+    bullet.dreamDissolving = true;
+    bullet.dreamDissolveT = life;
+    bullet.dreamDissolveMax = life;
+    bullet.dreamDissolveReason = reason;
+    dreamDissolvingBulletCount++;
+    bullet.damage = 0;
+    bullet.grazed = true;
+    bullet.ax = 0;
+    bullet.ay = 0;
+    bullet.dreamTrailT = 0;
+    bullet.dreamTrailMax = 0;
+    bullet.dreamTrailLength = 0;
+    bullet.vx *= 0.42;
+    bullet.vy *= 0.42;
+    return true;
+  }
+  function dissolveDreamBullets(reason = 'wave-clear') {
+    let count = 0;
+    for (const bullet of enemyBullets) {
+      if (beginDreamBulletDissolve(bullet, DREAM_BULLET_MOTION_CONFIG.dissolveDuration, reason)) count++;
+    }
+    return count;
   }
   function addDreamBullet(x, y, vx, vy, options = {}) {
     if (!dreamActive()) return null;
@@ -25265,7 +25404,8 @@
     if (!b) { b = {}; dreamBulletAllocations++; }
     b.x = x; b.y = y; b.vx = vx; b.vy = vy; b.ax = options.ax || 0; b.ay = options.ay || 0;
     b.r = options.r || 6.5; b.color = options.color || '#ffd46c'; b.damage = options.damage || 8;
-    b.life = options.life || 5.5; b.maxLife = b.life; b.kind = options.kind || 'orb';
+    const requestedLife = options.life || 5.5;
+    b.life = Math.max(requestedLife, DREAM_BULLET_MOTION_CONFIG.visibleLifeFloor); b.maxLife = b.life; b.kind = options.kind || 'orb';
     b.grazed = false; b.rot = options.rot || 0;
     b.threat = options.threat || 'spread'; b.dream = true; b.dreamStyle = options.style || b.threat;
     b.dreamShape = options.shape || options.kind || 'orb';
@@ -25281,6 +25421,7 @@
     b.dreamEmitter = options.emitter || dreamConductor.activeVoice || 'runtime';
     b.dreamMotion = options.motion || dreamMotionForVoice(b.dreamEmitter) || (options.delay ? 'stasis-release' : (options.curve ? 'curved-flow' : 'linear'));
     b.dreamAge = 0;
+    b.dreamHardLife = Math.max(b.life, DREAM_BULLET_MOTION_CONFIG.hardLife);
     b.dreamVisualDiameter = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
     b.dreamFallback = false;
     const startSpeed = Math.hypot(vx, vy);
@@ -25293,10 +25434,18 @@
     }
     b.dreamFaceX = b.dreamDirX; b.dreamFaceY = b.dreamDirY;
     b.dreamTrailLength = 0;
+    b.dreamTrailT = 0; b.dreamTrailMax = 0; b.dreamTrailEnv = 0;
+    b.dreamTrailDamaging = DREAM_BULLET_MATERIAL_CONFIG.trail.damaging;
+    b.dreamTrailCollisionRadius = DREAM_BULLET_MATERIAL_CONFIG.trail.collisionRadius;
     b.dreamDepthScale = 1;
+    b.dreamDissolving = false; b.dreamDissolveT = 0; b.dreamDissolveMax = 0; b.dreamDissolveReason = '';
     b.dreamCurve = options.curve || 0; b.dreamCurvePhase = options.phase || 0;
     b.dreamDelay = options.delay || 0; b.dreamDelaySpeed = options.delaySpeed || 0;
     b.dreamAimAngle = options.aimAngle;
+    b.dreamBaseAngle = startSpeed > 0.01 ? Math.atan2(vy, vx) : (Number.isFinite(options.aimAngle) ? options.aimAngle : -Math.PI / 2);
+    b.dreamBaseSpeed = startSpeed;
+    b.dreamCurveElapsed = 0;
+    b.dreamWaveOffset = undefined;
     // 固定池对象必须清理所有运动族字段；否则上一颗深度弹/弹跳刃的状态会污染下一颗弹。
     b.wavePhase = undefined; b.waveAmp = undefined;
     b.splitAfter = undefined; b.splitN = undefined; b.splitSpread = undefined; b.splitSpeed = undefined;
@@ -25308,6 +25457,8 @@
     b.depth = undefined; b.depthSpeed = 0; b.depthMin = undefined; b.depthMax = undefined;
     b.depthBounce = false; b.pseudo3d = false; b.perspectiveSquish = undefined; b.baseR = undefined;
     b.spinSaw = false; b.scalePulse = 1;
+    b._cgUltTrail = undefined; b._cgUltTrailT = 0;
+    if (startSpeed >= DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin) dreamTriggerTrail(b, DREAM_BULLET_MATERIAL_CONFIG.trail.launchDuration);
     updateDreamBulletVisualMotion(b, 0);
     b._dreamCounted = true;
     dreamLiveBulletSet.add(b);
@@ -25779,21 +25930,28 @@
 	    return enemy;
 	  }
   function dreamWaveRoster(waveIndexValue) {
-    // 每波仍只有 6 个实体，但六种职责各一只；只随机化站位与出场顺序。
-    const types = ['dream_seraph_wing', 'dream_seraph_choir', 'dream_seraph_guard', 'dream_seraph_prism', 'dream_seraph_reaper', 'dream_seraph_oracle'];
+    // 八种职责各一只，固定种子只打乱出场顺序；指挥器仍统一发弹，不让实体数乘上弹量。
+    const types = [
+      'dream_seraph_wing', 'dream_seraph_choir', 'dream_seraph_guard', 'dream_seraph_prism',
+      'dream_seraph_reaper', 'dream_seraph_oracle', 'dream_seraph_lancer', 'dream_seraph_storm',
+    ];
     return types.map((type, index) => ({ type, order: dreamRandomUnit('roster', waveIndexValue, index) }))
       .sort((a, b) => a.order - b.order)
       .map(entry => entry.type);
+  }
+  function dreamFormationSlot(waveIndexValue, batch, slot) {
+    const preset = DREAM_FORMATION_PRESETS[(waveIndexValue * 3 + (waveIndexValue >> 1)) % DREAM_FORMATION_PRESETS.length];
+    return preset[Math.max(0, Math.min(preset.length - 1, batch | 0))][slot] || preset[0][0];
   }
   function spawnDreamEnemy(type, slot, batch, waveIndexValue) {
     if (!dreamActive() || enemies.length >= DREAM_PERF_CONFIG.enemyCap) return null;
     const def = DREAM_MOB_DEFS[type];
     if (!def) return null;
     const scale = DREAM_WAVE_HP_SCALE[Math.max(0, Math.min(DREAM_WAVE_HP_SCALE.length - 1, waveIndexValue))];
-    const batchSlots = batch === 0 ? [128, 360, 592] : [208, 512, 360];
+    const formation = dreamFormationSlot(waveIndexValue, batch, slot);
     const jitter = (dreamRandomUnit('x', waveIndexValue, batch, slot) - 0.5) * 30;
-    const x = clamp(batchSlots[slot] + jitter, 72, W - 72);
-    const hoverY = 220 + batch * 118 + (slot % 2) * 44;
+    const x = clamp(formation[0] + jitter, 72, W - 72);
+    const hoverY = formation[1];
     const hp = Math.round(def.hp * scale);
     const enemy = {
       type, x, y: -90 - slot * 48, baseY: -90, hoverY, hp, maxHp: hp, r: def.r,
@@ -25814,13 +25972,16 @@
   }
   function spawnDreamBatch(batch) {
     const roster = dreamWaveRoster(dreamRun.wave);
-    for (let slot = 0; slot < 3; slot++) spawnDreamEnemy(roster[batch * 3 + slot], slot, batch, dreamRun.wave);
+    const count = DREAM_WAVE_BATCHES[batch] || 0;
+    const offset = batch <= 0 ? 0 : DREAM_WAVE_BATCHES.slice(0, batch).reduce((sum, value) => sum + value, 0);
+    for (let slot = 0; slot < count; slot++) spawnDreamEnemy(roster[offset + slot], slot, batch, dreamRun.wave);
   }
   function startDreamWave(index) {
     dreamRun.wave = Math.max(0, Math.min(9, index | 0));
     dreamRun.waveElapsed = 0;
     dreamRun.waveTransition = 0;
     dreamRun.batch2Spawned = false;
+    dreamRun.batch3Spawned = false;
     dreamConductor.reset();
     clearDreamBullets();
     warnings.length = 0;
@@ -25947,7 +26108,7 @@
   }
   function dreamEmitLaneLasers(count = 2) {
     const source = dreamSourceAny(['guard', 'prism']);
-    if (!source || warnings.filter(w => w.dream).length + count > DREAM_PERF_CONFIG.warningCap) return false;
+    if (!source || dreamCountTagged(warnings) + count > DREAM_PERF_CONFIG.warningCap) return false;
     const base = clamp(player.x, 120, W - 120);
     for (let i = 0; i < count; i++) {
       const x = clamp(base + (i - (count - 1) / 2) * 190, 72, W - 72);
@@ -26035,7 +26196,7 @@
     });
   }
   function dreamEmitBreathRing(speedMul = 1) {
-    // 呼吸囚笼：整环高速绽放后被 ax/ay 匀减速拉回，先开花再收拢再穿心（刹车弹思路）
+    // 呼吸囚笼：整环高速绽放后平滑刹停并沿原方向缓行，不再无预警反向穿心。
     const source = dreamSourceAny(['guard', 'prism'], 1); if (!source) return false;
     const count = 12;
     return dreamTryAtomicBulletGroup(count, () => {
@@ -26043,10 +26204,11 @@
       for (let i = 0; i < count; i++) {
         const a = seed + i * TAU / count;
         const sp = 236 * speedMul;
-        addDreamBullet(source.x, source.y, Math.cos(a) * sp, Math.sin(a) * sp, {
+        const b = addDreamBullet(source.x, source.y, Math.cos(a) * sp, Math.sin(a) * sp, {
           r: 6.5, threat: 'spread', style: 'spread', color: '#9fd8ff', life: 3.9,
           ax: -Math.cos(a) * sp * 0.58, ay: -Math.sin(a) * sp * 0.58,
         });
+        if (b) { b.brake = true; b.brakeAngle = a; }
       }
       source.attackFlash = 0.3;
     });
@@ -26247,7 +26409,8 @@
         const b = addDreamBullet(source.x, source.y + 8, Math.cos(a) * speed, Math.sin(a) * speed, {
           r: 6.4, threat: i === 0 ? 'aimed' : 'spread', style: i === 0 ? 'aimed' : 'spread', shape: 'crescent',
           skin: i & 1 ? 'pathRibbon' : 'choirPetal', color: '#b7dcff', life: 5.2, motion: 'boomerang-brake',
-          ax: -Math.cos(a) * speed * 0.82, ay: -Math.sin(a) * speed * 0.48 + 52,
+          // 严格沿出生轴刹车，避免横纵减速度不一致造成近 80 度硬拐。
+          ax: -Math.cos(a) * speed * 0.82, ay: -Math.sin(a) * speed * 0.82,
         });
         b.brake = true;
         b.brakeAngle = a;
@@ -26433,6 +26596,82 @@
       source.attackFlash = 0.36;
     });
   }
+  function dreamEmitPendulumFan(speedMul = 1) {
+    const source = dreamSourceAny(['lancer', 'wing']); if (!source) return false;
+    const count = 7;
+    const aim = angleTo(source.x, source.y, player.x, player.y);
+    return dreamTryAtomicBulletGroup(count, () => {
+      for (let i = 0; i < count; i++) {
+        const side = i - (count - 1) * 0.5;
+        const a = aim + side * 0.115;
+        addDreamBullet(source.x + side * 4, source.y + 12, Math.cos(a) * (178 + Math.abs(side) * 9) * speedMul, Math.sin(a) * (178 + Math.abs(side) * 9) * speedMul, {
+          r: 6.3, threat: Math.abs(side) <= 1 ? 'aimed' : 'spread', style: Math.abs(side) <= 1 ? 'aimed' : 'spread',
+          shape: 'needle', skin: i & 1 ? 'petalBladeViolet' : 'ravenDive', color: '#9ebcff', life: 5.6,
+          curve: side * 0.075, phase: i * 0.44, motion: 'bounded-pendulum',
+        });
+      }
+      source.attackFlash = 0.38;
+    });
+  }
+  function dreamEmitShutterRain(speedMul = 1) {
+    const source = dreamSourceAny(['storm', 'guard']); if (!source) return false;
+    const xs = [50, 138, 226, 314, 402, 490, 578, 666];
+    const gapIndex = (dreamConductor.serial * 3 + dreamRun.wave) % (xs.length - 1);
+    const active = [];
+    for (let i = 0; i < xs.length; i++) if (i !== gapIndex && i !== gapIndex + 1) active.push(i);
+    return dreamTryAtomicBulletGroup(active.length, () => {
+      for (let k = 0; k < active.length; k++) {
+        const i = active[k];
+        addDreamBullet(xs[i], -18 - (i & 1) * 44, (i & 1 ? 18 : -18), (208 + (i % 3) * 18) * speedMul, {
+          r: 6.6, threat: 'hazard', style: i & 1 ? 'spread' : 'hazard', shape: 'needle',
+          skin: i & 1 ? 'galaxyTall' : 'judgmentSpear', color: i & 1 ? '#7fdcff' : '#ffd37a', life: 6,
+          motion: 'alternating-shutter',
+        });
+      }
+      source.attackFlash = 0.4;
+    });
+  }
+  function dreamEmitClockLances(speedMul = 1) {
+    const source = dreamSourceAny(['storm', 'prism', 'lancer']); if (!source) return false;
+    const count = 12;
+    const gap = angleTo(source.x, source.y, player.x, player.y);
+    const phase = dreamRun.waveElapsed * 0.31 * (dreamConductor.serial & 1 ? -1 : 1);
+    const angles = [];
+    for (let i = 0; i < count; i++) {
+      const a = phase + i * TAU / count;
+      const delta = Math.abs(Math.atan2(Math.sin(a - gap), Math.cos(a - gap)));
+      if (delta > 0.38) angles.push(a);
+    }
+    return dreamTryAtomicBulletGroup(angles.length, () => {
+      for (let i = 0; i < angles.length; i++) {
+        const a = angles[i];
+        addDreamBullet(source.x, source.y, Math.cos(a) * (164 + (i & 1) * 26) * speedMul, Math.sin(a) * (164 + (i & 1) * 26) * speedMul, {
+          r: 6.4, threat: 'spread', style: i & 1 ? 'deco' : 'spread', shape: 'needle',
+          skin: i & 1 ? 'cleaveViolet' : 'prismLance', color: i & 1 ? '#d9c6ff' : '#89dcff', life: 6,
+          motion: 'clock-wedge',
+        });
+      }
+      source.attackFlash = 0.38;
+    });
+  }
+  function dreamEmitStormRelay(speedMul = 1) {
+    const sources = dreamSourcesAny(['storm', 'lancer']); if (!sources.length) return false;
+    const count = 6;
+    return dreamTryAtomicBulletGroup(count, () => {
+      for (let i = 0; i < count; i++) {
+        const source = sources[i % sources.length];
+        const targetX = player.x + (i - 2.5) * 26;
+        const targetY = player.y - 18 + (i & 1) * 36;
+        const a = angleTo(source.x, source.y, targetX, targetY);
+        addDreamBullet(source.x + (i % 3 - 1) * 13, source.y + 10, 0, 0, {
+          r: 6.2, threat: 'aimed', style: 'aimed', shape: 'needle', skin: i & 1 ? 'seraphArrowRed' : 'ravenDive',
+          color: i & 1 ? '#ff7191' : '#9baeff', life: 6.2, delay: 0.48 + (i % 3) * 0.10,
+          delaySpeed: (292 + (i & 1) * 28) * speedMul, aimAngle: a, motion: 'telegraphed-relay',
+        });
+        source.attackFlash = 0.42;
+      }
+    });
+  }
   function dreamPickVoice(list, counter, wave, channel) {
     if (!list || !list.length) return '';
     return list[(counter + wave * 2 + channel) % list.length];
@@ -26478,6 +26717,10 @@
       if (key === 'petalCascade') return dreamEmitPetalCascade(speedMul);
       if (key === 'bladeWheel') return dreamEmitBladeWheel(speedMul);
       if (key === 'mirrorChoir') return dreamEmitMirrorChoir(speedMul);
+      if (key === 'pendulumFan') return dreamEmitPendulumFan(speedMul);
+      if (key === 'shutterRain') return dreamEmitShutterRain(speedMul);
+      if (key === 'clockLances') return dreamEmitClockLances(speedMul);
+      if (key === 'stormRelay') return dreamEmitStormRelay(speedMul);
       if (key === 'finaleCycle') {
         const finale = ['roseSpiral', 'crossWeave', 'ribbonHelix', 'meteorSweep', 'voidVortex', 'bladeWheel', 'chaseFork'];
         return dreamEmitVoice(finale[dreamConductor.serial % finale.length], speedMul, reserveSlots);
@@ -27710,7 +27953,7 @@
     }
   }
 
-  function dreamTakeHit() {
+  function dreamTakeHit(hitBullet = null) {
     if (!dreamActive() || player.inv > 0 || dreamRun.finished || dreamRun.failed) return false;
     if (motherLifeActive() && motherLifeState.ultimate.active) return true;
     dreamRun.hitCount++;
@@ -27736,6 +27979,10 @@
     player.combo = 0;
     hurtT = Math.max(hurtT, DREAM_HIT_FEEDBACK_CONFIG.vignetteSeconds);
     dreamHitFeedbackT = DREAM_HIT_FEEDBACK_CONFIG.vignetteSeconds;
+    dreamHitGlintT = DREAM_HIT_FEEDBACK_CONFIG.impactDuration;
+    dreamHitGlintX = player.x;
+    dreamHitGlintY = player.y;
+    dreamHitGlintTheme = hitBullet && Number.isFinite(hitBullet.dreamMaterialTheme) ? hitBullet.dreamMaterialTheme : 1;
     dreamHitFeedbackSerial++;
     screenShake = Math.max(screenShake, DREAM_HIT_FEEDBACK_CONFIG.shake);
     setFlash(DREAM_HIT_FEEDBACK_CONFIG.flash, '255,35,72');
@@ -27756,9 +28003,9 @@
     return true;
   }
 
-  function damagePlayer(amount) {
+  function damagePlayer(amount, hitBullet = null) {
     if (player.inv > 0 || state === 'win') return;
-    if (dreamActive()) { dreamTakeHit(); return; }
+    if (dreamActive()) { dreamTakeHit(hitBullet); return; }
     if (endRunByHellMode('hostileDamage')) return;
     if (motherLifeActive() && motherLifeState.ultimate.active) return;
     if (state === 'boss' || state === 'bossIntro') amount *= bossDamageMul();
@@ -27854,6 +28101,7 @@
       dangerDim += (dimTarget - dangerDim) * Math.min(1, dt * 3.5);
       if (hurtT > 0) hurtT = Math.max(0, hurtT - dt);
       if (dreamHitFeedbackT > 0) dreamHitFeedbackT = Math.max(0, dreamHitFeedbackT - dt);
+      if (dreamHitGlintT > 0) dreamHitGlintT = Math.max(0, dreamHitGlintT - dt);
       if (killStreakT > 0) {
         killStreakT -= dt;
         if (killStreakT <= 0) killStreakN = 0;
@@ -34655,7 +34903,7 @@
         score += e.score;
         // 刷怪提升火力（已移除火力掉落物，改由击杀直接给予，数值上调补偿）
         { const heavyKill = (e.tier >= 3);
-          addPower(e.dream ? 5.0 : (heavyKill ? 5.0 : 1.7)); }
+          addPower(e.dream ? DREAM_REWARD_CONFIG.powerPerKill : (heavyKill ? 5.0 : 1.7)); }
         player.energy = clamp(player.energy + 7, 0, player.maxEnergy);
         dmgText(e.x, e.y, '+' + e.score, '#fff2a8', 20);
         { const heavy = (e.tier >= 3);
@@ -34685,24 +34933,43 @@
       const b = enemyBullets[i];
       // damagePlayer() 可能在循环中清空 enemyBullets（复活/死亡），此时高位索引为 undefined
       if (!b) continue;
-      if (b.dream) b.dreamAge = (b.dreamAge || 0) + dt;
+      if (b.dream) {
+        b.dreamAge = (b.dreamAge || 0) + dt;
+        b.dreamTrailT = Math.max(0, (b.dreamTrailT || 0) - dt);
+        if (b.dreamDissolving) {
+          b.dreamDissolveT = Math.max(0, (b.dreamDissolveT || 0) - dt);
+          const damping = Math.pow(0.018, dt);
+          b.vx *= damping;
+          b.vy *= damping;
+          b.x += b.vx * dt;
+          b.y += b.vy * dt;
+          b.rot += (b.spin || 0) * dt;
+          updateDreamBulletVisualMotion(b, dt);
+          if (b.dreamDissolveT <= 0) removeUnordered(enemyBullets, i);
+          continue;
+        }
+      }
       if (b.dreamDelay > 0) {
         b.dreamDelay -= dt;
         if (b.dreamDelay <= 0 && b.dreamDelaySpeed > 0) {
           const a = b.dreamAimAngle !== undefined ? b.dreamAimAngle : Math.atan2(b.vy, b.vx);
-          b.vx = Math.cos(a) * b.dreamDelaySpeed;
-          b.vy = Math.sin(a) * b.dreamDelaySpeed;
+          dreamSetBulletVelocity(b, Math.cos(a) * b.dreamDelaySpeed, Math.sin(a) * b.dreamDelaySpeed, DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration);
         }
-      }
-      if (b.dreamCurve) {
-        const turn = Math.sin(time * 2.2 + b.dreamCurvePhase) * b.dreamCurve * dt;
-        const turnCos = Math.cos(turn), turnSin = Math.sin(turn);
-        const vx = b.vx, vy = b.vy;
-        b.vx = vx * turnCos - vy * turnSin;
-        b.vy = vx * turnSin + vy * turnCos;
       }
       b.vx += b.ax * dt;
       b.vy += b.ay * dt;
+      // 曲线弹以出生朝向为中线做有界摆角，禁止把全局时间连续积分进当前速度导致随机漂移。
+      if (b.dream && b.dreamCurve) {
+        b.dreamCurveElapsed = (b.dreamCurveElapsed || 0) + dt;
+        const speed = Math.hypot(b.vx, b.vy);
+        if (speed > 0.01) {
+          const phase = b.dreamCurvePhase || 0;
+          const oscillation = (Math.sin(b.dreamCurveElapsed * DREAM_BULLET_MOTION_CONFIG.curveFrequency + phase) - Math.sin(phase)) * 0.5;
+          const heading = (b.dreamBaseAngle || 0) + oscillation * b.dreamCurve;
+          b.vx = Math.cos(heading) * speed;
+          b.vy = Math.sin(heading) * speed;
+        }
+      }
       // 普通弹占绝大多数，不再为每一颗都调用三套专属行为更新器。
       const suiyiCustomMove = b.suiyi ? updateSuiyiEnemyBullet(b, dt) : false;
       if (b.suiyiTech) updateSuiyiTechEnemyBullet(b, dt);
@@ -34718,22 +34985,35 @@
         b.vx = Math.cos(na) * spd; b.vy = Math.sin(na) * spd;
         if (b.homeT > 2.6) b.homingSoul = false;
       }
-      // 刹车弹：减速到很慢时停止加速度，转为缓慢前行（避免反向倒飞）
+      // 刹车弹：梦境弹按出生轴向速度判定，避免非共线加速度让总速度始终过高后突然倒飞。
       if (b.brake) {
         const sp2 = b.vx * b.vx + b.vy * b.vy;
-        if (sp2 < 30 * 30) {
+        const hasDreamAxis = !!(b.dream && Number.isFinite(b.brakeAngle));
+        const axisSpeed = hasDreamAxis
+          ? b.vx * Math.cos(b.brakeAngle) + b.vy * Math.sin(b.brakeAngle)
+          : Infinity;
+        if ((hasDreamAxis && axisSpeed <= 30) || (!hasDreamAxis && sp2 < 30 * 30)) {
           b.ax = 0; b.ay = 0; b.brake = false;
-          const a = b.brakeAngle !== undefined ? b.brakeAngle : (b.rot || Math.atan2(b.vy, b.vx));
-          b.vx = Math.cos(a) * 90; b.vy = Math.abs(Math.sin(a) * 90) + 60;  // 缓慢下行
+          if (hasDreamAxis) {
+            dreamSetBulletVelocity(b, Math.cos(b.brakeAngle) * 82, Math.sin(b.brakeAngle) * 82, DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration);
+          } else {
+            const a = b.rot || Math.atan2(b.vy, b.vx);
+            b.vx = Math.cos(a) * 90;
+            b.vy = Math.abs(Math.sin(a) * 90) + 60;
+          }
         }
       }
-      // 波浪弹：正弦轨迹侧向摆动
+      // 波浪弹使用解析位移差，不把正弦速度无限积分进主轨迹。
       if (b.wavePhase !== undefined) {
-        b.wavePhase += dt * 3.5;
-        const waveDelta = Math.sin(b.wavePhase) * b.waveAmp * dt;
-        const waveSpeed = Math.sqrt(b.vx * b.vx + b.vy * b.vy) || 1;
-        b.x += (-b.vy / waveSpeed) * waveDelta;
-        b.y += (b.vx / waveSpeed) * waveDelta;
+        b.wavePhase += dt * DREAM_BULLET_MOTION_CONFIG.waveFrequency;
+        const nextOffset = Math.sin(b.wavePhase) * (b.waveAmp || 0) * 0.28;
+        if (b.dreamWaveOffset !== undefined) {
+          const waveDelta = nextOffset - b.dreamWaveOffset;
+          const baseAngle = Number.isFinite(b.dreamBaseAngle) ? b.dreamBaseAngle : Math.atan2(b.vy, b.vx);
+          b.x += -Math.sin(baseAngle) * waveDelta;
+          b.y += Math.cos(baseAngle) * waveDelta;
+        }
+        b.dreamWaveOffset = nextOffset;
       }
       // 追击分叉：母弹飞行片刻后裂成对称子弹
       if (b.splitAfter !== undefined) {
@@ -34783,8 +35063,7 @@
         if (b.delayAim <= 0) {
           const a = b.delayAimAngle !== undefined ? b.delayAimAngle : angleTo(b.x, b.y, player.x, player.y);
           const sp = b.delayAimSpeed || 220;
-          b.vx = Math.cos(a) * sp;
-          b.vy = Math.sin(a) * sp;
+          dreamSetBulletVelocity(b, Math.cos(a) * sp, Math.sin(a) * sp, DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration);
           b.threat = 'aimed';
           b.delayAim = undefined;
         }
@@ -34795,8 +35074,7 @@
         if (b.chargeDelay <= 0) {
           const a = b.chargeAngle !== undefined ? b.chargeAngle : Math.atan2(b.vy, b.vx);
           const sp = b.chargeSpeed || 360;
-          b.vx = Math.cos(a) * sp;
-          b.vy = Math.sin(a) * sp;
+          dreamSetBulletVelocity(b, Math.cos(a) * sp, Math.sin(a) * sp, DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration);
           b.chargeRam = false;
           b.threat = 'aimed';
         } else {
@@ -34806,24 +35084,31 @@
       }
       // 弹跳刃：触左右/上下边反弹
       if (b.bounceLeft > 0) {
+        let bounced = false;
         if ((b.x < 24 && b.vx < 0) || (b.x > W - 24 && b.vx > 0)) {
           b.vx *= -1;
           b.x = clamp(b.x, 24, W - 24);
           b.bounceLeft--;
           b.spin = -(b.spin || 4);
+          bounced = true;
         }
         if (b.y < 24 && b.vy < 0) {
           b.vy *= -1;
           b.y = 24;
           b.bounceLeft--;
+          bounced = true;
         }
+        if (bounced) dreamSetBulletVelocity(b, b.vx, b.vy, DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration);
       }
       // 伪3D / 电锯：缩放脉动 + 深度轴推进（BulletUpHell 风格）
       if (b.depth != null && !b.suiyi && !b.migua) {
         b.depth += (b.depthSpeed || 0) * dt;
         if (b.depth < (b.depthMin != null ? b.depthMin : -1.6) || b.depth > (b.depthMax != null ? b.depthMax : 1.2)) {
-          if (b.depthBounce) { b.depthSpeed = -(b.depthSpeed || 0); b.depth = Math.max(b.depthMin || -1.6, Math.min(b.depthMax || 1.2, b.depth)); }
-          else { b.life = 0; }
+          const minDepth = b.depthMin != null ? b.depthMin : -1.6;
+          const maxDepth = b.depthMax != null ? b.depthMax : 1.2;
+          if (b.depthBounce) b.depthSpeed = -(b.depthSpeed || 0);
+          else b.depthSpeed = 0;
+          b.depth = clamp(b.depth, minDepth, maxDepth);
         }
         const ds = bulletDepthScale(b);
         if (b.baseR) b.r = b.baseR * Math.max(0.55, Math.min(1.35, 0.75 + ds * 0.25));
@@ -34846,8 +35131,15 @@
       b.rot += b.spin * dt;
       if (b.dream) updateDreamBulletVisualMotion(b, dt);
       b.life -= dt;
-      if (b.life <= 0 || b.x < -80 || b.x > W + 80 || b.y < -100 || b.y > H + 100) {
+      const dreamExpired = b.dream && b.dreamAge >= (b.dreamHardLife || DREAM_BULLET_MOTION_CONFIG.hardLife);
+      const margin = b.dream ? DREAM_BULLET_MOTION_CONFIG.offscreenMargin : 80;
+      const outside = b.x < -margin || b.x > W + margin || b.y < -margin || b.y > H + margin;
+      if ((!b.dream && b.life <= 0) || outside) {
         removeUnordered(enemyBullets, i);
+        continue;
+      }
+      if (dreamExpired) {
+        beginDreamBulletDissolve(b, DREAM_BULLET_MOTION_CONFIG.dissolveDuration, 'hard-life');
         continue;
       }
       const d2 = dist2(b.x, b.y, player.x, player.y);
@@ -34855,8 +35147,10 @@
       if (d2 < hitR * hitR) {
         if (b.suiyiFake || b.damage <= 0) continue;
         if (!bulletDepthCollidable(b)) continue; // 背景深度弹不可碰撞
+        const hitDamage = b.damage;
+        const hitBullet = b.dream ? { dreamMaterialTheme: b.dreamMaterialTheme } : b;
         removeUnordered(enemyBullets, i);
-        damagePlayer(b.damage);
+        damagePlayer(hitDamage, hitBullet);
         continue;
       }
       if (!b.grazed && d2 < (b.r + grazeR) * (b.r + grazeR) && d2 > hitR * hitR) {
@@ -34881,7 +35175,7 @@
       w.life -= dt;
       if (w.life <= 0) {
         if (w.type === 'laser') {
-          if (!w.dream || lasers.filter(l => l && l.dream).length < DREAM_PERF_CONFIG.laserCap) {
+          if (!w.dream || dreamCountTagged(lasers) < DREAM_PERF_CONFIG.laserCap) {
             lasers.push({ x1: w.x1, y1: w.y1, x2: w.x2, y2: w.y2, width: w.width, life: w.duration, maxLife: w.duration, color: '#ff365f', damage: 18, dream: !!w.dream });
           }
           playSfx('laser', 0.4, 0.14);
@@ -34951,19 +35245,25 @@
 
   function updateDreamMobStage(dt) {
     dreamRun.waveElapsed += dt;
-    if (!dreamRun.batch2Spawned && dreamRun.waveElapsed >= 6) {
+    if (!dreamRun.batch2Spawned && dreamRun.waveElapsed >= DREAM_WAVE_BATCH_DELAYS[1]) {
       dreamRun.batch2Spawned = true;
       spawnDreamBatch(1);
       setMessage(`第${dreamRun.wave + 1}波 · 第二编队降临`, 1.2);
+    }
+    if (!dreamRun.batch3Spawned && dreamRun.waveElapsed >= DREAM_WAVE_BATCH_DELAYS[2]) {
+      dreamRun.batch3Spawned = true;
+      spawnDreamBatch(2);
+      setMessage(`第${dreamRun.wave + 1}波 · 终末双星夹击`, 1.2);
     }
     updateDreamConductor(dt);
     dreamRun.shotPeak = Math.max(dreamRun.shotPeak, dreamSyncBulletBudget());
     dreamRun.warningPeak = Math.max(dreamRun.warningPeak, dreamCountTagged(warnings));
     dreamRun.laserPeak = Math.max(dreamRun.laserPeak, dreamCountTagged(lasers));
-    if (!dreamRun.batch2Spawned || enemies.some(e => e && e.dream)) {
+    if (!dreamRun.batch3Spawned || enemies.some(e => e && e.dream)) {
       dreamRun.waveTransition = 0;
       return;
     }
+    if (dreamRun.waveTransition <= 0) dissolveDreamBullets('wave-clear');
     dreamRun.waveTransition += dt;
     if (dreamRun.waveTransition < 1.4) return;
     if (dreamRun.wave < 9) {
@@ -35102,7 +35402,7 @@
     });
   }
   function dreamBossLasers(count = 2) {
-    if (!boss || warnings.filter(w => w && w.dream).length + count > DREAM_PERF_CONFIG.warningCap) return false;
+    if (!boss || dreamCountTagged(warnings) + count > DREAM_PERF_CONFIG.warningCap) return false;
     for (let i = 0; i < count; i++) {
       const a = boss.t * 0.28 + (i - (count - 1) / 2) * 0.55 + Math.PI / 2;
       const len = H * 1.15;
@@ -38506,11 +38806,11 @@
         const barW = e.dreamRole === 'guard' ? 94 : (e.dreamRole === 'wing' ? 80 : 86);
         const barY = size * 0.5 + 10;
         ctx.fillStyle = 'rgba(3,8,20,.92)'; roundRect(-barW / 2 - 2, barY - 2, barW + 4, 11, 5); ctx.fill();
-        const grad = ctx.createLinearGradient(-barW / 2, 0, barW / 2, 0);
         const roleColors = DREAM_ROLE_COLORS[e.dreamRole] || DREAM_ROLE_COLORS.wing;
-        grad.addColorStop(0, roleColors[0]);
-        grad.addColorStop(1, roleColors[1]);
-        ctx.fillStyle = grad; roundRect(-barW / 2, barY, barW * hpRate, 7, 3.5); ctx.fill();
+        ctx.fillStyle = roleColors[0]; roundRect(-barW / 2, barY, barW * hpRate, 7, 3.5); ctx.fill();
+        ctx.globalAlpha = 0.72;
+        ctx.fillStyle = roleColors[1]; roundRect(-barW / 2, barY, barW * hpRate, 2.2, 1.1); ctx.fill();
+        ctx.globalAlpha = 1;
       } else {
         ctx.fillStyle = 'rgba(0,0,0,.48)'; ctx.fillRect(-e.r, e.r + 10, e.r * 2, 5);
         ctx.fillStyle = e.color; ctx.fillRect(-e.r, e.r + 10, e.r * 2 * hpRate, 5);
@@ -41568,7 +41868,7 @@
   }
   function dreamBulletMaterialAssetsReady() {
     let ready = true;
-    for (const key of DREAM_BULLET_MATERIAL_ASSET_KEYS) {
+    for (const key of DREAM_BULLET_MATERIAL_REQUIRED_KEYS) {
       if (assetReady(key)) continue;
       ready = false;
       const slot = assets[key];
@@ -41602,7 +41902,6 @@
     const img = assets[skin.asset];
     const volumeAtlas = assets.dreamSharedVolumeCore;
     const specularAtlas = assets.dreamSharedSpecularStreak;
-    const trailAtlas = assets.dreamSharedVelocityTrail;
     const themeIndex = dreamBulletMaterialThemeIndex(skinKey);
     const theme = config.themes[themeIndex];
     const roundBody = config.orbFamilies.includes(skin.family);
@@ -41660,14 +41959,7 @@
       const frameX = phase * frameW;
       g.globalCompositeOperation = 'source-over';
       g.globalAlpha = 1;
-      if (skin.directional) {
-        g.save();
-        g.translate(frameX + anchorX, anchorY + 3);
-        g.rotate(-Math.PI / 2);
-        g.globalAlpha = 0.74;
-        drawDreamMaterialAtlasFrame(g, trailAtlas, 96, 36, phase, themeIndex, -70, -12, 76, 24);
-        g.restore();
-      } else {
+      if (!skin.directional) {
         g.globalAlpha = roundBody ? 0.82 : 0.54;
         drawDreamMaterialAtlasFrame(g, volumeAtlas, 48, 48, phase, themeIndex, frameX + anchorX - 25, anchorY - 25, 50, 50);
       }
@@ -41787,15 +42079,28 @@
       b.dreamFaceY = faceY / faceLen;
     }
     b.dreamDepthScale = b.depth != null ? bulletDepthScale(b) : 1;
-    const bodySize = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * b.dreamDepthScale * (b.scalePulse || 1);
+    const dissolveEnv = b.dreamDissolving
+      ? clamp((b.dreamDissolveT || 0) / Math.max(0.001, b.dreamDissolveMax || 0.001), 0, 1)
+      : 1;
+    const dissolveScale = b.dreamDissolving ? 0.38 + Math.sqrt(dissolveEnv) * 0.62 : 1;
+    const bodySize = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * b.dreamDepthScale * (b.scalePulse || 1) * dissolveScale;
     b.dreamVisualDiameter = bodySize;
+    const trailMax = Math.max(0.001, b.dreamTrailMax || 0.001);
+    const trailProgress = clamp(1 - (b.dreamTrailT || 0) / trailMax, 0, 1);
+    const trailEnv = b.dreamTrailT > 0 ? Math.min(1, trailProgress / 0.16, (1 - trailProgress) / 0.34) : 0;
     const speedT = clamp((speed - DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin) / 340, 0, 1);
-    b.dreamTrailLength = bodySize * lerp(DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[0], DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[1], speedT);
+    const maxTrailLength = IS_MOBILE_RUNTIME
+      ? DREAM_BULLET_MATERIAL_CONFIG.trail.maxLengthMobile
+      : DREAM_BULLET_MATERIAL_CONFIG.trail.maxLengthDesktop;
+    b.dreamTrailEnv = Math.max(0, trailEnv);
+    b.dreamTrailLength = dreamTrailAllowed(b)
+      ? Math.min(maxTrailLength, bodySize * lerp(DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[0], DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[1], speedT)) * b.dreamTrailEnv
+      : 0;
     b.dreamMaterialPhase = (Math.floor((b.dreamAge * DREAM_BULLET_MATERIAL_CONFIG.phaseRate) + b.dreamVisualSeed * DREAM_BULLET_MATERIAL_CONFIG.phaseCount)) & 3;
   }
   function traceDreamBulletTrail(b, widthMul, includeMotes) {
     const length = b.dreamTrailLength || 0;
-    if (b.dreamSpeed < DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin || length <= 1) return false;
+    if (!dreamTrailAllowed(b) || b.dreamTrailT <= 0 || b.dreamSpeed < DREAM_BULLET_MATERIAL_CONFIG.trailSpeedMin || length <= 1) return false;
     const ux = b.dreamDirX || 0;
     const uy = b.dreamDirY || -1;
     const px = -uy;
@@ -41807,17 +42112,16 @@
     const tailY = b.y - uy * length;
     const headWidth = Math.max(2.2, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[0] * widthMul);
     const tailWidth = Math.max(0.45, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[1] * widthMul);
-    const bend = Math.sin(b.dreamAge * 7.4 + b.dreamVisualSeed * TAU) * Math.min(5, length * 0.055);
-    const midX = (headX + tailX) * 0.5 + px * bend;
-    const midY = (headY + tailY) * 0.5 + py * bend;
+    const midX = (headX + tailX) * 0.5;
+    const midY = (headY + tailY) * 0.5;
     ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
     ctx.quadraticCurveTo(midX + px * tailWidth, midY + py * tailWidth, tailX, tailY);
     ctx.quadraticCurveTo(midX - px * tailWidth, midY - py * tailWidth, headX - px * headWidth, headY - py * headWidth);
     ctx.closePath();
     if (includeMotes) {
       const moteT = 0.58 + 0.18 * Math.sin(b.dreamAge * 5.1 + b.dreamVisualSeed * 19);
-      const moteX = b.x - ux * length * moteT + px * bend * 1.35;
-      const moteY = b.y - uy * length * moteT + py * bend * 1.35;
+      const moteX = b.x - ux * length * moteT;
+      const moteY = b.y - uy * length * moteT;
       const moteR = Math.max(0.75, b.r * 0.12);
       ctx.moveTo(moteX, moteY - moteR * 1.7);
       ctx.lineTo(moteX + moteR, moteY);
@@ -41856,25 +42160,27 @@
     }
     if (segments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
     dreamBulletMaterialFrameStats.trailSegments = segments;
-    for (let themeIndex = 0; themeIndex < DREAM_BULLET_MATERIAL_CONFIG.themes.length; themeIndex++) {
-      let themedSegments = 0;
-      ctx.fillStyle = DREAM_BULLET_MATERIAL_CONFIG.themes[themeIndex].trail;
+    if (visualMul <= 0.2) {
+      let compactSegments = 0;
+      ctx.fillStyle = 'rgba(172,92,220,.48)';
       ctx.beginPath();
       for (const b of enemyBullets) {
-        if (!b || !b.dream || b.dreamMaterialTheme !== themeIndex) continue;
-        if (traceDreamBulletTrail(b, 0.64, visualMul >= 0.35 && b.dreamSpeed > 150)) themedSegments++;
+        if (!b || !b.dream) continue;
+        if (traceDreamBulletTrail(b, 0.52, false)) compactSegments++;
       }
-      if (themedSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+      if (compactSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+    } else {
+      for (let themeIndex = 0; themeIndex < DREAM_BULLET_MATERIAL_CONFIG.themes.length; themeIndex++) {
+        let themedSegments = 0;
+        ctx.fillStyle = DREAM_BULLET_MATERIAL_CONFIG.themes[themeIndex].trail;
+        ctx.beginPath();
+        for (const b of enemyBullets) {
+          if (!b || !b.dream || b.dreamMaterialTheme !== themeIndex) continue;
+          if (traceDreamBulletTrail(b, 0.64, visualMul >= 0.35 && b.dreamSpeed > 150)) themedSegments++;
+        }
+        if (themedSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+      }
     }
-    let hotSegments = 0;
-    ctx.fillStyle = visualMul <= 0.2 ? 'rgba(224,236,255,.48)' : 'rgba(245,247,255,.72)';
-    ctx.beginPath();
-    for (const b of enemyBullets) {
-      if (!b || !b.dream) continue;
-      if (traceDreamBulletTrail(b, 0.30, false)) hotSegments++;
-    }
-    if (hotSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
-
     const base = ctx.getTransform();
     for (const b of enemyBullets) {
       if (!b || !b.dream) continue;
@@ -41885,6 +42191,9 @@
       }
       if (!material) {
         ctx.setTransform(base);
+        ctx.globalAlpha = b.dreamDissolving
+          ? Math.pow(clamp((b.dreamDissolveT || 0) / Math.max(0.001, b.dreamDissolveMax || 0.001), 0, 1), 1.7)
+          : 1;
         drawDreamBulletFallback(b);
         continue;
       }
@@ -41915,11 +42224,40 @@
       const e = base.a * b.x + base.c * b.y + base.e;
       const f = base.b * b.x + base.d * b.y + base.f;
       ctx.setTransform(a, bb, c, d, e, f);
-      ctx.globalAlpha = b.depth != null ? bulletDepthAlpha(b) : 1;
+      const dissolveAlpha = b.dreamDissolving
+        ? Math.pow(clamp((b.dreamDissolveT || 0) / Math.max(0.001, b.dreamDissolveMax || 0.001), 0, 1), 1.7)
+        : 1;
+      ctx.globalAlpha = (b.depth != null ? bulletDepthAlpha(b) : 1) * dissolveAlpha;
       ctx.drawImage(material.canvas, phase * material.frameWidth, 0, material.frameWidth, material.frameHeight, -material.anchorX, -material.anchorY, material.frameWidth, material.frameHeight);
       dreamBulletMaterialFrameStats.bodyDraws++;
     }
     ctx.setTransform(base);
+    if (dreamDissolvingBulletCount > 0) {
+      ctx.globalAlpha = 0.68;
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = 'rgba(218,154,255,.78)';
+      ctx.beginPath();
+      let dissolveFragments = 0;
+      for (const b of enemyBullets) {
+        if (!b || !b.dream || !b.dreamDissolving) continue;
+        const env = clamp((b.dreamDissolveT || 0) / Math.max(0.001, b.dreamDissolveMax || 0.001), 0, 1);
+        const progress = 1 - env;
+        const size = Math.max(0.15, b.r * 0.34 * env);
+        const spread = 5 + b.r * 1.8 * progress;
+        for (let shard = 0; shard < 2; shard++) {
+          const angle = b.dreamVisualSeed * TAU + shard * Math.PI + progress * (2.2 + shard * 0.6);
+          const x = b.x + Math.cos(angle) * spread;
+          const y = b.y + Math.sin(angle) * spread;
+          ctx.moveTo(x, y - size * 1.8);
+          ctx.lineTo(x + size, y);
+          ctx.lineTo(x, y + size * 1.8);
+          ctx.lineTo(x - size, y);
+          ctx.closePath();
+          dissolveFragments++;
+        }
+      }
+      if (dissolveFragments) ctx.fill();
+    }
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
   }
@@ -43419,7 +43757,7 @@
       ctx.fillStyle = '#2f4a72'; ctx.fillText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
       ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 2.4; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-      const info = dreamActive() ? `场上 ${enemies.length}/6   敌弹 ${dreamSyncBulletBudget()}/${DREAM_PERF_CONFIG.bulletCap}` : `轮回 ${loopCount + 1}   强度 ×${diffMul().toFixed(1)}   击杀 ${killCount}`;
+      const info = dreamActive() ? `场上 ${enemies.length}/${DREAM_PERF_CONFIG.enemyCap}   敌弹 ${dreamSyncBulletBudget()}/${DREAM_PERF_CONFIG.bulletCap}` : `轮回 ${loopCount + 1}   强度 ×${diffMul().toFixed(1)}   击杀 ${killCount}`;
       ctx.strokeText(info, W / 2, barY + barH + 12);
       ctx.fillStyle = '#bfe0ff'; ctx.fillText(info, W / 2, barY + barH + 12);
     }
@@ -44428,15 +44766,15 @@
       ctx.strokeStyle = 'rgba(132,160,211,.38)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x + 24, y + 178); ctx.lineTo(x + w - 24, y + 178); ctx.stroke();
       const mobs = Object.values(DREAM_MOB_DEFS);
       mobs.forEach((mob, i) => {
-        const col = i % 3, row = Math.floor(i / 3);
-        const cw = (w - 36) / 3, cx = x + 18 + col * cw, cy = y + 221 + row * 94;
-        const cardX = cx + 4, cardY = cy - 31, cardW = cw - 8, cardH = 82;
+        const col = i % 4, row = Math.floor(i / 4);
+        const cw = (w - 32) / 4, cx = x + 16 + col * cw, cy = y + 218 + row * 91;
+        const cardX = cx + 3, cardY = cy - 27, cardW = cw - 6, cardH = 80;
         ctx.fillStyle = row ? 'rgba(244,226,251,.66)' : 'rgba(216,234,255,.72)'; roundRect(cardX, cardY, cardW, cardH, 14); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,.52)'; ctx.beginPath(); ctx.arc(cx + 39, cy + 8, 30, 0, TAU); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,.52)'; ctx.beginPath(); ctx.arc(cx + 27, cy + 10, 23, 0, TAU); ctx.fill();
         let key = `${mob.sprite}Idle`; if (!assetReady(key) && assetReady(mob.sprite)) key = mob.sprite;
-        if (assetReady(key)) drawImageContain(assets[key], cx + 10, cy - 21, 58, 58);
-        ctx.textAlign = 'left'; ctx.font = cuteFont(900, 18); ctx.fillStyle = '#493f7d'; ctx.fillText(mob.name, cx + 76, cy + 1);
-        ctx.font = cuteFont(800, 18); ctx.fillStyle = '#5179a0'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 76, cy + 27);
+        if (assetReady(key)) drawImageContain(assets[key], cx + 6, cy - 11, 42, 42);
+        ctx.textAlign = 'left'; ctx.font = cuteFont(900, 18); ctx.fillStyle = '#493f7d'; ctx.fillText(mob.name, cx + 52, cy + 1);
+        ctx.font = cuteFont(800, 18); ctx.fillStyle = '#5179a0'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 52, cy + 27);
       });
       ctx.textAlign = 'center'; ctx.font = cuteFont(900, 19); ctx.fillStyle = '#a45586'; ctx.fillText('10波约8分钟 · Boss约2分钟 · 第4次受击失败', x + w / 2, y + h - 13);
       ctx.restore();
@@ -44456,12 +44794,15 @@
     ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 25); ctx.fillStyle = '#315b82'; ctx.fillText('梦境守卫', rx + rw / 2, ry + 34);
     const mobs = Object.values(DREAM_MOB_DEFS);
     mobs.forEach((mob, i) => {
-      const cy = ry + 90 + i * 98;
+      const col = i % 2, row = Math.floor(i / 2);
+      const cellW = (rw - 28) / 2;
+      const cx = rx + 14 + col * cellW;
+      const cy = ry + 92 + row * 78;
       const key = `${mob.sprite}Idle`;
-      ctx.fillStyle = 'rgba(220,235,255,.72)'; ctx.beginPath(); ctx.arc(rx + 55, cy, 36, 0, TAU); ctx.fill();
-      if (assetReady(key)) drawImageContain(assets[key], rx + 20, cy - 35, 70, 70);
-      ctx.textAlign = 'left'; ctx.font = cuteFont(900, 20); ctx.fillStyle = '#493f7d'; ctx.fillText(mob.name, rx + 104, cy - 9);
-      ctx.font = cuteFont(700, 16); ctx.fillStyle = '#5179a0'; ctx.fillText(`基础HP ${mob.hp.toLocaleString()}`, rx + 104, cy + 15);
+      ctx.fillStyle = 'rgba(220,235,255,.72)'; roundRect(cx, cy - 31, cellW - 8, 66, 12); ctx.fill();
+      if (assetReady(key)) drawImageContain(assets[key], cx + 4, cy - 25, 50, 50);
+      ctx.textAlign = 'left'; ctx.font = cuteFont(900, 17); ctx.fillStyle = '#493f7d'; ctx.fillText(mob.name, cx + 58, cy - 4);
+      ctx.font = cuteFont(700, 15); ctx.fillStyle = '#5179a0'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 58, cy + 18);
     });
     ctx.textAlign = 'center'; ctx.font = cuteFont(800, 18); ctx.fillStyle = '#a45586'; ctx.fillText('10波约8分钟 · Boss约2分钟', rx + rw / 2, ry + rh - 45);
     ctx.fillStyle = '#4c6f94'; ctx.fillText('3星容错 · 第4次受击失败', rx + rw / 2, ry + rh - 20);
@@ -44708,6 +45049,18 @@
       vg.addColorStop(1, `rgba(255,42,72,${(FEEL_V3_TUNING.hurtVignetteAlpha * hv).toFixed(3)})`);
       ctx.fillStyle = vg;
       ctx.fillRect(0, 0, W, H);
+    }
+    if (dreamActive() && dreamHitGlintT > 0 && assetReady('dreamSharedImpactGlint')) {
+      const progress = clamp(1 - dreamHitGlintT / DREAM_HIT_FEEDBACK_CONFIG.impactDuration, 0, 1);
+      const frame = Math.min(5, Math.floor(progress * 6));
+      const open = clamp(progress / 0.16, 0, 1);
+      const close = clamp((1 - progress) / 0.26, 0, 1);
+      const size = DREAM_HIT_FEEDBACK_CONFIG.impactSize * (0.74 + progress * 0.34);
+      ctx.save();
+      ctx.globalAlpha = 0.94 * open * close;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(assets.dreamSharedImpactGlint, frame * 64, dreamHitGlintTheme * 64, 64, 64, dreamHitGlintX - size / 2, dreamHitGlintY - size / 2, size, size);
+      ctx.restore();
     }
     if (dreamActive() && dreamHitFeedbackT > 0) {
       const remaining = clamp(dreamHitFeedbackT / DREAM_HIT_FEEDBACK_CONFIG.vignetteSeconds, 0, 1);
@@ -49008,7 +49361,10 @@
 
     function dreamRosterForTest(waveNumber, seed = DREAM_SEED) {
       const waveIdx = Math.max(0, (waveNumber | 0) - 1);
-      const types = ['dream_seraph_wing', 'dream_seraph_choir', 'dream_seraph_guard', 'dream_seraph_prism', 'dream_seraph_reaper', 'dream_seraph_oracle'];
+      const types = [
+        'dream_seraph_wing', 'dream_seraph_choir', 'dream_seraph_guard', 'dream_seraph_prism',
+        'dream_seraph_reaper', 'dream_seraph_oracle', 'dream_seraph_lancer', 'dream_seraph_storm',
+      ];
       const seeded = (index) => {
         let x = dreamHashString([seed, waveIdx, index].join('|')) || 1;
         x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
@@ -49016,7 +49372,75 @@
       };
       return types.map((key, index) => ({ key, order: seeded(index), slot: index }))
         .sort((a, b) => a.order - b.order)
-        .map((entry, index) => ({ key: entry.key, slot: index, batch: index < 3 ? 1 : 2 }));
+        .map((entry, index) => ({ key: entry.key, slot: index, batch: index < 3 ? 1 : (index < 6 ? 2 : 3) }));
+    }
+    function dreamMotionTraceForTest(options = {}) {
+      const dt = Math.max(1 / 240, Number(options.dt) || 1 / 60);
+      const frames = Math.max(1, Math.floor((Number(options.seconds) || 6) / dt));
+      const startVx = Number(options.vx) || 0;
+      const startVy = Number(options.vy) || 220;
+      const baseAngle = Math.atan2(startVy, startVx);
+      const curve = Number(options.curve) || 0;
+      const phase = Number(options.phase) || 0;
+      const waveAmp = Number(options.waveAmp) || 0;
+      let x = Number(options.x) || 360;
+      let y = Number(options.y) || 80;
+      let vx = startVx;
+      let vy = startVy;
+      let ax = Number(options.ax) || 0;
+      let ay = Number(options.ay) || 0;
+      let brake = !!options.brake;
+      let brakeTriggered = false;
+      let reversed = false;
+      let wavePhase = Number(options.wavePhase) || 0;
+      let waveOffset;
+      let maxHeadingDeviation = 0;
+      let monotonicDown = true;
+      const points = [];
+      for (let frame = 0; frame < frames; frame++) {
+        const age = (frame + 1) * dt;
+        vx += ax * dt;
+        vy += ay * dt;
+        const axisSpeed = vx * Math.cos(baseAngle) + vy * Math.sin(baseAngle);
+        if (axisSpeed < -0.001) reversed = true;
+        if (brake && axisSpeed <= 30) {
+          vx = Math.cos(baseAngle) * 82;
+          vy = Math.sin(baseAngle) * 82;
+          ax = 0;
+          ay = 0;
+          brake = false;
+          brakeTriggered = true;
+        }
+        const speed = Math.hypot(vx, vy);
+        if (curve && speed > 0.01) {
+          const offset = (Math.sin(age * DREAM_BULLET_MOTION_CONFIG.curveFrequency + phase) - Math.sin(phase)) * 0.5 * curve;
+          const heading = baseAngle + offset;
+          vx = Math.cos(heading) * speed;
+          vy = Math.sin(heading) * speed;
+          maxHeadingDeviation = Math.max(maxHeadingDeviation, Math.abs(offset));
+        }
+        if (speed > 0.01) {
+          const heading = Math.atan2(vy, vx);
+          const headingDelta = Math.abs(((heading - baseAngle + Math.PI) % TAU) - Math.PI);
+          maxHeadingDeviation = Math.max(maxHeadingDeviation, headingDelta);
+        }
+        if (waveAmp) {
+          wavePhase += dt * DREAM_BULLET_MOTION_CONFIG.waveFrequency;
+          const nextOffset = Math.sin(wavePhase) * waveAmp * 0.28;
+          if (waveOffset !== undefined) {
+            const delta = nextOffset - waveOffset;
+            x += -Math.sin(baseAngle) * delta;
+            y += Math.cos(baseAngle) * delta;
+          }
+          waveOffset = nextOffset;
+        }
+        const previousY = y;
+        x += vx * dt;
+        y += vy * dt;
+        if (y + 0.001 < previousY && startVy >= 0 && Math.abs(curve) <= 0.85) monotonicDown = false;
+        if (frame % Math.max(1, Math.floor(frames / 12)) === 0 || frame === frames - 1) points.push({ x: Number(x.toFixed(2)), y: Number(y.toFixed(2)) });
+      }
+      return { points, monotonicDown, maxHeadingDeviation, baseAngle, brakeTriggered, reversed, final: points[points.length - 1] };
     }
     function dreamLogicHash(items) {
       let h = 2166136261 >>> 0;
@@ -49058,14 +49482,15 @@
       modeSpec: () => ({ key: 'dream', title: '梦境模式', levelCount: 10, unlockedLevels: 1, locksLoadoutAfterStart: true, disablesRandomDrops: true, keepsCharacterSkills: true, keepsWingmen: true, activeWallClock: true, loadoutSelect: { planes: 7, wingmen: 6, picksRequired: { plane: 1, wingman: 1 }, restoresCampaignLoadoutOnExit: true } }),
       levelSpec: () => ({ id: DREAM_STAGE_ID, version: DREAM_CLEAR_VERSION, name: '堕辉圣域', seed: DREAM_SEED, waveCount: 10, mobTargetSeconds: DREAM_BALANCE_CONFIG.mobTargetSeconds, bossTargetSeconds: DREAM_BALANCE_CONFIG.bossTargetSeconds, bossKey: 'seraph' }),
       uiSpec: () => ({ titleActions: ['chapter', 'dream'], lobbyLayout: 'two-rows-five-levels', levelNodes: 10, availableLevels: [1], mobileTabs: ['情报', '敌人弹幕', '排行榜'], minimumBodyFont: 18, minimumButtonHeight: 52, hud: ['wave', 'active-time', 'stars', 'hits', 'damage-multiplier'] }),
-      previewSpec: () => ({ usesRuntimePatternSampler: false, usesSharedPatternAndMotionCatalog: true, showsMobs: 6, showsBossPhases: 5, showsWaveRules: true, showsStarRules: true }),
+      previewSpec: () => ({ usesRuntimePatternSampler: false, usesSharedPatternAndMotionCatalog: true, showsMobs: 8, showsBossPhases: 5, showsWaveRules: true, showsStarRules: true }),
       mobSpec: () => Object.entries(DREAM_MOB_DEFS).map(([key, mob]) => ({ key, ...mob })),
-      waveSpec: () => DREAM_PATTERN_DEFS.map((pattern, index) => ({ id: `dream-wave-${index + 1}`, name: pattern.name, hpMultiplier: DREAM_WAVE_HP_SCALE[index], count: 6, composition: [1, 1, 1, 1, 1, 1], batches: [3, 3], batchDelay: 6 })),
+      waveSpec: () => DREAM_PATTERN_DEFS.map((pattern, index) => ({ id: `dream-wave-${index + 1}`, name: pattern.name, hpMultiplier: DREAM_WAVE_HP_SCALE[index], count: 8, composition: [1, 1, 1, 1, 1, 1, 1, 1], batches: [...DREAM_WAVE_BATCHES], batchDelays: [...DREAM_WAVE_BATCH_DELAYS] })),
       waveRosterForTest: dreamRosterForTest,
-      rewardSpec: () => ({ powerPerKill: 5, randomPlugins: false, lifeDrops: false, berserkDrops: false }),
-      waveTransitionSpec: () => ({ clearDelay: 1.4, timedOverlap: false }),
+      formationSpec: () => DREAM_FORMATION_PRESETS.map((preset, index) => ({ id: index + 1, batches: preset.map(batch => batch.map(point => [...point])) })),
+      rewardSpec: () => ({ powerPerKill: DREAM_REWARD_CONFIG.powerPerKill, powerPerWave: DREAM_REWARD_CONFIG.powerPerKill * 8, randomPlugins: false, lifeDrops: false, berserkDrops: false }),
+      waveTransitionSpec: () => ({ clearDelay: 1.4, timedOverlap: false, bulletDissolve: DREAM_BULLET_MOTION_CONFIG.dissolveDuration, abruptVisibleClear: false }),
       patternSpec: () => DREAM_PATTERN_DEFS.map((pattern, index) => ({ id: `dream-pattern-${index + 1}`, name: pattern.name, voices: [...pattern.voices], primary: [...pattern.primary], secondary: [...pattern.secondary], accent: [...pattern.accent], maxVoices: pattern.accent.length ? 3 : 2, completeGroupOnly: true, minGap: pattern.voices.some(v => v === 'gateWall' || v === 'prismGate' || v === 'crystalRain') ? 96 : 24 })),
-      patternBudgetSpec: () => ({ enemyCap: 6, logicalBulletCap: 96, warningCap: 4, laserCap: 4, poolSize: 128, activeCountStrategy: 'once-per-frame-plus-o1-release', primaryReserve: DREAM_PERF_CONFIG.primaryReserve, secondaryReserve: DREAM_PERF_CONFIG.secondaryReserve, accentThreshold: DREAM_PERF_CONFIG.accentThreshold, aimedWarningMin: 0.45, laserWarningMin: 0.75, corridorGapMin: 96, cullsLogicalBulletsByQuality: false, decorationScale: [...DREAM_PERF_CONFIG.visualMul] }),
+      patternBudgetSpec: () => ({ enemyCap: DREAM_PERF_CONFIG.enemyCap, logicalBulletCap: 96, warningCap: 4, laserCap: 4, poolSize: 128, activeCountStrategy: 'once-per-frame-plus-o1-release', primaryReserve: DREAM_PERF_CONFIG.primaryReserve, secondaryReserve: DREAM_PERF_CONFIG.secondaryReserve, accentThreshold: DREAM_PERF_CONFIG.accentThreshold, aimedWarningMin: 0.45, laserWarningMin: 0.75, corridorGapMin: 96, cullsLogicalBulletsByQuality: false, decorationScale: [...DREAM_PERF_CONFIG.visualMul] }),
       bulletSkinSpec: () => Object.entries(DREAM_BULLET_SKINS).map(([key, skin]) => ({ key, assetKey: skin.asset, assetPath: ASSET_PATHS[skin.asset] || '', family: skin.family, directional: !!skin.directional, spin: !!skin.spin, preoutlined: !!skin.preoutlined })),
       bulletAssetStatus: dreamBulletAssetStatus,
       bulletMaterialSpec: () => ({
@@ -49076,12 +49501,22 @@
         allocationFreeHotPath: DREAM_BULLET_MATERIAL_CONFIG.hotPath.allocationFree,
         drawImagesPerBullet: DREAM_BULLET_MATERIAL_CONFIG.hotPath.drawImagesPerBullet,
         trailLengthScale: [...DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale],
+        trailDuration: { launch: DREAM_BULLET_MATERIAL_CONFIG.trail.launchDuration, transition: DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration },
+        trailFamilies: [...DREAM_BULLET_MATERIAL_CONFIG.trail.families],
+        trailDamaging: DREAM_BULLET_MATERIAL_CONFIG.trail.damaging,
+        trailCollisionRadius: DREAM_BULLET_MATERIAL_CONFIG.trail.collisionRadius,
+        transientTrails: true,
+        permanentTailBakedIntoBody: false,
+        requiredMaterialAssets: [...DREAM_BULLET_MATERIAL_REQUIRED_KEYS],
+        optionalMaterialAssets: [...DREAM_BULLET_MATERIAL_OPTIONAL_KEYS],
         materialAssets: DREAM_BULLET_MATERIAL_ASSET_KEYS.map(key => ({ key, path: ASSET_PATHS[key] || '' })),
         universalBackingDisk: false,
         shapeFollowingDepth: true,
         smoothedVelocityFacing: true,
       }),
       bulletMaterialStatus: dreamBulletMaterialStatus,
+      motionSpec: () => ({ ...DREAM_BULLET_MOTION_CONFIG, policies: [...DREAM_BULLET_MOTION_CONFIG.policies], cumulativeGlobalTimeTurning: false, visibleDepthCull: false, transitionsTelegraphed: true }),
+      motionTraceForTest: dreamMotionTraceForTest,
       patternDiversitySpec: () => {
         const emitterKeys = [...new Set(DREAM_PATTERN_DEFS.flatMap(pattern => pattern.voices))];
         const motionFamilies = [...new Set(emitterKeys.map(dreamMotionForVoice).filter(Boolean))];
@@ -49131,6 +49566,8 @@
         collisionRadius: Number(b.r.toFixed(2)), fallback: !!b.dreamFallback,
         materialPhase: b.dreamMaterialPhase | 0, materialTheme: b.dreamMaterialTheme | 0,
         speed: Number((b.dreamSpeed || 0).toFixed(2)), trailLength: Number((b.dreamTrailLength || 0).toFixed(2)),
+        dissolving: !!b.dreamDissolving,
+        dissolveRemaining: Number((b.dreamDissolveT || 0).toFixed(3)),
       }));
       const fallbacks = [...new Set([...dreamBulletFallbackKeys, ...dreamBulletMaterialFallbackKeys, ...items.filter(item => item.fallback).map(item => item.assetKey || item.skin || 'programmatic')])];
       return {
@@ -49155,6 +49592,7 @@
         elapsedMs: Math.round(dreamRun.elapsedMs),
         enemyCount: enemies.filter(e => e && e.dream).length,
         logicalBulletCount: dreamBullets.length,
+        dissolvingBulletCount: items.filter(item => item.dissolving).length,
         bulletStyles: [...new Set(items.map(item => `${item.style}:${item.shape}`))],
         bulletSkins: [...new Set(items.map(item => item.skin).filter(Boolean))],
         bulletAssets: [...new Set(items.map(item => item.assetKey).filter(Boolean))],
@@ -49249,16 +49687,36 @@
           for (let i = 0; i < labSkins.length; i++) {
             const column = i % 3;
             const row = Math.floor(i / 3);
+            const skinSpec = DREAM_BULLET_SKINS[labSkins[i]];
             const direction = column === 0 ? 1 : (column === 2 ? -1 : (row & 1 ? 0.72 : -0.72));
             const angle = column === 1 ? (direction > 0 ? 0.42 : Math.PI - 0.42) : (direction > 0 ? 0 : Math.PI);
-            const speed = 92 + row * 12 + column * 7;
+            const baseSpeed = 92 + row * 12 + column * 7;
+            // 验收场同时保留慢速体积弹与高速方向弹，确保短尾迹的出现和完整消散都能被多帧捕获。
+            const speed = skinSpec.directional ? Math.max(baseSpeed, 168 + row * 4) : baseSpeed;
             addDreamBullet(column === 0 ? 118 : (column === 2 ? W - 118 : W * 0.5), 236 + row * 205, Math.cos(angle) * speed, Math.sin(angle) * speed, {
               r: 7.2, damage: 0, life: 20, skin: labSkins[i], visualIndex: i,
               style: i % 4 === 0 ? 'aimed' : (i % 4 === 1 ? 'hazard' : (i % 4 === 2 ? 'spread' : 'deco')),
-              shape: DREAM_BULLET_SKINS[labSkins[i]].directional ? 'needle' : 'orb',
+              shape: skinSpec.directional ? 'needle' : 'orb',
               emitter: 'material-lab', motion: 'material-phase-demo',
             });
           }
+        } else if (scene === 'bullet-dissolve') {
+          state = 'dreamMaterialLab';
+          dreamUi.open = false;
+          enemies.length = 0;
+          clearDreamBullets();
+          warnings.length = 0;
+          lasers.length = 0;
+          warmDreamBulletMaterialCache(999);
+          const dissolveSkins = ['seraphArrowViolet', 'judgmentSpear', 'tentacleShard', 'cleaveViolet', 'ravenDive', 'galaxyTall'];
+          for (let i = 0; i < dissolveSkins.length; i++) {
+            const x = 120 + i * ((W - 240) / Math.max(1, dissolveSkins.length - 1));
+            addDreamBullet(x, H * 0.48 + Math.sin(i * 1.7) * 84, (i - 2.5) * 24, 142 + (i & 1) * 34, {
+              r: 7, damage: 0, life: 20, skin: dissolveSkins[i], visualIndex: i,
+              style: i & 1 ? 'hazard' : 'aimed', shape: 'needle', emitter: 'dissolve-lab', motion: 'linear',
+            });
+          }
+          dissolveDreamBullets('capture');
         } else if (scene === 'boss') {
           dreamUi.open = false;
           state = 'boss'; bossKind = 'seraph'; spawnBoss(); boss.inv = 0; boss.t = 5;
@@ -49297,7 +49755,9 @@
           }
           if (scene === 'performance') {
             dreamRun.batch2Spawned = true;
+            dreamRun.batch3Spawned = true;
             spawnDreamBatch(1);
+            spawnDreamBatch(2);
             placeDreamEnemies();
             let guard = 0;
             while (enemyBullets.filter(b => b && b.dream).length < Math.min(96, Number(options.bullets) || 96) && guard++ < 18) {
@@ -49307,6 +49767,15 @@
             while (warnings.filter(w => w && w.dream).length < Math.min(4, Number(options.warnings) || 4) && warningGuard++ < 8) dreamEmitLaneLasers(1);
           } else {
             const targetElapsed = Math.max(0, Number(options.elapsed) || 2.4);
+            if (targetElapsed >= DREAM_WAVE_BATCH_DELAYS[1] && !dreamRun.batch2Spawned) {
+              dreamRun.batch2Spawned = true;
+              spawnDreamBatch(1);
+            }
+            if (targetElapsed >= DREAM_WAVE_BATCH_DELAYS[2] && !dreamRun.batch3Spawned) {
+              dreamRun.batch3Spawned = true;
+              spawnDreamBatch(2);
+            }
+            placeDreamEnemies();
             const frames = Math.min(900, Math.ceil(targetElapsed * 60));
             for (let i = 0; i < frames; i++) { time += 1 / 60; dreamRun.waveElapsed += 1 / 60; updateDreamConductor(1 / 60); updateEnemyBullets(1 / 60); }
           }
@@ -49315,7 +49784,7 @@
         draw();
         return dreamCaptureSnapshot();
       },
-      step(frames = 1, dt = 1 / 60) {
+      step(frames = 1, dt = 1 / 60, includeSnapshot = true) {
         const n = Math.max(0, Math.min(3600, frames | 0));
         for (let i = 0; i < n; i++) {
           time += dt; stateTimer += dt; updateCuteUiMotion(dt);
@@ -49330,7 +49799,7 @@
           hitStop = Math.max(0, hitStop - dt);
         }
         draw();
-        return dreamCaptureSnapshot();
+        return includeSnapshot ? dreamCaptureSnapshot() : null;
       },
       snapshot: dreamCaptureSnapshot,
       setQuality(preset) { selectQualityPreset(preset); draw(); return dreamCaptureSnapshot(); },

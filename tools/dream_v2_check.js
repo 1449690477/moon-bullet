@@ -169,11 +169,11 @@ if (cap && internals) {
   assert(!!hooks, '测试钩子注入成功');
   cap.prepare('mobs', { wave: 1, elapsed: 0.2 });
   let prev = null, prevDx = null, maxJump = 0, flapCount = 0, samples = 0;
-  for (let f = 0; f < 620; f++) {
+  for (let f = 0; f < 900; f++) {
     cap.step(1);
     const positions = hooks.enemyPositions();
-    // 只统计已就位精英：跳过第一编队入场(前150帧)与第二编队入场窗口(约336-500帧)
-    const measuring = (f > 150 && f < 330) || f > 560;
+    // 只统计已就位精英：跳过三批编队各自的入场窗口。
+    const measuring = (f > 150 && f < 280) || (f > 450 && f < 580) || f > 750;
     if (prev && prev.length === positions.length && measuring) {
       const dxs = [];
       for (let k = 0; k < positions.length; k++) {
@@ -193,22 +193,23 @@ if (cap && internals) {
 
   // ── 3. 十波弹幕：预算 + 多样性 + 确定性 ────────────────────
   const budget = internals.patternBudgetSpec();
-  assert(budget.logicalBulletCap === 96 && budget.enemyCap === 6, '性能预算保持：96 弹上限 / 6 敌上限');
+  assert(budget.logicalBulletCap === 96 && budget.enemyCap === 8, '性能预算保持：96 弹上限 / 8 敌上限');
   const skinSpec = typeof internals.bulletSkinSpec === 'function' ? internals.bulletSkinSpec() : [];
   const assetStatus = typeof internals.bulletAssetStatus === 'function' ? internals.bulletAssetStatus() : null;
   const diversitySpec = typeof internals.patternDiversitySpec === 'function' ? internals.patternDiversitySpec() : null;
-  assert(skinSpec.length >= 12 && new Set(skinSpec.map(s => s.assetKey)).size >= 12, `真实敌弹素材 ≥ 12（${skinSpec.length} 皮肤 / ${new Set(skinSpec.map(s => s.assetKey)).size} 素材）`);
+  assert(skinSpec.length >= 16 && new Set(skinSpec.map(s => s.assetKey)).size >= 16, `真实敌弹素材 ≥ 16（${skinSpec.length} 皮肤 / ${new Set(skinSpec.map(s => s.assetKey)).size} 素材）`);
   assert(assetStatus && Array.isArray(assetStatus.missing) && assetStatus.missing.length === 0, '敌弹素材路径对账无缺失');
   assert(diversitySpec && diversitySpec.motionFamilies.length >= 10, `运动族 ≥ 10（${diversitySpec?.motionFamilies?.length || 0}）`);
-  assert(diversitySpec && diversitySpec.emitterKeys.length >= 28, `发射器 ≥ 28（${diversitySpec?.emitterKeys?.length || 0}）`);
+  assert(diversitySpec && diversitySpec.emitterKeys.length >= 32, `发射器 ≥ 32（${diversitySpec?.emitterKeys?.length || 0}）`);
   assert(diversitySpec && diversitySpec.runtimeFallbackReporting === true, '运行时 fallback 会真实上报');
   const materialSpec = typeof internals.bulletMaterialSpec === 'function' ? internals.bulletMaterialSpec() : null;
   assert(materialSpec && materialSpec.phaseCount === 4, '敌弹材质缓存为 4 相位动态高光');
   assert(materialSpec && materialSpec.prewarm === true && materialSpec.allocationFreeHotPath === true, '材质缓存预热且实战热路径零分配');
   assert(materialSpec && materialSpec.batchTrails === true, '速度尾迹按威胁色批量绘制');
   assert(materialSpec && materialSpec.trailLengthScale != null, '高速敌弹公开重量感尾迹长度配置');
+  assert(materialSpec && materialSpec.transientTrails === true && materialSpec.trailDamaging === false && materialSpec.trailCollisionRadius === 0, '尾迹只在速度事件短暂出现且无伤害判定');
   const materialStatusBeforeLab = typeof internals.bulletMaterialStatus === 'function' ? internals.bulletMaterialStatus() : null;
-  assert(materialStatusBeforeLab && Array.isArray(materialStatusBeforeLab.materialAssets) && materialStatusBeforeLab.materialAssets.length >= 4, '四类共享材质辅助图已注册');
+  assert(materialStatusBeforeLab && Array.isArray(materialStatusBeforeLab.materialAssets) && materialStatusBeforeLab.materialAssets.length >= 3, '必需材质与可选命中辅助图已注册');
   assert(materialStatusBeforeLab && Array.isArray(materialStatusBeforeLab.fallbacks) && materialStatusBeforeLab.fallbacks.length === 0, '材质缓存无静默 fallback');
 
   // ── 3a. 同一弹组连续 2 秒材质与速度尾迹验收 ────────────────
@@ -228,7 +229,8 @@ if (cap && internals) {
   assert(lab0.logicalBulletCount >= 8 && labLast.logicalBulletCount === lab0.logicalBulletCount, `材质实验场同一弹组稳定存在 2 秒（${lab0.logicalBulletCount} 发）`);
   assert(phaseSignatures.size >= 2, `0/100/250/500ms 可见材质相位变化（${phaseSignatures.size} 种相位签名）`);
   assert(trailBatches > 0 && trailBatches <= 8, `尾迹批次有界（峰值 ${trailBatches}）`);
-  assert(trailSegments >= lab0.logicalBulletCount, `每发高速样弹都有可见速度尾迹（${trailSegments} 段 / ${lab0.logicalBulletCount} 发）`);
+  assert(trailSegments > 0 && trailSegments <= lab0.logicalBulletCount, `仅高速方向弹有瞬时速度尾迹（峰值 ${trailSegments} 段 / ${lab0.logicalBulletCount} 发）`);
+  assert(Number(labLast.materialStats?.trailSegments || 0) === 0, '发射后2秒尾迹已完整消散，不形成常驻伤害错觉');
   assert(Number(labLast.materialStats?.cacheEntries || 0) === labCacheEntries, '连续 2 秒材质缓存条目不增长');
   assert(Number(labLast.materialStats?.cacheBuilds || 0) === labCacheBuilds, '连续 2 秒无临时材质重建');
   const materialStatusAfterLab = typeof internals.bulletMaterialStatus === 'function' ? internals.bulletMaterialStatus() : null;
@@ -241,7 +243,7 @@ if (cap && internals) {
     let maxBullets = 0, maxWarnings = 0, maxLasers = 0, maxEnemies = 0;
     const styles = new Set();
     const assets = new Set(), motions = new Set(), emitters = new Set(), fallbacks = new Set();
-    for (let chunk = 0; chunk < 90; chunk++) {   // 90 × 6帧 = 9 秒实战推进
+    for (let chunk = 0; chunk < 130; chunk++) {   // 130 × 6帧 = 13 秒，覆盖3/3/2三批编队
       const s = cap.step(6);
       maxBullets = Math.max(maxBullets, s.logicalBulletCount);
       maxWarnings = Math.max(maxWarnings, s.warningCount);
@@ -262,7 +264,7 @@ if (cap && internals) {
     waveStyleSets.push([...styles].sort().join(','));
     assert(maxBullets <= 96, `第${wave}波 弹量峰值 ${maxBullets} ≤ 96`);
     assert(maxWarnings <= 4 && maxLasers <= 4, `第${wave}波 预警/激光 ≤ 4 (${maxWarnings}/${maxLasers})`);
-    assert(maxEnemies <= 6, `第${wave}波 敌数 ${maxEnemies} ≤ 6`);
+    assert(maxEnemies <= 8, `第${wave}波 敌数 ${maxEnemies} ≤ 8`);
     assert(maxBullets >= 18, `第${wave}波 有足量弹幕输出（峰值 ${maxBullets} ≥ 18）`);
     assert(assets.size >= 4, `第${wave}波 真实贴图 ≥ 4（${assets.size}）`);
     assert(motions.size >= 3, `第${wave}波 运动族 ≥ 3（${motions.size}）`);

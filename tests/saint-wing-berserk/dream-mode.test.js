@@ -42,24 +42,26 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(dream.previewSpec()).toMatchObject({
       usesRuntimePatternSampler: false,
       usesSharedPatternAndMotionCatalog: true,
-      showsMobs: 6,
+      showsMobs: 8,
       showsBossPhases: 5,
       showsWaveRules: true,
       showsStarRules: true,
     });
   });
 
-  it('defines six larger high-HP elites for every wave', () => {
+  it('defines eight readable elites with lower individual HP for every wave', () => {
     const mobs = dream.mobSpec();
     expect(mobs).toEqual([
-      expect.objectContaining({ key: 'dream_seraph_wing', name: '曦翼星使', sprite: 'drone', hp: 125000, size: 118, r: 29 }),
-      expect.objectContaining({ key: 'dream_seraph_choir', name: '辉歌咏者', sprite: 'nun', hp: 170000, size: 126, r: 31 }),
-      expect.objectContaining({ key: 'dream_seraph_guard', name: '圣盾执刑者', sprite: 'holyshield', hp: 235000, size: 136, r: 35 }),
-      expect.objectContaining({ key: 'dream_seraph_prism', name: '极光棱镜', sprite: 'enBluecryst', hp: 185000, size: 128, r: 32 }),
-      expect.objectContaining({ key: 'dream_seraph_reaper', name: '堕辉镰侍', sprite: 'reaper', hp: 210000, size: 134, r: 34 }),
-      expect.objectContaining({ key: 'dream_seraph_oracle', name: '虚星谕者', sprite: 'voidchanter', hp: 160000, size: 130, r: 32 }),
+      expect.objectContaining({ key: 'dream_seraph_wing', name: '曦翼星使', sprite: 'drone', hp: 90000, size: 118, r: 29 }),
+      expect.objectContaining({ key: 'dream_seraph_choir', name: '辉歌咏者', sprite: 'nun', hp: 122000, size: 126, r: 31 }),
+      expect.objectContaining({ key: 'dream_seraph_guard', name: '圣盾执刑者', sprite: 'holyshield', hp: 169000, size: 136, r: 35 }),
+      expect.objectContaining({ key: 'dream_seraph_prism', name: '极光棱镜', sprite: 'enBluecryst', hp: 133000, size: 128, r: 32 }),
+      expect.objectContaining({ key: 'dream_seraph_reaper', name: '堕辉镰侍', sprite: 'reaper', hp: 151000, size: 134, r: 34 }),
+      expect.objectContaining({ key: 'dream_seraph_oracle', name: '虚星谕者', sprite: 'voidchanter', hp: 115000, size: 130, r: 32 }),
+      expect.objectContaining({ key: 'dream_seraph_lancer', name: '渊行枪使', sprite: 'abyssrunner', hp: 105000, size: 126, r: 31 }),
+      expect.objectContaining({ key: 'dream_seraph_storm', name: '霆辉侍祭', sprite: 'stormacolyte', hp: 118000, size: 124, r: 30 }),
     ]);
-    expect(mobs.map((mob) => mob.role)).toEqual(['wing', 'choir', 'guard', 'prism', 'reaper', 'oracle']);
+    expect(mobs.map((mob) => mob.role)).toEqual(['wing', 'choir', 'guard', 'prism', 'reaper', 'oracle', 'lancer', 'storm']);
   });
 
   it('builds ten seeded one-of-each elite waves with the documented HP curve', () => {
@@ -70,16 +72,18 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(waves.map((wave) => wave.name)).toEqual(expectedNames);
     expect(waves.map((wave) => wave.hpMultiplier)).toEqual(expectedMultipliers);
     for (let index = 0; index < waves.length; index += 1) {
-      expect(waves[index]).toMatchObject({ count: 6, composition: [1, 1, 1, 1, 1, 1], batches: [3, 3], batchDelay: 6 });
+      expect(waves[index]).toMatchObject({ count: 8, composition: [1, 1, 1, 1, 1, 1, 1, 1], batches: [3, 3, 2], batchDelays: [0, 5, 10] });
       const roster = dream.waveRosterForTest(index + 1);
-      expect(roster).toHaveLength(6);
+      expect(roster).toHaveLength(8);
       expect(Object.values(roster.reduce((counts, enemy) => {
         counts[enemy.key] = (counts[enemy.key] || 0) + 1;
         return counts;
-      }, {})).sort()).toEqual([1, 1, 1, 1, 1, 1]);
+      }, {})).sort()).toEqual([1, 1, 1, 1, 1, 1, 1, 1]);
     }
-    expect(dream.rewardSpec()).toMatchObject({ powerPerKill: 5, randomPlugins: false, lifeDrops: false, berserkDrops: false });
-    expect(dream.waveTransitionSpec()).toMatchObject({ clearDelay: 1.4, timedOverlap: false });
+    expect(dream.formationSpec()).toHaveLength(5);
+    expect(dream.formationSpec().every((formation) => formation.batches.flat().length === 8)).toBe(true);
+    expect(dream.rewardSpec()).toMatchObject({ powerPerKill: 3.75, powerPerWave: 30, randomPlugins: false, lifeDrops: false, berserkDrops: false });
+    expect(dream.waveTransitionSpec()).toMatchObject({ clearDelay: 1.4, timedOverlap: false, bulletDissolve: 0.34, abruptVisibleClear: false });
   });
 
   it('replays identical positions and order for the published seed', () => {
@@ -110,7 +114,7 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(patterns.every((pattern) => pattern.voices.length >= 4)).toBe(true);
     expect(patterns.filter((pattern) => pattern.maxVoices === 3).length).toBeGreaterThanOrEqual(5);
     expect(dream.patternBudgetSpec()).toMatchObject({
-      enemyCap: 6,
+      enemyCap: 8,
       logicalBulletCap: 96,
       warningCap: 4,
       laserCap: 4,
@@ -192,13 +196,13 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(dream.bulletAssetStatus()).toMatchObject({ expected: assetKeys.size, missing: [], decodeFailed: [], fallbackKeys: [] });
   });
 
-  it('exposes at least ten motion families and twenty-eight bounded emitters', () => {
+  it('exposes broad asset and motion catalogues with bounded emitters', () => {
     expect(typeof dream.patternDiversitySpec).toBe('function');
     const diversity = dream.patternDiversitySpec();
-    expect(diversity.realAssetCount).toBeGreaterThanOrEqual(12);
+    expect(diversity.realAssetCount).toBeGreaterThanOrEqual(16);
     expect(diversity.motionFamilies.length).toBeGreaterThanOrEqual(10);
     expect(new Set(diversity.motionFamilies).size).toBe(diversity.motionFamilies.length);
-    expect(diversity.emitterKeys.length).toBeGreaterThanOrEqual(28);
+    expect(diversity.emitterKeys.length).toBeGreaterThanOrEqual(32);
     expect(new Set(diversity.emitterKeys).size).toBe(diversity.emitterKeys.length);
     expect(diversity.runtimeFallbackReporting).toBe(true);
   });
@@ -207,11 +211,16 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(typeof dream.bulletMaterialSpec).toBe('function');
     expect(typeof dream.bulletMaterialStatus).toBe('function');
     expect(dream.bulletMaterialSpec()).toMatchObject({
+      version: 'V48-transient-trail',
       phaseCount: 4,
       prewarm: true,
       batchTrails: true,
       allocationFreeHotPath: true,
       trailLengthScale: expect.anything(),
+      trailDamaging: false,
+      trailCollisionRadius: 0,
+      transientTrails: true,
+      permanentTailBakedIntoBody: false,
     });
     const materialStatus = dream.bulletMaterialStatus();
     expect(typeof materialStatus.cacheEntries).toBe('number');
@@ -249,6 +258,73 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(draw).not.toContain('ctx.shadowBlur');
     expect(draw).not.toContain('ctx.save()');
     expect(draw).not.toContain('ctx.restore()');
+    const cacheStart = source.indexOf('function getDreamBulletSkinSprite');
+    const cacheEnd = source.indexOf('function warmDreamBulletMaterialCache', cacheStart);
+    expect(source.slice(cacheStart, cacheEnd)).not.toContain('trailAtlas');
+  });
+
+  it('keeps straight bullets monotonic and bounds every curved path around its spawn heading', () => {
+    const motion = dream.motionSpec();
+    expect(motion).toMatchObject({
+      visibleLifeFloor: 8.5,
+      hardLife: 11,
+      dissolveDuration: 0.34,
+      cumulativeGlobalTimeTurning: false,
+      visibleDepthCull: false,
+      transitionsTelegraphed: true,
+    });
+    const straight = dream.motionTraceForTest({ vx: 0, vy: 220, seconds: 6 });
+    expect(straight.monotonicDown).toBe(true);
+    expect(new Set(straight.points.map((point) => point.x))).toEqual(new Set([360]));
+    const curve = dream.motionTraceForTest({ vx: 26, vy: 220, curve: 0.18, phase: 1, seconds: 6 });
+    expect(curve.monotonicDown).toBe(true);
+    expect(curve.maxHeadingDeviation).toBeLessThanOrEqual(0.180001);
+    const brakeAngle = 1.13;
+    const brakeSpeed = 242;
+    const brake = dream.motionTraceForTest({
+      vx: Math.cos(brakeAngle) * brakeSpeed,
+      vy: Math.sin(brakeAngle) * brakeSpeed,
+      ax: -Math.cos(brakeAngle) * brakeSpeed * 0.82,
+      ay: -Math.sin(brakeAngle) * brakeSpeed * 0.82,
+      brake: true,
+      seconds: 4,
+    });
+    expect(brake.brakeTriggered).toBe(true);
+    expect(brake.reversed).toBe(false);
+    expect(brake.maxHeadingDeviation).toBeLessThanOrEqual(0.000001);
+    const updateStart = source.indexOf('function updateEnemyBullets');
+    const updateEnd = source.indexOf('function updateWarnings', updateStart);
+    const update = source.slice(updateStart, updateEnd);
+    expect(update).not.toContain('Math.sin(time * 2.2');
+    expect(update).not.toContain('else { b.life = 0; }');
+    expect(update).toContain('DREAM_BULLET_MOTION_CONFIG.offscreenMargin');
+    expect(update).toContain("beginDreamBulletDissolve(b, DREAM_BULLET_MOTION_CONFIG.dissolveDuration, 'hard-life')");
+    const boomerangStart = source.indexOf('function dreamEmitBoomerangFeathers');
+    const boomerangEnd = source.indexOf('function dreamEmitChaseFork', boomerangStart);
+    const boomerang = source.slice(boomerangStart, boomerangEnd);
+    expect(boomerang).toContain('ax: -Math.cos(a) * speed * 0.82, ay: -Math.sin(a) * speed * 0.82');
+    expect(boomerang).not.toContain('+ 52');
+  });
+
+  it('dissolves visible cleanup bullets and snapshots hit material before pool release', () => {
+    const dissolveStart = source.indexOf('function beginDreamBulletDissolve');
+    const dissolveEnd = source.indexOf('function addDreamBullet', dissolveStart);
+    const dissolve = source.slice(dissolveStart, dissolveEnd);
+    expect(dissolveStart).toBeGreaterThan(0);
+    expect(dissolve).toContain('bullet.damage = 0');
+    expect(dissolve).toContain('bullet.dreamTrailT = 0');
+    expect(dissolve).toContain('bullet.dreamDissolving = true');
+    expect(source).toContain("if (dreamRun.waveTransition <= 0) dissolveDreamBullets('wave-clear')");
+
+    const updateStart = source.indexOf('function updateEnemyBullets');
+    const updateEnd = source.indexOf('function updateWarnings', updateStart);
+    const collision = source.slice(updateStart, updateEnd);
+    const snapshotAt = collision.indexOf('const hitBullet = b.dream ? { dreamMaterialTheme: b.dreamMaterialTheme } : b');
+    const releaseAt = collision.indexOf('removeUnordered(enemyBullets, i)', snapshotAt);
+    const damageAt = collision.indexOf('damagePlayer(hitDamage, hitBullet)', releaseAt);
+    expect(snapshotAt).toBeGreaterThan(0);
+    expect(releaseAt).toBeGreaterThan(snapshotAt);
+    expect(damageAt).toBeGreaterThan(releaseAt);
   });
 
   it('keeps every wave logical barrage identical in all four quality modes', () => {
@@ -328,13 +404,13 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       targetTotalSeconds: 600,
       mobTargetSeconds: 480,
       bossTargetSeconds: 120,
-      mobDamageFloorSeconds: 40,
-      mobInitialCreditRatio: 0.045,
+      mobDamageFloorSeconds: 36,
+      mobInitialCreditRatio: 0.05,
       bossHp: 300000,
       bossDpsCap: 2500,
       bossCreditCap: 15000,
       bossTargetRange: [105, 135],
-      mobHpRange: [125000, 235000],
+      mobHpRange: [90000, 169000],
       enemyDamageBudget: true,
       targetCharacters: ['skyward', 'corruptgun'],
     });

@@ -19,7 +19,7 @@ const OUT_DIR = process.env.DREAM_CAPTURE_OUT
 const PORT = Number(process.env.DREAM_CAPTURE_PORT || 18786);
 const PERF_SECONDS = Math.max(1, Number(process.env.DREAM_PERF_SECONDS || 60));
 const PERF_CPU_RATE = Math.max(1, Number(process.env.DREAM_PERF_CPU_RATE || 1));
-const EXPECTED = { enemyCap: 6, bulletCap: 96, warningCap: 4, laserCap: 4 };
+const EXPECTED = { enemyCap: 8, bulletCap: 96, warningCap: 4, laserCap: 4 };
 
 const VIEWPORTS = [
   { id: 'desktop_1280x720', width: 1280, height: 720, mobile: false, dpr: 1 },
@@ -134,6 +134,9 @@ async function createPage(browser, viewport, diagnostics) {
     // response() below records the concrete 404 URL; Chromium's generic duplicate
     // provides no actionable information and can repeat dozens of times.
     if (/404 \(Not Found\)|bad HTTP response code \(404\)/i.test(text)) return;
+    // Offline Google Fonts fall back to the bundled system font stack. Local asset
+    // failures are still captured with their concrete URL by response/requestfailed.
+    if (/net::ERR_INTERNET_DISCONNECTED/i.test(text)) return;
     diagnostics.errors.push(`${viewport.id}: ${text}`);
   });
   page.on('response', (response) => {
@@ -233,8 +236,8 @@ async function auditDreamAssets(page, viewport, report) {
   }
   const assets = new Set(api.skins.map((skin) => skin.assetKey).filter(Boolean));
   const families = new Set(api.skins.map((skin) => skin.family).filter(Boolean));
-  if (api.skins.length < 12) report.failures.push(`${label}: ${api.skins.length} declared skins < 12`);
-  if (assets.size < 12) report.failures.push(`${label}: ${assets.size} real assets < 12`);
+  if (api.skins.length < 16) report.failures.push(`${label}: ${api.skins.length} declared skins < 16`);
+  if (assets.size < 16) report.failures.push(`${label}: ${assets.size} real assets < 16`);
   if (families.size < 8) report.failures.push(`${label}: ${families.size} visual families < 8`);
   if (Number.isFinite(api.status?.expected) && api.status.expected !== assets.size) report.failures.push(`${label}: status expects ${api.status.expected} assets for ${assets.size} unique skin assets`);
   const pendingAssets = Array.isArray(api.status?.pending) ? api.status.pending : (Number(api.status?.pending || 0) ? ['unknown'] : []);
@@ -244,12 +247,13 @@ async function auditDreamAssets(page, viewport, report) {
   if (failedAssets.length) report.failures.push(`${label}: failed assets ${failedAssets.join(', ')}`);
   if (api.status?.fallbackKeys?.length) report.failures.push(`${label}: runtime fallback keys ${api.status.fallbackKeys.join(', ')}`);
   if ((api.diversity?.motionFamilies?.length || 0) < 10) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < 10`);
-  if ((api.diversity?.emitterKeys?.length || 0) < 28) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < 28`);
+  if ((api.diversity?.emitterKeys?.length || 0) < 32) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < 32`);
   if (api.diversity?.runtimeFallbackReporting !== true) report.failures.push(`${label}: runtime fallback reporting is not enabled`);
   if (api.materialSpec?.phaseCount !== 4) report.failures.push(`${label}: material phase count ${api.materialSpec?.phaseCount} != 4`);
   if (!api.materialSpec?.prewarm || !api.materialSpec?.batchTrails || !api.materialSpec?.allocationFreeHotPath) report.failures.push(`${label}: prewarm/batch-trail/allocation-free material policy incomplete`);
   if (api.materialSpec?.trailLengthScale == null) report.failures.push(`${label}: material trailLengthScale missing`);
-  if ((api.materialStatus?.materialAssets?.length || 0) < 4) report.failures.push(`${label}: ${(api.materialStatus?.materialAssets || []).length} material helper assets < 4`);
+  if (api.materialSpec?.transientTrails !== true || api.materialSpec?.trailDamaging !== false || Number(api.materialSpec?.trailCollisionRadius) !== 0) report.failures.push(`${label}: trail policy is not transient visual-only`);
+  if ((api.materialStatus?.materialAssets?.length || 0) < 3) report.failures.push(`${label}: ${(api.materialStatus?.materialAssets || []).length} material helper assets < 3`);
   if (api.materialStatus?.fallbacks?.length) report.failures.push(`${label}: material fallbacks ${api.materialStatus.fallbacks.join(', ')}`);
   if (!api.materialStatus?.warmed || Number(api.materialStatus?.cacheEntries || 0) !== Number(api.materialStatus?.expectedEntries || 0)) report.failures.push(`${label}: material cache not fully prewarmed (${api.materialStatus?.cacheEntries || 0}/${api.materialStatus?.expectedEntries || 0})`);
   report.assetAudit.push({ viewport: viewport.id, ...api, realAssetCount: assets.size, familyCount: families.size });
@@ -405,7 +409,8 @@ async function captureMaterialAnimation(page, viewport, report) {
   if (firstCount < 8 || finalCount !== firstCount) report.failures.push(`${label}: same bullet group was not stable for 2s (${firstCount} -> ${finalCount})`);
   if (phaseSignatures.size < 2) report.failures.push(`${label}: material phase did not change across 0/100/250/500ms`);
   if (maxTrailBatches < 1 || maxTrailBatches > 8) report.failures.push(`${label}: trail batches ${maxTrailBatches} outside 1..8`);
-  if (maxTrailSegments < firstCount) report.failures.push(`${label}: trail segments ${maxTrailSegments} < bullet count ${firstCount}`);
+  if (maxTrailSegments < 1 || maxTrailSegments > firstCount) report.failures.push(`${label}: transient trail segments ${maxTrailSegments} outside 1..${firstCount}`);
+  if (Number(finalStats.trailSegments || 0) !== 0) report.failures.push(`${label}: ${finalStats.trailSegments} trails still visible after 2s`);
   if (Number(finalStats.cacheEntries || 0) !== cacheEntries) report.failures.push(`${label}: cache entries grew during 2s (${cacheEntries} -> ${finalStats.cacheEntries})`);
   if (Number(finalStats.cacheBuilds || 0) !== cacheBuilds) report.failures.push(`${label}: cache builds grew during 2s (${cacheBuilds} -> ${finalStats.cacheBuilds})`);
   report.materialAnimation = {
@@ -568,7 +573,7 @@ async function runPerformance(page, report) {
       && Number(status?.cacheEntries || 0) === Number(status?.expectedEntries || 0)
       && !(status?.fallbacks?.length);
   }, { timeout: 15000 });
-  await prepare(page, 'performance', { wave: 10, quality: 'ultra', enemies: 6, bullets: 96, warnings: 4, lasers: 4 });
+  await prepare(page, 'performance', { wave: 10, quality: 'ultra', enemies: 8, bullets: 96, warnings: 4, lasers: 4 });
   const sample = await page.evaluate(async ({ seconds }) => {
     const cap = window.__dreamModeCapture__;
     const intervals = [];
@@ -579,7 +584,7 @@ async function runPerformance(page, report) {
     const deadline = performance.now() + seconds * 1000;
     while (performance.now() < deadline) {
       const start = performance.now();
-      cap.step(1, 1 / 60);
+      cap.step(1, 1 / 60, false);
       cpu.push(Math.max(0.001, performance.now() - start));
       const now = await nextFrame();
       intervals.push(Math.max(0.001, now - previous));
@@ -608,8 +613,7 @@ async function runPerformance(page, report) {
   const finalMaterial = sample.snapshot?.materialStats || {};
   if (Number(firstMaterial.cacheEntries || 0) !== Number(finalMaterial.cacheEntries || 0)) report.failures.push(`performance material cache entries grew ${firstMaterial.cacheEntries || 0} -> ${finalMaterial.cacheEntries || 0}`);
   if (Number(firstMaterial.cacheBuilds || 0) !== Number(finalMaterial.cacheBuilds || 0)) report.failures.push(`performance material cache builds grew ${firstMaterial.cacheBuilds || 0} -> ${finalMaterial.cacheBuilds || 0}`);
-  if (Number(finalMaterial.trailBatches || 0) < 1 || Number(finalMaterial.trailBatches || 0) > 8) report.failures.push(`performance trail batches ${finalMaterial.trailBatches || 0} outside 1..8`);
-  if (Number(finalMaterial.trailSegments || 0) < 1) report.failures.push('performance scene has no visible batched trail segments');
+  if (Number(finalMaterial.trailBatches || 0) > 5) report.failures.push(`performance trail batches ${finalMaterial.trailBatches || 0} > 5`);
   if (report.performance.averageFps < 58) report.failures.push(`performance average ${report.performance.averageFps} FPS < 58`);
   if (report.performance.onePercentLowFps < 45) report.failures.push(`performance 1% low ${report.performance.onePercentLowFps} FPS < 45`);
 }
@@ -701,6 +705,7 @@ async function main() {
         await captureTimeline(page, viewport, 'result', { stars: 3, elapsedMs: 390000 }, [0, 30, 90], report, 'result_3star');
         await captureTimeline(page, viewport, 'result', { stars: 0, elapsedMs: 450000 }, [0, 30, 90], report, 'result_0star');
         await captureHitFeedback(page, viewport, report);
+        await captureTimeline(page, viewport, 'bullet-dissolve', { quality: viewport.mobile ? 'ultra' : 'high' }, [0, 5, 12, 20, 24], report, 'bullet_dissolve');
         if (!viewport.mobile) {
           await captureTimeline(page, viewport, 'leaderboard', { level: 1 }, [0, 30, 90], report, 'leaderboard');
           for (let wave = 2; wave <= 9; wave += 1) {
@@ -749,9 +754,11 @@ async function main() {
   const waveFrames = numberedFrames('wave');
   const bossFrames = numberedFrames('boss');
   const hitFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/hit_feedback/')).map((entry) => entry.file);
+  const dissolveFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/bullet_dissolve/')).map((entry) => entry.file);
   report.gifs.push(buildGif('dream_wave_patterns', waveFrames));
   report.gifs.push(buildGif('dream_seraph_phases', bossFrames));
   report.gifs.push(buildGif('dream_hit_feedback', hitFrames));
+  report.gifs.push(buildGif('dream_bullet_dissolve', dissolveFrames, { frameDuration: 0.08, fps: 15, width: 720 }));
   if (report.materialAnimation?.frames?.length) {
     report.gifs.push(buildGif('dream_bullet_material_motion_2s', report.materialAnimation.frames, { frameDuration: 1 / 30, fps: 30, width: 720 }));
   }
