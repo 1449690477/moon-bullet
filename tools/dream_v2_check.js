@@ -203,7 +203,7 @@ if (cap && internals) {
   assert(diversitySpec && diversitySpec.emitterKeys.length >= 32, `发射器 ≥ 32（${diversitySpec?.emitterKeys?.length || 0}）`);
   assert(diversitySpec && diversitySpec.runtimeFallbackReporting === true, '运行时 fallback 会真实上报');
   const materialSpec = typeof internals.bulletMaterialSpec === 'function' ? internals.bulletMaterialSpec() : null;
-  assert(materialSpec && materialSpec.phaseCount === 4, '敌弹材质缓存为 4 相位动态高光');
+  assert(materialSpec && materialSpec.phaseCount === 8, '敌弹材质缓存为 8 相位动态高光');
   assert(materialSpec && materialSpec.prewarm === true && materialSpec.allocationFreeHotPath === true, '材质缓存预热且实战热路径零分配');
   assert(materialSpec && materialSpec.batchTrails === true, '速度尾迹按威胁色批量绘制');
   assert(materialSpec && materialSpec.trailLengthScale != null, '高速敌弹公开重量感尾迹长度配置');

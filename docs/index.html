@@ -2600,8 +2600,8 @@
     waterToy: Object.freeze(['#258fcc', '#d7f3ff']),
     starToy: Object.freeze(['#d7a52e', '#fff1a8']),
   });
-  // 梦境敌弹优先复用普通模式已经验收过的 V3.26 PNG。每张素材只在进入梦境时预取，
-  // 并烘焙一次暗边、判定环与亮芯，实战仍保持每颗敌弹一次 drawImage。
+  // 梦境敌弹优先复用已验收 PNG。素材层只负责固有色，选择性能量层、
+  // 屏幕空间受光和短时无判定拖尾在运行时分层合成，避免缩小后退化成发光贴纸。
   const DREAM_BULLET_SKINS = Object.freeze({
     seraphArrowViolet: Object.freeze({ asset: 'bv3StarArrowViolet', family: 'arrow', directional: true, sourceScale: 0.86, edge: '#bca6ff' }),
     seraphArrowRed: Object.freeze({ asset: 'bv3StarArrowRed', family: 'arrow', directional: true, sourceScale: 0.86, edge: '#ff6f8f' }),
@@ -2729,15 +2729,19 @@
     'suiyiMobCompilePlatform', 'suiyiMobOrbitRing',
   ]);
   const DREAM_BULLET_MATERIAL_CONFIG = Object.freeze({
-    version: 'V48-transient-trail',
-    phaseCount: 4,
-    phaseRate: 9,
+    version: 'V49-volumetric-energy',
+    phaseCount: 8,
+    legacyPhaseCount: 4,
+    phaseRate: 12,
     cacheFrame: Object.freeze({ width: 112, height: 128, anchorX: 56, anchorY: 47 }),
     bodyFit: Object.freeze({ directional: 96, round: 88, blade: 94 }),
     drawScale: 8.2,
-    speedStretch: Object.freeze({ start: 120, full: 420, max: 1.16 }),
+    stage3DisplayScale: Object.freeze({ directional: 1.28, round: 1.20 }),
+    speedStretch: Object.freeze({ start: 120, full: 420, max: 1.24, minWidth: 0.90 }),
     facingResponse: 13,
     prewarmPerFrame: 3,
+    energyOverlay: Object.freeze({ minVisualMul: 0.60, highCap: 64, mediumCap: 48, alpha: 0.40 }),
+    screenLight: Object.freeze({ minVisualMul: 0.35, directionalShadowAlpha: 0.12, roundShadowAlpha: 0.26, highlightAlpha: 0.48 }),
     trailSpeedMin: 132,
     trailLengthScale: Object.freeze([0.48, 1.12]),
     trailWidthScale: Object.freeze([0.74, 0.24]),
@@ -2756,8 +2760,15 @@
       Object.freeze({ key: 'gold', edge: '#ffc862', trail: 'rgba(218,137,42,.60)', hot: 'rgba(255,241,195,.94)' }),
       Object.freeze({ key: 'silver', edge: '#9edcff', trail: 'rgba(91,157,220,.58)', hot: 'rgba(224,244,255,.94)' }),
     ]),
+    stage3FamilyLight: Object.freeze([
+      Object.freeze({ key: 'leaf', trail: 'rgba(75,205,116,.72)', hot: 'rgba(224,255,205,.96)' }),
+      Object.freeze({ key: 'iceToy', trail: 'rgba(72,181,246,.72)', hot: 'rgba(220,250,255,.96)' }),
+      Object.freeze({ key: 'doll', trail: 'rgba(172,102,238,.70)', hot: 'rgba(246,218,255,.96)' }),
+      Object.freeze({ key: 'waterToy', trail: 'rgba(48,196,230,.72)', hot: 'rgba(214,255,255,.96)' }),
+      Object.freeze({ key: 'starToy', trail: 'rgba(242,170,55,.72)', hot: 'rgba(255,245,190,.98)' }),
+    ]),
     orbFamilies: Object.freeze(['orb', 'halo', 'vortex', 'sigil', 'bloom', 'wisp', 'star', 'burst']),
-    hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, drawImagesPerBullet: 1 }),
+    hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, bodyDrawsPerBullet: 1, energyDrawsPerBulletHigh: 1, screenLightBatches: 8, cachePolicy: 'active-stage-only', selectiveEnergyAtlas: true }),
   });
   const DREAM_BULLET_MOTION_CONFIG = Object.freeze({
     visibleLifeFloor: 8.5,
@@ -3009,9 +3020,19 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-15-dream-level3-v1';
+     const UPDATE_NOTICE_VERSION = '2026-07-15-dream-level3-v2';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-15 · 绒梦弹幕立体化更新',
+      items: [
+        '梦境第三关15种专属弹幕完成材质返工：固有色、暗面厚度、选择性能量芯与屏幕空间高光现在独立合成，不再把整张贴图平均发亮。',
+        '弹体内部升级为8相位连续流光：亮芯会沿材质纹理输运，扫光与呼吸错相变化；非方向弹保持外轮廓稳定，只让内环和能量流动。',
+        '叶刃、冰矛、晶片、鱼骨和流星等高速弹强化可见厚度与短锥形速度尾迹；冰矛和流星已把素材里的常驻长尾从弹芯剥离，拖尾只在速度事件中短暂出现，仍为0伤害、0判定并会完整消散。',
+        '高、中画质新增独立能量视差层，低、极低画质保留完整暗面与亮芯；四档画质的弹幕数量、轨迹和判定完全一致。',
+        '更新公告已重新接通首次进入自动显示，同时仍可从标题页“更新公告”按钮随时查看。',
+      ],
+    },
     {
       date: '2026-07-15',
       items: [
@@ -4217,7 +4238,7 @@
     backdrop.innerHTML = `
       <div class="leaderboard-dialog update-notice-dialog" role="dialog" aria-modal="true">
         <h2>更新公告</h2>
-        <div class="update-notice-kicker">最近版本强化 Boss 专属华丽弹幕与小怪难度，并继续打磨蓝白粉可爱 UI。下面是简单版说明：</div>
+        <div class="update-notice-kicker">本次重点重做「绒梦玩偶屋」弹幕材质、立体光照与速度表现；最新内容置顶显示：</div>
         ${sections}
         <div class="actions">
           <button class="update-notice-close" type="button">我知道了</button>
@@ -25904,7 +25925,23 @@
   let dreamBulletMaterialCacheBuilds = 0;
   let dreamBulletMaterialPrewarmCursor = 0;
   let dreamBulletMaterialWarmed = false;
-  const dreamBulletMaterialFrameStats = { trailBatches: 0, trailSegments: 0, bodyDraws: 0, materialPhases: 0 };
+  const dreamBulletMaterialFrameStats = { trailBatches: 0, trailSegments: 0, bodyDraws: 0, energyDraws: 0, lightPasses: 0, materialPhases: 0 };
+  let dreamBulletMaterialCacheStageId = '';
+  function dreamStageIdForBulletSkin(skinKey) {
+    if (DREAM_STAGE3_BULLET_SKIN_KEYS.includes(skinKey)) return DREAM_STAGE3_ID;
+    if (DREAM_STAGE2_BULLET_SKIN_KEYS.includes(skinKey)) return DREAM_STAGE2_ID;
+    return DREAM_STAGE_ID;
+  }
+  function keepDreamBulletMaterialCacheForStage(stageId) {
+    if (!stageId || dreamBulletMaterialCacheStageId === stageId) return;
+    const keep = new Set(dreamBulletSkinKeysForStage(stageId));
+    for (const key of dreamBulletSkinCache.keys()) {
+      if (!keep.has(key)) dreamBulletSkinCache.delete(key);
+    }
+    dreamBulletMaterialCacheStageId = stageId;
+    dreamBulletMaterialPrewarmCursor = 0;
+    dreamBulletMaterialWarmed = false;
+  }
   function ensureDreamBulletPool() {
     const target = Math.max(0, DREAM_PERF_CONFIG.poolSize - dreamLiveBulletSet.size);
     while (dreamBulletPool.length < target) {
@@ -26158,7 +26195,10 @@
     b.dreamHardLife = Number.isFinite(options.hardLife)
       ? Math.max(b.life, options.hardLife)
       : Math.max(b.life, DREAM_BULLET_MOTION_CONFIG.hardLife);
-    b.dreamVisualDiameter = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
+    const initialDisplayScale = b.dreamSkin.startsWith('plush')
+      ? (skinSpec?.directional ? DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.directional : DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.round)
+      : 1;
+    b.dreamVisualDiameter = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * initialDisplayScale;
     b.dreamFallback = false;
     const startSpeed = Math.hypot(vx, vy);
     b.dreamSpeed = startSpeed;
@@ -44036,7 +44076,9 @@
     return count ? ((requested % count) + count) % count : 0;
   }
   function drawDreamMaterialAtlasFrame(target, image, frameW, frameH, phase, row, dx, dy, dw, dh) {
-    target.drawImage(image, phase * frameW, row * frameH, frameW, frameH, dx, dy, dw, dh);
+    const columns = Math.max(1, Math.floor((image.naturalWidth || image.width || frameW) / frameW));
+    const safePhase = ((phase % columns) + columns) % columns;
+    target.drawImage(image, safePhase * frameW, row * frameH, frameW, frameH, dx, dy, dw, dh);
   }
   function dreamBulletMaterialAssetsReady() {
     let ready = true;
@@ -44052,9 +44094,10 @@
     return ready;
   }
   function getDreamBulletSkinSprite(skinKey) {
-    if (dreamBulletSkinCache.has(skinKey)) return dreamBulletSkinCache.get(skinKey);
     const skin = DREAM_BULLET_SKINS[skinKey];
     if (!skin) return null;
+    keepDreamBulletMaterialCacheForStage(dreamStageIdForBulletSkin(skinKey));
+    if (dreamBulletSkinCache.has(skinKey)) return dreamBulletSkinCache.get(skinKey);
     if (!assetReady(skin.asset)) {
       const slot = assets[skin.asset];
       if (slot && slot.failed && !dreamBulletFallbackKeys.has(skin.asset)) {
@@ -44078,9 +44121,10 @@
     const frameH = config.cacheFrame.height;
     const anchorX = config.cacheFrame.anchorX;
     const anchorY = config.cacheFrame.anchorY;
-    const phases = config.phaseCount;
     const img = assets[skin.asset];
     const glowImg = skin.glow ? assets[skin.glow] : null;
+    const enhancedMaterial = !!glowImg;
+    const phases = enhancedMaterial ? config.phaseCount : config.legacyPhaseCount;
     const volumeAtlas = assets.dreamSharedVolumeCore;
     const specularAtlas = assets.dreamSharedSpecularStreak;
     const themeIndex = dreamBulletMaterialThemeIndex(skinKey);
@@ -44100,19 +44144,27 @@
     const strip = document.createElement('canvas');
     strip.width = frameW * phases;
     strip.height = frameH;
+    const energyStrip = enhancedMaterial ? document.createElement('canvas') : null;
+    if (energyStrip) {
+      energyStrip.width = frameW * phases;
+      energyStrip.height = frameH;
+    }
     const g = strip.getContext('2d');
+    const eg = energyStrip ? energyStrip.getContext('2d') : null;
     const mask = document.createElement('canvas');
     const rim = document.createElement('canvas');
     const shade = document.createElement('canvas');
     const sheen = document.createElement('canvas');
-    for (const canvas of [mask, rim, shade, sheen]) { canvas.width = frameW; canvas.height = frameH; }
+    const energyFrame = document.createElement('canvas');
+    for (const canvas of [mask, rim, shade, sheen, energyFrame]) { canvas.width = frameW; canvas.height = frameH; }
     const m = mask.getContext('2d');
     const r = rim.getContext('2d');
     const s = shade.getContext('2d');
     const h = sheen.getContext('2d');
+    const ef = energyFrame.getContext('2d');
 
-    // Alpha-following extrusion replaces the old universal black badge. The
-    // silhouette now carries its own depth, while the hit marker stays thin.
+    // 固有色、形状阴影与选择性能量层分别缓存。外缘只沿原始 alpha 生成，
+    // 不再把整张素材复制成一圈发光徽章。
     m.drawImage(img, bodyX, bodyY, bodyW, bodyH);
     m.globalCompositeOperation = 'source-in';
     m.fillStyle = 'rgba(1,3,12,.98)';
@@ -44138,6 +44190,41 @@
 
     for (let phase = 0; phase < phases; phase++) {
       const frameX = phase * frameW;
+      const phaseT = phase / phases;
+      const phaseAngle = phaseT * TAU;
+      const energyPulse = 0.92 + 0.08 * Math.sin(phaseAngle - 0.65);
+      const energyScale = 0.985 + 0.035 * (0.5 + 0.5 * Math.sin(phaseAngle));
+      const flow = Math.sin(phaseAngle) * 1.8;
+      const axisX = skin.sourceAxis === 'left' ? -1 : (skin.sourceAxis === 'right' ? 1 : 0);
+      const axisY = skin.sourceAxis === 'up' || !skin.sourceAxis ? -1 : 0;
+
+      h.clearRect(0, 0, frameW, frameH);
+      h.globalCompositeOperation = 'source-over';
+      h.drawImage(mask, 0, 0);
+      h.globalCompositeOperation = 'source-in';
+      h.save();
+      // Sine motion closes phase 7 -> 0 without teleporting the specular band.
+      const sweep = Math.sin(phaseAngle - Math.PI * 0.5) * 0.48;
+      h.translate(anchorX + bodyW * sweep * 0.58, anchorY - bodyH * 0.10);
+      h.rotate(-0.22 + Math.sin(phaseAngle) * 0.04);
+      drawDreamMaterialAtlasFrame(h, specularAtlas, 64, 24, phase, themeIndex, -bodyW * 0.58, -Math.max(7, bodyH * 0.17), bodyW * 1.16, Math.max(14, bodyH * 0.34));
+      h.restore();
+
+      ef.clearRect(0, 0, frameW, frameH);
+      ef.globalCompositeOperation = 'lighter';
+      if (glowImg) {
+        ef.save();
+        ef.translate(anchorX + axisX * flow, anchorY + axisY * flow);
+        ef.scale(energyScale, energyScale);
+        ef.globalAlpha = energyPulse * (roundBody ? 0.72 : 1);
+        ef.drawImage(glowImg, -bodyW * 0.5, -bodyH * 0.5, bodyW, bodyH);
+        ef.restore();
+      }
+      ef.globalAlpha = roundBody ? 0.56 : 0.76;
+      ef.drawImage(sheen, 0, 0);
+      ef.globalAlpha = 1;
+      ef.globalCompositeOperation = 'source-over';
+
       g.globalCompositeOperation = 'source-over';
       g.globalAlpha = 1;
       if (!skin.directional) {
@@ -44145,76 +44232,38 @@
         drawDreamMaterialAtlasFrame(g, volumeAtlas, 48, 48, phase, themeIndex, frameX + anchorX - 25, anchorY - 25, 50, 50);
       }
       g.globalAlpha = 1;
-      for (const offset of rimOffsets) g.drawImage(mask, frameX + offset[0], offset[1]);
-      g.globalAlpha = 0.86;
+      // Stage assets already carry a readability outline. Only add a lower-right
+      // extrusion for thickness; a second four-sided contour reads as a sticker.
+      if (!skin.preoutlined) {
+        for (const offset of [[-2.1, 0], [2.1, 0], [0, -2.1], [0, 2.1]]) {
+          g.drawImage(mask, frameX + offset[0], offset[1]);
+        }
+      }
+      g.drawImage(mask, frameX + (skin.preoutlined ? 1.15 : 1.8), skin.preoutlined ? 1.25 : 1.9);
+      g.globalAlpha = skin.preoutlined ? 0.14 : 0.72;
       g.drawImage(rim, frameX, 0);
       g.globalAlpha = 1;
       g.drawImage(img, frameX + bodyX, bodyY, bodyW, bodyH);
-      g.globalAlpha = 0.92;
+      g.globalAlpha = skin.directional ? 0.78 : 0.88;
       g.drawImage(shade, frameX, 0);
-      if (glowImg) {
-        g.globalCompositeOperation = 'lighter';
-        g.globalAlpha = roundBody ? 0.72 : 0.62;
-        g.drawImage(glowImg, frameX + bodyX, bodyY, bodyW, bodyH);
-        g.globalCompositeOperation = 'source-over';
-        g.globalAlpha = 1;
-      }
-
-      h.clearRect(0, 0, frameW, frameH);
-      h.globalCompositeOperation = 'source-over';
-      h.drawImage(mask, 0, 0);
-      h.globalCompositeOperation = 'source-in';
-      h.save();
-      h.translate(anchorX, anchorY - bodyH * 0.08);
-      h.rotate(-0.18 + phase * 0.035);
-      drawDreamMaterialAtlasFrame(h, specularAtlas, 64, 24, phase, themeIndex, -bodyW * 0.52, -bodyH * 0.18, bodyW * 1.04, Math.max(13, bodyH * 0.34));
-      h.restore();
+      // 低配仍保留完整亮芯；高/中画质会再绘制独立能量层，形成真实视差。
       g.globalCompositeOperation = 'lighter';
-      g.globalAlpha = roundBody ? 0.82 : 0.68;
-      g.drawImage(sheen, frameX, 0);
+      g.globalAlpha = roundBody ? 0.16 : 0.22;
+      g.drawImage(energyFrame, frameX, 0);
       g.globalCompositeOperation = 'source-over';
       g.globalAlpha = 1;
-
-      const markerR = 12.2;
-      const drawMarker = () => {
-        g.beginPath();
-        if (skin.directional) {
-          g.arc(frameX + anchorX, anchorY, markerR, -0.78, 0.78);
-          g.moveTo(frameX + anchorX - markerR * 0.71, anchorY - markerR * 0.70);
-          g.arc(frameX + anchorX, anchorY, markerR, Math.PI - 0.78, Math.PI + 0.78);
-        } else {
-          for (let arc = 0; arc < 4; arc++) {
-            const start = arc * Math.PI / 2 + 0.12 + phase * 0.08;
-            g.moveTo(frameX + anchorX + Math.cos(start) * markerR, anchorY + Math.sin(start) * markerR);
-            g.arc(frameX + anchorX, anchorY, markerR, start, start + 0.62);
-          }
-        }
-      };
-      g.strokeStyle = 'rgba(1,3,10,.96)';
-      g.lineWidth = 4;
-      drawMarker(); g.stroke();
-      g.strokeStyle = theme.edge;
-      g.globalAlpha = 0.86;
-      g.lineWidth = 1.45;
-      drawMarker(); g.stroke();
-      g.globalAlpha = 1;
-      if (skin.directional) {
-        g.globalCompositeOperation = 'lighter';
-        g.strokeStyle = theme.hot;
-        g.lineWidth = 1.15;
-        g.beginPath();
-        g.moveTo(frameX + anchorX, anchorY - Math.min(34, bodyH * 0.38));
-        g.lineTo(frameX + anchorX, anchorY - Math.min(14, bodyH * 0.16));
-        g.stroke();
-        g.globalCompositeOperation = 'source-over';
+      if (eg) {
+        eg.globalCompositeOperation = 'source-over';
+        eg.globalAlpha = 1;
+        eg.drawImage(energyFrame, frameX, 0);
       }
     }
     g.globalAlpha = 1;
     g.globalCompositeOperation = 'source-over';
     const entry = Object.freeze({
-      canvas: strip, frameWidth: frameW, frameHeight: frameH, phaseCount: phases,
+      canvas: strip, energyCanvas: energyStrip, frameWidth: frameW, frameHeight: frameH, phaseCount: phases,
       anchorX, anchorY, bodyFit, bodyW, bodyH, directional: !!skin.directional,
-      spinning: !!skin.spin, roundBody, themeIndex, skinKey,
+      spinning: !!skin.spin, roundBody, themeIndex, skinKey, enhancedMaterial,
       axisCorrection: skin.sourceAxis === 'left' ? Math.PI / 2 : (skin.sourceAxis === 'right' ? -Math.PI / 2 : 0),
     });
     dreamBulletSkinCache.set(skinKey, entry);
@@ -44225,6 +44274,7 @@
   }
   function warmDreamBulletMaterialCache(limit = DREAM_BULLET_MATERIAL_CONFIG.prewarmPerFrame) {
     const stageId = dreamActive() ? dreamRun.stageId : selectedDreamLevel().id;
+    keepDreamBulletMaterialCacheForStage(stageId);
     const keys = dreamBulletSkinKeysForStage(stageId);
     loadAssetGroup([...dreamBulletAssetKeysForStage(stageId), ...DREAM_BULLET_MATERIAL_ASSET_KEYS]);
     if (!dreamBulletMaterialAssetsReady()) return 0;
@@ -44242,6 +44292,7 @@
   }
   function dreamBulletMaterialStatus() {
     const stageId = dreamActive() ? dreamRun.stageId : selectedDreamLevel().id;
+    keepDreamBulletMaterialCacheForStage(stageId);
     const expectedKeys = dreamBulletSkinKeysForStage(stageId);
     let activeCacheEntries = expectedKeys.filter(key => dreamBulletSkinCache.has(key)).length;
     dreamBulletMaterialWarmed = activeCacheEntries === expectedKeys.length;
@@ -44284,7 +44335,11 @@
       ? clamp((b.dreamDissolveT || 0) / Math.max(0.001, b.dreamDissolveMax || 0.001), 0, 1)
       : 1;
     const dissolveScale = b.dreamDissolving ? 0.38 + Math.sqrt(dissolveEnv) * 0.62 : 1;
-    const bodySize = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * b.dreamDepthScale * (b.scalePulse || 1) * dissolveScale;
+    const skin = DREAM_BULLET_SKINS[b.dreamSkin];
+    const stage3Scale = b.dreamSkin && b.dreamSkin.startsWith('plush')
+      ? (skin?.directional ? DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.directional : DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.round)
+      : 1;
+    const bodySize = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * stage3Scale * b.dreamDepthScale * (b.scalePulse || 1) * dissolveScale;
     b.dreamVisualDiameter = bodySize;
     const trailMax = Math.max(0.001, b.dreamTrailMax || 0.001);
     const trailProgress = clamp(1 - (b.dreamTrailT || 0) / trailMax, 0, 1);
@@ -44297,7 +44352,8 @@
     b.dreamTrailLength = dreamTrailAllowed(b)
       ? Math.min(maxTrailLength, bodySize * lerp(DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[0], DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[1], speedT)) * b.dreamTrailEnv
       : 0;
-    b.dreamMaterialPhase = (Math.floor((b.dreamAge * DREAM_BULLET_MATERIAL_CONFIG.phaseRate) + b.dreamVisualSeed * DREAM_BULLET_MATERIAL_CONFIG.phaseCount)) & 3;
+    const phaseCount = DREAM_BULLET_MATERIAL_CONFIG.phaseCount;
+    b.dreamMaterialPhase = Math.floor((b.dreamAge * DREAM_BULLET_MATERIAL_CONFIG.phaseRate) + b.dreamVisualSeed * phaseCount) % phaseCount;
   }
   function dreamBulletDissolveEnvelope(b) {
     if (!b?.dreamDissolving) return 1;
@@ -44349,20 +44405,90 @@
     ctx.drawImage(fallback, -fallback.width / 2, -fallback.height / 2);
     ctx.restore();
   }
+  function setDreamBulletMaterialTransform(base, b, material) {
+    const speedStretchT = clamp((b.dreamSpeed - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start) / Math.max(1, DREAM_BULLET_MATERIAL_CONFIG.speedStretch.full - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start), 0, 1);
+    const lengthStretch = 1 + speedStretchT * (DREAM_BULLET_MATERIAL_CONFIG.speedStretch.max - 1);
+    const widthStretch = 1 - speedStretchT * (1 - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.minWidth);
+    const bodySize = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
+    const sourceScale = bodySize / material.bodyFit;
+    let cos = 1, sin = 0;
+    if (material.directional) {
+      const angle = Math.atan2(b.dreamFaceY || -1, b.dreamFaceX || 0) + Math.PI / 2 + (material.axisCorrection || 0);
+      cos = Math.cos(angle);
+      sin = Math.sin(angle);
+    } else if (material.spinning) {
+      const angle = b.rot || 0;
+      cos = Math.cos(angle);
+      sin = Math.sin(angle);
+    }
+    const scaleX = sourceScale * widthStretch;
+    const scaleY = sourceScale * lengthStretch;
+    ctx.setTransform(
+      base.a * cos * scaleX + base.c * sin * scaleX,
+      base.b * cos * scaleX + base.d * sin * scaleX,
+      base.c * cos * scaleY - base.a * sin * scaleY,
+      base.d * cos * scaleY - base.b * sin * scaleY,
+      base.a * b.x + base.c * b.y + base.e,
+      base.b * b.x + base.d * b.y + base.f,
+    );
+  }
+  function traceDreamBulletScreenVolume(b, material, highlight) {
+    const dissolveVisibility = dreamBulletDissolveEnvelope(b);
+    const depthVisibility = b.depth != null ? bulletDepthAlpha(b) : 1;
+    const visibilityScale = Math.sqrt(Math.max(0, dissolveVisibility * depthVisibility));
+    const size = (b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale) * visibilityScale;
+    if (size < 0.75) return false;
+    if (material.directional) {
+      const dx = b.dreamFaceX || 0;
+      const dy = b.dreamFaceY || -1;
+      const nx = -dy;
+      const ny = dx;
+      const lightX = -0.64;
+      const lightY = -0.77;
+      const side = nx * lightX + ny * lightY >= 0 ? 1 : -1;
+      const sideX = nx * side;
+      const sideY = ny * side;
+      const offset = highlight ? size * 0.032 : -size * 0.026;
+      const cx = b.x + sideX * offset + (highlight ? lightX * size * 0.006 : -lightX * size * 0.008);
+      const cy = b.y + sideY * offset + (highlight ? lightY * size * 0.006 : -lightY * size * 0.008);
+      const halfLength = size * (highlight ? 0.14 : 0.16);
+      const halfWidth = size * (highlight ? 0.012 : 0.024);
+      ctx.moveTo(cx - dx * halfLength + sideX * halfWidth, cy - dy * halfLength + sideY * halfWidth);
+      ctx.lineTo(cx + dx * halfLength + sideX * halfWidth, cy + dy * halfLength + sideY * halfWidth);
+      ctx.lineTo(cx + dx * halfLength - sideX * halfWidth, cy + dy * halfLength - sideY * halfWidth);
+      ctx.lineTo(cx - dx * halfLength - sideX * halfWidth, cy - dy * halfLength - sideY * halfWidth);
+      ctx.closePath();
+      return true;
+    }
+    const offset = highlight ? -0.10 : 0.08;
+    ctx.ellipse(
+      b.x + size * offset,
+      b.y + size * offset,
+      size * (highlight ? 0.080 : 0.22),
+      size * (highlight ? 0.036 : 0.13),
+      -0.66,
+      0,
+      TAU,
+    );
+    return true;
+  }
   function drawDreamBulletsBatch() {
     dreamBulletMaterialFrameStats.trailBatches = 0;
     dreamBulletMaterialFrameStats.trailSegments = 0;
     dreamBulletMaterialFrameStats.bodyDraws = 0;
+    dreamBulletMaterialFrameStats.energyDraws = 0;
+    dreamBulletMaterialFrameStats.lightPasses = 0;
     dreamBulletMaterialFrameStats.materialPhases = 0;
     const qualityIndex = clamp(perfLevel | 0, 0, DREAM_PERF_CONFIG.visualMul.length - 1);
     const visualMul = DREAM_PERF_CONFIG.visualMul[qualityIndex];
+    const enhancedStageActive = dreamRun.stageId === DREAM_STAGE3_ID;
     let segments = 0;
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = visualMul <= 0.2 ? 'rgba(1,3,10,.66)' : 'rgba(1,3,12,.80)';
+    ctx.fillStyle = visualMul <= 0.2 ? 'rgba(1,3,10,.42)' : 'rgba(1,3,12,.48)';
     ctx.beginPath();
     for (const b of enemyBullets) {
       if (!b || !b.dream) continue;
-      if (traceDreamBulletTrail(b, 1.38, false)) segments++;
+      if (traceDreamBulletTrail(b, 1.18, false)) segments++;
     }
     if (segments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
     dreamBulletMaterialFrameStats.trailSegments = segments;
@@ -44376,15 +44502,32 @@
       }
       if (compactSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
     } else {
-      for (let themeIndex = 0; themeIndex < DREAM_BULLET_MATERIAL_CONFIG.themes.length; themeIndex++) {
+      const trailStyles = enhancedStageActive
+        ? DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight
+        : DREAM_BULLET_MATERIAL_CONFIG.themes;
+      for (let themeIndex = 0; themeIndex < trailStyles.length; themeIndex++) {
         let themedSegments = 0;
-        ctx.fillStyle = DREAM_BULLET_MATERIAL_CONFIG.themes[themeIndex].trail;
+        const trailStyle = trailStyles[themeIndex];
+        ctx.fillStyle = trailStyle.trail;
         ctx.beginPath();
         for (const b of enemyBullets) {
-          if (!b || !b.dream || b.dreamMaterialTheme !== themeIndex) continue;
-          if (traceDreamBulletTrail(b, 0.64, visualMul >= 0.35 && b.dreamSpeed > 150)) themedSegments++;
+          const styleMatches = enhancedStageActive ? b?.dreamFamily === trailStyle.key : b?.dreamMaterialTheme === themeIndex;
+          if (!b?.dream || !styleMatches) continue;
+          if (traceDreamBulletTrail(b, 0.72, visualMul >= 0.35 && b.dreamSpeed > 150)) themedSegments++;
         }
         if (themedSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+      }
+      if (visualMul >= 0.6) {
+        let hotSegments = 0;
+        ctx.fillStyle = 'rgba(245,249,255,.82)';
+        ctx.globalAlpha = 0.48;
+        ctx.beginPath();
+        for (const b of enemyBullets) {
+          if (!b || !b.dream) continue;
+          if (traceDreamBulletTrail(b, 0.24, false)) hotSegments++;
+        }
+        if (hotSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
+        ctx.globalAlpha = 1;
       }
     }
     // 预警只标记一次真实的转向/释放事件，不创建判定，也不会留下常驻拖尾。
@@ -44422,36 +44565,67 @@
       }
       b.dreamFallback = false;
       b.dreamMaterialTheme = material.themeIndex;
-      const phase = b.dreamMaterialPhase & (material.phaseCount - 1);
+      const phase = ((b.dreamMaterialPhase % material.phaseCount) + material.phaseCount) % material.phaseCount;
       dreamBulletMaterialFrameStats.materialPhases |= (1 << phase);
-      const speedStretchT = clamp((b.dreamSpeed - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start) / Math.max(1, DREAM_BULLET_MATERIAL_CONFIG.speedStretch.full - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start), 0, 1);
-      const lengthStretch = 1 + speedStretchT * (DREAM_BULLET_MATERIAL_CONFIG.speedStretch.max - 1);
-      const widthStretch = 1 - speedStretchT * 0.08;
-      const bodySize = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
-      const sourceScale = bodySize / material.bodyFit;
-      let cos = 1, sin = 0;
-      if (material.directional) {
-        const angle = Math.atan2(b.dreamFaceY || -1, b.dreamFaceX || 0) + Math.PI / 2 + (material.axisCorrection || 0);
-        cos = Math.cos(angle);
-        sin = Math.sin(angle);
-      } else {
-        const angle = material.spinning ? (b.rot || 0) : (b.rot || 0) * 0.18;
-        cos = Math.cos(angle);
-        sin = Math.sin(angle);
-      }
-      const scaleX = sourceScale * widthStretch;
-      const scaleY = sourceScale * lengthStretch;
-      const a = base.a * cos * scaleX + base.c * sin * scaleX;
-      const bb = base.b * cos * scaleX + base.d * sin * scaleX;
-      const c = base.c * cos * scaleY - base.a * sin * scaleY;
-      const d = base.d * cos * scaleY - base.b * sin * scaleY;
-      const e = base.a * b.x + base.c * b.y + base.e;
-      const f = base.b * b.x + base.d * b.y + base.f;
-      ctx.setTransform(a, bb, c, d, e, f);
+      setDreamBulletMaterialTransform(base, b, material);
       const dissolveAlpha = dreamBulletDissolveEnvelope(b);
       ctx.globalAlpha = (b.depth != null ? bulletDepthAlpha(b) : 1) * dissolveAlpha;
       ctx.drawImage(material.canvas, phase * material.frameWidth, 0, material.frameWidth, material.frameHeight, -material.anchorX, -material.anchorY, material.frameWidth, material.frameHeight);
       dreamBulletMaterialFrameStats.bodyDraws++;
+    }
+    ctx.setTransform(base);
+    const overlayConfig = DREAM_BULLET_MATERIAL_CONFIG.energyOverlay;
+    if (enhancedStageActive && visualMul >= overlayConfig.minVisualMul) {
+      const overlayCap = visualMul >= 0.95 ? overlayConfig.highCap : overlayConfig.mediumCap;
+      let energyDraws = 0;
+      ctx.globalCompositeOperation = 'lighter';
+      for (const b of enemyBullets) {
+        if (!b?.dream || energyDraws >= overlayCap) continue;
+        const material = b.dreamMaterialRef;
+        if (!material?.energyCanvas || !material.enhancedMaterial) continue;
+        const phase = ((b.dreamMaterialPhase % material.phaseCount) + material.phaseCount) % material.phaseCount;
+        setDreamBulletMaterialTransform(base, b, material);
+        const pulse = 0.90 + 0.10 * Math.sin(b.dreamAge * 9.2 + b.dreamVisualSeed * TAU);
+        const familyEnergy = material.roundBody ? 0.68 : 1;
+        ctx.globalAlpha = (b.depth != null ? bulletDepthAlpha(b) : 1) * dreamBulletDissolveEnvelope(b) * overlayConfig.alpha * familyEnergy * pulse;
+        ctx.drawImage(material.energyCanvas, phase * material.frameWidth, 0, material.frameWidth, material.frameHeight, -material.anchorX, -material.anchorY, material.frameWidth, material.frameHeight);
+        energyDraws++;
+      }
+      dreamBulletMaterialFrameStats.energyDraws = energyDraws;
+      ctx.setTransform(base);
+    }
+    // 固定左上方世界光：暗面与窄高光不随贴图自转，形成真正的球面/刃面体积。
+    if (enhancedStageActive) {
+      const lightConfig = DREAM_BULLET_MATERIAL_CONFIG.screenLight;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = 'rgba(0,2,12,.96)';
+      for (const directionalPass of [true, false]) {
+        ctx.globalAlpha = directionalPass ? lightConfig.directionalShadowAlpha : lightConfig.roundShadowAlpha;
+        ctx.beginPath();
+        let shadowCount = 0;
+        for (const b of enemyBullets) {
+          const material = b?.dreamMaterialRef;
+          if (!b?.dream || !material?.enhancedMaterial || material.directional !== directionalPass) continue;
+          if (traceDreamBulletScreenVolume(b, material, false)) shadowCount++;
+        }
+        if (shadowCount) { ctx.fill(); dreamBulletMaterialFrameStats.lightPasses++; }
+      }
+      if (visualMul >= lightConfig.minVisualMul) {
+        ctx.globalCompositeOperation = 'lighter';
+        const highlightStyles = DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight;
+        for (let themeIndex = 0; themeIndex < highlightStyles.length; themeIndex++) {
+          let highlightCount = 0;
+          ctx.globalAlpha = lightConfig.highlightAlpha * (visualMul >= 0.6 ? 1 : 0.72);
+          const highlightStyle = highlightStyles[themeIndex];
+          ctx.fillStyle = highlightStyle.hot;
+          ctx.beginPath();
+          for (const b of enemyBullets) {
+            if (!b?.dream || !b.dreamMaterialRef?.enhancedMaterial || b.dreamFamily !== highlightStyle.key) continue;
+            if (traceDreamBulletScreenVolume(b, b.dreamMaterialRef, true)) highlightCount++;
+          }
+          if (highlightCount) { ctx.fill(); dreamBulletMaterialFrameStats.lightPasses++; }
+        }
+      }
     }
     ctx.setTransform(base);
     if (dreamDissolvingBulletCount > 0) {
@@ -47096,7 +47270,7 @@
       const material = getDreamBulletSkinSprite(sample.skin);
       ctx.save(); ctx.translate(sample.x, sample.y);
       if (material) {
-        const phase = (Math.floor(time * DREAM_BULLET_MATERIAL_CONFIG.phaseRate + sample.x * 0.03) & 3);
+        const phase = Math.floor(time * DREAM_BULLET_MATERIAL_CONFIG.phaseRate + sample.x * 0.03) % material.phaseCount;
         const size = sample.r * 7.5;
         const scale = size / material.bodyFit;
         const previewRot = material.directional
@@ -52035,7 +52209,14 @@
         prewarm: DREAM_BULLET_MATERIAL_CONFIG.hotPath.prewarm,
         batchTrails: DREAM_BULLET_MATERIAL_CONFIG.hotPath.batchTrails,
         allocationFreeHotPath: DREAM_BULLET_MATERIAL_CONFIG.hotPath.allocationFree,
-        drawImagesPerBullet: DREAM_BULLET_MATERIAL_CONFIG.hotPath.drawImagesPerBullet,
+        drawImagesPerBullet: { high: 2, medium: 2, low: 1, ultra: 1 },
+        bodyDrawsPerBullet: DREAM_BULLET_MATERIAL_CONFIG.hotPath.bodyDrawsPerBullet,
+        energyDrawsPerBulletHigh: DREAM_BULLET_MATERIAL_CONFIG.hotPath.energyDrawsPerBulletHigh,
+        screenLightBatches: DREAM_BULLET_MATERIAL_CONFIG.hotPath.screenLightBatches,
+        cachePolicy: DREAM_BULLET_MATERIAL_CONFIG.hotPath.cachePolicy,
+        selectiveEnergyAtlas: DREAM_BULLET_MATERIAL_CONFIG.hotPath.selectiveEnergyAtlas,
+        enhancedStage: DREAM_STAGE3_ID,
+        stage3FamilyLightKeys: DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight.map(style => style.key),
         trailLengthScale: [...DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale],
         trailDuration: { launch: DREAM_BULLET_MATERIAL_CONFIG.trail.launchDuration, transition: DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration },
         trailFamilies: [...DREAM_BULLET_MATERIAL_CONFIG.trail.families],
@@ -52043,6 +52224,10 @@
         trailCollisionRadius: DREAM_BULLET_MATERIAL_CONFIG.trail.collisionRadius,
         transientTrails: true,
         permanentTailBakedIntoBody: false,
+        bakedTailRemovedSkins: ['plushIceSpear', 'plushMeteorStar'],
+        selectiveEnergyMask: true,
+        screenSpaceLighting: true,
+        stableNonDirectionalSilhouette: true,
         requiredMaterialAssets: [...DREAM_BULLET_MATERIAL_REQUIRED_KEYS],
         optionalMaterialAssets: [...DREAM_BULLET_MATERIAL_OPTIONAL_KEYS],
         materialAssets: DREAM_BULLET_MATERIAL_ASSET_KEYS.map(key => ({ key, path: ASSET_PATHS[key] || '' })),
@@ -52218,6 +52403,8 @@
           trailBatches: dreamBulletMaterialFrameStats.trailBatches,
           trailSegments: dreamBulletMaterialFrameStats.trailSegments,
           bodyDraws: dreamBulletMaterialFrameStats.bodyDraws,
+          energyDraws: dreamBulletMaterialFrameStats.energyDraws,
+          lightPasses: dreamBulletMaterialFrameStats.lightPasses,
           materialPhases: items.map(item => item.materialPhase),
         },
         layoutIssues,

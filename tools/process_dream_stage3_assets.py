@@ -143,6 +143,16 @@ VFX_SPECS = (
     CropSpec("dreamPlushStarImpact", "star_fx", (990, 1025, 1235, 1235), (256, 256), "star"),
 )
 
+# These two source paintings include a long baked comet tail. Runtime already
+# owns a transient, non-damaging speed trail, so keeping the painted tail would
+# make the projectile look permanently stretched even while stopped or turning.
+# Ratios are measured inside each cleaned alpha bound, from the projectile nose
+# (left) toward the old tail (right).
+STATIC_TAIL_SPLIT_RULES = {
+    "dreamPlushIceSpear": {"fadeStart": 0.29, "fadeEnd": 0.50, "taperHalf": 0.42},
+    "dreamPlushMeteorStar": {"fadeStart": 0.31, "fadeEnd": 0.59, "taperHalf": 0.34},
+}
+
 FAMILY_OUTLINE = {
     "leaf": (13, 45, 39),
     "penguin": (8, 28, 65),
@@ -282,19 +292,147 @@ def add_readability_outline(image: Image.Image, family: str) -> Image.Image:
     return base
 
 
-def make_glow(image: Image.Image) -> Image.Image:
-    data = np.asarray(image.convert("RGBA"), dtype=np.float32)
-    alpha = data[..., 3] / 255.0
-    luminance = np.max(data[..., :3], axis=2) / 255.0
-    glow_alpha = np.clip(alpha * (0.28 + luminance * 0.72) * 205.0, 0, 205)
-    glow = np.zeros_like(data)
-    glow[..., :3] = np.clip(data[..., :3] * 1.08 + 8, 0, 255)
-    glow[..., 3] = glow_alpha
-    layer = Image.fromarray(glow.astype(np.uint8), "RGBA").filter(ImageFilter.GaussianBlur(2.2))
-    core = Image.fromarray(data.astype(np.uint8), "RGBA")
-    core.putalpha(Image.fromarray(np.clip(glow_alpha * 0.42, 0, 110).astype(np.uint8)))
+def smoothstep(low: float, high: float, values: np.ndarray) -> np.ndarray:
+    t = np.clip((values - low) / max(1e-6, high - low), 0.0, 1.0)
+    return t * t * (3.0 - 2.0 * t)
+
+
+def make_energy_glow(image: Image.Image) -> Image.Image:
+    """Extract a selective energy layer from the clean, unoutlined artwork.
+
+    The old glow blurred every visible pixel, including the dark readability
+    outline, so additive compositing lifted the whole sprite like a sticker.
+    This mask keeps bright local detail, saturated energy veins, and a narrow
+    lit-side edge while leaving broad plush/material regions transparent.
+    """
+
+    data = np.asarray(image.convert("RGBA"), dtype=np.float32) / 255.0
+    rgb = data[..., :3]
+    alpha = data[..., 3]
+    visible = alpha > 0.025
+    if not visible.any():
+        return Image.new("RGBA", image.size)
+
+    value = np.max(rgb, axis=2)
+    minimum = np.min(rgb, axis=2)
+    saturation = np.divide(value - minimum, np.maximum(value, 1e-5))
+    luminance = rgb[..., 0] * 0.2126 + rgb[..., 1] * 0.7152 + rgb[..., 2] * 0.0722
+    local_luminance = ndimage.gaussian_filter(luminance, sigma=2.0)
+    bright_detail = np.clip((luminance - local_luminance) * 5.2, 0.0, 1.0)
+
+    # A stable upper-left key light gives pale/white effects a selective rim
+    # even when their interior has little chroma or local contrast.
+    ys, xs = np.nonzero(visible)
+    left, right = int(xs.min()), int(xs.max())
+    top, bottom = int(ys.min()), int(ys.max())
+    grid_y, grid_x = np.mgrid[0 : image.height, 0 : image.width]
+    nx = (grid_x - (left + right) * 0.5) / max(1.0, (right - left + 1) * 0.5)
+    ny = (grid_y - (top + bottom) * 0.5) / max(1.0, (bottom - top + 1) * 0.5)
+    key_light = np.clip(0.58 - nx * 0.30 - ny * 0.38, 0.0, 1.0)
+    inner_distance = ndimage.distance_transform_edt(visible)
+    edge_band = np.exp(-((inner_distance - 1.7) / 1.45) ** 2)
+
+    bright = smoothstep(0.52, 0.94, luminance)
+    chroma = smoothstep(0.34, 0.82, saturation) * smoothstep(0.40, 0.86, value)
+    detail = smoothstep(0.018, 0.17, bright_detail)
+    lit_edge = edge_band * smoothstep(0.34, 0.82, key_light) * np.maximum(bright, chroma * 0.62)
+
+    # Saturation alone must not light a whole painted panel. It only becomes
+    # emissive when supported by local contrast or a narrow lit edge.
+    score = np.maximum.reduce(
+        [
+            bright * detail,
+            chroma * np.maximum(detail, lit_edge * 0.74),
+            lit_edge,
+        ]
+    )
+    score *= smoothstep(0.06, 0.92, alpha)
+
+    opaque_scores = score[alpha > 0.10]
+    threshold = max(0.085, float(np.quantile(opaque_scores, 0.72))) if opaque_scores.size else 0.085
+    selector = smoothstep(threshold, min(1.0, threshold + 0.28), score)
+    selector = np.maximum(selector, detail * bright * 0.72)
+    selector = np.where(selector >= 0.10, smoothstep(0.10, 1.0, selector), 0.0)
+    selector *= visible
+
+    # Preserve the source hue, but pull only the selected hot pixels slightly
+    # toward white. The transparent material body is never reintroduced here.
+    energy_rgb = np.clip(rgb * 1.14 + value[..., None] * 0.08 + selector[..., None] * 0.10, 0.0, 1.0)
+    core_alpha = np.clip(alpha * selector * (0.66 + bright * 0.22), 0.0, 0.88)
+    core_data = np.zeros_like(data)
+    core_data[..., :3] = energy_rgb
+    core_data[..., 3] = core_alpha
+    core = Image.fromarray(np.clip(core_data * 255.0, 0, 255).astype(np.uint8), "RGBA")
+
+    halo = core.filter(ImageFilter.GaussianBlur(1.65))
+    halo_data = np.asarray(halo, dtype=np.float32).copy()
+    halo_data[..., 3] *= 0.62
+    layer = Image.fromarray(np.clip(halo_data, 0, 255).astype(np.uint8), "RGBA")
     layer.alpha_composite(core)
     return layer
+
+
+def strip_static_tail(image: Image.Image, key: str) -> Image.Image:
+    """Remove a baked long tail and recenter the retained projectile core."""
+
+    rule = STATIC_TAIL_SPLIT_RULES.get(key)
+    if not rule:
+        return image
+
+    data = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
+    alpha = data[..., 3]
+    source_alpha = alpha.copy()
+    visible = alpha > 5
+    if not visible.any():
+        return image
+
+    ys, xs = np.nonzero(visible)
+    left, right = float(xs.min()), float(xs.max() + 1)
+    width = max(1.0, right - left)
+    fade_start = left + width * float(rule["fadeStart"])
+    fade_end = left + width * float(rule["fadeEnd"])
+    grid_x = np.arange(image.width, dtype=np.float32)[None, :]
+    grid_y = np.arange(image.height, dtype=np.float32)[:, None]
+    tail_t = np.clip((grid_x - fade_start) / max(1.0, fade_end - fade_start), 0.0, 1.0)
+    tail_fade = 1.0 - tail_t * tail_t * (3.0 - 2.0 * tail_t)
+    column_mass = np.sum(alpha, axis=0)
+    fallback_y = float(np.sum(alpha * grid_y) / max(1.0, np.sum(alpha)))
+    centerline = np.divide(
+        np.sum(alpha * grid_y, axis=0),
+        np.maximum(column_mass, 1.0),
+        out=np.full(image.width, fallback_y, dtype=np.float32),
+        where=column_mass > 1.0,
+    )
+    centerline = ndimage.gaussian_filter1d(centerline, sigma=1.5)
+    start_half = max(3.0, (float(ys.max() - ys.min() + 1)) * float(rule["taperHalf"]))
+    taper_half = 0.30 + start_half * np.power(1.0 - tail_t, 1.28)
+    taper_distance = np.abs(grid_y - centerline[None, :])
+    taper_edge = np.clip((taper_distance - taper_half) / 1.8, 0.0, 1.0)
+    taper_keep = 1.0 - taper_edge * taper_edge * (3.0 - 2.0 * taper_edge)
+    taper_keep = np.where(grid_x <= fade_start, 1.0, taper_keep)
+    alpha *= tail_fade * taper_keep
+    data[..., 3] = alpha
+    data[alpha < 2] = 0
+    stripped = Image.fromarray(np.clip(data, 0, 255).astype(np.uint8), "RGBA")
+
+    # Keep the collision/readability anchor on the visible crystal/star core.
+    bbox = stripped.getchannel("A").getbbox()
+    if not bbox:
+        raise RuntimeError(f"{key}: static-tail split removed the entire projectile")
+    part = stripped.crop(bbox)
+    core_weight = source_alpha * (grid_x <= fade_start)
+    core_total = max(1.0, float(np.sum(core_weight)))
+    core_x = float(np.sum(core_weight * grid_x) / core_total)
+    core_y = float(np.sum(core_weight * grid_y) / core_total)
+    local_core_x = core_x - bbox[0]
+    local_core_y = core_y - bbox[1]
+    paste_x = round((image.width - 1) * 0.5 - local_core_x)
+    paste_y = round((image.height - 1) * 0.5 - local_core_y)
+    paste_x = int(np.clip(paste_x, 2, image.width - part.width - 2))
+    paste_y = int(np.clip(paste_y, 2, image.height - part.height - 2))
+    centered = Image.new("RGBA", image.size)
+    centered.alpha_composite(part, (paste_x, paste_y))
+    return centered
 
 
 def derive_hit(image: Image.Image) -> Image.Image:
@@ -430,13 +568,14 @@ def process_crop_assets(
         crop = source.crop(spec.crop)
         crop = clean_chroma(crop, spec.protect_green)
         crop = trim(crop, padding=12)
-        fitted = fit_canvas(crop, spec.canvas, padding=12)
-        fitted = add_readability_outline(fitted, spec.family)
+        clean_fitted = fit_canvas(crop, spec.canvas, padding=12)
+        clean_fitted = strip_static_tail(clean_fitted, spec.key)
+        fitted = add_readability_outline(clean_fitted, spec.family)
         path = destination / f"{slug_from_key(spec.key)}.png"
         glow_path = destination / f"{slug_from_key(spec.key)}_glow.png"
         glow_key = f"{spec.key}Glow"
         save_png(fitted, path)
-        save_png(make_glow(fitted), glow_path)
+        save_png(make_energy_glow(clean_fitted), glow_path)
         manifest_assets[spec.key] = asset_record(
             path,
             category=category,
@@ -446,8 +585,10 @@ def process_crop_assets(
             glowKey=glow_key,
             glowFile=str(glow_path.relative_to(ROOT)),
             glowSha256=sha256(glow_path),
+            glowTreatment="selective-energy-mask-before-outline",
             forwardAxis=spec.forward_axis,
             collision="body-only" if category == "bullet" else "none",
+            **({"staticTailTreatment": "runtime-transient-trail-only"} if spec.key in STATIC_TAIL_SPLIT_RULES else {}),
         )
         manifest_assets[glow_key] = asset_record(
             glow_path,
@@ -456,7 +597,10 @@ def process_crop_assets(
             source=SOURCES[spec.source],
             baseOf=spec.key,
             blendMode="lighter",
+            sourceStage="clean-fitted-before-outline",
+            maskTreatment="bright-detail+saturated-veins+lit-edge",
             collision="none",
+            **({"staticTailTreatment": "removed-before-energy-mask"} if spec.key in STATIC_TAIL_SPLIT_RULES else {}),
         )
         contact.append((spec.key, path))
     return contact
@@ -636,7 +780,9 @@ def write_report(manifest: dict[str, object], preserved_files: dict[Path, str]) 
             "- Concept collages are split into named primitives; whole formations are not used as damaging bullets.",
             "- LeafCat greens are protected; only the chroma matte/grid and contaminated boundary are rebuilt.",
             "- Non-leaf green spill is recolored from the nearest clean material pixel instead of cut into holes.",
-            "- Bullets have a restrained dark readability outline and a separate additive glow layer.",
+            "- Bullet/VFX glow is extracted from clean pre-outline art; broad material and dark readability outlines stay non-emissive.",
+            "- The selective additive mask keeps bright local detail, saturated energy veins, and a narrow lit-side edge.",
+            "- Ice spear and meteor star retain only a centered core plus short material taper; long zero-damage trails are runtime-only.",
             "- Trails and VFX remain presentation-only and must never participate in collision.",
             "- Desktop/mobile room images are pregraded so runtime does not pay per-frame filter costs.",
             "",
@@ -737,11 +883,12 @@ def main() -> None:
         "sources": source_metadata,
         "renderContract": {
             "enemy": "contact shadow -> plush base -> restrained rim/core light",
-            "bullet": "dark outline/base in source-over -> separate glow in lighter",
+            "bullet": "dark outline/base in source-over -> selective pre-outline energy mask in lighter",
             "trailCollision": False,
             "vfxCollision": False,
             "stageLoad": "lazy on Dream Level 3 only",
-            "glowAssets": "independent manifest keys with collision none",
+            "glowAssets": "independent selective-energy manifest keys with collision none",
+            "bakedLongTrails": "removed from IceSpear/MeteorStar; runtime transient trail only",
             "deletesUnknownFiles": False,
         },
         "assets": manifest_assets,

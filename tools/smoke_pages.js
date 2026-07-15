@@ -225,6 +225,12 @@ async function runScenario(browser, scenario, baseUrl) {
   });
   await page.setUserAgent(scenario.userAgent);
 
+  // Smoke checks exercise layout and navigation, not the first-visit changelog.
+  // Mark the current notice as seen before app boot so the modal cannot mask taps.
+  await page.evaluateOnNewDocument(() => {
+    try { window.localStorage.setItem('moonBulletSeenUpdateNotice', '2026-07-15-dream-level3-v2'); } catch (e) { /* ignore */ }
+  });
+
   // 触摸模拟
   if (scenario.isTouch) {
     await page.evaluateOnNewDocument(() => {

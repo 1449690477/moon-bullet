@@ -102,6 +102,8 @@
 - Concept collages are split into named primitives; whole formations are not used as damaging bullets.
 - LeafCat greens are protected; only the chroma matte/grid and contaminated boundary are rebuilt.
 - Non-leaf green spill is recolored from the nearest clean material pixel instead of cut into holes.
-- Bullets have a restrained dark readability outline and a separate additive glow layer.
+- Bullet/VFX glow is extracted from clean pre-outline art; broad material and dark readability outlines stay non-emissive.
+- The selective additive mask keeps bright local detail, saturated energy veins, and a narrow lit-side edge.
+- Ice spear and meteor star retain only a centered core plus short material taper; long zero-damage trails are runtime-only.
 - Trails and VFX remain presentation-only and must never participate in collision.
 - Desktop/mobile room images are pregraded so runtime does not pay per-frame filter costs.

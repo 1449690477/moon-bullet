@@ -209,11 +209,12 @@
   },
   "renderContract": {
     "enemy": "contact shadow -> plush base -> restrained rim/core light",
-    "bullet": "dark outline/base in source-over -> separate glow in lighter",
+    "bullet": "dark outline/base in source-over -> selective pre-outline energy mask in lighter",
     "trailCollision": false,
     "vfxCollision": false,
     "stageLoad": "lazy on Dream Level 3 only",
-    "glowAssets": "independent manifest keys with collision none",
+    "glowAssets": "independent selective-energy manifest keys with collision none",
+    "bakedLongTrails": "removed from IceSpear/MeteorStar; runtime transient trail only",
     "deletesUnknownFiles": false
   },
   "assets": {
@@ -1297,7 +1298,8 @@
       ],
       "glowKey": "dreamPlushLeafBladeGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_blade_glow.png",
-      "glowSha256": "f772f8a4519da72e70124949c158a2d747e68a8b059bf1a0c4860e8acd4224ce",
+      "glowSha256": "d1c1feb0a361a7bb994cc7e61158882fbb7b7bc35355cee1523bc5845a873964",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1308,19 +1310,21 @@
         160
       ],
       "alphaBounds": [
-        24,
-        12,
-        71,
-        148
+        28,
+        15,
+        68,
+        144
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "f772f8a4519da72e70124949c158a2d747e68a8b059bf1a0c4860e8acd4224ce",
+      "sha256": "d1c1feb0a361a7bb994cc7e61158882fbb7b7bc35355cee1523bc5845a873964",
       "category": "bullet-glow",
       "family": "leaf",
       "source": "新叶苗弹幕.png",
       "baseOf": "dreamPlushLeafBlade",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushLeafSeed": {
@@ -1349,7 +1353,8 @@
       ],
       "glowKey": "dreamPlushLeafSeedGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_seed_glow.png",
-      "glowSha256": "879bd667c4f977ac4ce68aca9cd9e94c25d46affadb8c2af42a2495999dc4dfc",
+      "glowSha256": "aaa3e83d7e307785811fea652e809ce578f9e5c46524d2828c44042beed172bd",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1360,19 +1365,21 @@
         112
       ],
       "alphaBounds": [
-        18,
-        16,
-        93,
-        97
+        21,
+        19,
+        90,
+        94
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "879bd667c4f977ac4ce68aca9cd9e94c25d46affadb8c2af42a2495999dc4dfc",
+      "sha256": "aaa3e83d7e307785811fea652e809ce578f9e5c46524d2828c44042beed172bd",
       "category": "bullet-glow",
       "family": "leaf",
       "source": "新叶苗弹幕.png",
       "baseOf": "dreamPlushLeafSeed",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushLeafBud": {
@@ -1401,7 +1408,8 @@
       ],
       "glowKey": "dreamPlushLeafBudGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_bud_glow.png",
-      "glowSha256": "55e8d9d3d5676dff7a4c48ae9fce3d052b35cc64c6022c454d3ca4d75c37887f",
+      "glowSha256": "58688352b7c2c39ccdfecbfa739b629399016743ab5f486f59d33e0423b0f3e0",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1412,19 +1420,21 @@
         168
       ],
       "alphaBounds": [
-        25,
-        12,
-        79,
-        156
+        28,
+        15,
+        76,
+        151
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "55e8d9d3d5676dff7a4c48ae9fce3d052b35cc64c6022c454d3ca4d75c37887f",
+      "sha256": "58688352b7c2c39ccdfecbfa739b629399016743ab5f486f59d33e0423b0f3e0",
       "category": "bullet-glow",
       "family": "leaf",
       "source": "新叶喵弹幕3.png",
       "baseOf": "dreamPlushLeafBud",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushIceShard": {
@@ -1453,7 +1463,8 @@
       ],
       "glowKey": "dreamPlushIceShardGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_ice_shard_glow.png",
-      "glowSha256": "2935575954506e22557e6e7ccfd5939445cd1fa3ddb6d12964516de37a47cfa3",
+      "glowSha256": "99f7cb9082c7c9b2cb5afa2afd32f6644e4dc91ff00df5f92a895fddaaaa2c16",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1464,19 +1475,21 @@
         160
       ],
       "alphaBounds": [
-        19,
-        13,
-        77,
-        147
+        22,
+        17,
+        73,
+        143
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "2935575954506e22557e6e7ccfd5939445cd1fa3ddb6d12964516de37a47cfa3",
+      "sha256": "99f7cb9082c7c9b2cb5afa2afd32f6644e4dc91ff00df5f92a895fddaaaa2c16",
       "category": "bullet-glow",
       "family": "penguin",
       "source": "企鹅弹幕2.png",
       "baseOf": "dreamPlushIceShard",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushSnowball": {
@@ -1505,7 +1518,8 @@
       ],
       "glowKey": "dreamPlushSnowballGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_snowball_glow.png",
-      "glowSha256": "b664763c2eb934be9af674d973526b982340cc2a1f2c1c416ddec1a812795c20",
+      "glowSha256": "88b6a3ec3930d45c644d7ff2b34509fa28edb2326dc3d546d7e3955deeed5269",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1516,19 +1530,21 @@
         152
       ],
       "alphaBounds": [
-        15,
-        14,
-        89,
-        139
+        21,
+        17,
+        83,
+        131
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "b664763c2eb934be9af674d973526b982340cc2a1f2c1c416ddec1a812795c20",
+      "sha256": "88b6a3ec3930d45c644d7ff2b34509fa28edb2326dc3d546d7e3955deeed5269",
       "category": "bullet-glow",
       "family": "penguin",
       "source": "企鹅弹幕2.png",
       "baseOf": "dreamPlushSnowball",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushIceSpear": {
@@ -1538,14 +1554,14 @@
         112
       ],
       "alphaBounds": [
-        12,
-        18,
-        195,
-        93
+        72,
+        19,
+        164,
+        94
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "398451b779273c567297565ce567144d5ff277a74a994f9ad68f39383f462faf",
+      "sha256": "65d4a0584cfa866a5425747345a09dced3a31fad4d69923bce5eed9e9ea3fde5",
       "category": "bullet",
       "family": "penguin",
       "source": "企鹅弹幕.png",
@@ -1557,9 +1573,11 @@
       ],
       "glowKey": "dreamPlushIceSpearGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_ice_spear_glow.png",
-      "glowSha256": "725488e656b7fba248587d610aaffd11879a6f24422c1ff044caeef55b7e15dc",
+      "glowSha256": "f9e10c7e271458a9bd6bf96a49ca14e41b5987311b700ae4e7e9e611a94a039d",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "left",
-      "collision": "body-only"
+      "collision": "body-only",
+      "staticTailTreatment": "runtime-transient-trail-only"
     },
     "dreamPlushIceSpearGlow": {
       "file": "assets/dream_stage3/bullets/dream_plush_ice_spear_glow.png",
@@ -1568,20 +1586,23 @@
         112
       ],
       "alphaBounds": [
-        10,
-        16,
-        198,
-        95
+        73,
+        20,
+        161,
+        93
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "725488e656b7fba248587d610aaffd11879a6f24422c1ff044caeef55b7e15dc",
+      "sha256": "f9e10c7e271458a9bd6bf96a49ca14e41b5987311b700ae4e7e9e611a94a039d",
       "category": "bullet-glow",
       "family": "penguin",
       "source": "企鹅弹幕.png",
       "baseOf": "dreamPlushIceSpear",
       "blendMode": "lighter",
-      "collision": "none"
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none",
+      "staticTailTreatment": "removed-before-energy-mask"
     },
     "dreamPlushCrystalShard": {
       "file": "assets/dream_stage3/bullets/dream_plush_crystal_shard.png",
@@ -1609,7 +1630,8 @@
       ],
       "glowKey": "dreamPlushCrystalShardGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_crystal_shard_glow.png",
-      "glowSha256": "dbbeab00c97bc207e7ae4766fa6c412d3df17ebeac8ef14cb0e8ca4949eb494e",
+      "glowSha256": "a34e0902f141a16d98292ba27f9a6c0c434949190a466b58f16799aa2f274a2b",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1620,19 +1642,21 @@
         152
       ],
       "alphaBounds": [
-        24,
-        17,
-        71,
-        135
+        28,
+        21,
+        67,
+        131
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "dbbeab00c97bc207e7ae4766fa6c412d3df17ebeac8ef14cb0e8ca4949eb494e",
+      "sha256": "a34e0902f141a16d98292ba27f9a6c0c434949190a466b58f16799aa2f274a2b",
       "category": "bullet-glow",
       "family": "doll",
       "source": "流萤弹幕.png",
       "baseOf": "dreamPlushCrystalShard",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushDollOrb": {
@@ -1661,7 +1685,8 @@
       ],
       "glowKey": "dreamPlushDollOrbGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_doll_orb_glow.png",
-      "glowSha256": "ea24fa6e034e224ed4a2cc45dae132c99e57dd9a535ec5c8c4775a91a9d10e70",
+      "glowSha256": "6cec57d49b276e95463ddd79a36c6587ff1b1e5b69ef6200c36a1d3e833aa383",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "body-only"
     },
@@ -1672,19 +1697,21 @@
         104
       ],
       "alphaBounds": [
-        19,
         22,
-        83,
-        82
+        26,
+        79,
+        78
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "ea24fa6e034e224ed4a2cc45dae132c99e57dd9a535ec5c8c4775a91a9d10e70",
+      "sha256": "6cec57d49b276e95463ddd79a36c6587ff1b1e5b69ef6200c36a1d3e833aa383",
       "category": "bullet-glow",
       "family": "doll",
       "source": "流萤弹幕.png",
       "baseOf": "dreamPlushDollOrb",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushDollSigil": {
@@ -1713,7 +1740,8 @@
       ],
       "glowKey": "dreamPlushDollSigilGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_doll_sigil_glow.png",
-      "glowSha256": "0fefe877743948475a0829e186d7035585fa2af1021375988f23f867c1c71893",
+      "glowSha256": "e3524adbf18bb6c67f18800c5e5a714c928d770f16d1ad4fa0c60b3135282214",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "body-only"
     },
@@ -1724,19 +1752,21 @@
         112
       ],
       "alphaBounds": [
-        26,
-        25,
-        86,
-        87
+        30,
+        29,
+        82,
+        83
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "0fefe877743948475a0829e186d7035585fa2af1021375988f23f867c1c71893",
+      "sha256": "e3524adbf18bb6c67f18800c5e5a714c928d770f16d1ad4fa0c60b3135282214",
       "category": "bullet-glow",
       "family": "doll",
       "source": "流萤弹幕.png",
       "baseOf": "dreamPlushDollSigil",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushWaterDrop": {
@@ -1765,7 +1795,8 @@
       ],
       "glowKey": "dreamPlushWaterDropGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_water_drop_glow.png",
-      "glowSha256": "48390adf7199802490f729f488f8d9eb416b1685e985a34483acfb4aa158c494",
+      "glowSha256": "2bb0f5883116576839b3b8a59fcd0133b8d98f3c8076129f6103f8f33fe7a6f9",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "up",
       "collision": "body-only"
     },
@@ -1776,19 +1807,21 @@
         128
       ],
       "alphaBounds": [
-        21,
-        16,
-        75,
-        112
+        25,
+        20,
+        70,
+        108
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "48390adf7199802490f729f488f8d9eb416b1685e985a34483acfb4aa158c494",
+      "sha256": "2bb0f5883116576839b3b8a59fcd0133b8d98f3c8076129f6103f8f33fe7a6f9",
       "category": "bullet-glow",
       "family": "fish",
       "source": "好兄弟弹幕2.png",
       "baseOf": "dreamPlushWaterDrop",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushFishbone": {
@@ -1817,7 +1850,8 @@
       ],
       "glowKey": "dreamPlushFishboneGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_fishbone_glow.png",
-      "glowSha256": "775acebdf8f6e02c6d59922f1690cdd013a518d6456d67e5038265f514f51224",
+      "glowSha256": "87e4dc85ef7170ad1d4d62902369c86ce169170de66d559856b53870fd5c0aea",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "right",
       "collision": "body-only"
     },
@@ -1828,19 +1862,21 @@
         88
       ],
       "alphaBounds": [
-        23,
-        24,
-        120,
-        63
+        26,
+        29,
+        115,
+        59
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "775acebdf8f6e02c6d59922f1690cdd013a518d6456d67e5038265f514f51224",
+      "sha256": "87e4dc85ef7170ad1d4d62902369c86ce169170de66d559856b53870fd5c0aea",
       "category": "bullet-glow",
       "family": "fish",
       "source": "好兄弟弹幕2.png",
       "baseOf": "dreamPlushFishbone",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushBubblePearl": {
@@ -1869,7 +1905,8 @@
       ],
       "glowKey": "dreamPlushBubblePearlGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_bubble_pearl_glow.png",
-      "glowSha256": "f2f061c41d618fc09fd1b4c9cdc8b10d467be162bb4fb7f5fc332470138ae43e",
+      "glowSha256": "1207301ec70766a1fc9460bb165a3c3c05b3f0ee4ef3e2f32f1a7e0656c0cbb0",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "body-only"
     },
@@ -1880,19 +1917,21 @@
         104
       ],
       "alphaBounds": [
-        27,
-        15,
-        77,
-        90
+        30,
+        18,
+        73,
+        86
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "f2f061c41d618fc09fd1b4c9cdc8b10d467be162bb4fb7f5fc332470138ae43e",
+      "sha256": "1207301ec70766a1fc9460bb165a3c3c05b3f0ee4ef3e2f32f1a7e0656c0cbb0",
       "category": "bullet-glow",
       "family": "fish",
       "source": "星星弹幕 和 好兄弟弹幕.png",
       "baseOf": "dreamPlushBubblePearl",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushStarShot": {
@@ -1921,7 +1960,8 @@
       ],
       "glowKey": "dreamPlushStarShotGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_star_shot_glow.png",
-      "glowSha256": "a542ed64342f9d54fef51ad47cd3c070eb61f7894a7eff1698d3c3abe857ce15",
+      "glowSha256": "3aec4a693d6c0ab0f5dc5fda4ad31dc903da96eb382ad283e2b0da2a118d1ede",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "body-only"
     },
@@ -1932,19 +1972,21 @@
         96
       ],
       "alphaBounds": [
-        16,
-        19,
-        80,
-        77
+        20,
+        22,
+        77,
+        72
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "a542ed64342f9d54fef51ad47cd3c070eb61f7894a7eff1698d3c3abe857ce15",
+      "sha256": "3aec4a693d6c0ab0f5dc5fda4ad31dc903da96eb382ad283e2b0da2a118d1ede",
       "category": "bullet-glow",
       "family": "star",
       "source": "星星弹幕2.png",
       "baseOf": "dreamPlushStarShot",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushMeteorStar": {
@@ -1954,14 +1996,14 @@
         104
       ],
       "alphaBounds": [
-        30,
-        18,
-        146,
-        86
+        65,
+        25,
+        133,
+        75
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "bdfc40c951cc3aae274481a35591c81b09fffd6001ccfaf011cba245901c3f5b",
+      "sha256": "03c8e4f090849c638a7fe9db64a4b14e47b02610d0a289e5a7358486ab4cfe9b",
       "category": "bullet",
       "family": "star",
       "source": "星星弹幕2.png",
@@ -1973,9 +2015,11 @@
       ],
       "glowKey": "dreamPlushMeteorStarGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_meteor_star_glow.png",
-      "glowSha256": "5af375a2af88a8c07256706afd5737b6a81f4772ab99e87e06ca7a92ce9fb9e7",
+      "glowSha256": "c8bfa81b97500ea3657be15e6c88dea7ccfdbceba441b48b1b3b3071fb148ab3",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": "left",
-      "collision": "body-only"
+      "collision": "body-only",
+      "staticTailTreatment": "runtime-transient-trail-only"
     },
     "dreamPlushMeteorStarGlow": {
       "file": "assets/dream_stage3/bullets/dream_plush_meteor_star_glow.png",
@@ -1984,20 +2028,23 @@
         104
       ],
       "alphaBounds": [
-        26,
-        16,
-        148,
-        89
+        65,
+        25,
+        130,
+        74
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "5af375a2af88a8c07256706afd5737b6a81f4772ab99e87e06ca7a92ce9fb9e7",
+      "sha256": "c8bfa81b97500ea3657be15e6c88dea7ccfdbceba441b48b1b3b3071fb148ab3",
       "category": "bullet-glow",
       "family": "star",
       "source": "星星弹幕2.png",
       "baseOf": "dreamPlushMeteorStar",
       "blendMode": "lighter",
-      "collision": "none"
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none",
+      "staticTailTreatment": "removed-before-energy-mask"
     },
     "dreamPlushConstellationNode": {
       "file": "assets/dream_stage3/bullets/dream_plush_constellation_node.png",
@@ -2025,7 +2072,8 @@
       ],
       "glowKey": "dreamPlushConstellationNodeGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_constellation_node_glow.png",
-      "glowSha256": "45ac5663ae1d3964d244f91ab7cffc6c18a69cc3b6d098cd0193b81284444fbc",
+      "glowSha256": "0cb307190356658af5e7d63ce819c6502ec501edeee6dcc513c8563c1ec5aedb",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "body-only"
     },
@@ -2036,19 +2084,21 @@
         144
       ],
       "alphaBounds": [
-        14,
-        21,
-        130,
-        122
+        18,
+        25,
+        126,
+        118
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "45ac5663ae1d3964d244f91ab7cffc6c18a69cc3b6d098cd0193b81284444fbc",
+      "sha256": "0cb307190356658af5e7d63ce819c6502ec501edeee6dcc513c8563c1ec5aedb",
       "category": "bullet-glow",
       "family": "star",
       "source": "星星弹幕2.png",
       "baseOf": "dreamPlushConstellationNode",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushLeafMuzzle": {
@@ -2077,7 +2127,8 @@
       ],
       "glowKey": "dreamPlushLeafMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle_glow.png",
-      "glowSha256": "8b302875251d297973d25e08f50f21e64a789c846b8ee064df1c1d5a2eeea4f5",
+      "glowSha256": "fe187d947782fedd235770643fb58cfc2fc4c56c9c69248f066d3f45f1ddc92a",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2088,19 +2139,21 @@
         256
       ],
       "alphaBounds": [
-        11,
-        20,
-        245,
-        234
+        15,
+        24,
+        241,
+        231
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "8b302875251d297973d25e08f50f21e64a789c846b8ee064df1c1d5a2eeea4f5",
+      "sha256": "fe187d947782fedd235770643fb58cfc2fc4c56c9c69248f066d3f45f1ddc92a",
       "category": "vfx-glow",
       "family": "leaf",
       "source": "新叶喵弹幕2.png",
       "baseOf": "dreamPlushLeafMuzzle",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushLeafImpact": {
@@ -2129,7 +2182,8 @@
       ],
       "glowKey": "dreamPlushLeafImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_leaf_impact_glow.png",
-      "glowSha256": "fed1ff55d9f9c79ec901d9e7bf99c9332bdb6bc11ed50b2a3e764f78c026a2a5",
+      "glowSha256": "206ff7b9f490370d41ff173f02ab91775a633befa68e2a7ac0d053138b5a81f4",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2140,19 +2194,21 @@
         256
       ],
       "alphaBounds": [
-        13,
-        12,
-        241,
-        244
+        16,
+        15,
+        238,
+        241
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "fed1ff55d9f9c79ec901d9e7bf99c9332bdb6bc11ed50b2a3e764f78c026a2a5",
+      "sha256": "206ff7b9f490370d41ff173f02ab91775a633befa68e2a7ac0d053138b5a81f4",
       "category": "vfx-glow",
       "family": "leaf",
       "source": "新叶苗弹幕.png",
       "baseOf": "dreamPlushLeafImpact",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushPenguinMuzzle": {
@@ -2181,7 +2237,8 @@
       ],
       "glowKey": "dreamPlushPenguinMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_penguin_muzzle_glow.png",
-      "glowSha256": "a113eb768f0ad865ff691a0c9712ee7a35ed851683e823780ba6d7f01fb154df",
+      "glowSha256": "94fc01ea03e29d24b704c5e7d1583492ae5e1378304c5678b6b046cbc98da344",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2192,19 +2249,21 @@
         256
       ],
       "alphaBounds": [
-        11,
         15,
-        245,
-        240
+        19,
+        241,
+        235
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "a113eb768f0ad865ff691a0c9712ee7a35ed851683e823780ba6d7f01fb154df",
+      "sha256": "94fc01ea03e29d24b704c5e7d1583492ae5e1378304c5678b6b046cbc98da344",
       "category": "vfx-glow",
       "family": "penguin",
       "source": "企鹅弹幕.png",
       "baseOf": "dreamPlushPenguinMuzzle",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushPenguinImpact": {
@@ -2233,7 +2292,8 @@
       ],
       "glowKey": "dreamPlushPenguinImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_penguin_impact_glow.png",
-      "glowSha256": "88b75dafd44e63d802e67f57efffe7cc8b16d267027df8e2c7beb1409e7ee803",
+      "glowSha256": "7b749188dfdb92613052b66b901663930bebd318f07d713db543ba44039417cf",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2244,19 +2304,21 @@
         256
       ],
       "alphaBounds": [
-        14,
-        24,
-        242,
-        232
+        17,
+        27,
+        239,
+        229
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "88b75dafd44e63d802e67f57efffe7cc8b16d267027df8e2c7beb1409e7ee803",
+      "sha256": "7b749188dfdb92613052b66b901663930bebd318f07d713db543ba44039417cf",
       "category": "vfx-glow",
       "family": "penguin",
       "source": "企鹅弹幕2.png",
       "baseOf": "dreamPlushPenguinImpact",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushDollMuzzle": {
@@ -2285,7 +2347,8 @@
       ],
       "glowKey": "dreamPlushDollMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_doll_muzzle_glow.png",
-      "glowSha256": "2d9cdd5ce53a958c594aba360c1ad8c84320f000a91b793e96a4aae5fcedcdcd",
+      "glowSha256": "60e6211a27bc126c5cd21d08d14e00d66dbc9b157d164fba4a21026e450848eb",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2296,19 +2359,21 @@
         256
       ],
       "alphaBounds": [
-        42,
-        41,
-        213,
-        214
+        45,
+        45,
+        210,
+        211
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "2d9cdd5ce53a958c594aba360c1ad8c84320f000a91b793e96a4aae5fcedcdcd",
+      "sha256": "60e6211a27bc126c5cd21d08d14e00d66dbc9b157d164fba4a21026e450848eb",
       "category": "vfx-glow",
       "family": "doll",
       "source": "流萤弹幕.png",
       "baseOf": "dreamPlushDollMuzzle",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushDollImpact": {
@@ -2337,7 +2402,8 @@
       ],
       "glowKey": "dreamPlushDollImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_doll_impact_glow.png",
-      "glowSha256": "f617c8f18e095d1a47991a0aaf157ac3e9a86581b10cb05e7e61fa4b26822b57",
+      "glowSha256": "2f49c90411acd49edb86b09f63d0677ce51635d106240d46d0fb621951017879",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2348,19 +2414,21 @@
         256
       ],
       "alphaBounds": [
-        13,
-        66,
-        242,
-        190
+        18,
+        69,
+        238,
+        186
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "f617c8f18e095d1a47991a0aaf157ac3e9a86581b10cb05e7e61fa4b26822b57",
+      "sha256": "2f49c90411acd49edb86b09f63d0677ce51635d106240d46d0fb621951017879",
       "category": "vfx-glow",
       "family": "doll",
       "source": "流萤弹幕.png",
       "baseOf": "dreamPlushDollImpact",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushFishMuzzle": {
@@ -2389,7 +2457,8 @@
       ],
       "glowKey": "dreamPlushFishMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_fish_muzzle_glow.png",
-      "glowSha256": "816e89d666513254cc22fa7aface59a6236adf6877601b795eb421cb18ae2bd4",
+      "glowSha256": "358682c8a556e82a899c04a1a7b4cbd09c64fdfe89e93043609f72084a266619",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2400,19 +2469,21 @@
         256
       ],
       "alphaBounds": [
-        32,
-        14,
-        223,
-        242
+        36,
+        17,
+        219,
+        238
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "816e89d666513254cc22fa7aface59a6236adf6877601b795eb421cb18ae2bd4",
+      "sha256": "358682c8a556e82a899c04a1a7b4cbd09c64fdfe89e93043609f72084a266619",
       "category": "vfx-glow",
       "family": "fish",
       "source": "星星弹幕 和 好兄弟弹幕.png",
       "baseOf": "dreamPlushFishMuzzle",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushFishImpact": {
@@ -2441,7 +2512,8 @@
       ],
       "glowKey": "dreamPlushFishImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_fish_impact_glow.png",
-      "glowSha256": "c79bd454e1f608ae08a10b018c8e790128e38b854eb5001f7bd3e781beb47c71",
+      "glowSha256": "cfd1b1707846fa6054c2a55e1c0adaf6657982aaa3719e8088cd5faf3c79cd3e",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2452,19 +2524,21 @@
         256
       ],
       "alphaBounds": [
-        17,
-        37,
-        239,
-        219
+        20,
+        40,
+        236,
+        215
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "c79bd454e1f608ae08a10b018c8e790128e38b854eb5001f7bd3e781beb47c71",
+      "sha256": "cfd1b1707846fa6054c2a55e1c0adaf6657982aaa3719e8088cd5faf3c79cd3e",
       "category": "vfx-glow",
       "family": "fish",
       "source": "好兄弟弹幕2.png",
       "baseOf": "dreamPlushFishImpact",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushStarMuzzle": {
@@ -2493,7 +2567,8 @@
       ],
       "glowKey": "dreamPlushStarMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_star_muzzle_glow.png",
-      "glowSha256": "0a114a09614ff79407feb361c00d69b415077cebd1e021a182dfdc764bc02624",
+      "glowSha256": "3a45babfeb28f8b2f674dc1b1531eb52ee591f898a663e7c4ff968c07b5c55b5",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2504,19 +2579,21 @@
         256
       ],
       "alphaBounds": [
-        16,
-        25,
-        241,
-        231
+        19,
+        28,
+        237,
+        227
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "0a114a09614ff79407feb361c00d69b415077cebd1e021a182dfdc764bc02624",
+      "sha256": "3a45babfeb28f8b2f674dc1b1531eb52ee591f898a663e7c4ff968c07b5c55b5",
       "category": "vfx-glow",
       "family": "star",
       "source": "星星弹幕 和 好兄弟弹幕.png",
       "baseOf": "dreamPlushStarMuzzle",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
     "dreamPlushStarImpact": {
@@ -2545,7 +2622,8 @@
       ],
       "glowKey": "dreamPlushStarImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_star_impact_glow.png",
-      "glowSha256": "c057614325c84a4382b40ec65d9d7ea1e356d17b75877ac974f99075db8ce814",
+      "glowSha256": "2604989733dfcbcd96dea56f07a322324c0e100b48046ec6440d0bcf61f9db4e",
+      "glowTreatment": "selective-energy-mask-before-outline",
       "forwardAxis": null,
       "collision": "none"
     },
@@ -2556,19 +2634,21 @@
         256
       ],
       "alphaBounds": [
-        22,
-        41,
-        233,
-        214
+        26,
+        44,
+        229,
+        210
       ],
       "keyGreenPixels": 0,
       "edgeTouchPixels": 0,
-      "sha256": "c057614325c84a4382b40ec65d9d7ea1e356d17b75877ac974f99075db8ce814",
+      "sha256": "2604989733dfcbcd96dea56f07a322324c0e100b48046ec6440d0bcf61f9db4e",
       "category": "vfx-glow",
       "family": "star",
       "source": "星星弹幕2.png",
       "baseOf": "dreamPlushStarImpact",
       "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     }
   }

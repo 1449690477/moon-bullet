@@ -207,12 +207,12 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(diversity.runtimeFallbackReporting).toBe(true);
   });
 
-  it('prebakes four material phases and batches weighted trails without hot-path allocations', () => {
+  it('prebakes eight volumetric material phases and batches visual-only trails without hot-path allocations', () => {
     expect(typeof dream.bulletMaterialSpec).toBe('function');
     expect(typeof dream.bulletMaterialStatus).toBe('function');
     expect(dream.bulletMaterialSpec()).toMatchObject({
-      version: 'V48-transient-trail',
-      phaseCount: 4,
+      version: 'V49-volumetric-energy',
+      phaseCount: 8,
       prewarm: true,
       batchTrails: true,
       allocationFreeHotPath: true,
@@ -221,6 +221,13 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       trailCollisionRadius: 0,
       transientTrails: true,
       permanentTailBakedIntoBody: false,
+      selectiveEnergyMask: true,
+      screenSpaceLighting: true,
+      stableNonDirectionalSilhouette: true,
+      cachePolicy: 'active-stage-only',
+      selectiveEnergyAtlas: true,
+      enhancedStage: 'dream-03-plush-room',
+      bakedTailRemovedSkins: ['plushIceSpear', 'plushMeteorStar'],
     });
     const materialStatus = dream.bulletMaterialStatus();
     expect(typeof materialStatus.cacheEntries).toBe('number');

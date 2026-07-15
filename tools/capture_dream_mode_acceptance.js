@@ -26,6 +26,14 @@ const CAPTURE_STAGE_HAS_BOSS = CAPTURE_STAGE !== 3;
 const PERF_SECONDS = Math.max(1, Number(process.env.DREAM_PERF_SECONDS || 60));
 const PERF_CPU_RATE = Math.max(1, Number(process.env.DREAM_PERF_CPU_RATE || 1));
 const EXPECTED = { enemyCap: 8, bulletCap: 96, warningCap: 4, laserCap: 4 };
+const EXPECTED_MATERIAL_PHASE_COUNT = 8;
+const STAGE3_MATERIAL_SKIN_COUNT = 15;
+const STAGE3_MATERIAL_SAMPLES = Object.freeze([
+  Object.freeze({ label: 't000', ms: 0, frame: 0 }),
+  Object.freeze({ label: 't080', ms: 80, frame: 5 }),
+  Object.freeze({ label: 't160', ms: 160, frame: 10 }),
+  Object.freeze({ label: 't240', ms: 240, frame: 15 }),
+]);
 
 const VIEWPORTS = [
   { id: 'desktop_1280x720', width: 1280, height: 720, mobile: false, dpr: 1 },
@@ -220,7 +228,7 @@ async function auditDreamAssets(page, viewport, report) {
       && Number(status?.cacheEntries || 0) === Number(status?.expectedEntries || 0)
       && !(status?.fallbacks?.length);
   }, { timeout: 15000 }).catch(() => {
-    report.failures.push(`${viewport.id}/asset-audit: four-phase material cache did not prewarm within 15s`);
+    report.failures.push(`${viewport.id}/asset-audit: eight-phase material cache did not prewarm within 15s`);
   });
   const api = await page.evaluate(() => {
     const internals = window.__dreamModeInternals__;
@@ -268,7 +276,7 @@ async function auditDreamAssets(page, viewport, report) {
   if ((api.diversity?.motionFamilies?.length || 0) < minimumMotionFamilies) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < ${minimumMotionFamilies}`);
   if ((api.diversity?.emitterKeys?.length || 0) < minimumEmitters) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < ${minimumEmitters}`);
   if (api.diversity?.runtimeFallbackReporting !== true) report.failures.push(`${label}: runtime fallback reporting is not enabled`);
-  if (api.materialSpec?.phaseCount !== 4) report.failures.push(`${label}: material phase count ${api.materialSpec?.phaseCount} != 4`);
+  if (api.materialSpec?.phaseCount !== EXPECTED_MATERIAL_PHASE_COUNT) report.failures.push(`${label}: material phase count ${api.materialSpec?.phaseCount} != ${EXPECTED_MATERIAL_PHASE_COUNT}`);
   if (!api.materialSpec?.prewarm || !api.materialSpec?.batchTrails || !api.materialSpec?.allocationFreeHotPath) report.failures.push(`${label}: prewarm/batch-trail/allocation-free material policy incomplete`);
   if (api.materialSpec?.trailLengthScale == null) report.failures.push(`${label}: material trailLengthScale missing`);
   if (api.materialSpec?.transientTrails !== true || api.materialSpec?.trailDamaging !== false || Number(api.materialSpec?.trailCollisionRadius) !== 0) report.failures.push(`${label}: trail policy is not transient visual-only`);
@@ -328,6 +336,69 @@ async function screenshotViewport(page, fileName) {
   return {
     width: buffer.subarray(12, 16).toString('ascii') === 'IHDR' ? buffer.readUInt32BE(16) : 0,
     height: buffer.subarray(12, 16).toString('ascii') === 'IHDR' ? buffer.readUInt32BE(20) : 0,
+  };
+}
+
+async function screenshotBulletCloseup(page, bullet, fileName) {
+  const capture = await page.evaluate(({ bullet, outputSize }) => {
+    const canvas = document.getElementById('game') || document.querySelector('canvas');
+    if (!canvas) throw new Error('game canvas missing');
+    const logicalWidth = typeof W === 'number' && W > 0 ? W : canvas.width;
+    const logicalHeight = typeof H === 'number' && H > 0 ? H : canvas.height;
+    const scaleX = canvas.width / logicalWidth;
+    const scaleY = canvas.height / logicalHeight;
+    const logicalSize = Math.max(144, Math.min(184, Number(bullet.drawDiameter || 0) * 2.5));
+    const sourceWidth = logicalSize * scaleX;
+    const sourceHeight = logicalSize * scaleY;
+    const centerX = Number(bullet.x) * scaleX;
+    const centerY = Number(bullet.y) * scaleY;
+    const sourceX = Math.max(0, Math.min(canvas.width - sourceWidth, centerX - sourceWidth * 0.5));
+    const sourceY = Math.max(0, Math.min(canvas.height - sourceHeight, centerY - sourceHeight * 0.5));
+    const closeup = document.createElement('canvas');
+    closeup.width = outputSize;
+    closeup.height = outputSize;
+    const ctx = closeup.getContext('2d', { willReadFrequently: true });
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(canvas, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, outputSize, outputSize);
+
+    const pixels = ctx.getImageData(0, 0, outputSize, outputSize).data;
+    const inset = Math.floor(outputSize * 0.24);
+    let minLum = 255;
+    let maxLum = 0;
+    let bright = 0;
+    let dark = 0;
+    let samples = 0;
+    for (let y = inset; y < outputSize - inset; y += 3) {
+      for (let x = inset; x < outputSize - inset; x += 3) {
+        const i = (y * outputSize + x) * 4;
+        const lum = Math.max(pixels[i], pixels[i + 1], pixels[i + 2]);
+        minLum = Math.min(minLum, lum);
+        maxLum = Math.max(maxLum, lum);
+        if (lum >= 150) bright += 1;
+        if (lum <= 58) dark += 1;
+        samples += 1;
+      }
+    }
+    return {
+      dataUrl: closeup.toDataURL('image/png'),
+      source: { x: sourceX, y: sourceY, width: sourceWidth, height: sourceHeight, logicalSize },
+      metrics: {
+        minLuminance: minLum,
+        maxLuminance: maxLum,
+        luminanceRange: maxLum - minLum,
+        brightRatio: samples ? bright / samples : 0,
+        darkRatio: samples ? dark / samples : 0,
+      },
+    };
+  }, { bullet, outputSize: 480 });
+  const buffer = Buffer.from(capture.dataUrl.replace(/^data:image\/png;base64,/, ''), 'base64');
+  fs.writeFileSync(path.join(OUT_DIR, fileName), buffer);
+  return {
+    width: buffer.subarray(12, 16).toString('ascii') === 'IHDR' ? buffer.readUInt32BE(16) : 0,
+    height: buffer.subarray(12, 16).toString('ascii') === 'IHDR' ? buffer.readUInt32BE(20) : 0,
+    source: capture.source,
+    metrics: capture.metrics,
   };
 }
 
@@ -482,6 +553,126 @@ async function captureMaterialAnimation(page, viewport, report) {
     finalStats,
     maxTrailBatches,
     maxTrailSegments,
+  };
+}
+
+async function captureStage3MaterialCloseups(page, viewport, report) {
+  if (CAPTURE_STAGE !== 3 || viewport.mobile) return;
+  const labSpec = await page.evaluate(() => {
+    const internals = window.__dreamModeInternals__;
+    return {
+      skins: typeof internals?.bulletSkinSpec === 'function'
+        ? internals.bulletSkinSpec('dream-03-plush-room')
+        : [],
+      material: typeof internals?.bulletMaterialSpec === 'function'
+        ? internals.bulletMaterialSpec()
+        : null,
+    };
+  });
+  const skins = Array.isArray(labSpec.skins) ? labSpec.skins : [];
+  const expectedKeys = new Set(skins.map((skin) => String(skin.key || '')).filter(Boolean));
+  const phaseBySkin = new Map([...expectedKeys].map((key) => [key, new Set()]));
+  const frameCountBySkin = new Map([...expectedKeys].map((key) => [key, 0]));
+  const allPhases = new Set();
+  const files = [];
+
+  if (skins.length !== STAGE3_MATERIAL_SKIN_COUNT || expectedKeys.size !== STAGE3_MATERIAL_SKIN_COUNT) {
+    report.failures.push(`${viewport.id}/stage3-material-closeup: expected ${STAGE3_MATERIAL_SKIN_COUNT} unique skins, got ${skins.length}/${expectedKeys.size}`);
+  }
+  if (Number(labSpec.material?.phaseCount || 0) !== EXPECTED_MATERIAL_PHASE_COUNT) {
+    report.failures.push(`${viewport.id}/stage3-material-closeup: expected ${EXPECTED_MATERIAL_PHASE_COUNT} phases, got ${labSpec.material?.phaseCount || 0}`);
+  }
+
+  let snapshot = await prepare(page, 'material-lab', { quality: 'high' });
+  let previousFrame = 0;
+  for (const sample of STAGE3_MATERIAL_SAMPLES) {
+    if (sample.frame > previousFrame) snapshot = await step(page, sample.frame - previousFrame, 0.016);
+    previousFrame = sample.frame;
+    const label = `${viewport.id}/stage3-material-closeup/${sample.label}`;
+    const validation = validateSnapshot(snapshot, label);
+    report.failures.push(...validation.failures);
+    const bullets = Array.isArray(snapshot?.bullets) ? snapshot.bullets : [];
+    const bulletsBySkin = new Map(bullets.map((bullet) => [String(bullet.skin || ''), bullet]));
+    const actualKeys = new Set(bulletsBySkin.keys());
+    const missing = [...expectedKeys].filter((key) => !actualKeys.has(key));
+    const extra = [...actualKeys].filter((key) => !expectedKeys.has(key));
+    if (bullets.length !== STAGE3_MATERIAL_SKIN_COUNT || missing.length || extra.length) {
+      report.failures.push(`${label}: expected ${STAGE3_MATERIAL_SKIN_COUNT} one-per-skin bullets; count ${bullets.length}, missing [${missing.join(', ')}], extra [${extra.join(', ')}]`);
+    }
+    const visual = await canvasMetrics(page);
+
+    for (const skin of skins) {
+      const key = String(skin.key || '');
+      const bullet = bulletsBySkin.get(key);
+      if (!bullet) continue;
+      const phase = Number(bullet.materialPhase);
+      phaseBySkin.get(key)?.add(phase);
+      allPhases.add(phase);
+      frameCountBySkin.set(key, Number(frameCountBySkin.get(key) || 0) + 1);
+      const skinLabel = `${viewport.id}/stage3-material-${key}/${sample.label}`;
+      if (!Number.isInteger(phase) || phase < 0 || phase >= EXPECTED_MATERIAL_PHASE_COUNT) {
+        report.failures.push(`${skinLabel}: material phase ${bullet.materialPhase} outside 0..${EXPECTED_MATERIAL_PHASE_COUNT - 1}`);
+      }
+      if (bullet.fallback) report.failures.push(`${skinLabel}: texture fallback active`);
+      if (String(bullet.assetKey || '') !== String(skin.assetKey || '')) {
+        report.failures.push(`${skinLabel}: asset ${bullet.assetKey || '(none)'} != ${skin.assetKey || '(none)'}`);
+      }
+      if (bullet.trailDamaging !== false || Number(bullet.trailCollisionRadius || 0) !== 0) {
+        report.failures.push(`${skinLabel}: presentation trail owns collision/damage`);
+      }
+      if (Number(bullet.drawDiameter || 0) < Number(bullet.collisionRadius || 0) * 5) {
+        report.failures.push(`${skinLabel}: rendered body ${bullet.drawDiameter || 0}px is too small for ${bullet.collisionRadius || 0}px collision radius`);
+      }
+
+      const file = `${viewport.id}_stage3_material_${key}_${sample.label}.png`;
+      const closeup = await screenshotBulletCloseup(page, bullet, file);
+      files.push(file);
+      if (closeup.width !== 480 || closeup.height !== 480) {
+        report.failures.push(`${skinLabel}: close-up ${closeup.width}x${closeup.height} != 480x480`);
+      }
+      if (Number(closeup.metrics?.maxLuminance || 0) < 96 || Number(closeup.metrics?.luminanceRange || 0) < 20) {
+        report.failures.push(`${skinLabel}: enlarged material lacks readable dark/light separation (${JSON.stringify(closeup.metrics)})`);
+      }
+      if (Number(closeup.metrics?.brightRatio || 0) < 0.001) {
+        report.failures.push(`${skinLabel}: enlarged material is missing a readable bright core (${JSON.stringify(closeup.metrics)})`);
+      }
+      report.frames.push({
+        label: skinLabel,
+        file,
+        shotKind: 'material-closeup',
+        screenshot: { width: closeup.width, height: closeup.height },
+        scene: 'material-lab',
+        options: { quality: 'high', stage: 3, skin: key },
+        frame: sample.frame,
+        elapsedMs: sample.ms,
+        snapshot,
+        bullet,
+        crop: { source: closeup.source, metrics: closeup.metrics },
+        counts: validation.counts,
+        visual,
+      });
+    }
+  }
+
+  for (const key of expectedKeys) {
+    if (Number(frameCountBySkin.get(key) || 0) !== STAGE3_MATERIAL_SAMPLES.length) {
+      report.failures.push(`${viewport.id}/stage3-material-${key}: captured ${frameCountBySkin.get(key) || 0}/${STAGE3_MATERIAL_SAMPLES.length} required close-ups`);
+    }
+    if (Number(phaseBySkin.get(key)?.size || 0) < 2) {
+      report.failures.push(`${viewport.id}/stage3-material-${key}: material phase did not change across 0/80/160/240ms`);
+    }
+  }
+  if (allPhases.size !== EXPECTED_MATERIAL_PHASE_COUNT) {
+    report.failures.push(`${viewport.id}/stage3-material-closeup: observed ${allPhases.size}/${EXPECTED_MATERIAL_PHASE_COUNT} material phases across all 15 skins`);
+  }
+  report.stage3MaterialLab = {
+    viewport: viewport.id,
+    skinCount: skins.length,
+    phaseCount: labSpec.material?.phaseCount || 0,
+    samples: STAGE3_MATERIAL_SAMPLES,
+    frames: files,
+    observedPhases: [...allPhases].sort((a, b) => a - b),
+    perSkinPhaseSignatures: Object.fromEntries([...phaseBySkin].map(([key, phases]) => [key, [...phases].sort((a, b) => a - b)])),
   };
 }
 
@@ -798,13 +989,14 @@ function writeHtml(report) {
   const sections = report.frames.map((entry) => `
     <figure>
       <img src="${entry.file}" alt="${entry.label}">
-      <figcaption><b>${entry.label}</b><br>full viewport ${entry.screenshot?.width || 0}×${entry.screenshot?.height || 0} · DPR ${entry.visual.viewport.dpr}<br>enemy ${entry.counts.enemies} · bullet ${entry.counts.bullets} · warning ${entry.counts.warnings} · laser ${entry.counts.lasers}<br>hash ${entry.visual.pixelHash}</figcaption>
+      <figcaption><b>${entry.label}</b><br>${entry.shotKind === 'material-closeup' ? 'enlarged material close-up' : 'full viewport'} ${entry.screenshot?.width || 0}×${entry.screenshot?.height || 0} · DPR ${entry.visual.viewport.dpr}${entry.elapsedMs == null ? '' : ` · ${entry.elapsedMs}ms`}<br>enemy ${entry.counts.enemies} · bullet ${entry.counts.bullets} · warning ${entry.counts.warnings} · laser ${entry.counts.lasers}<br>hash ${entry.visual.pixelHash}</figcaption>
     </figure>`).join('\n');
   const performance = report.performance ? `<p>Performance ${report.performance.durationSeconds}s: average <b>${report.performance.averageFps} FPS</b>, 1% low <b>${report.performance.onePercentLowFps} FPS</b>, CPU ${report.performance.averageCpuMs}ms</p>` : '';
   const html = `<!doctype html><meta charset="utf-8"><title>梦境模式${CAPTURE_STAGE_TITLE}视觉验收</title>
 <style>body{margin:24px;background:#0d1024;color:#eef2ff;font:15px system-ui}h1,h2{color:#ffb8e7}p{line-height:1.7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}figure{margin:0;padding:10px;background:#171b36;border:1px solid #7784c7;border-radius:8px}img{display:block;width:100%;height:auto;background:#050713}figcaption{padding:9px 2px 2px;line-height:1.5}.bad{color:#ff849a}.good{color:#9dffd8}</style>
 <h1>梦境模式${CAPTURE_STAGE_TITLE}视觉验收</h1>
 <p>Source ${report.source.file} · ${report.source.sha256.slice(0, 12)} · Chrome ${report.runtime.chrome}</p>
+${report.stage3MaterialLab ? `<p>弹体放大实验室：${report.stage3MaterialLab.skinCount} 种 · ${report.stage3MaterialLab.phaseCount} 相位 · 0/80/160/240ms 连续帧</p>` : ''}
 ${performance}
 <p class="${report.failures.length ? 'bad' : 'good'}">${report.failures.length ? `${report.failures.length} failures: ${report.failures.join(' | ')}` : 'All automated visual, resource, logic-cap and performance gates passed.'}</p>
 <div class="grid">${sections}</div>`;
@@ -829,6 +1021,7 @@ async function main() {
     assetAudit: [],
     hitFeedback: [],
     materialAnimation: null,
+    stage3MaterialLab: null,
     performance: null,
     gifs: [],
     failures: [],
@@ -884,6 +1077,7 @@ async function main() {
           await captureTimeline(page, viewport, 'fail', { hits: 4 }, [0, 30, 90], report, 'fail_4hits');
           await captureTimeline(page, viewport, 'material-lab', { quality: 'high' }, [0, 6, 15, 30], report, 'material_phases');
           await captureMaterialAnimation(page, viewport, report);
+          await captureStage3MaterialCloseups(page, viewport, report);
           await captureQualityParity(page, report);
           if (CAPTURE_STAGE_HAS_BOSS) await captureBossQualityParity(page, report);
         }

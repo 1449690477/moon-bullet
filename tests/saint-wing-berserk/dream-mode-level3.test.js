@@ -194,9 +194,13 @@ describe('dream mode level three: Plush Dream Room', () => {
       trailDamaging: false,
       trailCollisionRadius: 0,
       permanentTailBakedIntoBody: false,
+      bakedTailRemovedSkins: ['plushIceSpear', 'plushMeteorStar'],
       prewarm: true,
       batchTrails: true,
       allocationFreeHotPath: true,
+      cachePolicy: 'active-stage-only',
+      selectiveEnergyAtlas: true,
+      stage3FamilyLightKeys: ['leaf', 'iceToy', 'doll', 'waterToy', 'starToy'],
     });
     expect(manifest.renderContract).toMatchObject({ trailCollision: false, vfxCollision: false });
   });
