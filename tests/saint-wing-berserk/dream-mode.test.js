@@ -211,7 +211,7 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(typeof dream.bulletMaterialSpec).toBe('function');
     expect(typeof dream.bulletMaterialStatus).toBe('function');
     expect(dream.bulletMaterialSpec()).toMatchObject({
-      version: 'V49-volumetric-energy',
+      version: 'V49.1-volumetric-energy-hotfix',
       phaseCount: 8,
       prewarm: true,
       batchTrails: true,
@@ -223,6 +223,7 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       permanentTailBakedIntoBody: false,
       selectiveEnergyMask: true,
       screenSpaceLighting: true,
+      screenSpaceVolumeSubpaths: 'isolated-moveTo-closePath',
       stableNonDirectionalSilhouette: true,
       cachePolicy: 'active-stage-only',
       selectiveEnergyAtlas: true,
@@ -235,6 +236,12 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(typeof materialStatus.warmed).toBe('boolean');
     expect(Array.isArray(materialStatus.materialAssets)).toBe(true);
     expect(Array.from(materialStatus.fallbacks)).toEqual([]);
+
+    const volumeStart = source.indexOf('function traceDreamBulletScreenVolume(');
+    const volumeEnd = source.indexOf('function drawDreamBulletsBatch(', volumeStart);
+    const volumeBlock = source.slice(volumeStart, volumeEnd);
+    expect(volumeBlock).toContain('ctx.moveTo(cx + radiusX * Math.cos(rotation), cy + radiusX * Math.sin(rotation))');
+    expect(volumeBlock.indexOf('ctx.moveTo(cx + radiusX')).toBeLessThan(volumeBlock.indexOf('ctx.ellipse(cx, cy'));
 
     const manifest = JSON.parse(readFileSync(new URL('../../assets/bullets_dream/dream_bullet_manifest.json', import.meta.url), 'utf8'));
     expect(manifest.helper_count).toBeGreaterThanOrEqual(4);

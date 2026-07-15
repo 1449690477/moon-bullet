@@ -200,6 +200,7 @@ describe('dream mode level three: Plush Dream Room', () => {
       allocationFreeHotPath: true,
       cachePolicy: 'active-stage-only',
       selectiveEnergyAtlas: true,
+      screenSpaceVolumeSubpaths: 'isolated-moveTo-closePath',
       stage3FamilyLightKeys: ['leaf', 'iceToy', 'doll', 'waterToy', 'starToy'],
     });
     expect(manifest.renderContract).toMatchObject({ trailCollision: false, vfxCollision: false });
