@@ -14,6 +14,7 @@
     "assets:corruptgun-infection": "node tools/run_python.js tools/process_corruptgun_infection_assets.py",
     "assets:corruptgun-ultimate": "node tools/run_python.js tools/process_corruptgun_ultimate_assets.py",
     "assets:dream-stage3": "node tools/run_python.js tools/process_dream_stage3_assets.py",
+    "manifest:root": "node tools/run_python.js tools/build_pages.py --root-manifest-only",
     "sync:main": "node tools/sync_main_mirror.js",
     "verify:publish": "node tools/verify_publish_consistency.js",
     "release:pages": "npm run build:pages && npm run sync:main && npm run verify:publish && npm run smoke:pages",

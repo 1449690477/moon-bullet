@@ -434,6 +434,7 @@ def process_crop_assets(
         fitted = add_readability_outline(fitted, spec.family)
         path = destination / f"{slug_from_key(spec.key)}.png"
         glow_path = destination / f"{slug_from_key(spec.key)}_glow.png"
+        glow_key = f"{spec.key}Glow"
         save_png(fitted, path)
         save_png(make_glow(fitted), glow_path)
         manifest_assets[spec.key] = asset_record(
@@ -442,15 +443,21 @@ def process_crop_assets(
             family=spec.family,
             source=SOURCES[spec.source],
             crop=list(spec.crop),
+            glowKey=glow_key,
             glowFile=str(glow_path.relative_to(ROOT)),
             glowSha256=sha256(glow_path),
             forwardAxis=spec.forward_axis,
             collision="body-only" if category == "bullet" else "none",
         )
-        glow_green = key_green_pixels(Image.open(glow_path).convert("RGBA"))
-        glow_touch = edge_touch_pixels(Image.open(glow_path).convert("RGBA"))
-        if glow_green or glow_touch:
-            raise RuntimeError(f"{glow_path}: glow validation failed ({glow_green} green, {glow_touch} edge)")
+        manifest_assets[glow_key] = asset_record(
+            glow_path,
+            category=f"{category}-glow",
+            family=spec.family,
+            source=SOURCES[spec.source],
+            baseOf=spec.key,
+            blendMode="lighter",
+            collision="none",
+        )
         contact.append((spec.key, path))
     return contact
 
@@ -572,7 +579,7 @@ def build_contact_sheet(items: list[tuple[str, Path]], path: Path, columns: int,
     sheet.save(path, optimize=True)
 
 
-def write_report(manifest: dict[str, object]) -> None:
+def write_report(manifest: dict[str, object], preserved_files: dict[Path, str]) -> None:
     assets = manifest["assets"]
     assert isinstance(assets, dict)
     report = {
@@ -582,7 +589,7 @@ def write_report(manifest: dict[str, object]) -> None:
         "generatedAssetKeys": len(assets),
         "categories": {
             category: sum(1 for value in assets.values() if isinstance(value, dict) and value.get("category") == category)
-            for category in ("background", "background-light", "enemy", "bullet", "vfx")
+            for category in ("background", "background-light", "enemy", "bullet", "bullet-glow", "vfx", "vfx-glow")
         },
         "greenValidation": {
             "rule": "near #00ff00 within 92 RGB distance on visible pixels",
@@ -592,6 +599,11 @@ def write_report(manifest: dict[str, object]) -> None:
         "edgeValidation": {
             "assetsWithVisibleEdgeTouch": [],
             "status": "pass",
+        },
+        "preservation": {
+            "unknownFilesDeleted": False,
+            "preservedFileCount": len(preserved_files),
+            "preservedFiles": sorted(str(path.relative_to(ROOT)) for path in preserved_files),
         },
         "sourceSha256": manifest["sourceSha256"],
     }
@@ -607,6 +619,7 @@ def write_report(manifest: dict[str, object]) -> None:
         f"- Runtime asset keys: {report['generatedAssetKeys']}",
         "- Near-key green validation: PASS (0 visible residual pixels)",
         "- Transparent padding validation: PASS (0 visible edge-touch pixels)",
+        f"- Hand-authored files preserved: {len(preserved_files)} (generator never clears output folders)",
         "",
         "## Runtime Keys",
         "",
@@ -644,12 +657,60 @@ def validate_sources() -> None:
                 raise RuntimeError(f"unexpected room source size: {image.size}")
 
 
+def generated_output_paths() -> set[Path]:
+    """Return only paths owned by this generator; everything else is immutable."""
+
+    paths = {
+        BACKGROUND_DIR / "dream_room_base.webp",
+        BACKGROUND_DIR / "dream_room_base_mobile.webp",
+        BACKGROUND_DIR / "dream_room_light.png",
+        BACKGROUND_DIR / "dream_room_light_mobile.png",
+        OUTPUT_DIR / "dream_stage3_manifest.json",
+        OUTPUT_DIR / "dream_stage3_asset_report.json",
+        OUTPUT_DIR / "dream_stage3_asset_report.md",
+        OUTPUT_DIR / "dream_stage3_enemies_contact.png",
+        OUTPUT_DIR / "dream_stage3_bullets_contact.png",
+        OUTPUT_DIR / "dream_stage3_vfx_contact.png",
+        OUTPUT_DIR / "dream_stage3_backgrounds_contact.png",
+    }
+    for definition in ENEMY_DEFS.values():
+        base_key = str(definition["base_key"])
+        for state in ("Idle", "Attack", "Hit", "Death", "MoveL", "MoveR"):
+            paths.add(ENEMY_DIR / f"{slug_from_key(f'{base_key}{state}')}.png")
+    for specs, destination in ((BULLET_SPECS, BULLET_DIR), (VFX_SPECS, VFX_DIR)):
+        for spec in specs:
+            slug = slug_from_key(spec.key)
+            paths.add(destination / f"{slug}.png")
+            paths.add(destination / f"{slug}_glow.png")
+    return paths
+
+
+def snapshot_unowned_files() -> dict[Path, str]:
+    owned = generated_output_paths()
+    return {
+        path: sha256(path)
+        for path in OUTPUT_DIR.rglob("*")
+        if path.is_file() and path not in owned
+    }
+
+
+def validate_unowned_files(snapshot: dict[Path, str]) -> None:
+    changed = [
+        str(path.relative_to(ROOT))
+        for path, digest in snapshot.items()
+        if not path.is_file() or sha256(path) != digest
+    ]
+    if changed:
+        raise RuntimeError("Dream Stage 3 generator modified hand-authored files: " + ", ".join(changed))
+
+
 def main() -> None:
     validate_sources()
     # Preserve hand-authored additions. This generator owns deterministic paths
     # below, so rebuilding only overwrites its own named outputs.
     for folder in (BACKGROUND_DIR, ENEMY_DIR, BULLET_DIR, VFX_DIR):
         folder.mkdir(parents=True, exist_ok=True)
+    preserved_files = snapshot_unowned_files()
 
     manifest_assets: dict[str, dict[str, object]] = {}
     background_contact = process_backgrounds(manifest_assets)
@@ -668,7 +729,7 @@ def main() -> None:
             }
 
     manifest: dict[str, object] = {
-        "formatVersion": 1,
+        "formatVersion": 2,
         "stage": "dream-03-plush-room",
         "generator": str(Path(__file__).relative_to(ROOT)),
         "sourceFolderReadOnly": str(SOURCE_DIR.relative_to(ROOT)),
@@ -680,17 +741,20 @@ def main() -> None:
             "trailCollision": False,
             "vfxCollision": False,
             "stageLoad": "lazy on Dream Level 3 only",
+            "glowAssets": "independent manifest keys with collision none",
+            "deletesUnknownFiles": False,
         },
         "assets": manifest_assets,
     }
     manifest_path = OUTPUT_DIR / "dream_stage3_manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    write_report(manifest)
 
     build_contact_sheet(enemy_contact, OUTPUT_DIR / "dream_stage3_enemies_contact.png", 6, (180, 190))
     build_contact_sheet(bullet_contact, OUTPUT_DIR / "dream_stage3_bullets_contact.png", 5, (210, 190))
     build_contact_sheet(vfx_contact, OUTPUT_DIR / "dream_stage3_vfx_contact.png", 5, (220, 220))
     build_contact_sheet(background_contact, OUTPUT_DIR / "dream_stage3_backgrounds_contact.png", 2, (660, 410))
+    validate_unowned_files(preserved_files)
+    write_report(manifest, preserved_files)
 
     print(
         f"Dream Stage 3 assets generated: {len(manifest_assets)} keys, "

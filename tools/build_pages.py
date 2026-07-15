@@ -8,6 +8,7 @@ runtime groups, and creates a mobile WebP mirror for coarse-pointer devices.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
@@ -28,6 +29,10 @@ AUDIO_EXTS = {".ogg", ".wav", ".mp3", ".m4a"}
 DREAM_STAGE3_PREPARED_MOBILE = {
     "dreamRoomBase": "assets/dream_stage3/backgrounds/dream_room_base_mobile.webp",
 }
+DREAM_STAGE3_LOSSLESS_MOBILE_PREFIXES = (
+    "assets/dream_stage3/bullets/",
+    "assets/dream_stage3/vfx/",
+)
 MHR_BLACKHOLE_SEQUENCE_PHASES = {"deploy": 16, "loop": 32, "overload": 16, "collapse": 12}
 CORRUPTGUN_VFX_MANIFEST_REL = "assets/player/corrupt_gun/cg_vfx_v2_manifest.json"
 CORRUPTGUN_VFX_BUNDLE_REL = "assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js"
@@ -95,6 +100,16 @@ CORRUPTGUN_INFECTION_KEYS.update({
 
 def read_index() -> str:
     return INDEX.read_text(encoding="utf-8")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--root-manifest-only",
+        action="store_true",
+        help="refresh only the root preview asset manifest without rebuilding docs/",
+    )
+    return parser.parse_args()
 
 
 def extract_const_object(source: str, name: str) -> dict[str, str]:
@@ -451,6 +466,11 @@ def mobile_max_side(rel: str) -> int:
     return 768
 
 
+def requires_lossless_mobile(rel: str) -> bool:
+    """Keep small alpha-heavy combat art crisp instead of falling back to desktop PNGs."""
+    return rel.startswith(DREAM_STAGE3_LOSSLESS_MOBILE_PREFIXES)
+
+
 def clean_mobile_ultimate(image: Image.Image) -> Image.Image:
     """Reapply chroma cleanup after resize so low-alpha key green cannot bleed on phones."""
     px = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
@@ -542,20 +562,26 @@ def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) ->
                     im.thumbnail((max_side, max_side), Image.Resampling.LANCZOS)
                 if rel.startswith("assets/player/corrupt_gun/ult/"):
                     im = clean_mobile_ultimate(im)
-                if rel.startswith((
+                if requires_lossless_mobile(rel) or rel.startswith((
                     "assets/player/corrupt_gun/infection/",
                     "assets/player/corrupt_gun/body/material/",
                     "assets/player/corrupt_gun/ult/",
                 )):
-                    im.save(out, "WEBP", lossless=True, method=6)
+                    im.save(out, "WEBP", lossless=True, method=6, exact=True)
                 else:
                     im.save(out, "WEBP", quality=72, method=4)
     except Exception:
-        if rel in lossless_sources or rel.startswith("assets/player/corrupt_gun/ult/"):
+        if (
+            rel in lossless_sources
+            or rel.startswith("assets/player/corrupt_gun/ult/")
+            or requires_lossless_mobile(rel)
+        ):
             raise
         return None
 
     if out.exists() and out.stat().st_size > 0:
+        if requires_lossless_mobile(rel) and b"VP8L" not in out.read_bytes()[:64]:
+            raise RuntimeError(f"Dream Stage 3 combat asset was not encoded as lossless WebP: {rel}")
         if rel.startswith("assets/player/corrupt_gun/ult/"):
             with Image.open(out) as encoded:
                 clean_mobile_ultimate(encoded)
@@ -586,6 +612,29 @@ def build_version(source: str) -> str:
         digest.update(b"\0")
         digest.update(path.read_bytes())
     return digest.hexdigest()[:12]
+
+
+def manifest_javascript(
+    version: str,
+    available_assets: dict[str, bool],
+    mobile_manifest: dict[str, str],
+) -> str:
+    return (
+        f"window.__PAGE_BUILD_VERSION__ = {json.dumps(version)};\n"
+        f"window.__AVAILABLE_ASSETS__ = {json.dumps(available_assets, ensure_ascii=False, sort_keys=True)};\n"
+        f"window.__MOBILE_ASSET_PATHS__ = {json.dumps(mobile_manifest, ensure_ascii=False, sort_keys=True)};\n"
+    )
+
+
+def read_manifest_assignment(path: Path, variable: str) -> dict[str, object]:
+    if not path.is_file():
+        return {}
+    prefix = f"window.{variable} = "
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.startswith(prefix):
+            value = json.loads(line[len(prefix):].removesuffix(";"))
+            return value if isinstance(value, dict) else {}
+    return {}
 
 
 def write_service_worker(version: str, core_urls: list[str]) -> None:
@@ -628,6 +677,7 @@ self.addEventListener('fetch', event => {{
 
 
 def main() -> None:
+    args = parse_args()
     source = read_index()
     asset_paths = extract_const_object(source, "ASSET_PATHS")
     asset_paths.update(extract_const_object(source, "CG_ASSET_PATHS"))
@@ -640,6 +690,27 @@ def main() -> None:
     sfx_paths = extract_const_object(source, "SFX_PATHS")
 
     version = build_version(source)
+    if args.root_manifest_only:
+        referenced = dict(asset_paths)
+        missing = sorted(rel for rel in referenced.values() if not (ROOT / rel).is_file())
+        if missing:
+            raise SystemExit("Missing referenced files:\n" + "\n".join(missing))
+        available_assets = {key: True for key in referenced}
+        previous_mobile = read_manifest_assignment(ROOT / "asset-mobile-manifest.js", "__MOBILE_ASSET_PATHS__")
+        mobile_manifest = {
+            key: rel
+            for key, rel in previous_mobile.items()
+            if key in referenced and isinstance(rel, str) and (DIST / rel).is_file()
+        }
+        (ROOT / "asset-mobile-manifest.js").write_text(
+            manifest_javascript(version, available_assets, mobile_manifest),
+            encoding="utf-8",
+        )
+        print(f"Refreshed {ROOT / 'asset-mobile-manifest.js'}")
+        print(f"Available assets: {len(available_assets)}")
+        print(f"Preserved mobile variants: {len(mobile_manifest)}")
+        return
+
     built_at = stable_built_at(version)
     clean_dist()
 
@@ -670,11 +741,7 @@ def main() -> None:
         if variant:
             mobile_manifest[key] = variant
 
-    manifest_js = (
-        f"window.__PAGE_BUILD_VERSION__ = {json.dumps(version)};\n"
-        f"window.__AVAILABLE_ASSETS__ = {json.dumps(available_assets, ensure_ascii=False, sort_keys=True)};\n"
-        f"window.__MOBILE_ASSET_PATHS__ = {json.dumps(mobile_manifest, ensure_ascii=False, sort_keys=True)};\n"
-    )
+    manifest_js = manifest_javascript(version, available_assets, mobile_manifest)
     (DIST / "asset-mobile-manifest.js").write_text(manifest_js, encoding="utf-8")
     # Root index.html is also a supported local preview entry; keep its availability map fresh.
     (ROOT / "asset-mobile-manifest.js").write_text(manifest_js, encoding="utf-8")

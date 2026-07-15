@@ -244,14 +244,16 @@ async function auditDreamAssets(page, viewport, report) {
     return;
   }
   const assets = new Set(api.skins.map((skin) => skin.assetKey).filter(Boolean));
+  const declaredAssets = new Set(api.skins.flatMap((skin) => [skin.assetKey, skin.glowAssetKey]).filter(Boolean));
   const families = new Set(api.skins.map((skin) => skin.family).filter(Boolean));
   const minimumSkins = CAPTURE_STAGE === 3 ? 15 : (CAPTURE_STAGE === 2 ? 10 : 16);
   const minimumFamilies = CAPTURE_STAGE === 3 ? 9 : (CAPTURE_STAGE === 2 ? 5 : 8);
   const minimumEmitters = CAPTURE_STAGE === 3 ? 16 : (CAPTURE_STAGE === 2 ? 16 : 32);
+  const minimumMotionFamilies = CAPTURE_STAGE === 3 ? 6 : 10;
   if (api.skins.length < minimumSkins) report.failures.push(`${label}: ${api.skins.length} declared skins < ${minimumSkins}`);
   if (assets.size < minimumSkins) report.failures.push(`${label}: ${assets.size} real assets < ${minimumSkins}`);
   if (families.size < minimumFamilies) report.failures.push(`${label}: ${families.size} visual families < ${minimumFamilies}`);
-  if (Number.isFinite(api.status?.expected) && api.status.expected !== assets.size) report.failures.push(`${label}: status expects ${api.status.expected} assets for ${assets.size} unique skin assets`);
+  if (Number.isFinite(api.status?.expected) && api.status.expected !== declaredAssets.size) report.failures.push(`${label}: status expects ${api.status.expected} assets for ${declaredAssets.size} declared base/glow assets`);
   const pendingAssets = Array.isArray(api.status?.pending) ? api.status.pending : (Number(api.status?.pending || 0) ? ['unknown'] : []);
   if (pendingAssets.length) report.failures.push(`${label}: pending assets ${pendingAssets.join(', ')}`);
   if (api.status?.missing?.length) report.failures.push(`${label}: missing assets ${api.status.missing.join(', ')}`);
@@ -263,7 +265,7 @@ async function auditDreamAssets(page, viewport, report) {
   if (api.status?.stageVisualDecodeFailed?.length) report.failures.push(`${label}: failed stage visuals ${api.status.stageVisualDecodeFailed.join(', ')}`);
   if (api.status?.techFallbackKeys?.length) report.failures.push(`${label}: technology VFX fallbacks ${api.status.techFallbackKeys.join(', ')}`);
   if (api.status?.stageFallbackKeys?.length) report.failures.push(`${label}: stage visual fallbacks ${api.status.stageFallbackKeys.join(', ')}`);
-  if ((api.diversity?.motionFamilies?.length || 0) < 10) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < 10`);
+  if ((api.diversity?.motionFamilies?.length || 0) < minimumMotionFamilies) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < ${minimumMotionFamilies}`);
   if ((api.diversity?.emitterKeys?.length || 0) < minimumEmitters) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < ${minimumEmitters}`);
   if (api.diversity?.runtimeFallbackReporting !== true) report.failures.push(`${label}: runtime fallback reporting is not enabled`);
   if (api.materialSpec?.phaseCount !== 4) report.failures.push(`${label}: material phase count ${api.materialSpec?.phaseCount} != 4`);

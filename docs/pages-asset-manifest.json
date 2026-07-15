@@ -1,8 +1,8 @@
 {
-  "version": "98de0a89ea21",
-  "builtAt": 1784085171,
-  "referencedMedia": 1818,
-  "mobileVariants": 1791,
+  "version": "8950b3673c3b",
+  "builtAt": 1784096279,
+  "referencedMedia": 1843,
+  "mobileVariants": 1816,
   "losslessCorruptgunVfxVariants": 14,
   "losslessCorruptgunInfectionVariants": 26,
   "corruptgunMaterialLayers": 84,
@@ -20,7 +20,7 @@
     "assets/player/corrupt_gun/ult/cg_ultimate_manifest.json",
     "THIRD_PARTY_NOTICES.md"
   ],
-  "copiedBytes": 277783279,
+  "copiedBytes": 278510537,
   "excluded": [
     "assets/_backup_before_user_import/**",
     "assets_backup_*/**",

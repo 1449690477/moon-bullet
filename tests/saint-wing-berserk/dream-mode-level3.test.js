@@ -69,24 +69,34 @@ describe('dream mode level three: Plush Dream Room', () => {
     expect(dream.formationSpec(LEVEL_THREE).every((formation) => formation.batches.flat().length === 8)).toBe(true);
   });
 
-  it('declares fifteen local projectile skins and sixteen distinct plush emitters', () => {
+  it('declares fifteen layered projectile skins and sixteen deterministic plush emitters', () => {
     const skins = dream.bulletSkinSpec(LEVEL_THREE);
     const patterns = dream.patternSpec(LEVEL_THREE);
     const emitters = new Set(patterns.flatMap((pattern) => pattern.voices));
     expect(skins).toHaveLength(15);
     expect(new Set(skins.map((skin) => skin.assetKey)).size).toBe(15);
-    expect(skins.every((skin) => skin.key.startsWith('plush') && skin.assetKey.startsWith('dreamPlush') && skin.preoutlined)).toBe(true);
+    expect(new Set(skins.map((skin) => skin.glowAssetKey)).size).toBe(15);
+    expect(skins.every((skin) => skin.key.startsWith('plush') && skin.assetKey.startsWith('dreamPlush') && skin.glowAssetKey.endsWith('Glow') && skin.preoutlined)).toBe(true);
     expect(patterns).toHaveLength(10);
     expect(emitters.size).toBe(16);
     expect(emitters).toContain('plushToyboxFinale');
-    expect(patterns.every((pattern) => pattern.completeGroupOnly && pattern.voices.length >= 2 && pattern.maxVoices <= 3)).toBe(true);
+    expect(patterns.every((pattern) => pattern.completeGroupOnly && pattern.voices.length === 2 && pattern.maxVoices === 2 && pattern.segments.length === 3)).toBe(true);
+    expect(patterns.every((pattern) => pattern.segments.every((segment) => [segment.a, segment.b].filter(Boolean).every((voice) => pattern.voices.includes(voice))))).toBe(true);
     expect(dream.patternDiversitySpec(LEVEL_THREE)).toMatchObject({
-      realAssetCount: 15,
+      realAssetCount: 30,
       skinCount: 15,
       emitterCount: 16,
-      motionFamilyCount: 16,
+      motionFamilyCount: 6,
       runtimeFallbackReporting: true,
     });
+    const policies = dream.motionSpec(LEVEL_THREE).policies;
+    expect(policies).toEqual(['locked-linear', 'analytic-wave-lane', 'bezier-lane', 'turn-once', 'brake-hold-release', 'orbit-release']);
+    for (const policy of policies) {
+      const trace = dream.stage3MotionTraceForTest({ policy, seconds: 2.4 });
+      expect(trace.points.length).toBeGreaterThan(8);
+      if (policy === 'turn-once' || policy === 'brake-hold-release' || policy === 'orbit-release') expect(trace.maxCue).toBeGreaterThan(0.8);
+      if (policy === 'turn-once') expect(trace.releaseTransitions).toBe(1);
+    }
   });
 
   it('keeps the 128-slot pool under the 96-bullet cap with identical logic at all qualities', () => {
@@ -193,17 +203,19 @@ describe('dream mode level three: Plush Dream Room', () => {
 
   it('ships a complete manifest whose generated files have no green spill or hard edge touch', () => {
     expect(manifest).toMatchObject({
-      formatVersion: 1,
+      formatVersion: 2,
       stage: LEVEL_THREE,
       sourceFolderReadOnly: expect.stringContaining('梦境第三关开发'),
       renderContract: expect.objectContaining({ stageLoad: 'lazy on Dream Level 3 only' }),
     });
-    expect(Object.keys(manifest.assets)).toHaveLength(62);
+    expect(Object.keys(manifest.assets)).toHaveLength(87);
     expect(assetReport).toMatchObject({
       sourceCount: 20,
-      generatedAssetKeys: 62,
+      generatedAssetKeys: 87,
+      categories: { bullet: 15, 'bullet-glow': 15, vfx: 10, 'vfx-glow': 10 },
       greenValidation: { assetsWithResidual: [], status: 'pass' },
       edgeValidation: { assetsWithVisibleEdgeTouch: [], status: 'pass' },
+      preservation: { unknownFilesDeleted: false },
     });
     for (const [key, asset] of Object.entries(manifest.assets)) {
       expect(existsSync(new URL(`../../${asset.file}`, import.meta.url)), `${key}: ${asset.file}`).toBe(true);

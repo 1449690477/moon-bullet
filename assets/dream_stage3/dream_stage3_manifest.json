@@ -1,5 +1,5 @@
 {
-  "formatVersion": 1,
+  "formatVersion": 2,
   "stage": "dream-03-plush-room",
   "generator": "tools/process_dream_stage3_assets.py",
   "sourceFolderReadOnly": "moon-bullet-main/梦境第三关开发",
@@ -212,7 +212,9 @@
     "bullet": "dark outline/base in source-over -> separate glow in lighter",
     "trailCollision": false,
     "vfxCollision": false,
-    "stageLoad": "lazy on Dream Level 3 only"
+    "stageLoad": "lazy on Dream Level 3 only",
+    "glowAssets": "independent manifest keys with collision none",
+    "deletesUnknownFiles": false
   },
   "assets": {
     "dreamRoomBase": {
@@ -1293,10 +1295,33 @@
         392,
         432
       ],
+      "glowKey": "dreamPlushLeafBladeGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_blade_glow.png",
       "glowSha256": "f772f8a4519da72e70124949c158a2d747e68a8b059bf1a0c4860e8acd4224ce",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushLeafBladeGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_leaf_blade_glow.png",
+      "size": [
+        96,
+        160
+      ],
+      "alphaBounds": [
+        24,
+        12,
+        71,
+        148
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "f772f8a4519da72e70124949c158a2d747e68a8b059bf1a0c4860e8acd4224ce",
+      "category": "bullet-glow",
+      "family": "leaf",
+      "source": "新叶苗弹幕.png",
+      "baseOf": "dreamPlushLeafBlade",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushLeafSeed": {
       "file": "assets/dream_stage3/bullets/dream_plush_leaf_seed.png",
@@ -1322,10 +1347,33 @@
         320,
         775
       ],
+      "glowKey": "dreamPlushLeafSeedGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_seed_glow.png",
       "glowSha256": "879bd667c4f977ac4ce68aca9cd9e94c25d46affadb8c2af42a2495999dc4dfc",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushLeafSeedGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_leaf_seed_glow.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        18,
+        16,
+        93,
+        97
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "879bd667c4f977ac4ce68aca9cd9e94c25d46affadb8c2af42a2495999dc4dfc",
+      "category": "bullet-glow",
+      "family": "leaf",
+      "source": "新叶苗弹幕.png",
+      "baseOf": "dreamPlushLeafSeed",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushLeafBud": {
       "file": "assets/dream_stage3/bullets/dream_plush_leaf_bud.png",
@@ -1351,10 +1399,33 @@
         185,
         420
       ],
+      "glowKey": "dreamPlushLeafBudGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_bud_glow.png",
       "glowSha256": "55e8d9d3d5676dff7a4c48ae9fce3d052b35cc64c6022c454d3ca4d75c37887f",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushLeafBudGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_leaf_bud_glow.png",
+      "size": [
+        104,
+        168
+      ],
+      "alphaBounds": [
+        25,
+        12,
+        79,
+        156
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "55e8d9d3d5676dff7a4c48ae9fce3d052b35cc64c6022c454d3ca4d75c37887f",
+      "category": "bullet-glow",
+      "family": "leaf",
+      "source": "新叶喵弹幕3.png",
+      "baseOf": "dreamPlushLeafBud",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushIceShard": {
       "file": "assets/dream_stage3/bullets/dream_plush_ice_shard.png",
@@ -1380,10 +1451,33 @@
         392,
         390
       ],
+      "glowKey": "dreamPlushIceShardGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_ice_shard_glow.png",
       "glowSha256": "2935575954506e22557e6e7ccfd5939445cd1fa3ddb6d12964516de37a47cfa3",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushIceShardGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_ice_shard_glow.png",
+      "size": [
+        96,
+        160
+      ],
+      "alphaBounds": [
+        19,
+        13,
+        77,
+        147
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "2935575954506e22557e6e7ccfd5939445cd1fa3ddb6d12964516de37a47cfa3",
+      "category": "bullet-glow",
+      "family": "penguin",
+      "source": "企鹅弹幕2.png",
+      "baseOf": "dreamPlushIceShard",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushSnowball": {
       "file": "assets/dream_stage3/bullets/dream_plush_snowball.png",
@@ -1409,10 +1503,33 @@
         405,
         785
       ],
+      "glowKey": "dreamPlushSnowballGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_snowball_glow.png",
       "glowSha256": "b664763c2eb934be9af674d973526b982340cc2a1f2c1c416ddec1a812795c20",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushSnowballGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_snowball_glow.png",
+      "size": [
+        104,
+        152
+      ],
+      "alphaBounds": [
+        15,
+        14,
+        89,
+        139
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "b664763c2eb934be9af674d973526b982340cc2a1f2c1c416ddec1a812795c20",
+      "category": "bullet-glow",
+      "family": "penguin",
+      "source": "企鹅弹幕2.png",
+      "baseOf": "dreamPlushSnowball",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushIceSpear": {
       "file": "assets/dream_stage3/bullets/dream_plush_ice_spear.png",
@@ -1438,10 +1555,33 @@
         1235,
         1095
       ],
+      "glowKey": "dreamPlushIceSpearGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_ice_spear_glow.png",
       "glowSha256": "725488e656b7fba248587d610aaffd11879a6f24422c1ff044caeef55b7e15dc",
       "forwardAxis": "left",
       "collision": "body-only"
+    },
+    "dreamPlushIceSpearGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_ice_spear_glow.png",
+      "size": [
+        208,
+        112
+      ],
+      "alphaBounds": [
+        10,
+        16,
+        198,
+        95
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "725488e656b7fba248587d610aaffd11879a6f24422c1ff044caeef55b7e15dc",
+      "category": "bullet-glow",
+      "family": "penguin",
+      "source": "企鹅弹幕.png",
+      "baseOf": "dreamPlushIceSpear",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushCrystalShard": {
       "file": "assets/dream_stage3/bullets/dream_plush_crystal_shard.png",
@@ -1467,10 +1607,33 @@
         1038,
         158
       ],
+      "glowKey": "dreamPlushCrystalShardGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_crystal_shard_glow.png",
       "glowSha256": "dbbeab00c97bc207e7ae4766fa6c412d3df17ebeac8ef14cb0e8ca4949eb494e",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushCrystalShardGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_crystal_shard_glow.png",
+      "size": [
+        96,
+        152
+      ],
+      "alphaBounds": [
+        24,
+        17,
+        71,
+        135
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "dbbeab00c97bc207e7ae4766fa6c412d3df17ebeac8ef14cb0e8ca4949eb494e",
+      "category": "bullet-glow",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "baseOf": "dreamPlushCrystalShard",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushDollOrb": {
       "file": "assets/dream_stage3/bullets/dream_plush_doll_orb.png",
@@ -1496,10 +1659,33 @@
         112,
         992
       ],
+      "glowKey": "dreamPlushDollOrbGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_doll_orb_glow.png",
       "glowSha256": "ea24fa6e034e224ed4a2cc45dae132c99e57dd9a535ec5c8c4775a91a9d10e70",
       "forwardAxis": null,
       "collision": "body-only"
+    },
+    "dreamPlushDollOrbGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_doll_orb_glow.png",
+      "size": [
+        104,
+        104
+      ],
+      "alphaBounds": [
+        19,
+        22,
+        83,
+        82
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "ea24fa6e034e224ed4a2cc45dae132c99e57dd9a535ec5c8c4775a91a9d10e70",
+      "category": "bullet-glow",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "baseOf": "dreamPlushDollOrb",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushDollSigil": {
       "file": "assets/dream_stage3/bullets/dream_plush_doll_sigil.png",
@@ -1525,10 +1711,33 @@
         112,
         635
       ],
+      "glowKey": "dreamPlushDollSigilGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_doll_sigil_glow.png",
       "glowSha256": "0fefe877743948475a0829e186d7035585fa2af1021375988f23f867c1c71893",
       "forwardAxis": null,
       "collision": "body-only"
+    },
+    "dreamPlushDollSigilGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_doll_sigil_glow.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        26,
+        25,
+        86,
+        87
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "0fefe877743948475a0829e186d7035585fa2af1021375988f23f867c1c71893",
+      "category": "bullet-glow",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "baseOf": "dreamPlushDollSigil",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushWaterDrop": {
       "file": "assets/dream_stage3/bullets/dream_plush_water_drop.png",
@@ -1554,10 +1763,33 @@
         790,
         287
       ],
+      "glowKey": "dreamPlushWaterDropGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_water_drop_glow.png",
       "glowSha256": "48390adf7199802490f729f488f8d9eb416b1685e985a34483acfb4aa158c494",
       "forwardAxis": "up",
       "collision": "body-only"
+    },
+    "dreamPlushWaterDropGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_water_drop_glow.png",
+      "size": [
+        96,
+        128
+      ],
+      "alphaBounds": [
+        21,
+        16,
+        75,
+        112
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "48390adf7199802490f729f488f8d9eb416b1685e985a34483acfb4aa158c494",
+      "category": "bullet-glow",
+      "family": "fish",
+      "source": "好兄弟弹幕2.png",
+      "baseOf": "dreamPlushWaterDrop",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushFishbone": {
       "file": "assets/dream_stage3/bullets/dream_plush_fishbone.png",
@@ -1583,10 +1815,33 @@
         116,
         640
       ],
+      "glowKey": "dreamPlushFishboneGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_fishbone_glow.png",
       "glowSha256": "775acebdf8f6e02c6d59922f1690cdd013a518d6456d67e5038265f514f51224",
       "forwardAxis": "right",
       "collision": "body-only"
+    },
+    "dreamPlushFishboneGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_fishbone_glow.png",
+      "size": [
+        144,
+        88
+      ],
+      "alphaBounds": [
+        23,
+        24,
+        120,
+        63
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "775acebdf8f6e02c6d59922f1690cdd013a518d6456d67e5038265f514f51224",
+      "category": "bullet-glow",
+      "family": "fish",
+      "source": "好兄弟弹幕2.png",
+      "baseOf": "dreamPlushFishbone",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushBubblePearl": {
       "file": "assets/dream_stage3/bullets/dream_plush_bubble_pearl.png",
@@ -1612,10 +1867,33 @@
         408,
         112
       ],
+      "glowKey": "dreamPlushBubblePearlGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_bubble_pearl_glow.png",
       "glowSha256": "f2f061c41d618fc09fd1b4c9cdc8b10d467be162bb4fb7f5fc332470138ae43e",
       "forwardAxis": null,
       "collision": "body-only"
+    },
+    "dreamPlushBubblePearlGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_bubble_pearl_glow.png",
+      "size": [
+        104,
+        104
+      ],
+      "alphaBounds": [
+        27,
+        15,
+        77,
+        90
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "f2f061c41d618fc09fd1b4c9cdc8b10d467be162bb4fb7f5fc332470138ae43e",
+      "category": "bullet-glow",
+      "family": "fish",
+      "source": "星星弹幕 和 好兄弟弹幕.png",
+      "baseOf": "dreamPlushBubblePearl",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushStarShot": {
       "file": "assets/dream_stage3/bullets/dream_plush_star_shot.png",
@@ -1641,10 +1919,33 @@
         170,
         112
       ],
+      "glowKey": "dreamPlushStarShotGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_star_shot_glow.png",
       "glowSha256": "a542ed64342f9d54fef51ad47cd3c070eb61f7894a7eff1698d3c3abe857ce15",
       "forwardAxis": null,
       "collision": "body-only"
+    },
+    "dreamPlushStarShotGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_star_shot_glow.png",
+      "size": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        16,
+        19,
+        80,
+        77
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a542ed64342f9d54fef51ad47cd3c070eb61f7894a7eff1698d3c3abe857ce15",
+      "category": "bullet-glow",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "baseOf": "dreamPlushStarShot",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushMeteorStar": {
       "file": "assets/dream_stage3/bullets/dream_plush_meteor_star.png",
@@ -1670,10 +1971,33 @@
         210,
         620
       ],
+      "glowKey": "dreamPlushMeteorStarGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_meteor_star_glow.png",
       "glowSha256": "5af375a2af88a8c07256706afd5737b6a81f4772ab99e87e06ca7a92ce9fb9e7",
       "forwardAxis": "left",
       "collision": "body-only"
+    },
+    "dreamPlushMeteorStarGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_meteor_star_glow.png",
+      "size": [
+        176,
+        104
+      ],
+      "alphaBounds": [
+        26,
+        16,
+        148,
+        89
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "5af375a2af88a8c07256706afd5737b6a81f4772ab99e87e06ca7a92ce9fb9e7",
+      "category": "bullet-glow",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "baseOf": "dreamPlushMeteorStar",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushConstellationNode": {
       "file": "assets/dream_stage3/bullets/dream_plush_constellation_node.png",
@@ -1699,10 +2023,33 @@
         708,
         1235
       ],
+      "glowKey": "dreamPlushConstellationNodeGlow",
       "glowFile": "assets/dream_stage3/bullets/dream_plush_constellation_node_glow.png",
       "glowSha256": "45ac5663ae1d3964d244f91ab7cffc6c18a69cc3b6d098cd0193b81284444fbc",
       "forwardAxis": null,
       "collision": "body-only"
+    },
+    "dreamPlushConstellationNodeGlow": {
+      "file": "assets/dream_stage3/bullets/dream_plush_constellation_node_glow.png",
+      "size": [
+        144,
+        144
+      ],
+      "alphaBounds": [
+        14,
+        21,
+        130,
+        122
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "45ac5663ae1d3964d244f91ab7cffc6c18a69cc3b6d098cd0193b81284444fbc",
+      "category": "bullet-glow",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "baseOf": "dreamPlushConstellationNode",
+      "blendMode": "lighter",
+      "collision": "none"
     },
     "dreamPlushLeafMuzzle": {
       "file": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle.png",
@@ -1728,9 +2075,32 @@
         1230,
         1160
       ],
+      "glowKey": "dreamPlushLeafMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle_glow.png",
       "glowSha256": "8b302875251d297973d25e08f50f21e64a789c846b8ee064df1c1d5a2eeea4f5",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushLeafMuzzleGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        11,
+        20,
+        245,
+        234
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "8b302875251d297973d25e08f50f21e64a789c846b8ee064df1c1d5a2eeea4f5",
+      "category": "vfx-glow",
+      "family": "leaf",
+      "source": "新叶喵弹幕2.png",
+      "baseOf": "dreamPlushLeafMuzzle",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushLeafImpact": {
@@ -1757,9 +2127,32 @@
         1190,
         1195
       ],
+      "glowKey": "dreamPlushLeafImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_leaf_impact_glow.png",
       "glowSha256": "fed1ff55d9f9c79ec901d9e7bf99c9332bdb6bc11ed50b2a3e764f78c026a2a5",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushLeafImpactGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_leaf_impact_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        13,
+        12,
+        241,
+        244
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "fed1ff55d9f9c79ec901d9e7bf99c9332bdb6bc11ed50b2a3e764f78c026a2a5",
+      "category": "vfx-glow",
+      "family": "leaf",
+      "source": "新叶苗弹幕.png",
+      "baseOf": "dreamPlushLeafImpact",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushPenguinMuzzle": {
@@ -1786,9 +2179,32 @@
         1235,
         625
       ],
+      "glowKey": "dreamPlushPenguinMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_penguin_muzzle_glow.png",
       "glowSha256": "a113eb768f0ad865ff691a0c9712ee7a35ed851683e823780ba6d7f01fb154df",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushPenguinMuzzleGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_penguin_muzzle_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        11,
+        15,
+        245,
+        240
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a113eb768f0ad865ff691a0c9712ee7a35ed851683e823780ba6d7f01fb154df",
+      "category": "vfx-glow",
+      "family": "penguin",
+      "source": "企鹅弹幕.png",
+      "baseOf": "dreamPlushPenguinMuzzle",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushPenguinImpact": {
@@ -1815,9 +2231,32 @@
         1238,
         1238
       ],
+      "glowKey": "dreamPlushPenguinImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_penguin_impact_glow.png",
       "glowSha256": "88b75dafd44e63d802e67f57efffe7cc8b16d267027df8e2c7beb1409e7ee803",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushPenguinImpactGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_penguin_impact_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        14,
+        24,
+        242,
+        232
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "88b75dafd44e63d802e67f57efffe7cc8b16d267027df8e2c7beb1409e7ee803",
+      "category": "vfx-glow",
+      "family": "penguin",
+      "source": "企鹅弹幕2.png",
+      "baseOf": "dreamPlushPenguinImpact",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushDollMuzzle": {
@@ -1844,9 +2283,32 @@
         570,
         720
       ],
+      "glowKey": "dreamPlushDollMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_doll_muzzle_glow.png",
       "glowSha256": "2d9cdd5ce53a958c594aba360c1ad8c84320f000a91b793e96a4aae5fcedcdcd",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushDollMuzzleGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_doll_muzzle_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        42,
+        41,
+        213,
+        214
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "2d9cdd5ce53a958c594aba360c1ad8c84320f000a91b793e96a4aae5fcedcdcd",
+      "category": "vfx-glow",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "baseOf": "dreamPlushDollMuzzle",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushDollImpact": {
@@ -1873,9 +2335,32 @@
         1235,
         255
       ],
+      "glowKey": "dreamPlushDollImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_doll_impact_glow.png",
       "glowSha256": "f617c8f18e095d1a47991a0aaf157ac3e9a86581b10cb05e7e61fa4b26822b57",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushDollImpactGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_doll_impact_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        13,
+        66,
+        242,
+        190
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "f617c8f18e095d1a47991a0aaf157ac3e9a86581b10cb05e7e61fa4b26822b57",
+      "category": "vfx-glow",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "baseOf": "dreamPlushDollImpact",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushFishMuzzle": {
@@ -1902,9 +2387,32 @@
         505,
         365
       ],
+      "glowKey": "dreamPlushFishMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_fish_muzzle_glow.png",
       "glowSha256": "816e89d666513254cc22fa7aface59a6236adf6877601b795eb421cb18ae2bd4",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushFishMuzzleGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_fish_muzzle_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        32,
+        14,
+        223,
+        242
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "816e89d666513254cc22fa7aface59a6236adf6877601b795eb421cb18ae2bd4",
+      "category": "vfx-glow",
+      "family": "fish",
+      "source": "星星弹幕 和 好兄弟弹幕.png",
+      "baseOf": "dreamPlushFishMuzzle",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushFishImpact": {
@@ -1931,9 +2439,32 @@
         1235,
         985
       ],
+      "glowKey": "dreamPlushFishImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_fish_impact_glow.png",
       "glowSha256": "c79bd454e1f608ae08a10b018c8e790128e38b854eb5001f7bd3e781beb47c71",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushFishImpactGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_fish_impact_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        17,
+        37,
+        239,
+        219
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "c79bd454e1f608ae08a10b018c8e790128e38b854eb5001f7bd3e781beb47c71",
+      "category": "vfx-glow",
+      "family": "fish",
+      "source": "好兄弟弹幕2.png",
+      "baseOf": "dreamPlushFishImpact",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushStarMuzzle": {
@@ -1960,9 +2491,32 @@
         515,
         930
       ],
+      "glowKey": "dreamPlushStarMuzzleGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_star_muzzle_glow.png",
       "glowSha256": "0a114a09614ff79407feb361c00d69b415077cebd1e021a182dfdc764bc02624",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushStarMuzzleGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_star_muzzle_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        16,
+        25,
+        241,
+        231
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "0a114a09614ff79407feb361c00d69b415077cebd1e021a182dfdc764bc02624",
+      "category": "vfx-glow",
+      "family": "star",
+      "source": "星星弹幕 和 好兄弟弹幕.png",
+      "baseOf": "dreamPlushStarMuzzle",
+      "blendMode": "lighter",
       "collision": "none"
     },
     "dreamPlushStarImpact": {
@@ -1989,9 +2543,32 @@
         1235,
         1235
       ],
+      "glowKey": "dreamPlushStarImpactGlow",
       "glowFile": "assets/dream_stage3/vfx/dream_plush_star_impact_glow.png",
       "glowSha256": "c057614325c84a4382b40ec65d9d7ea1e356d17b75877ac974f99075db8ce814",
       "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushStarImpactGlow": {
+      "file": "assets/dream_stage3/vfx/dream_plush_star_impact_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        22,
+        41,
+        233,
+        214
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "c057614325c84a4382b40ec65d9d7ea1e356d17b75877ac974f99075db8ce814",
+      "category": "vfx-glow",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "baseOf": "dreamPlushStarImpact",
+      "blendMode": "lighter",
       "collision": "none"
     }
   }

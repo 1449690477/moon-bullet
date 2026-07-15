@@ -2,13 +2,15 @@
   "sourceFolderReadOnly": "moon-bullet-main/梦境第三关开发",
   "sourceCount": 20,
   "sourceBytes": 21267451,
-  "generatedAssetKeys": 62,
+  "generatedAssetKeys": 87,
   "categories": {
     "background": 1,
     "background-light": 1,
     "enemy": 35,
     "bullet": 15,
-    "vfx": 10
+    "bullet-glow": 15,
+    "vfx": 10,
+    "vfx-glow": 10
   },
   "greenValidation": {
     "rule": "near #00ff00 within 92 RGB distance on visible pixels",
@@ -18,6 +20,11 @@
   "edgeValidation": {
     "assetsWithVisibleEdgeTouch": [],
     "status": "pass"
+  },
+  "preservation": {
+    "unknownFilesDeleted": false,
+    "preservedFileCount": 0,
+    "preservedFiles": []
   },
   "sourceSha256": {
     "场景地图.png": "d323fe79fedb3687adb8fb66619d631a4083c12ad1631932c388375b1b0a45b5",

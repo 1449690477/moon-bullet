@@ -2,9 +2,10 @@
 
 - Source folder: `moon-bullet-main/梦境第三关开发` (read-only)
 - Source files: 20 / 21267451 bytes
-- Runtime asset keys: 62
+- Runtime asset keys: 87
 - Near-key green validation: PASS (0 visible residual pixels)
 - Transparent padding validation: PASS (0 visible edge-touch pixels)
+- Hand-authored files preserved: 0 (generator never clears output folders)
 
 ## Runtime Keys
 
@@ -16,15 +17,25 @@
 - `dreamPlushBlueFishMoveL` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_move_l.png`
 - `dreamPlushBlueFishMoveR` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_move_r.png`
 - `dreamPlushBubblePearl` -> `assets/dream_stage3/bullets/dream_plush_bubble_pearl.png`
+- `dreamPlushBubblePearlGlow` -> `assets/dream_stage3/bullets/dream_plush_bubble_pearl_glow.png`
 - `dreamPlushConstellationNode` -> `assets/dream_stage3/bullets/dream_plush_constellation_node.png`
+- `dreamPlushConstellationNodeGlow` -> `assets/dream_stage3/bullets/dream_plush_constellation_node_glow.png`
 - `dreamPlushCrystalShard` -> `assets/dream_stage3/bullets/dream_plush_crystal_shard.png`
+- `dreamPlushCrystalShardGlow` -> `assets/dream_stage3/bullets/dream_plush_crystal_shard_glow.png`
 - `dreamPlushDollImpact` -> `assets/dream_stage3/vfx/dream_plush_doll_impact.png`
+- `dreamPlushDollImpactGlow` -> `assets/dream_stage3/vfx/dream_plush_doll_impact_glow.png`
 - `dreamPlushDollMuzzle` -> `assets/dream_stage3/vfx/dream_plush_doll_muzzle.png`
+- `dreamPlushDollMuzzleGlow` -> `assets/dream_stage3/vfx/dream_plush_doll_muzzle_glow.png`
 - `dreamPlushDollOrb` -> `assets/dream_stage3/bullets/dream_plush_doll_orb.png`
+- `dreamPlushDollOrbGlow` -> `assets/dream_stage3/bullets/dream_plush_doll_orb_glow.png`
 - `dreamPlushDollSigil` -> `assets/dream_stage3/bullets/dream_plush_doll_sigil.png`
+- `dreamPlushDollSigilGlow` -> `assets/dream_stage3/bullets/dream_plush_doll_sigil_glow.png`
 - `dreamPlushFishImpact` -> `assets/dream_stage3/vfx/dream_plush_fish_impact.png`
+- `dreamPlushFishImpactGlow` -> `assets/dream_stage3/vfx/dream_plush_fish_impact_glow.png`
 - `dreamPlushFishMuzzle` -> `assets/dream_stage3/vfx/dream_plush_fish_muzzle.png`
+- `dreamPlushFishMuzzleGlow` -> `assets/dream_stage3/vfx/dream_plush_fish_muzzle_glow.png`
 - `dreamPlushFishbone` -> `assets/dream_stage3/bullets/dream_plush_fishbone.png`
+- `dreamPlushFishboneGlow` -> `assets/dream_stage3/bullets/dream_plush_fishbone_glow.png`
 - `dreamPlushGrayDoll` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_idle.png`
 - `dreamPlushGrayDollAttack` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_attack.png`
 - `dreamPlushGrayDollDeath` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_death.png`
@@ -33,9 +44,13 @@
 - `dreamPlushGrayDollMoveL` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_move_l.png`
 - `dreamPlushGrayDollMoveR` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_move_r.png`
 - `dreamPlushIceShard` -> `assets/dream_stage3/bullets/dream_plush_ice_shard.png`
+- `dreamPlushIceShardGlow` -> `assets/dream_stage3/bullets/dream_plush_ice_shard_glow.png`
 - `dreamPlushIceSpear` -> `assets/dream_stage3/bullets/dream_plush_ice_spear.png`
+- `dreamPlushIceSpearGlow` -> `assets/dream_stage3/bullets/dream_plush_ice_spear_glow.png`
 - `dreamPlushLeafBlade` -> `assets/dream_stage3/bullets/dream_plush_leaf_blade.png`
+- `dreamPlushLeafBladeGlow` -> `assets/dream_stage3/bullets/dream_plush_leaf_blade_glow.png`
 - `dreamPlushLeafBud` -> `assets/dream_stage3/bullets/dream_plush_leaf_bud.png`
+- `dreamPlushLeafBudGlow` -> `assets/dream_stage3/bullets/dream_plush_leaf_bud_glow.png`
 - `dreamPlushLeafCat` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_idle.png`
 - `dreamPlushLeafCatAttack` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_attack.png`
 - `dreamPlushLeafCatDeath` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_death.png`
@@ -44,21 +59,30 @@
 - `dreamPlushLeafCatMoveL` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_move_l.png`
 - `dreamPlushLeafCatMoveR` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_move_r.png`
 - `dreamPlushLeafImpact` -> `assets/dream_stage3/vfx/dream_plush_leaf_impact.png`
+- `dreamPlushLeafImpactGlow` -> `assets/dream_stage3/vfx/dream_plush_leaf_impact_glow.png`
 - `dreamPlushLeafMuzzle` -> `assets/dream_stage3/vfx/dream_plush_leaf_muzzle.png`
+- `dreamPlushLeafMuzzleGlow` -> `assets/dream_stage3/vfx/dream_plush_leaf_muzzle_glow.png`
 - `dreamPlushLeafSeed` -> `assets/dream_stage3/bullets/dream_plush_leaf_seed.png`
+- `dreamPlushLeafSeedGlow` -> `assets/dream_stage3/bullets/dream_plush_leaf_seed_glow.png`
 - `dreamPlushMeteorStar` -> `assets/dream_stage3/bullets/dream_plush_meteor_star.png`
+- `dreamPlushMeteorStarGlow` -> `assets/dream_stage3/bullets/dream_plush_meteor_star_glow.png`
 - `dreamPlushPenguin` -> `assets/dream_stage3/enemies/dream_plush_penguin_idle.png`
 - `dreamPlushPenguinAttack` -> `assets/dream_stage3/enemies/dream_plush_penguin_attack.png`
 - `dreamPlushPenguinDeath` -> `assets/dream_stage3/enemies/dream_plush_penguin_death.png`
 - `dreamPlushPenguinHit` -> `assets/dream_stage3/enemies/dream_plush_penguin_hit.png`
 - `dreamPlushPenguinIdle` -> `assets/dream_stage3/enemies/dream_plush_penguin_idle.png`
 - `dreamPlushPenguinImpact` -> `assets/dream_stage3/vfx/dream_plush_penguin_impact.png`
+- `dreamPlushPenguinImpactGlow` -> `assets/dream_stage3/vfx/dream_plush_penguin_impact_glow.png`
 - `dreamPlushPenguinMoveL` -> `assets/dream_stage3/enemies/dream_plush_penguin_move_l.png`
 - `dreamPlushPenguinMoveR` -> `assets/dream_stage3/enemies/dream_plush_penguin_move_r.png`
 - `dreamPlushPenguinMuzzle` -> `assets/dream_stage3/vfx/dream_plush_penguin_muzzle.png`
+- `dreamPlushPenguinMuzzleGlow` -> `assets/dream_stage3/vfx/dream_plush_penguin_muzzle_glow.png`
 - `dreamPlushSnowball` -> `assets/dream_stage3/bullets/dream_plush_snowball.png`
+- `dreamPlushSnowballGlow` -> `assets/dream_stage3/bullets/dream_plush_snowball_glow.png`
 - `dreamPlushStarImpact` -> `assets/dream_stage3/vfx/dream_plush_star_impact.png`
+- `dreamPlushStarImpactGlow` -> `assets/dream_stage3/vfx/dream_plush_star_impact_glow.png`
 - `dreamPlushStarMuzzle` -> `assets/dream_stage3/vfx/dream_plush_star_muzzle.png`
+- `dreamPlushStarMuzzleGlow` -> `assets/dream_stage3/vfx/dream_plush_star_muzzle_glow.png`
 - `dreamPlushStarPillow` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_idle.png`
 - `dreamPlushStarPillowAttack` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_attack.png`
 - `dreamPlushStarPillowDeath` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_death.png`
@@ -67,7 +91,9 @@
 - `dreamPlushStarPillowMoveL` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_move_l.png`
 - `dreamPlushStarPillowMoveR` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_move_r.png`
 - `dreamPlushStarShot` -> `assets/dream_stage3/bullets/dream_plush_star_shot.png`
+- `dreamPlushStarShotGlow` -> `assets/dream_stage3/bullets/dream_plush_star_shot_glow.png`
 - `dreamPlushWaterDrop` -> `assets/dream_stage3/bullets/dream_plush_water_drop.png`
+- `dreamPlushWaterDropGlow` -> `assets/dream_stage3/bullets/dream_plush_water_drop_glow.png`
 - `dreamRoomBase` -> `assets/dream_stage3/backgrounds/dream_room_base.webp`
 - `dreamRoomLight` -> `assets/dream_stage3/backgrounds/dream_room_light.png`
 
