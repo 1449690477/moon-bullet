@@ -25,6 +25,9 @@ DIST = ROOT / "docs"
 MOBILE_DIR = DIST / "assets_mobile"
 IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 AUDIO_EXTS = {".ogg", ".wav", ".mp3", ".m4a"}
+DREAM_STAGE3_PREPARED_MOBILE = {
+    "dreamRoomBase": "assets/dream_stage3/backgrounds/dream_room_base_mobile.webp",
+}
 MHR_BLACKHOLE_SEQUENCE_PHASES = {"deploy": 16, "loop": 32, "overload": 16, "collapse": 12}
 CORRUPTGUN_VFX_MANIFEST_REL = "assets/player/corrupt_gun/cg_vfx_v2_manifest.json"
 CORRUPTGUN_VFX_BUNDLE_REL = "assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js"
@@ -504,6 +507,16 @@ def clean_mobile_ultimate(image: Image.Image) -> Image.Image:
 
 def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) -> str | None:
     src = ROOT / rel
+    prepared_mobile_rel = DREAM_STAGE3_PREPARED_MOBILE.get(key)
+    if prepared_mobile_rel:
+        prepared_src = ROOT / prepared_mobile_rel
+        if not prepared_src.is_file():
+            raise FileNotFoundError(prepared_mobile_rel)
+        out_rel = Path("assets_mobile") / Path(rel).relative_to("assets")
+        out = DIST / out_rel
+        out.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(prepared_src, out)
+        return out_rel.as_posix()
     if src.suffix.lower() not in IMAGE_EXTS or not src.exists():
         return None
 

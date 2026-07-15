@@ -1,0 +1,44 @@
+{
+  "sourceFolderReadOnly": "moon-bullet-main/梦境第三关开发",
+  "sourceCount": 20,
+  "sourceBytes": 21267451,
+  "generatedAssetKeys": 62,
+  "categories": {
+    "background": 1,
+    "background-light": 1,
+    "enemy": 35,
+    "bullet": 15,
+    "vfx": 10
+  },
+  "greenValidation": {
+    "rule": "near #00ff00 within 92 RGB distance on visible pixels",
+    "assetsWithResidual": [],
+    "status": "pass"
+  },
+  "edgeValidation": {
+    "assetsWithVisibleEdgeTouch": [],
+    "status": "pass"
+  },
+  "sourceSha256": {
+    "场景地图.png": "d323fe79fedb3687adb8fb66619d631a4083c12ad1631932c388375b1b0a45b5",
+    "新叶喵小怪.png": "aa419daf98152a702459c774e7245bd366b8e2d38626203baefd10e2a39a1f8d",
+    "新叶喵小怪姿态2.png": "2982a47c5e9144bd8c230aa155d9118bae69c0183b4527ef67f1e91e47df9cc1",
+    "新叶苗弹幕.png": "71ba9ae3edce9dd02c323cda58b6301c10c7e640838b50eed39c3217a94d1487",
+    "新叶喵弹幕2.png": "964b744592f84240eb9e17384bfe17b86e1d8e9e17b92bc38f5483386cf10b52",
+    "新叶喵弹幕3.png": "be0ccd3c5587570ebe8f5632cbc782edb577fca4ceebed0e2071a3295c9a78be",
+    "企鹅小怪.png": "11e804cdbc6c85d190b5719d2b7f3177ed209e0a00d06426cea8482c053610b9",
+    "企鹅小怪姿态2.png": "0f354d95e6b6e0a90f9854e1e672aa79013d12ce75a363eed62da1a4d83ce5fa",
+    "企鹅弹幕.png": "0455e4db30693727f778af2dcb24663f4ece71b62364fdd8b75fa446841715e5",
+    "企鹅弹幕2.png": "078d03730eafcc672e06431b18069376121153b9ae82f3be60ef8cd92d792b8d",
+    "流萤小怪.png": "1510085484bfefb750d82f680ad5db0fcdc6d5eb4897c504afb4cf231669d8f3",
+    "流萤小怪姿态2.png": "dfab17f883da17084dd1269733b9dae58770039951581fed0dc9ddeed68c12f8",
+    "流萤弹幕.png": "bc4ac675e09140550b2c281c4d69b16a2a27074256cf42853404c01ac3708c3b",
+    "好兄弟小怪.png": "269fa2030ab59aa0102be2297eac5198dc7b8c363ca5a2941aebd63574a39841",
+    "好兄弟小怪姿态2.png": "147f0c40f211620c18a8890866f9a4c3f1e37602f89997b3ecd18eb96f6c5993",
+    "好兄弟弹幕2.png": "7f039dc3abc92bf98710ba2ca1d196fca2a2b3ff2ebe28abedce3149e507910b",
+    "星星弹幕 和 好兄弟弹幕.png": "633363d7507e2f540ef503b0eac1efb3b339351c704d269e13d52ccf4b8507e1",
+    "星星小怪.png": "ef5ef313155fb1ca8dddfb0742d6b9d5c8b7707b0ca827a1af41883a8a6d5321",
+    "星星小怪姿态2.png": "ca71709bfe56b98e31b292510151cad3a01168c567074057bd807df4e1b01ca0",
+    "星星弹幕2.png": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828"
+  }
+}

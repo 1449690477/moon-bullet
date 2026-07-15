@@ -1,0 +1,81 @@
+# Dream Stage 3 Asset Report
+
+- Source folder: `moon-bullet-main/梦境第三关开发` (read-only)
+- Source files: 20 / 21267451 bytes
+- Runtime asset keys: 62
+- Near-key green validation: PASS (0 visible residual pixels)
+- Transparent padding validation: PASS (0 visible edge-touch pixels)
+
+## Runtime Keys
+
+- `dreamPlushBlueFish` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_idle.png`
+- `dreamPlushBlueFishAttack` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_attack.png`
+- `dreamPlushBlueFishDeath` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_death.png`
+- `dreamPlushBlueFishHit` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_hit.png`
+- `dreamPlushBlueFishIdle` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_idle.png`
+- `dreamPlushBlueFishMoveL` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_move_l.png`
+- `dreamPlushBlueFishMoveR` -> `assets/dream_stage3/enemies/dream_plush_blue_fish_move_r.png`
+- `dreamPlushBubblePearl` -> `assets/dream_stage3/bullets/dream_plush_bubble_pearl.png`
+- `dreamPlushConstellationNode` -> `assets/dream_stage3/bullets/dream_plush_constellation_node.png`
+- `dreamPlushCrystalShard` -> `assets/dream_stage3/bullets/dream_plush_crystal_shard.png`
+- `dreamPlushDollImpact` -> `assets/dream_stage3/vfx/dream_plush_doll_impact.png`
+- `dreamPlushDollMuzzle` -> `assets/dream_stage3/vfx/dream_plush_doll_muzzle.png`
+- `dreamPlushDollOrb` -> `assets/dream_stage3/bullets/dream_plush_doll_orb.png`
+- `dreamPlushDollSigil` -> `assets/dream_stage3/bullets/dream_plush_doll_sigil.png`
+- `dreamPlushFishImpact` -> `assets/dream_stage3/vfx/dream_plush_fish_impact.png`
+- `dreamPlushFishMuzzle` -> `assets/dream_stage3/vfx/dream_plush_fish_muzzle.png`
+- `dreamPlushFishbone` -> `assets/dream_stage3/bullets/dream_plush_fishbone.png`
+- `dreamPlushGrayDoll` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_idle.png`
+- `dreamPlushGrayDollAttack` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_attack.png`
+- `dreamPlushGrayDollDeath` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_death.png`
+- `dreamPlushGrayDollHit` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_hit.png`
+- `dreamPlushGrayDollIdle` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_idle.png`
+- `dreamPlushGrayDollMoveL` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_move_l.png`
+- `dreamPlushGrayDollMoveR` -> `assets/dream_stage3/enemies/dream_plush_gray_doll_move_r.png`
+- `dreamPlushIceShard` -> `assets/dream_stage3/bullets/dream_plush_ice_shard.png`
+- `dreamPlushIceSpear` -> `assets/dream_stage3/bullets/dream_plush_ice_spear.png`
+- `dreamPlushLeafBlade` -> `assets/dream_stage3/bullets/dream_plush_leaf_blade.png`
+- `dreamPlushLeafBud` -> `assets/dream_stage3/bullets/dream_plush_leaf_bud.png`
+- `dreamPlushLeafCat` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_idle.png`
+- `dreamPlushLeafCatAttack` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_attack.png`
+- `dreamPlushLeafCatDeath` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_death.png`
+- `dreamPlushLeafCatHit` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_hit.png`
+- `dreamPlushLeafCatIdle` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_idle.png`
+- `dreamPlushLeafCatMoveL` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_move_l.png`
+- `dreamPlushLeafCatMoveR` -> `assets/dream_stage3/enemies/dream_plush_leaf_cat_move_r.png`
+- `dreamPlushLeafImpact` -> `assets/dream_stage3/vfx/dream_plush_leaf_impact.png`
+- `dreamPlushLeafMuzzle` -> `assets/dream_stage3/vfx/dream_plush_leaf_muzzle.png`
+- `dreamPlushLeafSeed` -> `assets/dream_stage3/bullets/dream_plush_leaf_seed.png`
+- `dreamPlushMeteorStar` -> `assets/dream_stage3/bullets/dream_plush_meteor_star.png`
+- `dreamPlushPenguin` -> `assets/dream_stage3/enemies/dream_plush_penguin_idle.png`
+- `dreamPlushPenguinAttack` -> `assets/dream_stage3/enemies/dream_plush_penguin_attack.png`
+- `dreamPlushPenguinDeath` -> `assets/dream_stage3/enemies/dream_plush_penguin_death.png`
+- `dreamPlushPenguinHit` -> `assets/dream_stage3/enemies/dream_plush_penguin_hit.png`
+- `dreamPlushPenguinIdle` -> `assets/dream_stage3/enemies/dream_plush_penguin_idle.png`
+- `dreamPlushPenguinImpact` -> `assets/dream_stage3/vfx/dream_plush_penguin_impact.png`
+- `dreamPlushPenguinMoveL` -> `assets/dream_stage3/enemies/dream_plush_penguin_move_l.png`
+- `dreamPlushPenguinMoveR` -> `assets/dream_stage3/enemies/dream_plush_penguin_move_r.png`
+- `dreamPlushPenguinMuzzle` -> `assets/dream_stage3/vfx/dream_plush_penguin_muzzle.png`
+- `dreamPlushSnowball` -> `assets/dream_stage3/bullets/dream_plush_snowball.png`
+- `dreamPlushStarImpact` -> `assets/dream_stage3/vfx/dream_plush_star_impact.png`
+- `dreamPlushStarMuzzle` -> `assets/dream_stage3/vfx/dream_plush_star_muzzle.png`
+- `dreamPlushStarPillow` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_idle.png`
+- `dreamPlushStarPillowAttack` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_attack.png`
+- `dreamPlushStarPillowDeath` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_death.png`
+- `dreamPlushStarPillowHit` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_hit.png`
+- `dreamPlushStarPillowIdle` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_idle.png`
+- `dreamPlushStarPillowMoveL` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_move_l.png`
+- `dreamPlushStarPillowMoveR` -> `assets/dream_stage3/enemies/dream_plush_star_pillow_move_r.png`
+- `dreamPlushStarShot` -> `assets/dream_stage3/bullets/dream_plush_star_shot.png`
+- `dreamPlushWaterDrop` -> `assets/dream_stage3/bullets/dream_plush_water_drop.png`
+- `dreamRoomBase` -> `assets/dream_stage3/backgrounds/dream_room_base.webp`
+- `dreamRoomLight` -> `assets/dream_stage3/backgrounds/dream_room_light.png`
+
+## Processing Contract
+
+- Concept collages are split into named primitives; whole formations are not used as damaging bullets.
+- LeafCat greens are protected; only the chroma matte/grid and contaminated boundary are rebuilt.
+- Non-leaf green spill is recolored from the nearest clean material pixel instead of cut into holes.
+- Bullets have a restrained dark readability outline and a separate additive glow layer.
+- Trails and VFX remain presentation-only and must never participate in collision.
+- Desktop/mobile room images are pregraded so runtime does not pay per-frame filter costs.

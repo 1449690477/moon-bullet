@@ -23,14 +23,17 @@ const SALT         = Deno.env.get("LB_SALT") ?? "CHANGE_ME";
 
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
-const EDGE_VERSION = "leaderboard-run-2026-07-13-dream-v2";
+const EDGE_VERSION = "leaderboard-run-2026-07-15-dream-level3-v1";
 const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife", "skyward", "corruptgun"]);
 const TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 令牌有效期 2 小时
 const DREAM_ACTIVE_CLEAR_VERSION = "dream-01-v2";
+const DREAM_STAGE_CONTRACT_VERSION = "dream-03-v1";
 const DREAM_TOKEN_TTL_MS = 90 * 60 * 1000;
 const DREAM_WINGS = new Set(["moonfeather", "reaverwing", "saintcrown", "nightcoffin", "skyglory", "motherhive"]);
 const DREAM_STAGES = new Map([
   ["dream-01-seraph", { clearVersion: DREAM_ACTIVE_CLEAR_VERSION, seed: 7130101 }],
+  ["dream-02-zero-compile", { clearVersion: "dream-02-v1", seed: 7130202 }],
+  ["dream-03-plush-room", { clearVersion: "dream-03-v1", seed: 7130303 }],
 ]);
 
 const cors = {
@@ -84,17 +87,25 @@ Deno.serve(async (req) => {
 
   try {
     // ---------------- /health ----------------
-    // 生产验收专用，只读检查函数版本、7号白名单与梦境 V2 迁移。
+    // 生产验收专用，只读检查函数版本、7号白名单与梦境多关卡契约。
     if (action === "health") {
-      const [tableResult, schemaResult] = await Promise.all([
+      const [tableResult, schemaResult, stageContractResult] = await Promise.all([
         admin.from("dream_leaderboard").select("id", { head: true, count: "exact" }),
         admin.rpc("dream_leaderboard_schema_version"),
+        admin.rpc("dream_leaderboard_stage_contract"),
       ]);
       const dreamTableError = tableResult.error;
       const dreamTableReady = !dreamTableError;
       const dreamSchemaVersion = typeof schemaResult.data === "string" ? schemaResult.data : null;
       const dreamSchemaReady = !schemaResult.error && dreamSchemaVersion === DREAM_ACTIVE_CLEAR_VERSION;
-      const dreamLeaderboardReady = dreamTableReady && dreamSchemaReady;
+      const dreamStageContractVersion = typeof stageContractResult.data === "string" ? stageContractResult.data : null;
+      const dreamStageContractReady = !stageContractResult.error && dreamStageContractVersion === DREAM_STAGE_CONTRACT_VERSION;
+      const dreamLeaderboardReady = dreamTableReady && dreamSchemaReady && dreamStageContractReady;
+      const dreamStages = [...DREAM_STAGES.entries()].map(([stage_id, stage]) => ({
+        stage_id,
+        clear_version: stage.clearVersion,
+        seed: stage.seed,
+      }));
       return json({
         ok: dreamLeaderboardReady,
         edge_version: EDGE_VERSION,
@@ -104,13 +115,17 @@ Deno.serve(async (req) => {
           dream_leaderboard: dreamLeaderboardReady,
           dream_stage: "dream-01-seraph",
           dream_clear_version: DREAM_ACTIVE_CLEAR_VERSION,
+          dream_stages: dreamStages,
+          dream_stage_contract: DREAM_STAGE_CONTRACT_VERSION,
           dream_token_ttl_ms: DREAM_TOKEN_TTL_MS,
         },
         database: {
           dream_leaderboard: dreamTableReady,
           dream_schema_version: dreamSchemaVersion,
+          dream_stage_contract: dreamStageContractVersion,
           table_error_code: dreamTableError?.code ?? null,
           schema_error_code: schemaResult.error?.code ?? null,
+          stage_contract_error_code: stageContractResult.error?.code ?? null,
         },
       }, dreamLeaderboardReady ? 200 : 503);
     }
@@ -204,9 +219,10 @@ Deno.serve(async (req) => {
       if (Number.isInteger(elapsedMs) && elapsedMs > serverRunAgeMs + 15000) reject.push("elapsed exceeds token age");
 
       // 梦境令牌同样一次性；校验失败也销毁，阻止修改 payload 后重放。
+      const consumedAt = new Date().toISOString();
       const { data: consumed, error: consumeError } = await admin
         .from("dream_leaderboard_runs")
-        .update({ submitted_at: new Date().toISOString() })
+        .update({ submitted_at: consumedAt })
         .eq("run_id", p.run_id)
         .is("submitted_at", null)
         .select("run_id")
@@ -214,6 +230,17 @@ Deno.serve(async (req) => {
       if (consumeError) return json({ ok: false, status: "rejected", reasons: [consumeError.message] }, 500);
       if (!consumed) return json({ ok: false, status: "rejected", reasons: ["already submitted"] }, 400);
       if (reject.length) return json({ ok: false, status: "rejected", reasons: reject }, 400);
+
+      // The claim prevents parallel replay. If the score write itself fails, release
+      // only this exact claim so a transient 5xx can be retried with the same token.
+      const releaseClaim = async (reason: string) => {
+        const { error } = await admin
+          .from("dream_leaderboard_runs")
+          .update({ submitted_at: null })
+          .eq("run_id", p.run_id)
+          .eq("submitted_at", consumedAt);
+        if (error) console.error("[dream-submit] failed to release claim", reason, error.message);
+      };
 
       const now = new Date().toISOString();
       const payload = {
@@ -239,7 +266,10 @@ Deno.serve(async (req) => {
         .eq("player_name_key", nameKey)
         .eq("character", character)
         .maybeSingle();
-      if (bestError) return json({ ok: false, status: "rejected", reasons: [bestError.message] }, 500);
+      if (bestError) {
+        await releaseClaim("best-select");
+        return json({ ok: false, status: "rejected", reasons: [bestError.message] }, 500);
+      }
 
       const improvesBest = !best || stars > best.stars || (stars === best.stars && elapsedMs < best.elapsed_ms);
       if (!improvesBest) {
@@ -248,17 +278,26 @@ Deno.serve(async (req) => {
             .from("dream_leaderboard")
             .update({ avatar_data: p.avatar_data, updated_at: now })
             .eq("id", best!.id);
-          if (avatarErr) return json({ ok: false, status: "rejected", reasons: [avatarErr.message] }, 500);
+          if (avatarErr) {
+            await releaseClaim("avatar-update");
+            return json({ ok: false, status: "rejected", reasons: [avatarErr.message] }, 500);
+          }
         }
         return json({ ok: true, status: "accepted", note: "kept existing better dream result" });
       }
 
       if (best) {
         const { error: updateError } = await admin.from("dream_leaderboard").update(payload).eq("id", best.id);
-        if (updateError) return json({ ok: false, status: "rejected", reasons: [updateError.message] }, 500);
+        if (updateError) {
+          await releaseClaim("score-update");
+          return json({ ok: false, status: "rejected", reasons: [updateError.message] }, 500);
+        }
       } else {
         const { error: insertError } = await admin.from("dream_leaderboard").insert(payload);
-        if (insertError) return json({ ok: false, status: "rejected", reasons: [insertError.message] }, 500);
+        if (insertError) {
+          await releaseClaim("score-insert");
+          return json({ ok: false, status: "rejected", reasons: [insertError.message] }, 500);
+        }
       }
       return json({ ok: true, status: "accepted" });
     }

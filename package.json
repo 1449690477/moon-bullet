@@ -7,12 +7,13 @@
     "test": "tests"
   },
   "scripts": {
-    "build:pages": "npm run assets:corruptgun && npm run assets:corruptgun-vfx-v2 && npm run assets:corruptgun-ultimate && npm run build:corruptgun-vfx && npm run assets:corruptgun-infection && node tools/run_python.js tools/build_pages.py",
+    "build:pages": "npm run assets:dream-stage3 && npm run assets:corruptgun && npm run assets:corruptgun-vfx-v2 && npm run assets:corruptgun-ultimate && npm run build:corruptgun-vfx && npm run assets:corruptgun-infection && node tools/run_python.js tools/build_pages.py",
     "build:corruptgun-vfx": "node tools/build_corruptgun_vfx.js",
     "assets:corruptgun": "node tools/run_python.js tools/import_corruptgun_assets.py",
     "assets:corruptgun-vfx-v2": "node tools/run_python.js tools/generate_corruptgun_vfx_v2.py",
     "assets:corruptgun-infection": "node tools/run_python.js tools/process_corruptgun_infection_assets.py",
     "assets:corruptgun-ultimate": "node tools/run_python.js tools/process_corruptgun_ultimate_assets.py",
+    "assets:dream-stage3": "node tools/run_python.js tools/process_dream_stage3_assets.py",
     "sync:main": "node tools/sync_main_mirror.js",
     "verify:publish": "node tools/verify_publish_consistency.js",
     "release:pages": "npm run build:pages && npm run sync:main && npm run verify:publish && npm run smoke:pages",

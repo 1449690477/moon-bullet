@@ -12,7 +12,7 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       key: 'dream',
       title: '梦境模式',
       levelCount: 10,
-      unlockedLevels: 1,
+      unlockedLevels: 3,
       locksLoadoutAfterStart: true,
       disablesRandomDrops: true,
       keepsCharacterSkills: true,
@@ -33,14 +33,14 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       titleActions: ['chapter', 'dream'],
       lobbyLayout: 'two-rows-five-levels',
       levelNodes: 10,
-      availableLevels: [1],
+      availableLevels: [1, 2, 3],
       mobileTabs: ['情报', '敌人弹幕', '排行榜'],
       minimumBodyFont: 18,
       minimumButtonHeight: 52,
       hud: ['wave', 'active-time', 'stars', 'hits', 'damage-multiplier'],
     });
     expect(dream.previewSpec()).toMatchObject({
-      usesRuntimePatternSampler: false,
+      usesRuntimePatternSampler: true,
       usesSharedPatternAndMotionCatalog: true,
       showsMobs: 8,
       showsBossPhases: 5,
@@ -426,8 +426,8 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     const spawnEnd = source.indexOf('function spawnDreamBatch', spawnStart);
     const spawnBlock = source.slice(spawnStart, spawnEnd);
     expect(spawnBlock).toContain('initDreamDamageBudget(');
-    expect(spawnBlock).toContain('DREAM_BALANCE_CONFIG.mobDamageFloorSeconds');
-    expect(spawnBlock).toContain('DREAM_BALANCE_CONFIG.mobInitialCreditRatio');
+    expect(spawnBlock).toContain('config.balance.mobDamageFloorSeconds');
+    expect(spawnBlock).toContain('config.balance.mobInitialCreditRatio');
   });
 
   it('applies the dream multiplier to every player-owned damage source', () => {

@@ -1,0 +1,1998 @@
+{
+  "formatVersion": 1,
+  "stage": "dream-03-plush-room",
+  "generator": "tools/process_dream_stage3_assets.py",
+  "sourceFolderReadOnly": "moon-bullet-main/梦境第三关开发",
+  "sourceSha256": {
+    "场景地图.png": "d323fe79fedb3687adb8fb66619d631a4083c12ad1631932c388375b1b0a45b5",
+    "新叶喵小怪.png": "aa419daf98152a702459c774e7245bd366b8e2d38626203baefd10e2a39a1f8d",
+    "新叶喵小怪姿态2.png": "2982a47c5e9144bd8c230aa155d9118bae69c0183b4527ef67f1e91e47df9cc1",
+    "新叶苗弹幕.png": "71ba9ae3edce9dd02c323cda58b6301c10c7e640838b50eed39c3217a94d1487",
+    "新叶喵弹幕2.png": "964b744592f84240eb9e17384bfe17b86e1d8e9e17b92bc38f5483386cf10b52",
+    "新叶喵弹幕3.png": "be0ccd3c5587570ebe8f5632cbc782edb577fca4ceebed0e2071a3295c9a78be",
+    "企鹅小怪.png": "11e804cdbc6c85d190b5719d2b7f3177ed209e0a00d06426cea8482c053610b9",
+    "企鹅小怪姿态2.png": "0f354d95e6b6e0a90f9854e1e672aa79013d12ce75a363eed62da1a4d83ce5fa",
+    "企鹅弹幕.png": "0455e4db30693727f778af2dcb24663f4ece71b62364fdd8b75fa446841715e5",
+    "企鹅弹幕2.png": "078d03730eafcc672e06431b18069376121153b9ae82f3be60ef8cd92d792b8d",
+    "流萤小怪.png": "1510085484bfefb750d82f680ad5db0fcdc6d5eb4897c504afb4cf231669d8f3",
+    "流萤小怪姿态2.png": "dfab17f883da17084dd1269733b9dae58770039951581fed0dc9ddeed68c12f8",
+    "流萤弹幕.png": "bc4ac675e09140550b2c281c4d69b16a2a27074256cf42853404c01ac3708c3b",
+    "好兄弟小怪.png": "269fa2030ab59aa0102be2297eac5198dc7b8c363ca5a2941aebd63574a39841",
+    "好兄弟小怪姿态2.png": "147f0c40f211620c18a8890866f9a4c3f1e37602f89997b3ecd18eb96f6c5993",
+    "好兄弟弹幕2.png": "7f039dc3abc92bf98710ba2ca1d196fca2a2b3ff2ebe28abedce3149e507910b",
+    "星星弹幕 和 好兄弟弹幕.png": "633363d7507e2f540ef503b0eac1efb3b339351c704d269e13d52ccf4b8507e1",
+    "星星小怪.png": "ef5ef313155fb1ca8dddfb0742d6b9d5c8b7707b0ca827a1af41883a8a6d5321",
+    "星星小怪姿态2.png": "ca71709bfe56b98e31b292510151cad3a01168c567074057bd807df4e1b01ca0",
+    "星星弹幕2.png": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828"
+  },
+  "sources": {
+    "room": {
+      "file": "moon-bullet-main/梦境第三关开发/场景地图.png",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "d323fe79fedb3687adb8fb66619d631a4083c12ad1631932c388375b1b0a45b5"
+    },
+    "leaf_base": {
+      "file": "moon-bullet-main/梦境第三关开发/新叶喵小怪.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "aa419daf98152a702459c774e7245bd366b8e2d38626203baefd10e2a39a1f8d"
+    },
+    "leaf_pose": {
+      "file": "moon-bullet-main/梦境第三关开发/新叶喵小怪姿态2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "2982a47c5e9144bd8c230aa155d9118bae69c0183b4527ef67f1e91e47df9cc1"
+    },
+    "leaf_fx_a": {
+      "file": "moon-bullet-main/梦境第三关开发/新叶苗弹幕.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "71ba9ae3edce9dd02c323cda58b6301c10c7e640838b50eed39c3217a94d1487"
+    },
+    "leaf_fx_b": {
+      "file": "moon-bullet-main/梦境第三关开发/新叶喵弹幕2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "964b744592f84240eb9e17384bfe17b86e1d8e9e17b92bc38f5483386cf10b52"
+    },
+    "leaf_fx_c": {
+      "file": "moon-bullet-main/梦境第三关开发/新叶喵弹幕3.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "be0ccd3c5587570ebe8f5632cbc782edb577fca4ceebed0e2071a3295c9a78be"
+    },
+    "penguin_base": {
+      "file": "moon-bullet-main/梦境第三关开发/企鹅小怪.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "11e804cdbc6c85d190b5719d2b7f3177ed209e0a00d06426cea8482c053610b9"
+    },
+    "penguin_pose": {
+      "file": "moon-bullet-main/梦境第三关开发/企鹅小怪姿态2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "0f354d95e6b6e0a90f9854e1e672aa79013d12ce75a363eed62da1a4d83ce5fa"
+    },
+    "penguin_fx_a": {
+      "file": "moon-bullet-main/梦境第三关开发/企鹅弹幕.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "0455e4db30693727f778af2dcb24663f4ece71b62364fdd8b75fa446841715e5"
+    },
+    "penguin_fx_b": {
+      "file": "moon-bullet-main/梦境第三关开发/企鹅弹幕2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "078d03730eafcc672e06431b18069376121153b9ae82f3be60ef8cd92d792b8d"
+    },
+    "doll_base": {
+      "file": "moon-bullet-main/梦境第三关开发/流萤小怪.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "1510085484bfefb750d82f680ad5db0fcdc6d5eb4897c504afb4cf231669d8f3"
+    },
+    "doll_pose": {
+      "file": "moon-bullet-main/梦境第三关开发/流萤小怪姿态2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "dfab17f883da17084dd1269733b9dae58770039951581fed0dc9ddeed68c12f8"
+    },
+    "doll_fx": {
+      "file": "moon-bullet-main/梦境第三关开发/流萤弹幕.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "bc4ac675e09140550b2c281c4d69b16a2a27074256cf42853404c01ac3708c3b"
+    },
+    "fish_base": {
+      "file": "moon-bullet-main/梦境第三关开发/好兄弟小怪.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "269fa2030ab59aa0102be2297eac5198dc7b8c363ca5a2941aebd63574a39841"
+    },
+    "fish_pose": {
+      "file": "moon-bullet-main/梦境第三关开发/好兄弟小怪姿态2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "147f0c40f211620c18a8890866f9a4c3f1e37602f89997b3ecd18eb96f6c5993"
+    },
+    "fish_fx": {
+      "file": "moon-bullet-main/梦境第三关开发/好兄弟弹幕2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7f039dc3abc92bf98710ba2ca1d196fca2a2b3ff2ebe28abedce3149e507910b"
+    },
+    "mixed_fx": {
+      "file": "moon-bullet-main/梦境第三关开发/星星弹幕 和 好兄弟弹幕.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "633363d7507e2f540ef503b0eac1efb3b339351c704d269e13d52ccf4b8507e1"
+    },
+    "star_base": {
+      "file": "moon-bullet-main/梦境第三关开发/星星小怪.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "ef5ef313155fb1ca8dddfb0742d6b9d5c8b7707b0ca827a1af41883a8a6d5321"
+    },
+    "star_pose": {
+      "file": "moon-bullet-main/梦境第三关开发/星星小怪姿态2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "ca71709bfe56b98e31b292510151cad3a01168c567074057bd807df4e1b01ca0"
+    },
+    "star_fx": {
+      "file": "moon-bullet-main/梦境第三关开发/星星弹幕2.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828"
+    }
+  },
+  "renderContract": {
+    "enemy": "contact shadow -> plush base -> restrained rim/core light",
+    "bullet": "dark outline/base in source-over -> separate glow in lighter",
+    "trailCollision": false,
+    "vfxCollision": false,
+    "stageLoad": "lazy on Dream Level 3 only"
+  },
+  "assets": {
+    "dreamRoomBase": {
+      "file": "assets/dream_stage3/backgrounds/dream_room_base.webp",
+      "mobileFile": "assets/dream_stage3/backgrounds/dream_room_base_mobile.webp",
+      "size": [
+        1280,
+        720
+      ],
+      "mobileSize": [
+        720,
+        1280
+      ],
+      "category": "background",
+      "source": "场景地图.png",
+      "sha256": "9f363de558121893259a2e056ca1691b6bddf2a84e576a04b746479cfdee2cc5",
+      "mobileSha256": "f87d2dc61d4436a1808d0b91143e19691a1364adb3e19c60ae20ed1a7f9bf40f",
+      "grade": "0.78 saturation, restrained contrast, dark blue-lavender combat grade"
+    },
+    "dreamRoomLight": {
+      "file": "assets/dream_stage3/backgrounds/dream_room_light.png",
+      "mobileFile": "assets/dream_stage3/backgrounds/dream_room_light_mobile.png",
+      "size": [
+        1280,
+        720
+      ],
+      "mobileSize": [
+        720,
+        1280
+      ],
+      "category": "background-light",
+      "source": "deterministic room dust derived for stage 3",
+      "sha256": "3151327d8a7741ceeb1872b64e48c782ad762ef8b20aa91bd2a1b62bbb23e85c",
+      "mobileSha256": "28f1e62bbe5a2cb920e0c30c0547d8ea085cf43f3a953c7ad404ce3adbabe258",
+      "collision": "none"
+    },
+    "dreamPlushLeafCatIdle": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        82,
+        53,
+        302,
+        331
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a10c4c6ba004d0196ccd9b9aba8a6dd92aa453bc13bf4f7ce021d80301a0e1a0",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "source": "新叶喵小怪.png",
+      "cell": 0
+    },
+    "dreamPlushLeafCatAttack": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_attack.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        80,
+        47,
+        304,
+        337
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "751b2e332e342e4d456fe1325f11060726d8f9074dcbaa28ff9d4af75b7a5ef6",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "Attack",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "source": "新叶喵小怪姿态2.png",
+      "cell": 3
+    },
+    "dreamPlushLeafCatHit": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_hit.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        82,
+        53,
+        302,
+        331
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "31d36e5f29c1cb244232ae29589c31ecdbcc50b00333feaabaffe123d828b241",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "Hit",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "derivedFrom": "dreamPlushLeafCatIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushLeafCatDeath": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_death.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        84,
+        54,
+        300,
+        329
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "f979098873f6084b3a896e45a9e07fb92acdfbc61c4686cdf84f48850bada83c",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "Death",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "derivedFrom": "dreamPlushLeafCatIdle",
+      "treatment": "death"
+    },
+    "dreamPlushLeafCatMoveL": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_move_l.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        45,
+        38,
+        339,
+        346
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "29ddb8e62d96889035159bdc37a043d56b57b9c7b57330ed0adaa25613bbbb21",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "MoveL",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "source": "新叶喵小怪姿态2.png",
+      "cell": 2
+    },
+    "dreamPlushLeafCatMoveR": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_move_r.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        31,
+        30,
+        352,
+        354
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "efc1d52b509806be46cbfcc3f8299bd0f275363b67fecdaec323d918dc7ef2f3",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "MoveR",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "source": "新叶喵小怪姿态2.png",
+      "cell": 1
+    },
+    "dreamPlushLeafCat": {
+      "file": "assets/dream_stage3/enemies/dream_plush_leaf_cat_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        82,
+        53,
+        302,
+        331
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a10c4c6ba004d0196ccd9b9aba8a6dd92aa453bc13bf4f7ce021d80301a0e1a0",
+      "category": "enemy",
+      "family": "LeafCat",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        224
+      ],
+      "source": "新叶喵小怪.png",
+      "cell": 0,
+      "aliasOf": "dreamPlushLeafCatIdle"
+    },
+    "dreamPlushPenguinIdle": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        63,
+        87,
+        320,
+        296
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "691a1918a2299918c944b644f7597ee8fe4b6efe83eebf57c2c5be880dd57772",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "source": "企鹅小怪.png",
+      "cell": 0
+    },
+    "dreamPlushPenguinAttack": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_attack.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        28,
+        102,
+        356,
+        281
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a69275038dbe620d7b7eb0a474a36eeb7b23ad0e2c30c5341fcd52ef11177056",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "Attack",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "source": "企鹅小怪姿态2.png",
+      "cell": 3
+    },
+    "dreamPlushPenguinHit": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_hit.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        63,
+        87,
+        320,
+        296
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "2cd5c3090c44b40b52d3c3c3c5b29435c96324787d7a41078a40bd9e8077e9eb",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "Hit",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "derivedFrom": "dreamPlushPenguinIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushPenguinDeath": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_death.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        65,
+        89,
+        318,
+        294
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "93755bcb3f8329c4cb8f534fef777c4748987309917ceae08937339d982110ce",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "Death",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "derivedFrom": "dreamPlushPenguinIdle",
+      "treatment": "death"
+    },
+    "dreamPlushPenguinMoveL": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_move_l.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        55,
+        79,
+        329,
+        304
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "08d5f3a5dafc0d1092d700341f5291342606c845fd036c317c6f711205f08f53",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "MoveL",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "source": "企鹅小怪姿态2.png",
+      "cell": 2
+    },
+    "dreamPlushPenguinMoveR": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_move_r.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        51,
+        74,
+        333,
+        309
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "3963ff0a338e20651f901e52e4b4773d9cf05b31c295d59cc17e9505557bb66a",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "MoveR",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "source": "企鹅小怪姿态2.png",
+      "cell": 1
+    },
+    "dreamPlushPenguin": {
+      "file": "assets/dream_stage3/enemies/dream_plush_penguin_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        63,
+        87,
+        320,
+        296
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "691a1918a2299918c944b644f7597ee8fe4b6efe83eebf57c2c5be880dd57772",
+      "category": "enemy",
+      "family": "Penguin",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        222
+      ],
+      "source": "企鹅小怪.png",
+      "cell": 0,
+      "aliasOf": "dreamPlushPenguinIdle"
+    },
+    "dreamPlushGrayDollIdle": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        88,
+        84,
+        296,
+        300
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "0d6a451429a5b899d5bd19522668728ade3b463ddba0c9ffb2e5ac7c25535cec",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "source": "流萤小怪.png",
+      "cell": 0
+    },
+    "dreamPlushGrayDollAttack": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_attack.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        67,
+        57,
+        316,
+        326
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "d536a6af0279374399e4ceef9bef154b026831d1285cbbbcd0473c9a6117b8a0",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "Attack",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "source": "流萤小怪姿态2.png",
+      "cell": 3
+    },
+    "dreamPlushGrayDollHit": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_hit.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        88,
+        84,
+        296,
+        300
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "819f270343a7cdaa813567b70dac7bcd55605c011beed1990bc9d504274f9ba0",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "Hit",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "derivedFrom": "dreamPlushGrayDollIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushGrayDollDeath": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_death.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        90,
+        86,
+        294,
+        298
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "635f46264934a91626b7c6fcf9c440a4dc01e0bc9606ac6aa49bcd8cd0fcd0b1",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "Death",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "derivedFrom": "dreamPlushGrayDollIdle",
+      "treatment": "death"
+    },
+    "dreamPlushGrayDollMoveL": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_move_l.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        28,
+        61,
+        354,
+        322
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "0e0b2bc0d7cb6799a6436911fd389813343afcf35cef8c3ce234b514fb92f60f",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "MoveL",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "source": "流萤小怪姿态2.png",
+      "cell": 2
+    },
+    "dreamPlushGrayDollMoveR": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_move_r.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        30,
+        62,
+        355,
+        321
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "673e1d3ece834031564fb0f5228cab32348aac0e8d4b73cc94b5df0126e057da",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "MoveR",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "source": "流萤小怪姿态2.png",
+      "cell": 1
+    },
+    "dreamPlushGrayDoll": {
+      "file": "assets/dream_stage3/enemies/dream_plush_gray_doll_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        88,
+        84,
+        296,
+        300
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "0d6a451429a5b899d5bd19522668728ade3b463ddba0c9ffb2e5ac7c25535cec",
+      "category": "enemy",
+      "family": "GrayDoll",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        230
+      ],
+      "source": "流萤小怪.png",
+      "cell": 0,
+      "aliasOf": "dreamPlushGrayDollIdle"
+    },
+    "dreamPlushBlueFishIdle": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        92,
+        354,
+        291
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "c8f034099dca5434d0d21f737cc8cb118c41fc3c5f1839137c6fc913fc6bcdce",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "source": "好兄弟小怪.png",
+      "cell": 0
+    },
+    "dreamPlushBlueFishAttack": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_attack.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        93,
+        32,
+        290,
+        352
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "8a18b71a7fce8b729d907bb8d167b7c17d0e17c73f03f1e1ee22b1737521bde7",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "Attack",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "source": "好兄弟小怪姿态2.png",
+      "cell": 3
+    },
+    "dreamPlushBlueFishHit": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_hit.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        92,
+        354,
+        291
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "336ce262346281c60f97d539400ecd2ccfdc3c51eef8f4974d89d92b7424a2dd",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "Hit",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "derivedFrom": "dreamPlushBlueFishIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushBlueFishDeath": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_death.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        31,
+        93,
+        352,
+        289
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "44f4516979f2bcfd52eec4ecc5488c2ff94cf6729f0cf1bb34e1e07c7d5d3755",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "Death",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "derivedFrom": "dreamPlushBlueFishIdle",
+      "treatment": "death"
+    },
+    "dreamPlushBlueFishMoveL": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_move_l.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        58,
+        355,
+        326
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a00ed414b43ed9ba2bca927fa96f7c37f8e78deb147d1ced7aa7244b908c8d11",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "MoveL",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "source": "好兄弟小怪姿态2.png",
+      "cell": 2
+    },
+    "dreamPlushBlueFishMoveR": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_move_r.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        61,
+        354,
+        322
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "6aecc65fa21654d92e902d9f8611a6a552cadc2f01fc91c418163e21584eee8d",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "MoveR",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "source": "好兄弟小怪姿态2.png",
+      "cell": 1
+    },
+    "dreamPlushBlueFish": {
+      "file": "assets/dream_stage3/enemies/dream_plush_blue_fish_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        92,
+        354,
+        291
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "c8f034099dca5434d0d21f737cc8cb118c41fc3c5f1839137c6fc913fc6bcdce",
+      "category": "enemy",
+      "family": "BlueFish",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        78,
+        206
+      ],
+      "source": "好兄弟小怪.png",
+      "cell": 0,
+      "aliasOf": "dreamPlushBlueFishIdle"
+    },
+    "dreamPlushStarPillowIdle": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        55,
+        355,
+        329
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "f2f88d5f80b6794a9410cbd341b6622867e751fda46038b558dcd4f3d367dbd3",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "source": "星星小怪.png",
+      "cell": 0
+    },
+    "dreamPlushStarPillowAttack": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_attack.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        38,
+        43,
+        347,
+        342
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "7dbd85ceb139c616c14dc1568acf967b732d1d97b467b806fb827081c6f714ac",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "Attack",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "source": "星星小怪姿态2.png",
+      "cell": 3
+    },
+    "dreamPlushStarPillowHit": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_hit.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        55,
+        355,
+        329
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "5e688ad44a6524d984818cff3f34cd34442f055c962f005a6a9ac3aee83a2f91",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "Hit",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "derivedFrom": "dreamPlushStarPillowIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushStarPillowDeath": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_death.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        31,
+        57,
+        353,
+        327
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "d0774abe5800cef1a1f125af9f13ee9cfcf09bd987299923d9ffc34ebf635c9e",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "Death",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "derivedFrom": "dreamPlushStarPillowIdle",
+      "treatment": "death"
+    },
+    "dreamPlushStarPillowMoveL": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_move_l.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        70,
+        58,
+        316,
+        325
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "90e8a01212e4c42adac4b634c79f7f5a6561ff2b1d1bda3a923f48293f65d607",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "MoveL",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "source": "星星小怪姿态2.png",
+      "cell": 2
+    },
+    "dreamPlushStarPillowMoveR": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_move_r.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        77,
+        56,
+        307,
+        328
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "60c2e5bd546a7103841296368cdd0d9d8dd844930e48c813ec60a50165441ebe",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "MoveR",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "source": "星星小怪姿态2.png",
+      "cell": 1
+    },
+    "dreamPlushStarPillow": {
+      "file": "assets/dream_stage3/enemies/dream_plush_star_pillow_idle.png",
+      "size": [
+        384,
+        384
+      ],
+      "alphaBounds": [
+        29,
+        55,
+        355,
+        329
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "f2f88d5f80b6794a9410cbd341b6622867e751fda46038b558dcd4f3d367dbd3",
+      "category": "enemy",
+      "family": "StarPillow",
+      "state": "Idle",
+      "anchor": [
+        192,
+        192
+      ],
+      "muzzle": [
+        192,
+        215
+      ],
+      "source": "星星小怪.png",
+      "cell": 0,
+      "aliasOf": "dreamPlushStarPillowIdle"
+    },
+    "dreamPlushLeafBlade": {
+      "file": "assets/dream_stage3/bullets/dream_plush_leaf_blade.png",
+      "size": [
+        96,
+        160
+      ],
+      "alphaBounds": [
+        26,
+        15,
+        69,
+        145
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "122b214d9499e0b925ce66e86cc963e3f242895647e08e5fbe6b81c6a2237314",
+      "category": "bullet",
+      "family": "leaf",
+      "source": "新叶苗弹幕.png",
+      "crop": [
+        298,
+        105,
+        392,
+        432
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_blade_glow.png",
+      "glowSha256": "f772f8a4519da72e70124949c158a2d747e68a8b059bf1a0c4860e8acd4224ce",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushLeafSeed": {
+      "file": "assets/dream_stage3/bullets/dream_plush_leaf_seed.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        20,
+        19,
+        90,
+        94
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "fd2733e71a3ec19cdf6a560615a3f68baa438b577dc7ba5b2a51f5151bdbf8e1",
+      "category": "bullet",
+      "family": "leaf",
+      "source": "新叶苗弹幕.png",
+      "crop": [
+        190,
+        640,
+        320,
+        775
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_seed_glow.png",
+      "glowSha256": "879bd667c4f977ac4ce68aca9cd9e94c25d46affadb8c2af42a2495999dc4dfc",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushLeafBud": {
+      "file": "assets/dream_stage3/bullets/dream_plush_leaf_bud.png",
+      "size": [
+        104,
+        168
+      ],
+      "alphaBounds": [
+        27,
+        15,
+        77,
+        153
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "182b73218ff6c52708225ebbb7a40bf2686fa60460395c78ada80a7ef2f0781a",
+      "category": "bullet",
+      "family": "leaf",
+      "source": "新叶喵弹幕3.png",
+      "crop": [
+        35,
+        40,
+        185,
+        420
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_leaf_bud_glow.png",
+      "glowSha256": "55e8d9d3d5676dff7a4c48ae9fce3d052b35cc64c6022c454d3ca4d75c37887f",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushIceShard": {
+      "file": "assets/dream_stage3/bullets/dream_plush_ice_shard.png",
+      "size": [
+        96,
+        160
+      ],
+      "alphaBounds": [
+        22,
+        16,
+        74,
+        144
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "ae95866a82556a007465c3f2d306dca000aadb54f9c62e5e9f404aaf96d230e4",
+      "category": "bullet",
+      "family": "penguin",
+      "source": "企鹅弹幕2.png",
+      "crop": [
+        278,
+        105,
+        392,
+        390
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_ice_shard_glow.png",
+      "glowSha256": "2935575954506e22557e6e7ccfd5939445cd1fa3ddb6d12964516de37a47cfa3",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushSnowball": {
+      "file": "assets/dream_stage3/bullets/dream_plush_snowball.png",
+      "size": [
+        104,
+        152
+      ],
+      "alphaBounds": [
+        17,
+        17,
+        85,
+        135
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "39ce13e8097f17e289a322245161899d17b158cd803762463abf924af522294c",
+      "category": "bullet",
+      "family": "penguin",
+      "source": "企鹅弹幕2.png",
+      "crop": [
+        260,
+        555,
+        405,
+        785
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_snowball_glow.png",
+      "glowSha256": "b664763c2eb934be9af674d973526b982340cc2a1f2c1c416ddec1a812795c20",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushIceSpear": {
+      "file": "assets/dream_stage3/bullets/dream_plush_ice_spear.png",
+      "size": [
+        208,
+        112
+      ],
+      "alphaBounds": [
+        12,
+        18,
+        195,
+        93
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "398451b779273c567297565ce567144d5ff277a74a994f9ad68f39383f462faf",
+      "category": "bullet",
+      "family": "penguin",
+      "source": "企鹅弹幕.png",
+      "crop": [
+        635,
+        815,
+        1235,
+        1095
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_ice_spear_glow.png",
+      "glowSha256": "725488e656b7fba248587d610aaffd11879a6f24422c1ff044caeef55b7e15dc",
+      "forwardAxis": "left",
+      "collision": "body-only"
+    },
+    "dreamPlushCrystalShard": {
+      "file": "assets/dream_stage3/bullets/dream_plush_crystal_shard.png",
+      "size": [
+        96,
+        152
+      ],
+      "alphaBounds": [
+        27,
+        20,
+        69,
+        132
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "e081d629cd42e317e6bfc79e6186704b9f27a06754bfedcac3eca6fb850bdfb4",
+      "category": "bullet",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "crop": [
+        955,
+        20,
+        1038,
+        158
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_crystal_shard_glow.png",
+      "glowSha256": "dbbeab00c97bc207e7ae4766fa6c412d3df17ebeac8ef14cb0e8ca4949eb494e",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushDollOrb": {
+      "file": "assets/dream_stage3/bullets/dream_plush_doll_orb.png",
+      "size": [
+        104,
+        104
+      ],
+      "alphaBounds": [
+        22,
+        24,
+        81,
+        79
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "e7163f424c85cd19af2797df412cb23ae392076c9b9c905b57839b981d9729a5",
+      "category": "bullet",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "crop": [
+        18,
+        895,
+        112,
+        992
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_doll_orb_glow.png",
+      "glowSha256": "ea24fa6e034e224ed4a2cc45dae132c99e57dd9a535ec5c8c4775a91a9d10e70",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushDollSigil": {
+      "file": "assets/dream_stage3/bullets/dream_plush_doll_sigil.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        29,
+        28,
+        83,
+        84
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "bd34b92b83e6e68822b637e727ba4162cc57383092919e45fc5187f37d5ca5dd",
+      "category": "bullet",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "crop": [
+        18,
+        535,
+        112,
+        635
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_doll_sigil_glow.png",
+      "glowSha256": "0fefe877743948475a0829e186d7035585fa2af1021375988f23f867c1c71893",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushWaterDrop": {
+      "file": "assets/dream_stage3/bullets/dream_plush_water_drop.png",
+      "size": [
+        96,
+        128
+      ],
+      "alphaBounds": [
+        23,
+        20,
+        71,
+        108
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "57f6be66a636f007afd63d23f9c85f49156f6de6b4ec0c5bc78ab4219da96fae",
+      "category": "bullet",
+      "family": "fish",
+      "source": "好兄弟弹幕2.png",
+      "crop": [
+        682,
+        145,
+        790,
+        287
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_water_drop_glow.png",
+      "glowSha256": "48390adf7199802490f729f488f8d9eb416b1685e985a34483acfb4aa158c494",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushFishbone": {
+      "file": "assets/dream_stage3/bullets/dream_plush_fishbone.png",
+      "size": [
+        144,
+        88
+      ],
+      "alphaBounds": [
+        26,
+        27,
+        117,
+        60
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "801e8650a3492507ca412ebb9a4c607f5aab6102c4560900f65d9e5a651d2a41",
+      "category": "bullet",
+      "family": "fish",
+      "source": "好兄弟弹幕2.png",
+      "crop": [
+        14,
+        520,
+        116,
+        640
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_fishbone_glow.png",
+      "glowSha256": "775acebdf8f6e02c6d59922f1690cdd013a518d6456d67e5038265f514f51224",
+      "forwardAxis": "right",
+      "collision": "body-only"
+    },
+    "dreamPlushBubblePearl": {
+      "file": "assets/dream_stage3/bullets/dream_plush_bubble_pearl.png",
+      "size": [
+        104,
+        104
+      ],
+      "alphaBounds": [
+        29,
+        18,
+        73,
+        86
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "2e5dd841eeed92aa7e50936e0ae68c82e266e2d123aaa8bef5e3a721f9cc731c",
+      "category": "bullet",
+      "family": "fish",
+      "source": "星星弹幕 和 好兄弟弹幕.png",
+      "crop": [
+        318,
+        8,
+        408,
+        112
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_bubble_pearl_glow.png",
+      "glowSha256": "f2f061c41d618fc09fd1b4c9cdc8b10d467be162bb4fb7f5fc332470138ae43e",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushStarShot": {
+      "file": "assets/dream_stage3/bullets/dream_plush_star_shot.png",
+      "size": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        19,
+        22,
+        77,
+        74
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "715dba81b4b5a1c672748231542b5ed5535d14290e3b1581ac86704a000ce596",
+      "category": "bullet",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "crop": [
+        98,
+        32,
+        170,
+        112
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_star_shot_glow.png",
+      "glowSha256": "a542ed64342f9d54fef51ad47cd3c070eb61f7894a7eff1698d3c3abe857ce15",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushMeteorStar": {
+      "file": "assets/dream_stage3/bullets/dream_plush_meteor_star.png",
+      "size": [
+        176,
+        104
+      ],
+      "alphaBounds": [
+        30,
+        18,
+        146,
+        86
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "bdfc40c951cc3aae274481a35591c81b09fffd6001ccfaf011cba245901c3f5b",
+      "category": "bullet",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "crop": [
+        20,
+        492,
+        210,
+        620
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_meteor_star_glow.png",
+      "glowSha256": "5af375a2af88a8c07256706afd5737b6a81f4772ab99e87e06ca7a92ce9fb9e7",
+      "forwardAxis": "left",
+      "collision": "body-only"
+    },
+    "dreamPlushConstellationNode": {
+      "file": "assets/dream_stage3/bullets/dream_plush_constellation_node.png",
+      "size": [
+        144,
+        144
+      ],
+      "alphaBounds": [
+        17,
+        24,
+        127,
+        119
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "56db4f051053a3817a580b5e6ba6acb3a7a0e22ff7ea657d872ea2763627a779",
+      "category": "bullet",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "crop": [
+        526,
+        1028,
+        708,
+        1235
+      ],
+      "glowFile": "assets/dream_stage3/bullets/dream_plush_constellation_node_glow.png",
+      "glowSha256": "45ac5663ae1d3964d244f91ab7cffc6c18a69cc3b6d098cd0193b81284444fbc",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushLeafMuzzle": {
+      "file": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        15,
+        24,
+        241,
+        231
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "89bc16f0b1861f6bca423dd75956498dea9e55f6c5cb5b11d1b049d9a5aec17a",
+      "category": "vfx",
+      "family": "leaf",
+      "source": "新叶喵弹幕2.png",
+      "crop": [
+        650,
+        630,
+        1230,
+        1160
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle_glow.png",
+      "glowSha256": "8b302875251d297973d25e08f50f21e64a789c846b8ee064df1c1d5a2eeea4f5",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushLeafImpact": {
+      "file": "assets/dream_stage3/vfx/dream_plush_leaf_impact.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        17,
+        15,
+        240,
+        241
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "ede4da8cfe789b7c1dc0e763376698413d4f674629bf046711abe19c0c56c5f4",
+      "category": "vfx",
+      "family": "leaf",
+      "source": "新叶苗弹幕.png",
+      "crop": [
+        650,
+        625,
+        1190,
+        1195
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_leaf_impact_glow.png",
+      "glowSha256": "fed1ff55d9f9c79ec901d9e7bf99c9332bdb6bc11ed50b2a3e764f78c026a2a5",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushPenguinMuzzle": {
+      "file": "assets/dream_stage3/vfx/dream_plush_penguin_muzzle.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        15,
+        19,
+        241,
+        236
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "a8a15c69269e803462e74b856b9ac40af003e99aae11be2fbfb09ded61da1f02",
+      "category": "vfx",
+      "family": "penguin",
+      "source": "企鹅弹幕.png",
+      "crop": [
+        680,
+        65,
+        1235,
+        625
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_penguin_muzzle_glow.png",
+      "glowSha256": "a113eb768f0ad865ff691a0c9712ee7a35ed851683e823780ba6d7f01fb154df",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushPenguinImpact": {
+      "file": "assets/dream_stage3/vfx/dream_plush_penguin_impact.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        17,
+        27,
+        239,
+        229
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "01035c2fa84f17b8337e159fa8a85052ea601504338bb1ebead4dd540528ce8c",
+      "category": "vfx",
+      "family": "penguin",
+      "source": "企鹅弹幕2.png",
+      "crop": [
+        885,
+        880,
+        1238,
+        1238
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_penguin_impact_glow.png",
+      "glowSha256": "88b75dafd44e63d802e67f57efffe7cc8b16d267027df8e2c7beb1409e7ee803",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushDollMuzzle": {
+      "file": "assets/dream_stage3/vfx/dream_plush_doll_muzzle.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        45,
+        44,
+        210,
+        211
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "835eb4182012e2501ea079e9e0f57015759a1c7b0a4812042b889e40c2a44045",
+      "category": "vfx",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "crop": [
+        375,
+        530,
+        570,
+        720
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_doll_muzzle_glow.png",
+      "glowSha256": "2d9cdd5ce53a958c594aba360c1ad8c84320f000a91b793e96a4aae5fcedcdcd",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushDollImpact": {
+      "file": "assets/dream_stage3/vfx/dream_plush_doll_impact.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        16,
+        69,
+        240,
+        188
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "7664c9a4e1918b3c1e41a724da49e3cdf170ec6a3557899cf162328ad89c9f5a",
+      "category": "vfx",
+      "family": "doll",
+      "source": "流萤弹幕.png",
+      "crop": [
+        790,
+        20,
+        1235,
+        255
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_doll_impact_glow.png",
+      "glowSha256": "f617c8f18e095d1a47991a0aaf157ac3e9a86581b10cb05e7e61fa4b26822b57",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushFishMuzzle": {
+      "file": "assets/dream_stage3/vfx/dream_plush_fish_muzzle.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        36,
+        16,
+        219,
+        238
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "1e4749fa3e19ddf250bf62f95a5813e65931de0783ff62d1372a4c067b2f7bdf",
+      "category": "vfx",
+      "family": "fish",
+      "source": "星星弹幕 和 好兄弟弹幕.png",
+      "crop": [
+        215,
+        0,
+        505,
+        365
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_fish_muzzle_glow.png",
+      "glowSha256": "816e89d666513254cc22fa7aface59a6236adf6877601b795eb421cb18ae2bd4",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushFishImpact": {
+      "file": "assets/dream_stage3/vfx/dream_plush_fish_impact.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        20,
+        40,
+        236,
+        216
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "b25cf78a2bc1c3970398472b0af7c65d951bbb90996ed970d0d86d080b2e26c6",
+      "category": "vfx",
+      "family": "fish",
+      "source": "好兄弟弹幕2.png",
+      "crop": [
+        965,
+        790,
+        1235,
+        985
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_fish_impact_glow.png",
+      "glowSha256": "c79bd454e1f608ae08a10b018c8e790128e38b854eb5001f7bd3e781beb47c71",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushStarMuzzle": {
+      "file": "assets/dream_stage3/vfx/dream_plush_star_muzzle.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        19,
+        28,
+        237,
+        227
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "6795758c5ec986101e3176e1762daa8f79aa5e68080e8ce152de1ea626f7b8ea",
+      "category": "vfx",
+      "family": "star",
+      "source": "星星弹幕 和 好兄弟弹幕.png",
+      "crop": [
+        195,
+        650,
+        515,
+        930
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_star_muzzle_glow.png",
+      "glowSha256": "0a114a09614ff79407feb361c00d69b415077cebd1e021a182dfdc764bc02624",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushStarImpact": {
+      "file": "assets/dream_stage3/vfx/dream_plush_star_impact.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        25,
+        44,
+        230,
+        211
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "93520740b784800ce50185211c3c21c3ac1d1663c732ad146aaf1135b4a1b923",
+      "category": "vfx",
+      "family": "star",
+      "source": "星星弹幕2.png",
+      "crop": [
+        990,
+        1025,
+        1235,
+        1235
+      ],
+      "glowFile": "assets/dream_stage3/vfx/dream_plush_star_impact_glow.png",
+      "glowSha256": "c057614325c84a4382b40ec65d9d7ea1e356d17b75877ac974f99075db8ce814",
+      "forwardAxis": null,
+      "collision": "none"
+    }
+  }
+}

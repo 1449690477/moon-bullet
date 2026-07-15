@@ -17,6 +17,12 @@ const OUT_DIR = process.env.DREAM_CAPTURE_OUT
   ? path.resolve(ROOT, process.env.DREAM_CAPTURE_OUT)
   : path.join(ROOT, 'tools', 'dream_mode_acceptance');
 const PORT = Number(process.env.DREAM_CAPTURE_PORT || 18786);
+const CAPTURE_STAGE = Math.max(1, Number(process.env.DREAM_CAPTURE_STAGE || 1) | 0);
+const CAPTURE_STAGE_OPTIONS = Object.freeze({ stage: CAPTURE_STAGE });
+const CAPTURE_STAGE_TITLE = CAPTURE_STAGE === 3
+  ? '第三关「绒梦玩偶屋」'
+  : (CAPTURE_STAGE === 2 ? '第二关「零界编译域」' : '第一关「堕辉圣域」');
+const CAPTURE_STAGE_HAS_BOSS = CAPTURE_STAGE !== 3;
 const PERF_SECONDS = Math.max(1, Number(process.env.DREAM_PERF_SECONDS || 60));
 const PERF_CPU_RATE = Math.max(1, Number(process.env.DREAM_PERF_CPU_RATE || 1));
 const EXPECTED = { enemyCap: 8, bulletCap: 96, warningCap: 4, laserCap: 4 };
@@ -194,16 +200,18 @@ function stringSet(snapshot, directNames, bulletName) {
 }
 
 async function auditDreamAssets(page, viewport, report) {
-  await page.evaluate(() => window.__dreamModeCapture__.prepare('lobby', { level: 1 }));
+  await page.evaluate((stage) => window.__dreamModeCapture__.prepare('lobby', { stage }), CAPTURE_STAGE);
   await page.waitForFunction(() => {
     const fn = window.__dreamModeInternals__?.bulletAssetStatus;
     if (typeof fn !== 'function') return true;
-    const status = fn();
+    const stageId = window.__dreamModeCapture__?.snapshot?.()?.stageId;
+    const status = fn(stageId);
     const pending = Array.isArray(status?.pending) ? status.pending.length : Number(status?.pending || 0);
-    return pending === 0;
+    return pending === 0 && !(status?.stageVisualPending?.length);
   }, { timeout: 15000 }).catch(() => {
     report.failures.push(`${viewport.id}/asset-audit: bullet textures did not settle within 15s`);
   });
+  await page.evaluate((stage) => window.__dreamModeCapture__.prepare('material-lab', { stage, quality: 'high' }), CAPTURE_STAGE);
   await page.waitForFunction(() => {
     const fn = window.__dreamModeInternals__?.bulletMaterialStatus;
     if (typeof fn !== 'function') return false;
@@ -216,15 +224,16 @@ async function auditDreamAssets(page, viewport, report) {
   });
   const api = await page.evaluate(() => {
     const internals = window.__dreamModeInternals__;
+    const stageId = window.__dreamModeCapture__?.snapshot?.()?.stageId;
     return {
       hasSkinSpec: typeof internals?.bulletSkinSpec === 'function',
       hasAssetStatus: typeof internals?.bulletAssetStatus === 'function',
       hasDiversitySpec: typeof internals?.patternDiversitySpec === 'function',
       hasMaterialSpec: typeof internals?.bulletMaterialSpec === 'function',
       hasMaterialStatus: typeof internals?.bulletMaterialStatus === 'function',
-      skins: typeof internals?.bulletSkinSpec === 'function' ? internals.bulletSkinSpec() : [],
-      status: typeof internals?.bulletAssetStatus === 'function' ? internals.bulletAssetStatus() : null,
-      diversity: typeof internals?.patternDiversitySpec === 'function' ? internals.patternDiversitySpec() : null,
+      skins: typeof internals?.bulletSkinSpec === 'function' ? internals.bulletSkinSpec(stageId) : [],
+      status: typeof internals?.bulletAssetStatus === 'function' ? internals.bulletAssetStatus(stageId) : null,
+      diversity: typeof internals?.patternDiversitySpec === 'function' ? internals.patternDiversitySpec(stageId) : null,
       materialSpec: typeof internals?.bulletMaterialSpec === 'function' ? internals.bulletMaterialSpec() : null,
       materialStatus: typeof internals?.bulletMaterialStatus === 'function' ? internals.bulletMaterialStatus() : null,
     };
@@ -236,9 +245,12 @@ async function auditDreamAssets(page, viewport, report) {
   }
   const assets = new Set(api.skins.map((skin) => skin.assetKey).filter(Boolean));
   const families = new Set(api.skins.map((skin) => skin.family).filter(Boolean));
-  if (api.skins.length < 16) report.failures.push(`${label}: ${api.skins.length} declared skins < 16`);
-  if (assets.size < 16) report.failures.push(`${label}: ${assets.size} real assets < 16`);
-  if (families.size < 8) report.failures.push(`${label}: ${families.size} visual families < 8`);
+  const minimumSkins = CAPTURE_STAGE === 3 ? 15 : (CAPTURE_STAGE === 2 ? 10 : 16);
+  const minimumFamilies = CAPTURE_STAGE === 3 ? 9 : (CAPTURE_STAGE === 2 ? 5 : 8);
+  const minimumEmitters = CAPTURE_STAGE === 3 ? 16 : (CAPTURE_STAGE === 2 ? 16 : 32);
+  if (api.skins.length < minimumSkins) report.failures.push(`${label}: ${api.skins.length} declared skins < ${minimumSkins}`);
+  if (assets.size < minimumSkins) report.failures.push(`${label}: ${assets.size} real assets < ${minimumSkins}`);
+  if (families.size < minimumFamilies) report.failures.push(`${label}: ${families.size} visual families < ${minimumFamilies}`);
   if (Number.isFinite(api.status?.expected) && api.status.expected !== assets.size) report.failures.push(`${label}: status expects ${api.status.expected} assets for ${assets.size} unique skin assets`);
   const pendingAssets = Array.isArray(api.status?.pending) ? api.status.pending : (Number(api.status?.pending || 0) ? ['unknown'] : []);
   if (pendingAssets.length) report.failures.push(`${label}: pending assets ${pendingAssets.join(', ')}`);
@@ -246,8 +258,13 @@ async function auditDreamAssets(page, viewport, report) {
   const failedAssets = api.status?.failed || api.status?.decodeFailed || [];
   if (failedAssets.length) report.failures.push(`${label}: failed assets ${failedAssets.join(', ')}`);
   if (api.status?.fallbackKeys?.length) report.failures.push(`${label}: runtime fallback keys ${api.status.fallbackKeys.join(', ')}`);
+  if (api.status?.stageVisualPending?.length) report.failures.push(`${label}: pending stage visuals ${api.status.stageVisualPending.join(', ')}`);
+  if (api.status?.stageVisualMissing?.length) report.failures.push(`${label}: missing stage visuals ${api.status.stageVisualMissing.join(', ')}`);
+  if (api.status?.stageVisualDecodeFailed?.length) report.failures.push(`${label}: failed stage visuals ${api.status.stageVisualDecodeFailed.join(', ')}`);
+  if (api.status?.techFallbackKeys?.length) report.failures.push(`${label}: technology VFX fallbacks ${api.status.techFallbackKeys.join(', ')}`);
+  if (api.status?.stageFallbackKeys?.length) report.failures.push(`${label}: stage visual fallbacks ${api.status.stageFallbackKeys.join(', ')}`);
   if ((api.diversity?.motionFamilies?.length || 0) < 10) report.failures.push(`${label}: ${(api.diversity?.motionFamilies || []).length} motion families < 10`);
-  if ((api.diversity?.emitterKeys?.length || 0) < 32) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < 32`);
+  if ((api.diversity?.emitterKeys?.length || 0) < minimumEmitters) report.failures.push(`${label}: ${(api.diversity?.emitterKeys || []).length} emitters < ${minimumEmitters}`);
   if (api.diversity?.runtimeFallbackReporting !== true) report.failures.push(`${label}: runtime fallback reporting is not enabled`);
   if (api.materialSpec?.phaseCount !== 4) report.failures.push(`${label}: material phase count ${api.materialSpec?.phaseCount} != 4`);
   if (!api.materialSpec?.prewarm || !api.materialSpec?.batchTrails || !api.materialSpec?.allocationFreeHotPath) report.failures.push(`${label}: prewarm/batch-trail/allocation-free material policy incomplete`);
@@ -313,6 +330,7 @@ async function screenshotViewport(page, fileName) {
 }
 
 async function prepare(page, scene, options = {}) {
+  options = { ...CAPTURE_STAGE_OPTIONS, ...options };
   return page.evaluate(({ scene, options }) => {
     const cap = window.__dreamModeCapture__;
     const prepared = cap.prepare(scene, options);
@@ -354,6 +372,44 @@ async function captureTimeline(page, viewport, scene, options, framePoints, repo
       report.failures.push(`${label}: canvas shifted or clipped (${JSON.stringify(visual.client)} in ${JSON.stringify(visual.viewport)})`);
     }
     report.frames.push({ label, file, shotKind: 'full-viewport', screenshot, scene, options, frame, snapshot, counts: validation.counts, visual });
+  }
+}
+
+async function captureStage3Visuals(page, viewport, report) {
+  if (CAPTURE_STAGE !== 3) return;
+
+  const roomStart = report.frames.length;
+  await captureTimeline(page, viewport, 'room', { quality: viewport.mobile ? 'ultra' : 'high' }, [0, 30, 90], report, 'room_scene');
+  const roomFrames = report.frames.slice(roomStart);
+  if (!roomFrames.length || roomFrames.some((entry) => entry.snapshot?.backgroundKey !== 'dreamRoomBase')) {
+    report.failures.push(`${viewport.id}/room-scene: dedicated room background was not active for the full capture`);
+  }
+  if (viewport.mobile) return;
+
+  const entryKinds = ['puppetRig', 'vineSwing', 'iceSlide', 'arcFly', 'starBounce'];
+  for (const entryKind of entryKinds) {
+    const start = report.frames.length;
+    await captureTimeline(page, viewport, 'entry-lab', { entryKind, quality: 'high' }, [0, 15, 30, 45, 60], report, `entry_${entryKind}`);
+    const frames = report.frames.slice(start);
+    const snapshots = frames.map((entry) => entry.snapshot);
+    if (!snapshots.some((snapshot) => snapshot?.enemies?.some((enemy) => enemy.entryKind === entryKind && enemy.entering))) {
+      report.failures.push(`${viewport.id}/entry-${entryKind}: no readable in-progress entry frame`);
+    }
+    for (const snapshot of snapshots) {
+      const entering = (snapshot?.enemies || []).filter((enemy) => enemy.entryKind === entryKind && enemy.entering);
+      if (entering.some((enemy) => enemy.collidable)) report.failures.push(`${viewport.id}/entry-${entryKind}: entry enemy became collidable before settling`);
+      if (entering.length && Number(snapshot?.logicalBulletCount || 0) > 0) report.failures.push(`${viewport.id}/entry-${entryKind}: conductor fired while the only plush source was entering`);
+    }
+  }
+
+  const plushMobs = ['leafcat', 'penguin', 'graydoll', 'bluefish', 'starpillow'];
+  for (const mob of plushMobs) {
+    const start = report.frames.length;
+    await captureTimeline(page, viewport, 'plush-material-lab', { mob, attackFlash: 0.32, quality: 'high' }, [0, 8, 18, 30], report, `plush_${mob}`);
+    const frames = report.frames.slice(start);
+    if (!frames.some((entry) => entry.snapshot?.enemies?.length === 1)) {
+      report.failures.push(`${viewport.id}/plush-${mob}: material close-up did not contain exactly one plush`);
+    }
   }
 }
 
@@ -545,16 +601,66 @@ async function captureQualityParity(page, report) {
     motionsPerWave: Object.fromEntries([...waveMotions].map(([wave, values]) => [wave, [...values].sort()])),
     emittersPerWave: Object.fromEntries([...waveEmitters].map(([wave, values]) => [wave, [...values].sort()])),
   };
-  if (allCombos.size < 12) report.failures.push(`pattern diversity: only ${allCombos.size} style/shape combinations < 12`);
-  if (allAssets.size < 12) report.failures.push(`pattern diversity: only ${allAssets.size} real bullet assets < 12`);
-  if (allMotions.size < 10) report.failures.push(`pattern diversity: only ${allMotions.size} motion families < 10`);
-  if (allEmitters.size < 24) report.failures.push(`pattern diversity: only ${allEmitters.size} observed emitters < 24`);
+  const minimumCombos = CAPTURE_STAGE === 3 ? 5 : (CAPTURE_STAGE === 2 ? 6 : 12);
+  const minimumAssets = CAPTURE_STAGE === 3 ? 15 : (CAPTURE_STAGE === 2 ? 10 : 12);
+  const minimumMotions = CAPTURE_STAGE === 3 ? 16 : (CAPTURE_STAGE === 2 ? 12 : 10);
+  const minimumEmitters = CAPTURE_STAGE === 3 ? 16 : (CAPTURE_STAGE === 2 ? 14 : 24);
+  if (allCombos.size < minimumCombos) report.failures.push(`pattern diversity: only ${allCombos.size} style/shape combinations < ${minimumCombos}`);
+  if (allAssets.size < minimumAssets) report.failures.push(`pattern diversity: only ${allAssets.size} real bullet assets < ${minimumAssets}`);
+  if (allMotions.size < minimumMotions) report.failures.push(`pattern diversity: only ${allMotions.size} motion families < ${minimumMotions}`);
+  if (allEmitters.size < minimumEmitters) report.failures.push(`pattern diversity: only ${allEmitters.size} observed emitters < ${minimumEmitters}`);
   for (const [wave, combos] of waveCombos) {
     if (combos.size < 2) report.failures.push(`wave ${wave}: only ${combos.size} style/shape combinations < 2`);
-    if ((waveAssets.get(wave)?.size || 0) < 4) report.failures.push(`wave ${wave}: only ${waveAssets.get(wave)?.size || 0} real bullet assets < 4`);
-    if ((waveMotions.get(wave)?.size || 0) < 3) report.failures.push(`wave ${wave}: only ${waveMotions.get(wave)?.size || 0} motion families < 3`);
-    if ((waveEmitters.get(wave)?.size || 0) < 4) report.failures.push(`wave ${wave}: only ${waveEmitters.get(wave)?.size || 0} observed emitters < 4`);
+    // Plush Room follows the guide's "one primary plus one counter-voice" rule.
+    // Require two distinct mechanics per wave, then audit the complete 15-asset /
+    // 16-emitter vocabulary across all ten waves above.
+    const perWaveAssetMin = CAPTURE_STAGE === 3 ? 4 : (CAPTURE_STAGE === 2 ? 2 : 4);
+    const perWaveMotionMin = CAPTURE_STAGE === 3 ? 2 : (CAPTURE_STAGE === 2 ? 2 : 3);
+    const perWaveEmitterMin = CAPTURE_STAGE === 3 ? 2 : (CAPTURE_STAGE === 2 ? 2 : 4);
+    if ((waveAssets.get(wave)?.size || 0) < perWaveAssetMin) report.failures.push(`wave ${wave}: only ${waveAssets.get(wave)?.size || 0} real bullet assets < ${perWaveAssetMin}`);
+    if ((waveMotions.get(wave)?.size || 0) < perWaveMotionMin) report.failures.push(`wave ${wave}: only ${waveMotions.get(wave)?.size || 0} motion families < ${perWaveMotionMin}`);
+    if ((waveEmitters.get(wave)?.size || 0) < perWaveEmitterMin) report.failures.push(`wave ${wave}: only ${waveEmitters.get(wave)?.size || 0} observed emitters < ${perWaveEmitterMin}`);
   }
+}
+
+async function captureBossQualityParity(page, report) {
+  if (!CAPTURE_STAGE_HAS_BOSS) return;
+  const qualities = ['high', 'medium', 'low', 'ultra'];
+  const phaseCount = CAPTURE_STAGE === 2 ? 6 : 5;
+  const samples = [];
+  for (let phase = 0; phase < phaseCount; phase += 1) {
+    for (const elapsed of [2.4, 5.2, 8.0]) {
+      const group = [];
+      for (const quality of qualities) {
+        const prepared = await prepare(page, 'boss', { phase, elapsed, quality });
+        const current = await step(page, 1) || prepared;
+        group.push({
+          phase,
+          elapsed,
+          quality,
+          logicalCount: count(current, ['logicalBulletCount', 'enemyBulletCount', 'enemyBullets', 'bullets']),
+          warningCount: count(current, ['warningCount', 'warnings']),
+          laserCount: count(current, ['laserCount', 'lasers']),
+          logicHash: current.logicHash || current.bulletLogicHash,
+          bulletAssets: [...stringSet(current, ['bulletAssets', 'bulletAssetKeys'], 'assetKey')].sort(),
+          bulletMotions: [...stringSet(current, ['bulletMotions'], 'motion')].sort(),
+          fallbacks: [...(current.fallbacks || [])],
+        });
+      }
+      const expected = group[0];
+      for (const sample of group.slice(1)) {
+        const label = `boss phase ${phase + 1} @ ${elapsed}s quality ${sample.quality}`;
+        if (sample.logicalCount !== expected.logicalCount) report.failures.push(`${label}: logical count ${sample.logicalCount} != ${expected.logicalCount}`);
+        if (sample.warningCount !== expected.warningCount || sample.laserCount !== expected.laserCount) report.failures.push(`${label}: telegraph counts differ from high quality`);
+        if (!sample.logicHash || sample.logicHash !== expected.logicHash) report.failures.push(`${label}: logic hash ${sample.logicHash} != ${expected.logicHash}`);
+        if (JSON.stringify(sample.bulletAssets) !== JSON.stringify(expected.bulletAssets)) report.failures.push(`${label}: bullet asset set differs from high quality`);
+        if (JSON.stringify(sample.bulletMotions) !== JSON.stringify(expected.bulletMotions)) report.failures.push(`${label}: motion set differs from high quality`);
+        if (sample.fallbacks.length) report.failures.push(`${label}: visual fallback active (${sample.fallbacks.map(String).join(', ')})`);
+      }
+      samples.push(...group);
+    }
+  }
+  report.bossQualityParity = samples;
 }
 
 function percentile(values, ratio) {
@@ -566,7 +672,19 @@ function percentile(values, ratio) {
 async function runPerformance(page, report) {
   // Performance measures the stable hot path, not one-time texture decoding and
   // per-skin material baking. A real player pays this cost incrementally in the lobby.
-  await prepare(page, 'lobby', { level: 1 });
+  await prepare(page, 'lobby', { level: CAPTURE_STAGE });
+  await page.waitForFunction(() => {
+    const cap = window.__dreamModeCapture__;
+    const fn = window.__dreamModeInternals__?.bulletAssetStatus;
+    if (typeof fn !== 'function') return false;
+    const stageId = cap?.snapshot?.()?.stageId;
+    const status = fn(stageId);
+    return !(status?.pending?.length) && !(status?.decodeFailed?.length)
+      && !(status?.stageVisualPending?.length) && !(status?.stageVisualDecodeFailed?.length);
+  }, { timeout: 20000 });
+  // The dedicated lab forces a complete, deterministic prewarm before the hot-path
+  // sample. This is especially important for Level 3's fifteen lazy-loaded skins.
+  await prepare(page, 'material-lab', { quality: 'ultra' });
   await page.waitForFunction(() => {
     const status = window.__dreamModeInternals__?.bulletMaterialStatus?.();
     return status?.warmed === true
@@ -578,23 +696,45 @@ async function runPerformance(page, report) {
     const cap = window.__dreamModeCapture__;
     const intervals = [];
     const cpu = [];
+    const loads = [];
     const firstSnapshot = cap.snapshot();
     const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
     let previous = await nextFrame();
     const deadline = performance.now() + seconds * 1000;
+    let frame = 0;
     while (performance.now() < deadline) {
       const start = performance.now();
       cap.step(1, 1 / 60, false);
       cpu.push(Math.max(0.001, performance.now() - start));
+      frame += 1;
+      if (frame % 120 === 0) {
+        const current = cap.snapshot();
+        loads.push({
+          enemies: current.enemyCount,
+          bullets: current.logicalBulletCount,
+          warnings: current.warningCount,
+          lasers: current.laserCount,
+        });
+      }
       const now = await nextFrame();
       intervals.push(Math.max(0.001, now - previous));
       previous = now;
     }
-    return { intervals, cpu, firstSnapshot, snapshot: cap.snapshot() };
+    const snapshot = cap.snapshot();
+    loads.push({ enemies: snapshot.enemyCount, bullets: snapshot.logicalBulletCount, warnings: snapshot.warningCount, lasers: snapshot.laserCount });
+    return { intervals, cpu, loads, firstSnapshot, snapshot };
   }, { seconds: PERF_SECONDS });
   const averageMs = sample.intervals.reduce((sum, value) => sum + value, 0) / Math.max(1, sample.intervals.length);
   const p99Ms = percentile(sample.intervals, 0.99);
   const cpuAverage = sample.cpu.reduce((sum, value) => sum + value, 0) / Math.max(1, sample.cpu.length);
+  const loadMetric = (key) => {
+    const values = sample.loads.map(load => Number(load[key]) || 0);
+    return {
+      min: Math.min(...values),
+      max: Math.max(...values),
+      average: Number((values.reduce((sum, value) => sum + value, 0) / Math.max(1, values.length)).toFixed(2)),
+    };
+  };
   report.performance = {
     durationSeconds: PERF_SECONDS,
     cpuThrottlingRate: PERF_CPU_RATE,
@@ -603,6 +743,12 @@ async function runPerformance(page, report) {
     onePercentLowFps: Number((1000 / Math.max(0.001, p99Ms)).toFixed(1)),
     averageCpuMs: Number(cpuAverage.toFixed(3)),
     p99FrameMs: Number(p99Ms.toFixed(3)),
+    sustainedLoad: {
+      enemies: loadMetric('enemies'),
+      bullets: loadMetric('bullets'),
+      warnings: loadMetric('warnings'),
+      lasers: loadMetric('lasers'),
+    },
     initialMaterialStats: sample.firstSnapshot?.materialStats || null,
     finalMaterialStats: sample.snapshot?.materialStats || null,
     snapshot: sample.snapshot,
@@ -614,6 +760,10 @@ async function runPerformance(page, report) {
   if (Number(firstMaterial.cacheEntries || 0) !== Number(finalMaterial.cacheEntries || 0)) report.failures.push(`performance material cache entries grew ${firstMaterial.cacheEntries || 0} -> ${finalMaterial.cacheEntries || 0}`);
   if (Number(firstMaterial.cacheBuilds || 0) !== Number(finalMaterial.cacheBuilds || 0)) report.failures.push(`performance material cache builds grew ${firstMaterial.cacheBuilds || 0} -> ${finalMaterial.cacheBuilds || 0}`);
   if (Number(finalMaterial.trailBatches || 0) > 5) report.failures.push(`performance trail batches ${finalMaterial.trailBatches || 0} > 5`);
+  if (report.performance.sustainedLoad.enemies.min < 8) report.failures.push(`performance enemies dropped below 8 (${report.performance.sustainedLoad.enemies.min})`);
+  if (report.performance.sustainedLoad.bullets.min < 80) report.failures.push(`performance bullets dropped below 80 (${report.performance.sustainedLoad.bullets.min})`);
+  if (report.performance.sustainedLoad.warnings.min < 4) report.failures.push(`performance warnings dropped below 4 (${report.performance.sustainedLoad.warnings.min})`);
+  if (report.performance.sustainedLoad.lasers.min < 4) report.failures.push(`performance lasers dropped below 4 (${report.performance.sustainedLoad.lasers.min})`);
   if (report.performance.averageFps < 58) report.failures.push(`performance average ${report.performance.averageFps} FPS < 58`);
   if (report.performance.onePercentLowFps < 45) report.failures.push(`performance 1% low ${report.performance.onePercentLowFps} FPS < 45`);
 }
@@ -649,9 +799,9 @@ function writeHtml(report) {
       <figcaption><b>${entry.label}</b><br>full viewport ${entry.screenshot?.width || 0}×${entry.screenshot?.height || 0} · DPR ${entry.visual.viewport.dpr}<br>enemy ${entry.counts.enemies} · bullet ${entry.counts.bullets} · warning ${entry.counts.warnings} · laser ${entry.counts.lasers}<br>hash ${entry.visual.pixelHash}</figcaption>
     </figure>`).join('\n');
   const performance = report.performance ? `<p>Performance ${report.performance.durationSeconds}s: average <b>${report.performance.averageFps} FPS</b>, 1% low <b>${report.performance.onePercentLowFps} FPS</b>, CPU ${report.performance.averageCpuMs}ms</p>` : '';
-  const html = `<!doctype html><meta charset="utf-8"><title>梦境模式第一关视觉验收</title>
+  const html = `<!doctype html><meta charset="utf-8"><title>梦境模式${CAPTURE_STAGE_TITLE}视觉验收</title>
 <style>body{margin:24px;background:#0d1024;color:#eef2ff;font:15px system-ui}h1,h2{color:#ffb8e7}p{line-height:1.7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}figure{margin:0;padding:10px;background:#171b36;border:1px solid #7784c7;border-radius:8px}img{display:block;width:100%;height:auto;background:#050713}figcaption{padding:9px 2px 2px;line-height:1.5}.bad{color:#ff849a}.good{color:#9dffd8}</style>
-<h1>梦境模式第一关「堕辉圣域」视觉验收</h1>
+<h1>梦境模式${CAPTURE_STAGE_TITLE}视觉验收</h1>
 <p>Source ${report.source.file} · ${report.source.sha256.slice(0, 12)} · Chrome ${report.runtime.chrome}</p>
 ${performance}
 <p class="${report.failures.length ? 'bad' : 'good'}">${report.failures.length ? `${report.failures.length} failures: ${report.failures.join(' | ')}` : 'All automated visual, resource, logic-cap and performance gates passed.'}</p>
@@ -667,10 +817,13 @@ async function main() {
   cleanOutput();
   const report = {
     generatedAt: new Date().toISOString(),
+    stage: CAPTURE_STAGE,
+    hasBoss: CAPTURE_STAGE_HAS_BOSS,
     source: { file: path.relative(ROOT, sourceFile) || 'index.html', sha256: sha256(sourceFile) },
     runtime: { node: process.version, chrome: '', executablePath },
     frames: [],
     qualityParity: [],
+    bossQualityParity: [],
     assetAudit: [],
     hitFeedback: [],
     materialAnimation: null,
@@ -698,21 +851,30 @@ async function main() {
       const page = await createPage(browser, viewport, diagnostics);
       try {
         await auditDreamAssets(page, viewport, report);
-        await captureTimeline(page, viewport, 'lobby', { level: 1 }, [0, 20, 60], report, 'lobby');
+        await captureStage3Visuals(page, viewport, report);
+        await captureTimeline(page, viewport, 'lobby', { level: CAPTURE_STAGE }, [0, 20, 60], report, 'lobby');
         await captureTimeline(page, viewport, 'wave', { wave: 1, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 36, 84, 144], report, 'wave01');
         await captureTimeline(page, viewport, 'wave', { wave: 10, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 36, 84, 144], report, 'wave10');
-        await captureTimeline(page, viewport, 'boss', { phase: 4, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 45, 120], report, 'boss05');
-        await captureTimeline(page, viewport, 'result', { stars: 3, elapsedMs: 390000 }, [0, 30, 90], report, 'result_3star');
-        await captureTimeline(page, viewport, 'result', { stars: 0, elapsedMs: 450000 }, [0, 30, 90], report, 'result_0star');
+        if (CAPTURE_STAGE_HAS_BOSS) {
+          const finalBossPhase = CAPTURE_STAGE === 2 ? 5 : 4;
+          await captureTimeline(page, viewport, 'boss', { phase: finalBossPhase, quality: viewport.mobile ? 'ultra' : 'high' }, [0, 45, 120, 240, 420], report, `boss${String(finalBossPhase + 1).padStart(2, '0')}`);
+        }
+        const threeStarTime = CAPTURE_STAGE === 3 ? 545000 : (CAPTURE_STAGE === 2 ? 628000 : 390000);
+        const zeroStarTime = CAPTURE_STAGE === 3 ? 610000 : (CAPTURE_STAGE === 2 ? 690000 : 450000);
+        await captureTimeline(page, viewport, 'result', { stars: 3, elapsedMs: threeStarTime }, [0, 30, 90], report, 'result_3star');
+        await captureTimeline(page, viewport, 'result', { stars: 0, elapsedMs: zeroStarTime }, [0, 30, 90], report, 'result_0star');
         await captureHitFeedback(page, viewport, report);
         await captureTimeline(page, viewport, 'bullet-dissolve', { quality: viewport.mobile ? 'ultra' : 'high' }, [0, 5, 12, 20, 24], report, 'bullet_dissolve');
         if (!viewport.mobile) {
-          await captureTimeline(page, viewport, 'leaderboard', { level: 1 }, [0, 30, 90], report, 'leaderboard');
+          await captureTimeline(page, viewport, 'leaderboard', { level: CAPTURE_STAGE }, [0, 30, 90], report, 'leaderboard');
           for (let wave = 2; wave <= 9; wave += 1) {
             await captureTimeline(page, viewport, 'wave', { wave, quality: 'high' }, [0, 36, 84, 144], report, `wave${String(wave).padStart(2, '0')}`);
           }
-          for (let phase = 0; phase < 4; phase += 1) {
-            await captureTimeline(page, viewport, 'boss', { phase, quality: 'high' }, [0, 45, 120], report, `boss${String(phase + 1).padStart(2, '0')}`);
+          if (CAPTURE_STAGE_HAS_BOSS) {
+            const extraBossPhaseCount = CAPTURE_STAGE === 2 ? 5 : 4;
+            for (let phase = 0; phase < extraBossPhaseCount; phase += 1) {
+              await captureTimeline(page, viewport, 'boss', { phase, quality: 'high' }, [0, 45, 120, 240, 420], report, `boss${String(phase + 1).padStart(2, '0')}`);
+            }
           }
           for (let hits = 0; hits <= 3; hits += 1) {
             await captureTimeline(page, viewport, 'stars', { hits }, [0, 12, 60], report, `stars_hits${hits}`);
@@ -721,6 +883,7 @@ async function main() {
           await captureTimeline(page, viewport, 'material-lab', { quality: 'high' }, [0, 6, 15, 30], report, 'material_phases');
           await captureMaterialAnimation(page, viewport, report);
           await captureQualityParity(page, report);
+          if (CAPTURE_STAGE_HAS_BOSS) await captureBossQualityParity(page, report);
         }
       } finally {
         await page.close().catch(() => {});
@@ -755,12 +918,24 @@ async function main() {
   const bossFrames = numberedFrames('boss');
   const hitFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/hit_feedback/')).map((entry) => entry.file);
   const dissolveFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/bullet_dissolve/')).map((entry) => entry.file);
-  report.gifs.push(buildGif('dream_wave_patterns', waveFrames));
-  report.gifs.push(buildGif('dream_seraph_phases', bossFrames));
+  const entryFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/entry_')).map((entry) => entry.file);
+  const plushMaterialFrames = report.frames.filter((entry) => entry.label.startsWith('desktop_1280x720/plush_')).map((entry) => entry.file);
+  report.gifs.push(buildGif(`dream_level${CAPTURE_STAGE}_wave_patterns`, waveFrames));
+  if (CAPTURE_STAGE_HAS_BOSS) {
+    report.gifs.push(buildGif(CAPTURE_STAGE === 2 ? 'dream_suiyi_phases' : 'dream_seraph_phases', bossFrames));
+  } else {
+    report.gifs.push(buildGif('dream_plush_entry_choreography', entryFrames, { frameDuration: 0.10, fps: 15, width: 720 }));
+    report.gifs.push(buildGif('dream_plush_materials', plushMaterialFrames, { frameDuration: 0.12, fps: 12, width: 720 }));
+  }
   report.gifs.push(buildGif('dream_hit_feedback', hitFrames));
   report.gifs.push(buildGif('dream_bullet_dissolve', dissolveFrames, { frameDuration: 0.08, fps: 15, width: 720 }));
   if (report.materialAnimation?.frames?.length) {
     report.gifs.push(buildGif('dream_bullet_material_motion_2s', report.materialAnimation.frames, { frameDuration: 1 / 30, fps: 30, width: 720 }));
+  }
+  if (ACTIVE_VIEWPORTS.some((viewport) => viewport.id === 'desktop_1280x720')) {
+    for (const gif of report.gifs) {
+      if (!gif?.built) report.failures.push(`required GIF was not built: ${gif?.reason || 'unknown error'}`);
+    }
   }
 
   fs.writeFileSync(path.join(OUT_DIR, 'report.json'), JSON.stringify(report, null, 2));
