@@ -20,8 +20,8 @@ describe('dream mode level three: Plush Dream Room', () => {
       seed: 7130303,
       name: '绒梦玩偶屋',
       waveCount: 10,
-      mobTargetSeconds: 545,
-      bossTargetSeconds: 142,
+      mobTargetSeconds: 480,
+      bossTargetSeconds: 140,
       bossKey: 'dreamshark',
       hasBoss: true,
       roomScene: true,
@@ -44,7 +44,7 @@ describe('dream mode level three: Plush Dream Room', () => {
     expect(mobs.map((mob) => mob.key)).toEqual(expectedKeys);
     expect(mobs.map((mob) => mob.role)).toEqual(['leaf', 'iceToy', 'doll', 'waterToy', 'starToy']);
     expect(new Set(mobs.map((mob) => mob.sprite)).size).toBe(5);
-    expect(mobs.every((mob) => mob.hp >= 118000 && mob.size >= 122 && mob.entryKind)).toBe(true);
+    expect(mobs.every((mob) => mob.hp >= 74000 && mob.size >= 122 && mob.entryKind)).toBe(true);
 
     const waves = dream.waveSpec(LEVEL_THREE);
     expect(waves).toHaveLength(10);
@@ -52,7 +52,7 @@ describe('dream mode level three: Plush Dream Room', () => {
       '绒线初醒', '冰帽滑行曲', '提线星晶阵', '好兄弟潮汐', '星枕夜航',
       '藤幕冰环', '玩偶巡游', '漩涡星雨', '午夜提线剧', '玩偶之家终奏',
     ]);
-    expect(waves.map((wave) => wave.hpMultiplier)).toEqual([1, 1.12, 1.24, 1.37, 1.51, 1.66, 1.82, 2, 2.2, 2.42]);
+    expect(waves.map((wave) => wave.hpMultiplier)).toEqual([1, 1.08, 1.16, 1.26, 1.36, 1.48, 1.6, 1.74, 1.88, 2.04]);
     for (let wave = 1; wave <= 10; wave += 1) {
       expect(waves[wave - 1]).toMatchObject({
         count: 8,
@@ -144,8 +144,8 @@ describe('dream mode level three: Plush Dream Room', () => {
   it('enters the shark boss after wave ten and preserves the leaderboard v1 contract', () => {
     expect(dream.stageCompletionSpec(LEVEL_THREE)).toEqual({ hasBoss: true, clearAfterWave: null, uploadsLeaderboard: true });
     expect(dream.bossSpec(LEVEL_THREE)).toMatchObject({
-      key: 'dreamshark', name: '霜潮绒鲨 · 阿布', hp: 355000,
-      targetDurationSeconds: 142, targetSeconds: [135, 150],
+      key: 'dreamshark', name: '霜潮绒鲨 · 阿布', hp: 300000,
+      targetDurationSeconds: 140, targetSeconds: [120, 145],
       phaseThresholds: [0.8, 0.6, 0.4, 0.2], logicalBulletCap: 96,
       distinctDreamHandler: true, normalBossPoolExcluded: true,
     });
@@ -182,14 +182,14 @@ describe('dream mode level three: Plush Dream Room', () => {
   });
 
   it('binds the dedicated shark HP UI directly to hp/maxHp with eased damage lag', () => {
-    const full = dream.sharkBossUiSpec({ hp: 355000, maxHp: 355000, lagRate: 1, phase: 0 });
-    const damaged = dream.sharkBossUiSpec({ hp: 106500, maxHp: 355000, lagRate: 0.46, phase: 3, viewport: { width: 390 } });
-    const critical = dream.sharkBossUiSpec({ hp: 35500, maxHp: 355000, lagRate: 0.18, phase: 4 });
+    const full = dream.sharkBossUiSpec({ hp: 300000, maxHp: 300000, lagRate: 1, phase: 0 });
+    const damaged = dream.sharkBossUiSpec({ hp: 90000, maxHp: 300000, lagRate: 0.46, phase: 3, viewport: { width: 390 } });
+    const critical = dream.sharkBossUiSpec({ hp: 30000, maxHp: 300000, lagRate: 0.18, phase: 4 });
     expect(full).toMatchObject({ linkedToBossHp: true, hpRate: 1, fillRate: 1, damageLagRate: 1, percent: '100%', phasePips: [true, false, false, false, false] });
     expect(damaged.hpRate).toBeCloseTo(0.3, 6);
     expect(damaged.fillRate).toBeCloseTo(damaged.hpRate, 8);
     expect(damaged.damageLagRate).toBeCloseTo(0.46, 8);
-    expect(damaged.numericHp).toBe('106,500/355,000');
+    expect(damaged.numericHp).toBe('90,000/300,000');
     expect(damaged.phasePips).toEqual([true, true, true, true, false]);
     expect(damaged.layout.frame.x).toBeGreaterThanOrEqual(0);
     expect(damaged.layout.frame.x + damaged.layout.frame.w).toBeLessThanOrEqual(390);

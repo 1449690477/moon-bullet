@@ -82,7 +82,7 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     }
     expect(dream.formationSpec()).toHaveLength(5);
     expect(dream.formationSpec().every((formation) => formation.batches.flat().length === 8)).toBe(true);
-    expect(dream.rewardSpec()).toMatchObject({ powerPerKill: 3.75, powerPerWave: 30, randomPlugins: false, lifeDrops: false, berserkDrops: false });
+    expect(dream.rewardSpec()).toMatchObject({ powerPerKill: 4.35, powerPerWave: 34.8, randomPlugins: false, lifeDrops: false, berserkDrops: true, berserkDropChance: 0.08 });
     expect(dream.waveTransitionSpec()).toMatchObject({ clearDelay: 1.4, timedOverlap: false, bulletDissolve: 0.34, abruptVisibleClear: false });
   });
 
@@ -211,7 +211,7 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(typeof dream.bulletMaterialSpec).toBe('function');
     expect(typeof dream.bulletMaterialStatus).toBe('function');
     expect(dream.bulletMaterialSpec()).toMatchObject({
-      version: 'V49.1-volumetric-energy-hotfix',
+      version: 'V51-stage3-rim-depth',
       phaseCount: 8,
       prewarm: true,
       batchTrails: true,

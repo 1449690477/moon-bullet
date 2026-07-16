@@ -2502,8 +2502,8 @@
       boss: 'dreamshark',
       bossName: '霜潮绒鲨 · 阿布',
       mobWaves: 10,
-      mobTargetSeconds: 545,
-      bossTargetSeconds: 142,
+      mobTargetSeconds: 480,
+      bossTargetSeconds: 140,
       unlocked: true,
       fieldBackground: 'dreamRoomBase',
       bossBackground: 'dreamRoomBase',
@@ -2540,7 +2540,13 @@
   const DREAM_WAVE_HP_SCALE = Object.freeze([1, 1.10, 1.20, 1.32, 1.45, 1.58, 1.72, 1.86, 2.02, 2.20]);
   const DREAM_WAVE_BATCHES = Object.freeze([3, 3, 2]);
   const DREAM_WAVE_BATCH_DELAYS = Object.freeze([0, 5, 10]);
-  const DREAM_REWARD_CONFIG = Object.freeze({ powerPerKill: 3.75 });
+  const DREAM_REWARD_CONFIG = Object.freeze({
+    powerPerKill: 4.35,
+    // 梦境击杀掉落暴走：帮助厚血量波次加快清场，约 8%（场上道具多时再衰减）
+    berserkDropChance: 0.08,
+    healDropChance: 0.018,
+  });
+  const DREAM_STAGE3_OUTGOING_DAMAGE_MUL = 1.28;
   const DREAM_FORMATION_PRESETS = Object.freeze([
     Object.freeze([Object.freeze([[132, 214], [360, 196], [588, 214]]), Object.freeze([[208, 334], [512, 334], [360, 392]]), Object.freeze([[258, 484], [462, 484]])]),
     Object.freeze([Object.freeze([[104, 246], [274, 194], [446, 194]]), Object.freeze([[616, 246], [530, 368], [190, 368]]), Object.freeze([[292, 474], [428, 474]])]),
@@ -2558,7 +2564,7 @@
     Object.freeze([Object.freeze([[90, 206], [360, 206], [630, 206]]), Object.freeze([[178, 326], [542, 326], [360, 406]]), Object.freeze([[142, 492], [578, 492]])]),
     Object.freeze([Object.freeze([[218, 190], [360, 154], [502, 190]]), Object.freeze([[104, 344], [360, 370], [616, 344]]), Object.freeze([[270, 488], [450, 488]])]),
   ]);
-  const DREAM_STAGE3_WAVE_HP_SCALE = Object.freeze([1, 1.12, 1.24, 1.37, 1.51, 1.66, 1.82, 2.00, 2.20, 2.42]);
+  const DREAM_STAGE3_WAVE_HP_SCALE = Object.freeze([1, 1.08, 1.16, 1.26, 1.36, 1.48, 1.60, 1.74, 1.88, 2.04]);
   const DREAM_STAGE3_WAVE_BATCHES = Object.freeze([3, 3, 2]);
   const DREAM_STAGE3_WAVE_BATCH_DELAYS = Object.freeze([0, 4.5, 8.7]);
   const DREAM_STAGE3_FORMATION_PRESETS = Object.freeze([
@@ -2621,11 +2627,11 @@
     crystalcompiler: Object.freeze({ name: '晶体编译器', hp: 150000, r: 33, size: 134, sprite: 'enSuiyiCrystalCompiler', role: 'compiler', color: '#ff8ae0', score: 7200 }),
   });
   const DREAM_STAGE3_MOB_DEFS = Object.freeze({
-    leafcat: Object.freeze({ name: '新叶喵', hp: 132000, r: 30, size: 126, sprite: 'dreamPlushLeafCat', role: 'leaf', color: '#79d9a4', score: 7600, entryKind: 'vineSwing' }),
-    penguin: Object.freeze({ name: '冰帽企鹅', hp: 118000, r: 29, size: 122, sprite: 'dreamPlushPenguin', role: 'iceToy', color: '#9bdcff', score: 7000, entryKind: 'iceSlide' }),
-    graydoll: Object.freeze({ name: '流萤玩偶', hp: 170000, r: 33, size: 132, sprite: 'dreamPlushGrayDoll', role: 'doll', color: '#d7b4ff', score: 8600, entryKind: 'puppetRig' }),
-    bluefish: Object.freeze({ name: '好兄弟', hp: 150000, r: 34, size: 138, sprite: 'dreamPlushBlueFish', role: 'waterToy', color: '#65c5ff', score: 8200, entryKind: 'arcFly' }),
-    starpillow: Object.freeze({ name: '星星抱枕', hp: 145000, r: 32, size: 132, sprite: 'dreamPlushStarPillow', role: 'starToy', color: '#ffd56f', score: 8000, entryKind: 'starBounce' }),
+    leafcat: Object.freeze({ name: '新叶喵', hp: 82000, r: 30, size: 126, sprite: 'dreamPlushLeafCat', role: 'leaf', color: '#79d9a4', score: 7600, entryKind: 'vineSwing' }),
+    penguin: Object.freeze({ name: '冰帽企鹅', hp: 74000, r: 29, size: 122, sprite: 'dreamPlushPenguin', role: 'iceToy', color: '#9bdcff', score: 7000, entryKind: 'iceSlide' }),
+    graydoll: Object.freeze({ name: '流萤玩偶', hp: 105000, r: 33, size: 132, sprite: 'dreamPlushGrayDoll', role: 'doll', color: '#d7b4ff', score: 8600, entryKind: 'puppetRig' }),
+    bluefish: Object.freeze({ name: '好兄弟', hp: 92000, r: 34, size: 138, sprite: 'dreamPlushBlueFish', role: 'waterToy', color: '#65c5ff', score: 8200, entryKind: 'arcFly' }),
+    starpillow: Object.freeze({ name: '星星抱枕', hp: 90000, r: 32, size: 132, sprite: 'dreamPlushStarPillow', role: 'starToy', color: '#ffd56f', score: 8000, entryKind: 'starBounce' }),
   });
   const DREAM_ROLE_COLORS = Object.freeze({
     wing: Object.freeze(['#4f9ef5', '#dff5ff']),
@@ -2794,29 +2800,31 @@
     'suiyiMobCompilePlatform', 'suiyiMobOrbitRing',
   ]);
   const DREAM_BULLET_MATERIAL_CONFIG = Object.freeze({
-    version: 'V49.1-volumetric-energy-hotfix',
+    version: 'V51-stage3-rim-depth',
     phaseCount: 8,
     legacyPhaseCount: 4,
     phaseRate: 12,
     cacheFrame: Object.freeze({ width: 112, height: 128, anchorX: 56, anchorY: 47 }),
     bodyFit: Object.freeze({ directional: 96, round: 88, blade: 94 }),
     drawScale: 8.2,
+    // 贴身描边：光效只贴轮廓，禁止大范围填充光晕
     stage3DisplayScale: Object.freeze({ directional: 1.28, round: 1.20 }),
     speedStretch: Object.freeze({ start: 120, full: 420, max: 1.24, minWidth: 0.90 }),
     facingResponse: 13,
     prewarmPerFrame: 3,
-    energyOverlay: Object.freeze({ minVisualMul: 0.60, highCap: 64, mediumCap: 48, alpha: 0.40 }),
-    screenLight: Object.freeze({ minVisualMul: 0.35, directionalShadowAlpha: 0.12, roundShadowAlpha: 0.26, highlightAlpha: 0.48 }),
-    trailSpeedMin: 132,
+    energyOverlay: Object.freeze({ minVisualMul: 0.55, highCap: 72, mediumCap: 48, alpha: 0.46 }),
+    screenLight: Object.freeze({ minVisualMul: 0.35, directionalShadowAlpha: 0.14, roundShadowAlpha: 0.28, highlightAlpha: 0.54 }),
+    trailSpeedMin: 140,
     trailLengthScale: Object.freeze([0.48, 1.12]),
-    trailWidthScale: Object.freeze([0.74, 0.24]),
+    trailWidthScale: Object.freeze([0.70, 0.22]),
     trail: Object.freeze({
-      launchDuration: 0.28,
-      transitionDuration: 0.18,
-      maxLengthDesktop: 96,
-      maxLengthMobile: 72,
+      launchDuration: 0.30,
+      transitionDuration: 0.20,
+      maxLengthDesktop: 92,
+      maxLengthMobile: 68,
       damaging: false,
       collisionRadius: 0,
+      // 仅方向性弹体可有速度尾迹；圆形弹靠描边/体积层，不做软光拖尾
       families: Object.freeze(['arrow', 'spear', 'blade', 'ribbon', 'petal', 'prism', 'chain', 'burst']),
     }),
     themes: Object.freeze([
@@ -2826,15 +2834,29 @@
       Object.freeze({ key: 'silver', edge: '#9edcff', trail: 'rgba(91,157,220,.58)', hot: 'rgba(224,244,255,.94)' }),
     ]),
     stage3FamilyLight: Object.freeze([
-      Object.freeze({ key: 'leaf', trail: 'rgba(75,205,116,.72)', hot: 'rgba(224,255,205,.96)' }),
-      Object.freeze({ key: 'iceToy', trail: 'rgba(72,181,246,.72)', hot: 'rgba(220,250,255,.96)' }),
-      Object.freeze({ key: 'doll', trail: 'rgba(172,102,238,.70)', hot: 'rgba(246,218,255,.96)' }),
-      Object.freeze({ key: 'waterToy', trail: 'rgba(48,196,230,.72)', hot: 'rgba(214,255,255,.96)' }),
-      Object.freeze({ key: 'starToy', trail: 'rgba(242,170,55,.72)', hot: 'rgba(255,245,190,.98)' }),
+      Object.freeze({ key: 'leaf', trail: 'rgba(68,200,118,.62)', hot: 'rgba(236,255,214,.94)', rim: 'rgba(120,255,168,.82)', outline: 'rgba(10,28,16,.72)' }),
+      Object.freeze({ key: 'iceToy', trail: 'rgba(72,186,240,.64)', hot: 'rgba(232,252,255,.95)', rim: 'rgba(150,230,255,.84)', outline: 'rgba(8,24,36,.72)' }),
+      Object.freeze({ key: 'doll', trail: 'rgba(176,110,230,.62)', hot: 'rgba(246,218,255,.94)', rim: 'rgba(220,160,255,.82)', outline: 'rgba(24,10,36,.72)' }),
+      Object.freeze({ key: 'waterToy', trail: 'rgba(48,196,230,.64)', hot: 'rgba(214,255,255,.95)', rim: 'rgba(120,236,255,.84)', outline: 'rgba(6,28,36,.72)' }),
+      Object.freeze({ key: 'starToy', trail: 'rgba(236,168,52,.64)', hot: 'rgba(255,248,210,.96)', rim: 'rgba(255,214,110,.86)', outline: 'rgba(36,22,6,.72)' }),
     ]),
+    // 贴合弹体轮廓的描边/体积层：外径不超过弹体显示直径的约 0.56 倍
+    stage3Rim: Object.freeze({
+      minVisualMul: 0.20,
+      bodyFit: 0.54,
+      outlineWidth: 1.85,
+      rimWidth: 1.15,
+      hotWidth: 0.85,
+      outlineAlpha: 0.70,
+      rimAlpha: 0.78,
+      hotAlpha: 0.42,
+      coreAlpha: 0.28,
+      coreFit: 0.18,
+    }),
     orbFamilies: Object.freeze(['orb', 'halo', 'vortex', 'sigil', 'bloom', 'wisp', 'star', 'burst']),
     hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, bodyDrawsPerBullet: 1, energyDrawsPerBulletHigh: 1, screenLightBatches: 8, cachePolicy: 'active-stage-only', selectiveEnergyAtlas: true }),
   });
+
   const DREAM_BULLET_MOTION_CONFIG = Object.freeze({
     visibleLifeFloor: 8.5,
     hardLife: 11,
@@ -2991,54 +3013,54 @@
   ]);
   const DREAM_STAGE3_CHOREOGRAPHY = Object.freeze([
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.10, a: 'plushLeafFan', aCadence: 1.24 }),
-      Object.freeze({ from: 4.10, to: 7.55, a: 'plushLeafFan', b: 'plushSeedBloom', aCadence: 1.30, bCadence: 2.42 }),
-      Object.freeze({ from: 7.55, to: 10.65, a: 'plushSeedBloom', b: 'plushLeafFan', aCadence: 2.22, bCadence: 1.12 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushLeafFan', b: 'plushSeedBloom', aCadence: 1.02, bCadence: 2.05 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushSeedBloom', b: 'plushLeafFan', aCadence: 1.88, bCadence: 0.96 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushLeafFan', b: 'plushSeedBloom', aCadence: 0.90, bCadence: 1.72 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.05, a: 'plushIceFan', aCadence: 1.18 }),
-      Object.freeze({ from: 4.05, to: 7.55, a: 'plushSnowSteps', b: 'plushIceFan', aCadence: 2.30, bCadence: 1.32 }),
-      Object.freeze({ from: 7.55, to: 10.65, a: 'plushIceFan', b: 'plushSnowSteps', aCadence: 1.08, bCadence: 2.18 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushIceFan', b: 'plushSnowSteps', aCadence: 0.98, bCadence: 2.05 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushSnowSteps', b: 'plushIceFan', aCadence: 1.92, bCadence: 1.05 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushIceFan', b: 'plushSnowSteps', aCadence: 0.88, bCadence: 1.78 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.05, a: 'plushCrystalOrbit', aCadence: 2.00 }),
-      Object.freeze({ from: 4.05, to: 7.50, a: 'plushCrystalOrbit', b: 'plushCrossSigil', aCadence: 2.15, bCadence: 2.42 }),
-      Object.freeze({ from: 7.50, to: 10.65, a: 'plushCrossSigil', b: 'plushCrystalOrbit', aCadence: 1.92, bCadence: 2.08 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushCrystalOrbit', b: 'plushCrossSigil', aCadence: 1.62, bCadence: 2.05 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushCrossSigil', b: 'plushCrystalOrbit', aCadence: 1.72, bCadence: 1.68 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushCrystalOrbit', b: 'plushCrossSigil', aCadence: 1.48, bCadence: 1.62 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.00, a: 'plushFishboneTide', aCadence: 2.05 }),
-      Object.freeze({ from: 4.00, to: 7.48, a: 'plushFishboneTide', b: 'plushBubbleCurrent', aCadence: 2.20, bCadence: 2.36 }),
-      Object.freeze({ from: 7.48, to: 10.65, a: 'plushBubbleCurrent', b: 'plushFishboneTide', aCadence: 1.92, bCadence: 1.82 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushFishboneTide', b: 'plushBubbleCurrent', aCadence: 1.68, bCadence: 1.92 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushBubbleCurrent', b: 'plushFishboneTide', aCadence: 1.64, bCadence: 1.52 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushFishboneTide', b: 'plushBubbleCurrent', aCadence: 1.42, bCadence: 1.58 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.05, a: 'plushStarOrbit', aCadence: 1.92 }),
-      Object.freeze({ from: 4.05, to: 7.50, a: 'plushStarOrbit', b: 'plushMeteorCurtain', aCadence: 2.08, bCadence: 2.20 }),
-      Object.freeze({ from: 7.50, to: 10.65, a: 'plushMeteorCurtain', b: 'plushStarOrbit', aCadence: 2.02, bCadence: 1.88 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushStarOrbit', b: 'plushMeteorCurtain', aCadence: 1.58, bCadence: 1.92 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushMeteorCurtain', b: 'plushStarOrbit', aCadence: 1.72, bCadence: 1.52 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushStarOrbit', b: 'plushMeteorCurtain', aCadence: 1.42, bCadence: 1.62 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.00, a: 'plushVineCurtain', aCadence: 2.12 }),
-      Object.freeze({ from: 4.00, to: 7.45, a: 'plushVineCurtain', b: 'plushIceHalo', aCadence: 2.22, bCadence: 2.14 }),
-      Object.freeze({ from: 7.45, to: 10.65, a: 'plushIceHalo', b: 'plushVineCurtain', aCadence: 1.98, bCadence: 2.04 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushVineCurtain', b: 'plushIceHalo', aCadence: 1.72, bCadence: 1.78 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushIceHalo', b: 'plushVineCurtain', aCadence: 1.62, bCadence: 1.68 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushVineCurtain', b: 'plushIceHalo', aCadence: 1.52, bCadence: 1.58 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.00, a: 'plushDollRelay', aCadence: 1.82 }),
-      Object.freeze({ from: 4.00, to: 7.45, a: 'plushDollRelay', b: 'plushConstellation', aCadence: 1.96, bCadence: 2.05 }),
-      Object.freeze({ from: 7.45, to: 10.65, a: 'plushConstellation', b: 'plushDollRelay', aCadence: 1.92, bCadence: 1.68 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushDollRelay', b: 'plushConstellation', aCadence: 1.48, bCadence: 1.72 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushConstellation', b: 'plushDollRelay', aCadence: 1.58, bCadence: 1.38 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushDollRelay', b: 'plushConstellation', aCadence: 1.32, bCadence: 1.48 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.00, a: 'plushWhirlpoolGate', aCadence: 2.16 }),
-      Object.freeze({ from: 4.00, to: 7.45, a: 'plushMeteorCurtain', b: 'plushWhirlpoolGate', aCadence: 2.25, bCadence: 2.46 }),
-      Object.freeze({ from: 7.45, to: 10.65, a: 'plushWhirlpoolGate', b: 'plushMeteorCurtain', aCadence: 2.02, bCadence: 1.98 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushWhirlpoolGate', b: 'plushMeteorCurtain', aCadence: 1.78, bCadence: 1.92 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushMeteorCurtain', b: 'plushWhirlpoolGate', aCadence: 1.72, bCadence: 1.88 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushWhirlpoolGate', b: 'plushMeteorCurtain', aCadence: 1.58, bCadence: 1.62 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 4.00, a: 'plushCrossSigil', aCadence: 2.12 }),
-      Object.freeze({ from: 4.00, to: 7.40, a: 'plushCrossSigil', b: 'plushFishboneTide', aCadence: 2.05, bCadence: 2.18 }),
-      Object.freeze({ from: 7.40, to: 10.65, a: 'plushFishboneTide', b: 'plushCrossSigil', aCadence: 1.90, bCadence: 2.02 }),
+      Object.freeze({ from: 0.45, to: 3.70, a: 'plushCrossSigil', b: 'plushFishboneTide', aCadence: 1.68, bCadence: 1.72 }),
+      Object.freeze({ from: 3.70, to: 7.20, a: 'plushFishboneTide', b: 'plushCrossSigil', aCadence: 1.52, bCadence: 1.62 }),
+      Object.freeze({ from: 7.20, to: 10.65, a: 'plushCrossSigil', b: 'plushFishboneTide', aCadence: 1.48, bCadence: 1.48 }),
     ]),
     Object.freeze([
-      Object.freeze({ from: 0.55, to: 3.85, a: 'plushToyboxFinale', aCadence: 1.92 }),
-      Object.freeze({ from: 3.85, to: 7.25, a: 'plushToyboxFinale', b: 'plushVineCurtain', aCadence: 1.82, bCadence: 2.12 }),
-      Object.freeze({ from: 7.25, to: 10.65, a: 'plushVineCurtain', b: 'plushToyboxFinale', aCadence: 1.86, bCadence: 1.94 }),
+      Object.freeze({ from: 0.40, to: 3.55, a: 'plushToyboxFinale', b: 'plushVineCurtain', aCadence: 1.52, bCadence: 1.78 }),
+      Object.freeze({ from: 3.55, to: 7.10, a: 'plushToyboxFinale', b: 'plushVineCurtain', aCadence: 1.42, bCadence: 1.68 }),
+      Object.freeze({ from: 7.10, to: 10.65, a: 'plushVineCurtain', b: 'plushToyboxFinale', aCadence: 1.48, bCadence: 1.38 }),
     ]),
   ]);
   const GUESTBOOK_TABLE = 'guestbook_messages';
@@ -3097,13 +3119,30 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-16-dream-level3-shark-boss';
+     const UPDATE_NOTICE_VERSION = '2026-07-16-dream3-rim-depth-v51';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
+      date: '2026-07-16 · 绒梦弹幕光效纠偏',
+      items: [
+        '紧急撤回第三关过大的圆形“灯泡”光晕：已删除大范围填充光圈，弹幕本体重新清晰可读。',
+        '视觉改为贴身立体层：深色外描边 + 家族色细描边 + 极窄高光与极小亮芯，只增强轮廓与体积感，不再糊住背景。',
+        '速度尾迹仅保留方向性弹体的短锥尾；圆形弹不再挂软光拖尾。能量叠光与屏幕体积高光同步收束。',
+        '弹幕排布复杂度、小怪血量下调、第三关输出加成与梦境击杀约 8% 掉落暴走仍保留。',
+      ],
+    },
+    {
+      date: '2026-07-16 · 绒梦第三关弹幕演出强化',
+      items: [
+        '梦境第三关弹幕全面加戏：玩偶与鲨鱼谱面改为多层叠射、错相释放与曲线潮汐，排布不再是单一扇形/直线循环。',
+        '第三关小怪血量约下调 35%–40%，玩家对第三关输出额外 ×1.28；击杀梦境敌人约有 8% 概率掉落暴走，帮助更快通关。',
+        '霜潮绒鲨各阶段招式加密：泡浪、冰牙、霜涡、怒潮与终幕都追加副层弹幕与施法特效，观赏性与压力同步提升。',
+      ],
+    },
+    {
       date: '2026-07-16 · 霜潮绒鲨Boss开放',
       items: [
-        '梦境第三关Boss「霜潮绒鲨 · 阿布」正式开放：十幕玩偶战结束后进入约142秒的五阶段Boss战，不再于第10波直接结算。',
+        '梦境第三关Boss「霜潮绒鲨 · 阿布」正式开放：十幕玩偶战结束后进入约140秒的五阶段Boss战，不再于第10波直接结算。',
         '新增霜潮泡浪、冰牙列阵、霜涡巡游、怒潮冲锋与冰渊吞星五套专属谱面；鲨鱼本体、冰晶与深渊能量使用独立本体/辉光层。',
         '专属血条UI现已绑定真实Boss血量：主填充实时响应，延迟损伤条平滑追赶，并显示精确HP、百分比、阶段节点与低血量脉冲。',
       ],
@@ -4992,15 +5031,15 @@
     bossTargetRange: Object.freeze([116, 142]),
   });
   const DREAM_STAGE3_BALANCE_CONFIG = Object.freeze({
-    targetTotalSeconds: 687,
-    mobTargetSeconds: 545,
-    bossTargetSeconds: 142,
-    mobDamageFloorSeconds: 45,
+    targetTotalSeconds: 620,
+    mobTargetSeconds: 480,
+    bossTargetSeconds: 140,
+    mobDamageFloorSeconds: 32,
     mobInitialCreditRatio: 0.05,
-    bossHp: 355000,
-    bossDpsCap: 2500,
-    bossCreditCap: 15000,
-    bossTargetRange: Object.freeze([135, 150]),
+    bossHp: 300000,
+    bossDpsCap: 2800,
+    bossCreditCap: 16000,
+    bossTargetRange: Object.freeze([120, 145]),
   });
   const DREAM_STAGE_CONFIGS = Object.freeze({
     [DREAM_STAGE_ID]: Object.freeze({
@@ -5199,7 +5238,11 @@
   function densMul() { return growthCurveAt().densMul; }
   function fireMul() { return growthCurveAt().fireMul; }
   // 击杀成长略强于旧版，抵消随机高阶池和 loop 带来的耐久，维持肉鸽割草手感。
-  function grindDmg() { return growthCurveAt().grindDmg * dreamDamageMultiplier(); }
+  function grindDmg() {
+    let mul = growthCurveAt().grindDmg * dreamDamageMultiplier();
+    if (dreamActive() && dreamRun.stageId === DREAM_STAGE3_ID) mul *= DREAM_STAGE3_OUTGOING_DAMAGE_MUL;
+    return mul;
+  }
   // 75 秒前不追加额外波；之后逐步加压，并受画质/性能档封顶。
   function extraWavesForStage() {
     return extraWavesAt();
@@ -26126,7 +26169,29 @@
   function dreamTrailAllowed(bullet) {
     if (bullet && bullet.dreamDissolving) return false;
     const skin = bullet && DREAM_BULLET_SKINS[bullet.dreamSkin];
+    // 只给方向性弹体速度尾迹；圆形弹用贴身描边表现立体感，禁止软光大环
     return !!(skin && skin.directional && DREAM_BULLET_MATERIAL_CONFIG.trail.families.includes(skin.family));
+  }
+  function dreamStage3FamilyStyle(family) {
+    const lights = DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight;
+    for (let i = 0; i < lights.length; i++) if (lights[i].key === family) return lights[i];
+    return lights[lights.length - 1];
+  }
+  function traceDreamStage3Rim(b, material, fitMul) {
+    const dissolveVisibility = dreamBulletDissolveEnvelope(b);
+    const depthVisibility = b.depth != null ? bulletDepthAlpha(b) : 1;
+    const visibilityScale = Math.sqrt(Math.max(0, dissolveVisibility * depthVisibility));
+    const body = (b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale) * visibilityScale;
+    if (body < 2) return false;
+    const long = body * fitMul * (material?.directional ? 0.58 : 0.50);
+    const wide = body * fitMul * (material?.directional ? 0.34 : 0.48);
+    let ang = 0;
+    if (material?.directional) ang = Math.atan2(b.dreamFaceY || -1, b.dreamFaceX || 0);
+    else if (material?.spinning) ang = b.rot || 0;
+    ctx.moveTo(b.x + Math.cos(ang) * long, b.y + Math.sin(ang) * long);
+    ctx.ellipse(b.x, b.y, long, wide, ang, 0, TAU);
+    ctx.closePath();
+    return true;
   }
   function dreamTriggerTrail(bullet, duration = DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration) {
     if (!bullet || !dreamTrailAllowed(bullet)) {
@@ -28013,7 +28078,16 @@
     })[role] || 'dreamPlushStarMuzzle';
     const size = source.size || 112;
     const placement = DREAM_STAGE3_VISUAL_CONFIG.muzzlePlacement[role] || DREAM_STAGE3_VISUAL_CONFIG.muzzlePlacement.starToy;
-    dreamTechFx(key, source.x + size * placement.x, source.y + size * placement.y, Math.max(92, size * placement.scale), DREAM_STAGE3_VISUAL_CONFIG.muzzleLife, dreamRun.waveElapsed * 0.35, alpha);
+    const mx = source.x + size * placement.x;
+    const my = source.y + size * placement.y;
+    dreamTechFx(key, mx, my, Math.max(92, size * placement.scale), DREAM_STAGE3_VISUAL_CONFIG.muzzleLife, dreamRun.waveElapsed * 0.35, alpha);
+    addRingFx(mx, my, 10, 54, 0.28, source.color || '#ffe9a8', 2.2);
+    const sparkColor = source.color || '#fff4c8';
+    for (let i = 0; i < 7; i++) {
+      const a = rand(0, TAU);
+      const sp = rand(90, 220);
+      addParticle(mx, my, Math.cos(a) * sp, Math.sin(a) * sp, 0.28 + rand(0, 0.16), rand(2.2, 4.4), sparkColor, true);
+    }
     source.dreamCastT = 0;
     source.dreamCastMax = DREAM_STAGE3_VISUAL_CONFIG.castCueSeconds;
     source.dreamCastVoice = '';
@@ -28026,53 +28100,78 @@
   }
   function dreamEmitPlushLeafFan(speedMul = 1) {
     const source = dreamPlushSource('leaf'); if (!source) return false;
-    const lanes = [-4, -3, -2, -1, 1, 2, 3, 4];
-    return dreamTryAtomicBulletGroup(lanes.length, () => {
+    const lanes = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
+    const cost = lanes.length + 6;
+    return dreamTryAtomicBulletGroup(cost, () => {
       const base = dreamStage3Aim(source);
+      const twist = (dreamConductor.serial & 1 ? 1 : -1) * 0.035;
       lanes.forEach((lane, i) => {
-        const a = base + lane * 0.108;
-        const speed = (210 + Math.abs(lane) * 7) * speedMul;
-        addDreamBullet(source.x, source.y + 10, Math.cos(a) * speed, Math.sin(a) * speed, {
-          r: 6.5, life: 5.4, hardLife: 6.4, style: 'spread', threat: 'spread', shape: 'needle',
+        const a = base + lane * 0.092 + twist;
+        const speed = (228 + Math.abs(lane) * 10) * speedMul;
+        addDreamBullet(source.x + lane * 2.2, source.y + 10, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.5, life: 5.6, hardLife: 6.6, style: 'spread', threat: 'spread', shape: 'needle',
           skin: i & 1 ? 'plushLeafBlade' : 'plushLeafSeed', color: i & 1 ? '#6de59b' : '#dfff8b',
           policy: 'locked-linear', policySpeed: speed, motion: 'leaf-gap-fan',
         });
       });
+      for (let i = 0; i < 6; i++) {
+        const a = base + (i - 2.5) * 0.16;
+        const speed = 96 * speedMul;
+        addDreamBullet(source.x, source.y + 4, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.4, life: 5.5, hardLife: 6.4, style: 'deco', threat: 'spread', shape: 'orb',
+          skin: 'plushLeafBud', color: '#ff9bc8', policy: 'brake-hold-release', policySpeed: speed,
+          brakeTime: 0.18, holdTime: 0.22 + i * 0.04, releaseAngle: a + (i & 1 ? 0.12 : -0.12),
+          releaseSpeed: (248 + i * 8) * speedMul, motion: 'leaf-inner-bloom-release',
+        });
+      }
       dreamPlushAttackFx('leaf', source);
     });
   }
   function dreamEmitPlushSeedBloom(speedMul = 1) {
     const source = dreamPlushSource('leaf'); if (!source) return false;
     const gap = dreamStage3Aim(source);
-    const angles = Array.from({ length: 12 }, (_, i) => i * TAU / 12 + (dreamConductor.serial & 1) * TAU / 24)
-      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.30);
-    return dreamTryAtomicBulletGroup(angles.length, () => {
-      angles.forEach((a, i) => {
-        const speed = 104 * speedMul;
+    const ringA = Array.from({ length: 14 }, (_, i) => i * TAU / 14 + (dreamConductor.serial & 1) * TAU / 28)
+      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.28);
+    const ringB = Array.from({ length: 10 }, (_, i) => i * TAU / 10 + Math.PI / 10)
+      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.34);
+    return dreamTryAtomicBulletGroup(ringA.length + ringB.length, () => {
+      ringA.forEach((a, i) => {
+        const speed = 92 * speedMul;
         addDreamBullet(source.x, source.y, Math.cos(a) * speed, Math.sin(a) * speed, {
-          r: 6.7, life: 5.8, hardLife: 6.6, style: 'deco', threat: 'spread', shape: i & 1 ? 'orb' : 'star',
+          r: 6.7, life: 5.9, hardLife: 6.8, style: 'deco', threat: 'spread', shape: i & 1 ? 'orb' : 'star',
           skin: i & 1 ? 'plushLeafSeed' : 'plushLeafBud', color: i & 1 ? '#b9f16f' : '#ff9bc8',
-          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.34, holdTime: 0.34,
-          releaseAngle: a, releaseSpeed: 204 * speedMul, motion: 'seed-brake-bloom-release',
+          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.28, holdTime: 0.28 + (i % 4) * 0.05,
+          releaseAngle: a + (i & 1 ? 0.08 : -0.08), releaseSpeed: (218 + (i % 3) * 16) * speedMul, motion: 'seed-brake-bloom-release',
         });
       });
-      dreamPlushAttackFx('leaf', source, 0.78);
+      ringB.forEach((a, i) => {
+        const rx = 34 + (i & 1) * 8, ry = 26 + (i & 1) * 6;
+        addDreamBullet(source.x + Math.cos(a) * rx, source.y + Math.sin(a) * ry, 0, 0, {
+          r: 6.4, life: 5.8, hardLife: 6.6, style: 'spread', threat: 'spread', shape: 'needle',
+          skin: 'plushLeafBlade', color: '#65dd91', policy: 'orbit-release',
+          orbitCx: source.x, orbitCy: source.y, orbitRx: rx, orbitRy: ry, orbitAngle: a,
+          orbitOmega: (dreamConductor.serial & 1 ? -1 : 1) * 2.9, orbitHold: 0.46, orbitMode: 'tangent',
+          releaseSpeed: 236 * speedMul, motion: 'seed-orbit-petal',
+        });
+      });
+      dreamPlushAttackFx('leaf', source, 0.82);
     });
   }
   function dreamEmitPlushVineCurtain(speedMul = 1) {
     const source = dreamPlushSource('leaf'); if (!source) return false;
     const gapX = dreamStage3RouteX();
-    const xs = [50, 122, 194, 266, 338, 410, 482, 554, 626, 698].filter(x => Math.abs(x - gapX) > DREAM_STAGE3_MOTION_CONFIG.wallGapRadius);
+    const xs = [42, 102, 162, 222, 282, 342, 402, 462, 522, 582, 642, 702].filter(x => Math.abs(x - gapX) > DREAM_STAGE3_MOTION_CONFIG.wallGapRadius * 0.92);
     return dreamTryAtomicBulletGroup(xs.length, () => {
       xs.forEach((x, i) => {
-        const bend = (i & 1 ? 1 : -1) * (34 + (i % 3) * 8);
-        const endX = clamp(x - bend * 0.36, 24, W - 24);
-        const duration = 4.3 / speedMul;
-        addDreamBullet(x, -28 - (i & 1) * 34, 0, 204 * speedMul, {
-          r: 6.6, life: 5.4, hardLife: 6.0, style: 'hazard', threat: 'hazard', shape: 'needle',
-          skin: i & 1 ? 'plushLeafBlade' : 'plushLeafBud', color: i & 1 ? '#65dd91' : '#ff8ec2',
-          policy: 'bezier-lane', policySpeed: 204 * speedMul, bezierDuration: duration,
-          bezierX1: x + bend, bezierY1: H * 0.28, bezierX2: endX - bend * 0.55, bezierY2: H * 0.72,
+        const bend = (i & 1 ? 1 : -1) * (42 + (i % 4) * 10);
+        const endX = clamp(x - bend * 0.42, 24, W - 24);
+        const duration = (4.0 + (i % 3) * 0.18) / speedMul;
+        const speed = (196 + (i % 3) * 18) * speedMul;
+        addDreamBullet(x, -28 - (i % 4) * 26, 0, speed, {
+          r: 6.6, life: 5.6, hardLife: 6.3, style: 'hazard', threat: 'hazard', shape: 'needle',
+          skin: i % 3 ? 'plushLeafBlade' : 'plushLeafBud', color: i % 3 ? '#65dd91' : '#ff8ec2',
+          policy: 'bezier-lane', policySpeed: speed, bezierDuration: duration,
+          bezierX1: x + bend, bezierY1: H * 0.24, bezierX2: endX - bend * 0.6, bezierY2: H * 0.68,
           bezierX3: endX, bezierY3: H + 78, motion: 'vine-bezier-lane',
         });
       });
@@ -28081,75 +28180,102 @@
   }
   function dreamEmitPlushIceFan(speedMul = 1) {
     const source = dreamPlushSource('iceToy'); if (!source) return false;
-    const lanes = [-4, -3, -2, 0, 2, 3, 4];
-    return dreamTryAtomicBulletGroup(lanes.length, () => {
+    const lanes = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+    return dreamTryAtomicBulletGroup(lanes.length + 5, () => {
       const aim = dreamStage3Aim(source);
       lanes.forEach((lane, i) => {
-        const a = aim + lane * 0.102;
-        const speed = (228 + Math.abs(lane) * 9) * speedMul;
-        addDreamBullet(source.x, source.y + 8, Math.cos(a) * speed, Math.sin(a) * speed, {
-          r: 6.4, life: 5.2, hardLife: 6.0, style: 'aimed', threat: 'aimed', shape: 'needle',
+        const a = aim + lane * 0.088;
+        const speed = (242 + Math.abs(lane) * 11) * speedMul;
+        addDreamBullet(source.x + lane * 1.8, source.y + 8, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.4, life: 5.4, hardLife: 6.2, style: 'aimed', threat: 'aimed', shape: 'needle',
           skin: i & 1 ? 'plushIceSpear' : 'plushIceShard', color: '#8fdcff',
           policy: 'locked-linear', policySpeed: speed, motion: 'ice-gap-fan',
         });
       });
+      for (let i = 0; i < 5; i++) {
+        const a = aim + (i - 2) * 0.22;
+        addDreamBullet(source.x, source.y + 6, Math.cos(a) * 70 * speedMul, Math.sin(a) * 70 * speedMul, {
+          r: 6.6, life: 5.6, hardLife: 6.4, style: 'spread', threat: 'spread', shape: 'orb',
+          skin: 'plushSnowball', color: '#dff7ff', policy: 'brake-hold-release', policySpeed: 70 * speedMul,
+          brakeTime: 0.16, holdTime: 0.28 + i * 0.05, releaseAngle: a, releaseSpeed: (266 + i * 10) * speedMul,
+          motion: 'ice-core-burst',
+        });
+      }
       dreamPlushAttackFx('iceToy', source);
     });
   }
   function dreamEmitPlushSnowSteps(speedMul = 1) {
     const source = dreamPlushSource('iceToy'); if (!source) return false;
     const gapX = dreamStage3RouteX();
-    const xs = [48, 130, 212, 294, 376, 458, 540, 622, 704].filter(x => Math.abs(x - gapX) > 70);
+    const xs = [40, 110, 180, 250, 320, 390, 460, 530, 600, 670].filter(x => Math.abs(x - gapX) > 64);
     return dreamTryAtomicBulletGroup(xs.length, () => {
       xs.forEach((x, i) => {
-        const initial = Math.PI / 2 + (i & 1 ? -0.05 : 0.05);
-        const speed = 72 * speedMul;
-        const release = Math.PI / 2 + (i - (xs.length - 1) * 0.5) * 0.018;
-        addDreamBullet(x, 52 + (i % 3) * 28, Math.cos(initial) * speed, Math.sin(initial) * speed, {
-          r: 6.5, life: 5.8, hardLife: 6.5, style: 'spread', threat: 'spread', shape: i & 1 ? 'orb' : 'diamond',
+        const initial = Math.PI / 2 + (i & 1 ? -0.06 : 0.06);
+        const speed = 68 * speedMul;
+        const release = Math.PI / 2 + (i - (xs.length - 1) * 0.5) * 0.022 + Math.sin(i * 0.7) * 0.04;
+        addDreamBullet(x, 44 + (i % 4) * 24, Math.cos(initial) * speed, Math.sin(initial) * speed, {
+          r: 6.5, life: 6.0, hardLife: 6.8, style: 'spread', threat: 'spread', shape: i & 1 ? 'orb' : 'diamond',
           skin: i & 1 ? 'plushSnowball' : 'plushIceShard', color: '#dff7ff',
-          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.28, holdTime: 0.24 + i * 0.055,
-          releaseAngle: release, releaseSpeed: (224 + (i % 3) * 16) * speedMul, motion: 'snow-step-release',
+          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.24, holdTime: 0.20 + i * 0.048,
+          releaseAngle: release, releaseSpeed: (236 + (i % 4) * 18) * speedMul, motion: 'snow-step-release',
         });
       });
-      dreamPlushAttackFx('iceToy', source, 0.76);
+      dreamPlushAttackFx('iceToy', source, 0.8);
     });
   }
   function dreamEmitPlushIceHalo(speedMul = 1) {
     const source = dreamPlushSource('iceToy'); if (!source) return false;
     const gap = dreamStage3Aim(source);
     const dir = dreamConductor.serial & 1 ? -1 : 1;
-    const angles = Array.from({ length: 14 }, (_, i) => i * TAU / 14)
-      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.31);
-    return dreamTryAtomicBulletGroup(angles.length, () => {
+    const angles = Array.from({ length: 16 }, (_, i) => i * TAU / 16)
+      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.28);
+    return dreamTryAtomicBulletGroup(angles.length + 8, () => {
       angles.forEach((a, i) => {
-        const rx = 46, ry = 36;
+        const rx = 52, ry = 40;
         const x = source.x + Math.cos(a) * rx, y = source.y + Math.sin(a) * ry;
         addDreamBullet(x, y, 0, 0, {
-          r: 6.6, life: 5.8, hardLife: 6.5, style: 'spread', threat: 'spread', shape: i & 1 ? 'orb' : 'needle',
+          r: 6.6, life: 6.0, hardLife: 6.8, style: 'spread', threat: 'spread', shape: i & 1 ? 'orb' : 'needle',
           skin: i & 1 ? 'plushSnowball' : 'plushIceSpear', color: '#a8e8ff',
           policy: 'orbit-release', orbitCx: source.x, orbitCy: source.y, orbitRx: rx, orbitRy: ry,
-          orbitAngle: a, orbitOmega: dir * 2.65, orbitHold: 0.54, orbitMode: 'radial',
-          releaseSpeed: 190 * speedMul, motion: 'ice-orbit-radial-release',
+          orbitAngle: a, orbitOmega: dir * 2.95, orbitHold: 0.48, orbitMode: 'radial',
+          releaseSpeed: (198 + (i % 3) * 12) * speedMul, motion: 'ice-orbit-radial-release',
         });
       });
+      for (let i = 0; i < 8; i++) {
+        const a = gap + (i - 3.5) * 0.11;
+        const speed = (210 + i * 6) * speedMul;
+        addDreamBullet(source.x, source.y + 8, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.3, life: 5.3, hardLife: 6.1, style: 'aimed', threat: 'aimed', shape: 'needle',
+          skin: 'plushIceShard', color: '#c9f4ff', policy: 'locked-linear', policySpeed: speed, motion: 'ice-halo-spike',
+        });
+      }
       dreamPlushAttackFx('iceToy', source);
     });
   }
   function dreamEmitPlushCrystalOrbit(speedMul = 1) {
     const source = dreamPlushSource('doll'); if (!source) return false;
     const dir = dreamConductor.serial & 1 ? 1 : -1;
-    return dreamTryAtomicBulletGroup(8, () => {
-      for (let i = 0; i < 8; i++) {
-        const a = i * TAU / 8;
-        const rx = 38, ry = 30;
+    return dreamTryAtomicBulletGroup(18, () => {
+      for (let i = 0; i < 10; i++) {
+        const a = i * TAU / 10;
+        const rx = 42 + (i & 1) * 10, ry = 32 + (i & 1) * 8;
         const x = source.x + Math.cos(a) * rx, y = source.y + Math.sin(a) * ry;
         addDreamBullet(x, y, 0, 0, {
-          r: 6.8, life: 5.8, hardLife: 6.5, style: i & 1 ? 'deco' : 'spread', threat: 'spread', shape: i & 1 ? 'orb' : 'diamond',
+          r: 6.8, life: 6.0, hardLife: 6.8, style: i & 1 ? 'deco' : 'spread', threat: 'spread', shape: i & 1 ? 'orb' : 'diamond',
           skin: i & 1 ? 'plushDollOrb' : 'plushCrystalShard', color: i & 1 ? '#cb8cff' : '#e1c6ff',
           policy: 'orbit-release', orbitCx: source.x, orbitCy: source.y, orbitRx: rx, orbitRy: ry,
-          orbitAngle: a, orbitOmega: dir * 3.05, orbitHold: 0.62, orbitMode: 'tangent',
-          releaseSpeed: 224 * speedMul, motion: 'crystal-orbit-tangent-release',
+          orbitAngle: a, orbitOmega: dir * (2.8 + (i & 1) * 0.35), orbitHold: 0.52 + (i % 3) * 0.04, orbitMode: 'tangent',
+          releaseSpeed: (236 + (i % 3) * 14) * speedMul, motion: 'crystal-orbit-tangent-release',
+        });
+      }
+      for (let i = 0; i < 8; i++) {
+        const a = -Math.PI / 2 + (i - 3.5) * 0.14;
+        const speed = 78 * speedMul;
+        addDreamBullet(source.x, source.y + 6, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.5, life: 5.6, hardLife: 6.4, style: 'aimed', threat: 'aimed', shape: 'star',
+          skin: 'plushDollSigil', color: '#ff9ad7', policy: 'brake-hold-release', policySpeed: speed,
+          brakeTime: 0.18, holdTime: 0.26 + (i % 4) * 0.05, releaseAngle: dreamStage3Aim(source, (i - 3.5) * 28),
+          releaseSpeed: (268 + i * 8) * speedMul, motion: 'crystal-sigil-pulse',
         });
       }
       dreamPlushAttackFx('doll', source);
@@ -28157,60 +28283,77 @@
   }
   function dreamEmitPlushCrossSigil(speedMul = 1) {
     const source = dreamPlushSource('doll'); if (!source) return false;
-    return dreamTryAtomicBulletGroup(8, () => {
+    return dreamTryAtomicBulletGroup(14, () => {
       for (let side = 0; side < 2; side++) {
         const dir = side ? -1 : 1;
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
           const x = side ? W + 20 : -20;
-          const y = 168 + i * 132;
-          const targetX = clamp(dreamStage3RouteX() + dir * (i - 1.5) * 74, 60, W - 60);
-          const targetY = player.y - 140 + i * 44;
+          const y = 140 + i * 118;
+          const targetX = clamp(dreamStage3RouteX() + dir * (i - 2) * 68, 60, W - 60);
+          const targetY = player.y - 160 + i * 42;
           const a = angleTo(x, y, targetX, targetY);
-          const speed = 224 * speedMul;
+          const speed = (234 + (i & 1) * 18) * speedMul;
           addDreamBullet(x, y, Math.cos(a) * speed, Math.sin(a) * speed, {
-            r: 6.7, life: 5.2, hardLife: 5.9, style: 'hazard', threat: 'hazard', shape: side ? 'diamond' : 'star',
+            r: 6.7, life: 5.4, hardLife: 6.1, style: 'hazard', threat: 'hazard', shape: side ? 'diamond' : 'star',
             skin: side ? 'plushCrystalShard' : 'plushDollSigil', color: side ? '#cba4ff' : '#ff9ad7',
-            policy: 'locked-linear', policySpeed: speed, spin: side ? -2.0 : 2.0, motion: 'sigil-crossing-lines',
+            policy: 'turn-once', policySpeed: speed, turnAt: 0.42 + i * 0.04, turnDuration: 0.2,
+            targetAngle: a + dir * (i - 2) * 0.05, spin: side ? -2.4 : 2.4, motion: 'sigil-crossing-lines',
           });
         }
+      }
+      for (let i = 0; i < 4; i++) {
+        const a = dreamStage3Aim(source) + (i - 1.5) * 0.18;
+        addDreamBullet(source.x, source.y + 8, Math.cos(a) * 64 * speedMul, Math.sin(a) * 64 * speedMul, {
+          r: 6.6, life: 5.5, hardLife: 6.3, style: 'aimed', threat: 'aimed', shape: 'orb',
+          skin: 'plushDollOrb', color: '#d69cff', policy: 'brake-hold-release', policySpeed: 64 * speedMul,
+          brakeTime: 0.16, holdTime: 0.34, releaseAngle: a, releaseSpeed: 292 * speedMul, motion: 'sigil-center-dart',
+        });
       }
       dreamPlushAttackFx('doll', source);
     });
   }
   function dreamEmitPlushDollRelay(speedMul = 1) {
     const sources = dreamPlushSources('doll'); if (!sources.length) return false;
-    return dreamTryAtomicBulletGroup(6, () => {
-      for (let i = 0; i < 6; i++) {
+    return dreamTryAtomicBulletGroup(10, () => {
+      for (let i = 0; i < 10; i++) {
         const source = sources[i % sources.length];
-        const startA = -Math.PI / 2 + (i - 2.5) * 0.18;
-        const speed = 58 * speedMul;
-        const targetA = angleTo(source.x, source.y, clamp(dreamStage3RouteX() + (i - 2.5) * 36, 44, W - 44), player.y - 30 + (i & 1) * 36);
+        const startA = -Math.PI / 2 + (i - 4.5) * 0.15;
+        const speed = 54 * speedMul;
+        const targetA = angleTo(source.x, source.y, clamp(dreamStage3RouteX() + (i - 4.5) * 32, 44, W - 44), player.y - 36 + (i & 1) * 40);
         addDreamBullet(source.x, source.y + 8, Math.cos(startA) * speed, Math.sin(startA) * speed, {
-          r: 6.7, life: 5.7, hardLife: 6.4, style: 'aimed', threat: 'aimed', shape: i & 1 ? 'orb' : 'star',
+          r: 6.7, life: 5.9, hardLife: 6.6, style: 'aimed', threat: 'aimed', shape: i & 1 ? 'orb' : 'star',
           skin: i & 1 ? 'plushDollOrb' : 'plushDollSigil', color: '#d69cff',
-          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.22, holdTime: 0.34 + (i % 3) * 0.09,
-          releaseAngle: targetA, releaseSpeed: (286 + (i & 1) * 24) * speedMul, motion: 'puppet-node-release',
+          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.18, holdTime: 0.28 + (i % 4) * 0.08,
+          releaseAngle: targetA, releaseSpeed: (298 + (i & 1) * 28) * speedMul, motion: 'puppet-node-release',
         });
         source.attackFlash = 0.42;
       }
-      dreamPlushAttackFx('doll', sources[0], 0.78);
+      dreamPlushAttackFx('doll', sources[0], 0.82);
     });
   }
   function dreamEmitPlushFishboneTide(speedMul = 1) {
     const source = dreamPlushSource('waterToy'); if (!source) return false;
     const dir = dreamConductor.serial & 1 ? -1 : 1;
-    return dreamTryAtomicBulletGroup(8, () => {
-      for (let i = 0; i < 8; i++) {
+    return dreamTryAtomicBulletGroup(12, () => {
+      for (let i = 0; i < 10; i++) {
         const x = dir > 0 ? -24 : W + 24;
-        const y = 128 + i * 84;
-        const base = dir > 0 ? 0.08 + (i % 3) * 0.025 : Math.PI - 0.08 - (i % 3) * 0.025;
-        const target = base + dir * (i & 1 ? 0.15 : -0.12);
-        const speed = (202 + (i & 1) * 22) * speedMul;
+        const y = 108 + i * 72;
+        const base = dir > 0 ? 0.06 + (i % 4) * 0.03 : Math.PI - 0.06 - (i % 4) * 0.03;
+        const target = base + dir * (i & 1 ? 0.18 : -0.14);
+        const speed = (214 + (i & 1) * 26) * speedMul;
         addDreamBullet(x, y, Math.cos(base) * speed, Math.sin(base) * speed, {
-          r: 6.6, life: 5.4, hardLife: 6.1, style: 'hazard', threat: 'hazard', shape: 'needle',
+          r: 6.6, life: 5.6, hardLife: 6.3, style: 'hazard', threat: 'hazard', shape: 'needle',
           skin: i & 1 ? 'plushWaterDrop' : 'plushFishbone', color: '#7ddfff',
-          policy: 'turn-once', policySpeed: speed, turnAt: 0.62 + (i % 3) * 0.07, turnDuration: 0.22,
+          policy: 'turn-once', policySpeed: speed, turnAt: 0.52 + (i % 4) * 0.06, turnDuration: 0.22,
           targetAngle: target, motion: 'fishbone-telegraphed-turn',
+        });
+      }
+      for (let i = 0; i < 2; i++) {
+        const a = dreamStage3Aim(source) + (i ? 0.2 : -0.2);
+        addDreamBullet(source.x, source.y + 10, Math.cos(a) * 88 * speedMul, Math.sin(a) * 88 * speedMul, {
+          r: 6.8, life: 5.5, hardLife: 6.2, style: 'aimed', threat: 'aimed', shape: 'orb',
+          skin: 'plushBubblePearl', color: '#8fe6ff', policy: 'analytic-wave-lane', policySpeed: 88 * speedMul,
+          waveAmplitude: 18, waveFrequency: 2.6, wavePhase: i * Math.PI, motion: 'fishbone-center-wave',
         });
       }
       dreamPlushAttackFx('waterToy', source);
@@ -28219,37 +28362,37 @@
   function dreamEmitPlushBubbleCurrent(speedMul = 1) {
     const source = dreamPlushSource('waterToy'); if (!source) return false;
     const gapX = dreamStage3RouteX();
-    const xs = [58, 138, 218, 298, 378, 458, 538, 618, 698].filter(x => Math.abs(x - gapX) > 64);
+    const xs = [46, 116, 186, 256, 326, 396, 466, 536, 606, 676].filter(x => Math.abs(x - gapX) > 58);
     return dreamTryAtomicBulletGroup(xs.length, () => {
       xs.forEach((x, i) => {
-        const speed = (180 + (i % 3) * 15) * speedMul;
-        addDreamBullet(x, -24 - (i & 1) * 40, 0, speed, {
-          r: 6.8, life: 5.7, hardLife: 6.3, style: 'spread', threat: 'spread', shape: 'orb',
+        const speed = (188 + (i % 4) * 16) * speedMul;
+        addDreamBullet(x, -24 - (i % 3) * 36, 0, speed, {
+          r: 6.8, life: 5.9, hardLife: 6.5, style: 'spread', threat: 'spread', shape: 'orb',
           skin: i & 1 ? 'plushBubblePearl' : 'plushWaterDrop', color: '#8fe6ff',
-          policy: 'analytic-wave-lane', policySpeed: speed, waveAmplitude: 14 + (i % 3) * 2,
-          waveFrequency: 2.25 + (i % 2) * 0.25, wavePhase: i * 0.72, motion: 'bubble-analytic-current',
+          policy: 'analytic-wave-lane', policySpeed: speed, waveAmplitude: 16 + (i % 4) * 3,
+          waveFrequency: 2.35 + (i % 3) * 0.22, wavePhase: i * 0.68, motion: 'bubble-analytic-current',
         });
       });
-      dreamPlushAttackFx('waterToy', source, 0.78);
+      dreamPlushAttackFx('waterToy', source, 0.82);
     });
   }
   function dreamEmitPlushWhirlpoolGate(speedMul = 1) {
     const source = dreamPlushSource('waterToy'); if (!source) return false;
     const spinDir = dreamConductor.serial & 1 ? 1 : -1;
-    return dreamTryAtomicBulletGroup(10, () => {
+    return dreamTryAtomicBulletGroup(16, () => {
       for (let side = 0; side < 2; side++) {
-        const cx = side ? W - 92 : 92, cy = 126 + side * 46;
-        for (let i = 0; i < 5; i++) {
-          const a = i * TAU / 5 + side * 0.34;
-          const rx = 48, ry = 38;
+        const cx = side ? W - 92 : 92, cy = 118 + side * 52;
+        for (let i = 0; i < 7; i++) {
+          const a = i * TAU / 7 + side * 0.28;
+          const rx = 52 + (i & 1) * 8, ry = 40 + (i & 1) * 6;
           const x = cx + Math.cos(a) * rx, y = cy + Math.sin(a) * ry;
-          const releaseAngle = angleTo(x, y, clamp(dreamStage3RouteX() + (side ? 106 : -106) + (i - 2) * 22, 52, W - 52), player.y - 70 + i * 26);
+          const releaseAngle = angleTo(x, y, clamp(dreamStage3RouteX() + (side ? 112 : -112) + (i - 3) * 20, 52, W - 52), player.y - 70 + i * 24);
           addDreamBullet(x, y, 0, 0, {
-            r: 6.6, life: 5.8, hardLife: 6.5, style: i & 1 ? 'deco' : 'hazard', threat: 'hazard', shape: i & 1 ? 'orb' : 'needle',
+            r: 6.6, life: 6.0, hardLife: 6.8, style: i & 1 ? 'deco' : 'hazard', threat: 'hazard', shape: i & 1 ? 'orb' : 'needle',
             skin: i & 1 ? 'plushBubblePearl' : 'plushFishbone', color: '#68d7ff',
             policy: 'orbit-release', orbitCx: cx, orbitCy: cy, orbitRx: rx, orbitRy: ry,
-            orbitAngle: a, orbitOmega: (side ? -1 : 1) * spinDir * 3.2, orbitHold: 0.50, orbitMode: 'fixed',
-            releaseAngle, releaseSpeed: (218 + i * 8) * speedMul, motion: 'whirlpool-fixed-gate-release',
+            orbitAngle: a, orbitOmega: (side ? -1 : 1) * spinDir * 3.45, orbitHold: 0.44, orbitMode: 'fixed',
+            releaseAngle, releaseSpeed: (228 + i * 10) * speedMul, motion: 'whirlpool-fixed-gate-release',
           });
         }
       }
@@ -28259,17 +28402,25 @@
   function dreamEmitPlushStarOrbit(speedMul = 1) {
     const source = dreamPlushSource('starToy'); if (!source) return false;
     const dir = dreamConductor.serial & 1 ? 1 : -1;
-    return dreamTryAtomicBulletGroup(10, () => {
-      for (let i = 0; i < 10; i++) {
-        const a = i * TAU / 10;
-        const rx = 36, ry = 28;
+    return dreamTryAtomicBulletGroup(16, () => {
+      for (let i = 0; i < 12; i++) {
+        const a = i * TAU / 12;
+        const rx = 38 + (i % 3) * 6, ry = 28 + (i % 3) * 5;
         const x = source.x + Math.cos(a) * rx, y = source.y + Math.sin(a) * ry;
         addDreamBullet(x, y, 0, 0, {
-          r: 6.6, life: 5.7, hardLife: 6.4, style: 'deco', threat: 'spread', shape: i & 1 ? 'star' : 'orb',
+          r: 6.6, life: 5.9, hardLife: 6.6, style: 'deco', threat: 'spread', shape: i & 1 ? 'star' : 'orb',
           skin: i & 1 ? 'plushStarShot' : 'plushConstellationNode', color: '#ffe279',
           policy: 'orbit-release', orbitCx: source.x, orbitCy: source.y, orbitRx: rx, orbitRy: ry,
-          orbitAngle: a, orbitOmega: dir * 3.4, orbitHold: 0.58, orbitMode: 'tangent',
-          releaseSpeed: 228 * speedMul, motion: 'star-orbit-tangent-release',
+          orbitAngle: a, orbitOmega: dir * (3.1 + (i % 3) * 0.18), orbitHold: 0.48, orbitMode: 'tangent',
+          releaseSpeed: (238 + (i % 3) * 12) * speedMul, motion: 'star-orbit-tangent-release',
+        });
+      }
+      for (let i = 0; i < 4; i++) {
+        const a = dreamStage3Aim(source) + (i - 1.5) * 0.16;
+        addDreamBullet(source.x, source.y + 6, Math.cos(a) * 72 * speedMul, Math.sin(a) * 72 * speedMul, {
+          r: 6.7, life: 5.5, hardLife: 6.3, style: 'aimed', threat: 'aimed', shape: 'needle',
+          skin: 'plushMeteorStar', color: '#ffad69', policy: 'brake-hold-release', policySpeed: 72 * speedMul,
+          brakeTime: 0.14, holdTime: 0.3, releaseAngle: a, releaseSpeed: 312 * speedMul, motion: 'star-core-meteor',
         });
       }
       dreamPlushAttackFx('starToy', source);
@@ -28278,17 +28429,17 @@
   function dreamEmitPlushMeteorCurtain(speedMul = 1) {
     const source = dreamPlushSource('starToy'); if (!source) return false;
     const gapX = dreamStage3RouteX();
-    const xs = [54, 126, 198, 270, 342, 414, 486, 558, 630, 702].filter(x => Math.abs(x - gapX) > DREAM_STAGE3_MOTION_CONFIG.wallGapRadius);
+    const xs = [42, 102, 162, 222, 282, 342, 402, 462, 522, 582, 642, 702].filter(x => Math.abs(x - gapX) > DREAM_STAGE3_MOTION_CONFIG.wallGapRadius * 0.9);
     return dreamTryAtomicBulletGroup(xs.length, () => {
       xs.forEach((x, i) => {
-        const initial = Math.PI / 2 + (i & 1 ? -0.04 : 0.04);
-        const speed = 48 * speedMul;
-        const release = Math.PI / 2 + (i - (xs.length - 1) * 0.5) * 0.012;
-        addDreamBullet(x, -30 - (i % 3) * 30, Math.cos(initial) * speed, Math.sin(initial) * speed, {
-          r: 6.8, life: 5.4, hardLife: 6.2, style: 'aimed', threat: 'aimed', shape: 'needle',
+        const initial = Math.PI / 2 + (i & 1 ? -0.05 : 0.05);
+        const speed = 44 * speedMul;
+        const release = Math.PI / 2 + (i - (xs.length - 1) * 0.5) * 0.016 + Math.sin(i) * 0.03;
+        addDreamBullet(x, -30 - (i % 4) * 26, Math.cos(initial) * speed, Math.sin(initial) * speed, {
+          r: 6.8, life: 5.6, hardLife: 6.4, style: 'aimed', threat: 'aimed', shape: 'needle',
           skin: i & 1 ? 'plushMeteorStar' : 'plushStarShot', color: i & 1 ? '#ffad69' : '#ffe681',
-          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.18, holdTime: 0.46 + (i % 3) * 0.06,
-          releaseAngle: release, releaseSpeed: (278 + (i % 3) * 18) * speedMul, motion: 'meteor-warning-release',
+          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.16, holdTime: 0.38 + (i % 4) * 0.055,
+          releaseAngle: release, releaseSpeed: (292 + (i % 4) * 20) * speedMul, motion: 'meteor-warning-release',
         });
       });
       dreamPlushAttackFx('starToy', source);
@@ -28296,20 +28447,30 @@
   }
   function dreamEmitPlushConstellation(speedMul = 1) {
     const source = dreamPlushSource('starToy'); if (!source) return false;
-    return dreamTryAtomicBulletGroup(7, () => {
-      for (let i = 0; i < 7; i++) {
-        const lane = i - 3;
-        const startA = -Math.PI / 2 + lane * 0.13;
-        const speed = 52 * speedMul;
-        const release = dreamStage3Aim(source, lane * 34, (i & 1) * 30 - 16);
-        addDreamBullet(source.x + lane * 12, source.y + 8, Math.cos(startA) * speed, Math.sin(startA) * speed, {
-          r: 6.5, life: 5.7, hardLife: 6.4, style: 'aimed', threat: 'aimed', shape: i & 1 ? 'star' : 'orb',
+    return dreamTryAtomicBulletGroup(11, () => {
+      for (let i = 0; i < 9; i++) {
+        const lane = i - 4;
+        const startA = -Math.PI / 2 + lane * 0.11;
+        const speed = 48 * speedMul;
+        const release = dreamStage3Aim(source, lane * 30, (i & 1) * 28 - 14);
+        addDreamBullet(source.x + lane * 11, source.y + 8, Math.cos(startA) * speed, Math.sin(startA) * speed, {
+          r: 6.5, life: 5.9, hardLife: 6.6, style: 'aimed', threat: 'aimed', shape: i & 1 ? 'star' : 'orb',
           skin: i & 1 ? 'plushStarShot' : 'plushConstellationNode', color: '#fff09a',
-          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.20, holdTime: 0.38 + Math.abs(lane) * 0.05,
-          releaseAngle: release, releaseSpeed: (278 + Math.abs(lane) * 14) * speedMul, motion: 'constellation-linked-release',
+          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.18, holdTime: 0.32 + Math.abs(lane) * 0.045,
+          releaseAngle: release, releaseSpeed: (288 + Math.abs(lane) * 16) * speedMul, motion: 'constellation-linked-release',
         });
       }
-      dreamPlushAttackFx('starToy', source, 0.82);
+      for (let i = 0; i < 2; i++) {
+        const a = i * TAU / 2 + dreamRun.waveElapsed;
+        addDreamBullet(source.x + Math.cos(a) * 46, source.y + Math.sin(a) * 34, 0, 0, {
+          r: 6.8, life: 5.8, hardLife: 6.5, style: 'deco', threat: 'spread', shape: 'star',
+          skin: 'plushStarShot', color: '#ffe47c', policy: 'orbit-release',
+          orbitCx: source.x, orbitCy: source.y, orbitRx: 46, orbitRy: 34, orbitAngle: a,
+          orbitOmega: (i ? -1 : 1) * 3.6, orbitHold: 0.4, orbitMode: 'tangent',
+          releaseSpeed: 256 * speedMul, motion: 'constellation-orbit-pair',
+        });
+      }
+      dreamPlushAttackFx('starToy', source, 0.86);
     });
   }
   function dreamEmitPlushToyboxFinale(speedMul = 1) {
@@ -28317,23 +28478,31 @@
     const toys = [
       ['plushLeafBlade', 'needle', 'spread', '#82e6a1'], ['plushSnowball', 'orb', 'spread', '#dff8ff'],
       ['plushDollSigil', 'star', 'hazard', '#e2a6ff'], ['plushWaterDrop', 'needle', 'aimed', '#85e4ff'],
-      ['plushStarShot', 'star', 'spread', '#ffe47c'],
+      ['plushStarShot', 'star', 'spread', '#ffe47c'], ['plushCrystalShard', 'diamond', 'hazard', '#d7b8ff'],
     ];
-    return dreamTryAtomicBulletGroup(10, () => {
+    return dreamTryAtomicBulletGroup(16, () => {
       const aim = dreamStage3Aim(source);
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 12; i++) {
         const toy = toys[i % toys.length];
-        const lane = i - 4.5;
-        const startA = i * TAU / 10;
-        const speed = 62 * speedMul;
+        const lane = i - 5.5;
+        const startA = i * TAU / 12 + dreamConductor.serial * 0.07;
+        const speed = 58 * speedMul;
         addDreamBullet(source.x, source.y, Math.cos(startA) * speed, Math.sin(startA) * speed, {
-          r: 6.7, life: 5.8, hardLife: 6.5, style: toy[2], threat: toy[2], shape: toy[1], skin: toy[0], color: toy[3],
-          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.24, holdTime: 0.36 + (i % 5) * 0.045,
-          releaseAngle: aim + lane * 0.092, releaseSpeed: (256 + (i % 3) * 22) * speedMul,
+          r: 6.7, life: 6.0, hardLife: 6.8, style: toy[2], threat: toy[2], shape: toy[1], skin: toy[0], color: toy[3],
+          policy: 'brake-hold-release', policySpeed: speed, brakeTime: 0.2, holdTime: 0.28 + (i % 6) * 0.04,
+          releaseAngle: aim + lane * 0.078, releaseSpeed: (268 + (i % 4) * 20) * speedMul,
           emitter: 'plushToyboxFinale', motion: 'toybox-chord-release',
         });
       }
-      dreamPlushAttackFx(source.dreamRole, source, 0.90);
+      for (let i = 0; i < 4; i++) {
+        const a = aim + (i - 1.5) * 0.2;
+        addDreamBullet(source.x, source.y + 6, Math.cos(a) * 86 * speedMul, Math.sin(a) * 86 * speedMul, {
+          r: 6.9, life: 5.5, hardLife: 6.3, style: 'aimed', threat: 'aimed', shape: 'needle',
+          skin: 'plushMeteorStar', color: '#ffad69', policy: 'analytic-wave-lane', policySpeed: 86 * speedMul,
+          waveAmplitude: 14, waveFrequency: 2.8, wavePhase: i, emitter: 'plushToyboxFinale', motion: 'toybox-wave-lance',
+        });
+      }
+      dreamPlushAttackFx(source.dreamRole, source, 0.94);
     });
   }
   function dreamPickVoice(list, counter, wave, channel) {
@@ -29191,7 +29360,7 @@
     darkqueen:   { hp: 14000, r: 72, scale: 1.0,  sprite: 'darkqueen',   name: '暗夜女王 · 莉莉丝', intro: '暗夜加冕：女王莅临战场', y: 218, theme: 'queen' },
     suiyi:       { hp: 15600, r: 72, scale: 1.0,  sprite: 'suiyi',       name: '随意 · 代码工程师', intro: '系统接入：随意开始重写战场', y: 206, theme: 'suiyi' },
     migua:       { hp: 18400, r: 76, scale: 1.0,  sprite: 'migua',       name: '蜜瓜号 · MIGUA-X', intro: '甜味警报：蜜瓜号驶入战场', y: 210, theme: 'migua' },
-    dreamshark:  { hp: 355000, r: 82, scale: 1.0, sprite: 'dreamshark',  name: '霜潮绒鲨 · 阿布', intro: '霜潮翻涌：阿布从玩偶海中跃出', y: 214, theme: 'dreamshark' },
+    dreamshark:  { hp: 300000, r: 82, scale: 1.0, sprite: 'dreamshark',  name: '霜潮绒鲨 · 阿布', intro: '霜潮翻涌：阿布从玩偶海中跃出', y: 214, theme: 'dreamshark' },
 
     nightherald:   { hp: 12100, r: 70, scale: 0.96, sprite: 'nightherald',   name: '夜谕使 · 诺克图', intro: '夜幕低语：夜谕使现身', y: 216, theme: 'night' },
     stormreaver:   { hp: 13300, r: 74, scale: 1.0,  sprite: 'stormreaver',   name: '风暴收割者 · 忒弥斯', intro: '雷云裂开：风暴收割者降临', y: 218, theme: 'storm' },
@@ -34725,6 +34894,18 @@
   }
   // 击杀掉落（V3.14 精简）：仅 绿色加血 / 金色暴走，低频且清晰，不再满地杂物。
   // 火力成长已由击杀直接给予（updateEnemies 内 addPower），故不再掉落火力/分数杂物。
+  function dropDreamEnemyLoot(e) {
+    // 梦境击杀概率掉暴走：帮助更快清场，不掉插件以免打乱构筑
+    const onField = items.length;
+    if (onField >= 7) return;
+    const glut = onField >= 3 ? 0.55 : 1;
+    if (Math.random() < DREAM_REWARD_CONFIG.berserkDropChance * glut) {
+      addItem(e.x + rand(-12, 12), e.y - 6, 'berserk');
+    }
+    if (Math.random() < DREAM_REWARD_CONFIG.healDropChance * glut) {
+      addItem(e.x + rand(-10, 10), e.y + 4, 'heal');
+    }
+  }
   function dropFromEnemy(e) {
     // 防刷屏：场上掉落物较多时大幅压制新掉落（避免一片小怪同时死亡时满屏杂物）
     const onField = items.length;
@@ -36796,7 +36977,8 @@
           addSpriteFx(heavy ? 'vfxExplosionLarge' : 'vfxExplosionSmall', e.x, e.y, heavy ? 132 : 78, heavy ? 0.5 : 0.32, rand(0, TAU), 0.36, heavy ? 0.74 : 0.62);
           burst(e.x, e.y, e.color, Math.max(4, Math.round((heavy ? 36 : 18) * fxMul)), heavy ? 260 : 180, true);
         } }
-        if (!dreamActive()) dropFromEnemy(e);
+        if (dreamActive()) dropDreamEnemyLoot(e);
+        else dropFromEnemy(e);
         enemies.splice(i, 1);
         continue;
       }
@@ -37593,212 +37775,288 @@
   function dreamSharkBubbleTide(speed = 174) {
     if (!boss) return false;
     const aim = angleTo(boss.x, boss.y + 22, player.x, player.y);
-    const lanes = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
-    const emitted = dreamTryAtomicBulletGroup(lanes.length, () => {
+    const lanes = [-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6];
+    const emitted = dreamTryAtomicBulletGroup(lanes.length + 6, () => {
       for (let i = 0; i < lanes.length; i++) {
         const lane = lanes[i];
-        const a = aim + lane * 0.105;
+        const a = aim + lane * 0.092;
         addDreamBullet(boss.x + lane * 7, boss.y + 36, Math.cos(a) * speed, Math.sin(a) * speed, {
           r: 6.7, skin: 'sharkBubble', family: 'waterToy', threat: 'spread', style: 'spread', shape: 'orb',
-          color: '#79e8ff', life: 5.6, policy: 'analytic-wave-lane', policySpeed: speed,
-          waveAmplitude: 9 + Math.abs(lane) * 1.2, waveFrequency: 2.05, wavePhase: i * 0.54,
+          color: '#79e8ff', life: 5.8, policy: 'analytic-wave-lane', policySpeed: speed,
+          waveAmplitude: 11 + Math.abs(lane) * 1.4, waveFrequency: 2.2, wavePhase: i * 0.5,
+        });
+      }
+      for (let i = 0; i < 6; i++) {
+        const a = aim + (i - 2.5) * 0.14;
+        addDreamBullet(boss.x, boss.y + 28, Math.cos(a) * 72, Math.sin(a) * 72, {
+          r: 6.9, skin: 'sharkWaveCrescent', family: 'waterToy', threat: 'aimed', style: 'aimed', shape: 'crescent',
+          color: '#64d7ff', life: 5.6, policy: 'brake-hold-release', policySpeed: 72,
+          brakeTime: 0.16, holdTime: 0.28 + i * 0.04, releaseAngle: a, releaseSpeed: speed + 86 + i * 8, spin: i & 1 ? 2.8 : -2.8,
         });
       }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkMuzzle', 178, 0.44, 0.88);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkMuzzle', 198, 0.48, 0.92);
     return emitted;
   }
   function dreamSharkFrostWake(speed = 196) {
     if (!boss) return false;
-    const count = 8;
-    const emitted = dreamTryAtomicBulletGroup(count, () => {
-      const base = boss.t * 0.32;
+    const count = 12;
+    const emitted = dreamTryAtomicBulletGroup(count + 8, () => {
+      const base = boss.t * 0.36;
       for (let i = 0; i < count; i++) {
         const a = base + i * TAU / count;
-        if (Math.abs(Math.atan2(Math.sin(a - Math.PI / 2), Math.cos(a - Math.PI / 2))) < 0.30) continue;
+        if (Math.abs(dreamShortestAngle(a, Math.PI / 2)) < 0.26) continue;
         addDreamBullet(boss.x, boss.y + 24, Math.cos(a) * speed, Math.sin(a) * speed, {
           r: 7.1, skin: 'sharkWaveCrescent', family: 'waterToy', threat: 'hazard', style: 'hazard', shape: 'crescent',
-          color: '#70d8ff', life: 5.4, policy: 'turn-once', policySpeed: speed,
-          turnAt: 0.68, turnDuration: 0.24, targetAngle: a + (i & 1 ? 0.16 : -0.16), spin: i & 1 ? 2.4 : -2.4,
+          color: '#70d8ff', life: 5.6, policy: 'turn-once', policySpeed: speed,
+          turnAt: 0.58, turnDuration: 0.24, targetAngle: a + (i & 1 ? 0.2 : -0.2), spin: i & 1 ? 2.8 : -2.8,
+        });
+      }
+      for (let i = 0; i < 8; i++) {
+        const a = -Math.PI / 2 + (i - 3.5) * 0.12;
+        addDreamBullet(boss.x + (i - 3.5) * 12, boss.y + 40, Math.cos(a) * 88, Math.sin(a) * 88, {
+          r: 6.6, skin: i & 1 ? 'sharkSnowball' : 'sharkIceShard', family: 'iceToy', threat: 'spread', style: 'spread',
+          shape: i & 1 ? 'orb' : 'shard', color: '#e5faff', life: 5.6, policy: 'analytic-wave-lane', policySpeed: 88,
+          waveAmplitude: 12, waveFrequency: 2.4, wavePhase: i,
         });
       }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkWave', 230, 0.54, 0.78);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkWave', 250, 0.58, 0.84);
     return emitted;
   }
   function dreamSharkSpearGate(speed = 258) {
     if (!boss) return false;
-    const columns = [54, 132, 210, 288, 366, 444, 522, 600, 678];
-    const active = columns.filter(x => Math.abs(x - player.x) >= 104);
-    const emitted = dreamTryAtomicBulletGroup(active.length, () => {
+    const columns = [42, 108, 174, 240, 306, 372, 438, 504, 570, 636, 702];
+    const active = columns.filter(x => Math.abs(x - player.x) >= 92);
+    const emitted = dreamTryAtomicBulletGroup(active.length + 6, () => {
       for (let i = 0; i < active.length; i++) {
-        const a = Math.PI / 2 + (i & 1 ? 0.025 : -0.025);
-        addDreamBullet(active[i], 74 - (i % 3) * 15, Math.cos(a) * 62, Math.sin(a) * 62, {
+        const a = Math.PI / 2 + (i & 1 ? 0.03 : -0.03);
+        addDreamBullet(active[i], 68 - (i % 4) * 14, Math.cos(a) * 58, Math.sin(a) * 58, {
           r: 7.3, skin: 'sharkIceSpear', family: 'iceToy', threat: 'aimed', style: 'aimed', shape: 'needle',
-          color: '#a7ebff', life: 6.2, policy: 'brake-hold-release', policySpeed: 62,
-          brakeTime: 0.18, holdTime: 0.52, releaseAngle: a, releaseSpeed: speed + (i & 1) * 18,
+          color: '#a7ebff', life: 6.4, policy: 'brake-hold-release', policySpeed: 58,
+          brakeTime: 0.16, holdTime: 0.42 + (i % 4) * 0.05, releaseAngle: a, releaseSpeed: speed + (i & 1) * 22,
+        });
+      }
+      const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
+      for (let i = 0; i < 6; i++) {
+        const a = aim + (i - 2.5) * 0.1;
+        addDreamBullet(boss.x, boss.y + 26, Math.cos(a) * speed * 0.82, Math.sin(a) * speed * 0.82, {
+          r: 6.8, skin: 'sharkIceShard', family: 'iceToy', threat: 'aimed', style: 'aimed', shape: 'shard',
+          color: '#c9f3ff', life: 5.6, policy: 'locked-linear', policySpeed: speed * 0.82,
         });
       }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkIceBurst', 220, 0.56, 0.86);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkIceBurst', 236, 0.6, 0.9);
     return emitted;
   }
   function dreamSharkSnowCrown(speed = 186) {
     if (!boss) return false;
-    const count = 14;
+    const count = 18;
     const gap = angleTo(boss.x, boss.y, player.x, player.y);
     const angles = [];
     for (let i = 0; i < count; i++) {
-      const a = boss.t * 0.24 + i * TAU / count;
-      if (Math.abs(dreamShortestAngle(a, gap)) > 0.32) angles.push(a);
+      const a = boss.t * 0.28 + i * TAU / count;
+      if (Math.abs(dreamShortestAngle(a, gap)) > 0.28) angles.push(a);
     }
-    const emitted = dreamTryAtomicBulletGroup(angles.length, () => {
+    const emitted = dreamTryAtomicBulletGroup(angles.length + 8, () => {
       angles.forEach((a, i) => addDreamBullet(boss.x, boss.y + 22, Math.cos(a) * speed, Math.sin(a) * speed, {
         r: 6.6, skin: i & 1 ? 'sharkSnowball' : 'sharkIceShard', family: 'iceToy',
-        threat: 'spread', style: 'spread', shape: i & 1 ? 'orb' : 'shard', color: '#e5faff', life: 5.8,
-        policy: 'locked-linear', policySpeed: speed, visualIndex: i,
+        threat: 'spread', style: 'spread', shape: i & 1 ? 'orb' : 'shard', color: '#e5faff', life: 6.0,
+        policy: i % 3 ? 'locked-linear' : 'analytic-wave-lane', policySpeed: speed,
+        waveAmplitude: 10, waveFrequency: 2.1, wavePhase: i * 0.4, visualIndex: i,
       }));
+      for (let i = 0; i < 8; i++) {
+        const a = i * TAU / 8;
+        addDreamBullet(boss.x + Math.cos(a) * 58, boss.y + 18 + Math.sin(a) * 42, 0, 0, {
+          r: 6.7, skin: 'sharkBubble', family: 'waterToy', threat: 'spread', style: 'deco', shape: 'orb',
+          color: '#81e8ff', life: 6.0, policy: 'orbit-release', orbitCx: boss.x, orbitCy: boss.y + 18,
+          orbitRx: 58, orbitRy: 42, orbitAngle: a, orbitOmega: 2.6, orbitHold: 0.5, orbitMode: 'radial', releaseSpeed: speed + 40,
+        });
+      }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkShield', 214, 0.52, 0.76);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkShield', 228, 0.56, 0.82);
     return emitted;
   }
   function dreamSharkWhirlpool(speed = 232) {
     if (!boss) return false;
-    const count = 10;
+    const count = 14;
     const emitted = dreamTryAtomicBulletGroup(count, () => {
       const dir = (Math.floor(boss.t * 0.8) & 1) ? 1 : -1;
       for (let i = 0; i < count; i++) {
         const a = i * TAU / count;
-        const rx = 78 + (i & 1) * 14;
-        const ry = 52 + (i & 1) * 10;
+        const rx = 70 + (i % 3) * 16;
+        const ry = 48 + (i % 3) * 10;
         addDreamBullet(boss.x + Math.cos(a) * rx, boss.y + 18 + Math.sin(a) * ry, 0, 0, {
           r: 6.7, skin: i % 3 ? 'sharkBubble' : 'sharkIceShard', family: i % 3 ? 'waterToy' : 'iceToy',
-          threat: 'spread', style: i % 3 ? 'deco' : 'spread', shape: i % 3 ? 'orb' : 'shard', color: '#83e5ff', life: 6.2,
+          threat: 'spread', style: i % 3 ? 'deco' : 'spread', shape: i % 3 ? 'orb' : 'shard', color: '#83e5ff', life: 6.4,
           policy: 'orbit-release', orbitCx: boss.x, orbitCy: boss.y + 18, orbitRx: rx, orbitRy: ry,
-          orbitAngle: a, orbitOmega: dir * (2.25 + (i & 1) * 0.22), orbitHold: 0.72, orbitMode: 'tangent', releaseSpeed: speed,
+          orbitAngle: a, orbitOmega: dir * (2.4 + (i % 3) * 0.25), orbitHold: 0.62, orbitMode: i % 2 ? 'tangent' : 'radial', releaseSpeed: speed + (i % 3) * 14,
         });
       }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkWhirlpool', 286, 0.72, 0.84);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkWhirlpool', 310, 0.78, 0.9);
     return emitted;
   }
   function dreamSharkShardCurrent(speed = 210) {
     if (!boss) return false;
-    const count = 6;
-    const emitted = dreamTryAtomicBulletGroup(count, () => {
+    const count = 8;
+    const emitted = dreamTryAtomicBulletGroup(count + 6, () => {
       for (let i = 0; i < count; i++) {
         const fromLeft = i < count / 2;
-        const row = i % 3;
+        const row = i % 4;
         const x = fromLeft ? -24 : W + 24;
-        const y = 260 + row * 150 + (fromLeft ? 0 : 58);
+        const y = 220 + row * 130 + (fromLeft ? 0 : 48);
         const endX = fromLeft ? W + 70 : -70;
         const bend = fromLeft ? 1 : -1;
-        addDreamBullet(x, y, bend * speed, 72, {
+        addDreamBullet(x, y, bend * speed, 64, {
           r: 7.0, skin: 'sharkIceShard', family: 'iceToy', threat: 'hazard', style: 'hazard', shape: 'shard',
-          color: '#bfefff', life: 6.2, policy: 'bezier-lane', policySpeed: 140,
-          bezierDuration: 3.4, bezierX1: x + bend * 220, bezierY1: y - 70,
-          bezierX2: endX - bend * 220, bezierY2: y + 190, bezierX3: endX, bezierY3: y + 250,
+          color: '#bfefff', life: 6.4, policy: 'bezier-lane', policySpeed: 150,
+          bezierDuration: 3.2, bezierX1: x + bend * 240, bezierY1: y - 80,
+          bezierX2: endX - bend * 200, bezierY2: y + 180, bezierX3: endX, bezierY3: y + 240,
+        });
+      }
+      const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
+      for (let i = 0; i < 6; i++) {
+        const a = aim + (i - 2.5) * 0.12;
+        addDreamBullet(boss.x, boss.y + 24, Math.cos(a) * 64, Math.sin(a) * 64, {
+          r: 7.2, skin: 'sharkIceSpear', family: 'iceToy', threat: 'aimed', style: 'aimed', shape: 'needle',
+          color: '#a7ebff', life: 5.8, policy: 'brake-hold-release', policySpeed: 64,
+          brakeTime: 0.14, holdTime: 0.36, releaseAngle: a, releaseSpeed: speed + 90,
         });
       }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkWave', 248, 0.56, 0.76);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkWave', 268, 0.6, 0.82);
     return emitted;
   }
   function dreamSharkRageCharge(speed = 326) {
     if (!boss) return false;
     const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
-    const lanes = [-3, -2, -1, 1, 2, 3];
-    const emitted = dreamTryAtomicBulletGroup(lanes.length, () => {
+    const lanes = [-4, -3, -2, -1, 1, 2, 3, 4];
+    const emitted = dreamTryAtomicBulletGroup(lanes.length + 8, () => {
       lanes.forEach((lane, i) => {
-        const a = aim + lane * 0.12;
-        addDreamBullet(boss.x + lane * 10, boss.y + 28, Math.cos(a) * 74, Math.sin(a) * 74, {
+        const a = aim + lane * 0.105;
+        addDreamBullet(boss.x + lane * 10, boss.y + 28, Math.cos(a) * 70, Math.sin(a) * 70, {
           r: 7.6, skin: 'sharkWaveCrescent', family: 'waterToy', threat: 'aimed', style: 'aimed', shape: 'crescent',
-          color: '#64d7ff', life: 5.8, policy: 'brake-hold-release', policySpeed: 74,
-          brakeTime: 0.20, holdTime: 0.56, releaseAngle: a, releaseSpeed: speed + Math.abs(lane) * 12, spin: i & 1 ? 3.4 : -3.4,
+          color: '#64d7ff', life: 6.0, policy: 'brake-hold-release', policySpeed: 70,
+          brakeTime: 0.18, holdTime: 0.48, releaseAngle: a, releaseSpeed: speed + Math.abs(lane) * 14, spin: i & 1 ? 3.6 : -3.6,
         });
       });
+      for (let i = 0; i < 8; i++) {
+        const a = aim + Math.PI + (i - 3.5) * 0.16;
+        addDreamBullet(boss.x, boss.y + 18, Math.cos(a) * 160, Math.sin(a) * 160, {
+          r: 6.6, skin: i & 1 ? 'sharkSnowball' : 'sharkBubble', family: i & 1 ? 'iceToy' : 'waterToy',
+          threat: 'spread', style: 'spread', shape: 'orb', color: '#d8f6ff', life: 5.4,
+          policy: 'turn-once', policySpeed: 160, turnAt: 0.34, turnDuration: 0.2, targetAngle: a + (i & 1 ? 0.35 : -0.35),
+        });
+      }
     });
     if (emitted) {
       boss.sharkDashT = 0.82;
-      dreamSharkCastFx('dreamPlushSharkWave', 320, 0.68, 0.90);
+      dreamSharkCastFx('dreamPlushSharkWave', 340, 0.72, 0.94);
     }
     return emitted;
   }
   function dreamSharkRageCross(speed = 222) {
     if (!boss) return false;
-    const count = 8;
-    const emitted = dreamTryAtomicBulletGroup(count, () => {
+    const count = 12;
+    const emitted = dreamTryAtomicBulletGroup(count + 6, () => {
       for (let i = 0; i < count; i++) {
-        const side = i < 4 ? -1 : 1;
-        const row = i % 4;
+        const side = i < 6 ? -1 : 1;
+        const row = i % 6;
         const x = side < 0 ? -20 : W + 20;
-        const y = 190 + row * 166;
-        const a = side < 0 ? 0.72 : Math.PI - 0.72;
+        const y = 150 + row * 128;
+        const a = side < 0 ? 0.68 : Math.PI - 0.68;
         addDreamBullet(x, y, Math.cos(a) * speed, Math.sin(a) * speed, {
           r: 6.9, skin: i & 1 ? 'sharkIceShard' : 'sharkSnowball', family: 'iceToy',
-          threat: 'hazard', style: 'hazard', shape: i & 1 ? 'shard' : 'orb', color: '#d8f6ff', life: 5.6,
-          policy: 'turn-once', policySpeed: speed, turnAt: 0.54, turnDuration: 0.22,
-          targetAngle: a + side * (row - 1.5) * 0.08,
+          threat: 'hazard', style: 'hazard', shape: i & 1 ? 'shard' : 'orb', color: '#d8f6ff', life: 5.8,
+          policy: 'turn-once', policySpeed: speed, turnAt: 0.46 + row * 0.03, turnDuration: 0.22,
+          targetAngle: a + side * (row - 2.5) * 0.07,
+        });
+      }
+      const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
+      for (let i = 0; i < 6; i++) {
+        const a = aim + (i - 2.5) * 0.13;
+        addDreamBullet(boss.x, boss.y + 24, Math.cos(a) * 54, Math.sin(a) * 54, {
+          r: 7.4, skin: 'sharkWaveCrescent', family: 'waterToy', threat: 'aimed', style: 'aimed', shape: 'crescent',
+          color: '#64d7ff', life: 5.8, policy: 'brake-hold-release', policySpeed: 54,
+          brakeTime: 0.14, holdTime: 0.4, releaseAngle: a, releaseSpeed: speed + 110, spin: i & 1 ? 3.2 : -3.2,
         });
       }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkIceBurst', 250, 0.54, 0.88);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkIceBurst', 270, 0.58, 0.92);
     return emitted;
   }
   function dreamSharkVoidMaw(speed = 206) {
     if (!boss) return false;
-    const count = 16;
+    const count = 20;
     const gap = angleTo(boss.x, boss.y, player.x, player.y);
     const angles = [];
     for (let i = 0; i < count; i++) {
-      const a = -boss.t * 0.38 + i * TAU / count;
-      if (Math.abs(dreamShortestAngle(a, gap)) > 0.34 && Math.abs(dreamShortestAngle(a, gap + Math.PI)) > 0.22) angles.push(a);
+      const a = -boss.t * 0.42 + i * TAU / count;
+      if (Math.abs(dreamShortestAngle(a, gap)) > 0.30 && Math.abs(dreamShortestAngle(a, gap + Math.PI)) > 0.2) angles.push(a);
     }
-    const emitted = dreamTryAtomicBulletGroup(angles.length, () => {
+    const emitted = dreamTryAtomicBulletGroup(angles.length + 10, () => {
       angles.forEach((a, i) => addDreamBullet(boss.x, boss.y + 18, Math.cos(a) * speed, Math.sin(a) * speed, {
         r: 7.2, skin: 'sharkVoidOrb', family: 'doll', threat: 'hazard', style: 'hazard', shape: 'orb',
-        color: '#c382ff', life: 6.0, policy: 'analytic-wave-lane', policySpeed: speed,
-        waveAmplitude: 11, waveFrequency: 1.8, wavePhase: i * 0.46, spin: i & 1 ? 3.0 : -3.0,
+        color: '#c382ff', life: 6.2, policy: 'analytic-wave-lane', policySpeed: speed,
+        waveAmplitude: 13, waveFrequency: 1.95, wavePhase: i * 0.42, spin: i & 1 ? 3.2 : -3.2,
       }));
+      for (let i = 0; i < 10; i++) {
+        const a = i * TAU / 10;
+        addDreamBullet(boss.x + Math.cos(a) * 64, boss.y + 16 + Math.sin(a) * 46, 0, 0, {
+          r: 6.8, skin: i & 1 ? 'sharkVoidOrb' : 'sharkIceShard', family: i & 1 ? 'doll' : 'iceToy',
+          threat: 'spread', style: 'spread', shape: i & 1 ? 'orb' : 'shard', color: '#d08cff', life: 6.2,
+          policy: 'orbit-release', orbitCx: boss.x, orbitCy: boss.y + 16, orbitRx: 64, orbitRy: 46,
+          orbitAngle: a, orbitOmega: -2.8, orbitHold: 0.55, orbitMode: 'tangent', releaseSpeed: speed + 60,
+        });
+      }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkVoidBurst', 306, 0.68, 0.92);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkVoidBurst', 330, 0.74, 0.96);
     return emitted;
   }
   function dreamSharkFinalRift(speed = 348) {
     if (!boss) return false;
     const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
-    const lanes = [-4, -3, -2, -1, 1, 2, 3, 4];
-    const emitted = dreamTryAtomicBulletGroup(lanes.length, () => {
+    const lanes = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
+    const emitted = dreamTryAtomicBulletGroup(lanes.length + 10, () => {
       lanes.forEach((lane, i) => {
-        const a = aim + lane * 0.095;
-        addDreamBullet(boss.x + lane * 8, boss.y + 24, Math.cos(a) * 58, Math.sin(a) * 58, {
+        const a = aim + lane * 0.086;
+        addDreamBullet(boss.x + lane * 8, boss.y + 24, Math.cos(a) * 52, Math.sin(a) * 52, {
           r: 7.4, skin: i & 1 ? 'sharkIceSpear' : 'sharkVoidOrb', family: i & 1 ? 'iceToy' : 'doll',
-          threat: 'aimed', style: 'aimed', shape: i & 1 ? 'needle' : 'orb', color: i & 1 ? '#b9eeff' : '#d08cff', life: 6.0,
-          policy: 'brake-hold-release', policySpeed: 58, brakeTime: 0.16, holdTime: 0.62,
-          releaseAngle: a, releaseSpeed: speed + Math.abs(lane) * 9,
+          threat: 'aimed', style: 'aimed', shape: i & 1 ? 'needle' : 'orb', color: i & 1 ? '#b9eeff' : '#d08cff', life: 6.2,
+          policy: 'brake-hold-release', policySpeed: 52, brakeTime: 0.14, holdTime: 0.52 + (i % 3) * 0.04,
+          releaseAngle: a, releaseSpeed: speed + Math.abs(lane) * 11,
         });
       });
+      for (let i = 0; i < 10; i++) {
+        const a = aim + Math.PI * 0.5 + i * TAU / 10;
+        addDreamBullet(boss.x, boss.y + 18, Math.cos(a) * 170, Math.sin(a) * 170, {
+          r: 6.7, skin: i & 1 ? 'sharkBubble' : 'sharkSnowball', family: i & 1 ? 'waterToy' : 'iceToy',
+          threat: 'spread', style: 'spread', shape: 'orb', color: '#e5faff', life: 5.6,
+          policy: 'turn-once', policySpeed: 170, turnAt: 0.4, turnDuration: 0.22, targetAngle: a + (i & 1 ? 0.4 : -0.4),
+        });
+      }
     });
-    if (emitted) dreamSharkCastFx('dreamPlushSharkMuzzle', 236, 0.62, 0.94);
+    if (emitted) dreamSharkCastFx('dreamPlushSharkMuzzle', 256, 0.68, 0.96);
     return emitted;
   }
   function dreamSharkPatterns(t, dt) {
     const phase = clamp(bossPhase | 0, 0, 4);
     if (phase === 0) {
-      if (tickEvery(t, dt, 1.08)) dreamBossVoice('sharkBubbleTide', () => dreamSharkBubbleTide(174));
-      if (tickEvery(t, dt, 2.55)) dreamBossVoice('sharkFrostWake', () => dreamSharkFrostWake(190));
+      if (tickEvery(t, dt, 0.92)) dreamBossVoice('sharkBubbleTide', () => dreamSharkBubbleTide(186));
+      if (tickEvery(t, dt, 2.18)) dreamBossVoice('sharkFrostWake', () => dreamSharkFrostWake(204));
     } else if (phase === 1) {
-      if (tickEvery(t, dt, 1.72)) dreamBossVoice('sharkSpearGate', () => dreamSharkSpearGate(258));
-      if (tickEvery(t, dt, 1.28)) dreamBossVoice('sharkSnowCrown', () => dreamSharkSnowCrown(190));
+      if (tickEvery(t, dt, 1.48)) dreamBossVoice('sharkSpearGate', () => dreamSharkSpearGate(272));
+      if (tickEvery(t, dt, 1.12)) dreamBossVoice('sharkSnowCrown', () => dreamSharkSnowCrown(202));
     } else if (phase === 2) {
-      if (tickEvery(t, dt, 1.88)) dreamBossVoice('sharkWhirlpool', () => dreamSharkWhirlpool(232));
-      if (tickEvery(t, dt, 1.46)) dreamBossVoice('sharkShardCurrent', () => dreamSharkShardCurrent(214));
+      if (tickEvery(t, dt, 1.62)) dreamBossVoice('sharkWhirlpool', () => dreamSharkWhirlpool(246));
+      if (tickEvery(t, dt, 1.28)) dreamBossVoice('sharkShardCurrent', () => dreamSharkShardCurrent(226));
     } else if (phase === 3) {
-      if (tickEvery(t, dt, 2.35)) dreamBossVoice('sharkRageCharge', () => dreamSharkRageCharge(326));
-      if (tickEvery(t, dt, 1.52)) dreamBossVoice('sharkRageCross', () => dreamSharkRageCross(226));
+      if (tickEvery(t, dt, 2.05)) dreamBossVoice('sharkRageCharge', () => dreamSharkRageCharge(338));
+      if (tickEvery(t, dt, 1.32)) dreamBossVoice('sharkRageCross', () => dreamSharkRageCross(238));
     } else {
-      if (tickEvery(t, dt, 1.38)) dreamBossVoice('sharkVoidMaw', () => dreamSharkVoidMaw(210));
-      if (tickEvery(t, dt, 2.05)) dreamBossVoice('sharkFinalRift', () => dreamSharkFinalRift(348));
+      if (tickEvery(t, dt, 1.18)) dreamBossVoice('sharkVoidMaw', () => dreamSharkVoidMaw(222));
+      if (tickEvery(t, dt, 1.78)) dreamBossVoice('sharkFinalRift', () => dreamSharkFinalRift(362));
     }
   }
   function dreamSharkEmitPhaseSample(phase = bossPhase) {
@@ -45098,6 +45356,72 @@
       dreamBulletMaterialFrameStats.bodyDraws++;
     }
     ctx.setTransform(base);
+    // 第三关贴身描边：深色外轮廓 + 家族色细描边 + 极小亮芯，绝不画大范围填充光晕
+    const rimCfg = DREAM_BULLET_MATERIAL_CONFIG.stage3Rim;
+    if (enhancedStageActive && rimCfg && visualMul >= rimCfg.minVisualMul) {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      // 1) 深色外描边：把弹体从背景里“抠”出来
+      ctx.strokeStyle = 'rgba(8,12,22,.74)';
+      ctx.lineWidth = rimCfg.outlineWidth;
+      ctx.globalAlpha = rimCfg.outlineAlpha * (visualMul >= 0.6 ? 1 : 0.82);
+      ctx.beginPath();
+      let outlineCount = 0;
+      for (const b of enemyBullets) {
+        if (!b?.dream || b.dreamDissolving) continue;
+        if (traceDreamStage3Rim(b, b.dreamMaterialRef, rimCfg.bodyFit * 1.06)) outlineCount++;
+      }
+      if (outlineCount) ctx.stroke();
+      // 2) 家族色贴边描边：只贴轮廓，不填充
+      const familyLights = DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight;
+      for (let themeIndex = 0; themeIndex < familyLights.length; themeIndex++) {
+        const style = familyLights[themeIndex];
+        let rimCount = 0;
+        ctx.strokeStyle = style.rim || style.hot;
+        ctx.lineWidth = rimCfg.rimWidth;
+        ctx.globalAlpha = rimCfg.rimAlpha * (visualMul >= 0.6 ? 1 : 0.78);
+        ctx.beginPath();
+        for (const b of enemyBullets) {
+          if (!b?.dream || b.dreamDissolving || b.dreamFamily !== style.key) continue;
+          if (traceDreamStage3Rim(b, b.dreamMaterialRef, rimCfg.bodyFit)) rimCount++;
+        }
+        if (rimCount) ctx.stroke();
+      }
+      // 3) 极窄高光描边 + 极小亮芯：增加体积感，尺寸严格贴身
+      if (visualMul >= 0.45) {
+        ctx.globalCompositeOperation = 'lighter';
+        for (let themeIndex = 0; themeIndex < familyLights.length; themeIndex++) {
+          const style = familyLights[themeIndex];
+          let hotCount = 0;
+          ctx.strokeStyle = style.hot;
+          ctx.lineWidth = rimCfg.hotWidth;
+          ctx.globalAlpha = rimCfg.hotAlpha;
+          ctx.beginPath();
+          for (const b of enemyBullets) {
+            if (!b?.dream || b.dreamDissolving || b.dreamFamily !== style.key) continue;
+            if (traceDreamStage3Rim(b, b.dreamMaterialRef, rimCfg.bodyFit * 0.90)) hotCount++;
+          }
+          if (hotCount) ctx.stroke();
+        }
+        ctx.fillStyle = 'rgba(255,248,236,.86)';
+        ctx.globalAlpha = rimCfg.coreAlpha;
+        ctx.beginPath();
+        let coreCount = 0;
+        for (const b of enemyBullets) {
+          if (!b?.dream || b.dreamDissolving) continue;
+          const body = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
+          const coreR = Math.max(1.1, body * rimCfg.coreFit);
+          if (coreR < 1) continue;
+          ctx.moveTo(b.x + coreR, b.y);
+          ctx.arc(b.x, b.y, coreR, 0, TAU);
+          coreCount++;
+        }
+        if (coreCount) ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
     const overlayConfig = DREAM_BULLET_MATERIAL_CONFIG.energyOverlay;
     if (enhancedStageActive && visualMul >= overlayConfig.minVisualMul) {
       const overlayCap = visualMul >= 0.95 ? overlayConfig.highCap : overlayConfig.mediumCap;
@@ -52937,7 +53261,7 @@
       entrySpec: (stageId = DREAM_STAGE3_ID) => Object.entries(dreamInternalsConfig(stageId).mobs).map(([key, mob]) => ({ key, entryKind: mob.entryKind || 'dreamHover', duration: DREAM_STAGE3_VISUAL_CONFIG.entryDurations[mob.entryKind] || 0, collidableDuringEntry: DREAM_STAGE3_VISUAL_CONFIG.collisionDuringEntry, canFireDuringEntry: DREAM_STAGE3_VISUAL_CONFIG.fireDuringEntry })),
       stageCompletionSpec: (stageId = DREAM_STAGE_ID) => { const config = dreamInternalsConfig(stageId); return { hasBoss: config.hasBoss !== false && !!config.level.boss, clearAfterWave: config.hasBoss === false ? config.patterns.length : null, uploadsLeaderboard: true }; },
       formationSpec: (stageId = DREAM_STAGE_ID) => dreamInternalsConfig(stageId).formations.map((preset, index) => ({ id: index + 1, batches: preset.map(batch => batch.map(point => [...point])) })),
-      rewardSpec: () => ({ powerPerKill: DREAM_REWARD_CONFIG.powerPerKill, powerPerWave: DREAM_REWARD_CONFIG.powerPerKill * 8, randomPlugins: false, lifeDrops: false, berserkDrops: false }),
+      rewardSpec: () => ({ powerPerKill: DREAM_REWARD_CONFIG.powerPerKill, powerPerWave: DREAM_REWARD_CONFIG.powerPerKill * 8, randomPlugins: false, lifeDrops: false, berserkDrops: true, berserkDropChance: DREAM_REWARD_CONFIG.berserkDropChance, healDropChance: DREAM_REWARD_CONFIG.healDropChance }),
       waveTransitionSpec: () => ({ clearDelay: 1.4, timedOverlap: false, bulletDissolve: DREAM_BULLET_MOTION_CONFIG.dissolveDuration, abruptVisibleClear: false }),
       patternSpec: (stageId = DREAM_STAGE_ID) => {
         const config = dreamInternalsConfig(stageId);
