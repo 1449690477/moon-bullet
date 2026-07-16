@@ -1,0 +1,4 @@
+project_id = "tdlqugkkojwysqnsunqt"
+
+[functions.leaderboard-run]
+verify_jwt = false

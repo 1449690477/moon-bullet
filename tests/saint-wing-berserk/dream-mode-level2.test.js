@@ -16,7 +16,7 @@ describe('dream mode level two: Zero Compile Domain', () => {
     expect(dream.levelsSpec()).toEqual([
       expect.objectContaining({ id: LEVEL_ONE, version: 'dream-01-v2', seed: 7130101, bossKey: 'seraph', unlocked: true }),
       expect.objectContaining({ id: LEVEL_TWO, version: 'dream-02-v1', seed: 7130202, name: '零界编译域', bossKey: 'suiyi', unlocked: true }),
-      expect.objectContaining({ id: LEVEL_THREE, version: 'dream-03-v1', seed: 7130303, name: '绒梦玩偶屋', bossKey: 'dreamshark', hasBoss: true, unlocked: true }),
+      expect.objectContaining({ id: LEVEL_THREE, version: 'dream-03-v2', seed: 7130303, name: '绒梦玩偶屋', bossKey: 'dreamshark', hasBoss: true, unlocked: true }),
     ]);
     expect(dream.levelSpec(LEVEL_TWO)).toMatchObject({
       id: LEVEL_TWO,
@@ -277,5 +277,18 @@ describe('dream mode level two: Zero Compile Domain', () => {
     expect(source).toContain("uploadPending ? 'resultUploadPending'");
     expect(source).toContain("if (action === 'resultUpload')");
     expect(source).toContain("if (action === 'resultUploadPending') return true");
+  });
+
+  it('retries ranked-run startup without hiding contract or authentication failures', () => {
+    const start = source.indexOf('async function startDreamRankedRun()');
+    const end = source.indexOf('function invalidateDreamLeaderboardSubmission', start);
+    const block = source.slice(start, end);
+    expect(source).toContain('startRetryDelaysMs: Object.freeze([0, 600, 1600, 3600])');
+    expect(source).toContain("if (status === 401 || status === 403)");
+    expect(source).toContain('/invalid stage|invalid clear version|invalid seed|contract|schema/');
+    expect(block).toContain("dreamLeaderboardPost('dream-start', startPayload)");
+    expect(block).toContain('dreamLeaderboardCanRetry(err)');
+    expect(block).toContain("dreamLeaderboardMessage = '排行榜连接波动，正在自动重试...'");
+    expect(source).not.toContain('梦境排行榜维护中');
   });
 });

@@ -7,11 +7,14 @@ const dreamSql = readFileSync(new URL('../../leaderboard-security/09_dream_leade
 const dreamV2Sql = readFileSync(new URL('../../leaderboard-security/10_dream_v2_balance.sql', import.meta.url), 'utf8');
 const dreamLevelTwoSql = readFileSync(new URL('../../leaderboard-security/11_dream_level_two.sql', import.meta.url), 'utf8');
 const dreamLevelThreeSql = readFileSync(new URL('../../leaderboard-security/12_dream_level_three.sql', import.meta.url), 'utf8');
+const dreamLevelThreeV2Sql = readFileSync(new URL('../../leaderboard-security/13_dream_level_three_v2.sql', import.meta.url), 'utf8');
+const dreamLevelThreeV2Migration = readFileSync(new URL('../../supabase/migrations/20260716000000_dream_level_three_v2.sql', import.meta.url), 'utf8');
+const supabaseConfig = readFileSync(new URL('../../supabase/config.toml', import.meta.url), 'utf8');
 const productionCheck = readFileSync(new URL('../../tools/check_leaderboard_production.js', import.meta.url), 'utf8');
 
 describe('leaderboard production contract', () => {
   it('publishes an explicit health contract for deployment drift checks', () => {
-    expect(edgeSource).toContain('leaderboard-run-2026-07-15-dream-level3-v1');
+    expect(edgeSource).toContain('leaderboard-run-2026-07-16-dream-level3-v2');
     expect(edgeSource).toContain('action === "health"');
     expect(edgeSource).toContain('dream_leaderboard: dreamLeaderboardReady');
     expect(edgeSource).toContain('corruptgun: CHARACTERS.has("corruptgun")');
@@ -21,14 +24,14 @@ describe('leaderboard production contract', () => {
     expect(edgeSource).toContain('dream_token_ttl_ms: DREAM_TOKEN_TTL_MS');
     expect(edgeSource).toContain('admin.rpc("dream_leaderboard_schema_version")');
     expect(edgeSource).toContain('admin.rpc("dream_leaderboard_stage_contract")');
-    expect(productionCheck).toContain("const expectedVersion = 'leaderboard-run-2026-07-15-dream-level3-v1'");
+    expect(productionCheck).toContain("const expectedVersion = 'leaderboard-run-2026-07-16-dream-level3-v2'");
     expect(productionCheck).toContain("const expectedDreamClearVersion = 'dream-01-v2'");
-    expect(productionCheck).toContain("const expectedDreamStageContract = 'dream-03-v1'");
+    expect(productionCheck).toContain("const expectedDreamStageContract = 'dream-03-v2'");
     expect(productionCheck).toContain('const expectedDreamStages = Object.freeze([');
     expect(productionCheck).toContain("stage_id: 'dream-01-seraph', clear_version: 'dream-01-v2', seed: 7130101");
     expect(productionCheck).toContain("stage_id: 'dream-02-zero-compile', clear_version: 'dream-02-v1', seed: 7130202");
     expect(productionCheck).toContain("stage_id: 'dream-03-plush-room'");
-    expect(productionCheck).toContain("clear_version: 'dream-03-v1'");
+    expect(productionCheck).toContain("clear_version: 'dream-03-v2'");
     expect(productionCheck).toContain('seed: 7130303');
     expect(productionCheck).toContain('const missingDreamStages = expectedDreamStages.filter');
     expect(productionCheck).toContain('const expectedDreamTtlMs = 90 * 60 * 1000');
@@ -39,6 +42,11 @@ describe('leaderboard production contract', () => {
     expect(productionCheck).toContain("reasons.includes('invalid stage')");
     expect(productionCheck).toContain("reasons.includes('invalid clear version')");
     expect(productionCheck).toContain("reasons.includes('invalid seed')");
+    expect(productionCheck).toContain("process.env.LEADERBOARD_WRITE_PROBE === '1'");
+    expect(productionCheck).toContain('token_received:');
+    expect(productionCheck).toContain("elapsed_ms: 0");
+    expect(productionCheck).toContain("consumeReasons.includes('elapsed out of range')");
+    expect(productionCheck).not.toContain('body: start }');
   });
 
   it('allows corruptgun in normal and dream Edge Function routes', () => {
@@ -47,11 +55,11 @@ describe('leaderboard production contract', () => {
     expect(edgeSource).toContain('action === "dream-submit"');
     expect(edgeSource).toContain('character mismatch');
     expect(edgeSource).toContain('const DREAM_ACTIVE_CLEAR_VERSION = "dream-01-v2"');
-    expect(edgeSource).toContain('const DREAM_STAGE_CONTRACT_VERSION = "dream-03-v1"');
+    expect(edgeSource).toContain('const DREAM_STAGE_CONTRACT_VERSION = "dream-03-v2"');
     expect(edgeSource).toContain('const DREAM_TOKEN_TTL_MS = 90 * 60 * 1000');
     expect(edgeSource).toContain('["dream-01-seraph", { clearVersion: DREAM_ACTIVE_CLEAR_VERSION, seed: 7130101 }]');
     expect(edgeSource).toContain('["dream-02-zero-compile", { clearVersion: "dream-02-v1", seed: 7130202 }]');
-    expect(edgeSource).toContain('["dream-03-plush-room", { clearVersion: "dream-03-v1", seed: 7130303 }]');
+    expect(edgeSource).toContain('["dream-03-plush-room", { clearVersion: "dream-03-v2", seed: 7130303 }]');
     expect(edgeSource).toContain('const releaseClaim = async');
     expect(edgeSource).toContain('.eq("submitted_at", consumedAt)');
     expect(edgeSource).toContain('await releaseClaim("score-update")');
@@ -93,5 +101,18 @@ describe('leaderboard production contract', () => {
     expect(dreamLevelThreeSql).toContain("select 'dream-03-v1'::text");
     expect(dreamLevelThreeSql).not.toMatch(/\bdelete\s+from\s+public\.dream_leaderboard\b/i);
     expect(dreamLevelThreeSql).not.toMatch(/\bupdate\s+public\.dream_leaderboard\b/i);
+  });
+
+  it('ships a final-state V2 migration and disables gateway JWT checks for the public function', () => {
+    expect(dreamLevelThreeV2Sql).toContain("clear_version in ('dream-01-v1', 'dream-01-v2', 'dream-02-v1', 'dream-03-v1', 'dream-03-v2')");
+    expect(dreamLevelThreeV2Sql).toContain("(stage_id = 'dream-03-plush-room' and clear_version in ('dream-03-v1', 'dream-03-v2') and seed = 7130303)");
+    expect(dreamLevelThreeV2Sql).toContain("(stage_id = 'dream-03-plush-room' and clear_version in ('dream-03-v1', 'dream-03-v2'))");
+    expect(dreamLevelThreeV2Sql).toContain("select 'dream-03-v2'::text");
+    expect(dreamLevelThreeV2Sql).not.toMatch(/\bdelete\s+from\s+public\.dream_leaderboard\b/i);
+    expect(dreamLevelThreeV2Sql).not.toMatch(/\bupdate\s+public\.dream_leaderboard\b/i);
+    expect(dreamLevelThreeV2Migration).toBe(dreamLevelThreeV2Sql);
+    expect(supabaseConfig).toContain('project_id = "tdlqugkkojwysqnsunqt"');
+    expect(supabaseConfig).toContain('[functions.leaderboard-run]');
+    expect(supabaseConfig).toContain('verify_jwt = false');
   });
 });

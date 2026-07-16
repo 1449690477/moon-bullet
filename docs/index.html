@@ -2457,9 +2457,13 @@
   const DREAM_STAGE2_CLEAR_VERSION = 'dream-02-v1';
   const DREAM_STAGE2_SEED = 7130202;
   const DREAM_STAGE3_ID = 'dream-03-plush-room';
-  const DREAM_STAGE3_CLEAR_VERSION = 'dream-03-v1';
+  const DREAM_STAGE3_CLEAR_VERSION = 'dream-03-v2';
   const DREAM_STAGE3_SEED = 7130303;
   const DREAM_LEADERBOARD_SELECT = `stage_id,clear_version,player_name,character,wing_loadout,stars,elapsed_ms,hit_count,created_at,${LEADERBOARD_AVATAR_COLUMN}`;
+  const DREAM_RANKED_NETWORK_CONFIG = Object.freeze({
+    timeoutMs: 6500,
+    startRetryDelaysMs: Object.freeze([0, 600, 1600, 3600]),
+  });
   const DREAM_LEVELS = Object.freeze([
     Object.freeze({
       id: DREAM_STAGE_ID,
@@ -2503,7 +2507,7 @@
       bossName: '霜潮绒鲨 · 阿布',
       mobWaves: 10,
       mobTargetSeconds: 480,
-      bossTargetSeconds: 140,
+      bossTargetSeconds: 120,
       unlocked: true,
       fieldBackground: 'dreamRoomBase',
       bossBackground: 'dreamRoomBase',
@@ -2554,7 +2558,7 @@
     berserkCapSeconds: 24,
     reaverBerserkCapSeconds: 45,
   });
-  const DREAM_STAGE3_OUTGOING_DAMAGE_MUL = 1.28;
+  const DREAM_STAGE3_OUTGOING_DAMAGE_MUL = 1.36;
   const DREAM_FORMATION_PRESETS = Object.freeze([
     Object.freeze([Object.freeze([[132, 214], [360, 196], [588, 214]]), Object.freeze([[208, 334], [512, 334], [360, 392]]), Object.freeze([[258, 484], [462, 484]])]),
     Object.freeze([Object.freeze([[104, 246], [274, 194], [446, 194]]), Object.freeze([[616, 246], [530, 368], [190, 368]]), Object.freeze([[292, 474], [428, 474]])]),
@@ -2572,7 +2576,7 @@
     Object.freeze([Object.freeze([[90, 206], [360, 206], [630, 206]]), Object.freeze([[178, 326], [542, 326], [360, 406]]), Object.freeze([[142, 492], [578, 492]])]),
     Object.freeze([Object.freeze([[218, 190], [360, 154], [502, 190]]), Object.freeze([[104, 344], [360, 370], [616, 344]]), Object.freeze([[270, 488], [450, 488]])]),
   ]);
-  const DREAM_STAGE3_WAVE_HP_SCALE = Object.freeze([1, 1.08, 1.16, 1.26, 1.36, 1.48, 1.60, 1.74, 1.88, 2.04]);
+  const DREAM_STAGE3_WAVE_HP_SCALE = Object.freeze([1, 1.07, 1.14, 1.22, 1.30, 1.39, 1.48, 1.58, 1.69, 1.82]);
   const DREAM_STAGE3_WAVE_BATCHES = Object.freeze([3, 3, 2]);
   const DREAM_STAGE3_WAVE_BATCH_DELAYS = Object.freeze([0, 4.5, 8.7]);
   const DREAM_STAGE3_FORMATION_PRESETS = Object.freeze([
@@ -2593,7 +2597,7 @@
     rimAlpha: 0.52,
     sheenAlpha: 0.38,
     shadowAlpha: 0.44,
-    castCueSeconds: 0.34,
+    castCueSeconds: 0.40,
     muzzleLife: 0.46,
     impactLife: 0.34,
     muzzlePlacement: Object.freeze({
@@ -2610,10 +2614,10 @@
   const DREAM_STAGE3_MOTION_CONFIG = Object.freeze({
     version: 'stage3-analytic-v2',
     phraseSeconds: 12,
-    releaseStart: 10.65,
+    releaseStart: 10.25,
     sharedGapRadius: 74,
-    wallGapRadius: 88,
-    cueSeconds: 0.34,
+    wallGapRadius: 104,
+    cueSeconds: 0.40,
     maxMajorVoices: 2,
     policies: Object.freeze(['locked-linear', 'analytic-wave-lane', 'bezier-lane', 'turn-once', 'brake-hold-release', 'orbit-release']),
   });
@@ -2635,11 +2639,11 @@
     crystalcompiler: Object.freeze({ name: '晶体编译器', hp: 150000, r: 33, size: 134, sprite: 'enSuiyiCrystalCompiler', role: 'compiler', color: '#ff8ae0', score: 7200 }),
   });
   const DREAM_STAGE3_MOB_DEFS = Object.freeze({
-    leafcat: Object.freeze({ name: '新叶喵', hp: 82000, r: 30, size: 126, sprite: 'dreamPlushLeafCat', role: 'leaf', color: '#79d9a4', score: 7600, entryKind: 'vineSwing' }),
-    penguin: Object.freeze({ name: '冰帽企鹅', hp: 74000, r: 29, size: 122, sprite: 'dreamPlushPenguin', role: 'iceToy', color: '#9bdcff', score: 7000, entryKind: 'iceSlide' }),
-    graydoll: Object.freeze({ name: '流萤玩偶', hp: 105000, r: 33, size: 132, sprite: 'dreamPlushGrayDoll', role: 'doll', color: '#d7b4ff', score: 8600, entryKind: 'puppetRig' }),
-    bluefish: Object.freeze({ name: '好兄弟', hp: 92000, r: 34, size: 138, sprite: 'dreamPlushBlueFish', role: 'waterToy', color: '#65c5ff', score: 8200, entryKind: 'arcFly' }),
-    starpillow: Object.freeze({ name: '星星抱枕', hp: 90000, r: 32, size: 132, sprite: 'dreamPlushStarPillow', role: 'starToy', color: '#ffd56f', score: 8000, entryKind: 'starBounce' }),
+    leafcat: Object.freeze({ name: '新叶喵', hp: 76000, r: 30, size: 126, sprite: 'dreamPlushLeafCat', role: 'leaf', color: '#79d9a4', score: 7600, entryKind: 'vineSwing' }),
+    penguin: Object.freeze({ name: '冰帽企鹅', hp: 68000, r: 29, size: 122, sprite: 'dreamPlushPenguin', role: 'iceToy', color: '#9bdcff', score: 7000, entryKind: 'iceSlide' }),
+    graydoll: Object.freeze({ name: '流萤玩偶', hp: 96000, r: 33, size: 132, sprite: 'dreamPlushGrayDoll', role: 'doll', color: '#d7b4ff', score: 8600, entryKind: 'puppetRig' }),
+    bluefish: Object.freeze({ name: '好兄弟', hp: 85000, r: 34, size: 138, sprite: 'dreamPlushBlueFish', role: 'waterToy', color: '#65c5ff', score: 8200, entryKind: 'arcFly' }),
+    starpillow: Object.freeze({ name: '星星抱枕', hp: 83000, r: 32, size: 132, sprite: 'dreamPlushStarPillow', role: 'starToy', color: '#ffd56f', score: 8000, entryKind: 'starBounce' }),
   });
   const DREAM_ROLE_COLORS = Object.freeze({
     wing: Object.freeze(['#4f9ef5', '#dff5ff']),
@@ -3036,52 +3040,52 @@
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushLeafFan', b: 'plushSeedBloom', aCadence: 1.02, bCadence: 2.05 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushSeedBloom', b: 'plushLeafFan', aCadence: 1.88, bCadence: 0.96 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushLeafFan', b: 'plushSeedBloom', aCadence: 0.90, bCadence: 1.72 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushLeafFan', b: 'plushSeedBloom', aCadence: 0.90, bCadence: 1.72 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushIceFan', b: 'plushSnowSteps', aCadence: 0.98, bCadence: 2.05 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushSnowSteps', b: 'plushIceFan', aCadence: 1.92, bCadence: 1.05 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushIceFan', b: 'plushSnowSteps', aCadence: 0.88, bCadence: 1.78 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushIceFan', b: 'plushSnowSteps', aCadence: 0.88, bCadence: 1.78 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushCrystalOrbit', b: 'plushCrossSigil', aCadence: 1.62, bCadence: 2.05 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushCrossSigil', b: 'plushCrystalOrbit', aCadence: 1.72, bCadence: 1.68 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushCrystalOrbit', b: 'plushCrossSigil', aCadence: 1.48, bCadence: 1.62 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushCrystalOrbit', b: 'plushCrossSigil', aCadence: 1.48, bCadence: 1.62 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushFishboneTide', b: 'plushBubbleCurrent', aCadence: 1.68, bCadence: 1.92 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushBubbleCurrent', b: 'plushFishboneTide', aCadence: 1.64, bCadence: 1.52 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushFishboneTide', b: 'plushBubbleCurrent', aCadence: 1.42, bCadence: 1.58 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushFishboneTide', b: 'plushBubbleCurrent', aCadence: 1.42, bCadence: 1.58 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushStarOrbit', b: 'plushMeteorCurtain', aCadence: 1.58, bCadence: 1.92 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushMeteorCurtain', b: 'plushStarOrbit', aCadence: 1.72, bCadence: 1.52 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushStarOrbit', b: 'plushMeteorCurtain', aCadence: 1.42, bCadence: 1.62 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushStarOrbit', b: 'plushMeteorCurtain', aCadence: 1.42, bCadence: 1.62 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushVineCurtain', b: 'plushIceHalo', aCadence: 1.72, bCadence: 1.78 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushIceHalo', b: 'plushVineCurtain', aCadence: 1.62, bCadence: 1.68 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushVineCurtain', b: 'plushIceHalo', aCadence: 1.52, bCadence: 1.58 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushVineCurtain', b: 'plushIceHalo', aCadence: 1.52, bCadence: 1.58 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushDollRelay', b: 'plushConstellation', aCadence: 1.48, bCadence: 1.72 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushConstellation', b: 'plushDollRelay', aCadence: 1.58, bCadence: 1.38 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushDollRelay', b: 'plushConstellation', aCadence: 1.32, bCadence: 1.48 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushDollRelay', b: 'plushConstellation', aCadence: 1.32, bCadence: 1.48 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushWhirlpoolGate', b: 'plushMeteorCurtain', aCadence: 1.78, bCadence: 1.92 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushMeteorCurtain', b: 'plushWhirlpoolGate', aCadence: 1.72, bCadence: 1.88 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushWhirlpoolGate', b: 'plushMeteorCurtain', aCadence: 1.58, bCadence: 1.62 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushWhirlpoolGate', b: 'plushMeteorCurtain', aCadence: 1.58, bCadence: 1.62 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.45, to: 3.70, a: 'plushCrossSigil', b: 'plushFishboneTide', aCadence: 1.68, bCadence: 1.72 }),
       Object.freeze({ from: 3.70, to: 7.20, a: 'plushFishboneTide', b: 'plushCrossSigil', aCadence: 1.52, bCadence: 1.62 }),
-      Object.freeze({ from: 7.20, to: 10.65, a: 'plushCrossSigil', b: 'plushFishboneTide', aCadence: 1.48, bCadence: 1.48 }),
+      Object.freeze({ from: 7.20, to: 10.25, a: 'plushCrossSigil', b: 'plushFishboneTide', aCadence: 1.48, bCadence: 1.48 }),
     ]),
     Object.freeze([
       Object.freeze({ from: 0.40, to: 3.55, a: 'plushToyboxFinale', b: 'plushVineCurtain', aCadence: 1.52, bCadence: 1.78 }),
       Object.freeze({ from: 3.55, to: 7.10, a: 'plushToyboxFinale', b: 'plushVineCurtain', aCadence: 1.42, bCadence: 1.68 }),
-      Object.freeze({ from: 7.10, to: 10.65, a: 'plushVineCurtain', b: 'plushToyboxFinale', aCadence: 1.48, bCadence: 1.38 }),
+      Object.freeze({ from: 7.10, to: 10.25, a: 'plushVineCurtain', b: 'plushToyboxFinale', aCadence: 1.48, bCadence: 1.38 }),
     ]),
   ]);
   const GUESTBOOK_TABLE = 'guestbook_messages';
@@ -3140,9 +3144,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-16-dream3-material-signature-v52';
+     const UPDATE_NOTICE_VERSION = '2026-07-16-dream3-ranking-balance-v53';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-16 · 梦境排行榜恢复与第三关难度调整',
+      items: [
+        '修复梦境通关记录无法上传的问题：排行榜后端已升级为三关统一契约，开局令牌会在网络波动时自动重试，故障信息不再统一误报为“维护中”。',
+        '梦境第三关启用独立 V2 排行榜版本，避免难度调整前后的通关时间混排；旧版成绩继续保留，不会删除。',
+        '第三关小怪耐久、后期波次成长与鲨鱼生命值下调，玩家输出提高；玩偶与鲨鱼弹幕整体减速、出弹间隔拉长，安全通道和预警时间同步扩大。',
+      ],
+    },
     {
       date: '2026-07-16 · 绒梦弹幕材质签名与暴走掉落核验',
       items: [
@@ -4500,6 +4512,55 @@
     const idx = Array.isArray(rows) ? rows.findIndex(row => normalizeLeaderboardName(row.player_name) === normalized) : -1;
     return idx >= 0 ? idx + 1 : null;
   }
+  function dreamLeaderboardErrorText(err) {
+    return String((err && (err.message || err.error || err.details || err.hint || err.code)) || err || '').toLowerCase();
+  }
+  function dreamLeaderboardFailureMessage(err, phase = 'start') {
+    const status = Number(err && err.status) || 0;
+    const detail = dreamLeaderboardErrorText(err);
+    if (status === 401 || status === 403) return phase === 'submit' ? '排行榜认证配置异常，本局成绩暂未上传' : '排行榜认证配置异常，本局仍可正常挑战';
+    if ((status === 400 || status === 409) && /invalid stage|invalid clear version|invalid seed|contract|schema/.test(detail)) {
+      return phase === 'submit' ? '排行榜版本尚未同步，本局成绩暂未上传' : '排行榜版本尚未同步，本局仍可正常挑战';
+    }
+    return phase === 'submit' ? '排行榜连接波动，本局成绩可再次上传' : '排行榜连接波动，本局仍可正常挑战';
+  }
+  function dreamLeaderboardCanRetry(err) {
+    const status = Number(err && err.status) || 0;
+    return status === 0 || status === 408 || status === 425 || status === 429 || status >= 500;
+  }
+  function dreamLeaderboardDelay(ms) {
+    return ms > 0 ? new Promise(resolve => setTimeout(resolve, ms)) : Promise.resolve();
+  }
+  async function dreamLeaderboardPost(path, payload, timeoutMs = DREAM_RANKED_NETWORK_CONFIG.timeoutMs) {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+      const res = await fetch(`${LEADERBOARD_FN_BASE}/${path}`, {
+        method: 'POST',
+        headers: leaderboardHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(payload),
+        signal: controller ? controller.signal : undefined,
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || !data.ok) {
+        const detail = data && (Array.isArray(data.reasons) ? data.reasons.join(', ') : (data.error || data.message));
+        const error = new Error(detail || `HTTP ${res.status}`);
+        error.status = res.status;
+        if (data && typeof data === 'object') error.response = data;
+        throw error;
+      }
+      return data;
+    } catch (err) {
+      if (err && err.name === 'AbortError' && !err.status) {
+        const timeoutError = new Error('leaderboard request timeout');
+        timeoutError.status = 408;
+        throw timeoutError;
+      }
+      throw err;
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
   async function fetchDreamLeaderboard(filter = dreamLeaderboardFilter) {
     const requestSerial = ++dreamLeaderboardRequestSerial;
     const requestFilter = filter || 'all';
@@ -4530,7 +4591,7 @@
     } catch (err) {
       if (requestSerial !== dreamLeaderboardRequestSerial || selectedDreamLevel().id !== requestStageId || dreamLeaderboardFilter !== requestFilter) return dreamLeaderboardData;
       dreamLeaderboardStatus = 'fail';
-      dreamLeaderboardMessage = '梦境排行榜维护中';
+      dreamLeaderboardMessage = (err && (err.status === 401 || err.status === 403)) ? '梦境排行榜读取认证异常' : '梦境排行榜暂时无法读取';
       console.warn('[dream leaderboard] fetch failed:', err);
       return [];
     }
@@ -4546,37 +4607,45 @@
     };
     dreamLeaderboardRunId = null;
     dreamLeaderboardRunToken = null;
-    try {
-      const res = await fetch(`${LEADERBOARD_FN_BASE}/dream-start`, {
-        method: 'POST',
-        headers: leaderboardHeaders({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({
-          stage_id: contract.stageId,
-          clear_version: contract.clearVersion,
-          seed: contract.seed,
-          character: contract.character,
-          wing_loadout: contract.wingLoadout,
-          client_version: 'dream-web-v1',
-        }),
-      });
-      const data = await res.json().catch(() => null);
-      if (!res.ok || !data || !data.ok || !data.run_id || !data.run_token) throw new Error('dream run token unavailable');
-      const currentContractMatches = dreamRun.active
-        && dreamRun.stageId === contract.stageId
-        && dreamRun.clearVersion === contract.clearVersion
-        && dreamRun.seed === contract.seed
-        && dreamRun.lockedCharacter === contract.character
-        && JSON.stringify(dreamRun.lockedWingLoadout || []) === JSON.stringify(contract.wingLoadout);
-      if (requestSerial !== dreamRankedStartSerial || !currentContractMatches) return { ok: false, reason: 'stale' };
-      dreamLeaderboardRunId = data.run_id;
-      dreamLeaderboardRunToken = data.run_token;
-      return { ok: true };
-    } catch (err) {
-      if (requestSerial !== dreamRankedStartSerial) return { ok: false, reason: 'stale' };
-      dreamLeaderboardMessage = '排行榜维护中，本局仍可正常挑战';
-      console.warn('[dream leaderboard] ranked run start failed:', err);
-      return { ok: false, error: err };
+    let lastError = null;
+    const startPayload = {
+      stage_id: contract.stageId,
+      clear_version: contract.clearVersion,
+      seed: contract.seed,
+      character: contract.character,
+      wing_loadout: contract.wingLoadout,
+      client_version: 'dream-web-v2',
+    };
+    for (let attempt = 0; attempt < DREAM_RANKED_NETWORK_CONFIG.startRetryDelaysMs.length; attempt++) {
+      const delayMs = DREAM_RANKED_NETWORK_CONFIG.startRetryDelaysMs[attempt];
+      if (delayMs) {
+        dreamLeaderboardMessage = '排行榜连接波动，正在自动重试...';
+        await dreamLeaderboardDelay(delayMs);
+      }
+      if (requestSerial !== dreamRankedStartSerial || !dreamRun.active) return { ok: false, reason: 'stale' };
+      try {
+        const data = await dreamLeaderboardPost('dream-start', startPayload);
+        if (!data.run_id || !data.run_token) throw new Error('dream run token unavailable');
+        const currentContractMatches = dreamRun.active
+          && dreamRun.stageId === contract.stageId
+          && dreamRun.clearVersion === contract.clearVersion
+          && dreamRun.seed === contract.seed
+          && dreamRun.lockedCharacter === contract.character
+          && JSON.stringify(dreamRun.lockedWingLoadout || []) === JSON.stringify(contract.wingLoadout);
+        if (requestSerial !== dreamRankedStartSerial || !currentContractMatches) return { ok: false, reason: 'stale' };
+        dreamLeaderboardRunId = data.run_id;
+        dreamLeaderboardRunToken = data.run_token;
+        dreamLeaderboardMessage = '';
+        return { ok: true };
+      } catch (err) {
+        lastError = err;
+        if (!dreamLeaderboardCanRetry(err)) break;
+      }
     }
+    if (requestSerial !== dreamRankedStartSerial) return { ok: false, reason: 'stale' };
+    dreamLeaderboardMessage = dreamLeaderboardFailureMessage(lastError, 'start');
+    console.warn('[dream leaderboard] ranked run start failed:', lastError);
+    return { ok: false, error: lastError };
   }
   function invalidateDreamLeaderboardSubmission(options = {}) {
     dreamLeaderboardSubmitSerial += 1;
@@ -4611,7 +4680,7 @@
     }
     if (!dreamLeaderboardRunToken) {
       dreamLeaderboardUploadStatus = 'fail';
-      dreamLeaderboardMessage = '排行榜维护中，本局成绩暂未上传';
+      dreamLeaderboardMessage = '排行榜开局令牌未取得，本局成绩暂未上传';
       return { ok: false, reason: 'noToken' };
     }
     const submitSerial = ++dreamLeaderboardSubmitSerial;
@@ -4622,17 +4691,7 @@
     const submittingToken = dreamLeaderboardRunToken;
     const isCurrentSubmission = () => dreamSubmissionContractMatches(submitSerial, payload);
     try {
-      const res = await fetch(`${LEADERBOARD_FN_BASE}/dream-submit`, {
-        method: 'POST',
-        headers: leaderboardHeaders({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ ...payload, run_id: submittingRunId, run_token: submittingToken }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        const error = new Error((data.reasons || []).join(',') || 'dream submit failed');
-        error.status = res.status;
-        throw error;
-      }
+      const data = await dreamLeaderboardPost('dream-submit', { ...payload, run_id: submittingRunId, run_token: submittingToken });
       if (!isCurrentSubmission() || dreamLeaderboardRunId !== submittingRunId || dreamLeaderboardRunToken !== submittingToken) {
         return { ok: true, stale: true };
       }
@@ -4656,7 +4715,7 @@
         dreamLeaderboardRunToken = null;
       }
       dreamLeaderboardUploadStatus = 'fail';
-      dreamLeaderboardMessage = '排行榜维护中，本局成绩暂未上传';
+      dreamLeaderboardMessage = dreamLeaderboardFailureMessage(err, 'submit');
       console.warn('[dream leaderboard] submit failed:', err);
       return { ok: false, error: err };
     } finally {
@@ -5060,15 +5119,15 @@
     bossTargetRange: Object.freeze([116, 142]),
   });
   const DREAM_STAGE3_BALANCE_CONFIG = Object.freeze({
-    targetTotalSeconds: 620,
+    targetTotalSeconds: 600,
     mobTargetSeconds: 480,
-    bossTargetSeconds: 140,
+    bossTargetSeconds: 120,
     mobDamageFloorSeconds: 32,
     mobInitialCreditRatio: 0.05,
-    bossHp: 300000,
+    bossHp: 270000,
     bossDpsCap: 2800,
-    bossCreditCap: 16000,
-    bossTargetRange: Object.freeze([120, 145]),
+    bossCreditCap: 18000,
+    bossTargetRange: Object.freeze([105, 130]),
   });
   const DREAM_STAGE_CONFIGS = Object.freeze({
     [DREAM_STAGE_ID]: Object.freeze({
@@ -5118,8 +5177,8 @@
       balance: DREAM_STAGE3_BALANCE_CONFIG,
       phaseThresholds: Object.freeze([0.80, 0.60, 0.40, 0.20]),
       phaseNames: Object.freeze(['软潮试探', '冰牙列阵', '霜涡巡游', '怒潮冲锋', '终幕·冰渊吞星']),
-      conductorCadence: 0.90,
-      stageSpeed: 1.09,
+      conductorCadence: 1.18,
+      stageSpeed: 0.96,
       accentThreshold: 72,
       hasBoss: true,
       roomScene: true,
@@ -28122,7 +28181,7 @@
           r: 6.5, life: 5.6, hardLife: 6.6, style: 'spread', threat: 'spread', shape: 'needle',
           skin: blade ? 'plushLeafBlade' : 'plushLeafSeed', color: blade ? '#6de59b' : '#dfff8b',
           policy: blade ? 'locked-linear' : 'analytic-wave-lane', policySpeed: speed,
-          waveAmplitude: blade ? 0 : 9 + Math.abs(lane) * 0.8, waveFrequency: 2.05,
+          waveAmplitude: blade ? 0 : 8 + Math.abs(lane) * 0.6, waveFrequency: 2.05,
           wavePhase: lane * 0.62, motion: blade ? 'leaf-blade-gap-cut' : 'leaf-seed-drift-lane',
         });
       });
@@ -28143,9 +28202,9 @@
     const source = dreamPlushSource('leaf'); if (!source) return false;
     const gap = dreamStage3Aim(source);
     const ringA = Array.from({ length: 14 }, (_, i) => i * TAU / 14 + (dreamConductor.serial & 1) * TAU / 28)
-      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.28);
-    const ringB = Array.from({ length: 10 }, (_, i) => i * TAU / 10 + Math.PI / 10)
       .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.34);
+    const ringB = Array.from({ length: 10 }, (_, i) => i * TAU / 10 + Math.PI / 10)
+      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.40);
     return dreamTryAtomicBulletGroup(ringA.length + ringB.length, () => {
       ringA.forEach((a, i) => {
         const speed = 92 * speedMul;
@@ -28219,7 +28278,7 @@
   function dreamEmitPlushSnowSteps(speedMul = 1) {
     const source = dreamPlushSource('iceToy'); if (!source) return false;
     const gapX = dreamStage3RouteX();
-    const xs = [40, 110, 180, 250, 320, 390, 460, 530, 600, 670].filter(x => Math.abs(x - gapX) > 64);
+    const xs = [40, 110, 180, 250, 320, 390, 460, 530, 600, 670].filter(x => Math.abs(x - gapX) > 80);
     return dreamTryAtomicBulletGroup(xs.length, () => {
       xs.forEach((x, i) => {
         const initial = Math.PI / 2 + (i & 1 ? -0.06 : 0.06);
@@ -28240,7 +28299,7 @@
     const gap = dreamStage3Aim(source);
     const dir = dreamConductor.serial & 1 ? -1 : 1;
     const angles = Array.from({ length: 16 }, (_, i) => i * TAU / 16)
-      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.28);
+      .filter(a => Math.abs(dreamShortestAngle(gap, a)) >= 0.34);
     return dreamTryAtomicBulletGroup(angles.length + 8, () => {
       angles.forEach((a, i) => {
         const rx = 52, ry = 40;
@@ -28374,14 +28433,14 @@
   function dreamEmitPlushBubbleCurrent(speedMul = 1) {
     const source = dreamPlushSource('waterToy'); if (!source) return false;
     const gapX = dreamStage3RouteX();
-    const xs = [46, 116, 186, 256, 326, 396, 466, 536, 606, 676].filter(x => Math.abs(x - gapX) > 58);
+    const xs = [46, 116, 186, 256, 326, 396, 466, 536, 606, 676].filter(x => Math.abs(x - gapX) > 76);
     return dreamTryAtomicBulletGroup(xs.length, () => {
       xs.forEach((x, i) => {
         const speed = (188 + (i % 4) * 16) * speedMul;
         addDreamBullet(x, -24 - (i % 3) * 36, 0, speed, {
           r: 6.8, life: 5.9, hardLife: 6.5, style: 'spread', threat: 'spread', shape: 'orb',
           skin: i & 1 ? 'plushBubblePearl' : 'plushWaterDrop', color: '#8fe6ff',
-          policy: 'analytic-wave-lane', policySpeed: speed, waveAmplitude: 16 + (i % 4) * 3,
+          policy: 'analytic-wave-lane', policySpeed: speed, waveAmplitude: 14 + (i % 4) * 2.5,
           waveFrequency: 2.35 + (i % 3) * 0.22, wavePhase: i * 0.68, motion: 'bubble-analytic-current',
         });
       });
@@ -28624,7 +28683,7 @@
       dreamConductor.pendingA = ''; dreamConductor.pendingB = '';
       dreamConductor.pendingAT = 0; dreamConductor.pendingBT = 0;
       dreamConductor.pendingASource = null; dreamConductor.pendingBSource = null;
-      dreamConductor.nextA = 0; dreamConductor.nextB = 0.42;
+      dreamConductor.nextA = 0; dreamConductor.nextB = 0.56;
     }
     const segments = DREAM_STAGE3_CHOREOGRAPHY[wave] || DREAM_STAGE3_CHOREOGRAPHY[0];
     const segmentIndex = segments.findIndex(segment => phraseTime >= segment.from && phraseTime < segment.to);
@@ -28643,9 +28702,12 @@
       dreamConductor.pendingAT = 0; dreamConductor.pendingBT = 0;
       dreamConductor.pendingASource = null; dreamConductor.pendingBSource = null;
       dreamConductor.nextA = Math.max(0, segment.from - phraseTime);
-      dreamConductor.nextB = segment.b ? dreamConductor.nextA + 0.42 : Infinity;
+      dreamConductor.nextB = segment.b ? dreamConductor.nextA + 0.56 : Infinity;
     }
-    const speedMul = 1 + wave * 0.032 + segmentIndex * 0.018;
+    const config = activeDreamStageConfig();
+    const cadenceMul = Number(config.conductorCadence) || 1;
+    const stageSpeed = Number(config.stageSpeed) || 1;
+    const speedMul = stageSpeed * (1 + wave * 0.022 + segmentIndex * 0.012);
     dreamConductor.nextA -= dt;
     if (segment.b) dreamConductor.nextB -= dt;
     if (dreamConductor.pendingA) {
@@ -28660,7 +28722,7 @@
       }
     } else if (dreamConductor.nextA <= 0) {
       const key = dreamStage3ResolveVoice(segment.a, 0);
-      dreamConductor.nextA = Math.max(0.72, segment.aCadence || 1.5);
+      dreamConductor.nextA = Math.max(0.84, (segment.aCadence || 1.5) * cadenceMul);
       if (key) {
         dreamConductor.pendingA = key;
         dreamConductor.pendingAT = DREAM_STAGE3_MOTION_CONFIG.cueSeconds;
@@ -28681,7 +28743,7 @@
       } else if (dreamConductor.nextB <= 0) {
         let key = dreamStage3ResolveVoice(segment.b, 1);
         if (key === dreamConductor.pendingA) key = '';
-        dreamConductor.nextB = Math.max(0.88, segment.bCadence || 2.1);
+        dreamConductor.nextB = Math.max(1.02, (segment.bCadence || 2.1) * cadenceMul);
         if (key) {
           dreamConductor.pendingB = key;
           dreamConductor.pendingBT = DREAM_STAGE3_MOTION_CONFIG.cueSeconds;
@@ -29372,7 +29434,7 @@
     darkqueen:   { hp: 14000, r: 72, scale: 1.0,  sprite: 'darkqueen',   name: '暗夜女王 · 莉莉丝', intro: '暗夜加冕：女王莅临战场', y: 218, theme: 'queen' },
     suiyi:       { hp: 15600, r: 72, scale: 1.0,  sprite: 'suiyi',       name: '随意 · 代码工程师', intro: '系统接入：随意开始重写战场', y: 206, theme: 'suiyi' },
     migua:       { hp: 18400, r: 76, scale: 1.0,  sprite: 'migua',       name: '蜜瓜号 · MIGUA-X', intro: '甜味警报：蜜瓜号驶入战场', y: 210, theme: 'migua' },
-    dreamshark:  { hp: 300000, r: 82, scale: 1.0, sprite: 'dreamshark',  name: '霜潮绒鲨 · 阿布', intro: '霜潮翻涌：阿布从玩偶海中跃出', y: 214, theme: 'dreamshark' },
+    dreamshark:  { hp: 270000, r: 82, scale: 1.0, sprite: 'dreamshark',  name: '霜潮绒鲨 · 阿布', intro: '霜潮翻涌：阿布从玩偶海中跃出', y: 214, theme: 'dreamshark' },
 
     nightherald:   { hp: 12100, r: 70, scale: 0.96, sprite: 'nightherald',   name: '夜谕使 · 诺克图', intro: '夜幕低语：夜谕使现身', y: 216, theme: 'night' },
     stormreaver:   { hp: 13300, r: 74, scale: 1.0,  sprite: 'stormreaver',   name: '风暴收割者 · 忒弥斯', intro: '雷云裂开：风暴收割者降临', y: 218, theme: 'storm' },
@@ -37846,6 +37908,13 @@
     drawSize: 330,
     lowHpAt: 0.20,
   });
+  const DREAM_SHARK_BALANCE_CONFIG = Object.freeze({
+    cadenceMul: 1.10,
+    speedMul: 0.92,
+    phaseTempoStep: 0.025,
+    spearGap: 112,
+    ringGap: 0.36,
+  });
   function dreamSharkPhaseAssetKey(phase) {
     return ['dreamPlushSharkIdle', 'dreamPlushSharkAttack', 'dreamPlushSharkIce', 'dreamPlushSharkRage', 'dreamPlushSharkVoid'][clamp(phase | 0, 0, 4)];
   }
@@ -37924,7 +37993,7 @@
   function dreamSharkSpearGate(speed = 258) {
     if (!boss) return false;
     const columns = [42, 108, 174, 240, 306, 372, 438, 504, 570, 636, 702];
-    const active = columns.filter(x => Math.abs(x - player.x) >= 92);
+    const active = columns.filter(x => Math.abs(x - player.x) >= DREAM_SHARK_BALANCE_CONFIG.spearGap);
     const emitted = dreamTryAtomicBulletGroup(active.length + 6, () => {
       for (let i = 0; i < active.length; i++) {
         const a = Math.PI / 2 + (i & 1 ? 0.03 : -0.03);
@@ -37953,7 +38022,7 @@
     const angles = [];
     for (let i = 0; i < count; i++) {
       const a = boss.t * 0.28 + i * TAU / count;
-      if (Math.abs(dreamShortestAngle(a, gap)) > 0.28) angles.push(a);
+      if (Math.abs(dreamShortestAngle(a, gap)) > DREAM_SHARK_BALANCE_CONFIG.ringGap) angles.push(a);
     }
     const emitted = dreamTryAtomicBulletGroup(angles.length + 8, () => {
       angles.forEach((a, i) => addDreamBullet(boss.x, boss.y + 22, Math.cos(a) * speed, Math.sin(a) * speed, {
@@ -38090,7 +38159,7 @@
     const angles = [];
     for (let i = 0; i < count; i++) {
       const a = -boss.t * 0.42 + i * TAU / count;
-      if (Math.abs(dreamShortestAngle(a, gap)) > 0.30 && Math.abs(dreamShortestAngle(a, gap + Math.PI)) > 0.2) angles.push(a);
+      if (Math.abs(dreamShortestAngle(a, gap)) > DREAM_SHARK_BALANCE_CONFIG.ringGap && Math.abs(dreamShortestAngle(a, gap + Math.PI)) > 0.26) angles.push(a);
     }
     const emitted = dreamTryAtomicBulletGroup(angles.length + 10, () => {
       angles.forEach((a, i) => addDreamBullet(boss.x, boss.y + 18, Math.cos(a) * speed, Math.sin(a) * speed, {
@@ -38139,21 +38208,23 @@
   }
   function dreamSharkPatterns(t, dt) {
     const phase = clamp(bossPhase | 0, 0, 4);
+    const cadence = DREAM_SHARK_BALANCE_CONFIG.cadenceMul;
+    const speed = DREAM_SHARK_BALANCE_CONFIG.speedMul;
     if (phase === 0) {
-      if (tickEvery(t, dt, 0.92)) dreamBossVoice('sharkBubbleTide', () => dreamSharkBubbleTide(186));
-      if (tickEvery(t, dt, 2.18)) dreamBossVoice('sharkFrostWake', () => dreamSharkFrostWake(204));
+      if (tickEvery(t, dt, 0.92 * cadence)) dreamBossVoice('sharkBubbleTide', () => dreamSharkBubbleTide(186 * speed));
+      if (tickEvery(t, dt, 2.18 * cadence)) dreamBossVoice('sharkFrostWake', () => dreamSharkFrostWake(204 * speed));
     } else if (phase === 1) {
-      if (tickEvery(t, dt, 1.48)) dreamBossVoice('sharkSpearGate', () => dreamSharkSpearGate(272));
-      if (tickEvery(t, dt, 1.12)) dreamBossVoice('sharkSnowCrown', () => dreamSharkSnowCrown(202));
+      if (tickEvery(t, dt, 1.48 * cadence)) dreamBossVoice('sharkSpearGate', () => dreamSharkSpearGate(272 * speed));
+      if (tickEvery(t, dt, 1.12 * cadence)) dreamBossVoice('sharkSnowCrown', () => dreamSharkSnowCrown(202 * speed));
     } else if (phase === 2) {
-      if (tickEvery(t, dt, 1.62)) dreamBossVoice('sharkWhirlpool', () => dreamSharkWhirlpool(246));
-      if (tickEvery(t, dt, 1.28)) dreamBossVoice('sharkShardCurrent', () => dreamSharkShardCurrent(226));
+      if (tickEvery(t, dt, 1.62 * cadence)) dreamBossVoice('sharkWhirlpool', () => dreamSharkWhirlpool(246 * speed));
+      if (tickEvery(t, dt, 1.28 * cadence)) dreamBossVoice('sharkShardCurrent', () => dreamSharkShardCurrent(226 * speed));
     } else if (phase === 3) {
-      if (tickEvery(t, dt, 2.05)) dreamBossVoice('sharkRageCharge', () => dreamSharkRageCharge(338));
-      if (tickEvery(t, dt, 1.32)) dreamBossVoice('sharkRageCross', () => dreamSharkRageCross(238));
+      if (tickEvery(t, dt, 2.05 * cadence)) dreamBossVoice('sharkRageCharge', () => dreamSharkRageCharge(338 * speed));
+      if (tickEvery(t, dt, 1.32 * cadence)) dreamBossVoice('sharkRageCross', () => dreamSharkRageCross(238 * speed));
     } else {
-      if (tickEvery(t, dt, 1.18)) dreamBossVoice('sharkVoidMaw', () => dreamSharkVoidMaw(222));
-      if (tickEvery(t, dt, 1.78)) dreamBossVoice('sharkFinalRift', () => dreamSharkFinalRift(362));
+      if (tickEvery(t, dt, 1.18 * cadence)) dreamBossVoice('sharkVoidMaw', () => dreamSharkVoidMaw(222 * speed));
+      if (tickEvery(t, dt, 1.78 * cadence)) dreamBossVoice('sharkFinalRift', () => dreamSharkFinalRift(362 * speed));
     }
   }
   function dreamSharkEmitPhaseSample(phase = bossPhase) {
@@ -38200,8 +38271,9 @@
     boss.sharkPose = (boss.hitFlash || 0) > 0 ? 'hit'
       : (boss.sharkIntroT > 0 ? 'entry' : (boss.sharkTransition > 0 ? 'transition' : (boss.sharkAttackT > 0 ? 'attack' : 'idle')));
 
-    patternTimer += dt * (1 + phase * 0.045);
-    dreamSharkPatterns(patternTimer, dt * (1 + phase * 0.045));
+    const tempoMul = 1 + phase * DREAM_SHARK_BALANCE_CONFIG.phaseTempoStep;
+    patternTimer += dt * tempoMul;
+    dreamSharkPatterns(patternTimer, dt * tempoMul);
   }
 
   function updateBoss(dt) {
@@ -53602,6 +53674,11 @@
         ...config.balance,
         waveHpScale: [...config.hpScale],
         mobHpRange: [Math.min(...Object.values(config.mobs).map(mob => mob.hp)), Math.max(...Object.values(config.mobs).map(mob => mob.hp))],
+        outgoingDamageMultiplier: config.level.id === DREAM_STAGE3_ID ? DREAM_STAGE3_OUTGOING_DAMAGE_MUL : 1,
+        conductorCadence: Number(config.conductorCadence) || 1,
+        stageSpeed: Number(config.stageSpeed) || 1,
+        bossCadenceMultiplier: config.level.id === DREAM_STAGE3_ID ? DREAM_SHARK_BALANCE_CONFIG.cadenceMul : 1,
+        bossSpeedMultiplier: config.level.id === DREAM_STAGE3_ID ? DREAM_SHARK_BALANCE_CONFIG.speedMul : 1,
         enemyDamageBudget: true,
         targetCharacters: ['skyward', 'corruptgun'],
       }; },

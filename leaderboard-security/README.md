@@ -24,3 +24,19 @@
 
 说明：`01` 会补 `avatar_data` 字段，所以头像上传依赖也一起解决。
 
+## 梦境三 V2 排行榜契约
+
+梦境三降低难度后使用独立的 `dream-03-v2` 成绩版本。部署顺序如下：
+
+1. 执行 `leaderboard-security/13_dream_level_three_v2.sql`，或通过 Supabase CLI 推送同内容的 `supabase/migrations/20260716000000_dream_level_three_v2.sql`。
+2. 部署当前 Edge Function。`supabase/config.toml` 已将 `leaderboard-run` 配置为 `verify_jwt = false`，公开客户端仍只使用发布密钥，写表权限只留给函数内的 `service_role`。
+3. 执行只读生产检查：
+   ```bash
+   npm run check:leaderboard:production
+   ```
+4. 需要验证令牌表真实写入时，执行一次无成绩污染的写探针：
+   ```bash
+   LEADERBOARD_WRITE_PROBE=1 npm run check:leaderboard:production
+   ```
+
+写探针会创建并立即消费一个运行令牌，但故意使用无效用时，因此不会写入排行榜成绩；输出只报告是否收到令牌，不输出令牌内容。

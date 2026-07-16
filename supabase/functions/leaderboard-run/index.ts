@@ -23,17 +23,17 @@ const SALT         = Deno.env.get("LB_SALT") ?? "CHANGE_ME";
 
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
-const EDGE_VERSION = "leaderboard-run-2026-07-15-dream-level3-v1";
+const EDGE_VERSION = "leaderboard-run-2026-07-16-dream-level3-v2";
 const CHARACTERS = new Set(["witch", "yanuxiya", "anna", "reaver", "motherlife", "skyward", "corruptgun"]);
 const TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 令牌有效期 2 小时
 const DREAM_ACTIVE_CLEAR_VERSION = "dream-01-v2";
-const DREAM_STAGE_CONTRACT_VERSION = "dream-03-v1";
+const DREAM_STAGE_CONTRACT_VERSION = "dream-03-v2";
 const DREAM_TOKEN_TTL_MS = 90 * 60 * 1000;
 const DREAM_WINGS = new Set(["moonfeather", "reaverwing", "saintcrown", "nightcoffin", "skyglory", "motherhive"]);
 const DREAM_STAGES = new Map([
   ["dream-01-seraph", { clearVersion: DREAM_ACTIVE_CLEAR_VERSION, seed: 7130101 }],
   ["dream-02-zero-compile", { clearVersion: "dream-02-v1", seed: 7130202 }],
-  ["dream-03-plush-room", { clearVersion: "dream-03-v1", seed: 7130303 }],
+  ["dream-03-plush-room", { clearVersion: "dream-03-v2", seed: 7130303 }],
 ]);
 
 const cors = {
