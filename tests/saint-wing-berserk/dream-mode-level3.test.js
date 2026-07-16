@@ -13,7 +13,7 @@ describe('dream mode level three: Plush Dream Room', () => {
   const manifest = JSON.parse(readFileSync(MANIFEST_URL, 'utf8'));
   const assetReport = JSON.parse(readFileSync(ASSET_REPORT_URL, 'utf8'));
 
-  it('registers the unlocked room stage as a ten-wave, boss-free Dream level', () => {
+  it('registers the unlocked room stage with its five-phase shark boss', () => {
     expect(dream.levelsSpec()).toContainEqual(expect.objectContaining({
       id: LEVEL_THREE,
       version: 'dream-03-v1',
@@ -21,9 +21,9 @@ describe('dream mode level three: Plush Dream Room', () => {
       name: '绒梦玩偶屋',
       waveCount: 10,
       mobTargetSeconds: 545,
-      bossTargetSeconds: 0,
-      bossKey: null,
-      hasBoss: false,
+      bossTargetSeconds: 142,
+      bossKey: 'dreamshark',
+      hasBoss: true,
       roomScene: true,
       unlocked: true,
     }));
@@ -31,8 +31,8 @@ describe('dream mode level three: Plush Dream Room', () => {
     expect(dream.uiSpec()).toMatchObject({ availableLevels: [1, 2, 3] });
     expect(dream.previewSpec(LEVEL_THREE)).toMatchObject({
       showsMobs: 5,
-      showsBossPhases: 0,
-      showsBoss: false,
+      showsBossPhases: 5,
+      showsBoss: true,
       showsWaveRules: true,
       showsStarRules: true,
     });
@@ -69,22 +69,30 @@ describe('dream mode level three: Plush Dream Room', () => {
     expect(dream.formationSpec(LEVEL_THREE).every((formation) => formation.batches.flat().length === 8)).toBe(true);
   });
 
-  it('declares fifteen layered projectile skins and sixteen deterministic plush emitters', () => {
+  it('declares twenty-one layered projectile skins including six shark-only families', () => {
     const skins = dream.bulletSkinSpec(LEVEL_THREE);
     const patterns = dream.patternSpec(LEVEL_THREE);
     const emitters = new Set(patterns.flatMap((pattern) => pattern.voices));
-    expect(skins).toHaveLength(15);
-    expect(new Set(skins.map((skin) => skin.assetKey)).size).toBe(15);
-    expect(new Set(skins.map((skin) => skin.glowAssetKey)).size).toBe(15);
-    expect(skins.every((skin) => skin.key.startsWith('plush') && skin.assetKey.startsWith('dreamPlush') && skin.glowAssetKey.endsWith('Glow') && skin.preoutlined)).toBe(true);
+    expect(skins).toHaveLength(21);
+    expect(new Set(skins.map((skin) => skin.assetKey)).size).toBe(21);
+    expect(new Set(skins.map((skin) => skin.glowAssetKey)).size).toBe(21);
+    expect(skins.every((skin) => (skin.key.startsWith('plush') || skin.key.startsWith('shark')) && skin.assetKey.startsWith('dreamPlush') && skin.glowAssetKey.endsWith('Glow') && skin.preoutlined)).toBe(true);
+    expect(skins.filter((skin) => skin.key.startsWith('shark')).map((skin) => skin.key)).toEqual([
+      'sharkIceSpear', 'sharkIceShard', 'sharkSnowball', 'sharkBubble', 'sharkWaveCrescent', 'sharkVoidOrb',
+    ]);
+    expect(Object.fromEntries(skins.filter((skin) => skin.key.startsWith('shark')).map((skin) => [skin.key, skin.sourceAxis]))).toMatchObject({
+      sharkIceSpear: 'up',
+      sharkIceShard: 'left',
+      sharkWaveCrescent: 'left',
+    });
     expect(patterns).toHaveLength(10);
     expect(emitters.size).toBe(16);
     expect(emitters).toContain('plushToyboxFinale');
     expect(patterns.every((pattern) => pattern.completeGroupOnly && pattern.voices.length === 2 && pattern.maxVoices === 2 && pattern.segments.length === 3)).toBe(true);
     expect(patterns.every((pattern) => pattern.segments.every((segment) => [segment.a, segment.b].filter(Boolean).every((voice) => pattern.voices.includes(voice))))).toBe(true);
     expect(dream.patternDiversitySpec(LEVEL_THREE)).toMatchObject({
-      realAssetCount: 30,
-      skinCount: 15,
+      realAssetCount: 42,
+      skinCount: 21,
       emitterCount: 16,
       motionFamilyCount: 6,
       runtimeFallbackReporting: true,
@@ -133,16 +141,77 @@ describe('dream mode level three: Plush Dream Room', () => {
     expect(emitters.size).toBe(16);
   });
 
-  it('clears directly after wave ten without constructing or entering a boss state', () => {
-    expect(dream.stageCompletionSpec(LEVEL_THREE)).toEqual({ hasBoss: false, clearAfterWave: 10, uploadsLeaderboard: true });
-    expect(dream.bossSpec(LEVEL_THREE)).toMatchObject({ key: null, implemented: false, hasBoss: false, clearAfterWave: 10 });
+  it('enters the shark boss after wave ten and preserves the leaderboard v1 contract', () => {
+    expect(dream.stageCompletionSpec(LEVEL_THREE)).toEqual({ hasBoss: true, clearAfterWave: null, uploadsLeaderboard: true });
+    expect(dream.bossSpec(LEVEL_THREE)).toMatchObject({
+      key: 'dreamshark', name: '霜潮绒鲨 · 阿布', hp: 355000,
+      targetDurationSeconds: 142, targetSeconds: [135, 150],
+      phaseThresholds: [0.8, 0.6, 0.4, 0.2], logicalBulletCap: 96,
+      distinctDreamHandler: true, normalBossPoolExcluded: true,
+    });
     const start = source.indexOf('function updateDreamMobStage(dt)');
     const end = source.indexOf('function updateMobStage(dt)', start);
     const block = source.slice(start, end);
     expect(start).toBeGreaterThan(0);
     expect(block).toContain("if (config.hasBoss === false || !config.level.boss)");
-    expect(block).toContain('completeDreamRun(');
-    expect(block.indexOf('completeDreamRun(')).toBeLessThan(block.indexOf('bossKind = config.level.boss'));
+    expect(block).toContain('bossKind = config.level.boss');
+    expect(block).toContain("state = 'bossIntro'");
+  });
+
+  it('uses five two-voice shark patterns, layered forms, telegraphs, and non-abrupt cleanup', () => {
+    const bossSpec = dream.bossSpec(LEVEL_THREE);
+    expect(bossSpec.patternNames).toEqual(['软潮试探', '冰牙列阵', '霜涡巡游', '怒潮冲锋', '终幕·冰渊吞星']);
+    expect(bossSpec.phaseVoices).toHaveLength(5);
+    expect(bossSpec.phaseVoices.every((voices) => voices.length === 2 && new Set(voices).size === 2)).toBe(true);
+    expect(new Set(bossSpec.phaseVoices.flat()).size).toBe(10);
+    expect(bossSpec).toMatchObject({
+      maxMajorVoices: 2, pooledVoices: true, completeGroupOnly: true,
+      patternsUseAddDreamBullet: true, usesDedicatedSkins: true, abruptVisibleClear: false,
+      transitions: { introSeconds: 0.82, phaseSeconds: 0.62, crossDissolve: true, squash: true },
+    });
+    const start = source.indexOf('function dreamSharkBubbleTide(');
+    const end = source.indexOf('function updateBoss(dt)', start);
+    const block = source.slice(start, end);
+    expect(start).toBeGreaterThan(0);
+    expect(block.match(/addDreamBullet\(/g)?.length).toBeGreaterThanOrEqual(10);
+    expect(block).toContain("policy: 'brake-hold-release'");
+    expect(block).toContain("policy: 'orbit-release'");
+    expect(block).toContain("policy: 'turn-once'");
+    expect(block).toContain('dreamSharkEmitPhaseSample');
+    expect(source).toContain("dissolveDreamBullets('boss-defeat')");
+  });
+
+  it('binds the dedicated shark HP UI directly to hp/maxHp with eased damage lag', () => {
+    const full = dream.sharkBossUiSpec({ hp: 355000, maxHp: 355000, lagRate: 1, phase: 0 });
+    const damaged = dream.sharkBossUiSpec({ hp: 106500, maxHp: 355000, lagRate: 0.46, phase: 3, viewport: { width: 390 } });
+    const critical = dream.sharkBossUiSpec({ hp: 35500, maxHp: 355000, lagRate: 0.18, phase: 4 });
+    expect(full).toMatchObject({ linkedToBossHp: true, hpRate: 1, fillRate: 1, damageLagRate: 1, percent: '100%', phasePips: [true, false, false, false, false] });
+    expect(damaged.hpRate).toBeCloseTo(0.3, 6);
+    expect(damaged.fillRate).toBeCloseTo(damaged.hpRate, 8);
+    expect(damaged.damageLagRate).toBeCloseTo(0.46, 8);
+    expect(damaged.numericHp).toBe('106,500/355,000');
+    expect(damaged.phasePips).toEqual([true, true, true, true, false]);
+    expect(damaged.layout.frame.x).toBeGreaterThanOrEqual(0);
+    expect(damaged.layout.frame.x + damaged.layout.frame.w).toBeLessThanOrEqual(390);
+    expect(critical).toMatchObject({ critical: true, percent: '10%', phasePips: [true, true, true, true, true] });
+    expect(dream.bossSpec(LEVEL_THREE).ui).toMatchObject({ immediateFill: true, easedDamageLag: true, numericHp: true, percent: true, phasePips: 5, mobileSafe: true });
+  });
+
+  it('exposes deterministic shark capture scenes and the exact 44-key runtime asset contract', () => {
+    const capture = dream.stage3SharkCaptureSpec();
+    const assets = dream.stage3SharkAssetSpec();
+    expect(capture).toMatchObject({
+      scenes: { entry: 'shark-entry', phase: 'boss', hp: 'shark-hp', hit: 'shark-hit', transition: 'shark-transition', death: 'shark-death', performance: 'shark-performance' },
+      phaseCount: 5, frameBudgetMs: 16.7,
+    });
+    expect(assets.assetKeys).toHaveLength(44);
+    expect(assets).toMatchObject({ layeredBoss: true, layeredBullets: true, layeredVfx: true, uiLayers: 6 });
+    expect(assets.boss).toHaveLength(14);
+    expect(assets.bullets).toHaveLength(12);
+    expect(assets.vfx).toHaveLength(12);
+    expect(assets.ui).toHaveLength(6);
+    expect(Object.values(assets.paths).every((path) => path.startsWith('assets/dream_stage3/'))).toBe(true);
+    expect(dream.stage3SharkAssetStatus().missing).toEqual([]);
   });
 
   it('builds a level-three result accepted by the versioned leaderboard contract', () => {
@@ -213,11 +282,11 @@ describe('dream mode level three: Plush Dream Room', () => {
       sourceFolderReadOnly: expect.stringContaining('梦境第三关开发'),
       renderContract: expect.objectContaining({ stageLoad: 'lazy on Dream Level 3 only' }),
     });
-    expect(Object.keys(manifest.assets)).toHaveLength(87);
+    expect(Object.keys(manifest.assets)).toHaveLength(131);
     expect(assetReport).toMatchObject({
-      sourceCount: 20,
-      generatedAssetKeys: 87,
-      categories: { bullet: 15, 'bullet-glow': 15, vfx: 10, 'vfx-glow': 10 },
+      sourceCount: 29,
+      generatedAssetKeys: 131,
+      categories: { boss: 7, 'boss-glow': 7, bullet: 21, 'bullet-glow': 21, vfx: 16, 'vfx-glow': 16, 'boss-ui': 6 },
       greenValidation: { assetsWithResidual: [], status: 'pass' },
       edgeValidation: { assetsWithVisibleEdgeTouch: [], status: 'pass' },
       preservation: { unknownFilesDeleted: false },

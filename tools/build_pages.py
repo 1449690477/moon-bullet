@@ -30,7 +30,9 @@ DREAM_STAGE3_PREPARED_MOBILE = {
     "dreamRoomBase": "assets/dream_stage3/backgrounds/dream_room_base_mobile.webp",
 }
 DREAM_STAGE3_LOSSLESS_MOBILE_PREFIXES = (
+    "assets/dream_stage3/boss/",
     "assets/dream_stage3/bullets/",
+    "assets/dream_stage3/ui/",
     "assets/dream_stage3/vfx/",
 )
 MHR_BLACKHOLE_SEQUENCE_PHASES = {"deploy": 16, "loop": 32, "overload": 16, "collapse": 12}

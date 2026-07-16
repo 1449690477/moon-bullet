@@ -16,7 +16,7 @@ describe('dream mode level two: Zero Compile Domain', () => {
     expect(dream.levelsSpec()).toEqual([
       expect.objectContaining({ id: LEVEL_ONE, version: 'dream-01-v2', seed: 7130101, bossKey: 'seraph', unlocked: true }),
       expect.objectContaining({ id: LEVEL_TWO, version: 'dream-02-v1', seed: 7130202, name: '零界编译域', bossKey: 'suiyi', unlocked: true }),
-      expect.objectContaining({ id: LEVEL_THREE, version: 'dream-03-v1', seed: 7130303, name: '绒梦玩偶屋', bossKey: null, unlocked: true }),
+      expect.objectContaining({ id: LEVEL_THREE, version: 'dream-03-v1', seed: 7130303, name: '绒梦玩偶屋', bossKey: 'dreamshark', hasBoss: true, unlocked: true }),
     ]);
     expect(dream.levelSpec(LEVEL_TWO)).toMatchObject({
       id: LEVEL_TWO,

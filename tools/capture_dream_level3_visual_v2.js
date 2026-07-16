@@ -20,6 +20,7 @@ const OUT_DIR = process.env.DREAM_STAGE3_V2_OUT
   : path.join(ROOT, 'tools', 'dream_level3_visual_v2_acceptance');
 const PORT = Number(process.env.DREAM_STAGE3_V2_PORT || 18793);
 const STRICT = String(process.env.DREAM_STAGE3_V2_STRICT || '0') === '1';
+const SHARK_ONLY = String(process.env.DREAM_STAGE3_SHARK_ONLY || '0') === '1';
 
 const VIEWPORTS = Object.freeze([
   Object.freeze({ id: 'desktop_1280x720', width: 1280, height: 720, dpr: 1, mobile: false, quality: 'high' }),
@@ -56,7 +57,7 @@ const MOTION_SAMPLES = Object.freeze([
 ]);
 const MOTION_FRAMES = Object.freeze([0, 8, 18, 36]);
 const EXPECTED_MATERIAL_PHASE_COUNT = 8;
-const STAGE3_MATERIAL_SKIN_COUNT = 15;
+const STAGE3_MATERIAL_SKIN_COUNT = 21;
 const MATERIAL_CLOSEUP_SAMPLES = Object.freeze([
   Object.freeze({ label: 't000', ms: 0, frame: 0 }),
   Object.freeze({ label: 't080', ms: 80, frame: 5 }),
@@ -65,6 +66,44 @@ const MATERIAL_CLOSEUP_SAMPLES = Object.freeze([
   Object.freeze({ label: 't640', ms: 640, frame: 40 }),
   Object.freeze({ label: 't720', ms: 720, frame: 45 }),
 ]);
+const SHARK_CAPTURE_DEFAULT_SCENES = Object.freeze({
+  entry: 'stage3-shark-entry',
+  phase: 'stage3-shark-phase',
+  hp: 'stage3-shark-hp',
+  hit: 'stage3-shark-hit',
+  transition: 'stage3-shark-transition',
+  death: 'stage3-shark-death',
+  performance: 'stage3-shark-performance',
+});
+const SHARK_BOSS_ASSET_KEYS = Object.freeze([
+  'dreamPlushSharkIdle', 'dreamPlushSharkAttack', 'dreamPlushSharkIce', 'dreamPlushSharkRage',
+  'dreamPlushSharkVoid', 'dreamPlushSharkHit', 'dreamPlushSharkDeath',
+].flatMap((key) => [key, `${key}Glow`]));
+const SHARK_BULLET_ASSET_KEYS = Object.freeze([
+  'dreamPlushSharkIceSpear', 'dreamPlushSharkIceShard', 'dreamPlushSharkSnowball',
+  'dreamPlushSharkBubble', 'dreamPlushSharkWaveCrescent', 'dreamPlushSharkVoidOrb',
+].flatMap((key) => [key, `${key}Glow`]));
+const SHARK_VFX_ASSET_KEYS = Object.freeze([
+  'dreamPlushSharkMuzzle', 'dreamPlushSharkIceBurst', 'dreamPlushSharkWhirlpool',
+  'dreamPlushSharkWave', 'dreamPlushSharkVoidBurst', 'dreamPlushSharkShield',
+].flatMap((key) => [key, `${key}Glow`]));
+const SHARK_UI_ASSET_KEYS = Object.freeze([
+  'dreamPlushSharkPortrait', 'dreamPlushSharkBossBarFrame', 'dreamPlushSharkBossBarEmpty',
+  'dreamPlushSharkBossBarFill', 'dreamPlushSharkBossBarCritical', 'dreamPlushSharkBossBarGloss',
+]);
+const SHARK_REQUIRED_ASSET_KEYS = Object.freeze([
+  ...SHARK_BOSS_ASSET_KEYS, ...SHARK_BULLET_ASSET_KEYS, ...SHARK_VFX_ASSET_KEYS, ...SHARK_UI_ASSET_KEYS,
+]);
+const SHARK_ENTRY_FRAMES = Object.freeze([0, 12, 28, 48, 72]);
+const SHARK_PHASE_SAMPLES = Object.freeze([
+  Object.freeze({ label: 'windup', moment: 'windup', elapsed: 0.12, frame: 0 }),
+  Object.freeze({ label: 'active', moment: 'active', elapsed: 1.18, frame: 18 }),
+  Object.freeze({ label: 'release', moment: 'release', elapsed: 2.42, frame: 42 }),
+]);
+const SHARK_HP_SAMPLES = Object.freeze([1, 0.60, 0.30, 0.08]);
+const SHARK_EVENT_FRAMES = Object.freeze([0, 8, 20, 36]);
+const SHARK_DEATH_FRAMES = Object.freeze([0, 12, 30, 60, 90]);
+const SHARK_PERF_FRAMES = Math.max(30, Math.min(600, Number(process.env.DREAM_STAGE3_SHARK_PERF_FRAMES || 120) | 0));
 const MOBILE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
 const DESKTOP_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
@@ -143,6 +182,12 @@ async function createPage(browser, viewport, diagnostics) {
     if (response.status() === 404 && response.url().startsWith(`http://127.0.0.1:${PORT}/`)
         && !response.url().endsWith('/favicon.ico')) diagnostics.missing.push(response.url());
   });
+  page.on('requestfailed', (request) => {
+    if (!request.url().startsWith(`http://127.0.0.1:${PORT}/`)) return;
+    const reason = request.failure()?.errorText || 'failed';
+    if (reason === 'net::ERR_ABORTED') return;
+    diagnostics.requestFailures.push(`${viewport.id}: ${request.url()} :: ${reason}`);
+  });
   await page.goto(`http://127.0.0.1:${PORT}/?dream-stage3-visual-v2=1`, { waitUntil: 'networkidle0', timeout: 60000 });
   await page.waitForFunction(() => window.__dreamModeCapture__ && window.__dreamModeInternals__, { timeout: 30000 });
   await page.evaluate(() => document.fonts?.ready || Promise.resolve());
@@ -188,12 +233,25 @@ async function capabilities(page) {
       ? internals.stage3VisualCaptureSpec()
       : null;
     const scenes = Array.isArray(spec?.scenes) ? spec.scenes : [];
+    const sharkSpec = typeof internals?.stage3SharkCaptureSpec === 'function'
+      ? internals.stage3SharkCaptureSpec()
+      : (typeof internals?.sharkBossCaptureSpec === 'function' ? internals.sharkBossCaptureSpec() : null);
+    const sharkAssetSpec = typeof internals?.stage3SharkAssetSpec === 'function'
+      ? internals.stage3SharkAssetSpec()
+      : (sharkSpec?.assets || sharkSpec?.assetKeys || null);
+    const sharkAssetStatus = typeof internals?.stage3SharkAssetStatus === 'function'
+      ? internals.stage3SharkAssetStatus()
+      : null;
     return {
       captureApi: !!cap && typeof cap.prepare === 'function' && typeof cap.step === 'function',
       snapshotApi: !!cap && typeof cap.snapshot === 'function',
       exactPlushVfx: scenes.includes('plush-vfx-lab') || spec?.plushVfx === true,
       exactPhrase: scenes.includes('stage3-phrase') || spec?.phrase === true,
       exactMotion: scenes.includes('stage3-motion-lab') || spec?.motion === true,
+      exactSharkBoss: !!sharkSpec,
+      sharkSpec,
+      sharkAssetSpec,
+      sharkAssetStatus,
       materialSpec: typeof internals?.bulletMaterialSpec === 'function' ? internals.bulletMaterialSpec() : null,
       materialSkins: typeof internals?.bulletSkinSpec === 'function' ? internals.bulletSkinSpec('dream-03-plush-room') : [],
       visualSpec: spec,
@@ -343,6 +401,281 @@ async function record(page, viewport, report, group, phase, metadata = {}) {
   if (Number(snapshot?.logicalBulletCount || 0) > 96) report.failures.push(`${label}: ${snapshot.logicalBulletCount} bullets > 96`);
   report.frames.push({ label, file, group, phase, metadata, snapshot, visual, screenshot: { width, height } });
   return snapshot;
+}
+
+function collectSharkAssetKeys(value, result = new Set()) {
+  if (typeof value === 'string') {
+    if (value.startsWith('dreamPlushShark')) result.add(value);
+    return result;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item) => collectSharkAssetKeys(item, result));
+    return result;
+  }
+  if (value && typeof value === 'object') {
+    Object.entries(value).forEach(([key, item]) => {
+      if (key.startsWith('dreamPlushShark')) result.add(key);
+      collectSharkAssetKeys(item, result);
+    });
+  }
+  return result;
+}
+
+function sharkScene(caps, kind) {
+  const spec = caps?.sharkSpec || {};
+  const scenes = spec.scenes;
+  if (scenes && !Array.isArray(scenes) && typeof scenes[kind] === 'string') return scenes[kind];
+  if (typeof spec[`${kind}Scene`] === 'string') return spec[`${kind}Scene`];
+  if (typeof spec.scene === 'string') return spec.scene;
+  if (Array.isArray(scenes)) {
+    if (scenes.includes(SHARK_CAPTURE_DEFAULT_SCENES[kind])) return SHARK_CAPTURE_DEFAULT_SCENES[kind];
+    const shared = scenes.find((scene) => /shark/i.test(String(scene)));
+    if (shared) return shared;
+  }
+  return SHARK_CAPTURE_DEFAULT_SCENES[kind];
+}
+
+async function prepareShark(page, caps, kind, options = {}) {
+  return prepare(page, sharkScene(caps, kind), {
+    captureKind: kind,
+    mode: kind,
+    ...options,
+  });
+}
+
+function sharkBossState(snapshot) {
+  return snapshot?.sharkBoss || snapshot?.bossSnapshot || snapshot?.boss || null;
+}
+
+function sharkBossUiState(snapshot) {
+  return snapshot?.sharkBossUi || snapshot?.bossUi || snapshot?.bossBar || null;
+}
+
+function finiteRate(...values) {
+  for (const value of values) {
+    const number = Number(value);
+    if (Number.isFinite(number)) return number;
+  }
+  return null;
+}
+
+function sharkHpRate(snapshot) {
+  const bossState = sharkBossState(snapshot) || {};
+  const direct = finiteRate(bossState.hpRate, bossState.healthRate, snapshot?.bossHpRate);
+  if (direct != null) return direct;
+  const hp = Number(bossState.hp ?? snapshot?.bossHp);
+  const maxHp = Number(bossState.maxHp ?? snapshot?.bossMaxHp);
+  return Number.isFinite(hp) && Number.isFinite(maxHp) && maxHp > 0 ? hp / maxHp : null;
+}
+
+function sharkUiFillRate(snapshot) {
+  const ui = sharkBossUiState(snapshot) || {};
+  return finiteRate(ui.fillRate, ui.hpRate, ui.displayRate, snapshot?.bossUiFillRate);
+}
+
+function sharkPhaseMatches(snapshot, expectedPhase) {
+  const bossState = sharkBossState(snapshot) || {};
+  const actual = Number(bossState.phase ?? snapshot?.bossPhase);
+  return Number.isInteger(actual) && (actual === expectedPhase || actual === expectedPhase + 1);
+}
+
+async function auditSharkAssets(page, viewport, report, caps) {
+  const declared = collectSharkAssetKeys(caps.sharkAssetSpec);
+  const missingContract = SHARK_REQUIRED_ASSET_KEYS.filter((key) => !declared.has(key));
+  const status = await page.evaluate(() => {
+    const internals = window.__dreamModeInternals__;
+    if (typeof internals?.stage3SharkAssetStatus === 'function') return internals.stage3SharkAssetStatus();
+    return null;
+  });
+  const unresolved = [...new Set([
+    ...(status?.missing || []), ...(status?.decodeFailed || []), ...(status?.fallbacks || []),
+    ...(status?.stageVisualMissing || []), ...(status?.stageVisualDecodeFailed || []),
+  ])];
+  const pending = [...new Set([...(status?.pending || []), ...(status?.stageVisualPending || [])])];
+  const loaded = new Set([...(status?.loaded || []), ...(status?.stageVisualLoaded || [])]);
+  const notLoaded = loaded.size ? SHARK_REQUIRED_ASSET_KEYS.filter((key) => !loaded.has(key)) : [];
+  report.sharkAssets[viewport.id] = {
+    expected: SHARK_REQUIRED_ASSET_KEYS.length,
+    declared: [...declared].sort(),
+    missingContract,
+    notLoaded,
+    status,
+  };
+  if (!declared.size) {
+    pushIssue(report, 'missing-interface', `${viewport.id}: stage3SharkAssetSpec or shark capture assetKeys is required`);
+  } else if (missingContract.length) {
+    report.failures.push(`${viewport.id}/shark-assets: contract keys missing: ${missingContract.join(', ')}`);
+  }
+  if (!status) {
+    pushIssue(report, 'missing-interface', `${viewport.id}: stage3SharkAssetStatus is required for decode/fallback acceptance`);
+  } else {
+    if (pending.length) report.failures.push(`${viewport.id}/shark-assets: still pending: ${pending.join(', ')}`);
+    if (unresolved.length) report.failures.push(`${viewport.id}/shark-assets: missing/decode/fallback: ${unresolved.join(', ')}`);
+    if (notLoaded.length) report.failures.push(`${viewport.id}/shark-assets: required keys not decoded: ${notLoaded.join(', ')}`);
+  }
+}
+
+async function captureSharkEventTimeline(page, viewport, report, caps, kind, options, frames, group) {
+  if (kind === 'entry') {
+    const snapshots = [];
+    for (const frame of frames) {
+      await prepareShark(page, caps, kind, { quality: viewport.quality, ...options, frame });
+      snapshots.push(await record(page, viewport, report, group, `f${String(frame).padStart(3, '0')}`, {
+        exact: true, captureKind: kind, frame, ...options,
+      }));
+    }
+    return snapshots;
+  }
+  await prepareShark(page, caps, kind, { quality: viewport.quality, ...options });
+  let previous = 0;
+  const snapshots = [];
+  for (const frame of frames) {
+    if (frame > previous) await step(page, frame - previous);
+    previous = frame;
+    const snapshot = await record(page, viewport, report, group, `f${String(frame).padStart(3, '0')}`, {
+      exact: true, captureKind: kind, frame, ...options,
+    });
+    snapshots.push(snapshot);
+  }
+  return snapshots;
+}
+
+async function captureSharkBoss(page, viewport, report, caps) {
+  if (!caps.exactSharkBoss) {
+    pushIssue(report, 'missing-interface', `${viewport.id}: stage3SharkCaptureSpec is required for exact shark boss acceptance`);
+    return;
+  }
+  await auditSharkAssets(page, viewport, report, caps);
+
+  const entrySnapshots = await captureSharkEventTimeline(
+    page, viewport, report, caps, 'entry', { phase: 0 }, SHARK_ENTRY_FRAMES, 'shark_entry',
+  );
+  if (!entrySnapshots.some((snapshot) => {
+    const state = sharkBossState(snapshot) || {};
+    return state.entering === true || Number(state.entryT || 0) > 0;
+  })) report.failures.push(`${viewport.id}/shark-entry: no readable in-progress entrance state`);
+
+  for (let phase = 0; phase < 5; phase += 1) {
+    for (const sample of SHARK_PHASE_SAMPLES) {
+      await prepareShark(page, caps, 'phase', {
+        phase, moment: sample.moment, elapsed: sample.elapsed, quality: viewport.quality,
+      });
+      if (sample.frame > 0) await step(page, sample.frame);
+      const snapshot = await record(page, viewport, report, `shark_phase${phase + 1}`, sample.label, {
+        exact: true, phase, moment: sample.moment, elapsed: sample.elapsed, frame: sample.frame,
+      });
+      if (!sharkBossState(snapshot)) report.failures.push(`${viewport.id}/shark-phase${phase + 1}/${sample.label}: boss snapshot missing`);
+      else if (!sharkPhaseMatches(snapshot, phase)) report.failures.push(`${viewport.id}/shark-phase${phase + 1}/${sample.label}: wrong boss phase`);
+    }
+  }
+
+  for (const hpRate of SHARK_HP_SAMPLES) {
+    await prepareShark(page, caps, 'hp', { hpRate, phase: hpRate <= 0.20 ? 4 : (hpRate <= 0.40 ? 3 : (hpRate <= 0.60 ? 2 : 0)), quality: viewport.quality });
+    const label = `${Math.round(hpRate * 100)}pct`;
+    const snapshot = await record(page, viewport, report, 'shark_hp_ui', label, { exact: true, hpRate });
+    const actualHpRate = sharkHpRate(snapshot);
+    const uiRate = sharkUiFillRate(snapshot);
+    const uiState = sharkBossUiState(snapshot);
+    if (actualHpRate == null || Math.abs(actualHpRate - hpRate) > 0.015) {
+      report.failures.push(`${viewport.id}/shark-hp/${label}: boss HP rate ${actualHpRate} does not match ${hpRate}`);
+    }
+    if (uiRate == null || Math.abs(uiRate - hpRate) > 0.015) {
+      report.failures.push(`${viewport.id}/shark-hp/${label}: UI fill rate ${uiRate} does not match real boss HP ${hpRate}`);
+    }
+    if (!uiState || uiState.visible === false) report.failures.push(`${viewport.id}/shark-hp/${label}: dedicated boss HP UI is not visible`);
+    if (uiState?.linkedToBossHp !== true) report.failures.push(`${viewport.id}/shark-hp/${label}: UI does not declare a live boss.hp/maxHp linkage`);
+    if (hpRate <= 0.08 && uiState?.critical !== true) report.failures.push(`${viewport.id}/shark-hp/${label}: critical HP layer is not active`);
+  }
+
+  const hitSnapshots = await captureSharkEventTimeline(
+    page, viewport, report, caps, 'hit', { phase: 2, hpRate: 0.52 }, SHARK_EVENT_FRAMES, 'shark_hit',
+  );
+  if (!hitSnapshots.some((snapshot) => {
+    const state = sharkBossState(snapshot) || {};
+    return /hit/i.test(String(state.pose || state.form || ''))
+      || /hit/i.test(String(state.visualKey || ''))
+      || Number(state.hitFlash || state.hitT || 0) > 0;
+  })) report.failures.push(`${viewport.id}/shark-hit: hit pose/flash never became visible`);
+
+  for (let phase = 1; phase < 5; phase += 1) {
+    const transitionSnapshots = await captureSharkEventTimeline(
+      page, viewport, report, caps, 'transition', { phase, fromPhase: phase - 1, toPhase: phase },
+      SHARK_EVENT_FRAMES, `shark_transition_${phase}_${phase + 1}`,
+    );
+    if (!transitionSnapshots.some((snapshot) => {
+      const state = sharkBossState(snapshot) || {};
+      return state.transitioning === true || Number(state.transitionT || state.phaseTransitionT || 0) > 0;
+    })) report.failures.push(`${viewport.id}/shark-transition-${phase}-${phase + 1}: transition envelope never became visible`);
+  }
+
+  const deathSnapshots = await captureSharkEventTimeline(
+    page, viewport, report, caps, 'death', { phase: 4, hpRate: 0 }, SHARK_DEATH_FRAMES, 'shark_death',
+  );
+  if (!deathSnapshots.some((snapshot) => {
+    const state = sharkBossState(snapshot) || {};
+    return state.dying === true || state.dead === true || /death/i.test(String(state.pose || state.form || ''));
+  })) report.failures.push(`${viewport.id}/shark-death: death state never became visible`);
+
+  await prepare(page, 'result', { stage: 3, stars: 3, elapsedMs: 687000, quality: viewport.quality });
+  let previousResultFrame = 0;
+  for (const frame of [0, 30, 90]) {
+    if (frame > previousResultFrame) await step(page, frame - previousResultFrame);
+    previousResultFrame = frame;
+    await record(page, viewport, report, 'shark_result', `f${String(frame).padStart(3, '0')}`, { exact: true, stars: 3, frame });
+  }
+}
+
+function percentile(values, ratio) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted[Math.max(0, Math.min(sorted.length - 1, Math.ceil(sorted.length * ratio) - 1))];
+}
+
+async function measureSharkFrameCost(page, viewport, report, caps) {
+  if (!caps.exactSharkBoss) return;
+  await prepareShark(page, caps, 'performance', {
+    phase: 4, moment: 'active', elapsed: 2.42, quality: viewport.quality,
+  });
+  const sample = await page.evaluate(async ({ frames }) => {
+    const cap = window.__dreamModeCapture__;
+    const intervals = [];
+    const cpu = [];
+    const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+    let previous = await nextFrame();
+    for (let frame = 0; frame < frames; frame += 1) {
+      const started = performance.now();
+      cap.step(1, 1 / 60, false);
+      cpu.push(Math.max(0.001, performance.now() - started));
+      const now = await nextFrame();
+      intervals.push(Math.max(0.001, now - previous));
+      previous = now;
+    }
+    return { intervals, cpu, snapshot: cap.snapshot() };
+  }, { frames: SHARK_PERF_FRAMES });
+  const average = (values) => values.reduce((sum, value) => sum + value, 0) / Math.max(1, values.length);
+  const averageIntervalMs = average(sample.intervals);
+  const cpuP95Ms = percentile(sample.cpu, 0.95);
+  const budgetSpec = caps.sharkSpec?.frameBudgetMs;
+  const cpuBudgetMs = Number(typeof budgetSpec === 'number'
+    ? budgetSpec
+    : (viewport.mobile ? budgetSpec?.mobile : budgetSpec?.desktop)) || (viewport.mobile ? 20 : 12);
+  report.sharkPerformance[viewport.id] = {
+    frames: SHARK_PERF_FRAMES,
+    averageFps: Number((1000 / Math.max(0.001, averageIntervalMs)).toFixed(1)),
+    averageIntervalMs: Number(averageIntervalMs.toFixed(3)),
+    p99IntervalMs: Number(percentile(sample.intervals, 0.99).toFixed(3)),
+    averageCpuMs: Number(average(sample.cpu).toFixed(3)),
+    p95CpuMs: Number(cpuP95Ms.toFixed(3)),
+    maxCpuMs: Number(Math.max(...sample.cpu).toFixed(3)),
+    cpuBudgetMs,
+    snapshot: sample.snapshot,
+  };
+  if (cpuP95Ms > cpuBudgetMs) {
+    report.failures.push(`${viewport.id}/shark-performance: p95 CPU ${cpuP95Ms.toFixed(2)}ms > ${cpuBudgetMs}ms`);
+  }
+  if ((sample.snapshot?.fallbacks || []).length) {
+    report.failures.push(`${viewport.id}/shark-performance: visual fallbacks ${sample.snapshot.fallbacks.join(', ')}`);
+  }
 }
 
 async function capturePlush(page, viewport, report, caps) {
@@ -566,7 +899,7 @@ async function captureMaterialCloseups(page, viewport, report, caps) {
     }
   }
   if (allPhases.size !== EXPECTED_MATERIAL_PHASE_COUNT) {
-    report.failures.push(`${viewport.id}/material-closeup: observed ${allPhases.size}/${EXPECTED_MATERIAL_PHASE_COUNT} material phases across all 15 skins`);
+    report.failures.push(`${viewport.id}/material-closeup: observed ${allPhases.size}/${EXPECTED_MATERIAL_PHASE_COUNT} material phases across all ${STAGE3_MATERIAL_SKIN_COUNT} skins`);
   }
   report.materialLab = {
     viewport: viewport.id,
@@ -603,11 +936,19 @@ function buildGif(prefix, files, duration = 0.12) {
 function writeReports(report) {
   const status = report.failures.length ? 'FAIL' : (report.missingInterfaces.length ? 'PARTIAL' : 'PASS');
   const rows = report.frames.map((frame) => `<figure><img src="${frame.file}" alt="${frame.label}"><figcaption><b>${frame.label}</b>${frame.metadata?.moment ? `<br>${frame.metadata.moment} · 第 ${frame.metadata.frame} 帧` : ''}<br>${frame.screenshot.width}x${frame.screenshot.height} · bullet ${frame.snapshot?.logicalBulletCount || 0}<br>pixel ${frame.visual.pixelHash}</figcaption></figure>`).join('\n');
+  const sharkPerformance = Object.entries(report.sharkPerformance).map(([viewport, sample]) =>
+    `${viewport}: ${sample.averageFps} FPS · CPU avg ${sample.averageCpuMs}ms · p95 ${sample.p95CpuMs}ms / ${sample.cpuBudgetMs}ms`).join('<br>');
+  const materialSummary = SHARK_ONLY
+    ? 'Shark-only：旧玩偶、波次、运动与材质矩阵按开关跳过'
+    : `${report.materialLab?.skinCount || 0} 种 · ${report.materialLab?.phaseCount || 0} 相位 · 0/80/160/240/640/720ms 连续帧（含相位回环）`;
+  const legacyManualChecklist = SHARK_ONLY ? ''
+    : `- [ ] 五只玩偶材质各自可辨，固有色未被整图加法发光冲白\n- [ ] 21 种弹体每种都有 0/80/160/240/640/720ms 六帧放大特写，固有色与轮廓可辨\n- [ ] 640/720ms 回环前后局部高光连续，没有从一侧瞬移到另一侧\n- [ ] 8 相位局部高光连续流动，不是整张贴图闪烁\n- [ ] 发射与命中均有 t000、peak_f007、decay_f020 三帧，峰值肉眼可见且衰减不硬切\n- [ ] 十波均能读出共享安全路线，最多两个主要声部\n- [ ] release 窗没有新弹组生成，屏幕可明显减压\n- [ ] 六种运动策略轨迹稳定，不累计乱转、不在可见区突然消失\n- [ ] 弹体暗轮廓、固有色、亮芯、局部 glow 层次清晰\n- [ ] 尾迹只在发射或转段短暂出现，尾迹无伤害\n`;
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), `<!doctype html><meta charset="utf-8"><title>梦境第三关 V2 视觉验收</title>
 <style>body{margin:24px;background:#0c1020;color:#eef5ff;font:15px system-ui}h1,h2{color:#ffbee7}.status{font-size:22px;color:${status === 'PASS' ? '#91ffd0' : '#ff9ba8'}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}figure{margin:0;padding:9px;background:#171d35;border:1px solid #66739c;border-radius:8px}img{width:100%;display:block;background:#05070e}figcaption{padding-top:8px;line-height:1.5}</style>
 <h1>梦境第三关「绒梦玩偶屋」V2 视觉验收</h1><p class="status">${status}</p>
 <p>Source ${report.source.file} · ${report.source.sha256.slice(0, 12)} · ${report.runtime.chrome}</p>
-<p>弹体放大实验室：${report.materialLab?.skinCount || 0} 种 · ${report.materialLab?.phaseCount || 0} 相位 · 0/80/160/240/640/720ms 连续帧（含相位回环）</p>
+<p>验收范围：${materialSummary}</p>
+<p>鲨鱼 Boss 帧耗：${sharkPerformance || '等待 capture internals'}</p>
 <h2>自动失败</h2><p>${report.failures.length ? report.failures.join('<br>') : '无'}</p>
 <h2>待接验收接口</h2><p>${report.missingInterfaces.length ? report.missingInterfaces.join('<br>') : '无'}</p>
 <h2>多帧截图</h2><div class="grid">${rows}</div>`);
@@ -616,11 +957,12 @@ function writeReports(report) {
     result[frame.group] = (result[frame.group] || 0) + 1; return result;
   }, {});
   const markdown = `# 梦境第三关 V2 视觉验收报告\n\n` +
-    `- 状态：**${status}**\n- 源文件：\`${report.source.file}\`\n- SHA256：\`${report.source.sha256}\`\n- 截图：${report.frames.length} 张\n- 视口：${report.viewports.join('、')}\n- 弹体放大实验室：${report.materialLab?.skinCount || 0} 种 / ${report.materialLab?.phaseCount || 0} 相位 / 0、80、160、240、640、720ms（含回环）\n\n` +
+    `- 状态：**${status}**\n- 源文件：\`${report.source.file}\`\n- SHA256：\`${report.source.sha256}\`\n- 截图：${report.frames.length} 张\n- 视口：${report.viewports.join('、')}\n- 验收范围：${materialSummary}\n\n` +
     `## 验收矩阵\n\n| 组别 | 帧数 |\n|---|---:|\n${Object.entries(groupCounts).map(([key, count]) => `| ${key} | ${count} |`).join('\n')}\n\n` +
+    `## 鲨鱼 Boss 帧耗\n\n${Object.entries(report.sharkPerformance).length ? Object.entries(report.sharkPerformance).map(([viewport, sample]) => `- ${viewport}: ${sample.averageFps} FPS / CPU avg ${sample.averageCpuMs}ms / p95 ${sample.p95CpuMs}ms（预算 ${sample.cpuBudgetMs}ms）`).join('\n') : '- 等待 `stage3SharkCaptureSpec`'}\n\n` +
     `## 自动失败\n\n${report.failures.length ? report.failures.map((item) => `- [ ] ${item}`).join('\n') : '- [x] 无自动失败'}\n\n` +
     `## 待接接口\n\n${report.missingInterfaces.length ? report.missingInterfaces.map((item) => `- [ ] ${item}`).join('\n') : '- [x] 精确验收接口齐全'}\n\n` +
-    `## 人工视觉核对\n\n- [ ] 五只玩偶材质各自可辨，固有色未被整图加法发光冲白\n- [ ] 15 种弹体每种都有 0/80/160/240/640/720ms 六帧放大特写，固有色与轮廓可辨\n- [ ] 640/720ms 回环前后局部高光连续，没有从一侧瞬移到另一侧\n- [ ] 8 相位局部高光连续流动，不是整张贴图闪烁\n- [ ] 发射与命中均有 t000、peak_f007、decay_f020 三帧，峰值肉眼可见且衰减不硬切\n- [ ] 十波均能读出共享安全路线，最多两个主要声部\n- [ ] release 窗没有新弹组生成，屏幕可明显减压\n- [ ] 六种运动策略轨迹稳定，不累计乱转、不在可见区突然消失\n- [ ] 弹体暗轮廓、固有色、亮芯、局部 glow 层次清晰\n- [ ] 尾迹只在发射或转段短暂出现，尾迹无伤害\n- [ ] 桌面与移动端无遮挡、无位移、无绿边、无静默 fallback\n`;
+    `## 人工视觉核对\n\n- [ ] 鲨鱼 Boss 入场有出现、维持、落位多帧，不能硬切或纯平移\n- [ ] 五阶段各有起手、过程、释放三帧，弹体与警示线在桌面/移动端清晰\n- [ ] 专属血条在真实 HP 100% / 60% / 30% / 8% 时填充比例同步，8% 临界层生效\n- [ ] 受击、四次转阶段、死亡与结算均有连续多帧，状态不残留\n- [ ] Boss 七组 base/glow、六组弹体 base/glow、六组 VFX base/glow、六组 UI 素材全部解码且无 fallback\n${legacyManualChecklist}- [ ] 桌面与移动端无遮挡、无位移、无绿边、无静默 fallback\n`;
   fs.writeFileSync(path.join(OUT_DIR, 'REPORT.md'), markdown);
   fs.writeFileSync(path.join(OUT_DIR, 'report.json'), JSON.stringify(report, null, 2));
 }
@@ -633,13 +975,14 @@ async function main() {
   fs.rmSync(OUT_DIR, { recursive: true, force: true });
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const report = {
-    generatedAt: new Date().toISOString(), stage: 3, strict: STRICT,
+    generatedAt: new Date().toISOString(), stage: 3, strict: STRICT, sharkOnly: SHARK_ONLY,
     source: { file: path.relative(ROOT, sourceFile) || 'index.html', sha256: sha256(sourceFile) },
     runtime: { node: process.version, chrome: '', executablePath },
     viewports: ACTIVE_VIEWPORTS.map((viewport) => viewport.id), frames: [], gifs: [],
-    capabilities: {}, materialLab: null, failures: [], missingInterfaces: [], diagnostics: {},
+    capabilities: {}, materialLab: null, sharkAssets: {}, sharkPerformance: {},
+    failures: [], missingInterfaces: [], diagnostics: {},
   };
-  const diagnostics = { errors: [], missing: [] };
+  const diagnostics = { errors: [], missing: [], requestFailures: [] };
   let server; let browser;
   try {
     server = await startServer();
@@ -654,11 +997,15 @@ async function main() {
         const caps = await capabilities(page);
         report.capabilities[viewport.id] = caps;
         if (!caps.captureApi || !caps.snapshotApi) throw new Error(`${viewport.id}: dream capture API missing`);
-        await capturePlush(page, viewport, report, caps);
-        await captureWavePhrases(page, viewport, report, caps);
-        await captureLiveBatches(page, viewport, report);
-        await captureMotionPolicies(page, viewport, report, caps);
-        await captureMaterialCloseups(page, viewport, report, caps);
+        await captureSharkBoss(page, viewport, report, caps);
+        await measureSharkFrameCost(page, viewport, report, caps);
+        if (!SHARK_ONLY) {
+          await capturePlush(page, viewport, report, caps);
+          await captureWavePhrases(page, viewport, report, caps);
+          await captureLiveBatches(page, viewport, report);
+          await captureMotionPolicies(page, viewport, report, caps);
+          await captureMaterialCloseups(page, viewport, report, caps);
+        }
       } finally {
         await page.close().catch(() => {});
       }
@@ -670,14 +1017,23 @@ async function main() {
   report.diagnostics = diagnostics;
   report.failures.push(...diagnostics.errors);
   if (diagnostics.missing.length) report.failures.push(`404 resources: ${[...new Set(diagnostics.missing)].join(', ')}`);
+  if (diagnostics.requestFailures.length) report.failures.push(`failed local requests: ${[...new Set(diagnostics.requestFailures)].join(', ')}`);
   const desktop = report.frames.filter((frame) => frame.label.startsWith('desktop_1280x720/'));
-  for (const mob of PLUSH_MOBS) {
-    report.gifs.push(buildGif(`plush_${mob}_v2`, desktop.filter((frame) => frame.group === `plush_${mob}`).map((frame) => frame.file), 0.16));
+  report.gifs.push(buildGif('shark_entry_v2', desktop.filter((frame) => frame.group === 'shark_entry').map((frame) => frame.file), 0.10));
+  for (let phase = 1; phase <= 5; phase += 1) {
+    report.gifs.push(buildGif(`shark_phase${phase}_v2`, desktop.filter((frame) => frame.group === `shark_phase${phase}`).map((frame) => frame.file), 0.14));
   }
-  for (const sample of MOTION_SAMPLES) {
-    report.gifs.push(buildGif(`motion_${sample.policy}_v2`, desktop.filter((frame) => frame.group === `motion_${sample.policy}`).map((frame) => frame.file), 0.12));
+  report.gifs.push(buildGif('shark_transitions_v2', desktop.filter((frame) => frame.group.startsWith('shark_transition_')).map((frame) => frame.file), 0.10));
+  report.gifs.push(buildGif('shark_death_v2', desktop.filter((frame) => frame.group === 'shark_death').map((frame) => frame.file), 0.10));
+  if (!SHARK_ONLY) {
+    for (const mob of PLUSH_MOBS) {
+      report.gifs.push(buildGif(`plush_${mob}_v2`, desktop.filter((frame) => frame.group === `plush_${mob}`).map((frame) => frame.file), 0.16));
+    }
+    for (const sample of MOTION_SAMPLES) {
+      report.gifs.push(buildGif(`motion_${sample.policy}_v2`, desktop.filter((frame) => frame.group === `motion_${sample.policy}`).map((frame) => frame.file), 0.12));
+    }
+    report.gifs.push(buildGif('stage3_ten_wave_phrase_v2', desktop.filter((frame) => /^wave\d+$/.test(frame.group)).map((frame) => frame.file), 0.12));
   }
-  report.gifs.push(buildGif('stage3_ten_wave_phrase_v2', desktop.filter((frame) => /^wave\d+$/.test(frame.group)).map((frame) => frame.file), 0.12));
   writeReports(report);
   console.log(`Dream Stage 3 V2 visual report: ${path.join(OUT_DIR, 'index.html')}`);
   console.log(`Frames ${report.frames.length}; failures ${report.failures.length}; missing interfaces ${report.missingInterfaces.length}`);

@@ -1703,7 +1703,52 @@
     dreamPlushStarMuzzle: 'assets/dream_stage3/vfx/dream_plush_star_muzzle.png',
     dreamPlushStarMuzzleGlow: 'assets/dream_stage3/vfx/dream_plush_star_muzzle_glow.png',
     dreamPlushStarImpact: 'assets/dream_stage3/vfx/dream_plush_star_impact.png',
-    dreamPlushStarImpactGlow: 'assets/dream_stage3/vfx/dream_plush_star_impact_glow.png'
+    dreamPlushStarImpactGlow: 'assets/dream_stage3/vfx/dream_plush_star_impact_glow.png',
+    // ===== 梦境三 Boss：霜潮绒鲨 · 阿布 =====
+    dreamPlushSharkIdle: 'assets/dream_stage3/boss/shark_idle.png',
+    dreamPlushSharkIdleGlow: 'assets/dream_stage3/boss/shark_idle_glow.png',
+    dreamPlushSharkAttack: 'assets/dream_stage3/boss/shark_attack.png',
+    dreamPlushSharkAttackGlow: 'assets/dream_stage3/boss/shark_attack_glow.png',
+    dreamPlushSharkIce: 'assets/dream_stage3/boss/shark_ice.png',
+    dreamPlushSharkIceGlow: 'assets/dream_stage3/boss/shark_ice_glow.png',
+    dreamPlushSharkRage: 'assets/dream_stage3/boss/shark_rage.png',
+    dreamPlushSharkRageGlow: 'assets/dream_stage3/boss/shark_rage_glow.png',
+    dreamPlushSharkVoid: 'assets/dream_stage3/boss/shark_void.png',
+    dreamPlushSharkVoidGlow: 'assets/dream_stage3/boss/shark_void_glow.png',
+    dreamPlushSharkHit: 'assets/dream_stage3/boss/shark_hit.png',
+    dreamPlushSharkHitGlow: 'assets/dream_stage3/boss/shark_hit_glow.png',
+    dreamPlushSharkDeath: 'assets/dream_stage3/boss/shark_death.png',
+    dreamPlushSharkDeathGlow: 'assets/dream_stage3/boss/shark_death_glow.png',
+    dreamPlushSharkIceSpear: 'assets/dream_stage3/bullets/shark_ice_spear.png',
+    dreamPlushSharkIceSpearGlow: 'assets/dream_stage3/bullets/shark_ice_spear_glow.png',
+    dreamPlushSharkIceShard: 'assets/dream_stage3/bullets/shark_ice_shard.png',
+    dreamPlushSharkIceShardGlow: 'assets/dream_stage3/bullets/shark_ice_shard_glow.png',
+    dreamPlushSharkSnowball: 'assets/dream_stage3/bullets/shark_snowball.png',
+    dreamPlushSharkSnowballGlow: 'assets/dream_stage3/bullets/shark_snowball_glow.png',
+    dreamPlushSharkBubble: 'assets/dream_stage3/bullets/shark_bubble.png',
+    dreamPlushSharkBubbleGlow: 'assets/dream_stage3/bullets/shark_bubble_glow.png',
+    dreamPlushSharkWaveCrescent: 'assets/dream_stage3/bullets/shark_wave_crescent.png',
+    dreamPlushSharkWaveCrescentGlow: 'assets/dream_stage3/bullets/shark_wave_crescent_glow.png',
+    dreamPlushSharkVoidOrb: 'assets/dream_stage3/bullets/shark_void_orb.png',
+    dreamPlushSharkVoidOrbGlow: 'assets/dream_stage3/bullets/shark_void_orb_glow.png',
+    dreamPlushSharkMuzzle: 'assets/dream_stage3/vfx/shark_muzzle.png',
+    dreamPlushSharkMuzzleGlow: 'assets/dream_stage3/vfx/shark_muzzle_glow.png',
+    dreamPlushSharkIceBurst: 'assets/dream_stage3/vfx/shark_ice_burst.png',
+    dreamPlushSharkIceBurstGlow: 'assets/dream_stage3/vfx/shark_ice_burst_glow.png',
+    dreamPlushSharkWhirlpool: 'assets/dream_stage3/vfx/shark_whirlpool.png',
+    dreamPlushSharkWhirlpoolGlow: 'assets/dream_stage3/vfx/shark_whirlpool_glow.png',
+    dreamPlushSharkWave: 'assets/dream_stage3/vfx/shark_wave.png',
+    dreamPlushSharkWaveGlow: 'assets/dream_stage3/vfx/shark_wave_glow.png',
+    dreamPlushSharkVoidBurst: 'assets/dream_stage3/vfx/shark_void_burst.png',
+    dreamPlushSharkVoidBurstGlow: 'assets/dream_stage3/vfx/shark_void_burst_glow.png',
+    dreamPlushSharkShield: 'assets/dream_stage3/vfx/shark_shield.png',
+    dreamPlushSharkShieldGlow: 'assets/dream_stage3/vfx/shark_shield_glow.png',
+    dreamPlushSharkPortrait: 'assets/dream_stage3/ui/shark_portrait.png',
+    dreamPlushSharkBossBarFrame: 'assets/dream_stage3/ui/shark_boss_bar_frame.png',
+    dreamPlushSharkBossBarEmpty: 'assets/dream_stage3/ui/shark_boss_bar_empty.png',
+    dreamPlushSharkBossBarFill: 'assets/dream_stage3/ui/shark_boss_bar_fill.png',
+    dreamPlushSharkBossBarCritical: 'assets/dream_stage3/ui/shark_boss_bar_critical.png',
+    dreamPlushSharkBossBarGloss: 'assets/dream_stage3/ui/shark_boss_bar_gloss.png'
   };
   const CG_ASSET_PATHS = {
     cgBodyNormal: 'assets/player/corrupt_gun/body/cg_body_normal.png',
@@ -2103,6 +2148,7 @@
     if (!def) return [];
     if (def.sprite === 'suiyi') return [...SUIYI_PHASE_FORM_KEYS, 'suiyiDeath', 'suiyiDrone', 'suiyiCubeSummon'];
     if (def.sprite === 'migua') return ['miguaBossIdle', 'miguaBossPhase1', 'miguaBossPhase2', 'miguaBossPhase3', 'miguaBossFinal', 'miguaBossHit', 'miguaBossDeath'];
+    if (def.sprite === 'dreamshark') return [...DREAM_STAGE3_BOSS_ASSET_KEYS, ...DREAM_STAGE3_BOSS_UI_ASSET_KEYS];
     const pfx = def.sprite || 'boss';
     const keys = [pfx + 'Idle', pfx + 'Phase1', pfx + 'Phase2', pfx + 'Rage', pfx + 'Hit', pfx + 'Death'];
     if (pfx === 'boss') keys.push('bossPhase3');
@@ -2453,11 +2499,11 @@
       seed: DREAM_STAGE3_SEED,
       index: 3,
       name: '绒梦玩偶屋',
-      boss: null,
-      bossName: 'Boss 构筑中',
+      boss: 'dreamshark',
+      bossName: '霜潮绒鲨 · 阿布',
       mobWaves: 10,
       mobTargetSeconds: 545,
-      bossTargetSeconds: 0,
+      bossTargetSeconds: 142,
       unlocked: true,
       fieldBackground: 'dreamRoomBase',
       bossBackground: 'dreamRoomBase',
@@ -2660,10 +2706,16 @@
     plushStarShot: Object.freeze({ asset: 'dreamPlushStarShot', glow: 'dreamPlushStarShotGlow', family: 'star', sourceScale: 0.90, edge: '#ffe274', preoutlined: true }),
     plushMeteorStar: Object.freeze({ asset: 'dreamPlushMeteorStar', glow: 'dreamPlushMeteorStarGlow', family: 'arrow', directional: true, sourceAxis: 'left', sourceScale: 0.92, edge: '#ffb166', preoutlined: true }),
     plushConstellationNode: Object.freeze({ asset: 'dreamPlushConstellationNode', glow: 'dreamPlushConstellationNodeGlow', family: 'orb', sourceScale: 0.86, edge: '#fff4b7', preoutlined: true }),
+    sharkIceSpear: Object.freeze({ asset: 'dreamPlushSharkIceSpear', glow: 'dreamPlushSharkIceSpearGlow', family: 'spear', directional: true, sourceAxis: 'up', sourceScale: 0.94, edge: '#92dcff', preoutlined: true }),
+    sharkIceShard: Object.freeze({ asset: 'dreamPlushSharkIceShard', glow: 'dreamPlushSharkIceShardGlow', family: 'prism', directional: true, sourceAxis: 'left', sourceScale: 0.92, edge: '#c9f3ff', preoutlined: true }),
+    sharkSnowball: Object.freeze({ asset: 'dreamPlushSharkSnowball', glow: 'dreamPlushSharkSnowballGlow', family: 'orb', sourceScale: 0.88, edge: '#f3fdff', preoutlined: true }),
+    sharkBubble: Object.freeze({ asset: 'dreamPlushSharkBubble', glow: 'dreamPlushSharkBubbleGlow', family: 'orb', sourceScale: 0.90, edge: '#81e8ff', preoutlined: true }),
+    sharkWaveCrescent: Object.freeze({ asset: 'dreamPlushSharkWaveCrescent', glow: 'dreamPlushSharkWaveCrescentGlow', family: 'ribbon', directional: true, sourceAxis: 'left', sourceScale: 0.96, edge: '#72d9ff', preoutlined: true }),
+    sharkVoidOrb: Object.freeze({ asset: 'dreamPlushSharkVoidOrb', glow: 'dreamPlushSharkVoidOrbGlow', family: 'orb', spin: true, sourceScale: 0.90, edge: '#c78aff', preoutlined: true }),
   });
   const DREAM_BULLET_ASSET_KEYS = Object.freeze([...new Set(Object.values(DREAM_BULLET_SKINS).map(skin => skin.asset))]);
   const DREAM_STAGE2_BULLET_SKIN_KEYS = Object.freeze(Object.keys(DREAM_BULLET_SKINS).filter(key => key.startsWith('zero')));
-  const DREAM_STAGE3_BULLET_SKIN_KEYS = Object.freeze(Object.keys(DREAM_BULLET_SKINS).filter(key => key.startsWith('plush')));
+  const DREAM_STAGE3_BULLET_SKIN_KEYS = Object.freeze(Object.keys(DREAM_BULLET_SKINS).filter(key => key.startsWith('plush') || key.startsWith('shark')));
   const DREAM_STAGE1_BULLET_SKIN_KEYS = Object.freeze(Object.keys(DREAM_BULLET_SKINS).filter(key => !DREAM_STAGE2_BULLET_SKIN_KEYS.includes(key) && !DREAM_STAGE3_BULLET_SKIN_KEYS.includes(key)));
   const DREAM_STAGE2_BULLET_ASSET_KEYS = Object.freeze([...new Set(DREAM_STAGE2_BULLET_SKIN_KEYS.map(key => DREAM_BULLET_SKINS[key].asset))]);
   const DREAM_STAGE3_BULLET_ASSET_KEYS = Object.freeze([...new Set(DREAM_STAGE3_BULLET_SKIN_KEYS.flatMap(key => {
@@ -2706,12 +2758,25 @@
     'dreamPlushStarPillowIdle', 'dreamPlushStarPillowAttack', 'dreamPlushStarPillowHit', 'dreamPlushStarPillowDeath', 'dreamPlushStarPillowMoveL', 'dreamPlushStarPillowMoveR',
   ]);
   const DREAM_STAGE3_SCENE_ASSET_KEYS = Object.freeze(['dreamRoomBase', 'dreamRoomLight']);
+  const DREAM_STAGE3_BOSS_ASSET_KEYS = Object.freeze([
+    'dreamPlushSharkIdle', 'dreamPlushSharkIdleGlow', 'dreamPlushSharkAttack', 'dreamPlushSharkAttackGlow',
+    'dreamPlushSharkIce', 'dreamPlushSharkIceGlow', 'dreamPlushSharkRage', 'dreamPlushSharkRageGlow',
+    'dreamPlushSharkVoid', 'dreamPlushSharkVoidGlow', 'dreamPlushSharkHit', 'dreamPlushSharkHitGlow',
+    'dreamPlushSharkDeath', 'dreamPlushSharkDeathGlow',
+  ]);
+  const DREAM_STAGE3_BOSS_UI_ASSET_KEYS = Object.freeze([
+    'dreamPlushSharkPortrait', 'dreamPlushSharkBossBarFrame', 'dreamPlushSharkBossBarEmpty',
+    'dreamPlushSharkBossBarFill', 'dreamPlushSharkBossBarCritical', 'dreamPlushSharkBossBarGloss',
+  ]);
   const DREAM_STAGE3_VFX_ASSET_KEYS = Object.freeze([
     'dreamPlushLeafMuzzle', 'dreamPlushLeafMuzzleGlow', 'dreamPlushLeafImpact', 'dreamPlushLeafImpactGlow',
     'dreamPlushPenguinMuzzle', 'dreamPlushPenguinMuzzleGlow', 'dreamPlushPenguinImpact', 'dreamPlushPenguinImpactGlow',
     'dreamPlushDollMuzzle', 'dreamPlushDollMuzzleGlow', 'dreamPlushDollImpact', 'dreamPlushDollImpactGlow',
     'dreamPlushFishMuzzle', 'dreamPlushFishMuzzleGlow', 'dreamPlushFishImpact', 'dreamPlushFishImpactGlow',
     'dreamPlushStarMuzzle', 'dreamPlushStarMuzzleGlow', 'dreamPlushStarImpact', 'dreamPlushStarImpactGlow',
+    'dreamPlushSharkMuzzle', 'dreamPlushSharkMuzzleGlow', 'dreamPlushSharkIceBurst', 'dreamPlushSharkIceBurstGlow',
+    'dreamPlushSharkWhirlpool', 'dreamPlushSharkWhirlpoolGlow', 'dreamPlushSharkWave', 'dreamPlushSharkWaveGlow',
+    'dreamPlushSharkVoidBurst', 'dreamPlushSharkVoidBurstGlow', 'dreamPlushSharkShield', 'dreamPlushSharkShieldGlow',
   ]);
   const DREAM_STAGE2_BOSS_ASSET_KEYS = Object.freeze([
     'suiyiIdle', 'suiyiPhase1', 'suiyiPhase2', 'suiyiOverclock', 'suiyiCrash', 'suiyiDeath',
@@ -2798,6 +2863,8 @@
     plushCrystalShard: 0, plushDollOrb: 0, plushDollSigil: 1,
     plushWaterDrop: 3, plushFishbone: 3, plushBubblePearl: 3,
     plushStarShot: 2, plushMeteorStar: 1, plushConstellationNode: 2,
+    sharkIceSpear: 3, sharkIceShard: 3, sharkSnowball: 3,
+    sharkBubble: 3, sharkWaveCrescent: 3, sharkVoidOrb: 0,
   });
   const DREAM_STAGE2_VOICE_SKINS = Object.freeze({
     bootBitFan: Object.freeze(['zeroCodeBolt', 'zeroCodeArrow']),
@@ -2834,6 +2901,16 @@
     plushMeteorCurtain: Object.freeze(['plushMeteorStar', 'plushStarShot']),
     plushConstellation: Object.freeze(['plushConstellationNode', 'plushStarShot']),
     plushToyboxFinale: Object.freeze(['plushMeteorStar', 'plushLeafBlade', 'plushCrystalShard']),
+    sharkBubbleTide: Object.freeze(['sharkBubble', 'sharkWaveCrescent']),
+    sharkFrostWake: Object.freeze(['sharkWaveCrescent', 'sharkSnowball']),
+    sharkSpearGate: Object.freeze(['sharkIceSpear', 'sharkIceShard']),
+    sharkSnowCrown: Object.freeze(['sharkSnowball', 'sharkIceShard']),
+    sharkWhirlpool: Object.freeze(['sharkBubble', 'sharkIceShard']),
+    sharkShardCurrent: Object.freeze(['sharkIceShard', 'sharkWaveCrescent']),
+    sharkRageCharge: Object.freeze(['sharkWaveCrescent', 'sharkIceSpear']),
+    sharkRageCross: Object.freeze(['sharkIceShard', 'sharkSnowball']),
+    sharkVoidMaw: Object.freeze(['sharkVoidOrb', 'sharkWaveCrescent']),
+    sharkFinalRift: Object.freeze(['sharkIceSpear', 'sharkVoidOrb']),
   });
   const DREAM_VOICE_SKINS_BY_STAGE = Object.freeze({
     [DREAM_STAGE2_ID]: DREAM_STAGE2_VOICE_SKINS,
@@ -3020,9 +3097,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-15-dream-level3-v3-hotfix';
+     const UPDATE_NOTICE_VERSION = '2026-07-16-dream-level3-shark-boss';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-16 · 霜潮绒鲨Boss开放',
+      items: [
+        '梦境第三关Boss「霜潮绒鲨 · 阿布」正式开放：十幕玩偶战结束后进入约142秒的五阶段Boss战，不再于第10波直接结算。',
+        '新增霜潮泡浪、冰牙列阵、霜涡巡游、怒潮冲锋与冰渊吞星五套专属谱面；鲨鱼本体、冰晶与深渊能量使用独立本体/辉光层。',
+        '专属血条UI现已绑定真实Boss血量：主填充实时响应，延迟损伤条平滑追赶，并显示精确HP、百分比、阶段节点与低血量脉冲。',
+      ],
+    },
     {
       date: '2026-07-15 · 绒梦弹幕色块紧急修复',
       items: [
@@ -3043,7 +3128,7 @@
     {
       date: '2026-07-15',
       items: [
-        '梦境第三关「绒梦玩偶屋」小怪篇开放：以真实房间为原型的专属地图、五类玩偶精英与十幕高难谱面完整接入；专属Boss仍在构筑中，本期第10波清场后直接结算。',
+        '梦境第三关「绒梦玩偶屋」首批内容开放：以真实房间为原型的专属地图、五类玩偶精英与十幕高难谱面完整接入。',
         '新叶喵、冰帽企鹅、流萤玩偶、好兄弟与星星抱枕获得独立待机、攻击、受击、消散材质，以及藤线摆入、冰面滑入、提线木偶和弧线飞入四类可爱登场演出。',
         '新增15套从第三关原始素材清理出的专属弹体与16个声部：叶刃花阵、冰晶缺口扇、提线星晶阵、鱼骨潮汐、气泡流场、漩涡门、星轨和流星帘共同构成比前两关更高一档的观赏型难度。',
         '第三关继续保持8敌人、96逻辑弹、4预警、4激光与128槽固定池；四档画质使用相同弹幕逻辑，只缩减无伤害浮尘、绒絮和登场粒子。',
@@ -4907,15 +4992,15 @@
     bossTargetRange: Object.freeze([116, 142]),
   });
   const DREAM_STAGE3_BALANCE_CONFIG = Object.freeze({
-    targetTotalSeconds: 545,
+    targetTotalSeconds: 687,
     mobTargetSeconds: 545,
-    bossTargetSeconds: 0,
+    bossTargetSeconds: 142,
     mobDamageFloorSeconds: 45,
     mobInitialCreditRatio: 0.05,
-    bossHp: 0,
-    bossDpsCap: 0,
-    bossCreditCap: 0,
-    bossTargetRange: Object.freeze([0, 0]),
+    bossHp: 355000,
+    bossDpsCap: 2500,
+    bossCreditCap: 15000,
+    bossTargetRange: Object.freeze([135, 150]),
   });
   const DREAM_STAGE_CONFIGS = Object.freeze({
     [DREAM_STAGE_ID]: Object.freeze({
@@ -4963,15 +5048,15 @@
       batchDelays: DREAM_STAGE3_WAVE_BATCH_DELAYS,
       formations: DREAM_STAGE3_FORMATION_PRESETS,
       balance: DREAM_STAGE3_BALANCE_CONFIG,
-      phaseThresholds: Object.freeze([]),
-      phaseNames: Object.freeze([]),
+      phaseThresholds: Object.freeze([0.80, 0.60, 0.40, 0.20]),
+      phaseNames: Object.freeze(['软潮试探', '冰牙列阵', '霜涡巡游', '怒潮冲锋', '终幕·冰渊吞星']),
       conductorCadence: 0.90,
       stageSpeed: 1.09,
       accentThreshold: 72,
-      hasBoss: false,
+      hasBoss: true,
       roomScene: true,
       waveBackgrounds: Object.freeze(Array(10).fill('dreamRoomBase')),
-      stageAssets: Object.freeze([...DREAM_STAGE3_SCENE_ASSET_KEYS, ...DREAM_STAGE3_ENEMY_ASSET_KEYS, ...DREAM_STAGE3_VFX_ASSET_KEYS, ...DREAM_STAGE3_BULLET_ASSET_KEYS, ...DREAM_BULLET_MATERIAL_ASSET_KEYS]),
+      stageAssets: Object.freeze([...DREAM_STAGE3_SCENE_ASSET_KEYS, ...DREAM_STAGE3_ENEMY_ASSET_KEYS, ...DREAM_STAGE3_BOSS_ASSET_KEYS, ...DREAM_STAGE3_BOSS_UI_ASSET_KEYS, ...DREAM_STAGE3_VFX_ASSET_KEYS, ...DREAM_STAGE3_BULLET_ASSET_KEYS, ...DREAM_BULLET_MATERIAL_ASSET_KEYS]),
       previewPatterns: Object.freeze([0, 3, 6, 9]),
     }),
   });
@@ -26185,11 +26270,17 @@
     b.dreamAssetKey = (DREAM_BULLET_SKINS[b.dreamSkin] && DREAM_BULLET_SKINS[b.dreamSkin].asset) || '';
     const skinSpec = DREAM_BULLET_SKINS[b.dreamSkin] || null;
     b.dreamGlowAssetKey = skinSpec?.glow || '';
-    b.dreamFamily = options.family || (b.dreamSkin.startsWith('plushLeaf') ? 'leaf'
-      : (b.dreamSkin.startsWith('plushIce') || b.dreamSkin === 'plushSnowball' ? 'iceToy'
-        : (b.dreamSkin.startsWith('plushDoll') || b.dreamSkin === 'plushCrystalShard' ? 'doll'
-          : (['plushWaterDrop', 'plushFishbone', 'plushBubblePearl'].includes(b.dreamSkin) ? 'waterToy'
-            : (b.dreamSkin.startsWith('plushStar') || b.dreamSkin === 'plushMeteorStar' || b.dreamSkin === 'plushConstellationNode' ? 'starToy' : '')))));
+    b.dreamFamily = options.family || '';
+    if (!b.dreamFamily) {
+      if (b.dreamSkin.startsWith('sharkVoid')) b.dreamFamily = 'doll';
+      else if (b.dreamSkin === 'sharkBubble' || b.dreamSkin === 'sharkWaveCrescent') b.dreamFamily = 'waterToy';
+      else if (b.dreamSkin.startsWith('shark')) b.dreamFamily = 'iceToy';
+      else if (b.dreamSkin.startsWith('plushLeaf')) b.dreamFamily = 'leaf';
+      else if (b.dreamSkin.startsWith('plushIce') || b.dreamSkin === 'plushSnowball') b.dreamFamily = 'iceToy';
+      else if (b.dreamSkin.startsWith('plushDoll') || b.dreamSkin === 'plushCrystalShard') b.dreamFamily = 'doll';
+      else if (['plushWaterDrop', 'plushFishbone', 'plushBubblePearl'].includes(b.dreamSkin)) b.dreamFamily = 'waterToy';
+      else if (b.dreamSkin.startsWith('plushStar') || b.dreamSkin === 'plushMeteorStar' || b.dreamSkin === 'plushConstellationNode') b.dreamFamily = 'starToy';
+    }
     const visualIndex = options.visualIndex == null ? enemyBullets.length : options.visualIndex;
     b.dreamVisualSeed = Math.abs(((visualIndex | 0) * 37 + dreamConductor.serial * 19 + dreamRun.wave * 53) % 997) / 997;
     b.dreamMaterialTheme = dreamBulletMaterialThemeIndex(b.dreamSkin);
@@ -26202,7 +26293,7 @@
     b.dreamHardLife = Number.isFinite(options.hardLife)
       ? Math.max(b.life, options.hardLife)
       : Math.max(b.life, DREAM_BULLET_MOTION_CONFIG.hardLife);
-    const initialDisplayScale = b.dreamSkin.startsWith('plush')
+    const initialDisplayScale = DREAM_STAGE3_BULLET_SKIN_KEYS.includes(b.dreamSkin)
       ? (skinSpec?.directional ? DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.directional : DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.round)
       : 1;
     b.dreamVisualDiameter = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * initialDisplayScale;
@@ -27526,6 +27617,9 @@
     dreamPlushDollMuzzle: 'dreamPlushDollMuzzleGlow', dreamPlushDollImpact: 'dreamPlushDollImpactGlow',
     dreamPlushFishMuzzle: 'dreamPlushFishMuzzleGlow', dreamPlushFishImpact: 'dreamPlushFishImpactGlow',
     dreamPlushStarMuzzle: 'dreamPlushStarMuzzleGlow', dreamPlushStarImpact: 'dreamPlushStarImpactGlow',
+    dreamPlushSharkMuzzle: 'dreamPlushSharkMuzzleGlow', dreamPlushSharkIceBurst: 'dreamPlushSharkIceBurstGlow',
+    dreamPlushSharkWhirlpool: 'dreamPlushSharkWhirlpoolGlow', dreamPlushSharkWave: 'dreamPlushSharkWaveGlow',
+    dreamPlushSharkVoidBurst: 'dreamPlushSharkVoidBurstGlow', dreamPlushSharkShield: 'dreamPlushSharkShieldGlow',
   });
   function reportDreamStageVisualFallback(key, context) {
     if (dreamStageVisualFallbackKeys.has(key)) return;
@@ -29097,6 +29191,7 @@
     darkqueen:   { hp: 14000, r: 72, scale: 1.0,  sprite: 'darkqueen',   name: '暗夜女王 · 莉莉丝', intro: '暗夜加冕：女王莅临战场', y: 218, theme: 'queen' },
     suiyi:       { hp: 15600, r: 72, scale: 1.0,  sprite: 'suiyi',       name: '随意 · 代码工程师', intro: '系统接入：随意开始重写战场', y: 206, theme: 'suiyi' },
     migua:       { hp: 18400, r: 76, scale: 1.0,  sprite: 'migua',       name: '蜜瓜号 · MIGUA-X', intro: '甜味警报：蜜瓜号驶入战场', y: 210, theme: 'migua' },
+    dreamshark:  { hp: 355000, r: 82, scale: 1.0, sprite: 'dreamshark',  name: '霜潮绒鲨 · 阿布', intro: '霜潮翻涌：阿布从玩偶海中跃出', y: 214, theme: 'dreamshark' },
 
     nightherald:   { hp: 12100, r: 70, scale: 0.96, sprite: 'nightherald',   name: '夜谕使 · 诺克图', intro: '夜幕低语：夜谕使现身', y: 216, theme: 'night' },
     stormreaver:   { hp: 13300, r: 74, scale: 1.0,  sprite: 'stormreaver',   name: '风暴收割者 · 忒弥斯', intro: '雷云裂开：风暴收割者降临', y: 218, theme: 'storm' },
@@ -29122,7 +29217,7 @@
   };
   
   const GLOBAL_BOSS_POOL = Object.freeze(Object.keys(BOSS_DEFS));
-  const NORMAL_BOSS_POOL = Object.freeze(GLOBAL_BOSS_POOL.filter(kind => kind !== 'suiyi' && kind !== 'migua'));
+  const NORMAL_BOSS_POOL = Object.freeze(GLOBAL_BOSS_POOL.filter(kind => kind !== 'suiyi' && kind !== 'migua' && kind !== 'dreamshark'));
   const TECH_BOSS_POOL = Object.freeze(['suiyi']);
   const MIGUA_BOSS_POOL = Object.freeze(['migua']);
 
@@ -29149,7 +29244,7 @@
     return kind;
   }
   function rememberBossEncounter(kind) {
-    if (!kind || kind === 'suiyi' || kind === 'migua') return;
+    if (!kind || kind === 'suiyi' || kind === 'migua' || kind === 'dreamshark') return;
     recentBossKinds.push(kind);
     if (recentBossKinds.length > 8) recentBossKinds.splice(0, recentBossKinds.length - 8);
   }
@@ -29190,6 +29285,7 @@
     patternTimer = 0;
     if (boss.kind === 'suiyi') resetSuiyiState();
     if (boss.kind === 'migua') resetMiguaState();
+    if (boss.kind === 'dreamshark') resetDreamSharkBoss();
     setMessage(dreamConfig ? `${dreamConfig.level.bossName} · 战斗进程启动` : def.intro, 2.8);
     screenShake = 10;
     playSfx('bossIntro', 0.58, 0.8);
@@ -29198,6 +29294,7 @@
 
   function changeBossPhase(next) {
     if (bossPhase === next) return;
+    const previousPhase = bossPhase;
     bossPhase = next;
     patternTimer = 0;
     screenShake = 8 + next * 2;
@@ -29206,6 +29303,13 @@
     if (boss && next > 0) {
       boss.inv = Math.max(boss.inv, 0.7);
       if (!boss.dream && boss.dmgCredit !== undefined) boss.dmgCredit = 0;
+    }
+    if (boss && boss.kind === 'dreamshark') {
+      boss.sharkPrevPhase = Math.max(0, previousPhase);
+      boss.sharkTransition = 0.62;
+      boss.sharkTransitionMax = 0.62;
+      boss.sharkDashT = 0;
+      dreamTechFx(next >= 4 ? 'dreamPlushSharkVoidBurst' : 'dreamPlushSharkShield', boss.x, boss.y + 8, next >= 4 ? 330 : 280, 0.72, next * 0.4, 0.88);
     }
     // 每个 Boss 阶段名各异，强化个性
     const PHASE_NAMES = {
@@ -29220,13 +29324,16 @@
       queen:       ['玫瑰之吻', '双翼华舞', '魅惑追踪', '蔷薇缺环', '终焉·夜葬'],
       suiyi:       SUIYI_PHASE_NAMES,
       migua:       MIGUA_PHASE_NAMES,
+      dreamshark:  ['软潮试探', '冰牙列阵', '霜涡巡游', '怒潮冲锋', '终幕·冰渊吞星'],
     };
     const key = (boss && (boss.theme || boss.kind)) || 'eclipseboss';
     const dreamNames = boss && boss.dream ? dreamStageConfig(boss.dreamStageId).phaseNames : null;
     const names = dreamNames || PHASE_NAMES[key] || PHASE_NAMES.eclipseboss;
     setMessage(`第${next + 1}阶段：${names[Math.min(next, names.length - 1)]}`, 2.0);
     playSfx('bossPhase', 0.48, 0.6);
-    addSpriteFx(next >= 3 ? 'vfxExplosionLarge' : 'vfxClearBullets', W * 0.5, H * 0.36, next >= 3 ? 520 : 430, 0.75, 0, 0.36, next >= 3 ? 0.52 : 0.36);
+    if (!boss || boss.kind !== 'dreamshark') {
+      addSpriteFx(next >= 3 ? 'vfxExplosionLarge' : 'vfxClearBullets', W * 0.5, H * 0.36, next >= 3 ? 520 : 430, 0.75, 0, 0.36, next >= 3 ? 0.52 : 0.36);
+    }
     // Phase transition clears a small space but not the whole screen.
     for (let i = enemyBullets.length - 1; i >= 0; i--) {
       if (dist2(enemyBullets[i].x, enemyBullets[i].y, player.x, player.y) < 210 * 210) {
@@ -29496,6 +29603,9 @@
     comboTimer = 2.0;
     bossDamageTicker++;
     if (big || Math.random() < 0.16) addSpriteFx(big ? 'vfxBossBreak' : 'vfxBossHit', x, y, big ? 180 : 74, big ? 0.46 : 0.22, rand(0, TAU), big ? 0.5 : 0.25, big ? 0.74 : 0.62);
+    if (boss.kind === 'dreamshark' && (big || bossDamageTicker % 8 === 0)) {
+      dreamTechFx('dreamPlushSharkIceBurst', x, y, big ? 176 : 104, big ? 0.48 : 0.30, rand(-0.25, 0.25), big ? 0.90 : 0.76);
+    }
     if (!big && bossDamageTicker % 4 === 0) {
       const pop = Math.floor(amount * rand(420, 780));
       dmgText(x + rand(-95, 95), y + rand(-46, 34), pop, '#ffb45f', rand(24, 34));
@@ -29515,11 +29625,18 @@
     flash = 1;
     audio.bossBoom();
     addSpriteFx('vfxExplosionLarge', boss.x, boss.y + 12, 390, 1.15, 0, 0.62, 0.88);
+    if (bossKind === 'dreamshark') {
+      boss.sharkPose = 'death';
+      dreamTechFx('dreamPlushSharkIceBurst', boss.x, boss.y + 12, 360, 1.05, -0.24, 0.94);
+      dreamTechFx('dreamPlushSharkVoidBurst', boss.x, boss.y + 18, 430, 1.35, 0.22, 0.92);
+    }
     for (let i = 0; i < 180; i++) {
       const a = rand(0, TAU), s = rand(40, 520);
-      addParticle(boss.x, boss.y, Math.cos(a) * s, Math.sin(a) * s, rand(0.5, 1.8), rand(3, 16), i % 3 ? '#ffd983' : '#c199ff', true);
+      const deathColor = bossKind === 'dreamshark' ? (i % 3 ? '#8be7ff' : '#c184ff') : (i % 3 ? '#ffd983' : '#c199ff');
+      addParticle(boss.x, boss.y, Math.cos(a) * s, Math.sin(a) * s, rand(0.5, 1.8), rand(3, 16), deathColor, true);
     }
-    enemyBullets.length = 0;
+    if (dreamActive()) dissolveDreamBullets('boss-defeat');
+    else enemyBullets.length = 0;
     warnings.length = 0;
     lasers.length = 0;
     if (bossKind === 'suiyi') clearSuiyiCombatLayers();
@@ -29576,7 +29693,10 @@
     }
     if (stateTimer < 1.4 && tickEvery(stateTimer, dt, 0.2) && boss) {
       addSpriteFx('vfxBossBreak', boss.x + rand(-90, 90), boss.y + rand(-70, 70), 130, 0.42, rand(0, TAU), 0.4, 0.7);
-      burst(boss.x + rand(-60, 60), boss.y + rand(-40, 40), Math.random() < 0.5 ? '#ffd983' : '#c199ff', 14, 240, true);
+      const outroColor = bossKind === 'dreamshark'
+        ? (Math.random() < 0.5 ? '#8be7ff' : '#c184ff')
+        : (Math.random() < 0.5 ? '#ffd983' : '#c199ff');
+      burst(boss.x + rand(-60, 60), boss.y + rand(-40, 40), outroColor, 14, 240, true);
       screenShake = Math.max(screenShake, 10);
     }
     if (stateTimer > 2.6) {
@@ -37234,6 +37354,10 @@
     if (boss) {
       boss.t += dt;
       boss.y = lerp(boss.y, boss.targetY, 0.04);
+      if (boss.kind === 'dreamshark') {
+        boss.sharkIntroT = Math.max(0, (boss.sharkIntroT || 0) - dt);
+        boss.sharkPose = boss.sharkIntroT > 0 ? 'entry' : 'idle';
+      }
       if (stateTimer > 5.2) {
         state = 'boss';
         stateTimer = 0;
@@ -37427,6 +37551,304 @@
     }
   }
 
+  const DREAM_SHARK_PHASE_VOICES = Object.freeze([
+    Object.freeze(['sharkBubbleTide', 'sharkFrostWake']),
+    Object.freeze(['sharkSpearGate', 'sharkSnowCrown']),
+    Object.freeze(['sharkWhirlpool', 'sharkShardCurrent']),
+    Object.freeze(['sharkRageCharge', 'sharkRageCross']),
+    Object.freeze(['sharkVoidMaw', 'sharkFinalRift']),
+  ]);
+  const DREAM_SHARK_VISUAL_CONFIG = Object.freeze({
+    introSeconds: 0.82,
+    phaseTransitionSeconds: 0.62,
+    hitPoseSeconds: 0.16,
+    hpLagDelay: 0.24,
+    hpLagEase: 2.8,
+    drawSize: 330,
+    lowHpAt: 0.20,
+  });
+  function dreamSharkPhaseAssetKey(phase) {
+    return ['dreamPlushSharkIdle', 'dreamPlushSharkAttack', 'dreamPlushSharkIce', 'dreamPlushSharkRage', 'dreamPlushSharkVoid'][clamp(phase | 0, 0, 4)];
+  }
+  function resetDreamSharkBoss() {
+    if (!boss) return;
+    boss.sharkIntroT = DREAM_SHARK_VISUAL_CONFIG.introSeconds;
+    boss.sharkTransition = 0;
+    boss.sharkTransitionMax = DREAM_SHARK_VISUAL_CONFIG.phaseTransitionSeconds;
+    boss.sharkPrevPhase = 0;
+    boss.sharkAttackT = 0;
+    boss.sharkDashT = 0;
+    boss.sharkHpRate = 1;
+    boss.sharkHpLagRate = 1;
+    boss.sharkHpLastRate = 1;
+    boss.sharkHpLagDelay = 0;
+    boss.sharkPose = 'entry';
+    dreamTechFx('dreamPlushSharkWhirlpool', boss.x, boss.y + 58, 310, DREAM_SHARK_VISUAL_CONFIG.introSeconds, 0, 0.86);
+  }
+  function dreamSharkCastFx(key, size = 190, life = 0.48, alpha = 0.82) {
+    if (!boss) return;
+    boss.sharkAttackT = Math.max(boss.sharkAttackT || 0, life);
+    dreamTechFx(key, boss.x, boss.y + 24, size, life, boss.t * 0.34, alpha);
+  }
+  function dreamSharkBubbleTide(speed = 174) {
+    if (!boss) return false;
+    const aim = angleTo(boss.x, boss.y + 22, player.x, player.y);
+    const lanes = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
+    const emitted = dreamTryAtomicBulletGroup(lanes.length, () => {
+      for (let i = 0; i < lanes.length; i++) {
+        const lane = lanes[i];
+        const a = aim + lane * 0.105;
+        addDreamBullet(boss.x + lane * 7, boss.y + 36, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.7, skin: 'sharkBubble', family: 'waterToy', threat: 'spread', style: 'spread', shape: 'orb',
+          color: '#79e8ff', life: 5.6, policy: 'analytic-wave-lane', policySpeed: speed,
+          waveAmplitude: 9 + Math.abs(lane) * 1.2, waveFrequency: 2.05, wavePhase: i * 0.54,
+        });
+      }
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkMuzzle', 178, 0.44, 0.88);
+    return emitted;
+  }
+  function dreamSharkFrostWake(speed = 196) {
+    if (!boss) return false;
+    const count = 8;
+    const emitted = dreamTryAtomicBulletGroup(count, () => {
+      const base = boss.t * 0.32;
+      for (let i = 0; i < count; i++) {
+        const a = base + i * TAU / count;
+        if (Math.abs(Math.atan2(Math.sin(a - Math.PI / 2), Math.cos(a - Math.PI / 2))) < 0.30) continue;
+        addDreamBullet(boss.x, boss.y + 24, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 7.1, skin: 'sharkWaveCrescent', family: 'waterToy', threat: 'hazard', style: 'hazard', shape: 'crescent',
+          color: '#70d8ff', life: 5.4, policy: 'turn-once', policySpeed: speed,
+          turnAt: 0.68, turnDuration: 0.24, targetAngle: a + (i & 1 ? 0.16 : -0.16), spin: i & 1 ? 2.4 : -2.4,
+        });
+      }
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkWave', 230, 0.54, 0.78);
+    return emitted;
+  }
+  function dreamSharkSpearGate(speed = 258) {
+    if (!boss) return false;
+    const columns = [54, 132, 210, 288, 366, 444, 522, 600, 678];
+    const active = columns.filter(x => Math.abs(x - player.x) >= 104);
+    const emitted = dreamTryAtomicBulletGroup(active.length, () => {
+      for (let i = 0; i < active.length; i++) {
+        const a = Math.PI / 2 + (i & 1 ? 0.025 : -0.025);
+        addDreamBullet(active[i], 74 - (i % 3) * 15, Math.cos(a) * 62, Math.sin(a) * 62, {
+          r: 7.3, skin: 'sharkIceSpear', family: 'iceToy', threat: 'aimed', style: 'aimed', shape: 'needle',
+          color: '#a7ebff', life: 6.2, policy: 'brake-hold-release', policySpeed: 62,
+          brakeTime: 0.18, holdTime: 0.52, releaseAngle: a, releaseSpeed: speed + (i & 1) * 18,
+        });
+      }
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkIceBurst', 220, 0.56, 0.86);
+    return emitted;
+  }
+  function dreamSharkSnowCrown(speed = 186) {
+    if (!boss) return false;
+    const count = 14;
+    const gap = angleTo(boss.x, boss.y, player.x, player.y);
+    const angles = [];
+    for (let i = 0; i < count; i++) {
+      const a = boss.t * 0.24 + i * TAU / count;
+      if (Math.abs(dreamShortestAngle(a, gap)) > 0.32) angles.push(a);
+    }
+    const emitted = dreamTryAtomicBulletGroup(angles.length, () => {
+      angles.forEach((a, i) => addDreamBullet(boss.x, boss.y + 22, Math.cos(a) * speed, Math.sin(a) * speed, {
+        r: 6.6, skin: i & 1 ? 'sharkSnowball' : 'sharkIceShard', family: 'iceToy',
+        threat: 'spread', style: 'spread', shape: i & 1 ? 'orb' : 'shard', color: '#e5faff', life: 5.8,
+        policy: 'locked-linear', policySpeed: speed, visualIndex: i,
+      }));
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkShield', 214, 0.52, 0.76);
+    return emitted;
+  }
+  function dreamSharkWhirlpool(speed = 232) {
+    if (!boss) return false;
+    const count = 10;
+    const emitted = dreamTryAtomicBulletGroup(count, () => {
+      const dir = (Math.floor(boss.t * 0.8) & 1) ? 1 : -1;
+      for (let i = 0; i < count; i++) {
+        const a = i * TAU / count;
+        const rx = 78 + (i & 1) * 14;
+        const ry = 52 + (i & 1) * 10;
+        addDreamBullet(boss.x + Math.cos(a) * rx, boss.y + 18 + Math.sin(a) * ry, 0, 0, {
+          r: 6.7, skin: i % 3 ? 'sharkBubble' : 'sharkIceShard', family: i % 3 ? 'waterToy' : 'iceToy',
+          threat: 'spread', style: i % 3 ? 'deco' : 'spread', shape: i % 3 ? 'orb' : 'shard', color: '#83e5ff', life: 6.2,
+          policy: 'orbit-release', orbitCx: boss.x, orbitCy: boss.y + 18, orbitRx: rx, orbitRy: ry,
+          orbitAngle: a, orbitOmega: dir * (2.25 + (i & 1) * 0.22), orbitHold: 0.72, orbitMode: 'tangent', releaseSpeed: speed,
+        });
+      }
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkWhirlpool', 286, 0.72, 0.84);
+    return emitted;
+  }
+  function dreamSharkShardCurrent(speed = 210) {
+    if (!boss) return false;
+    const count = 6;
+    const emitted = dreamTryAtomicBulletGroup(count, () => {
+      for (let i = 0; i < count; i++) {
+        const fromLeft = i < count / 2;
+        const row = i % 3;
+        const x = fromLeft ? -24 : W + 24;
+        const y = 260 + row * 150 + (fromLeft ? 0 : 58);
+        const endX = fromLeft ? W + 70 : -70;
+        const bend = fromLeft ? 1 : -1;
+        addDreamBullet(x, y, bend * speed, 72, {
+          r: 7.0, skin: 'sharkIceShard', family: 'iceToy', threat: 'hazard', style: 'hazard', shape: 'shard',
+          color: '#bfefff', life: 6.2, policy: 'bezier-lane', policySpeed: 140,
+          bezierDuration: 3.4, bezierX1: x + bend * 220, bezierY1: y - 70,
+          bezierX2: endX - bend * 220, bezierY2: y + 190, bezierX3: endX, bezierY3: y + 250,
+        });
+      }
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkWave', 248, 0.56, 0.76);
+    return emitted;
+  }
+  function dreamSharkRageCharge(speed = 326) {
+    if (!boss) return false;
+    const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
+    const lanes = [-3, -2, -1, 1, 2, 3];
+    const emitted = dreamTryAtomicBulletGroup(lanes.length, () => {
+      lanes.forEach((lane, i) => {
+        const a = aim + lane * 0.12;
+        addDreamBullet(boss.x + lane * 10, boss.y + 28, Math.cos(a) * 74, Math.sin(a) * 74, {
+          r: 7.6, skin: 'sharkWaveCrescent', family: 'waterToy', threat: 'aimed', style: 'aimed', shape: 'crescent',
+          color: '#64d7ff', life: 5.8, policy: 'brake-hold-release', policySpeed: 74,
+          brakeTime: 0.20, holdTime: 0.56, releaseAngle: a, releaseSpeed: speed + Math.abs(lane) * 12, spin: i & 1 ? 3.4 : -3.4,
+        });
+      });
+    });
+    if (emitted) {
+      boss.sharkDashT = 0.82;
+      dreamSharkCastFx('dreamPlushSharkWave', 320, 0.68, 0.90);
+    }
+    return emitted;
+  }
+  function dreamSharkRageCross(speed = 222) {
+    if (!boss) return false;
+    const count = 8;
+    const emitted = dreamTryAtomicBulletGroup(count, () => {
+      for (let i = 0; i < count; i++) {
+        const side = i < 4 ? -1 : 1;
+        const row = i % 4;
+        const x = side < 0 ? -20 : W + 20;
+        const y = 190 + row * 166;
+        const a = side < 0 ? 0.72 : Math.PI - 0.72;
+        addDreamBullet(x, y, Math.cos(a) * speed, Math.sin(a) * speed, {
+          r: 6.9, skin: i & 1 ? 'sharkIceShard' : 'sharkSnowball', family: 'iceToy',
+          threat: 'hazard', style: 'hazard', shape: i & 1 ? 'shard' : 'orb', color: '#d8f6ff', life: 5.6,
+          policy: 'turn-once', policySpeed: speed, turnAt: 0.54, turnDuration: 0.22,
+          targetAngle: a + side * (row - 1.5) * 0.08,
+        });
+      }
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkIceBurst', 250, 0.54, 0.88);
+    return emitted;
+  }
+  function dreamSharkVoidMaw(speed = 206) {
+    if (!boss) return false;
+    const count = 16;
+    const gap = angleTo(boss.x, boss.y, player.x, player.y);
+    const angles = [];
+    for (let i = 0; i < count; i++) {
+      const a = -boss.t * 0.38 + i * TAU / count;
+      if (Math.abs(dreamShortestAngle(a, gap)) > 0.34 && Math.abs(dreamShortestAngle(a, gap + Math.PI)) > 0.22) angles.push(a);
+    }
+    const emitted = dreamTryAtomicBulletGroup(angles.length, () => {
+      angles.forEach((a, i) => addDreamBullet(boss.x, boss.y + 18, Math.cos(a) * speed, Math.sin(a) * speed, {
+        r: 7.2, skin: 'sharkVoidOrb', family: 'doll', threat: 'hazard', style: 'hazard', shape: 'orb',
+        color: '#c382ff', life: 6.0, policy: 'analytic-wave-lane', policySpeed: speed,
+        waveAmplitude: 11, waveFrequency: 1.8, wavePhase: i * 0.46, spin: i & 1 ? 3.0 : -3.0,
+      }));
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkVoidBurst', 306, 0.68, 0.92);
+    return emitted;
+  }
+  function dreamSharkFinalRift(speed = 348) {
+    if (!boss) return false;
+    const aim = angleTo(boss.x, boss.y + 18, player.x, player.y);
+    const lanes = [-4, -3, -2, -1, 1, 2, 3, 4];
+    const emitted = dreamTryAtomicBulletGroup(lanes.length, () => {
+      lanes.forEach((lane, i) => {
+        const a = aim + lane * 0.095;
+        addDreamBullet(boss.x + lane * 8, boss.y + 24, Math.cos(a) * 58, Math.sin(a) * 58, {
+          r: 7.4, skin: i & 1 ? 'sharkIceSpear' : 'sharkVoidOrb', family: i & 1 ? 'iceToy' : 'doll',
+          threat: 'aimed', style: 'aimed', shape: i & 1 ? 'needle' : 'orb', color: i & 1 ? '#b9eeff' : '#d08cff', life: 6.0,
+          policy: 'brake-hold-release', policySpeed: 58, brakeTime: 0.16, holdTime: 0.62,
+          releaseAngle: a, releaseSpeed: speed + Math.abs(lane) * 9,
+        });
+      });
+    });
+    if (emitted) dreamSharkCastFx('dreamPlushSharkMuzzle', 236, 0.62, 0.94);
+    return emitted;
+  }
+  function dreamSharkPatterns(t, dt) {
+    const phase = clamp(bossPhase | 0, 0, 4);
+    if (phase === 0) {
+      if (tickEvery(t, dt, 1.08)) dreamBossVoice('sharkBubbleTide', () => dreamSharkBubbleTide(174));
+      if (tickEvery(t, dt, 2.55)) dreamBossVoice('sharkFrostWake', () => dreamSharkFrostWake(190));
+    } else if (phase === 1) {
+      if (tickEvery(t, dt, 1.72)) dreamBossVoice('sharkSpearGate', () => dreamSharkSpearGate(258));
+      if (tickEvery(t, dt, 1.28)) dreamBossVoice('sharkSnowCrown', () => dreamSharkSnowCrown(190));
+    } else if (phase === 2) {
+      if (tickEvery(t, dt, 1.88)) dreamBossVoice('sharkWhirlpool', () => dreamSharkWhirlpool(232));
+      if (tickEvery(t, dt, 1.46)) dreamBossVoice('sharkShardCurrent', () => dreamSharkShardCurrent(214));
+    } else if (phase === 3) {
+      if (tickEvery(t, dt, 2.35)) dreamBossVoice('sharkRageCharge', () => dreamSharkRageCharge(326));
+      if (tickEvery(t, dt, 1.52)) dreamBossVoice('sharkRageCross', () => dreamSharkRageCross(226));
+    } else {
+      if (tickEvery(t, dt, 1.38)) dreamBossVoice('sharkVoidMaw', () => dreamSharkVoidMaw(210));
+      if (tickEvery(t, dt, 2.05)) dreamBossVoice('sharkFinalRift', () => dreamSharkFinalRift(348));
+    }
+  }
+  function dreamSharkEmitPhaseSample(phase = bossPhase) {
+    const p = clamp(phase | 0, 0, 4);
+    if (p === 0) return [dreamBossVoice('sharkBubbleTide', () => dreamSharkBubbleTide(174)), dreamBossVoice('sharkFrostWake', () => dreamSharkFrostWake(190))];
+    if (p === 1) return [dreamBossVoice('sharkSpearGate', () => dreamSharkSpearGate(258)), dreamBossVoice('sharkSnowCrown', () => dreamSharkSnowCrown(190))];
+    if (p === 2) return [dreamBossVoice('sharkWhirlpool', () => dreamSharkWhirlpool(232)), dreamBossVoice('sharkShardCurrent', () => dreamSharkShardCurrent(214))];
+    if (p === 3) return [dreamBossVoice('sharkRageCharge', () => dreamSharkRageCharge(326)), dreamBossVoice('sharkRageCross', () => dreamSharkRageCross(226))];
+    return [dreamBossVoice('sharkVoidMaw', () => dreamSharkVoidMaw(210)), dreamBossVoice('sharkFinalRift', () => dreamSharkFinalRift(348))];
+  }
+  function updateDreamSharkBoss(dt) {
+    if (!boss) return;
+    const hpRate = clamp(boss.hp / Math.max(1, boss.maxHp), 0, 1);
+    const thresholds = activeDreamStageConfig().phaseThresholds;
+    let nextPhase = thresholds.findIndex(threshold => hpRate > threshold);
+    if (nextPhase < 0) nextPhase = thresholds.length;
+    changeBossPhase(nextPhase);
+
+    boss.sharkIntroT = Math.max(0, (boss.sharkIntroT || 0) - dt);
+    boss.sharkTransition = Math.max(0, (boss.sharkTransition || 0) - dt);
+    boss.sharkAttackT = Math.max(0, (boss.sharkAttackT || 0) - dt);
+    boss.sharkDashT = Math.max(0, (boss.sharkDashT || 0) - dt);
+    const phase = clamp(bossPhase | 0, 0, 4);
+    const movementRate = 0.52 + phase * 0.08;
+    const rageDash = phase === 3 && boss.sharkDashT > 0
+      ? Math.sin((1 - boss.sharkDashT / 0.82) * Math.PI) * 76
+      : 0;
+    const targetX = W * 0.5 + Math.sin(boss.t * movementRate) * (72 + phase * 10) + Math.sin(boss.t * 1.31) * 20 + rageDash * Math.sin(boss.t * 2.2);
+    const targetY = 214 + Math.sin(boss.t * (0.82 + phase * 0.05)) * (14 + phase * 2) + rageDash * 0.28;
+    const follow = 1 - Math.exp(-dt * (phase === 3 ? 4.6 : 3.5));
+    boss.x = lerp(boss.x, clamp(targetX, 112, W - 112), follow);
+    boss.y = lerp(boss.y, clamp(targetY, 176, 292), follow);
+
+    if (hpRate < (boss.sharkHpLastRate ?? 1) - 0.00001) boss.sharkHpLagDelay = DREAM_SHARK_VISUAL_CONFIG.hpLagDelay;
+    if (hpRate > (boss.sharkHpLagRate ?? hpRate)) boss.sharkHpLagRate = hpRate;
+    boss.sharkHpLastRate = hpRate;
+    boss.sharkHpRate = hpRate;
+    boss.sharkHpLagDelay = Math.max(0, (boss.sharkHpLagDelay || 0) - dt);
+    if (boss.sharkHpLagDelay <= 0) {
+      const lagFollow = 1 - Math.exp(-dt * DREAM_SHARK_VISUAL_CONFIG.hpLagEase);
+      boss.sharkHpLagRate = lerp(boss.sharkHpLagRate ?? hpRate, hpRate, lagFollow);
+    }
+    boss.sharkHpLagRate = clamp(Math.max(hpRate, boss.sharkHpLagRate ?? hpRate), 0, 1);
+    boss.sharkPose = (boss.hitFlash || 0) > 0 ? 'hit'
+      : (boss.sharkIntroT > 0 ? 'entry' : (boss.sharkTransition > 0 ? 'transition' : (boss.sharkAttackT > 0 ? 'attack' : 'idle')));
+
+    patternTimer += dt * (1 + phase * 0.045);
+    dreamSharkPatterns(patternTimer, dt * (1 + phase * 0.045));
+  }
+
   function updateBoss(dt) {
     if (!boss || boss.dead) return;
     if (boss.dream) reconcileDreamDirectDamage(boss, dt);
@@ -37438,6 +37860,7 @@
     if (!boss.dream && boss.dmgCredit !== undefined) boss.dmgCredit = Math.min(boss.dmgCreditMax, boss.dmgCredit + boss.dpsCap * dt);
     if (boss.kind === 'suiyi') { updateSuiyiBoss(dt); applyCgUltimateBossMovementSlow(previousX, previousY, dt); return; }
     if (boss.kind === 'migua') { updateMiguaBoss(dt); applyCgUltimateBossMovementSlow(previousX, previousY, dt); return; }
+    if (boss.kind === 'dreamshark') { updateDreamSharkBoss(dt); applyCgUltimateBossMovementSlow(previousX, previousY, dt); return; }
     boss.x = W * 0.5 + Math.sin(boss.t * 0.7) * 80 + Math.sin(boss.t * 1.53) * 26;
     boss.y = 210 + Math.sin(boss.t * 0.95) * 18;
     applyCgUltimateBossMovementSlow(previousX, previousY, dt);
@@ -41036,10 +41459,103 @@
     }
   }
 
+  function drawDreamSharkFallback(alpha = 1) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    const body = ctx.createLinearGradient(-130, -80, 130, 90);
+    body.addColorStop(0, '#f3fbff'); body.addColorStop(0.42, '#8ecce8'); body.addColorStop(1, '#3d6f9c');
+    ctx.fillStyle = body;
+    ctx.beginPath(); ctx.ellipse(0, 0, 126, 76, -0.08, 0, TAU); ctx.fill();
+    ctx.strokeStyle = 'rgba(19,49,79,.9)'; ctx.lineWidth = 5; ctx.stroke();
+    ctx.fillStyle = '#70a9ce';
+    ctx.beginPath(); ctx.moveTo(-106, -22); ctx.lineTo(-174, -76); ctx.lineTo(-154, 1); ctx.lineTo(-174, 70); ctx.lineTo(-102, 30); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-18, -65); ctx.lineTo(28, -126); ctx.lineTo(48, -55); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#f8fdff'; ctx.beginPath(); ctx.ellipse(35, 34, 72, 30, -0.05, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#102942'; ctx.beginPath(); ctx.arc(68, -23, 8, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(65, -26, 2.5, 0, TAU); ctx.fill();
+    ctx.strokeStyle = 'rgba(220,247,255,.88)'; ctx.lineWidth = 3; ctx.setLineDash([8, 7]);
+    ctx.beginPath(); ctx.ellipse(-4, 2, 104, 57, -0.08, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+    ctx.restore();
+  }
+  function drawDreamSharkSpriteLayer(key, alpha, scaleX = 1, scaleY = 1, yOffset = 0) {
+    if (alpha <= 0.001) return;
+    const glowKey = `${key}Glow`;
+    const size = DREAM_SHARK_VISUAL_CONFIG.drawSize;
+    ctx.save();
+    ctx.translate(0, yOffset);
+    ctx.scale(scaleX, scaleY);
+    if (assetReady(key)) {
+      ctx.globalAlpha = alpha;
+      drawImageContain(assets[key], -size / 2, -size / 2, size, size);
+    } else {
+      if (!ASSET_PATHS[key] || assets[key]?.failed) reportDreamStageVisualFallback(key, '霜潮绒鲨本体');
+      drawDreamSharkFallback(Math.max(0.72, alpha));
+    }
+    if (assetReady(glowKey)) {
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * (0.52 + Math.sin(time * 5.2) * 0.08);
+      drawImageContain(assets[glowKey], -size / 2, -size / 2, size, size);
+    } else if (!ASSET_PATHS[glowKey] || assets[glowKey]?.failed) {
+      reportDreamStageVisualFallback(glowKey, '霜潮绒鲨能量层');
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * 0.28;
+      const fallbackGlow = ctx.createRadialGradient(28, 8, 0, 28, 8, 92);
+      fallbackGlow.addColorStop(0, key.includes('Void') ? 'rgba(197,111,255,.9)' : 'rgba(122,223,255,.9)');
+      fallbackGlow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = fallbackGlow; ctx.beginPath(); ctx.arc(28, 8, 92, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function drawDreamSharkBoss() {
+    if (!boss) return;
+    ctx.save();
+    ctx.translate(boss.x, boss.y);
+    const phase = clamp(bossPhase | 0, 0, 4);
+    const deadAlpha = boss.dead ? clamp(1 - stateTimer / 2.35, 0, 1) : 1;
+    const introT = clamp((boss.sharkIntroT || 0) / DREAM_SHARK_VISUAL_CONFIG.introSeconds, 0, 1);
+    const introP = 1 - introT;
+    const introEase = introP * introP * (3 - 2 * introP);
+    const introAlpha = boss.dead ? deadAlpha : Math.max(0.30, introEase);
+    const introScaleX = 0.52 + introEase * 0.48;
+    const introScaleY = 1.28 - introEase * 0.28;
+    const introY = (1 - introEase) * 82;
+    const breath = 1 + Math.sin(time * 3.4) * 0.018;
+
+    const aura = ctx.createRadialGradient(0, 14, 20, 0, 14, 196);
+    const voidPhase = phase >= 4;
+    aura.addColorStop(0, voidPhase ? 'rgba(174,94,255,.27)' : 'rgba(102,215,255,.24)');
+    aura.addColorStop(0.42, voidPhase ? 'rgba(72,28,132,.15)' : 'rgba(84,143,213,.12)');
+    aura.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.globalAlpha = introAlpha;
+    ctx.fillStyle = aura; ctx.beginPath(); ctx.arc(0, 14, 196, 0, TAU); ctx.fill();
+
+    let currentKey = boss.dead ? 'dreamPlushSharkDeath'
+      : ((boss.hitFlash || 0) > 0 ? 'dreamPlushSharkHit'
+        : ((boss.sharkAttackT || 0) > 0 && phase === 0 ? 'dreamPlushSharkAttack' : dreamSharkPhaseAssetKey(phase)));
+    const transitionRate = boss.dead ? 0 : clamp((boss.sharkTransition || 0) / Math.max(0.001, boss.sharkTransitionMax || DREAM_SHARK_VISUAL_CONFIG.phaseTransitionSeconds), 0, 1);
+    if (transitionRate > 0 && !boss.dead && (boss.hitFlash || 0) <= 0) {
+      const p = 1 - transitionRate;
+      const smooth = p * p * (3 - 2 * p);
+      const previousKey = dreamSharkPhaseAssetKey(boss.sharkPrevPhase || 0);
+      drawDreamSharkSpriteLayer(previousKey, introAlpha * (1 - smooth), introScaleX * breath * (1 + smooth * 0.10), introScaleY * (1 - smooth * 0.08), introY);
+      drawDreamSharkSpriteLayer(currentKey, introAlpha * smooth, introScaleX * breath * (0.76 + smooth * 0.24), introScaleY * (1.18 - smooth * 0.18), introY);
+    } else {
+      const deathSquash = boss.dead ? 1 - clamp(stateTimer / 2.2, 0, 1) * 0.18 : 1;
+      drawDreamSharkSpriteLayer(currentKey, introAlpha, introScaleX * breath * (boss.dead ? 1.10 : 1), introScaleY * deathSquash, introY + (boss.dead ? stateTimer * 20 : 0));
+    }
+    if ((boss.hitFlash || 0) > 0 && !boss.dead) {
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = clamp(boss.hitFlash / DREAM_SHARK_VISUAL_CONFIG.hitPoseSeconds, 0, 1) * 0.30;
+      ctx.fillStyle = '#eafcff'; ctx.beginPath(); ctx.ellipse(12, 0, 122, 70, -0.08, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   function drawBoss() {
     if (!boss) return;
     if (boss.kind === 'suiyi') { drawSuiyiBoss(); return; }
     if (boss.kind === 'migua') { drawMiguaBoss(); return; }
+    if (boss.kind === 'dreamshark') { drawDreamSharkBoss(); return; }
     ctx.save();
     ctx.translate(boss.x, boss.y);
     const a = boss.dead ? Math.max(0, 1 - stateTimer * 0.7) : 1;
@@ -46150,6 +46666,146 @@
     ctx.restore();
   }
 
+  function dreamSharkBossBarLayoutForRate(rate = 1, lagRate = rate, viewport = {}) {
+    const vw = Math.max(320, Number(viewport.width || viewport.w || W));
+    const frameW = Math.min(590, vw - 58);
+    const portraitSize = Math.min(82, Math.max(58, frameW * 0.145));
+    const rootW = Math.min(vw - 20, frameW + portraitSize * 0.48);
+    const rootX = (vw - rootW) / 2;
+    const frame = { x: rootX + portraitSize * 0.46, y: 8, w: frameW, h: 82 };
+    const track = { x: frame.x + frame.w * 0.105, y: frame.y + 36, w: frame.w * 0.845, h: 24 };
+    const portrait = { x: rootX, y: 9, w: portraitSize, h: portraitSize };
+    const hpRate = clamp(Number(rate) || 0, 0, 1);
+    const damageLagRate = clamp(Math.max(hpRate, Number(lagRate) || 0), 0, 1);
+    return {
+      frame, track, portrait, hpRate, fillRate: hpRate, damageLagRate,
+      actualW: track.w * hpRate, lagW: track.w * damageLagRate,
+      name: { x: frame.x + frame.w * 0.53, y: frame.y + 24 },
+      phase: { x: frame.x + frame.w * 0.23, y: frame.y + 75 },
+      hpText: { x: frame.x + frame.w * 0.94, y: frame.y + 75 },
+      pips: { x: frame.x + frame.w * 0.55, y: frame.y + 72, gap: Math.max(14, frame.w * 0.035) },
+      scale: frame.w / 590,
+    };
+  }
+  function dreamSharkBossUiStateForTest(hp, maxHp, lagRate = null, phase = 0, viewport = {}) {
+    const safeMax = Math.max(1, Number(maxHp) || 1);
+    const safeHp = clamp(Number(hp) || 0, 0, safeMax);
+    const hpRate = safeHp / safeMax;
+    const resolvedLag = lagRate == null ? hpRate : clamp(Math.max(hpRate, Number(lagRate) || 0), 0, 1);
+    const layout = dreamSharkBossBarLayoutForRate(hpRate, resolvedLag, viewport);
+    return {
+      visible: true,
+      linkedToBossHp: true,
+      hpRate,
+      fillRate: layout.fillRate,
+      damageLagRate: layout.damageLagRate,
+      critical: hpRate <= DREAM_SHARK_VISUAL_CONFIG.lowHpAt,
+      numericHp: `${Math.ceil(safeHp).toLocaleString()}/${Math.ceil(safeMax).toLocaleString()}`,
+      percent: `${Math.ceil(hpRate * 100)}%`,
+      phasePips: Array.from({ length: 5 }, (_, index) => index <= clamp(phase | 0, 0, 4)),
+      layout: { frame: { ...layout.frame }, track: { ...layout.track }, portrait: { ...layout.portrait } },
+    };
+  }
+  function drawDreamSharkBarLayer(key, track, visibleRate, alpha = 1) {
+    if (!assetReady(key) || visibleRate <= 0 || alpha <= 0) return false;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(track.x, track.y, track.w * clamp(visibleRate, 0, 1), track.h); ctx.clip();
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(assets[key], track.x, track.y, track.w, track.h);
+    ctx.restore();
+    return true;
+  }
+  function drawDreamSharkBossBar() {
+    if (!boss || boss.kind !== 'dreamshark') return;
+    const actualRate = clamp(boss.hp / Math.max(1, boss.maxHp), 0, 1);
+    const lagRate = clamp(Math.max(actualRate, boss.sharkHpLagRate ?? actualRate), 0, 1);
+    const phase = clamp(bossPhase | 0, 0, 4);
+    const critical = actualRate <= DREAM_SHARK_VISUAL_CONFIG.lowHpAt;
+    const layout = dreamSharkBossBarLayoutForRate(actualRate, lagRate);
+    const { frame, track, portrait, scale } = layout;
+    const pulse = critical ? 0.5 + Math.sin(time * 11) * 0.28 : 0;
+    ctx.save();
+    if (critical) ctx.translate(Math.sin(time * 37) * 1.4, Math.cos(time * 31) * 0.8);
+
+    if (assetReady('dreamPlushSharkBossBarEmpty')) {
+      ctx.drawImage(assets.dreamPlushSharkBossBarEmpty, track.x, track.y, track.w, track.h);
+    } else {
+      if (assets.dreamPlushSharkBossBarEmpty?.failed) reportDreamStageVisualFallback('dreamPlushSharkBossBarEmpty', '鲨鱼Boss空血槽');
+      ctx.fillStyle = 'rgba(6,18,35,.94)'; roundRect(track.x, track.y, track.w, track.h, track.h * 0.42); ctx.fill();
+      ctx.strokeStyle = 'rgba(125,214,255,.72)'; ctx.lineWidth = 2; roundRect(track.x, track.y, track.w, track.h, track.h * 0.42); ctx.stroke();
+    }
+
+    if (lagRate > actualRate + 0.001) {
+      ctx.save();
+      ctx.beginPath(); ctx.rect(track.x + track.w * actualRate, track.y, track.w * (lagRate - actualRate), track.h); ctx.clip();
+      const lagGradient = ctx.createLinearGradient(track.x, track.y, track.x + track.w, track.y);
+      lagGradient.addColorStop(0, 'rgba(255,248,194,.82)'); lagGradient.addColorStop(1, 'rgba(191,118,255,.74)');
+      ctx.fillStyle = lagGradient; ctx.fillRect(track.x, track.y, track.w, track.h);
+      ctx.restore();
+    }
+    const fillKey = critical ? 'dreamPlushSharkBossBarCritical' : 'dreamPlushSharkBossBarFill';
+    if (!drawDreamSharkBarLayer(fillKey, track, actualRate, 1)) {
+      const fillGradient = ctx.createLinearGradient(track.x, track.y, track.x + track.w, track.y);
+      fillGradient.addColorStop(0, critical ? '#8c3dc9' : '#54d8ff');
+      fillGradient.addColorStop(0.62, critical ? '#d64fbd' : '#7eaaff');
+      fillGradient.addColorStop(1, critical ? '#ff657d' : '#c77cff');
+      ctx.fillStyle = fillGradient; roundRect(track.x, track.y, track.w * actualRate, track.h, track.h * 0.42); ctx.fill();
+    }
+    if (assetReady('dreamPlushSharkBossBarGloss') && actualRate > 0) {
+      ctx.save();
+      ctx.beginPath(); ctx.rect(track.x, track.y, track.w * actualRate, track.h); ctx.clip();
+      ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.42;
+      const glossW = Math.max(86, track.w * 0.24);
+      const glossX = track.x - glossW + ((time * 116) % (track.w + glossW));
+      ctx.drawImage(assets.dreamPlushSharkBossBarGloss, glossX, track.y, glossW, track.h);
+      ctx.restore();
+    }
+    if (critical) {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.24 + pulse * 0.32;
+      ctx.strokeStyle = '#d58aff'; ctx.shadowColor = '#9c63ff'; ctx.shadowBlur = 16 * scale; ctx.lineWidth = 3 * scale;
+      roundRect(track.x - 2, track.y - 2, track.w + 4, track.h + 4, track.h * 0.48); ctx.stroke(); ctx.restore();
+    }
+
+    if (assetReady('dreamPlushSharkBossBarFrame')) {
+      ctx.drawImage(assets.dreamPlushSharkBossBarFrame, frame.x, frame.y, frame.w, frame.h);
+    } else {
+      if (assets.dreamPlushSharkBossBarFrame?.failed) reportDreamStageVisualFallback('dreamPlushSharkBossBarFrame', '鲨鱼Boss血条框');
+      ctx.strokeStyle = 'rgba(185,235,255,.88)'; ctx.lineWidth = 2.5; roundRect(frame.x, frame.y, frame.w, frame.h, 10); ctx.stroke();
+    }
+
+    if (assetReady('dreamPlushSharkPortrait')) {
+      drawImageContain(assets.dreamPlushSharkPortrait, portrait.x, portrait.y, portrait.w, portrait.h);
+    } else {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(portrait.x + portrait.w / 2, portrait.y + portrait.h / 2, portrait.w * 0.43, 0, TAU); ctx.clip();
+      ctx.fillStyle = 'rgba(44,95,145,.92)'; ctx.fillRect(portrait.x, portrait.y, portrait.w, portrait.h);
+      if (assetReady('dreamPlushSharkIdle')) drawImageContain(assets.dreamPlushSharkIdle, portrait.x - 8, portrait.y - 8, portrait.w + 16, portrait.h + 16);
+      ctx.restore();
+      ctx.strokeStyle = critical ? '#d68aff' : '#a9eaff'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(portrait.x + portrait.w / 2, portrait.y + portrait.h / 2, portrait.w * 0.43, 0, TAU); ctx.stroke();
+    }
+
+    const phaseNames = activeDreamStageConfig().phaseNames;
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+    ctx.font = '900 17px "M PLUS Rounded 1c", Nunito, PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(4,15,34,.78)'; ctx.strokeText('霜潮绒鲨 · 阿布', layout.name.x, layout.name.y);
+    ctx.fillStyle = critical ? '#f6d8ff' : '#e9fbff'; ctx.fillText('霜潮绒鲨 · 阿布', layout.name.x, layout.name.y);
+    ctx.textAlign = 'left'; ctx.font = '800 12px "M PLUS Rounded 1c", Nunito, PingFang SC, Microsoft YaHei, sans-serif';
+    ctx.strokeText(`P${phase + 1}/5 · ${phaseNames[phase] || ''}`, layout.phase.x, layout.phase.y);
+    ctx.fillStyle = critical ? '#edb6ff' : '#a7e8ff'; ctx.fillText(`P${phase + 1}/5 · ${phaseNames[phase] || ''}`, layout.phase.x, layout.phase.y);
+
+    ctx.textAlign = 'right';
+    const hpLabel = `${Math.ceil(boss.hp).toLocaleString()} / ${Math.ceil(boss.maxHp).toLocaleString()}  ${Math.ceil(actualRate * 100)}%`;
+    ctx.strokeText(hpLabel, layout.hpText.x, layout.hpText.y); ctx.fillStyle = '#f4fbff'; ctx.fillText(hpLabel, layout.hpText.x, layout.hpText.y);
+    for (let i = 0; i < 5; i++) {
+      const px = layout.pips.x + (i - 2) * layout.pips.gap;
+      ctx.fillStyle = i <= phase ? (i === phase ? '#ffffff' : '#82dfff') : 'rgba(38,69,105,.72)';
+      ctx.strokeStyle = i === phase ? '#b785ff' : 'rgba(184,232,255,.78)'; ctx.lineWidth = i === phase ? 2.2 : 1.2;
+      ctx.beginPath(); ctx.arc(px, layout.pips.y, i === phase ? 5 : 3.8, 0, TAU); ctx.fill(); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   function drawCgBossCorrosionWidget() {
     if (!boss || boss.dead || state !== 'boss') return;
     const corrosion = boss._cgBossCorrosion || null;
@@ -46241,7 +46897,8 @@
 
   function drawDreamHud() {
     if (!dreamActive() || state === 'title' || state === 'win' || state === 'lose') return;
-    const x = W / 2 - 180, y = state === 'boss' ? 72 : 58, w = 360, h = 50;
+    const sharkBarActive = state === 'boss' && boss?.kind === 'dreamshark';
+    const x = W / 2 - 180, y = sharkBarActive ? 108 : (state === 'boss' ? 72 : 58), w = 360, h = 50;
     ctx.save();
     drawTyTechPanel(x, y, w, h, { r: 15, top: 'rgba(230,243,255,.90)', bottom: 'rgba(245,226,252,.90)', edge: 'rgba(148,123,220,.80)', stripAlpha: 0.08, scanAlpha: 0.06 });
     ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.font = cuteFont(900, 23);
@@ -46260,6 +46917,8 @@
     if (state === 'boss' && boss) {
       if (boss.kind === 'migua') {
         drawMiguaBossBar();
+      } else if (boss.kind === 'dreamshark') {
+        drawDreamSharkBossBar();
       } else {
         ctx.textAlign = 'center';
         const bw = 420, bx = W / 2 - bw / 2, by = 8, bh = 40;
@@ -47324,9 +47983,10 @@
     const config = selectedDreamStageConfig();
     const level = config.level;
     const hasBoss = config.hasBoss !== false && !!level.boss;
-    const bossSprite = !hasBoss ? 'dreamRoomBase' : (level.boss === 'suiyi' ? 'suiyiIdle' : 'seraphPhase1');
+    const bossSprite = !hasBoss ? 'dreamRoomBase'
+      : (level.boss === 'suiyi' ? 'suiyiIdle' : (level.boss === 'dreamshark' ? 'dreamPlushSharkIdle' : 'seraphPhase1'));
     const bossLines = level.id === DREAM_STAGE3_ID
-      ? ['五类玩偶 · 特色提线登场', '十幕同源素材弹幕编排', '专属Boss仍在构筑中']
+      ? ['霜潮泡浪 · 冰牙列阵', '霜涡巡游 · 怒潮冲锋', '冰渊吞星 · 五阶段终幕']
       : (level.id === DREAM_STAGE2_ID
       ? ['二进制门阵 · 递归分叉', '死锁线程 · 双缝扫描', '系统崩溃 · 六阶段']
       : ['六翼缺口扇 · 棱镜门', '迟滞星冠 · 双侧镰刃', '终焉晶格 · 五阶段']);
@@ -47704,6 +48364,24 @@
       ctx.save();
       ctx.globalAlpha = (0.78 + Math.sin(time * 10) * 0.18) * p;
       ctx.drawImage(assets.uiBossWarning, 40, slideY - bh / 2, bw, bh);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = 'rgba(255,24,66,.68)';
+      ctx.shadowBlur = 14;
+      ctx.font = '900 38px Nunito, Arial, sans-serif';
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = 'rgba(10,0,8,.94)';
+      ctx.strokeText('BOSS WARNING', W / 2, slideY - 20);
+      ctx.fillStyle = '#fff0d6';
+      ctx.fillText('BOSS WARNING', W / 2, slideY - 20);
+      ctx.shadowBlur = 8;
+      ctx.font = '900 28px "M PLUS Rounded 1c", Nunito, PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.lineWidth = 6;
+      const warningName = boss?.name || (dreamActive() ? activeDreamStageConfig()?.level?.bossName : '') || 'UNKNOWN BOSS';
+      ctx.strokeText(warningName, W / 2, slideY + 28);
+      ctx.fillStyle = '#ffd1dc';
+      ctx.fillText(warningName, W / 2, slideY + 28);
       ctx.restore();
     }
 
@@ -47736,9 +48414,22 @@
       const p = clamp(stateTimer / 0.4, 0, 1) * clamp((2.6 - stateTimer) / 0.5, 0, 1);
       const bw = (W - 140) * (0.85 + p * 0.15);
       const bh = bw * (assets.uiStageClear.height / assets.uiStageClear.width);
+      const clearY = H * 0.40;
       ctx.save();
       ctx.globalAlpha = 0.92 * p;
-      ctx.drawImage(assets.uiStageClear, (W - bw) / 2, H * 0.40 - bh / 2, bw, bh);
+      ctx.drawImage(assets.uiStageClear, (W - bw) / 2, clearY - bh / 2, bw, bh);
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = 'rgba(255,206,92,.72)';
+      ctx.shadowBlur = 16;
+      ctx.font = '900 46px "M PLUS Rounded 1c", Nunito, PingFang SC, Microsoft YaHei, sans-serif';
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = 'rgba(32,12,2,.94)';
+      const clearTitle = dreamActive() ? '梦境通关' : 'STAGE CLEAR';
+      ctx.strokeText(clearTitle, W / 2, clearY + 2);
+      ctx.fillStyle = '#fff4b8';
+      ctx.fillText(clearTitle, W / 2, clearY + 2);
       ctx.restore();
     }
 
@@ -52149,6 +52840,21 @@
       if (config.hasBoss === false || !config.level.boss) {
         return { key: null, name: config.level.bossName, implemented: false, hasBoss: false, clearAfterWave: config.patterns.length };
       }
+      if (config.level.id === DREAM_STAGE3_ID) {
+        return {
+          key: 'dreamshark', name: config.level.bossName, hp: config.balance.bossHp,
+          creditCap: config.balance.bossCreditCap, creditRechargePerSecond: config.balance.bossDpsCap,
+          targetSeconds: [...config.balance.bossTargetRange], targetDurationSeconds: config.balance.bossTargetSeconds,
+          phaseThresholds: [...config.phaseThresholds], patternNames: [...config.phaseNames],
+          phaseVoices: DREAM_SHARK_PHASE_VOICES.map(voices => [...voices]),
+          pooledVoices: true, logicalBulletCap: DREAM_PERF_CONFIG.bulletCap,
+          maxMajorVoices: 2, aimedWarningMin: DREAM_PERF_CONFIG.aimedWarning, completeGroupOnly: true,
+          usesDedicatedSkins: true, patternsUseAddDreamBullet: true, abruptVisibleClear: false,
+          reusesNormalBossDefinition: false, distinctDreamHandler: true, normalBossPoolExcluded: !NORMAL_BOSS_POOL.includes('dreamshark'),
+          transitions: { introSeconds: DREAM_SHARK_VISUAL_CONFIG.introSeconds, phaseSeconds: DREAM_SHARK_VISUAL_CONFIG.phaseTransitionSeconds, crossDissolve: true, squash: true },
+          ui: { linkedToBossHp: true, immediateFill: true, easedDamageLag: true, numericHp: true, percent: true, phasePips: 5, lowHpPulseAt: DREAM_SHARK_VISUAL_CONFIG.lowHpAt, mobileSafe: true },
+        };
+      }
       if (config.level.id === DREAM_STAGE2_ID) {
         return {
           key: 'suiyi', name: config.level.bossName, hp: config.balance.bossHp,
@@ -52178,6 +52884,42 @@
         pooledVoices: true, logicalBulletCap: DREAM_PERF_CONFIG.bulletCap,
         aimedWarningMin: DREAM_PERF_CONFIG.aimedWarning, completeGroupOnly: true,
         reusesNormalBossDefinition: false,
+      };
+    }
+    function stage3SharkAssetSpecForTest() {
+      const bulletAssets = Object.entries(DREAM_BULLET_SKINS)
+        .filter(([key]) => key.startsWith('shark'))
+        .flatMap(([, skin]) => [skin.asset, skin.glow]);
+      const vfxAssets = DREAM_STAGE3_VFX_ASSET_KEYS.filter(key => key.startsWith('dreamPlushShark'));
+      const assetKeys = [...DREAM_STAGE3_BOSS_ASSET_KEYS, ...bulletAssets, ...vfxAssets, ...DREAM_STAGE3_BOSS_UI_ASSET_KEYS];
+      return {
+        key: 'dreamshark', assetKeys,
+        boss: [...DREAM_STAGE3_BOSS_ASSET_KEYS], bullets: bulletAssets, vfx: vfxAssets, ui: [...DREAM_STAGE3_BOSS_UI_ASSET_KEYS],
+        paths: Object.fromEntries(assetKeys.map(key => [key, ASSET_PATHS[key] || ''])),
+        layeredBoss: true, layeredBullets: true, layeredVfx: true, uiLayers: 6,
+      };
+    }
+    function stage3SharkAssetStatusForTest() {
+      const spec = stage3SharkAssetSpecForTest();
+      return {
+        expected: spec.assetKeys.length,
+        loaded: spec.assetKeys.filter(key => !!assets[key]?.ready),
+        pending: spec.assetKeys.filter(key => !!assets[key] && !assets[key].ready && !assets[key].failed),
+        missing: spec.assetKeys.filter(key => !ASSET_PATHS[key]),
+        decodeFailed: spec.assetKeys.filter(key => !!assets[key]?.failed),
+      };
+    }
+    function stage3SharkCaptureSpecForTest() {
+      return {
+        scenes: {
+          entry: 'shark-entry', phase: 'boss', hp: 'shark-hp', hit: 'shark-hit',
+          transition: 'shark-transition', death: 'shark-death', performance: 'shark-performance',
+        },
+        phaseCount: 5,
+        phaseNames: [...DREAM_STAGE_CONFIGS[DREAM_STAGE3_ID].phaseNames],
+        assetKeys: stage3SharkAssetSpecForTest().assetKeys,
+        frameBudgetMs: 16.7,
+        snapshotFields: ['sharkBoss', 'sharkBossUi', 'spriteFxKeys'],
       };
     }
     window.__dreamModeInternals__ = {
@@ -52282,6 +53024,10 @@
       damageForTest: (amount, source, hits) => Math.round((Number(amount) || 0) * DREAM_DAMAGE_STEPS[Math.min(3, Math.max(0, hits | 0))]),
       damageSourceSpec: () => ['main', 'skill', 'ultimate', 'dot', 'clone', 'plugin', 'wingman'],
       bossSpec: dreamInternalsBoss,
+      sharkBossUiSpec: (options = {}) => dreamSharkBossUiStateForTest(options.hp, options.maxHp, options.lagRate, options.phase, options.viewport),
+      stage3SharkCaptureSpec: stage3SharkCaptureSpecForTest,
+      stage3SharkAssetSpec: stage3SharkAssetSpecForTest,
+      stage3SharkAssetStatus: stage3SharkAssetStatusForTest,
       activeClockForTest: (segments) => (segments || []).reduce((sum, part) => sum + (part && part.active ? Number(part.dt) || 0 : 0), 0),
       rankRowsForTest: (rows) => [...(rows || [])].sort((a, b) => (b.stars - a.stars) || (a.elapsed_ms - b.elapsed_ms) || String(a.created_at || '').localeCompare(String(b.created_at || ''))),
       leaderboardSpec: () => ({ separateTable: true, directRestFallback: false, order: ['stars-desc', 'elapsed-ms-asc', 'created-at-asc'], filters: ['overall', 'character'], failedRunsUpload: false, oneTimeToken: true, bestRecordKey: ['player-name', 'level-id', 'level-version', 'character'] }),
@@ -52290,7 +53036,12 @@
 
     let dreamCaptureScene = '';
     function maintainDreamCapturePerformancePressure() {
-      if (dreamCaptureScene !== 'performance') return;
+      if (dreamCaptureScene !== 'performance' && dreamCaptureScene !== 'shark-performance') return;
+      if (dreamCaptureScene === 'shark-performance' && boss?.kind === 'dreamshark') {
+        let sharkGuard = 0;
+        while (dreamSyncBulletBudget(true) < 84 && sharkGuard++ < 8) dreamSharkEmitPhaseSample(Math.max(0, bossPhase));
+        return;
+      }
       let guard = 0;
       while (enemyBullets.filter(b => b && b.dream).length < 84 && guard++ < 6) {
         if (dreamRun.stageId === DREAM_STAGE3_ID) {
@@ -52350,6 +53101,22 @@
         const nodeGridBottom = DREAM_LOBBY_LAYOUT.nodeTop + DREAM_LOBBY_LAYOUT.nodeRowGap + DREAM_LOBBY_LAYOUT.nodeHeight;
         if (nodeGridBottom + DREAM_LOBBY_LAYOUT.minimumSectionGap > DREAM_LOBBY_LAYOUT.tabTop) layoutIssues.push('stage nodes overlap lobby tabs');
       }
+      const sharkActive = boss?.kind === 'dreamshark';
+      const sharkHpRate = sharkActive ? clamp(boss.hp / Math.max(1, boss.maxHp), 0, 1) : 0;
+      const sharkPhase = sharkActive ? clamp(bossPhase | 0, 0, 4) : -1;
+      const sharkVisualKey = sharkActive
+        ? (boss.dead ? 'dreamPlushSharkDeath'
+          : ((boss.hitFlash || 0) > 0 ? 'dreamPlushSharkHit' : dreamSharkPhaseAssetKey(sharkPhase)))
+        : '';
+      const sharkBoss = sharkActive ? {
+        hp: Number(boss.hp.toFixed(2)), maxHp: Number(boss.maxHp.toFixed(2)), hpRate: Number(sharkHpRate.toFixed(6)),
+        phase: sharkPhase, phaseName: activeDreamStageConfig().phaseNames[sharkPhase] || '', pose: boss.sharkPose || 'idle',
+        visualKey: sharkVisualKey, entering: (boss.sharkIntroT || 0) > 0,
+        transitioning: (boss.sharkTransition || 0) > 0, dying: !!boss.dead,
+      } : null;
+      const sharkBossUi = sharkActive
+        ? { ...dreamSharkBossUiStateForTest(boss.hp, boss.maxHp, boss.sharkHpLagRate, sharkPhase), visible: state === 'boss' }
+        : null;
       return {
         runMode,
         state,
@@ -52394,6 +53161,9 @@
         logicHash: dreamLogicHash(items),
         visualHash: dreamVisualHash(items),
         bossPhase,
+        sharkBoss,
+        sharkBossUi,
+        spriteFxKeys: spriteFx.map(fx => fx?.key || '').filter(Boolean),
         quality: qualityPreset,
         conductor: {
           phraseTime: Number((dreamRun.waveElapsed % DREAM_STAGE3_MOTION_CONFIG.phraseSeconds).toFixed(3)),
@@ -52624,16 +53394,20 @@
             : (captureLevel.id === DREAM_STAGE2_ID
               ? ['zeroCodeBolt', 'zeroBinaryOrb', 'zeroCursorShard', 'zeroCrystalShard', 'zeroCodeArrow', 'zeroCrystalNeedle', 'zeroBinaryDiamond', 'zeroDataCube', 'zeroCursor', 'zeroCrashFragment']
               : ['seraphArrowViolet', 'judgmentSpear', 'choirBloom', 'oracleOrb', 'bladeDome', 'triBlade', 'galaxyVortex', 'trinityOrb', 'chainLink', 'tentacleShard', 'wireOrb', 'spiralHalo']);
+          const labColumns = captureLevel.id === DREAM_STAGE3_ID ? 4 : 3;
           for (let i = 0; i < labSkins.length; i++) {
-            const column = i % 3;
-            const row = Math.floor(i / 3);
+            const column = i % labColumns;
+            const row = Math.floor(i / labColumns);
             const skinSpec = DREAM_BULLET_SKINS[labSkins[i]];
-            const direction = column === 0 ? 1 : (column === 2 ? -1 : (row & 1 ? 0.72 : -0.72));
-            const angle = column === 1 ? (direction > 0 ? 0.42 : Math.PI - 0.42) : (direction > 0 ? 0 : Math.PI);
+            const stage3Lab = captureLevel.id === DREAM_STAGE3_ID;
+            const direction = stage3Lab ? (column < labColumns / 2 ? 1 : -1) : (column === 0 ? 1 : (column === 2 ? -1 : (row & 1 ? 0.72 : -0.72)));
+            const angle = stage3Lab ? (direction > 0 ? 0.12 : Math.PI - 0.12) : (column === 1 ? (direction > 0 ? 0.42 : Math.PI - 0.42) : (direction > 0 ? 0 : Math.PI));
             const baseSpeed = 92 + row * 12 + column * 7;
             // 验收场同时保留慢速体积弹与高速方向弹，确保短尾迹的出现和完整消散都能被多帧捕获。
             const speed = skinSpec.directional ? Math.max(baseSpeed, 168 + row * 4) : baseSpeed;
-            addDreamBullet(column === 0 ? 118 : (column === 2 ? W - 118 : W * 0.5), 236 + row * 205, Math.cos(angle) * speed, Math.sin(angle) * speed, {
+            const labX = stage3Lab ? 92 + column * ((W - 184) / (labColumns - 1)) : (column === 0 ? 118 : (column === 2 ? W - 118 : W * 0.5));
+            const labY = stage3Lab ? 168 + row * 178 : 236 + row * 205;
+            addDreamBullet(labX, labY, Math.cos(angle) * speed, Math.sin(angle) * speed, {
               r: 7.2, damage: 0, life: 20, skin: labSkins[i], visualIndex: i,
               style: i % 4 === 0 ? 'aimed' : (i % 4 === 1 ? 'hazard' : (i % 4 === 2 ? 'spread' : 'deco')),
               shape: skinSpec.directional ? 'needle' : 'orb',
@@ -52661,26 +53435,84 @@
             });
           }
           dissolveDreamBullets('capture');
-        } else if (scene === 'boss') {
+        } else if (scene === 'boss' || ['shark-entry', 'shark-hp', 'shark-hit', 'shark-transition', 'shark-death', 'shark-performance'].includes(scene)) {
           dreamUi.open = false;
           if (captureConfig.hasBoss === false || !captureLevel.boss) {
-            state = 'mobs'; boss = null; bossKind = null; setMessage('本期小怪篇 · Boss构筑中', 999);
+            state = 'mobs'; boss = null; bossKind = null; setMessage('该梦境尚未开放Boss', 999);
           } else {
-          state = 'boss'; bossKind = captureLevel.boss; randomBackgroundState.boss = captureLevel.bossBackground; stageTheme = themeForBackgroundKey(captureLevel.bossBackground); spawnBoss(); boss.inv = 0; boss.t = 5;
-          bossPhase = Math.max(0, Math.min(captureConfig.phaseNames.length - 1, Number(options.phase ?? 0) | 0));
-          const thresholds = captureConfig.phaseThresholds;
-          const phaseRates = [0.94];
-          for (let phaseIndex = 1; phaseIndex <= thresholds.length; phaseIndex++) {
-            const upper = thresholds[phaseIndex - 1];
-            const lower = phaseIndex < thresholds.length ? thresholds[phaseIndex] : 0;
-            phaseRates.push((upper + lower) * 0.5);
-          }
-          boss.hp = boss.maxHp * (phaseRates[bossPhase] || 0.08);
-          boss._dreamDamageCheckpoint = boss.hp;
-          boss.dmgCredit = boss.dmgCreditMax;
-          patternTimer = Number(options.elapsed) || 2.2;
-          if (captureLevel.id === DREAM_STAGE2_ID) dreamSuiyiPatterns(patternTimer, 1 / 60);
-          else dreamSeraphPatterns(patternTimer, 1 / 60);
+            state = scene === 'shark-entry' ? 'bossIntro' : 'boss';
+            stateTimer = scene === 'shark-entry' ? 2.25 : 0;
+            bossKind = captureLevel.boss;
+            randomBackgroundState.boss = captureLevel.bossBackground;
+            stageTheme = themeForBackgroundKey(captureLevel.bossBackground);
+            spawnBoss();
+            if (scene !== 'shark-entry') {
+              message = '';
+              messageTimer = 0;
+            }
+            boss.inv = 0;
+            boss.t = 5;
+            const requestedPhase = Math.max(0, Math.min(captureConfig.phaseNames.length - 1, Number(options.phase ?? (scene === 'shark-performance' ? 4 : 0)) | 0));
+            const thresholds = captureConfig.phaseThresholds;
+            const phaseRates = [0.94];
+            for (let phaseIndex = 1; phaseIndex <= thresholds.length; phaseIndex++) {
+              const upper = thresholds[phaseIndex - 1];
+              const lower = phaseIndex < thresholds.length ? thresholds[phaseIndex] : 0;
+              phaseRates.push((upper + lower) * 0.5);
+            }
+            const requestedRate = options.hpRate == null
+              ? (phaseRates[requestedPhase] || 0.08)
+              : clamp(Number(options.hpRate) || 0, 0, 1);
+            bossPhase = requestedPhase;
+            boss.hp = boss.maxHp * requestedRate;
+            boss._dreamDamageCheckpoint = boss.hp;
+            boss.dmgCredit = boss.dmgCreditMax;
+            boss.sharkHpRate = requestedRate;
+            boss.sharkHpLastRate = requestedRate;
+            boss.sharkHpLagRate = options.lagRate == null ? Math.min(1, requestedRate + 0.14) : clamp(Number(options.lagRate) || 0, requestedRate, 1);
+            patternTimer = Number(options.elapsed) || 2.2;
+
+            if (boss.kind === 'dreamshark') {
+              const captureFrame = Math.max(0, Number(options.frame) || 0);
+              if (scene === 'shark-entry') {
+                boss.sharkIntroT = Math.max(0, DREAM_SHARK_VISUAL_CONFIG.introSeconds - captureFrame / 60);
+                boss.sharkPose = boss.sharkIntroT > 0 ? 'entry' : 'idle';
+              } else {
+                boss.sharkIntroT = 0;
+                boss.sharkPose = 'idle';
+              }
+              if (scene === 'shark-hit') {
+                boss.hitFlash = DREAM_SHARK_VISUAL_CONFIG.hitPoseSeconds;
+                boss.sharkPose = 'hit';
+                dreamTechFx('dreamPlushSharkIceBurst', boss.x, boss.y, 150, 0.40, 0.1, 0.90);
+              } else if (scene === 'shark-transition') {
+                boss.sharkPrevPhase = Math.max(0, requestedPhase - 1);
+                boss.sharkTransition = DREAM_SHARK_VISUAL_CONFIG.phaseTransitionSeconds;
+                boss.sharkTransitionMax = DREAM_SHARK_VISUAL_CONFIG.phaseTransitionSeconds;
+                boss.sharkPose = 'transition';
+                dreamTechFx(requestedPhase >= 4 ? 'dreamPlushSharkVoidBurst' : 'dreamPlushSharkShield', boss.x, boss.y, 286, 0.72, 0, 0.90);
+              } else if (scene === 'shark-death') {
+                state = 'bossOutro';
+                stateTimer = captureFrame / 60;
+                boss.dead = true;
+                boss.hp = 0;
+                boss.sharkHpRate = 0;
+                boss.sharkPose = 'death';
+                dreamTechFx('dreamPlushSharkIceBurst', boss.x, boss.y, 350, 1.05, -0.2, 0.94);
+                dreamTechFx('dreamPlushSharkVoidBurst', boss.x, boss.y, 420, 1.35, 0.2, 0.92);
+                dissolveDreamBullets('capture-shark-death');
+              } else {
+                dreamSharkEmitPhaseSample(requestedPhase);
+              }
+              if (scene === 'shark-performance') {
+                let guard = 0;
+                while (dreamSyncBulletBudget(true) < 84 && guard++ < 12) dreamSharkEmitPhaseSample(requestedPhase);
+              }
+            } else if (captureLevel.id === DREAM_STAGE2_ID) {
+              dreamSuiyiPatterns(patternTimer, 1 / 60);
+            } else {
+              dreamSeraphPatterns(patternTimer, 1 / 60);
+            }
           }
         } else if (scene === 'result') {
           state = 'win'; dreamUi.open = false; dreamRun.finished = true;
@@ -52752,6 +53584,8 @@
           time += dt; stateTimer += dt; updateCuteUiMotion(dt);
           if (state === 'mobs') { updateEnemies(dt); updateDreamMobStage(dt); }
           else if (state === 'boss') updateBoss(dt);
+          else if (state === 'bossIntro') updateBossIntro(dt);
+          else if (state === 'bossOutro') updateBossOutro(dt);
           updateEnemyBullets(dt); updateWarnings(dt); updateLasers(dt); updateParticles(dt); updateSpriteFx(dt); updateDamageTexts(dt);
           player.inv = Math.max(0, (player.inv || 0) - dt);
           hurtT = Math.max(0, hurtT - dt);

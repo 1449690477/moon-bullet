@@ -24,7 +24,7 @@ function fileSha256(file) {
 describe('Dream Stage 3 generated asset contract', () => {
   it('registers every bullet and VFX glow as a first-class non-colliding runtime asset', () => {
     const bases = Object.entries(manifest.assets).filter(([, asset]) => asset.category === 'bullet' || asset.category === 'vfx');
-    expect(bases).toHaveLength(25);
+    expect(bases).toHaveLength(37);
 
     for (const [key, asset] of bases) {
       const expectedGlowKey = `${key}Glow`;
@@ -48,17 +48,20 @@ describe('Dream Stage 3 generated asset contract', () => {
 
   it('keeps every declared runtime file present, hashed, padded, and chroma-clean', () => {
     expect(manifest.formatVersion).toBe(2);
-    expect(Object.keys(manifest.assets)).toHaveLength(87);
+    expect(Object.keys(manifest.assets)).toHaveLength(131);
     expect(report).toMatchObject({
-      generatedAssetKeys: 87,
+      generatedAssetKeys: 131,
       categories: {
         background: 1,
         'background-light': 1,
         enemy: 35,
-        bullet: 15,
-        'bullet-glow': 15,
-        vfx: 10,
-        'vfx-glow': 10,
+        boss: 7,
+        'boss-glow': 7,
+        bullet: 21,
+        'bullet-glow': 21,
+        vfx: 16,
+        'vfx-glow': 16,
+        'boss-ui': 6,
       },
       greenValidation: { status: 'pass', assetsWithResidual: [] },
       edgeValidation: { status: 'pass', assetsWithVisibleEdgeTouch: [] },
@@ -78,7 +81,7 @@ describe('Dream Stage 3 generated asset contract', () => {
   it('matches all Stage 3 bullet/VFX manifest keys to explicit runtime loader paths', () => {
     const renderedAssets = Object.entries(manifest.assets).filter(([, asset]) =>
       ['bullet', 'bullet-glow', 'vfx', 'vfx-glow'].includes(asset.category));
-    expect(renderedAssets).toHaveLength(50);
+    expect(renderedAssets).toHaveLength(74);
     for (const [key, asset] of renderedAssets) {
       const escapedPath = asset.file.replaceAll('/', '\\/').replaceAll('.', '\\.');
       expect(indexSource, `${key}: runtime key/path`).toMatch(new RegExp(`${key}\\s*:\\s*['\"]${escapedPath}['\"]`));
@@ -91,5 +94,58 @@ describe('Dream Stage 3 generated asset contract', () => {
     expect(processorSource).toContain('validate_unowned_files(preserved_files)');
     expect(processorSource).not.toMatch(/\.(?:unlink|rmdir)\s*\(/);
     expect(processorSource).not.toContain('shutil.rmtree');
+  });
+
+  it('ships the shark boss, six readable bullet pairs, six layered VFX pairs, and composable HP UI', () => {
+    const bossStates = ['Idle', 'Attack', 'Ice', 'Rage', 'Void', 'Hit', 'Death'];
+    for (const state of bossStates) {
+      const key = `dreamPlushShark${state}`;
+      const glowKey = `${key}Glow`;
+      expect(manifest.assets[key]).toMatchObject({
+        category: 'boss',
+        family: 'shark',
+        state,
+        glowKey,
+        collision: 'body-only',
+        keyGreenPixels: 0,
+        edgeTouchPixels: 0,
+      });
+      expect(manifest.assets[glowKey]).toMatchObject({
+        category: 'boss-glow',
+        baseOf: key,
+        blendMode: 'lighter',
+        collision: 'none',
+      });
+    }
+
+    const bullets = ['IceSpear', 'IceShard', 'Snowball', 'Bubble', 'WaveCrescent', 'VoidOrb'];
+    for (const name of bullets) {
+      const key = `dreamPlushShark${name}`;
+      expect(manifest.assets[key]).toMatchObject({ category: 'bullet', family: 'shark', collision: 'body-only' });
+      expect(manifest.assets[`${key}Glow`]).toMatchObject({ category: 'bullet-glow', collision: 'none' });
+    }
+    const iceShard = manifest.assets.dreamPlushSharkIceShard;
+    const [left, top, right, bottom] = iceShard.alphaBounds;
+    expect(Math.max(right - left, bottom - top) / Math.max(...iceShard.size)).toBeGreaterThanOrEqual(0.55);
+    expect(iceShard.forwardAxis).toBe('left');
+
+    const vfx = ['Muzzle', 'IceBurst', 'Whirlpool', 'Wave', 'VoidBurst', 'Shield'];
+    for (const name of vfx) {
+      const key = `dreamPlushShark${name}`;
+      expect(manifest.assets[key]).toMatchObject({ category: 'vfx', family: 'shark', collision: 'none' });
+      expect(manifest.assets[`${key}Glow`]).toMatchObject({ category: 'vfx-glow', collision: 'none' });
+    }
+
+    const uiRoles = {
+      dreamPlushSharkPortrait: 'portrait',
+      dreamPlushSharkBossBarFrame: 'frame-overlay',
+      dreamPlushSharkBossBarEmpty: 'empty-track',
+      dreamPlushSharkBossBarFill: 'live-fill',
+      dreamPlushSharkBossBarCritical: 'critical-fill',
+      dreamPlushSharkBossBarGloss: 'gloss-overlay',
+    };
+    for (const [key, role] of Object.entries(uiRoles)) {
+      expect(manifest.assets[key]).toMatchObject({ category: 'boss-ui', family: 'shark', role, collision: 'none' });
+    }
   });
 });

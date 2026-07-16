@@ -1,8 +1,8 @@
 # Dream Stage 3 Asset Report
 
 - Source folder: `moon-bullet-main/梦境第三关开发` (read-only)
-- Source files: 20 / 21267451 bytes
-- Runtime asset keys: 87
+- Source files: 29 / 32301101 bytes
+- Runtime asset keys: 131
 - Near-key green validation: PASS (0 visible residual pixels)
 - Transparent padding validation: PASS (0 visible edge-touch pixels)
 - Hand-authored files preserved: 0 (generator never clears output folders)
@@ -77,6 +77,50 @@
 - `dreamPlushPenguinMoveR` -> `assets/dream_stage3/enemies/dream_plush_penguin_move_r.png`
 - `dreamPlushPenguinMuzzle` -> `assets/dream_stage3/vfx/dream_plush_penguin_muzzle.png`
 - `dreamPlushPenguinMuzzleGlow` -> `assets/dream_stage3/vfx/dream_plush_penguin_muzzle_glow.png`
+- `dreamPlushSharkAttack` -> `assets/dream_stage3/boss/shark_attack.png`
+- `dreamPlushSharkAttackGlow` -> `assets/dream_stage3/boss/shark_attack_glow.png`
+- `dreamPlushSharkBossBarCritical` -> `assets/dream_stage3/ui/shark_boss_bar_critical.png`
+- `dreamPlushSharkBossBarEmpty` -> `assets/dream_stage3/ui/shark_boss_bar_empty.png`
+- `dreamPlushSharkBossBarFill` -> `assets/dream_stage3/ui/shark_boss_bar_fill.png`
+- `dreamPlushSharkBossBarFrame` -> `assets/dream_stage3/ui/shark_boss_bar_frame.png`
+- `dreamPlushSharkBossBarGloss` -> `assets/dream_stage3/ui/shark_boss_bar_gloss.png`
+- `dreamPlushSharkBubble` -> `assets/dream_stage3/bullets/shark_bubble.png`
+- `dreamPlushSharkBubbleGlow` -> `assets/dream_stage3/bullets/shark_bubble_glow.png`
+- `dreamPlushSharkDeath` -> `assets/dream_stage3/boss/shark_death.png`
+- `dreamPlushSharkDeathGlow` -> `assets/dream_stage3/boss/shark_death_glow.png`
+- `dreamPlushSharkHit` -> `assets/dream_stage3/boss/shark_hit.png`
+- `dreamPlushSharkHitGlow` -> `assets/dream_stage3/boss/shark_hit_glow.png`
+- `dreamPlushSharkIce` -> `assets/dream_stage3/boss/shark_ice.png`
+- `dreamPlushSharkIceBurst` -> `assets/dream_stage3/vfx/shark_ice_burst.png`
+- `dreamPlushSharkIceBurstGlow` -> `assets/dream_stage3/vfx/shark_ice_burst_glow.png`
+- `dreamPlushSharkIceGlow` -> `assets/dream_stage3/boss/shark_ice_glow.png`
+- `dreamPlushSharkIceShard` -> `assets/dream_stage3/bullets/shark_ice_shard.png`
+- `dreamPlushSharkIceShardGlow` -> `assets/dream_stage3/bullets/shark_ice_shard_glow.png`
+- `dreamPlushSharkIceSpear` -> `assets/dream_stage3/bullets/shark_ice_spear.png`
+- `dreamPlushSharkIceSpearGlow` -> `assets/dream_stage3/bullets/shark_ice_spear_glow.png`
+- `dreamPlushSharkIdle` -> `assets/dream_stage3/boss/shark_idle.png`
+- `dreamPlushSharkIdleGlow` -> `assets/dream_stage3/boss/shark_idle_glow.png`
+- `dreamPlushSharkMuzzle` -> `assets/dream_stage3/vfx/shark_muzzle.png`
+- `dreamPlushSharkMuzzleGlow` -> `assets/dream_stage3/vfx/shark_muzzle_glow.png`
+- `dreamPlushSharkPortrait` -> `assets/dream_stage3/ui/shark_portrait.png`
+- `dreamPlushSharkRage` -> `assets/dream_stage3/boss/shark_rage.png`
+- `dreamPlushSharkRageGlow` -> `assets/dream_stage3/boss/shark_rage_glow.png`
+- `dreamPlushSharkShield` -> `assets/dream_stage3/vfx/shark_shield.png`
+- `dreamPlushSharkShieldGlow` -> `assets/dream_stage3/vfx/shark_shield_glow.png`
+- `dreamPlushSharkSnowball` -> `assets/dream_stage3/bullets/shark_snowball.png`
+- `dreamPlushSharkSnowballGlow` -> `assets/dream_stage3/bullets/shark_snowball_glow.png`
+- `dreamPlushSharkVoid` -> `assets/dream_stage3/boss/shark_void.png`
+- `dreamPlushSharkVoidBurst` -> `assets/dream_stage3/vfx/shark_void_burst.png`
+- `dreamPlushSharkVoidBurstGlow` -> `assets/dream_stage3/vfx/shark_void_burst_glow.png`
+- `dreamPlushSharkVoidGlow` -> `assets/dream_stage3/boss/shark_void_glow.png`
+- `dreamPlushSharkVoidOrb` -> `assets/dream_stage3/bullets/shark_void_orb.png`
+- `dreamPlushSharkVoidOrbGlow` -> `assets/dream_stage3/bullets/shark_void_orb_glow.png`
+- `dreamPlushSharkWave` -> `assets/dream_stage3/vfx/shark_wave.png`
+- `dreamPlushSharkWaveCrescent` -> `assets/dream_stage3/bullets/shark_wave_crescent.png`
+- `dreamPlushSharkWaveCrescentGlow` -> `assets/dream_stage3/bullets/shark_wave_crescent_glow.png`
+- `dreamPlushSharkWaveGlow` -> `assets/dream_stage3/vfx/shark_wave_glow.png`
+- `dreamPlushSharkWhirlpool` -> `assets/dream_stage3/vfx/shark_whirlpool.png`
+- `dreamPlushSharkWhirlpoolGlow` -> `assets/dream_stage3/vfx/shark_whirlpool_glow.png`
 - `dreamPlushSnowball` -> `assets/dream_stage3/bullets/dream_plush_snowball.png`
 - `dreamPlushSnowballGlow` -> `assets/dream_stage3/bullets/dream_plush_snowball_glow.png`
 - `dreamPlushStarImpact` -> `assets/dream_stage3/vfx/dream_plush_star_impact.png`
@@ -105,5 +149,7 @@
 - Bullet/VFX glow is extracted from clean pre-outline art; broad material and dark readability outlines stay non-emissive.
 - The selective additive mask keeps bright local detail, saturated energy veins, and a narrow lit-side edge.
 - Ice spear and meteor star retain only a centered core plus short material taper; long zero-damage trails are runtime-only.
+- Shark boss forms share a stable 448x384 anchor; phase glow is a separate additive energy-only layer.
+- Shark HP frame, track, live fill, critical fill, portrait, and gloss remain independent for real-time clipping.
 - Trails and VFX remain presentation-only and must never participate in collision.
 - Desktop/mobile room images are pregraded so runtime does not pay per-frame filter costs.

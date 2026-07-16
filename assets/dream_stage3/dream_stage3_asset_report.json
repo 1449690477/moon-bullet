@@ -1,16 +1,19 @@
 {
   "sourceFolderReadOnly": "moon-bullet-main/梦境第三关开发",
-  "sourceCount": 20,
-  "sourceBytes": 21267451,
-  "generatedAssetKeys": 87,
+  "sourceCount": 29,
+  "sourceBytes": 32301101,
+  "generatedAssetKeys": 131,
   "categories": {
     "background": 1,
     "background-light": 1,
     "enemy": 35,
-    "bullet": 15,
-    "bullet-glow": 15,
-    "vfx": 10,
-    "vfx-glow": 10
+    "boss": 7,
+    "boss-glow": 7,
+    "bullet": 21,
+    "bullet-glow": 21,
+    "vfx": 16,
+    "vfx-glow": 16,
+    "boss-ui": 6
   },
   "greenValidation": {
     "rule": "near #00ff00 within 92 RGB distance on visible pixels",
@@ -46,6 +49,15 @@
     "星星弹幕 和 好兄弟弹幕.png": "633363d7507e2f540ef503b0eac1efb3b339351c704d269e13d52ccf4b8507e1",
     "星星小怪.png": "ef5ef313155fb1ca8dddfb0742d6b9d5c8b7707b0ca827a1af41883a8a6d5321",
     "星星小怪姿态2.png": "ca71709bfe56b98e31b292510151cad3a01168c567074057bd807df4e1b01ca0",
-    "星星弹幕2.png": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828"
+    "星星弹幕2.png": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828",
+    "具体形象和特下.png": "0c1df0f86e7c5ab7b22e45ce5449c55e142bc4236771c45583a84b3bb39f74b3",
+    "具体的技能特效.png": "d1a177019838aaf4f831bf2104a183b4fc317e00e5a008a0894c7b57a22751cf",
+    "具体的血条素材.png": "550df4669e3293b52cfb2e4fc0ba206fd27a4867a85496267b9e19f5ebc36a9b",
+    "形象和血条UI.png": "51a334fcd91c303bf0aeedf81f186fd054afd465f74e89987e638daec0a2da08",
+    "所有的Ui 和图标.png": "f52f64c0650cbac3e02af07ab9e55b95858b30774cf4ea15127ac33ff38f3997",
+    "技能特效忒土.png": "46cc3db42f0cfccba0828fd857871f022a20afdfc9965f40f0029fa88dc17bd2",
+    "技能贴图.png": "a32d84a8f1c6d197a478769fa2abc9d2911d5e565e92e17db96a3fadd1609bbd",
+    "血条UI和图标.png": "58a77bdbc170e9aff0b0e6969ad480968b1b546abccd38845515b14a4569b4eb",
+    "鲨鱼外形具体.png": "8b74baf50c03de001dfb4789e08cf7e5af765c8106d32866a6edabed173fbfba"
   }
 }

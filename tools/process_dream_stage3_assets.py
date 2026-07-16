@@ -27,6 +27,8 @@ BACKGROUND_DIR = OUTPUT_DIR / "backgrounds"
 ENEMY_DIR = OUTPUT_DIR / "enemies"
 BULLET_DIR = OUTPUT_DIR / "bullets"
 VFX_DIR = OUTPUT_DIR / "vfx"
+BOSS_DIR = OUTPUT_DIR / "boss"
+UI_DIR = OUTPUT_DIR / "ui"
 
 SOURCES = {
     "room": "场景地图.png",
@@ -49,9 +51,29 @@ SOURCES = {
     "star_base": "星星小怪.png",
     "star_pose": "星星小怪姿态2.png",
     "star_fx": "星星弹幕2.png",
+    "shark_form_detail": "鲨鱼boss开发/具体形象和特下.png",
+    "shark_fx_detail": "鲨鱼boss开发/具体的技能特效.png",
+    "shark_hp_detail": "鲨鱼boss开发/具体的血条素材.png",
+    "shark_form_ui": "鲨鱼boss开发/形象和血条UI.png",
+    "shark_ui_all": "鲨鱼boss开发/所有的Ui 和图标.png",
+    "shark_fx_rough": "鲨鱼boss开发/技能特效忒土.png",
+    "shark_fx_sheet": "鲨鱼boss开发/技能贴图.png",
+    "shark_ui_hp": "鲨鱼boss开发/血条UI和图标.png",
+    "shark_form_sheet": "鲨鱼boss开发/鲨鱼外形具体.png",
 }
 
 SOURCE_PATHS = {key: SOURCE_DIR / name for key, name in SOURCES.items()}
+
+EXPECTED_SOURCE_SIZES = {
+    **{key: (1254, 1254) for key in SOURCES if not key.startswith("shark_") and key != "room"},
+    "room": (1024, 1536),
+    "shark_form_ui": (1536, 1024),
+    **{
+        key: (1448, 1086)
+        for key in SOURCES
+        if key.startswith("shark_") and key != "shark_form_ui"
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -63,6 +85,9 @@ class CropSpec:
     family: str
     protect_green: bool = False
     forward_axis: str | None = None
+    file_stem: str | None = None
+    keep_largest: bool = False
+    treatment: str | None = None
 
 
 ENEMY_DEFS = {
@@ -143,6 +168,43 @@ VFX_SPECS = (
     CropSpec("dreamPlushStarImpact", "star_fx", (990, 1025, 1235, 1235), (256, 256), "star"),
 )
 
+# The shark references are irregular transparent collages, not frame grids.
+# Keep every crop explicit so generator output remains deterministic when the
+# source folder gains more concept sheets later.
+SHARK_BOSS_SPECS = (
+    CropSpec("dreamPlushSharkIdle", "shark_form_detail", (48, 8, 350, 258), (448, 384), "shark", file_stem="shark_idle"),
+    CropSpec("dreamPlushSharkAttack", "shark_form_detail", (1202, 22, 1442, 250), (448, 384), "shark", file_stem="shark_attack"),
+    CropSpec("dreamPlushSharkIce", "shark_form_detail", (925, 38, 1195, 242), (448, 384), "shark", file_stem="shark_ice"),
+    CropSpec("dreamPlushSharkRage", "shark_form_detail", (46, 242, 330, 470), (448, 384), "shark", file_stem="shark_rage"),
+    CropSpec("dreamPlushSharkVoid", "shark_form_detail", (672, 235, 940, 470), (448, 384), "shark", file_stem="shark_void"),
+)
+
+SHARK_BULLET_SPECS = (
+    CropSpec("dreamPlushSharkIceSpear", "shark_fx_detail", (76, 15, 150, 205), (104, 176), "shark", False, "up", "shark_ice_spear"),
+    CropSpec("dreamPlushSharkIceShard", "shark_fx_detail", (738, 570, 895, 670), (160, 96), "shark", False, "left", "shark_ice_shard", True),
+    CropSpec("dreamPlushSharkSnowball", "shark_fx_detail", (288, 670, 380, 765), (112, 112), "shark", False, None, "shark_snowball", True, "snowball"),
+    CropSpec("dreamPlushSharkBubble", "shark_fx_detail", (40, 217, 128, 306), (112, 112), "shark", False, None, "shark_bubble", True),
+    CropSpec("dreamPlushSharkWaveCrescent", "shark_fx_detail", (1115, 222, 1280, 365), (176, 128), "shark", False, "left", "shark_wave_crescent"),
+    CropSpec("dreamPlushSharkVoidOrb", "shark_fx_detail", (514, 662, 665, 814), (136, 136), "shark", False, None, "shark_void_orb"),
+)
+
+SHARK_VFX_SPECS = (
+    CropSpec("dreamPlushSharkMuzzle", "shark_fx_detail", (690, 12, 908, 230), (256, 256), "shark", False, None, "shark_muzzle"),
+    CropSpec("dreamPlushSharkIceBurst", "shark_fx_sheet", (1095, 455, 1270, 605), (288, 256), "shark", False, None, "shark_ice_burst"),
+    CropSpec("dreamPlushSharkWhirlpool", "shark_fx_detail", (1098, 20, 1294, 210), (288, 256), "shark", False, None, "shark_whirlpool"),
+    CropSpec("dreamPlushSharkWave", "shark_fx_sheet", (15, 445, 225, 610), (320, 256), "shark", False, None, "shark_wave"),
+    CropSpec("dreamPlushSharkVoidBurst", "shark_fx_detail", (770, 668, 915, 815), (256, 256), "shark", False, None, "shark_void_burst"),
+    CropSpec("dreamPlushSharkShield", "shark_fx_detail", (462, 12, 688, 234), (288, 288), "shark", False, None, "shark_shield"),
+)
+
+SHARK_UI_CROPS = {
+    "dreamPlushSharkPortrait": ("shark_ui_hp", (4, 136, 164, 288), "shark_portrait.png"),
+    "dreamPlushSharkBossBarFrame": ("shark_ui_hp", (158, 214, 812, 282), "shark_boss_bar_frame.png"),
+    "dreamPlushSharkBossBarEmpty": ("shark_hp_detail", (1090, 48, 1382, 98), "shark_boss_bar_empty.png"),
+    "dreamPlushSharkBossBarFill": ("shark_ui_hp", (170, 326, 552, 369), "shark_boss_bar_fill.png"),
+    "dreamPlushSharkBossBarCritical": ("shark_ui_hp", (170, 124, 552, 166), "shark_boss_bar_critical.png"),
+}
+
 # These two source paintings include a long baked comet tail. Runtime already
 # owns a transient, non-damaging speed trail, so keeping the painted tail would
 # make the projectile look permanently stretched even while stopped or turning.
@@ -159,6 +221,7 @@ FAMILY_OUTLINE = {
     "doll": (23, 18, 67),
     "fish": (7, 34, 64),
     "star": (73, 45, 10),
+    "shark": (5, 24, 52),
 }
 
 
@@ -372,6 +435,68 @@ def make_energy_glow(image: Image.Image) -> Image.Image:
     return layer
 
 
+def make_shark_boss_energy_glow(image: Image.Image, state: str) -> Image.Image:
+    """Keep additive light on crystals/energy, never on plush fabric or teeth."""
+
+    data = np.asarray(image.convert("RGBA"), dtype=np.float32) / 255.0
+    rgb = data[..., :3]
+    alpha = data[..., 3]
+    visible = alpha > 0.025
+    if not visible.any():
+        return Image.new("RGBA", image.size)
+
+    r, g, b = (rgb[..., index] for index in range(3))
+    value = np.max(rgb, axis=2)
+    minimum = np.min(rgb, axis=2)
+    saturation = np.divide(value - minimum, np.maximum(value, 1e-5))
+    luminance = r * 0.2126 + g * 0.7152 + b * 0.0722
+    local = ndimage.gaussian_filter(luminance, sigma=2.1)
+    detail = smoothstep(0.018, 0.16, np.clip(luminance - local, 0.0, 1.0))
+    bright = smoothstep(0.38, 0.90, luminance)
+
+    is_void = state in {"Void", "Death"}
+    if is_void:
+        purple_dominance = (r + b) * 0.5 - g
+        material = (
+            smoothstep(0.075, 0.28, purple_dominance)
+            * smoothstep(0.24, 0.72, saturation)
+            * smoothstep(0.26, 0.82, value)
+        )
+    else:
+        cool_dominance = np.maximum(b - r, g - r * 0.92)
+        material = (
+            smoothstep(0.09, 0.34, cool_dominance)
+            * smoothstep(0.28, 0.72, saturation)
+            * smoothstep(0.30, 0.88, value)
+        )
+
+    # Bright crystals and narrow painted energy veins survive; broad blue or
+    # purple fabric lacks the local-detail/brightness support and stays dark.
+    detail_support = detail * smoothstep(0.42, 0.76, value)
+    selector = material * np.maximum(detail_support, bright * 0.56)
+    selector = np.where(selector > 0.08, smoothstep(0.08, 0.72, selector), 0.0)
+    if not is_void:
+        ys, xs = np.nonzero(visible)
+        left, right = float(xs.min()), float(xs.max() + 1)
+        grid_x = np.arange(image.width, dtype=np.float32)[None, :]
+        rear_bias = smoothstep(0.40, 0.66, (grid_x - left) / max(1.0, right - left))
+        crystal_hot = smoothstep(0.66, 0.94, value) * smoothstep(0.16, 0.44, cool_dominance)
+        selector *= np.maximum(rear_bias, crystal_hot * 0.26)
+    selector *= smoothstep(0.08, 0.90, alpha) * visible
+
+    energy_rgb = np.clip(rgb * 1.16 + selector[..., None] * 0.18, 0.0, 1.0)
+    core_data = np.zeros_like(data)
+    core_data[..., :3] = energy_rgb
+    core_data[..., 3] = np.clip(alpha * selector * 0.76, 0.0, 0.78)
+    core = Image.fromarray(np.clip(core_data * 255.0, 0, 255).astype(np.uint8), "RGBA")
+    halo = core.filter(ImageFilter.GaussianBlur(1.45))
+    halo_data = np.asarray(halo, dtype=np.float32).copy()
+    halo_data[..., 3] *= 0.48
+    layer = Image.fromarray(np.clip(halo_data, 0, 255).astype(np.uint8), "RGBA")
+    layer.alpha_composite(core)
+    return layer
+
+
 def strip_static_tail(image: Image.Image, key: str) -> Image.Image:
     """Remove a baked long tail and recenter the retained projectile core."""
 
@@ -556,6 +681,103 @@ def process_enemies(manifest_assets: dict[str, dict[str, object]]) -> list[tuple
     return contact
 
 
+def process_shark_boss(manifest_assets: dict[str, dict[str, object]]) -> list[tuple[str, Path]]:
+    """Extract aligned shark forms plus derived hit/death presentation states."""
+
+    prepared: dict[str, Image.Image] = {}
+    spec_by_key = {spec.key: spec for spec in SHARK_BOSS_SPECS}
+    for spec in SHARK_BOSS_SPECS:
+        source = Image.open(SOURCE_PATHS[spec.source]).convert("RGBA")
+        crop = clean_chroma(source.crop(spec.crop), spec.protect_green)
+        prepared[spec.key] = trim(crop, padding=14)
+
+    max_w = max(frame.width for frame in prepared.values())
+    max_h = max(frame.height for frame in prepared.values())
+    common_scale = min(412 / max_w, 348 / max_h)
+    clean_rendered = {
+        key: fit_canvas(frame, (448, 384), scale=common_scale)
+        for key, frame in prepared.items()
+    }
+    clean_rendered["dreamPlushSharkHit"] = derive_hit(clean_rendered["dreamPlushSharkIdle"])
+    clean_rendered["dreamPlushSharkDeath"] = derive_death(clean_rendered["dreamPlushSharkVoid"])
+
+    states = {
+        "dreamPlushSharkIdle": "Idle",
+        "dreamPlushSharkAttack": "Attack",
+        "dreamPlushSharkIce": "Ice",
+        "dreamPlushSharkRage": "Rage",
+        "dreamPlushSharkVoid": "Void",
+        "dreamPlushSharkHit": "Hit",
+        "dreamPlushSharkDeath": "Death",
+    }
+    contact: list[tuple[str, Path]] = []
+    for key, state in states.items():
+        clean = clean_rendered[key]
+        file_stem = spec_by_key[key].file_stem if key in spec_by_key else f"shark_{state.lower()}"
+        assert file_stem is not None
+        path = BOSS_DIR / f"{file_stem}.png"
+        glow_path = BOSS_DIR / f"{file_stem}_glow.png"
+        glow_key = f"{key}Glow"
+        save_png(add_readability_outline(clean, "shark"), path)
+        save_png(make_shark_boss_energy_glow(clean, state), glow_path)
+
+        if key in spec_by_key:
+            spec = spec_by_key[key]
+            source_meta: dict[str, object] = {
+                "source": SOURCES[spec.source],
+                "crop": list(spec.crop),
+            }
+        else:
+            source_key = "dreamPlushSharkIdle" if state == "Hit" else "dreamPlushSharkVoid"
+            source_meta = {"derivedFrom": source_key, "treatment": state.lower()}
+
+        manifest_assets[key] = asset_record(
+            path,
+            category="boss",
+            family="shark",
+            state=state,
+            anchor=[224, 192],
+            muzzle=[164, 188],
+            glowKey=glow_key,
+            glowFile=str(glow_path.relative_to(ROOT)),
+            glowSha256=sha256(glow_path),
+            glowTreatment="shark-crystal-and-energy-mask-before-outline",
+            collision="body-only",
+            **source_meta,
+        )
+        manifest_assets[glow_key] = asset_record(
+            glow_path,
+            category="boss-glow",
+            family="shark",
+            state=state,
+            baseOf=key,
+            blendMode="lighter",
+            sourceStage="clean-fitted-before-outline",
+            maskTreatment="crystal+energy-veins only; plush fabric and teeth excluded",
+            collision="none",
+            **source_meta,
+        )
+        contact.append((key, path))
+    return contact
+
+
+def apply_crop_treatment(image: Image.Image, treatment: str | None) -> Image.Image:
+    if treatment != "snowball":
+        return image
+    data = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
+    alpha = data[..., 3]
+    rgb = data[..., :3]
+    luminance = rgb[..., 0] * 0.2126 + rgb[..., 1] * 0.7152 + rgb[..., 2] * 0.0722
+    cool = np.stack(
+        [luminance * 0.70 + 102, luminance * 0.82 + 104, luminance * 0.96 + 106],
+        axis=2,
+    )
+    rgb[:] = np.clip(rgb * 0.30 + cool * 0.70, 0, 255)
+    data[..., 3] = alpha
+    data[alpha < 2] = 0
+    return Image.fromarray(data.astype(np.uint8), "RGBA")
+
+
 def process_crop_assets(
     specs: Iterable[CropSpec],
     destination: Path,
@@ -567,12 +789,22 @@ def process_crop_assets(
         source = Image.open(SOURCE_PATHS[spec.source]).convert("RGBA")
         crop = source.crop(spec.crop)
         crop = clean_chroma(crop, spec.protect_green)
-        crop = trim(crop, padding=12)
-        clean_fitted = fit_canvas(crop, spec.canvas, padding=12)
+        if spec.keep_largest:
+            crop = keep_largest_component(crop)
+        crop = apply_crop_treatment(crop, spec.treatment)
+        inner_padding = 4 if spec.keep_largest else 12
+        fit_padding = 8 if spec.keep_largest else 12
+        crop = trim(crop, padding=inner_padding)
+        if spec.keep_largest:
+            upscale = min((spec.canvas[0] - fit_padding * 2) / crop.width, (spec.canvas[1] - fit_padding * 2) / crop.height)
+            clean_fitted = fit_canvas(crop, spec.canvas, scale=upscale)
+        else:
+            clean_fitted = fit_canvas(crop, spec.canvas, padding=fit_padding)
         clean_fitted = strip_static_tail(clean_fitted, spec.key)
         fitted = add_readability_outline(clean_fitted, spec.family)
-        path = destination / f"{slug_from_key(spec.key)}.png"
-        glow_path = destination / f"{slug_from_key(spec.key)}_glow.png"
+        file_stem = spec.file_stem or slug_from_key(spec.key)
+        path = destination / f"{file_stem}.png"
+        glow_path = destination / f"{file_stem}_glow.png"
         glow_key = f"{spec.key}Glow"
         save_png(fitted, path)
         save_png(make_energy_glow(clean_fitted), glow_path)
@@ -588,6 +820,7 @@ def process_crop_assets(
             glowTreatment="selective-energy-mask-before-outline",
             forwardAxis=spec.forward_axis,
             collision="body-only" if category == "bullet" else "none",
+            **({"treatment": spec.treatment} if spec.treatment else {}),
             **({"staticTailTreatment": "runtime-transient-trail-only"} if spec.key in STATIC_TAIL_SPLIT_RULES else {}),
         )
         manifest_assets[glow_key] = asset_record(
@@ -603,6 +836,128 @@ def process_crop_assets(
             **({"staticTailTreatment": "removed-before-energy-mask"} if spec.key in STATIC_TAIL_SPLIT_RULES else {}),
         )
         contact.append((spec.key, path))
+    return contact
+
+
+def stretch_ui_strip(image: Image.Image, size: tuple[int, int] = (640, 48)) -> Image.Image:
+    """Nine-slice a prepared HP strip so end caps stay crisp at HUD width."""
+
+    bbox = image.getchannel("A").getbbox()
+    if not bbox:
+        raise RuntimeError("empty shark HP strip")
+    part = image.crop(bbox)
+    out_w, out_h = size
+    pad_x, pad_y = 10, 7
+    draw_h = out_h - pad_y * 2
+    source_cap = max(4, min(24, part.width // 5))
+    dest_cap = min(30, (out_w - pad_x * 2) // 5)
+    center_w = out_w - pad_x * 2 - dest_cap * 2
+    left = part.crop((0, 0, source_cap, part.height)).resize((dest_cap, draw_h), Image.Resampling.LANCZOS)
+    center = part.crop((source_cap, 0, part.width - source_cap, part.height)).resize(
+        (center_w, draw_h), Image.Resampling.LANCZOS
+    )
+    right = part.crop((part.width - source_cap, 0, part.width, part.height)).resize(
+        (dest_cap, draw_h), Image.Resampling.LANCZOS
+    )
+    canvas = Image.new("RGBA", size)
+    canvas.alpha_composite(left, (pad_x, pad_y))
+    canvas.alpha_composite(center, (pad_x + dest_cap, pad_y))
+    canvas.alpha_composite(right, (pad_x + dest_cap + center_w, pad_y))
+    return canvas
+
+
+def make_ui_frame_overlay(image: Image.Image) -> Image.Image:
+    """Remove the baked empty track so dynamic fill can show under the frame."""
+
+    data = np.asarray(image.convert("RGBA"), dtype=np.uint8).copy()
+    height, width = data.shape[:2]
+    left, right = round(width * 0.075), round(width * 0.94)
+    top, bottom = round(height * 0.34), round(height * 0.70)
+    data[top:bottom, left:right] = 0
+    cut = Image.fromarray(data, "RGBA")
+    return fit_canvas(trim(cut, padding=8), (720, 96), padding=10)
+
+
+def make_ui_gloss(fill: Image.Image) -> Image.Image:
+    data = np.asarray(fill.convert("RGBA"), dtype=np.float32) / 255.0
+    rgb = data[..., :3]
+    alpha = data[..., 3]
+    luminance = rgb[..., 0] * 0.2126 + rgb[..., 1] * 0.7152 + rgb[..., 2] * 0.0722
+    grid_y = np.linspace(0.0, 1.0, fill.height, dtype=np.float32)[:, None]
+    upper_band = np.exp(-((grid_y - 0.33) / 0.17) ** 2)
+    detail = smoothstep(0.42, 0.90, luminance)
+    gloss_alpha = alpha * upper_band * (0.18 + detail * 0.38)
+    out = np.zeros_like(data)
+    out[..., :3] = np.array([1.0, 0.94, 0.82], dtype=np.float32)
+    out[..., 3] = np.clip(gloss_alpha, 0.0, 0.52)
+    return Image.fromarray(np.clip(out * 255.0, 0, 255).astype(np.uint8), "RGBA")
+
+
+def tint_empty_track_ice(image: Image.Image) -> Image.Image:
+    data = np.asarray(image.convert("RGBA"), dtype=np.float32).copy()
+    rgb = data[..., :3]
+    alpha = data[..., 3]
+    luminance = rgb[..., 0] * 0.2126 + rgb[..., 1] * 0.7152 + rgb[..., 2] * 0.0722
+    rgb[..., 0] = luminance * 0.15 + 4
+    rgb[..., 1] = luminance * 0.43 + 12
+    rgb[..., 2] = luminance * 0.72 + 24
+    data[..., 3] = alpha
+    data[alpha < 2] = 0
+    return Image.fromarray(np.clip(data, 0, 255).astype(np.uint8), "RGBA")
+
+
+def process_shark_ui(manifest_assets: dict[str, dict[str, object]]) -> list[tuple[str, Path]]:
+    contact: list[tuple[str, Path]] = []
+    rendered: dict[str, Image.Image] = {}
+    for key, (source_key, crop_box, _filename) in SHARK_UI_CROPS.items():
+        source = Image.open(SOURCE_PATHS[source_key]).convert("RGBA")
+        crop = clean_chroma(source.crop(crop_box), False)
+        if key == "dreamPlushSharkPortrait":
+            crop = keep_largest_component(crop)
+            image = fit_canvas(trim(crop, padding=10), (192, 192), padding=12)
+        elif key == "dreamPlushSharkBossBarFrame":
+            image = make_ui_frame_overlay(crop)
+        else:
+            if key == "dreamPlushSharkBossBarEmpty":
+                crop = tint_empty_track_ice(crop)
+            image = stretch_ui_strip(crop)
+        rendered[key] = image
+
+    rendered["dreamPlushSharkBossBarGloss"] = make_ui_gloss(rendered["dreamPlushSharkBossBarFill"])
+    filenames = {
+        key: filename
+        for key, (_source_key, _crop_box, filename) in SHARK_UI_CROPS.items()
+    }
+    filenames["dreamPlushSharkBossBarGloss"] = "shark_boss_bar_gloss.png"
+    roles = {
+        "dreamPlushSharkPortrait": "portrait",
+        "dreamPlushSharkBossBarFrame": "frame-overlay",
+        "dreamPlushSharkBossBarEmpty": "empty-track",
+        "dreamPlushSharkBossBarFill": "live-fill",
+        "dreamPlushSharkBossBarCritical": "critical-fill",
+        "dreamPlushSharkBossBarGloss": "gloss-overlay",
+    }
+
+    for key, image in rendered.items():
+        path = UI_DIR / filenames[key]
+        save_png(image, path)
+        if key in SHARK_UI_CROPS:
+            source_key, crop_box, _filename = SHARK_UI_CROPS[key]
+            source_meta: dict[str, object] = {"source": SOURCES[source_key], "crop": list(crop_box)}
+        else:
+            source_meta = {
+                "derivedFrom": "dreamPlushSharkBossBarFill",
+                "treatment": "upper-band selective gloss",
+            }
+        manifest_assets[key] = asset_record(
+            path,
+            category="boss-ui",
+            family="shark",
+            role=roles[key],
+            collision="none",
+            **source_meta,
+        )
+        contact.append((key, path))
     return contact
 
 
@@ -733,7 +1088,10 @@ def write_report(manifest: dict[str, object], preserved_files: dict[Path, str]) 
         "generatedAssetKeys": len(assets),
         "categories": {
             category: sum(1 for value in assets.values() if isinstance(value, dict) and value.get("category") == category)
-            for category in ("background", "background-light", "enemy", "bullet", "bullet-glow", "vfx", "vfx-glow")
+            for category in (
+                "background", "background-light", "enemy", "boss", "boss-glow", "bullet", "bullet-glow",
+                "vfx", "vfx-glow", "boss-ui",
+            )
         },
         "greenValidation": {
             "rule": "near #00ff00 within 92 RGB distance on visible pixels",
@@ -783,6 +1141,8 @@ def write_report(manifest: dict[str, object], preserved_files: dict[Path, str]) 
             "- Bullet/VFX glow is extracted from clean pre-outline art; broad material and dark readability outlines stay non-emissive.",
             "- The selective additive mask keeps bright local detail, saturated energy veins, and a narrow lit-side edge.",
             "- Ice spear and meteor star retain only a centered core plus short material taper; long zero-damage trails are runtime-only.",
+            "- Shark boss forms share a stable 448x384 anchor; phase glow is a separate additive energy-only layer.",
+            "- Shark HP frame, track, live fill, critical fill, portrait, and gloss remain independent for real-time clipping.",
             "- Trails and VFX remain presentation-only and must never participate in collision.",
             "- Desktop/mobile room images are pregraded so runtime does not pay per-frame filter costs.",
             "",
@@ -797,10 +1157,9 @@ def validate_sources() -> None:
         raise FileNotFoundError("missing Dream Stage 3 prepared assets: " + ", ".join(missing))
     for key, path in SOURCE_PATHS.items():
         with Image.open(path) as image:
-            if key != "room" and image.size != (1254, 1254):
-                raise RuntimeError(f"unexpected source size for {path.name}: {image.size}")
-            if key == "room" and image.size != (1024, 1536):
-                raise RuntimeError(f"unexpected room source size: {image.size}")
+            expected = EXPECTED_SOURCE_SIZES[key]
+            if image.size != expected:
+                raise RuntimeError(f"unexpected source size for {path.name}: {image.size}; expected {expected}")
 
 
 def generated_output_paths() -> set[Path]:
@@ -818,16 +1177,33 @@ def generated_output_paths() -> set[Path]:
         OUTPUT_DIR / "dream_stage3_bullets_contact.png",
         OUTPUT_DIR / "dream_stage3_vfx_contact.png",
         OUTPUT_DIR / "dream_stage3_backgrounds_contact.png",
+        OUTPUT_DIR / "dream_stage3_shark_boss_contact.png",
+        OUTPUT_DIR / "dream_stage3_shark_ui_contact.png",
     }
     for definition in ENEMY_DEFS.values():
         base_key = str(definition["base_key"])
         for state in ("Idle", "Attack", "Hit", "Death", "MoveL", "MoveR"):
             paths.add(ENEMY_DIR / f"{slug_from_key(f'{base_key}{state}')}.png")
-    for specs, destination in ((BULLET_SPECS, BULLET_DIR), (VFX_SPECS, VFX_DIR)):
+    for spec in SHARK_BOSS_SPECS:
+        assert spec.file_stem is not None
+        paths.add(BOSS_DIR / f"{spec.file_stem}.png")
+        paths.add(BOSS_DIR / f"{spec.file_stem}_glow.png")
+    for state in ("hit", "death"):
+        paths.add(BOSS_DIR / f"shark_{state}.png")
+        paths.add(BOSS_DIR / f"shark_{state}_glow.png")
+    for specs, destination in (
+        (BULLET_SPECS, BULLET_DIR),
+        (VFX_SPECS, VFX_DIR),
+        (SHARK_BULLET_SPECS, BULLET_DIR),
+        (SHARK_VFX_SPECS, VFX_DIR),
+    ):
         for spec in specs:
-            slug = slug_from_key(spec.key)
+            slug = spec.file_stem or slug_from_key(spec.key)
             paths.add(destination / f"{slug}.png")
             paths.add(destination / f"{slug}_glow.png")
+    for _key, (_source_key, _crop_box, filename) in SHARK_UI_CROPS.items():
+        paths.add(UI_DIR / filename)
+    paths.add(UI_DIR / "shark_boss_bar_gloss.png")
     return paths
 
 
@@ -854,15 +1230,19 @@ def main() -> None:
     validate_sources()
     # Preserve hand-authored additions. This generator owns deterministic paths
     # below, so rebuilding only overwrites its own named outputs.
-    for folder in (BACKGROUND_DIR, ENEMY_DIR, BULLET_DIR, VFX_DIR):
+    for folder in (BACKGROUND_DIR, ENEMY_DIR, BULLET_DIR, VFX_DIR, BOSS_DIR, UI_DIR):
         folder.mkdir(parents=True, exist_ok=True)
     preserved_files = snapshot_unowned_files()
 
     manifest_assets: dict[str, dict[str, object]] = {}
     background_contact = process_backgrounds(manifest_assets)
     enemy_contact = process_enemies(manifest_assets)
+    shark_boss_contact = process_shark_boss(manifest_assets)
     bullet_contact = process_crop_assets(BULLET_SPECS, BULLET_DIR, "bullet", manifest_assets)
+    bullet_contact.extend(process_crop_assets(SHARK_BULLET_SPECS, BULLET_DIR, "bullet", manifest_assets))
     vfx_contact = process_crop_assets(VFX_SPECS, VFX_DIR, "vfx", manifest_assets)
+    vfx_contact.extend(process_crop_assets(SHARK_VFX_SPECS, VFX_DIR, "vfx", manifest_assets))
+    shark_ui_contact = process_shark_ui(manifest_assets)
 
     source_metadata: dict[str, dict[str, object]] = {}
     for key, path in SOURCE_PATHS.items():
@@ -888,6 +1268,8 @@ def main() -> None:
             "vfxCollision": False,
             "stageLoad": "lazy on Dream Level 3 only",
             "glowAssets": "independent selective-energy manifest keys with collision none",
+            "bossGlow": "all seven shark boss states have independent additive glow keys",
+            "bossHpUi": "portrait/frame/empty/fill/critical/gloss are separate live-composition assets",
             "bakedLongTrails": "removed from IceSpear/MeteorStar; runtime transient trail only",
             "deletesUnknownFiles": False,
         },
@@ -900,6 +1282,8 @@ def main() -> None:
     build_contact_sheet(bullet_contact, OUTPUT_DIR / "dream_stage3_bullets_contact.png", 5, (210, 190))
     build_contact_sheet(vfx_contact, OUTPUT_DIR / "dream_stage3_vfx_contact.png", 5, (220, 220))
     build_contact_sheet(background_contact, OUTPUT_DIR / "dream_stage3_backgrounds_contact.png", 2, (660, 410))
+    build_contact_sheet(shark_boss_contact, OUTPUT_DIR / "dream_stage3_shark_boss_contact.png", 4, (270, 235))
+    build_contact_sheet(shark_ui_contact, OUTPUT_DIR / "dream_stage3_shark_ui_contact.png", 2, (390, 180))
     validate_unowned_files(preserved_files)
     write_report(manifest, preserved_files)
 

@@ -23,7 +23,16 @@
     "星星弹幕 和 好兄弟弹幕.png": "633363d7507e2f540ef503b0eac1efb3b339351c704d269e13d52ccf4b8507e1",
     "星星小怪.png": "ef5ef313155fb1ca8dddfb0742d6b9d5c8b7707b0ca827a1af41883a8a6d5321",
     "星星小怪姿态2.png": "ca71709bfe56b98e31b292510151cad3a01168c567074057bd807df4e1b01ca0",
-    "星星弹幕2.png": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828"
+    "星星弹幕2.png": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828",
+    "具体形象和特下.png": "0c1df0f86e7c5ab7b22e45ce5449c55e142bc4236771c45583a84b3bb39f74b3",
+    "具体的技能特效.png": "d1a177019838aaf4f831bf2104a183b4fc317e00e5a008a0894c7b57a22751cf",
+    "具体的血条素材.png": "550df4669e3293b52cfb2e4fc0ba206fd27a4867a85496267b9e19f5ebc36a9b",
+    "形象和血条UI.png": "51a334fcd91c303bf0aeedf81f186fd054afd465f74e89987e638daec0a2da08",
+    "所有的Ui 和图标.png": "f52f64c0650cbac3e02af07ab9e55b95858b30774cf4ea15127ac33ff38f3997",
+    "技能特效忒土.png": "46cc3db42f0cfccba0828fd857871f022a20afdfc9965f40f0029fa88dc17bd2",
+    "技能贴图.png": "a32d84a8f1c6d197a478769fa2abc9d2911d5e565e92e17db96a3fadd1609bbd",
+    "血条UI和图标.png": "58a77bdbc170e9aff0b0e6969ad480968b1b546abccd38845515b14a4569b4eb",
+    "鲨鱼外形具体.png": "8b74baf50c03de001dfb4789e08cf7e5af765c8106d32866a6edabed173fbfba"
   },
   "sources": {
     "room": {
@@ -205,6 +214,87 @@
       ],
       "mode": "RGBA",
       "sha256": "f705455cf6528f10617821abf2e66ba0c72ffc326bd23937d4a7230454ac0828"
+    },
+    "shark_form_detail": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/具体形象和特下.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "0c1df0f86e7c5ab7b22e45ce5449c55e142bc4236771c45583a84b3bb39f74b3"
+    },
+    "shark_fx_detail": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/具体的技能特效.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "d1a177019838aaf4f831bf2104a183b4fc317e00e5a008a0894c7b57a22751cf"
+    },
+    "shark_hp_detail": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/具体的血条素材.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "550df4669e3293b52cfb2e4fc0ba206fd27a4867a85496267b9e19f5ebc36a9b"
+    },
+    "shark_form_ui": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/形象和血条UI.png",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "51a334fcd91c303bf0aeedf81f186fd054afd465f74e89987e638daec0a2da08"
+    },
+    "shark_ui_all": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/所有的Ui 和图标.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "f52f64c0650cbac3e02af07ab9e55b95858b30774cf4ea15127ac33ff38f3997"
+    },
+    "shark_fx_rough": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/技能特效忒土.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "46cc3db42f0cfccba0828fd857871f022a20afdfc9965f40f0029fa88dc17bd2"
+    },
+    "shark_fx_sheet": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/技能贴图.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "a32d84a8f1c6d197a478769fa2abc9d2911d5e565e92e17db96a3fadd1609bbd"
+    },
+    "shark_ui_hp": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/血条UI和图标.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "58a77bdbc170e9aff0b0e6969ad480968b1b546abccd38845515b14a4569b4eb"
+    },
+    "shark_form_sheet": {
+      "file": "moon-bullet-main/梦境第三关开发/鲨鱼boss开发/鲨鱼外形具体.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "sha256": "8b74baf50c03de001dfb4789e08cf7e5af765c8106d32866a6edabed173fbfba"
     }
   },
   "renderContract": {
@@ -214,6 +304,8 @@
     "vfxCollision": false,
     "stageLoad": "lazy on Dream Level 3 only",
     "glowAssets": "independent selective-energy manifest keys with collision none",
+    "bossGlow": "all seven shark boss states have independent additive glow keys",
+    "bossHpUi": "portrait/frame/empty/fill/critical/gloss are separate live-composition assets",
     "bakedLongTrails": "removed from IceSpear/MeteorStar; runtime transient trail only",
     "deletesUnknownFiles": false
   },
@@ -1272,6 +1364,476 @@
       "cell": 0,
       "aliasOf": "dreamPlushStarPillowIdle"
     },
+    "dreamPlushSharkIdle": {
+      "file": "assets/dream_stage3/boss/shark_idle.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        34,
+        38,
+        412,
+        345
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "528388060522108392054cdc3d9214013b0b2e438a5f5b67cedbdf3d6d2aa87f",
+      "category": "boss",
+      "family": "shark",
+      "state": "Idle",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkIdleGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_idle_glow.png",
+      "glowSha256": "d202d12133b5d9b2c132104d643cf845b8ef4d872a1fd501e7805ba023054179",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        48,
+        8,
+        350,
+        258
+      ]
+    },
+    "dreamPlushSharkIdleGlow": {
+      "file": "assets/dream_stage3/boss/shark_idle_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        42,
+        42,
+        410,
+        336
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "d202d12133b5d9b2c132104d643cf845b8ef4d872a1fd501e7805ba023054179",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Idle",
+      "baseOf": "dreamPlushSharkIdle",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        48,
+        8,
+        350,
+        258
+      ]
+    },
+    "dreamPlushSharkAttack": {
+      "file": "assets/dream_stage3/boss/shark_attack.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        85,
+        58,
+        362,
+        326
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "03e62b123de2e0c39d33c6b69179683c3ad0ea709b5f7c56c2325b156a46d293",
+      "category": "boss",
+      "family": "shark",
+      "state": "Attack",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkAttackGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_attack_glow.png",
+      "glowSha256": "ef12025c6ba119f678d1d13c669c7a4ac416a7c66fa7d394e1101d2c3e325d35",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        1202,
+        22,
+        1442,
+        250
+      ]
+    },
+    "dreamPlushSharkAttackGlow": {
+      "file": "assets/dream_stage3/boss/shark_attack_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        89,
+        66,
+        358,
+        315
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "ef12025c6ba119f678d1d13c669c7a4ac416a7c66fa7d394e1101d2c3e325d35",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Attack",
+      "baseOf": "dreamPlushSharkAttack",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        1202,
+        22,
+        1442,
+        250
+      ]
+    },
+    "dreamPlushSharkIce": {
+      "file": "assets/dream_stage3/boss/shark_ice.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        63,
+        77,
+        384,
+        306
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "747fbe22f403ea6270c3800c23526b35e356ac81f9b6951859ba083155525ed2",
+      "category": "boss",
+      "family": "shark",
+      "state": "Ice",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkIceGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_ice_glow.png",
+      "glowSha256": "221aa0ec0f24e31f3c53004670d906e27e1b05e8fd88236bf1634b5986bdac06",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        925,
+        38,
+        1195,
+        242
+      ]
+    },
+    "dreamPlushSharkIceGlow": {
+      "file": "assets/dream_stage3/boss/shark_ice_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        70,
+        79,
+        380,
+        304
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "221aa0ec0f24e31f3c53004670d906e27e1b05e8fd88236bf1634b5986bdac06",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Ice",
+      "baseOf": "dreamPlushSharkIce",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        925,
+        38,
+        1195,
+        242
+      ]
+    },
+    "dreamPlushSharkRage": {
+      "file": "assets/dream_stage3/boss/shark_rage.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        51,
+        58,
+        397,
+        325
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "30d98659da36c4cfe3c11d8ce6899327759d2fa16ec00e541f4d9a2935264832",
+      "category": "boss",
+      "family": "shark",
+      "state": "Rage",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkRageGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_rage_glow.png",
+      "glowSha256": "1f4f05e83733fbd83a949fe3aa03d3fe24b8266bc011140ff91112d91615b732",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        46,
+        242,
+        330,
+        470
+      ]
+    },
+    "dreamPlushSharkRageGlow": {
+      "file": "assets/dream_stage3/boss/shark_rage_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        70,
+        64,
+        394,
+        312
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "1f4f05e83733fbd83a949fe3aa03d3fe24b8266bc011140ff91112d91615b732",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Rage",
+      "baseOf": "dreamPlushSharkRage",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        46,
+        242,
+        330,
+        470
+      ]
+    },
+    "dreamPlushSharkVoid": {
+      "file": "assets/dream_stage3/boss/shark_void.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        63,
+        56,
+        384,
+        328
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "edb3e8e5d30c08ab0a96610665528596404ec2671ee0bb067eeccc1fb7e1c3a9",
+      "category": "boss",
+      "family": "shark",
+      "state": "Void",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkVoidGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_void_glow.png",
+      "glowSha256": "8f2b0df55d7d290f7e65284705362e77e1aa494d48ce3527cb3f39ae140d9508",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        672,
+        235,
+        940,
+        470
+      ]
+    },
+    "dreamPlushSharkVoidGlow": {
+      "file": "assets/dream_stage3/boss/shark_void_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        76,
+        59,
+        371,
+        311
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "8f2b0df55d7d290f7e65284705362e77e1aa494d48ce3527cb3f39ae140d9508",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Void",
+      "baseOf": "dreamPlushSharkVoid",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "source": "鲨鱼boss开发/具体形象和特下.png",
+      "crop": [
+        672,
+        235,
+        940,
+        470
+      ]
+    },
+    "dreamPlushSharkHit": {
+      "file": "assets/dream_stage3/boss/shark_hit.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        34,
+        38,
+        412,
+        345
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "21cb305e74b7c7773d31faab6f3bc5ae03b82b543ada038f3f6dd3fa7458986a",
+      "category": "boss",
+      "family": "shark",
+      "state": "Hit",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkHitGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_hit_glow.png",
+      "glowSha256": "c4dcf45c1396e7e93cd7b90cf86c8d53229225b1f745979c9a827375890e0732",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "derivedFrom": "dreamPlushSharkIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushSharkHitGlow": {
+      "file": "assets/dream_stage3/boss/shark_hit_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        73,
+        53,
+        408,
+        336
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "c4dcf45c1396e7e93cd7b90cf86c8d53229225b1f745979c9a827375890e0732",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Hit",
+      "baseOf": "dreamPlushSharkHit",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "derivedFrom": "dreamPlushSharkIdle",
+      "treatment": "hit"
+    },
+    "dreamPlushSharkDeath": {
+      "file": "assets/dream_stage3/boss/shark_death.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        63,
+        56,
+        384,
+        328
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "80205770569187618add05eb758e2d7f677f6c35e3a3d3a5fdb8f02ddf183754",
+      "category": "boss",
+      "family": "shark",
+      "state": "Death",
+      "anchor": [
+        224,
+        192
+      ],
+      "muzzle": [
+        164,
+        188
+      ],
+      "glowKey": "dreamPlushSharkDeathGlow",
+      "glowFile": "assets/dream_stage3/boss/shark_death_glow.png",
+      "glowSha256": "9cf6f7cabbe7d1c5cf7721d9c8f74fa3ee44e658f2baca8e69f068fdfe757d51",
+      "glowTreatment": "shark-crystal-and-energy-mask-before-outline",
+      "collision": "body-only",
+      "derivedFrom": "dreamPlushSharkVoid",
+      "treatment": "death"
+    },
+    "dreamPlushSharkDeathGlow": {
+      "file": "assets/dream_stage3/boss/shark_death_glow.png",
+      "size": [
+        448,
+        384
+      ],
+      "alphaBounds": [
+        96,
+        99,
+        326,
+        256
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "9cf6f7cabbe7d1c5cf7721d9c8f74fa3ee44e658f2baca8e69f068fdfe757d51",
+      "category": "boss-glow",
+      "family": "shark",
+      "state": "Death",
+      "baseOf": "dreamPlushSharkDeath",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "crystal+energy-veins only; plush fabric and teeth excluded",
+      "collision": "none",
+      "derivedFrom": "dreamPlushSharkVoid",
+      "treatment": "death"
+    },
     "dreamPlushLeafBlade": {
       "file": "assets/dream_stage3/bullets/dream_plush_leaf_blade.png",
       "size": [
@@ -2101,6 +2663,337 @@
       "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
     },
+    "dreamPlushSharkIceSpear": {
+      "file": "assets/dream_stage3/bullets/shark_ice_spear.png",
+      "size": [
+        104,
+        176
+      ],
+      "alphaBounds": [
+        32,
+        20,
+        71,
+        156
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "14d6f7d17e2c88248a21d2bfa10aa4fa060c04363fafd0d32861ebccc67405e6",
+      "category": "bullet",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        76,
+        15,
+        150,
+        205
+      ],
+      "glowKey": "dreamPlushSharkIceSpearGlow",
+      "glowFile": "assets/dream_stage3/bullets/shark_ice_spear_glow.png",
+      "glowSha256": "7d5b9872d5a2999f8a7e8f78e533a93e92527b29aa52fec6ffc260dc18dd0fd3",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": "up",
+      "collision": "body-only"
+    },
+    "dreamPlushSharkIceSpearGlow": {
+      "file": "assets/dream_stage3/bullets/shark_ice_spear_glow.png",
+      "size": [
+        104,
+        176
+      ],
+      "alphaBounds": [
+        35,
+        21,
+        67,
+        154
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "7d5b9872d5a2999f8a7e8f78e533a93e92527b29aa52fec6ffc260dc18dd0fd3",
+      "category": "bullet-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkIceSpear",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkIceShard": {
+      "file": "assets/dream_stage3/bullets/shark_ice_shard.png",
+      "size": [
+        160,
+        96
+      ],
+      "alphaBounds": [
+        11,
+        13,
+        150,
+        82
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "5c299c513f3bf76fd3f0a1914d67831b5952dbd8a5207ed698c1a6776a20a034",
+      "category": "bullet",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        738,
+        570,
+        895,
+        670
+      ],
+      "glowKey": "dreamPlushSharkIceShardGlow",
+      "glowFile": "assets/dream_stage3/bullets/shark_ice_shard_glow.png",
+      "glowSha256": "9fc8f1a80979ca08e02ddb18d6d37f6e15a304b519b335b1a75183bdf08bbe74",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": "left",
+      "collision": "body-only"
+    },
+    "dreamPlushSharkIceShardGlow": {
+      "file": "assets/dream_stage3/bullets/shark_ice_shard_glow.png",
+      "size": [
+        160,
+        96
+      ],
+      "alphaBounds": [
+        11,
+        16,
+        140,
+        82
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "9fc8f1a80979ca08e02ddb18d6d37f6e15a304b519b335b1a75183bdf08bbe74",
+      "category": "bullet-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkIceShard",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkSnowball": {
+      "file": "assets/dream_stage3/bullets/shark_snowball.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        12,
+        13,
+        100,
+        99
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "eae8ad6090126767987d6586449a79cd611bd4a140b722dd99580db2ae7c9cd6",
+      "category": "bullet",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        288,
+        670,
+        380,
+        765
+      ],
+      "glowKey": "dreamPlushSharkSnowballGlow",
+      "glowFile": "assets/dream_stage3/bullets/shark_snowball_glow.png",
+      "glowSha256": "92c5dabe068dccc397a3f3a7ee1791dde6bc4a330290016548e0ad2e3904ad16",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "body-only",
+      "treatment": "snowball"
+    },
+    "dreamPlushSharkSnowballGlow": {
+      "file": "assets/dream_stage3/bullets/shark_snowball_glow.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        12,
+        13,
+        99,
+        99
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "92c5dabe068dccc397a3f3a7ee1791dde6bc4a330290016548e0ad2e3904ad16",
+      "category": "bullet-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkSnowball",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkBubble": {
+      "file": "assets/dream_stage3/bullets/shark_bubble.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        13,
+        12,
+        99,
+        100
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "299908a87e1d288086294b35136cf64783d6f7c0e8fe2a9e81d8c61984b4d996",
+      "category": "bullet",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        40,
+        217,
+        128,
+        306
+      ],
+      "glowKey": "dreamPlushSharkBubbleGlow",
+      "glowFile": "assets/dream_stage3/bullets/shark_bubble_glow.png",
+      "glowSha256": "716ea356ae353958b90737bb3df56b372b5ce926e995e937a0d395b73d82050c",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushSharkBubbleGlow": {
+      "file": "assets/dream_stage3/bullets/shark_bubble_glow.png",
+      "size": [
+        112,
+        112
+      ],
+      "alphaBounds": [
+        13,
+        12,
+        99,
+        99
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "716ea356ae353958b90737bb3df56b372b5ce926e995e937a0d395b73d82050c",
+      "category": "bullet-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkBubble",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkWaveCrescent": {
+      "file": "assets/dream_stage3/bullets/shark_wave_crescent.png",
+      "size": [
+        176,
+        128
+      ],
+      "alphaBounds": [
+        27,
+        19,
+        148,
+        109
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "e6e450155ab9d1520628b4725678fc7de12b51c2872ad66a9efddcfb324d1df7",
+      "category": "bullet",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        1115,
+        222,
+        1280,
+        365
+      ],
+      "glowKey": "dreamPlushSharkWaveCrescentGlow",
+      "glowFile": "assets/dream_stage3/bullets/shark_wave_crescent_glow.png",
+      "glowSha256": "18f4fc685228af45ce21d4b853f4e6961c0d8ef060a76e99449c35aee217d11e",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": "left",
+      "collision": "body-only"
+    },
+    "dreamPlushSharkWaveCrescentGlow": {
+      "file": "assets/dream_stage3/bullets/shark_wave_crescent_glow.png",
+      "size": [
+        176,
+        128
+      ],
+      "alphaBounds": [
+        28,
+        19,
+        147,
+        106
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "18f4fc685228af45ce21d4b853f4e6961c0d8ef060a76e99449c35aee217d11e",
+      "category": "bullet-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkWaveCrescent",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkVoidOrb": {
+      "file": "assets/dream_stage3/bullets/shark_void_orb.png",
+      "size": [
+        136,
+        136
+      ],
+      "alphaBounds": [
+        20,
+        19,
+        116,
+        117
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "4110950bbf2d1c281c86b910669c0affc3e1914ccbcda2b1b60b6cb51607ce37",
+      "category": "bullet",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        514,
+        662,
+        665,
+        814
+      ],
+      "glowKey": "dreamPlushSharkVoidOrbGlow",
+      "glowFile": "assets/dream_stage3/bullets/shark_void_orb_glow.png",
+      "glowSha256": "6261e1174fd401a09e146052693c0e93ecdbcc66ee93ca76a6222b4871c3825d",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "body-only"
+    },
+    "dreamPlushSharkVoidOrbGlow": {
+      "file": "assets/dream_stage3/bullets/shark_void_orb_glow.png",
+      "size": [
+        136,
+        136
+      ],
+      "alphaBounds": [
+        23,
+        23,
+        114,
+        116
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "6261e1174fd401a09e146052693c0e93ecdbcc66ee93ca76a6222b4871c3825d",
+      "category": "bullet-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkVoidOrb",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
     "dreamPlushLeafMuzzle": {
       "file": "assets/dream_stage3/vfx/dream_plush_leaf_muzzle.png",
       "size": [
@@ -2650,6 +3543,493 @@
       "sourceStage": "clean-fitted-before-outline",
       "maskTreatment": "bright-detail+saturated-veins+lit-edge",
       "collision": "none"
+    },
+    "dreamPlushSharkMuzzle": {
+      "file": "assets/dream_stage3/vfx/shark_muzzle.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        32,
+        33,
+        224,
+        223
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "c06aa46e40690627acbf62187e40d5c7cd24339833520f13d5aac3f1ac268f46",
+      "category": "vfx",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        690,
+        12,
+        908,
+        230
+      ],
+      "glowKey": "dreamPlushSharkMuzzleGlow",
+      "glowFile": "assets/dream_stage3/vfx/shark_muzzle_glow.png",
+      "glowSha256": "7c99fb4756222d71f20478ea08ce83ddbccc07b65355b2e3d09a35272641e440",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushSharkMuzzleGlow": {
+      "file": "assets/dream_stage3/vfx/shark_muzzle_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        33,
+        34,
+        223,
+        221
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "7c99fb4756222d71f20478ea08ce83ddbccc07b65355b2e3d09a35272641e440",
+      "category": "vfx-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkMuzzle",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkIceBurst": {
+      "file": "assets/dream_stage3/vfx/shark_ice_burst.png",
+      "size": [
+        288,
+        256
+      ],
+      "alphaBounds": [
+        78,
+        73,
+        209,
+        183
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "8efcd93377cc2682c05b1995e8558cdf75513047e6d1e95bfd04827d16035053",
+      "category": "vfx",
+      "family": "shark",
+      "source": "鲨鱼boss开发/技能贴图.png",
+      "crop": [
+        1095,
+        455,
+        1270,
+        605
+      ],
+      "glowKey": "dreamPlushSharkIceBurstGlow",
+      "glowFile": "assets/dream_stage3/vfx/shark_ice_burst_glow.png",
+      "glowSha256": "6ba128c844fad660724341c5f93fbf3e368b9406a3a4e65ee842cde1342f8637",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushSharkIceBurstGlow": {
+      "file": "assets/dream_stage3/vfx/shark_ice_burst_glow.png",
+      "size": [
+        288,
+        256
+      ],
+      "alphaBounds": [
+        80,
+        73,
+        208,
+        183
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "6ba128c844fad660724341c5f93fbf3e368b9406a3a4e65ee842cde1342f8637",
+      "category": "vfx-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/技能贴图.png",
+      "baseOf": "dreamPlushSharkIceBurst",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkWhirlpool": {
+      "file": "assets/dream_stage3/vfx/shark_whirlpool.png",
+      "size": [
+        288,
+        256
+      ],
+      "alphaBounds": [
+        52,
+        51,
+        235,
+        204
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "9a7e18aa71d0c51ccea203a711b24c377e591c9677d71635045f831602f0b963",
+      "category": "vfx",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        1098,
+        20,
+        1294,
+        210
+      ],
+      "glowKey": "dreamPlushSharkWhirlpoolGlow",
+      "glowFile": "assets/dream_stage3/vfx/shark_whirlpool_glow.png",
+      "glowSha256": "9800a3362e14c283612d1ddc6cb65cddb0e6c8b43e1c228fa0bc9875ac02b38a",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushSharkWhirlpoolGlow": {
+      "file": "assets/dream_stage3/vfx/shark_whirlpool_glow.png",
+      "size": [
+        288,
+        256
+      ],
+      "alphaBounds": [
+        53,
+        53,
+        235,
+        203
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "9800a3362e14c283612d1ddc6cb65cddb0e6c8b43e1c228fa0bc9875ac02b38a",
+      "category": "vfx-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkWhirlpool",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkWave": {
+      "file": "assets/dream_stage3/vfx/shark_wave.png",
+      "size": [
+        320,
+        256
+      ],
+      "alphaBounds": [
+        70,
+        51,
+        250,
+        204
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "936b3794d5a7c0b48d433412e56e484a0814994cca37a89b391b6f5c7215c16f",
+      "category": "vfx",
+      "family": "shark",
+      "source": "鲨鱼boss开发/技能贴图.png",
+      "crop": [
+        15,
+        445,
+        225,
+        610
+      ],
+      "glowKey": "dreamPlushSharkWaveGlow",
+      "glowFile": "assets/dream_stage3/vfx/shark_wave_glow.png",
+      "glowSha256": "0520245a745084598e6d1d11ea2868d191d00c21f7c4883a3a1d61dfbef64162",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushSharkWaveGlow": {
+      "file": "assets/dream_stage3/vfx/shark_wave_glow.png",
+      "size": [
+        320,
+        256
+      ],
+      "alphaBounds": [
+        72,
+        51,
+        249,
+        204
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "0520245a745084598e6d1d11ea2868d191d00c21f7c4883a3a1d61dfbef64162",
+      "category": "vfx-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/技能贴图.png",
+      "baseOf": "dreamPlushSharkWave",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkVoidBurst": {
+      "file": "assets/dream_stage3/vfx/shark_void_burst.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        71,
+        72,
+        184,
+        183
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "3099dbe278edd08bfa6cb5789865f6ead5c3f2c57450f097a0cbfa514efc34d1",
+      "category": "vfx",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        770,
+        668,
+        915,
+        815
+      ],
+      "glowKey": "dreamPlushSharkVoidBurstGlow",
+      "glowFile": "assets/dream_stage3/vfx/shark_void_burst_glow.png",
+      "glowSha256": "5b3467b986eb3822fe4a6147ac003fc5d6f5610242647d8ebcadedb77fe7bf18",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushSharkVoidBurstGlow": {
+      "file": "assets/dream_stage3/vfx/shark_void_burst_glow.png",
+      "size": [
+        256,
+        256
+      ],
+      "alphaBounds": [
+        74,
+        73,
+        181,
+        181
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "5b3467b986eb3822fe4a6147ac003fc5d6f5610242647d8ebcadedb77fe7bf18",
+      "category": "vfx-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkVoidBurst",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkShield": {
+      "file": "assets/dream_stage3/vfx/shark_shield.png",
+      "size": [
+        288,
+        288
+      ],
+      "alphaBounds": [
+        47,
+        46,
+        241,
+        241
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "ea77c26cca890d7c706f5397a988d36a72e813b3b5ef746463fa9e9c22c62f78",
+      "category": "vfx",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "crop": [
+        462,
+        12,
+        688,
+        234
+      ],
+      "glowKey": "dreamPlushSharkShieldGlow",
+      "glowFile": "assets/dream_stage3/vfx/shark_shield_glow.png",
+      "glowSha256": "520292b2274e2d29790c59f49b4d9bd8758792c39860823a1d9572681651c8af",
+      "glowTreatment": "selective-energy-mask-before-outline",
+      "forwardAxis": null,
+      "collision": "none"
+    },
+    "dreamPlushSharkShieldGlow": {
+      "file": "assets/dream_stage3/vfx/shark_shield_glow.png",
+      "size": [
+        288,
+        288
+      ],
+      "alphaBounds": [
+        48,
+        47,
+        239,
+        240
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "520292b2274e2d29790c59f49b4d9bd8758792c39860823a1d9572681651c8af",
+      "category": "vfx-glow",
+      "family": "shark",
+      "source": "鲨鱼boss开发/具体的技能特效.png",
+      "baseOf": "dreamPlushSharkShield",
+      "blendMode": "lighter",
+      "sourceStage": "clean-fitted-before-outline",
+      "maskTreatment": "bright-detail+saturated-veins+lit-edge",
+      "collision": "none"
+    },
+    "dreamPlushSharkPortrait": {
+      "file": "assets/dream_stage3/ui/shark_portrait.png",
+      "size": [
+        192,
+        192
+      ],
+      "alphaBounds": [
+        25,
+        22,
+        167,
+        170
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "7d61dd170279172bd665e57ab3073cb19a9b82011e79013c8cc56c38a837083d",
+      "category": "boss-ui",
+      "family": "shark",
+      "role": "portrait",
+      "collision": "none",
+      "source": "鲨鱼boss开发/血条UI和图标.png",
+      "crop": [
+        4,
+        136,
+        164,
+        288
+      ]
+    },
+    "dreamPlushSharkBossBarFrame": {
+      "file": "assets/dream_stage3/ui/shark_boss_bar_frame.png",
+      "size": [
+        720,
+        96
+      ],
+      "alphaBounds": [
+        42,
+        24,
+        678,
+        72
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "cfe1cab87e564d8b20ef6ee9fef17bcf0030fae834bbceb766c9a61348dabe23",
+      "category": "boss-ui",
+      "family": "shark",
+      "role": "frame-overlay",
+      "collision": "none",
+      "source": "鲨鱼boss开发/血条UI和图标.png",
+      "crop": [
+        158,
+        214,
+        812,
+        282
+      ]
+    },
+    "dreamPlushSharkBossBarEmpty": {
+      "file": "assets/dream_stage3/ui/shark_boss_bar_empty.png",
+      "size": [
+        640,
+        48
+      ],
+      "alphaBounds": [
+        10,
+        7,
+        630,
+        41
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "d9b39e749e5a58021e222c0e57fbf68740cad9f2210ededd9f8e256d2def6d0d",
+      "category": "boss-ui",
+      "family": "shark",
+      "role": "empty-track",
+      "collision": "none",
+      "source": "鲨鱼boss开发/具体的血条素材.png",
+      "crop": [
+        1090,
+        48,
+        1382,
+        98
+      ]
+    },
+    "dreamPlushSharkBossBarFill": {
+      "file": "assets/dream_stage3/ui/shark_boss_bar_fill.png",
+      "size": [
+        640,
+        48
+      ],
+      "alphaBounds": [
+        10,
+        7,
+        630,
+        41
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "3a7f0fe77d6529702888d37dc2c10f24b1af284b42bed8bb485c50be5dc03059",
+      "category": "boss-ui",
+      "family": "shark",
+      "role": "live-fill",
+      "collision": "none",
+      "source": "鲨鱼boss开发/血条UI和图标.png",
+      "crop": [
+        170,
+        326,
+        552,
+        369
+      ]
+    },
+    "dreamPlushSharkBossBarCritical": {
+      "file": "assets/dream_stage3/ui/shark_boss_bar_critical.png",
+      "size": [
+        640,
+        48
+      ],
+      "alphaBounds": [
+        10,
+        7,
+        630,
+        41
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "d691e022ee17a0a9601ff75a48ddb24d993967304a443cb2b1dc42dca0156a71",
+      "category": "boss-ui",
+      "family": "shark",
+      "role": "critical-fill",
+      "collision": "none",
+      "source": "鲨鱼boss开发/血条UI和图标.png",
+      "crop": [
+        170,
+        124,
+        552,
+        166
+      ]
+    },
+    "dreamPlushSharkBossBarGloss": {
+      "file": "assets/dream_stage3/ui/shark_boss_bar_gloss.png",
+      "size": [
+        640,
+        48
+      ],
+      "alphaBounds": [
+        10,
+        7,
+        629,
+        33
+      ],
+      "keyGreenPixels": 0,
+      "edgeTouchPixels": 0,
+      "sha256": "844b8cea218168ddccb4927aedce67fae7b398767f95dbf7ea65e48abfcf9303",
+      "category": "boss-ui",
+      "family": "shark",
+      "role": "gloss-overlay",
+      "collision": "none",
+      "derivedFrom": "dreamPlushSharkBossBarFill",
+      "treatment": "upper-band selective gloss"
     }
   }
 }
