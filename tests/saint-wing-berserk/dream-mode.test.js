@@ -14,7 +14,10 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       levelCount: 10,
       unlockedLevels: 3,
       locksLoadoutAfterStart: true,
-      disablesRandomDrops: true,
+      disablesRandomDrops: false,
+      disablesRandomPluginDrops: true,
+      disablesRandomLifeDrops: true,
+      configuredDreamDrops: ['berserk', 'heal'],
       keepsCharacterSkills: true,
       keepsWingmen: true,
       activeWallClock: true,
@@ -82,8 +85,50 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     }
     expect(dream.formationSpec()).toHaveLength(5);
     expect(dream.formationSpec().every((formation) => formation.batches.flat().length === 8)).toBe(true);
-    expect(dream.rewardSpec()).toMatchObject({ powerPerKill: 4.35, powerPerWave: 34.8, randomPlugins: false, lifeDrops: false, berserkDrops: true, berserkDropChance: 0.08 });
+    expect(dream.rewardSpec()).toMatchObject({ powerPerKill: 4.35, powerPerWave: 34.8, randomPlugins: false, lifeDrops: false, berserkDrops: true, berserkDropChance: 0.08, crowdedAt: 3, crowdedChanceMul: 0.55, dropHardCap: 7, berserkDamageMul: 1.6 });
     expect(dream.waveTransitionSpec()).toMatchObject({ clearDelay: 1.4, timedOverlap: false, bulletDissolve: 0.34, abruptVisibleClear: false });
+  });
+
+  it('runs deterministic Dream drop rolls with a strict seven-item cap and real berserk pickup rules', () => {
+    expect(typeof dream.dreamDropPlanForTest).toBe('function');
+    expect(typeof dream.berserkPickupForTest).toBe('function');
+    expect(typeof dream.berserkRuntimeAuditForTest).toBe('function');
+
+    expect(dream.dreamDropPlanForTest(0, { berserk: 0.079, heal: 1 })).toMatchObject({
+      initialCount: 0, finalCount: 1, crowded: false, chanceMul: 1,
+      chances: { berserk: 0.08, heal: 0.018 }, drops: ['berserk'], hardCap: 7,
+    });
+    const crowded = dream.dreamDropPlanForTest(3, { berserk: 0.043, heal: 1 });
+    expect(crowded).toMatchObject({
+      initialCount: 3, finalCount: 4, crowded: true, chanceMul: 0.55,
+      drops: ['berserk'], hardCap: 7,
+    });
+    expect(crowded.chances.berserk).toBeCloseTo(0.044, 8);
+    expect(crowded.chances.heal).toBeCloseTo(0.0099, 8);
+    expect(dream.dreamDropPlanForTest(6, { berserk: 0, heal: 0 })).toMatchObject({
+      initialCount: 6, finalCount: 7, drops: ['berserk'], hardCap: 7,
+    });
+    expect(dream.dreamDropPlanForTest(7, { berserk: 0, heal: 0 })).toMatchObject({
+      initialCount: 7, finalCount: 7, drops: [], hardCap: 7,
+    });
+
+    expect(dream.berserkPickupForTest(0, false)).toEqual({ seconds: 6, addSeconds: 6, capSeconds: 24, damageMultiplier: 1.6 });
+    expect(dream.berserkPickupForTest(22, false)).toEqual({ seconds: 24, addSeconds: 6, capSeconds: 24, damageMultiplier: 1.6 });
+    expect(dream.berserkPickupForTest(0, true)).toEqual({ seconds: 12, addSeconds: 12, capSeconds: 45, damageMultiplier: 1.6 });
+    expect(dream.berserkPickupForTest(40, true)).toEqual({ seconds: 45, addSeconds: 12, capSeconds: 45, damageMultiplier: 1.6 });
+
+    const normalRuntime = dream.berserkRuntimeAuditForTest(false);
+    expect(normalRuntime).toMatchObject({
+      killCountDelta: 1, spawnedTypes: ['berserk'], attracted: true, collected: true,
+      berserkSeconds: 6, damageFor100: 160, pickupToast: '暴走！火力爆发',
+    });
+    expect(normalRuntime.minDistance).toBeLessThan(normalRuntime.startDistance);
+    const reaverRuntime = dream.berserkRuntimeAuditForTest(true);
+    expect(reaverRuntime).toMatchObject({
+      killCountDelta: 1, spawnedTypes: ['berserk'], attracted: true, collected: true,
+      berserkSeconds: 12, damageFor100: 160, pickupToast: '暴走！火力爆发',
+    });
+    expect(reaverRuntime.minDistance).toBeLessThan(reaverRuntime.startDistance);
   });
 
   it('replays identical positions and order for the published seed', () => {
@@ -207,11 +252,11 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(diversity.runtimeFallbackReporting).toBe(true);
   });
 
-  it('prebakes eight volumetric material phases and batches visual-only trails without hot-path allocations', () => {
+  it('prebakes eight material-relief phases and batches visual-only trails without hot-path allocations', () => {
     expect(typeof dream.bulletMaterialSpec).toBe('function');
     expect(typeof dream.bulletMaterialStatus).toBe('function');
     expect(dream.bulletMaterialSpec()).toMatchObject({
-      version: 'V51-stage3-rim-depth',
+      version: 'V52-stage3-material-relief',
       phaseCount: 8,
       prewarm: true,
       batchTrails: true,
@@ -222,9 +267,14 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
       transientTrails: true,
       permanentTailBakedIntoBody: false,
       selectiveEnergyMask: true,
-      screenSpaceLighting: true,
-      screenSpaceVolumeSubpaths: 'isolated-moveTo-closePath',
+      screenSpaceLighting: false,
+      screenSpaceVolumeSubpaths: 'removed-stage3-generic-ellipses',
       stableNonDirectionalSilhouette: true,
+      perSkinMaterialRelief: true,
+      profileCount: 21,
+      genericStage3Ellipse: false,
+      genericWhiteCore: false,
+      energyClippedToSilhouette: true,
       cachePolicy: 'active-stage-only',
       selectiveEnergyAtlas: true,
       enhancedStage: 'dream-03-plush-room',
@@ -237,11 +287,10 @@ describe('dream mode level one: Fallen Radiance Sanctuary', () => {
     expect(Array.isArray(materialStatus.materialAssets)).toBe(true);
     expect(Array.from(materialStatus.fallbacks)).toEqual([]);
 
-    const volumeStart = source.indexOf('function traceDreamBulletScreenVolume(');
-    const volumeEnd = source.indexOf('function drawDreamBulletsBatch(', volumeStart);
-    const volumeBlock = source.slice(volumeStart, volumeEnd);
-    expect(volumeBlock).toContain('ctx.moveTo(cx + radiusX * Math.cos(rotation), cy + radiusX * Math.sin(rotation))');
-    expect(volumeBlock.indexOf('ctx.moveTo(cx + radiusX')).toBeLessThan(volumeBlock.indexOf('ctx.ellipse(cx, cy'));
+    expect(source).toContain('function drawDreamStage3SurfaceRelief(');
+    expect(source).not.toContain('function traceDreamBulletScreenVolume(');
+    expect(source).not.toContain('function traceDreamStage3Rim(');
+    expect(source).not.toContain('stage3Rim: Object.freeze');
 
     const manifest = JSON.parse(readFileSync(new URL('../../assets/bullets_dream/dream_bullet_manifest.json', import.meta.url), 'utf8'));
     expect(manifest.helper_count).toBeGreaterThanOrEqual(4);

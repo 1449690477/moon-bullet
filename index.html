@@ -2545,6 +2545,14 @@
     // 梦境击杀掉落暴走：帮助厚血量波次加快清场，约 8%（场上道具多时再衰减）
     berserkDropChance: 0.08,
     healDropChance: 0.018,
+    crowdedAt: 3,
+    crowdedChanceMul: 0.55,
+    dropHardCap: 7,
+    berserkDamageMul: 1.6,
+    berserkSeconds: 6,
+    reaverBerserkSeconds: 12,
+    berserkCapSeconds: 24,
+    reaverBerserkCapSeconds: 45,
   });
   const DREAM_STAGE3_OUTGOING_DAMAGE_MUL = 1.28;
   const DREAM_FORMATION_PRESETS = Object.freeze([
@@ -2719,6 +2727,32 @@
     sharkWaveCrescent: Object.freeze({ asset: 'dreamPlushSharkWaveCrescent', glow: 'dreamPlushSharkWaveCrescentGlow', family: 'ribbon', directional: true, sourceAxis: 'left', sourceScale: 0.96, edge: '#72d9ff', preoutlined: true }),
     sharkVoidOrb: Object.freeze({ asset: 'dreamPlushSharkVoidOrb', glow: 'dreamPlushSharkVoidOrbGlow', family: 'orb', spin: true, sourceScale: 0.90, edge: '#c78aff', preoutlined: true }),
   });
+  // Stage 3 art already carries a strong silhouette. These profiles add relief inside that
+  // silhouette and a motion-specific transient trail instead of surrounding every sprite
+  // with the same ellipse/white bloom treatment.
+  const DREAM_STAGE3_BULLET_MATERIAL_PROFILES = Object.freeze({
+    plushLeafBlade: Object.freeze({ material: 'living-leaf', relief: 'leaf-vein', trail: 'leaf-slice', displayScale: 1.30, trailLength: 0.82, trailWidth: 0.76, energyAlpha: 0.66, shadeAlpha: 0.54, motionRole: 'straight-cut-or-vine-curve' }),
+    plushLeafSeed: Object.freeze({ material: 'seed-pulp', relief: 'seed-spiral', trail: 'none', displayScale: 1.20, energyAlpha: 0.42, shadeAlpha: 0.48, motionRole: 'soft-wave-or-delayed-bloom' }),
+    plushLeafBud: Object.freeze({ material: 'petal-crystal', relief: 'bud-facets', trail: 'pollen-flick', displayScale: 1.25, trailLength: 0.48, trailWidth: 0.62, energyAlpha: 0.58, shadeAlpha: 0.48, motionRole: 'brake-bloom-or-vine-curve' }),
+    plushIceShard: Object.freeze({ material: 'clear-ice', relief: 'ice-facets', trail: 'frost-splinter', displayScale: 1.31, trailLength: 0.96, trailWidth: 0.68, energyAlpha: 0.76, shadeAlpha: 0.62, motionRole: 'fast-facet-lane' }),
+    plushSnowball: Object.freeze({ material: 'packed-snow', relief: 'snow-grain', trail: 'none', displayScale: 1.21, energyAlpha: 0.34, shadeAlpha: 0.58, motionRole: 'stepped-release-or-radial-drift' }),
+    plushIceSpear: Object.freeze({ material: 'frost-bundle', relief: 'ice-bundle', trail: 'frost-lance', displayScale: 1.30, trailLength: 1.08, trailWidth: 0.78, energyAlpha: 0.72, shadeAlpha: 0.58, motionRole: 'radial-lance' }),
+    plushCrystalShard: Object.freeze({ material: 'violet-prism', relief: 'prism-facets', trail: 'prism-splinter', displayScale: 1.28, trailLength: 0.82, trailWidth: 0.66, energyAlpha: 0.70, shadeAlpha: 0.62, motionRole: 'orbit-tangent-or-crossing-turn' }),
+    plushDollOrb: Object.freeze({ material: 'glass-soul', relief: 'soul-lens', trail: 'none', displayScale: 1.21, energyAlpha: 0.58, shadeAlpha: 0.54, motionRole: 'node-release' }),
+    plushDollSigil: Object.freeze({ material: 'stitched-rune', relief: 'rune-stitch', trail: 'none', displayScale: 1.22, energyAlpha: 0.68, shadeAlpha: 0.44, motionRole: 'sigil-pulse-or-crossing-turn' }),
+    plushWaterDrop: Object.freeze({ material: 'liquid-drop', relief: 'water-caustic', trail: 'droplet-echo', displayScale: 1.28, trailLength: 0.62, trailWidth: 0.66, energyAlpha: 0.60, shadeAlpha: 0.56, motionRole: 'bounded-current-or-turn' }),
+    plushFishbone: Object.freeze({ material: 'pearl-bone', relief: 'bone-ridges', trail: 'bubble-chain', displayScale: 1.29, trailLength: 0.72, trailWidth: 0.54, energyAlpha: 0.46, shadeAlpha: 0.64, motionRole: 'telegraphed-swim-turn' }),
+    plushBubblePearl: Object.freeze({ material: 'water-pearl', relief: 'bubble-caustic', trail: 'none', displayScale: 1.22, energyAlpha: 0.52, shadeAlpha: 0.50, motionRole: 'analytic-current-or-orbit-release' }),
+    plushStarShot: Object.freeze({ material: 'star-enamel', relief: 'star-enamel', trail: 'none', displayScale: 1.22, energyAlpha: 0.52, shadeAlpha: 0.46, motionRole: 'orbit-or-staggered-release' }),
+    plushMeteorStar: Object.freeze({ material: 'hot-comet', relief: 'meteor-flow', trail: 'comet-flame', displayScale: 1.30, trailLength: 1.12, trailWidth: 0.84, energyAlpha: 0.70, shadeAlpha: 0.48, motionRole: 'brake-then-launch' }),
+    plushConstellationNode: Object.freeze({ material: 'constellation-gold', relief: 'constellation-rays', trail: 'none', displayScale: 1.24, energyAlpha: 0.66, shadeAlpha: 0.40, motionRole: 'linked-node-release' }),
+    sharkIceSpear: Object.freeze({ material: 'abyss-ice-lance', relief: 'shark-spear-facets', trail: 'frost-lance', displayScale: 1.34, trailLength: 1.10, trailWidth: 0.72, energyAlpha: 0.78, shadeAlpha: 0.64, motionRole: 'warning-gate-launch' }),
+    sharkIceShard: Object.freeze({ material: 'tide-prism', relief: 'shark-shard-facets', trail: 'frost-splinter', displayScale: 1.34, trailLength: 0.98, trailWidth: 0.68, energyAlpha: 0.76, shadeAlpha: 0.62, motionRole: 'curved-current-or-aimed-dart' }),
+    sharkSnowball: Object.freeze({ material: 'frosted-orb', relief: 'snow-lens', trail: 'none', displayScale: 1.27, energyAlpha: 0.38, shadeAlpha: 0.58, motionRole: 'slow-structure-or-single-turn' }),
+    sharkBubble: Object.freeze({ material: 'deep-water-lens', relief: 'deep-bubble', trail: 'none', displayScale: 1.27, energyAlpha: 0.52, shadeAlpha: 0.54, motionRole: 'sine-tide-or-radial-release' }),
+    sharkWaveCrescent: Object.freeze({ material: 'cresting-wave', relief: 'wave-foam', trail: 'foam-spray', displayScale: 1.36, trailLength: 0.78, trailWidth: 0.86, energyAlpha: 0.64, shadeAlpha: 0.56, motionRole: 'banked-turn-or-charged-surge' }),
+    sharkVoidOrb: Object.freeze({ material: 'fractured-void', relief: 'void-fracture', trail: 'none', displayScale: 1.30, energyAlpha: 0.78, shadeAlpha: 0.70, motionRole: 'gravitic-wave-or-orbit-release' }),
+  });
   const DREAM_BULLET_ASSET_KEYS = Object.freeze([...new Set(Object.values(DREAM_BULLET_SKINS).map(skin => skin.asset))]);
   const DREAM_STAGE2_BULLET_SKIN_KEYS = Object.freeze(Object.keys(DREAM_BULLET_SKINS).filter(key => key.startsWith('zero')));
   const DREAM_STAGE3_BULLET_SKIN_KEYS = Object.freeze(Object.keys(DREAM_BULLET_SKINS).filter(key => key.startsWith('plush') || key.startsWith('shark')));
@@ -2800,20 +2834,20 @@
     'suiyiMobCompilePlatform', 'suiyiMobOrbitRing',
   ]);
   const DREAM_BULLET_MATERIAL_CONFIG = Object.freeze({
-    version: 'V51-stage3-rim-depth',
+    version: 'V52-stage3-material-relief',
     phaseCount: 8,
     legacyPhaseCount: 4,
     phaseRate: 12,
     cacheFrame: Object.freeze({ width: 112, height: 128, anchorX: 56, anchorY: 47 }),
     bodyFit: Object.freeze({ directional: 96, round: 88, blade: 94 }),
     drawScale: 8.2,
-    // 贴身描边：光效只贴轮廓，禁止大范围填充光晕
+    // Stage 3 display size comes from the per-skin profiles above so a bubble, spear,
+    // wave crest, and snowball do not share one artificial silhouette.
     stage3DisplayScale: Object.freeze({ directional: 1.28, round: 1.20 }),
     speedStretch: Object.freeze({ start: 120, full: 420, max: 1.24, minWidth: 0.90 }),
     facingResponse: 13,
     prewarmPerFrame: 3,
     energyOverlay: Object.freeze({ minVisualMul: 0.55, highCap: 72, mediumCap: 48, alpha: 0.46 }),
-    screenLight: Object.freeze({ minVisualMul: 0.35, directionalShadowAlpha: 0.14, roundShadowAlpha: 0.28, highlightAlpha: 0.54 }),
     trailSpeedMin: 140,
     trailLengthScale: Object.freeze([0.48, 1.12]),
     trailWidthScale: Object.freeze([0.70, 0.22]),
@@ -2840,21 +2874,8 @@
       Object.freeze({ key: 'waterToy', trail: 'rgba(48,196,230,.64)', hot: 'rgba(214,255,255,.95)', rim: 'rgba(120,236,255,.84)', outline: 'rgba(6,28,36,.72)' }),
       Object.freeze({ key: 'starToy', trail: 'rgba(236,168,52,.64)', hot: 'rgba(255,248,210,.96)', rim: 'rgba(255,214,110,.86)', outline: 'rgba(36,22,6,.72)' }),
     ]),
-    // 贴合弹体轮廓的描边/体积层：外径不超过弹体显示直径的约 0.56 倍
-    stage3Rim: Object.freeze({
-      minVisualMul: 0.20,
-      bodyFit: 0.54,
-      outlineWidth: 1.85,
-      rimWidth: 1.15,
-      hotWidth: 0.85,
-      outlineAlpha: 0.70,
-      rimAlpha: 0.78,
-      hotAlpha: 0.42,
-      coreAlpha: 0.28,
-      coreFit: 0.18,
-    }),
     orbFamilies: Object.freeze(['orb', 'halo', 'vortex', 'sigil', 'bloom', 'wisp', 'star', 'burst']),
-    hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, bodyDrawsPerBullet: 1, energyDrawsPerBulletHigh: 1, screenLightBatches: 8, cachePolicy: 'active-stage-only', selectiveEnergyAtlas: true }),
+    hotPath: Object.freeze({ prewarm: true, batchTrails: true, allocationFree: true, bodyDrawsPerBullet: 1, energyDrawsPerBulletHigh: 1, screenLightBatches: 0, cachePolicy: 'active-stage-only', selectiveEnergyAtlas: true }),
   });
 
   const DREAM_BULLET_MOTION_CONFIG = Object.freeze({
@@ -3119,9 +3140,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-16-dream3-rim-depth-v51';
+     const UPDATE_NOTICE_VERSION = '2026-07-16-dream3-material-signature-v52';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-16 · 绒梦弹幕材质签名与暴走掉落核验',
+      items: [
+        '梦境第三关21种弹幕完成逐款材质重制：删除套在弹体外的通用圆圈、白色圆芯与整图泛白，改为贴合原贴图的叶脉、冰晶切面、水纹焦散、鱼骨脊线、星釉与深渊裂纹。',
+        '每类弹幕获得符合造型的运动和短时光迹：叶刃直切、种子波浪漂移、冰棱碎片、鱼骨轻转向、气泡链、彗星焰尾与浪花飞沫各自独立；圆形弹不挂拖尾，所有光迹仍为0伤害、0判定。',
+        '梦境随机暴走掉落已完成运行链核验：基础概率8%，场上道具较多时降至4.4%，严格最多7件；拾取后普通角色增加6秒、夜裁增加12秒，伤害倍率实时提升至1.6倍。',
+      ],
+    },
     {
       date: '2026-07-16 · 绒梦弹幕光效纠偏',
       items: [
@@ -8851,7 +8880,7 @@
   function powerLevel() { return clamp(1 + Math.floor(player.power / 54), 1, 5); }
   function addPower(v) { player.power = clamp(player.power + v, 0, MAX_POWER); }
   // 暴走伤害倍率（金色掉落）
-  function berserkDmg() { return player.berserk > 0 ? 1.6 : 1; }
+  function berserkDmg() { return player.berserk > 0 ? DREAM_REWARD_CONFIG.berserkDamageMul : 1; }
 
   // ===== 三主角设定 (数字键 1 / 2 / 3 切换，C 换皮肤) =====
   const CHARACTERS = {
@@ -26169,29 +26198,9 @@
   function dreamTrailAllowed(bullet) {
     if (bullet && bullet.dreamDissolving) return false;
     const skin = bullet && DREAM_BULLET_SKINS[bullet.dreamSkin];
-    // 只给方向性弹体速度尾迹；圆形弹用贴身描边表现立体感，禁止软光大环
+    const profile = bullet && DREAM_STAGE3_BULLET_MATERIAL_PROFILES[bullet.dreamSkin];
+    if (profile) return !!(skin?.directional && profile.trail !== 'none');
     return !!(skin && skin.directional && DREAM_BULLET_MATERIAL_CONFIG.trail.families.includes(skin.family));
-  }
-  function dreamStage3FamilyStyle(family) {
-    const lights = DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight;
-    for (let i = 0; i < lights.length; i++) if (lights[i].key === family) return lights[i];
-    return lights[lights.length - 1];
-  }
-  function traceDreamStage3Rim(b, material, fitMul) {
-    const dissolveVisibility = dreamBulletDissolveEnvelope(b);
-    const depthVisibility = b.depth != null ? bulletDepthAlpha(b) : 1;
-    const visibilityScale = Math.sqrt(Math.max(0, dissolveVisibility * depthVisibility));
-    const body = (b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale) * visibilityScale;
-    if (body < 2) return false;
-    const long = body * fitMul * (material?.directional ? 0.58 : 0.50);
-    const wide = body * fitMul * (material?.directional ? 0.34 : 0.48);
-    let ang = 0;
-    if (material?.directional) ang = Math.atan2(b.dreamFaceY || -1, b.dreamFaceX || 0);
-    else if (material?.spinning) ang = b.rot || 0;
-    ctx.moveTo(b.x + Math.cos(ang) * long, b.y + Math.sin(ang) * long);
-    ctx.ellipse(b.x, b.y, long, wide, ang, 0, TAU);
-    ctx.closePath();
-    return true;
   }
   function dreamTriggerTrail(bullet, duration = DREAM_BULLET_MATERIAL_CONFIG.trail.transitionDuration) {
     if (!bullet || !dreamTrailAllowed(bullet)) {
@@ -28108,10 +28117,13 @@
       lanes.forEach((lane, i) => {
         const a = base + lane * 0.092 + twist;
         const speed = (228 + Math.abs(lane) * 10) * speedMul;
+        const blade = !!(i & 1);
         addDreamBullet(source.x + lane * 2.2, source.y + 10, Math.cos(a) * speed, Math.sin(a) * speed, {
           r: 6.5, life: 5.6, hardLife: 6.6, style: 'spread', threat: 'spread', shape: 'needle',
-          skin: i & 1 ? 'plushLeafBlade' : 'plushLeafSeed', color: i & 1 ? '#6de59b' : '#dfff8b',
-          policy: 'locked-linear', policySpeed: speed, motion: 'leaf-gap-fan',
+          skin: blade ? 'plushLeafBlade' : 'plushLeafSeed', color: blade ? '#6de59b' : '#dfff8b',
+          policy: blade ? 'locked-linear' : 'analytic-wave-lane', policySpeed: speed,
+          waveAmplitude: blade ? 0 : 9 + Math.abs(lane) * 0.8, waveFrequency: 2.05,
+          wavePhase: lane * 0.62, motion: blade ? 'leaf-blade-gap-cut' : 'leaf-seed-drift-lane',
         });
       });
       for (let i = 0; i < 6; i++) {
@@ -34822,7 +34834,7 @@
 
   // 掉落道具：下落，靠近玩家时被吸附拾取。
   function addItem(x, y, type) {
-    items.push({ x, y, vx: rand(-30, 30), vy: rand(-150, -70), type, life: 12, attract: false });
+    items.push({ x, y, spawnX: x, spawnY: y, vx: rand(-30, 30), vy: rand(-150, -70), type, life: 12, attract: false });
   }
   function updateItems(dt) {
     const collectR = player.r + 28;
@@ -34859,10 +34871,9 @@
     if (it.type === 'berserk') {
       // 金色暴走：火力爆发（夜裁暴走时间更长，配合刀锋洪流演出）
       // 叠加：连续拾取会持续延长暴走时间（封顶避免无限）
-      const bAdd = reaverActive() ? 12.0 : 6.0;
-      const bCap = reaverActive() ? 45.0 : 24.0;
+      const pickup = dreamBerserkPickupResult(player.berserk, reaverActive());
       const wasBerserk = player.berserk > 0.1;
-      player.berserk = Math.min(bCap, player.berserk + bAdd);
+      player.berserk = pickup.seconds;
       player.pluginGlow = 1.2;
       flashPickup('#ffd45a');
       const bSec = Math.round(player.berserk);
@@ -34894,17 +34905,103 @@
   }
   // 击杀掉落（V3.14 精简）：仅 绿色加血 / 金色暴走，低频且清晰，不再满地杂物。
   // 火力成长已由击杀直接给予（updateEnemies 内 addPower），故不再掉落火力/分数杂物。
-  function dropDreamEnemyLoot(e) {
+  function dreamBerserkPickupResult(currentSeconds = 0, isReaver = false) {
+    const addSeconds = isReaver ? DREAM_REWARD_CONFIG.reaverBerserkSeconds : DREAM_REWARD_CONFIG.berserkSeconds;
+    const capSeconds = isReaver ? DREAM_REWARD_CONFIG.reaverBerserkCapSeconds : DREAM_REWARD_CONFIG.berserkCapSeconds;
+    return {
+      seconds: Math.min(capSeconds, Math.max(0, Number(currentSeconds) || 0) + addSeconds),
+      addSeconds,
+      capSeconds,
+      damageMultiplier: DREAM_REWARD_CONFIG.berserkDamageMul,
+    };
+  }
+  function dreamDropPlanForRolls(onField = 0, rolls = {}) {
+    const initialCount = Math.max(0, Math.floor(Number(onField) || 0));
+    const crowded = initialCount >= DREAM_REWARD_CONFIG.crowdedAt;
+    const chanceMul = crowded ? DREAM_REWARD_CONFIG.crowdedChanceMul : 1;
+    const chances = {
+      berserk: DREAM_REWARD_CONFIG.berserkDropChance * chanceMul,
+      heal: DREAM_REWARD_CONFIG.healDropChance * chanceMul,
+    };
+    const drops = [];
+    let count = initialCount;
+    const tryDrop = (type, roll) => {
+      if (count >= DREAM_REWARD_CONFIG.dropHardCap) return;
+      if (Number(roll) < chances[type]) { drops.push(type); count += 1; }
+    };
+    tryDrop('berserk', rolls.berserk ?? 1);
+    tryDrop('heal', rolls.heal ?? 1);
+    return { initialCount, finalCount: count, crowded, chanceMul, chances, drops, hardCap: DREAM_REWARD_CONFIG.dropHardCap };
+  }
+  let dreamDropRollOverride = null;
+  function dropDreamEnemyLoot(e, rolls = null) {
     // 梦境击杀概率掉暴走：帮助更快清场，不掉插件以免打乱构筑
-    const onField = items.length;
-    if (onField >= 7) return;
-    const glut = onField >= 3 ? 0.55 : 1;
-    if (Math.random() < DREAM_REWARD_CONFIG.berserkDropChance * glut) {
-      addItem(e.x + rand(-12, 12), e.y - 6, 'berserk');
+    const resolvedRolls = rolls || dreamDropRollOverride || { berserk: Math.random(), heal: Math.random() };
+    dreamDropRollOverride = null;
+    const plan = dreamDropPlanForRolls(items.length, resolvedRolls);
+    for (const type of plan.drops) {
+      if (type === 'berserk') addItem(e.x + rand(-12, 12), e.y - 6, type);
+      else addItem(e.x + rand(-10, 10), e.y + 4, type);
     }
-    if (Math.random() < DREAM_REWARD_CONFIG.healDropChance * glut) {
-      addItem(e.x + rand(-10, 10), e.y + 4, 'heal');
+  }
+  function dreamBerserkRuntimeAuditForTest(isReaver = false) {
+    const saved = {
+      runMode, state, selectedChar, score, killCount, killStreakN, killStreakT, message, messageTimer,
+      dreamActive: dreamRun.active, stageId: dreamRun.stageId, captureLocked: dreamRun.captureLocked,
+      player: { x: player.x, y: player.y, berserk: player.berserk, pluginGlow: player.pluginGlow, power: player.power, energy: player.energy },
+      items: items.slice(), enemies: enemies.slice(), particles: particles.slice(), spriteFx: spriteFx.slice(),
+      damageTexts: damageTexts.slice(), procRings: procRings.slice(), pluginToast,
+    };
+    let result = null;
+    try {
+      runMode = 'dream'; state = 'mobs'; selectedChar = isReaver ? 'reaver' : 'witch';
+      dreamRun.active = true; dreamRun.stageId = DREAM_STAGE3_ID; dreamRun.captureLocked = true;
+      items.length = 0; enemies.length = 0; particles.length = 0; spriteFx.length = 0; damageTexts.length = 0; procRings.length = 0;
+      player.x = W * 0.5; player.y = H * 0.72; player.berserk = 0; player.pluginGlow = 0; player.power = 0; player.energy = 0;
+      pluginToast = null;
+      const killBefore = killCount;
+      const enemyType = Object.keys(DREAM_STAGE_CONFIGS[DREAM_STAGE3_ID].mobs)[0];
+      const enemy = spawnDreamEnemy(enemyType, 0, 0, 0);
+      if (!enemy) throw new Error('Dream runtime audit could not spawn an enemy');
+      enemy.dreamEntering = false; enemy.r = enemy.dreamBaseR; enemy.x = player.x; enemy.y = player.y - 118;
+      enemy.dmgCreditMax = enemy.maxHp; enemy.dmgCredit = enemy.maxHp; enemy._dreamDamageCheckpoint = enemy.maxHp; enemy.hp = 0;
+      dreamDropRollOverride = { berserk: 0, heal: 1 };
+      updateEnemies(0);
+      const spawnedTypes = items.map(item => item.type);
+      const drop = items.find(item => item.type === 'berserk');
+      if (!drop) throw new Error('Dream runtime audit kill did not create the berserk drop');
+      const startDistance = Math.hypot(drop.x - player.x, drop.y - player.y);
+      let minDistance = startDistance;
+      let attracted = false;
+      for (let frame = 0; frame < 180 && items.includes(drop); frame++) {
+        updateItems(1 / 60);
+        attracted = attracted || !!drop.attract;
+        minDistance = Math.min(minDistance, Math.hypot(drop.x - player.x, drop.y - player.y));
+      }
+      result = {
+        killCountDelta: killCount - killBefore,
+        spawnedTypes,
+        attracted,
+        startDistance: Number(startDistance.toFixed(3)),
+        minDistance: Number(minDistance.toFixed(3)),
+        collected: !items.includes(drop),
+        berserkSeconds: Number(player.berserk.toFixed(3)),
+        damageFor100: 100 * berserkDmg(),
+        pickupToast: pluginToast?.name || '',
+      };
+    } finally {
+      dreamDropRollOverride = null;
+      runMode = saved.runMode; state = saved.state; selectedChar = saved.selectedChar;
+      score = saved.score; killCount = saved.killCount; killStreakN = saved.killStreakN; killStreakT = saved.killStreakT;
+      message = saved.message; messageTimer = saved.messageTimer;
+      dreamRun.active = saved.dreamActive; dreamRun.stageId = saved.stageId; dreamRun.captureLocked = saved.captureLocked;
+      Object.assign(player, saved.player);
+      items.splice(0, items.length, ...saved.items); enemies.splice(0, enemies.length, ...saved.enemies);
+      particles.splice(0, particles.length, ...saved.particles); spriteFx.splice(0, spriteFx.length, ...saved.spriteFx);
+      damageTexts.splice(0, damageTexts.length, ...saved.damageTexts); procRings.splice(0, procRings.length, ...saved.procRings);
+      pluginToast = saved.pluginToast;
     }
+    return result;
   }
   function dropFromEnemy(e) {
     // 防刷屏：场上掉落物较多时大幅压制新掉落（避免一片小怪同时死亡时满屏杂物）
@@ -44874,6 +44971,205 @@
     }
     return ready;
   }
+  function drawDreamStage3SurfaceRelief(target, profile, bodyW, bodyH, anchorX, anchorY, phaseAngle, energy = false) {
+    if (!profile) return;
+    const w = bodyW;
+    const h = bodyH;
+    const pulse = 0.82 + 0.18 * Math.sin(phaseAngle);
+    const sweep = Math.sin(phaseAngle - Math.PI * 0.5);
+    let dark = 'rgba(5,20,24,.64)';
+    let mid = 'rgba(92,224,255,.68)';
+    let hot = 'rgba(232,253,255,.92)';
+    if (/leaf|seed|bud/.test(profile.relief)) {
+      dark = 'rgba(20,58,24,.66)'; mid = 'rgba(126,244,112,.72)'; hot = 'rgba(244,255,188,.94)';
+    } else if (/soul|rune|prism/.test(profile.relief)) {
+      dark = 'rgba(35,12,62,.68)'; mid = 'rgba(198,126,255,.72)'; hot = 'rgba(250,225,255,.95)';
+    } else if (/star|meteor|constellation/.test(profile.relief)) {
+      dark = 'rgba(78,38,6,.66)'; mid = 'rgba(255,191,62,.76)'; hot = 'rgba(255,250,205,.96)';
+    } else if (/void/.test(profile.relief)) {
+      dark = 'rgba(5,2,22,.78)'; mid = 'rgba(142,76,255,.80)'; hot = 'rgba(235,207,255,.96)';
+    } else if (/snow/.test(profile.relief)) {
+      dark = 'rgba(44,82,105,.60)'; mid = 'rgba(172,231,255,.72)'; hot = 'rgba(255,255,255,.95)';
+    }
+    const line = (points, color = mid, width = Math.max(0.8, Math.min(w, h) * 0.035)) => {
+      if (!points.length) return;
+      target.beginPath();
+      target.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) target.lineTo(points[i][0], points[i][1]);
+      target.strokeStyle = color;
+      target.lineWidth = width;
+      target.stroke();
+    };
+    const dot = (x, y, r, color = hot) => {
+      target.fillStyle = color;
+      target.beginPath(); target.arc(x, y, r, 0, TAU); target.fill();
+    };
+    target.save();
+    target.translate(anchorX, anchorY);
+    target.lineCap = 'round';
+    target.lineJoin = 'round';
+    target.globalAlpha = energy ? profile.energyAlpha * pulse : 1;
+    const thin = Math.max(0.75, Math.min(w, h) * (energy ? 0.022 : 0.032));
+    const thick = thin * (energy ? 1.25 : 1.7);
+    switch (profile.relief) {
+      case 'leaf-vein': {
+        if (!energy) line([[0, h * 0.37], [0, -h * 0.36]], dark, thick);
+        line([[0, h * 0.34], [w * 0.02, -h * 0.34]], energy ? hot : mid, thin);
+        for (let i = -2; i <= 2; i++) {
+          const yy = i * h * 0.115;
+          const reach = w * (0.26 - Math.abs(i) * 0.025);
+          line([[0, yy], [reach, yy - h * 0.10]], energy ? hot : mid, thin * 0.78);
+          line([[0, yy + h * 0.025], [-reach, yy - h * 0.075]], energy ? hot : mid, thin * 0.78);
+        }
+        break;
+      }
+      case 'seed-spiral': {
+        if (!energy) {
+          target.strokeStyle = dark; target.lineWidth = thick;
+          target.beginPath(); target.arc(-w * 0.05, h * 0.05, w * 0.24, -0.35, Math.PI * 1.72); target.stroke();
+        }
+        target.strokeStyle = energy ? hot : mid; target.lineWidth = thin;
+        target.beginPath(); target.arc(-w * 0.06, h * 0.05, w * (0.16 + sweep * 0.018), -0.45, Math.PI * 1.55); target.stroke();
+        dot(w * 0.17, -h * 0.12, Math.max(0.8, w * 0.035), energy ? hot : mid);
+        break;
+      }
+      case 'bud-facets':
+      case 'ice-facets':
+      case 'prism-facets':
+      case 'shark-spear-facets': {
+        if (!energy) {
+          line([[0, -h * 0.38], [-w * 0.19, h * 0.02], [0, h * 0.36]], dark, thick);
+          line([[0, -h * 0.38], [w * 0.20, h * 0.02], [0, h * 0.36]], dark, thick);
+        }
+        const shift = sweep * w * 0.035;
+        line([[shift, -h * 0.36], [-w * 0.16 + shift, h * 0.02], [shift, h * 0.34]], energy ? hot : mid, thin);
+        line([[shift, -h * 0.36], [w * 0.17 + shift, h * 0.02], [shift, h * 0.34]], energy ? hot : mid, thin);
+        line([[-w * 0.17, h * 0.02], [w * 0.18, h * 0.02]], energy ? hot : mid, thin * 0.72);
+        break;
+      }
+      case 'ice-bundle': {
+        for (let i = -2; i <= 2; i++) {
+          const yy = i * h * 0.075;
+          const tip = w * (0.35 + (2 - Math.abs(i)) * 0.04);
+          if (!energy) line([[-w * 0.38, yy + h * 0.035], [tip, yy]], dark, thick * 0.82);
+          line([[-w * 0.34, yy], [tip, yy - h * 0.02]], energy ? hot : mid, thin * (i ? 0.72 : 1));
+        }
+        break;
+      }
+      case 'soul-lens': {
+        if (!energy) {
+          target.fillStyle = dark; target.beginPath(); target.ellipse(w * 0.08, h * 0.09, w * 0.28, h * 0.24, -0.55, 0, TAU); target.fill();
+        }
+        target.strokeStyle = energy ? hot : mid; target.lineWidth = thin;
+        target.beginPath(); target.arc(-w * 0.04, -h * 0.01, w * 0.24, -2.58, 0.35); target.stroke();
+        dot(-w * 0.13 + sweep * w * 0.04, -h * 0.13, Math.max(0.9, w * 0.04), hot);
+        break;
+      }
+      case 'rune-stitch': {
+        const rr = Math.min(w, h) * 0.25;
+        for (let i = 0; i < 6; i++) {
+          const a = i * TAU / 6 + phaseAngle * 0.08;
+          const b = a + TAU / 3;
+          line([[Math.cos(a) * rr, Math.sin(a) * rr], [Math.cos(b) * rr, Math.sin(b) * rr]], energy ? hot : (i & 1 ? mid : dark), i & 1 ? thin : thick * 0.72);
+        }
+        dot(0, 0, Math.max(0.9, rr * 0.13), hot);
+        break;
+      }
+      case 'water-caustic': {
+        if (!energy) line([[-w * 0.24, h * 0.22], [0, h * 0.34], [w * 0.18, h * 0.12]], dark, thick);
+        target.strokeStyle = energy ? hot : mid; target.lineWidth = thin;
+        target.beginPath(); target.moveTo(-w * 0.18, h * 0.18); target.quadraticCurveTo(w * (0.04 + sweep * 0.04), h * 0.02, w * 0.10, -h * 0.31); target.stroke();
+        target.beginPath(); target.moveTo(-w * 0.03, h * 0.28); target.quadraticCurveTo(w * 0.22, h * 0.05, w * 0.18, -h * 0.16); target.stroke();
+        break;
+      }
+      case 'bone-ridges': {
+        if (!energy) line([[-w * 0.36, 0], [w * 0.38, 0]], dark, thick);
+        line([[-w * 0.34, -h * 0.015], [w * 0.36, -h * 0.015]], energy ? hot : mid, thin);
+        for (let i = -2; i <= 2; i++) {
+          const xx = i * w * 0.12;
+          line([[xx, 0], [xx - w * 0.055, -h * 0.21]], energy ? hot : mid, thin * 0.72);
+          line([[xx, 0], [xx - w * 0.055, h * 0.21]], energy ? hot : mid, thin * 0.72);
+        }
+        break;
+      }
+      case 'bubble-caustic':
+      case 'deep-bubble':
+      case 'snow-lens': {
+        if (!energy) {
+          target.fillStyle = dark; target.beginPath(); target.ellipse(w * 0.10, h * 0.12, w * 0.27, h * 0.22, -0.55, 0, TAU); target.fill();
+        }
+        target.strokeStyle = energy ? hot : mid; target.lineWidth = thin;
+        target.beginPath(); target.arc(-w * 0.04, -h * 0.01, Math.min(w, h) * 0.31, -2.72, -0.22); target.stroke();
+        dot(-w * 0.16 + sweep * w * 0.035, -h * 0.16, Math.max(0.8, Math.min(w, h) * 0.045), hot);
+        if (profile.relief === 'deep-bubble') dot(w * 0.13, h * 0.13, Math.max(0.65, w * 0.025), energy ? hot : mid);
+        break;
+      }
+      case 'snow-grain': {
+        for (let i = 0; i < 7; i++) {
+          const a = i * 2.399 + phaseAngle * 0.05;
+          const rr = Math.min(w, h) * (0.08 + (i % 3) * 0.075);
+          const x = Math.cos(a) * rr, y = Math.sin(a) * rr;
+          line([[x - w * 0.035, y], [x + w * 0.035, y]], energy ? hot : (i & 1 ? mid : dark), thin * 0.62);
+          line([[x, y - h * 0.035], [x, y + h * 0.035]], energy ? hot : mid, thin * 0.62);
+        }
+        break;
+      }
+      case 'star-enamel': {
+        for (let i = 0; i < 5; i++) {
+          const a = -Math.PI / 2 + i * TAU / 5;
+          line([[Math.cos(a) * w * 0.06, Math.sin(a) * h * 0.06], [Math.cos(a) * w * 0.29, Math.sin(a) * h * 0.29]], energy ? hot : (i & 1 ? mid : dark), i & 1 ? thin : thick * 0.72);
+        }
+        dot(-w * 0.08 + sweep * w * 0.035, -h * 0.09, Math.max(0.8, w * 0.035), hot);
+        break;
+      }
+      case 'meteor-flow': {
+        for (let i = -1; i <= 1; i++) {
+          const yy = i * h * 0.12;
+          line([[-w * 0.38, yy + sweep * h * 0.018], [w * 0.26, yy * 0.45]], energy ? hot : (i ? mid : dark), i ? thin : thick * 0.78);
+        }
+        dot(w * 0.22, -h * 0.05, Math.max(0.9, h * 0.055), hot);
+        break;
+      }
+      case 'constellation-rays': {
+        for (let i = 0; i < 8; i++) {
+          const a = i * TAU / 8 + phaseAngle * 0.035;
+          const r0 = Math.min(w, h) * 0.08, r1 = Math.min(w, h) * (i & 1 ? 0.27 : 0.38);
+          line([[Math.cos(a) * r0, Math.sin(a) * r0], [Math.cos(a) * r1, Math.sin(a) * r1]], energy ? hot : (i & 1 ? mid : dark), i & 1 ? thin * 0.72 : thin);
+        }
+        dot(0, 0, Math.max(1, Math.min(w, h) * 0.052), hot);
+        break;
+      }
+      case 'shark-shard-facets': {
+        if (!energy) line([[-w * 0.39, h * 0.17], [-w * 0.08, -h * 0.27], [w * 0.39, -h * 0.06]], dark, thick);
+        line([[-w * 0.37, h * 0.13], [-w * 0.06 + sweep * w * 0.03, -h * 0.21], [w * 0.37, -h * 0.05]], energy ? hot : mid, thin);
+        line([[-w * 0.12, -h * 0.20], [w * 0.02, h * 0.22], [w * 0.24, -h * 0.08]], energy ? hot : mid, thin * 0.76);
+        break;
+      }
+      case 'wave-foam': {
+        if (!energy) {
+          target.strokeStyle = dark; target.lineWidth = thick;
+          target.beginPath(); target.moveTo(-w * 0.40, h * 0.18); target.quadraticCurveTo(-w * 0.04, -h * 0.34, w * 0.38, -h * 0.04); target.stroke();
+        }
+        target.strokeStyle = energy ? hot : mid; target.lineWidth = thin;
+        target.beginPath(); target.moveTo(-w * 0.38, h * 0.13); target.quadraticCurveTo(-w * (0.02 + sweep * 0.025), -h * 0.30, w * 0.36, -h * 0.05); target.stroke();
+        for (let i = 0; i < 3; i++) dot(-w * 0.18 + i * w * 0.16, -h * (0.18 + (i & 1) * 0.08), Math.max(0.65, h * 0.025), energy ? hot : mid);
+        break;
+      }
+      case 'void-fracture': {
+        if (!energy) dot(0, 0, Math.min(w, h) * 0.16, dark);
+        for (let i = 0; i < 7; i++) {
+          const a = i * TAU / 7 + phaseAngle * 0.04;
+          const kink = a + (i & 1 ? 0.22 : -0.18);
+          line([[Math.cos(a) * w * 0.06, Math.sin(a) * h * 0.06], [Math.cos(kink) * w * 0.20, Math.sin(kink) * h * 0.20], [Math.cos(a) * w * 0.37, Math.sin(a) * h * 0.37]], energy ? hot : (i & 1 ? mid : dark), i & 1 ? thin : thick * 0.68);
+        }
+        dot(0, 0, Math.max(1, Math.min(w, h) * 0.045) * pulse, hot);
+        break;
+      }
+      default:
+        break;
+    }
+    target.restore();
+  }
   function getDreamBulletSkinSprite(skinKey) {
     const skin = DREAM_BULLET_SKINS[skinKey];
     if (!skin) return null;
@@ -44905,6 +45201,7 @@
     const img = assets[skin.asset];
     const glowImg = skin.glow ? assets[skin.glow] : null;
     const enhancedMaterial = !!glowImg;
+    const profile = DREAM_STAGE3_BULLET_MATERIAL_PROFILES[skinKey] || null;
     const phases = enhancedMaterial ? config.phaseCount : config.legacyPhaseCount;
     const volumeAtlas = assets.dreamSharedVolumeCore;
     const specularAtlas = assets.dreamSharedSpecularStreak;
@@ -44936,13 +45233,19 @@
     const rim = document.createElement('canvas');
     const shade = document.createElement('canvas');
     const sheen = document.createElement('canvas');
+    const relief = document.createElement('canvas');
+    const reliefEnergy = document.createElement('canvas');
     const energyFrame = document.createElement('canvas');
-    for (const canvas of [mask, rim, shade, sheen, energyFrame]) { canvas.width = frameW; canvas.height = frameH; }
+    const energyMask = document.createElement('canvas');
+    for (const canvas of [mask, rim, shade, sheen, relief, reliefEnergy, energyFrame, energyMask]) { canvas.width = frameW; canvas.height = frameH; }
     const m = mask.getContext('2d');
     const r = rim.getContext('2d');
     const s = shade.getContext('2d');
     const h = sheen.getContext('2d');
+    const d = relief.getContext('2d');
+    const de = reliefEnergy.getContext('2d');
     const ef = energyFrame.getContext('2d');
+    const em = energyMask.getContext('2d');
 
     // 固有色、形状阴影与选择性能量层分别缓存。外缘只沿原始 alpha 生成，
     // 不再把整张素材复制成一圈发光徽章。
@@ -44950,6 +45253,10 @@
     m.globalCompositeOperation = 'source-in';
     m.fillStyle = 'rgba(1,3,12,.98)';
     m.fillRect(0, 0, frameW, frameH);
+    // The authored glow may extend beyond the painted body, but only by one
+    // shape-following pixel. This prevents any source-image halo from becoming
+    // a generic circle while retaining a crisp luminous edge.
+    for (const offset of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) em.drawImage(mask, offset[0], offset[1]);
     const rimOffsets = skin.preoutlined
       ? [[-1.2, 0], [1.2, 0], [0, -1.2], [0, 1.2]]
       : [[-2, 0], [2, 0], [0, -2], [0, 2], [-1.4, -1.4], [1.4, -1.4], [-1.4, 1.4], [1.4, 1.4]];
@@ -44980,16 +45287,29 @@
       const axisY = skin.sourceAxis === 'up' || !skin.sourceAxis ? -1 : 0;
 
       h.clearRect(0, 0, frameW, frameH);
-      h.globalCompositeOperation = 'source-over';
-      h.drawImage(mask, 0, 0);
-      h.globalCompositeOperation = 'source-in';
-      h.save();
-      // Sine motion closes phase 7 -> 0 without teleporting the specular band.
-      const sweep = Math.sin(phaseAngle - Math.PI * 0.5) * 0.48;
-      h.translate(anchorX + bodyW * sweep * 0.58, anchorY - bodyH * 0.10);
-      h.rotate(-0.22 + Math.sin(phaseAngle) * 0.04);
-      drawDreamMaterialAtlasFrame(h, specularAtlas, 64, 24, phase, themeIndex, -bodyW * 0.58, -Math.max(7, bodyH * 0.17), bodyW * 1.16, Math.max(14, bodyH * 0.34));
-      h.restore();
+      d.clearRect(0, 0, frameW, frameH);
+      de.clearRect(0, 0, frameW, frameH);
+      if (profile) {
+        drawDreamStage3SurfaceRelief(d, profile, bodyW, bodyH, anchorX, anchorY, phaseAngle, false);
+        d.globalCompositeOperation = 'destination-in';
+        d.drawImage(mask, 0, 0);
+        d.globalCompositeOperation = 'source-over';
+        drawDreamStage3SurfaceRelief(de, profile, bodyW, bodyH, anchorX, anchorY, phaseAngle, true);
+        de.globalCompositeOperation = 'destination-in';
+        de.drawImage(mask, 0, 0);
+        de.globalCompositeOperation = 'source-over';
+      } else {
+        h.globalCompositeOperation = 'source-over';
+        h.drawImage(mask, 0, 0);
+        h.globalCompositeOperation = 'source-in';
+        h.save();
+        // Sine motion closes phase 7 -> 0 without teleporting the legacy specular band.
+        const sweep = Math.sin(phaseAngle - Math.PI * 0.5) * 0.48;
+        h.translate(anchorX + bodyW * sweep * 0.58, anchorY - bodyH * 0.10);
+        h.rotate(-0.22 + Math.sin(phaseAngle) * 0.04);
+        drawDreamMaterialAtlasFrame(h, specularAtlas, 64, 24, phase, themeIndex, -bodyW * 0.58, -Math.max(7, bodyH * 0.17), bodyW * 1.16, Math.max(14, bodyH * 0.34));
+        h.restore();
+      }
 
       ef.clearRect(0, 0, frameW, frameH);
       ef.globalCompositeOperation = 'lighter';
@@ -44997,18 +45317,20 @@
         ef.save();
         ef.translate(anchorX + axisX * flow, anchorY + axisY * flow);
         ef.scale(energyScale, energyScale);
-        ef.globalAlpha = energyPulse * (roundBody ? 0.72 : 1);
+        ef.globalAlpha = energyPulse * (profile ? profile.energyAlpha : (roundBody ? 0.72 : 1));
         ef.drawImage(glowImg, -bodyW * 0.5, -bodyH * 0.5, bodyW, bodyH);
         ef.restore();
       }
-      ef.globalAlpha = roundBody ? 0.56 : 0.76;
-      ef.drawImage(sheen, 0, 0);
+      ef.globalAlpha = profile ? 0.92 : (roundBody ? 0.56 : 0.76);
+      ef.drawImage(profile ? reliefEnergy : sheen, 0, 0);
       ef.globalAlpha = 1;
+      ef.globalCompositeOperation = 'destination-in';
+      ef.drawImage(energyMask, 0, 0);
       ef.globalCompositeOperation = 'source-over';
 
       g.globalCompositeOperation = 'source-over';
       g.globalAlpha = 1;
-      if (!skin.directional) {
+      if (!skin.directional && !profile) {
         g.globalAlpha = roundBody ? 0.82 : 0.54;
         drawDreamMaterialAtlasFrame(g, volumeAtlas, 48, 48, phase, themeIndex, frameX + anchorX - 25, anchorY - 25, 50, 50);
       }
@@ -45025,7 +45347,11 @@
       g.drawImage(rim, frameX, 0);
       g.globalAlpha = 1;
       g.drawImage(img, frameX + bodyX, bodyY, bodyW, bodyH);
-      g.globalAlpha = skin.directional ? 0.78 : 0.88;
+      if (profile) {
+        g.globalAlpha = 0.84;
+        g.drawImage(relief, frameX, 0);
+      }
+      g.globalAlpha = profile ? profile.shadeAlpha : (skin.directional ? 0.78 : 0.88);
       g.drawImage(shade, frameX, 0);
       // 低配仍保留完整亮芯；高/中画质会再绘制独立能量层，形成真实视差。
       g.globalCompositeOperation = 'lighter';
@@ -45044,7 +45370,7 @@
     const entry = Object.freeze({
       canvas: strip, energyCanvas: energyStrip, frameWidth: frameW, frameHeight: frameH, phaseCount: phases,
       anchorX, anchorY, bodyFit, bodyW, bodyH, directional: !!skin.directional,
-      spinning: !!skin.spin, roundBody, themeIndex, skinKey, enhancedMaterial,
+      spinning: !!skin.spin, roundBody, themeIndex, skinKey, enhancedMaterial, profile,
       axisCorrection: skin.sourceAxis === 'left' ? Math.PI / 2 : (skin.sourceAxis === 'right' ? -Math.PI / 2 : 0),
     });
     dreamBulletSkinCache.set(skinKey, entry);
@@ -45117,9 +45443,10 @@
       : 1;
     const dissolveScale = b.dreamDissolving ? 0.38 + Math.sqrt(dissolveEnv) * 0.62 : 1;
     const skin = DREAM_BULLET_SKINS[b.dreamSkin];
-    const stage3Scale = b.dreamSkin && b.dreamSkin.startsWith('plush')
+    const profile = DREAM_STAGE3_BULLET_MATERIAL_PROFILES[b.dreamSkin];
+    const stage3Scale = profile?.displayScale || (b.dreamSkin && b.dreamSkin.startsWith('plush')
       ? (skin?.directional ? DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.directional : DREAM_BULLET_MATERIAL_CONFIG.stage3DisplayScale.round)
-      : 1;
+      : 1);
     const bodySize = b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale * stage3Scale * b.dreamDepthScale * (b.scalePulse || 1) * dissolveScale;
     b.dreamVisualDiameter = bodySize;
     const trailMax = Math.max(0.001, b.dreamTrailMax || 0.001);
@@ -45131,7 +45458,7 @@
       : DREAM_BULLET_MATERIAL_CONFIG.trail.maxLengthDesktop;
     b.dreamTrailEnv = Math.max(0, trailEnv);
     b.dreamTrailLength = dreamTrailAllowed(b)
-      ? Math.min(maxTrailLength, bodySize * lerp(DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[0], DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[1], speedT)) * b.dreamTrailEnv
+      ? Math.min(maxTrailLength, bodySize * lerp(DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[0], DREAM_BULLET_MATERIAL_CONFIG.trailLengthScale[1], speedT) * (profile?.trailLength || 1)) * b.dreamTrailEnv
       : 0;
     const phaseCount = DREAM_BULLET_MATERIAL_CONFIG.phaseCount;
     b.dreamMaterialPhase = Math.floor((b.dreamAge * DREAM_BULLET_MATERIAL_CONFIG.phaseRate) + b.dreamVisualSeed * phaseCount) % phaseCount;
@@ -45153,24 +45480,72 @@
     const headY = b.y - uy * bodySize * 0.18;
     const tailX = b.x - ux * length;
     const tailY = b.y - uy * length;
-    const headWidth = Math.max(2.2, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[0] * widthMul);
+    const profile = DREAM_STAGE3_BULLET_MATERIAL_PROFILES[b.dreamSkin];
+    const trailStyle = profile?.trail || 'speed-ribbon';
+    const profileWidth = profile?.trailWidth || 1;
+    const headWidth = Math.max(2.0, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[0] * widthMul * profileWidth);
     const tailWidth = Math.max(0.45, b.r * DREAM_BULLET_MATERIAL_CONFIG.trailWidthScale[1] * widthMul);
     const midX = (headX + tailX) * 0.5;
     const midY = (headY + tailY) * 0.5;
-    ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
-    ctx.quadraticCurveTo(midX + px * tailWidth, midY + py * tailWidth, tailX, tailY);
-    ctx.quadraticCurveTo(midX - px * tailWidth, midY - py * tailWidth, headX - px * headWidth, headY - py * headWidth);
-    ctx.closePath();
-    if (includeMotes) {
+    if (trailStyle === 'droplet-echo' || trailStyle === 'bubble-chain') {
+      const count = trailStyle === 'bubble-chain' ? 3 : 2;
+      for (let i = 0; i < count; i++) {
+        const t = (i + 1) / (count + 1);
+        const rr = Math.max(0.7, headWidth * (0.42 - i * 0.08));
+        const xx = headX + (tailX - headX) * t + px * Math.sin(i * 2.4 + b.dreamVisualSeed * 9) * rr * 0.65;
+        const yy = headY + (tailY - headY) * t + py * Math.sin(i * 2.4 + b.dreamVisualSeed * 9) * rr * 0.65;
+        ctx.moveTo(xx + rr, yy);
+        ctx.ellipse(xx, yy, rr, trailStyle === 'droplet-echo' ? rr * 1.45 : rr, Math.atan2(uy, ux), 0, TAU);
+        ctx.closePath();
+      }
+    } else if (trailStyle === 'frost-splinter' || trailStyle === 'prism-splinter' || trailStyle === 'frost-lance') {
+      const notchX = headX + (tailX - headX) * 0.48;
+      const notchY = headY + (tailY - headY) * 0.48;
+      ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
+      ctx.lineTo(notchX + px * tailWidth * 1.8, notchY + py * tailWidth * 1.8);
+      ctx.lineTo(tailX, tailY);
+      ctx.lineTo(notchX - px * tailWidth * 0.75, notchY - py * tailWidth * 0.75);
+      ctx.lineTo(headX - px * headWidth, headY - py * headWidth);
+      ctx.closePath();
+    } else if (trailStyle === 'comet-flame') {
+      const wave = Math.sin(b.dreamAge * 18 + b.dreamVisualSeed * 17) * tailWidth * 1.7;
+      ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
+      ctx.quadraticCurveTo(midX + px * (tailWidth * 2.2 + wave), midY + py * (tailWidth * 2.2 + wave), tailX + px * wave * 0.35, tailY + py * wave * 0.35);
+      ctx.quadraticCurveTo(midX - px * (tailWidth * 0.8 - wave), midY - py * (tailWidth * 0.8 - wave), headX - px * headWidth, headY - py * headWidth);
+      ctx.closePath();
+    } else if (trailStyle === 'leaf-slice' || trailStyle === 'foam-spray' || trailStyle === 'pollen-flick') {
+      const kink = trailStyle === 'leaf-slice' ? headWidth * 0.42 : headWidth * 0.18;
+      ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
+      ctx.lineTo(midX + px * (tailWidth + kink), midY + py * (tailWidth + kink));
+      ctx.lineTo(tailX, tailY);
+      ctx.lineTo(midX - px * tailWidth, midY - py * tailWidth);
+      ctx.lineTo(headX - px * headWidth, headY - py * headWidth);
+      ctx.closePath();
+    } else {
+      ctx.moveTo(headX + px * headWidth, headY + py * headWidth);
+      ctx.quadraticCurveTo(midX + px * tailWidth, midY + py * tailWidth, tailX, tailY);
+      ctx.quadraticCurveTo(midX - px * tailWidth, midY - py * tailWidth, headX - px * headWidth, headY - py * headWidth);
+      ctx.closePath();
+    }
+    if (includeMotes && trailStyle !== 'droplet-echo' && trailStyle !== 'bubble-chain') {
       const moteT = 0.58 + 0.18 * Math.sin(b.dreamAge * 5.1 + b.dreamVisualSeed * 19);
       const moteX = b.x - ux * length * moteT;
       const moteY = b.y - uy * length * moteT;
       const moteR = Math.max(0.75, b.r * 0.12);
-      ctx.moveTo(moteX, moteY - moteR * 1.7);
-      ctx.lineTo(moteX + moteR, moteY);
-      ctx.lineTo(moteX, moteY + moteR * 1.7);
-      ctx.lineTo(moteX - moteR, moteY);
-      ctx.closePath();
+      if (trailStyle === 'foam-spray') {
+        for (let i = 0; i < 3; i++) {
+          const rr = moteR * (0.75 - i * 0.12);
+          const xx = moteX - ux * i * moteR * 2.2 + px * (i - 1) * moteR * 1.2;
+          const yy = moteY - uy * i * moteR * 2.2 + py * (i - 1) * moteR * 1.2;
+          ctx.moveTo(xx + rr, yy); ctx.arc(xx, yy, rr, 0, TAU); ctx.closePath();
+        }
+      } else {
+        ctx.moveTo(moteX, moteY - moteR * 1.7);
+        ctx.lineTo(moteX + moteR, moteY);
+        ctx.lineTo(moteX, moteY + moteR * 1.7);
+        ctx.lineTo(moteX - moteR, moteY);
+        ctx.closePath();
+      }
     }
     return true;
   }
@@ -45187,9 +45562,11 @@
     ctx.restore();
   }
   function setDreamBulletMaterialTransform(base, b, material) {
-    const speedStretchT = clamp((b.dreamSpeed - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start) / Math.max(1, DREAM_BULLET_MATERIAL_CONFIG.speedStretch.full - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start), 0, 1);
-    const lengthStretch = 1 + speedStretchT * (DREAM_BULLET_MATERIAL_CONFIG.speedStretch.max - 1);
-    const widthStretch = 1 - speedStretchT * (1 - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.minWidth);
+    const speedStretchT = material.directional
+      ? clamp((b.dreamSpeed - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start) / Math.max(1, DREAM_BULLET_MATERIAL_CONFIG.speedStretch.full - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.start), 0, 1)
+      : 0;
+    const lengthStretch = material.directional ? 1 + speedStretchT * (DREAM_BULLET_MATERIAL_CONFIG.speedStretch.max - 1) : 1;
+    const widthStretch = material.directional ? 1 - speedStretchT * (1 - DREAM_BULLET_MATERIAL_CONFIG.speedStretch.minWidth) : 1;
     const bodySize = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
     const sourceScale = bodySize / material.bodyFit;
     let cos = 1, sin = 0;
@@ -45213,47 +45590,6 @@
       base.b * b.x + base.d * b.y + base.f,
     );
   }
-  function traceDreamBulletScreenVolume(b, material, highlight) {
-    const dissolveVisibility = dreamBulletDissolveEnvelope(b);
-    const depthVisibility = b.depth != null ? bulletDepthAlpha(b) : 1;
-    const visibilityScale = Math.sqrt(Math.max(0, dissolveVisibility * depthVisibility));
-    const size = (b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale) * visibilityScale;
-    if (size < 0.75) return false;
-    if (material.directional) {
-      const dx = b.dreamFaceX || 0;
-      const dy = b.dreamFaceY || -1;
-      const nx = -dy;
-      const ny = dx;
-      const lightX = -0.64;
-      const lightY = -0.77;
-      const side = nx * lightX + ny * lightY >= 0 ? 1 : -1;
-      const sideX = nx * side;
-      const sideY = ny * side;
-      const offset = highlight ? size * 0.032 : -size * 0.026;
-      const cx = b.x + sideX * offset + (highlight ? lightX * size * 0.006 : -lightX * size * 0.008);
-      const cy = b.y + sideY * offset + (highlight ? lightY * size * 0.006 : -lightY * size * 0.008);
-      const halfLength = size * (highlight ? 0.14 : 0.16);
-      const halfWidth = size * (highlight ? 0.012 : 0.024);
-      ctx.moveTo(cx - dx * halfLength + sideX * halfWidth, cy - dy * halfLength + sideY * halfWidth);
-      ctx.lineTo(cx + dx * halfLength + sideX * halfWidth, cy + dy * halfLength + sideY * halfWidth);
-      ctx.lineTo(cx + dx * halfLength - sideX * halfWidth, cy + dy * halfLength - sideY * halfWidth);
-      ctx.lineTo(cx - dx * halfLength - sideX * halfWidth, cy - dy * halfLength - sideY * halfWidth);
-      ctx.closePath();
-      return true;
-    }
-    const offset = highlight ? -0.10 : 0.08;
-    const cx = b.x + size * offset;
-    const cy = b.y + size * offset;
-    const radiusX = size * (highlight ? 0.080 : 0.22);
-    const radiusY = size * (highlight ? 0.036 : 0.13);
-    const rotation = -0.66;
-    // Each ellipse must start its own subpath. Without moveTo(), Canvas joins
-    // consecutive bullets and fills the gap as a huge black/green polygon.
-    ctx.moveTo(cx + radiusX * Math.cos(rotation), cy + radiusX * Math.sin(rotation));
-    ctx.ellipse(cx, cy, radiusX, radiusY, rotation, 0, TAU);
-    ctx.closePath();
-    return true;
-  }
   function drawDreamBulletsBatch() {
     dreamBulletMaterialFrameStats.trailBatches = 0;
     dreamBulletMaterialFrameStats.trailSegments = 0;
@@ -45274,7 +45610,7 @@
     }
     if (segments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
     dreamBulletMaterialFrameStats.trailSegments = segments;
-    if (visualMul <= 0.2) {
+    if (visualMul <= 0.2 && !enhancedStageActive) {
       let compactSegments = 0;
       ctx.fillStyle = 'rgba(172,92,220,.48)';
       ctx.beginPath();
@@ -45299,20 +45635,9 @@
         }
         if (themedSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
       }
-      if (visualMul >= 0.6) {
-        let hotSegments = 0;
-        ctx.fillStyle = 'rgba(245,249,255,.82)';
-        ctx.globalAlpha = 0.48;
-        ctx.beginPath();
-        for (const b of enemyBullets) {
-          if (!b || !b.dream) continue;
-          if (traceDreamBulletTrail(b, 0.24, false)) hotSegments++;
-        }
-        if (hotSegments) { ctx.fill(); dreamBulletMaterialFrameStats.trailBatches++; }
-        ctx.globalAlpha = 1;
-      }
     }
-    // 预警只标记一次真实的转向/释放事件，不创建判定，也不会留下常驻拖尾。
+    // 预警只标记一次真实的转向/释放事件。方向弹用速度箭翼，圆弹用断开的
+    // 四向刻度；不再给所有弹体套同一只圆环或白色圆芯。
     ctx.globalCompositeOperation = 'lighter';
     for (const b of enemyBullets) {
       if (!b?.dream || !(b.dreamPolicyCue > 0)) continue;
@@ -45322,12 +45647,36 @@
       ctx.strokeStyle = b.color || '#ffeaa8';
       ctx.lineWidth = 1.4 + cue * 1.2;
       ctx.beginPath();
-      ctx.arc(b.x, b.y, rr, -Math.PI * 0.82, -Math.PI * 0.18);
-      ctx.arc(b.x, b.y, rr, Math.PI * 0.18, Math.PI * 0.82);
+      const cueSkin = DREAM_BULLET_SKINS[b.dreamSkin];
+      if (cueSkin?.directional) {
+        const dx = b.dreamFaceX || b.dreamDirX || 0;
+        const dy = b.dreamFaceY || b.dreamDirY || -1;
+        const nx = -dy, ny = dx;
+        const backX = b.x - dx * rr * 0.58;
+        const backY = b.y - dy * rr * 0.58;
+        ctx.moveTo(backX + nx * rr * 0.44, backY + ny * rr * 0.44);
+        ctx.lineTo(b.x - dx * rr * 0.18, b.y - dy * rr * 0.18);
+        ctx.lineTo(backX - nx * rr * 0.44, backY - ny * rr * 0.44);
+        ctx.moveTo(b.x + dx * rr * 0.18 + nx * rr * 0.25, b.y + dy * rr * 0.18 + ny * rr * 0.25);
+        ctx.lineTo(b.x + dx * rr * 0.48, b.y + dy * rr * 0.48);
+        ctx.lineTo(b.x + dx * rr * 0.18 - nx * rr * 0.25, b.y + dy * rr * 0.18 - ny * rr * 0.25);
+      } else {
+        const tick0 = rr * 0.62, tick1 = rr * 0.94;
+        ctx.moveTo(b.x - tick1, b.y); ctx.lineTo(b.x - tick0, b.y);
+        ctx.moveTo(b.x + tick0, b.y); ctx.lineTo(b.x + tick1, b.y);
+        ctx.moveTo(b.x, b.y - tick1); ctx.lineTo(b.x, b.y - tick0);
+        ctx.moveTo(b.x, b.y + tick0); ctx.lineTo(b.x, b.y + tick1);
+      }
       ctx.stroke();
       ctx.globalAlpha = 0.42 * cue;
-      ctx.fillStyle = '#fff9de';
-      ctx.beginPath(); ctx.arc(b.x, b.y, Math.max(1.5, b.r * 0.24), 0, TAU); ctx.fill();
+      ctx.fillStyle = b.color || '#ffeaa8';
+      const core = Math.max(1.5, b.r * 0.24);
+      ctx.beginPath();
+      ctx.moveTo(b.x, b.y - core * 1.35);
+      ctx.lineTo(b.x + core, b.y);
+      ctx.lineTo(b.x, b.y + core * 1.35);
+      ctx.lineTo(b.x - core, b.y);
+      ctx.closePath(); ctx.fill();
     }
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
@@ -45356,72 +45705,6 @@
       dreamBulletMaterialFrameStats.bodyDraws++;
     }
     ctx.setTransform(base);
-    // 第三关贴身描边：深色外轮廓 + 家族色细描边 + 极小亮芯，绝不画大范围填充光晕
-    const rimCfg = DREAM_BULLET_MATERIAL_CONFIG.stage3Rim;
-    if (enhancedStageActive && rimCfg && visualMul >= rimCfg.minVisualMul) {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      // 1) 深色外描边：把弹体从背景里“抠”出来
-      ctx.strokeStyle = 'rgba(8,12,22,.74)';
-      ctx.lineWidth = rimCfg.outlineWidth;
-      ctx.globalAlpha = rimCfg.outlineAlpha * (visualMul >= 0.6 ? 1 : 0.82);
-      ctx.beginPath();
-      let outlineCount = 0;
-      for (const b of enemyBullets) {
-        if (!b?.dream || b.dreamDissolving) continue;
-        if (traceDreamStage3Rim(b, b.dreamMaterialRef, rimCfg.bodyFit * 1.06)) outlineCount++;
-      }
-      if (outlineCount) ctx.stroke();
-      // 2) 家族色贴边描边：只贴轮廓，不填充
-      const familyLights = DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight;
-      for (let themeIndex = 0; themeIndex < familyLights.length; themeIndex++) {
-        const style = familyLights[themeIndex];
-        let rimCount = 0;
-        ctx.strokeStyle = style.rim || style.hot;
-        ctx.lineWidth = rimCfg.rimWidth;
-        ctx.globalAlpha = rimCfg.rimAlpha * (visualMul >= 0.6 ? 1 : 0.78);
-        ctx.beginPath();
-        for (const b of enemyBullets) {
-          if (!b?.dream || b.dreamDissolving || b.dreamFamily !== style.key) continue;
-          if (traceDreamStage3Rim(b, b.dreamMaterialRef, rimCfg.bodyFit)) rimCount++;
-        }
-        if (rimCount) ctx.stroke();
-      }
-      // 3) 极窄高光描边 + 极小亮芯：增加体积感，尺寸严格贴身
-      if (visualMul >= 0.45) {
-        ctx.globalCompositeOperation = 'lighter';
-        for (let themeIndex = 0; themeIndex < familyLights.length; themeIndex++) {
-          const style = familyLights[themeIndex];
-          let hotCount = 0;
-          ctx.strokeStyle = style.hot;
-          ctx.lineWidth = rimCfg.hotWidth;
-          ctx.globalAlpha = rimCfg.hotAlpha;
-          ctx.beginPath();
-          for (const b of enemyBullets) {
-            if (!b?.dream || b.dreamDissolving || b.dreamFamily !== style.key) continue;
-            if (traceDreamStage3Rim(b, b.dreamMaterialRef, rimCfg.bodyFit * 0.90)) hotCount++;
-          }
-          if (hotCount) ctx.stroke();
-        }
-        ctx.fillStyle = 'rgba(255,248,236,.86)';
-        ctx.globalAlpha = rimCfg.coreAlpha;
-        ctx.beginPath();
-        let coreCount = 0;
-        for (const b of enemyBullets) {
-          if (!b?.dream || b.dreamDissolving) continue;
-          const body = b.dreamVisualDiameter || b.r * DREAM_BULLET_MATERIAL_CONFIG.drawScale;
-          const coreR = Math.max(1.1, body * rimCfg.coreFit);
-          if (coreR < 1) continue;
-          ctx.moveTo(b.x + coreR, b.y);
-          ctx.arc(b.x, b.y, coreR, 0, TAU);
-          coreCount++;
-        }
-        if (coreCount) ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-      ctx.globalCompositeOperation = 'source-over';
-    }
     const overlayConfig = DREAM_BULLET_MATERIAL_CONFIG.energyOverlay;
     if (enhancedStageActive && visualMul >= overlayConfig.minVisualMul) {
       const overlayCap = visualMul >= 0.95 ? overlayConfig.highCap : overlayConfig.mediumCap;
@@ -45441,39 +45724,6 @@
       }
       dreamBulletMaterialFrameStats.energyDraws = energyDraws;
       ctx.setTransform(base);
-    }
-    // 固定左上方世界光：暗面与窄高光不随贴图自转，形成真正的球面/刃面体积。
-    if (enhancedStageActive) {
-      const lightConfig = DREAM_BULLET_MATERIAL_CONFIG.screenLight;
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = 'rgba(0,2,12,.96)';
-      for (const directionalPass of [true, false]) {
-        ctx.globalAlpha = directionalPass ? lightConfig.directionalShadowAlpha : lightConfig.roundShadowAlpha;
-        ctx.beginPath();
-        let shadowCount = 0;
-        for (const b of enemyBullets) {
-          const material = b?.dreamMaterialRef;
-          if (!b?.dream || !material?.enhancedMaterial || material.directional !== directionalPass) continue;
-          if (traceDreamBulletScreenVolume(b, material, false)) shadowCount++;
-        }
-        if (shadowCount) { ctx.fill(); dreamBulletMaterialFrameStats.lightPasses++; }
-      }
-      if (visualMul >= lightConfig.minVisualMul) {
-        ctx.globalCompositeOperation = 'lighter';
-        const highlightStyles = DREAM_BULLET_MATERIAL_CONFIG.stage3FamilyLight;
-        for (let themeIndex = 0; themeIndex < highlightStyles.length; themeIndex++) {
-          let highlightCount = 0;
-          ctx.globalAlpha = lightConfig.highlightAlpha * (visualMul >= 0.6 ? 1 : 0.72);
-          const highlightStyle = highlightStyles[themeIndex];
-          ctx.fillStyle = highlightStyle.hot;
-          ctx.beginPath();
-          for (const b of enemyBullets) {
-            if (!b?.dream || !b.dreamMaterialRef?.enhancedMaterial || b.dreamFamily !== highlightStyle.key) continue;
-            if (traceDreamBulletScreenVolume(b, b.dreamMaterialRef, true)) highlightCount++;
-          }
-          if (highlightCount) { ctx.fill(); dreamBulletMaterialFrameStats.lightPasses++; }
-        }
-      }
     }
     ctx.setTransform(base);
     if (dreamDissolvingBulletCount > 0) {
@@ -53145,6 +53395,7 @@
         .map(([key, skin]) => ({
           key, assetKey: skin.asset, assetPath: ASSET_PATHS[skin.asset] || '', glowAssetKey: skin.glow || '', glowAssetPath: skin.glow ? (ASSET_PATHS[skin.glow] || '') : '',
           family: skin.family, directional: !!skin.directional, sourceAxis: skin.sourceAxis || 'up', spin: !!skin.spin, preoutlined: !!skin.preoutlined,
+          materialProfile: DREAM_STAGE3_BULLET_MATERIAL_PROFILES[key] ? { ...DREAM_STAGE3_BULLET_MATERIAL_PROFILES[key] } : null,
         }));
     }
     function dreamInternalsAssetStatus(stageId = DREAM_STAGE_ID) {
@@ -53247,7 +53498,7 @@
       };
     }
     window.__dreamModeInternals__ = {
-      modeSpec: () => ({ key: 'dream', title: '梦境模式', levelCount: 10, unlockedLevels: DREAM_LEVELS.filter(level => level.unlocked).length, locksLoadoutAfterStart: true, disablesRandomDrops: true, keepsCharacterSkills: true, keepsWingmen: true, activeWallClock: true, loadoutSelect: { planes: 7, wingmen: 6, picksRequired: { plane: 1, wingman: 1 }, restoresCampaignLoadoutOnExit: true } }),
+      modeSpec: () => ({ key: 'dream', title: '梦境模式', levelCount: 10, unlockedLevels: DREAM_LEVELS.filter(level => level.unlocked).length, locksLoadoutAfterStart: true, disablesRandomDrops: false, disablesRandomPluginDrops: true, disablesRandomLifeDrops: true, configuredDreamDrops: ['berserk', 'heal'], keepsCharacterSkills: true, keepsWingmen: true, activeWallClock: true, loadoutSelect: { planes: 7, wingmen: 6, picksRequired: { plane: 1, wingman: 1 }, restoresCampaignLoadoutOnExit: true } }),
       levelsSpec: () => DREAM_LEVELS.map(level => ({ ...dreamInternalsLevel(level.id), unlocked: level.unlocked })),
       levelSpec: dreamInternalsLevel,
       uiSpec: () => ({ titleActions: ['chapter', 'dream'], lobbyLayout: 'two-rows-five-levels', levelNodes: 10, availableLevels: DREAM_LEVELS.filter(level => level.unlocked).map(level => level.index), mobileTabs: ['情报', '敌人弹幕', '排行榜'], minimumBodyFont: 18, minimumButtonHeight: 52, hud: ['wave', 'active-time', 'stars', 'hits', 'damage-multiplier'] }),
@@ -53261,7 +53512,10 @@
       entrySpec: (stageId = DREAM_STAGE3_ID) => Object.entries(dreamInternalsConfig(stageId).mobs).map(([key, mob]) => ({ key, entryKind: mob.entryKind || 'dreamHover', duration: DREAM_STAGE3_VISUAL_CONFIG.entryDurations[mob.entryKind] || 0, collidableDuringEntry: DREAM_STAGE3_VISUAL_CONFIG.collisionDuringEntry, canFireDuringEntry: DREAM_STAGE3_VISUAL_CONFIG.fireDuringEntry })),
       stageCompletionSpec: (stageId = DREAM_STAGE_ID) => { const config = dreamInternalsConfig(stageId); return { hasBoss: config.hasBoss !== false && !!config.level.boss, clearAfterWave: config.hasBoss === false ? config.patterns.length : null, uploadsLeaderboard: true }; },
       formationSpec: (stageId = DREAM_STAGE_ID) => dreamInternalsConfig(stageId).formations.map((preset, index) => ({ id: index + 1, batches: preset.map(batch => batch.map(point => [...point])) })),
-      rewardSpec: () => ({ powerPerKill: DREAM_REWARD_CONFIG.powerPerKill, powerPerWave: DREAM_REWARD_CONFIG.powerPerKill * 8, randomPlugins: false, lifeDrops: false, berserkDrops: true, berserkDropChance: DREAM_REWARD_CONFIG.berserkDropChance, healDropChance: DREAM_REWARD_CONFIG.healDropChance }),
+      rewardSpec: () => ({ powerPerKill: DREAM_REWARD_CONFIG.powerPerKill, powerPerWave: DREAM_REWARD_CONFIG.powerPerKill * 8, randomPlugins: false, lifeDrops: false, berserkDrops: true, berserkDropChance: DREAM_REWARD_CONFIG.berserkDropChance, healDropChance: DREAM_REWARD_CONFIG.healDropChance, crowdedAt: DREAM_REWARD_CONFIG.crowdedAt, crowdedChanceMul: DREAM_REWARD_CONFIG.crowdedChanceMul, dropHardCap: DREAM_REWARD_CONFIG.dropHardCap, berserkDamageMul: DREAM_REWARD_CONFIG.berserkDamageMul }),
+      dreamDropPlanForTest: (onField, rolls) => dreamDropPlanForRolls(onField, rolls),
+      berserkPickupForTest: (currentSeconds, isReaver = false) => dreamBerserkPickupResult(currentSeconds, isReaver),
+      berserkRuntimeAuditForTest: (isReaver = false) => dreamBerserkRuntimeAuditForTest(isReaver),
       waveTransitionSpec: () => ({ clearDelay: 1.4, timedOverlap: false, bulletDissolve: DREAM_BULLET_MOTION_CONFIG.dissolveDuration, abruptVisibleClear: false }),
       patternSpec: (stageId = DREAM_STAGE_ID) => {
         const config = dreamInternalsConfig(stageId);
@@ -53300,9 +53554,17 @@
         permanentTailBakedIntoBody: false,
         bakedTailRemovedSkins: ['plushIceSpear', 'plushMeteorStar'],
         selectiveEnergyMask: true,
-        screenSpaceLighting: true,
-        screenSpaceVolumeSubpaths: 'isolated-moveTo-closePath',
+        screenSpaceLighting: false,
+        screenSpaceVolumeSubpaths: 'removed-stage3-generic-ellipses',
         stableNonDirectionalSilhouette: true,
+        profileCount: Object.keys(DREAM_STAGE3_BULLET_MATERIAL_PROFILES).length,
+        perSkinMaterialRelief: true,
+        reliefTypes: [...new Set(Object.values(DREAM_STAGE3_BULLET_MATERIAL_PROFILES).map(profile => profile.relief))],
+        trailStyles: [...new Set(Object.values(DREAM_STAGE3_BULLET_MATERIAL_PROFILES).map(profile => profile.trail))],
+        motionRoles: [...new Set(Object.values(DREAM_STAGE3_BULLET_MATERIAL_PROFILES).map(profile => profile.motionRole))],
+        genericStage3Ellipse: false,
+        genericWhiteCore: false,
+        energyClippedToSilhouette: true,
         requiredMaterialAssets: [...DREAM_BULLET_MATERIAL_REQUIRED_KEYS],
         optionalMaterialAssets: [...DREAM_BULLET_MATERIAL_OPTIONAL_KEYS],
         materialAssets: DREAM_BULLET_MATERIAL_ASSET_KEYS.map(key => ({ key, path: ASSET_PATHS[key] || '' })),
@@ -53325,7 +53587,7 @@
         const skins = dreamInternalsSkins(stageId);
         return { realAssetCount: new Set(skins.flatMap(skin => [skin.assetKey, skin.glowAssetKey].filter(Boolean))).size, skinCount: skins.length, emitterCount: emitterKeys.length, emitterKeys, motionFamilyCount: motionFamilies.length, motionFamilies, runtimeFallbackReporting: true };
       },
-      stage3VisualCaptureSpec: () => ({ scenes: ['plush-vfx-lab', 'stage3-phrase', 'stage3-motion-lab'], plushVfx: true, phrase: true, motion: true, version: DREAM_STAGE3_VISUAL_CONFIG.materialVersion }),
+      stage3VisualCaptureSpec: () => ({ scenes: ['plush-vfx-lab', 'stage3-phrase', 'stage3-motion-lab', 'material-closeup', 'dream-berserk-drop'], plushVfx: true, phrase: true, motion: true, materialCloseup: true, dreamBerserkDrop: true, version: DREAM_STAGE3_VISUAL_CONFIG.materialVersion }),
       poolReuseForTest: () => {
         const active = dreamSyncBulletBudget();
         const slots = dreamBulletPool.length + dreamLiveBulletSet.size;
@@ -53393,6 +53655,17 @@
         lasers.push({ x1: x, y1: 92, x2: x + (i & 1 ? -62 : 62), y2: H - 162, width: 22, life: 999, maxLife: 999, color: '#ff365f', damage: 0, dream: true });
       }
     }
+    function dreamDropSnapshotForCapture() {
+      return items.map((item) => ({
+        type: item.type,
+        x: Number(item.x.toFixed(2)),
+        y: Number(item.y.toFixed(2)),
+        spawnX: Number((item.spawnX ?? item.x).toFixed(2)),
+        spawnY: Number((item.spawnY ?? item.y).toFixed(2)),
+        attract: !!item.attract,
+        life: Number((item.life || 0).toFixed(3)),
+      }));
+    }
     function dreamCaptureSnapshot() {
       const dreamBullets = enemyBullets.filter(b => b && b.dream);
       const dreamEnemies = enemies.filter(e => e && e.dream).map(e => ({
@@ -53457,6 +53730,11 @@
         stars: dreamRun.stars,
         hits: dreamRun.hitCount,
         damageMultiplier: dreamRun.outgoingDamageMul,
+        berserkSeconds: Number((player.berserk || 0).toFixed(3)),
+        berserkDamageMultiplier: player.berserk > 0 ? DREAM_REWARD_CONFIG.berserkDamageMul : 1,
+        playerPosition: { x: Number(player.x.toFixed(2)), y: Number(player.y.toFixed(2)) },
+        drops: dreamDropSnapshotForCapture(),
+        pickupToast: pluginToast?.name || '',
         playerInv: Number((player.inv || 0).toFixed(3)),
         screenShake: Number((screenShake || 0).toFixed(3)),
         vignetteRemaining: Number((dreamHitFeedbackT || 0).toFixed(3)),
@@ -53650,6 +53928,33 @@
               }
             }
           }
+        } else if (scene === 'dream-berserk-drop') {
+          state = 'mobs'; dreamUi.open = false;
+          enemies.length = 0; clearDreamBullets(); warnings.length = 0; lasers.length = 0; items.length = 0;
+          particles.length = 0; damageTexts.length = 0; spriteFx.length = 0;
+          player.x = W * 0.5; player.y = H * 0.72; player.berserk = 0; player.pluginGlow = 0;
+          pluginToast = null;
+          const phase = String(options.phase || 'floating');
+          const emitBerserkDrop = (x, y) => dropDreamEnemyLoot({ x, y }, { berserk: 0, heal: 1 });
+          if (phase === 'floating') {
+            emitBerserkDrop(W * 0.5, H * 0.43 + 6);
+            const drop = items.find(item => item.type === 'berserk');
+            if (drop) { drop.vx = 0; drop.vy = 0; }
+          } else if (phase === 'attract') {
+            emitBerserkDrop(player.x - 28, player.y - 106);
+            for (let frame = 0; frame < 12; frame++) updateItems(1 / 60);
+          } else {
+            emitBerserkDrop(player.x, player.y - 16);
+            updateItems(1 / 60);
+            if (phase === 'active') {
+              for (let frame = 0; frame < 30; frame++) {
+                player.berserk = Math.max(0, player.berserk - 1 / 60);
+                player.pluginGlow = Math.max(0, player.pluginGlow - 1 / 60);
+                if (pluginToast) pluginToast.life = Math.max(0.01, pluginToast.life - 1 / 60);
+                updateParticles(1 / 60); updateDamageTexts(1 / 60);
+              }
+            }
+          }
         } else if (scene === 'stage3-phrase') {
           state = 'mobs'; dreamUi.open = false;
           enemies.length = 0; clearDreamBullets(); warnings.length = 0; lasers.length = 0;
@@ -53705,6 +54010,25 @@
               addDreamBullet(x, y, Math.cos(baseAngle) * speed, Math.sin(baseAngle) * speed, { ...common, skin: 'plushIceSpear' });
             }
           }
+        } else if (scene === 'material-closeup') {
+          state = 'dreamMaterialLab';
+          dreamUi.open = false;
+          enemies.length = 0;
+          clearDreamBullets();
+          warnings.length = 0;
+          lasers.length = 0;
+          warmDreamBulletMaterialCache(999);
+          const requestedSkin = DREAM_STAGE3_BULLET_SKIN_KEYS.includes(String(options.skin || ''))
+            ? String(options.skin)
+            : DREAM_STAGE3_BULLET_SKIN_KEYS[0];
+          const skinSpec = DREAM_BULLET_SKINS[requestedSkin];
+          const skinIndex = Math.max(0, DREAM_STAGE3_BULLET_SKIN_KEYS.indexOf(requestedSkin));
+          const speed = skinSpec.directional ? 170 : 92;
+          addDreamBullet(250, H * 0.52, speed, 0, {
+            r: 7.2, damage: 0, life: 20, hardLife: 20, skin: requestedSkin, visualIndex: skinIndex,
+            style: skinSpec.directional ? 'aimed' : 'hazard', shape: skinSpec.directional ? 'needle' : 'orb',
+            emitter: 'material-closeup', motion: 'material-relief-closeup', policy: 'locked-linear', policySpeed: speed,
+          });
         } else if (scene === 'material-lab') {
           state = 'dreamMaterialLab';
           dreamUi.open = false;
@@ -53911,6 +54235,12 @@
           else if (state === 'bossIntro') updateBossIntro(dt);
           else if (state === 'bossOutro') updateBossOutro(dt);
           updateEnemyBullets(dt); updateWarnings(dt); updateLasers(dt); updateParticles(dt); updateSpriteFx(dt); updateDamageTexts(dt);
+          if (dreamCaptureScene === 'dream-berserk-drop') {
+            updateItems(dt);
+            player.berserk = Math.max(0, player.berserk - dt);
+            player.pluginGlow = Math.max(0, player.pluginGlow - dt);
+            if (pluginToast) { pluginToast.life -= dt; if (pluginToast.life <= 0) pluginToast = null; }
+          }
           player.inv = Math.max(0, (player.inv || 0) - dt);
           hurtT = Math.max(0, hurtT - dt);
           dreamHitFeedbackT = Math.max(0, dreamHitFeedbackT - dt);

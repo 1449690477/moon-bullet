@@ -77,6 +77,9 @@ describe('dream mode level three: Plush Dream Room', () => {
     expect(new Set(skins.map((skin) => skin.assetKey)).size).toBe(21);
     expect(new Set(skins.map((skin) => skin.glowAssetKey)).size).toBe(21);
     expect(skins.every((skin) => (skin.key.startsWith('plush') || skin.key.startsWith('shark')) && skin.assetKey.startsWith('dreamPlush') && skin.glowAssetKey.endsWith('Glow') && skin.preoutlined)).toBe(true);
+    expect(skins.every((skin) => skin.materialProfile?.material && skin.materialProfile?.relief && skin.materialProfile?.motionRole)).toBe(true);
+    expect(new Set(skins.map((skin) => skin.materialProfile.material)).size).toBe(21);
+    expect(new Set(skins.map((skin) => skin.materialProfile.relief)).size).toBeGreaterThanOrEqual(17);
     expect(skins.filter((skin) => skin.key.startsWith('shark')).map((skin) => skin.key)).toEqual([
       'sharkIceSpear', 'sharkIceShard', 'sharkSnowball', 'sharkBubble', 'sharkWaveCrescent', 'sharkVoidOrb',
     ]);
@@ -269,9 +272,24 @@ describe('dream mode level three: Plush Dream Room', () => {
       allocationFreeHotPath: true,
       cachePolicy: 'active-stage-only',
       selectiveEnergyAtlas: true,
-      screenSpaceVolumeSubpaths: 'isolated-moveTo-closePath',
+      screenSpaceLighting: false,
+      screenSpaceVolumeSubpaths: 'removed-stage3-generic-ellipses',
       stage3FamilyLightKeys: ['leaf', 'iceToy', 'doll', 'waterToy', 'starToy'],
+      profileCount: 21,
+      perSkinMaterialRelief: true,
+      genericStage3Ellipse: false,
+      genericWhiteCore: false,
+      energyClippedToSilhouette: true,
     });
+    const material = dream.bulletMaterialSpec();
+    expect(material.reliefTypes.length).toBeGreaterThanOrEqual(17);
+    expect(material.trailStyles).toEqual(expect.arrayContaining(['none', 'leaf-slice', 'frost-lance', 'bubble-chain', 'droplet-echo', 'comet-flame', 'foam-spray']));
+    expect(material.motionRoles).toHaveLength(21);
+    const materialStart = source.indexOf('function getDreamBulletSkinSprite(');
+    const materialEnd = source.indexOf('function warmDreamBulletMaterialCache(', materialStart);
+    const materialBlock = source.slice(materialStart, materialEnd);
+    expect(materialBlock).toContain("ef.globalCompositeOperation = 'destination-in'");
+    expect(materialBlock).toContain('ef.drawImage(energyMask, 0, 0)');
     expect(manifest.renderContract).toMatchObject({ trailCollision: false, vfxCollision: false });
   });
 

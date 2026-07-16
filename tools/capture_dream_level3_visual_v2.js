@@ -66,6 +66,21 @@ const MATERIAL_CLOSEUP_SAMPLES = Object.freeze([
   Object.freeze({ label: 't640', ms: 640, frame: 40 }),
   Object.freeze({ label: 't720', ms: 720, frame: 45 }),
 ]);
+const BERSERK_DROP_SAMPLES = Object.freeze([
+  Object.freeze({ phase: 'floating', moment: '暴走掉落悬浮' }),
+  Object.freeze({ phase: 'attract', moment: '进入玩家吸附轨迹' }),
+  Object.freeze({ phase: 'pickup', moment: '拾取瞬间与提示' }),
+  Object.freeze({ phase: 'active', moment: '暴走状态生效' }),
+]);
+const STAGE3_RUNTIME_POLICY_EXPECTATIONS = Object.freeze({
+  plushLeafBlade: ['locked-linear', 'bezier-lane'], plushLeafSeed: ['analytic-wave-lane', 'brake-hold-release'], plushLeafBud: ['brake-hold-release', 'bezier-lane'],
+  plushIceShard: ['locked-linear', 'brake-hold-release'], plushSnowball: ['brake-hold-release', 'orbit-release'], plushIceSpear: ['locked-linear', 'orbit-release'],
+  plushCrystalShard: ['orbit-release', 'turn-once'], plushDollOrb: ['brake-hold-release', 'orbit-release'], plushDollSigil: ['brake-hold-release', 'turn-once'],
+  plushWaterDrop: ['analytic-wave-lane', 'turn-once'], plushFishbone: ['turn-once', 'orbit-release'], plushBubblePearl: ['analytic-wave-lane', 'orbit-release'],
+  plushStarShot: ['orbit-release', 'brake-hold-release'], plushMeteorStar: ['brake-hold-release', 'analytic-wave-lane'], plushConstellationNode: ['orbit-release', 'brake-hold-release'],
+  sharkIceSpear: ['brake-hold-release'], sharkIceShard: ['locked-linear', 'analytic-wave-lane', 'bezier-lane', 'orbit-release'], sharkSnowball: ['analytic-wave-lane', 'locked-linear', 'turn-once'],
+  sharkBubble: ['analytic-wave-lane', 'orbit-release', 'turn-once'], sharkWaveCrescent: ['brake-hold-release', 'turn-once'], sharkVoidOrb: ['analytic-wave-lane', 'orbit-release', 'brake-hold-release'],
+});
 const SHARK_CAPTURE_DEFAULT_SCENES = Object.freeze({
   entry: 'stage3-shark-entry',
   phase: 'stage3-shark-phase',
@@ -248,6 +263,8 @@ async function capabilities(page) {
       exactPlushVfx: scenes.includes('plush-vfx-lab') || spec?.plushVfx === true,
       exactPhrase: scenes.includes('stage3-phrase') || spec?.phrase === true,
       exactMotion: scenes.includes('stage3-motion-lab') || spec?.motion === true,
+      exactMaterialCloseup: scenes.includes('material-closeup') || spec?.materialCloseup === true,
+      exactDreamBerserkDrop: scenes.includes('dream-berserk-drop') || spec?.dreamBerserkDrop === true,
       exactSharkBoss: !!sharkSpec,
       sharkSpec,
       sharkAssetSpec,
@@ -764,6 +781,43 @@ async function captureLiveBatches(page, viewport, report) {
   }
 }
 
+async function captureDreamBerserkDrop(page, viewport, report, caps) {
+  if (!caps.exactDreamBerserkDrop) {
+    pushIssue(report, 'missing-interface', `${viewport.id}: exact Dream berserk drop capture requires dream-berserk-drop`);
+    return;
+  }
+  for (const sample of BERSERK_DROP_SAMPLES) {
+    await prepare(page, 'dream-berserk-drop', { phase: sample.phase, quality: viewport.quality });
+    const snapshot = await record(page, viewport, report, 'berserk_drop', sample.phase, {
+      exact: true, moment: sample.moment, frame: 0,
+    });
+    const drops = Array.isArray(snapshot?.drops) ? snapshot.drops : [];
+    if (sample.phase === 'floating' && !(drops.length === 1 && drops[0]?.type === 'berserk')) {
+      report.failures.push(`${viewport.id}/berserk-drop/floating: gold berserk drop is not visible`);
+    }
+    if (sample.phase === 'attract' && !(drops.length === 1 && drops[0]?.attract === true)) {
+      report.failures.push(`${viewport.id}/berserk-drop/attract: attraction state is not active`);
+    }
+    if (sample.phase === 'attract' && drops.length === 1) {
+      const moved = Math.hypot(Number(drops[0].x) - Number(drops[0].spawnX), Number(drops[0].y) - Number(drops[0].spawnY));
+      const startDistance = Math.hypot(Number(drops[0].spawnX) - Number(snapshot?.playerPosition?.x), Number(drops[0].spawnY) - Number(snapshot?.playerPosition?.y));
+      const currentDistance = Math.hypot(Number(drops[0].x) - Number(snapshot?.playerPosition?.x), Number(drops[0].y) - Number(snapshot?.playerPosition?.y));
+      if (moved < 4 || currentDistance >= startDistance) {
+        report.failures.push(`${viewport.id}/berserk-drop/attract: drop did not move toward the player across updateItems frames`);
+      }
+    }
+    if ((sample.phase === 'pickup' || sample.phase === 'active') && Number(snapshot?.berserkSeconds || 0) < 5) {
+      report.failures.push(`${viewport.id}/berserk-drop/${sample.phase}: pickup did not activate the six-second berserk timer`);
+    }
+    if (sample.phase === 'pickup' && !String(snapshot?.pickupToast || '').includes('暴走')) {
+      report.failures.push(`${viewport.id}/berserk-drop/pickup: pickup feedback toast is missing`);
+    }
+    if ((sample.phase === 'pickup' || sample.phase === 'active') && Number(snapshot?.berserkDamageMultiplier || 1) !== 1.6) {
+      report.failures.push(`${viewport.id}/berserk-drop/${sample.phase}: live damage multiplier is not 1.6`);
+    }
+  }
+}
+
 function bulletPolicy(bullet) {
   return bullet?.policy || bullet?.dreamPolicy || bullet?.motionPolicy || '';
 }
@@ -814,29 +868,27 @@ async function captureMaterialCloseups(page, viewport, report, caps) {
   if (caps.materialSpec?.transientTrails !== true || caps.materialSpec?.trailDamaging !== false || Number(caps.materialSpec?.trailCollisionRadius || 0) !== 0) {
     report.failures.push(`${viewport.id}/material-closeup: global trail policy is not transient and presentation-only`);
   }
+  if (!caps.exactMaterialCloseup) {
+    pushIssue(report, 'missing-interface', `${viewport.id}: isolated material close-ups require material-closeup`);
+    return;
+  }
 
-  let snapshot = await prepare(page, 'material-lab', { quality: viewport.quality });
-  let previousFrame = 0;
-  for (const sample of MATERIAL_CLOSEUP_SAMPLES) {
-    if (sample.frame > previousFrame) snapshot = await step(page, sample.frame - previousFrame, 0.016);
-    previousFrame = sample.frame;
-    const bullets = Array.isArray(snapshot?.bullets) ? snapshot.bullets : [];
-    const bulletsBySkin = new Map(bullets.map((bullet) => [String(bullet.skin || ''), bullet]));
-    const actualKeys = new Set(bulletsBySkin.keys());
-    const missing = [...expectedKeys].filter((key) => !actualKeys.has(key));
-    const extra = [...actualKeys].filter((key) => !expectedKeys.has(key));
-    const sampleLabel = `${viewport.id}/material-closeup/${sample.label}`;
-    if (bullets.length !== STAGE3_MATERIAL_SKIN_COUNT || missing.length || extra.length) {
-      report.failures.push(`${sampleLabel}: expected ${STAGE3_MATERIAL_SKIN_COUNT} one-per-skin bullets; count ${bullets.length}, missing [${missing.join(', ')}], extra [${extra.join(', ')}]`);
-    }
-    if ((snapshot?.fallbacks || []).length) report.failures.push(`${sampleLabel}: visual fallbacks ${snapshot.fallbacks.join(', ')}`);
-    if (Number(snapshot?.logicalBulletCount || 0) > 96) report.failures.push(`${sampleLabel}: ${snapshot.logicalBulletCount} bullets > 96`);
-    const visual = await canvasMetrics(page);
-
-    for (const skin of skins) {
-      const key = String(skin.key || '');
-      const bullet = bulletsBySkin.get(key);
-      if (!bullet) continue;
+  for (const skin of skins) {
+    const key = String(skin.key || '');
+    let snapshot = await prepare(page, 'material-closeup', { skin: key, quality: viewport.quality });
+    let previousFrame = 0;
+    for (const sample of MATERIAL_CLOSEUP_SAMPLES) {
+      if (sample.frame > previousFrame) snapshot = await step(page, sample.frame - previousFrame, 0.016);
+      previousFrame = sample.frame;
+      const bullets = Array.isArray(snapshot?.bullets) ? snapshot.bullets : [];
+      const bullet = bullets.find((candidate) => String(candidate.skin || '') === key);
+      const sampleLabel = `${viewport.id}/material_${key}/${sample.label}`;
+      if (bullets.length !== 1 || !bullet) {
+        report.failures.push(`${sampleLabel}: isolated lab expected one ${key} bullet, got ${bullets.map((candidate) => candidate.skin).join(', ') || '(none)'}`);
+        continue;
+      }
+      if ((snapshot?.fallbacks || []).length) report.failures.push(`${sampleLabel}: visual fallbacks ${snapshot.fallbacks.join(', ')}`);
+      if (String(bullet.emitter || '') !== 'material-closeup') report.failures.push(`${sampleLabel}: close-up is not isolated from the live HUD lab`);
       const phase = Number(bullet.materialPhase);
       phaseBySkin.get(key)?.add(phase);
       allPhases.add(phase);
@@ -856,6 +908,7 @@ async function captureMaterialCloseups(page, viewport, report, caps) {
         report.failures.push(`${label}: rendered body ${bullet.drawDiameter || 0}px is too small for ${bullet.collisionRadius || 0}px collision radius`);
       }
 
+      const visual = await canvasMetrics(page);
       const file = `${viewport.id}_material_${sanitize(key)}_${sample.label}.png`;
       const closeup = await screenshotBulletCloseup(page, bullet, file);
       if (closeup.width !== 480 || closeup.height !== 480) {
@@ -933,6 +986,36 @@ function buildGif(prefix, files, duration = 0.12) {
   return { built: true, file: path.basename(output) };
 }
 
+function auditRuntimeSkinMotions(report) {
+  const coverage = new Map();
+  for (const frame of report.frames) {
+    if (!/^(wave\d+|live_wave\d+|shark_phase\d+)$/.test(String(frame.group || ''))) continue;
+    for (const bullet of frame.snapshot?.bullets || []) {
+      const skin = String(bullet.skin || '');
+      if (!STAGE3_RUNTIME_POLICY_EXPECTATIONS[skin]) continue;
+      if (!coverage.has(skin)) coverage.set(skin, { policies: new Set(), motions: new Set(), emitters: new Set() });
+      const row = coverage.get(skin);
+      if (bullet.policy) row.policies.add(String(bullet.policy));
+      if (bullet.motion) row.motions.add(String(bullet.motion));
+      if (bullet.emitter) row.emitters.add(String(bullet.emitter));
+    }
+  }
+  for (const [skin, expectedPolicies] of Object.entries(STAGE3_RUNTIME_POLICY_EXPECTATIONS)) {
+    const row = coverage.get(skin);
+    if (!row) {
+      report.failures.push(`runtime-motion/${skin}: skin never appeared in live wave or shark phase captures`);
+      continue;
+    }
+    if (![...row.policies].some((policy) => expectedPolicies.includes(policy))) {
+      report.failures.push(`runtime-motion/${skin}: policies [${[...row.policies].join(', ')}] do not match [${expectedPolicies.join(', ')}]`);
+    }
+    if (!row.emitters.size) report.failures.push(`runtime-motion/${skin}: no real runtime emitter captured`);
+  }
+  report.runtimeMotionCoverage = Object.fromEntries([...coverage].map(([skin, row]) => [skin, {
+    policies: [...row.policies].sort(), motions: [...row.motions].sort(), emitters: [...row.emitters].sort(),
+  }]));
+}
+
 function writeReports(report) {
   const status = report.failures.length ? 'FAIL' : (report.missingInterfaces.length ? 'PARTIAL' : 'PASS');
   const rows = report.frames.map((frame) => `<figure><img src="${frame.file}" alt="${frame.label}"><figcaption><b>${frame.label}</b>${frame.metadata?.moment ? `<br>${frame.metadata.moment} · 第 ${frame.metadata.frame} 帧` : ''}<br>${frame.screenshot.width}x${frame.screenshot.height} · bullet ${frame.snapshot?.logicalBulletCount || 0}<br>pixel ${frame.visual.pixelHash}</figcaption></figure>`).join('\n');
@@ -942,7 +1025,7 @@ function writeReports(report) {
     ? 'Shark-only：旧玩偶、波次、运动与材质矩阵按开关跳过'
     : `${report.materialLab?.skinCount || 0} 种 · ${report.materialLab?.phaseCount || 0} 相位 · 0/80/160/240/640/720ms 连续帧（含相位回环）`;
   const legacyManualChecklist = SHARK_ONLY ? ''
-    : `- [ ] 五只玩偶材质各自可辨，固有色未被整图加法发光冲白\n- [ ] 21 种弹体每种都有 0/80/160/240/640/720ms 六帧放大特写，固有色与轮廓可辨\n- [ ] 640/720ms 回环前后局部高光连续，没有从一侧瞬移到另一侧\n- [ ] 8 相位局部高光连续流动，不是整张贴图闪烁\n- [ ] 发射与命中均有 t000、peak_f007、decay_f020 三帧，峰值肉眼可见且衰减不硬切\n- [ ] 十波均能读出共享安全路线，最多两个主要声部\n- [ ] release 窗没有新弹组生成，屏幕可明显减压\n- [ ] 六种运动策略轨迹稳定，不累计乱转、不在可见区突然消失\n- [ ] 弹体暗轮廓、固有色、亮芯、局部 glow 层次清晰\n- [ ] 尾迹只在发射或转段短暂出现，尾迹无伤害\n`;
+    : `- [ ] 五只玩偶材质各自可辨，固有色未被整图加法发光冲白\n- [ ] 21 种弹体每种都有 0/80/160/240/640/720ms 六帧放大特写，固有色与轮廓可辨\n- [ ] 640/720ms 回环前后局部高光连续，没有从一侧瞬移到另一侧\n- [ ] 8 相位局部高光连续流动，不是整张贴图闪烁\n- [ ] 发射与命中均有 t000、peak_f007、decay_f020 三帧，峰值肉眼可见且衰减不硬切\n- [ ] 十波均能读出共享安全路线，最多两个主要声部\n- [ ] release 窗没有新弹组生成，屏幕可明显减压\n- [ ] 六种运动策略轨迹稳定，不累计乱转、不在可见区突然消失\n- [ ] 弹体暗轮廓、固有色、亮芯、局部 glow 层次清晰\n- [ ] 尾迹只在发射或转段短暂出现，尾迹无伤害\n- [ ] 暴走掉落悬浮、吸附、拾取、激活四帧清晰，拾取后计时和 1.6 倍伤害同步生效\n`;
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), `<!doctype html><meta charset="utf-8"><title>梦境第三关 V2 视觉验收</title>
 <style>body{margin:24px;background:#0c1020;color:#eef5ff;font:15px system-ui}h1,h2{color:#ffbee7}.status{font-size:22px;color:${status === 'PASS' ? '#91ffd0' : '#ff9ba8'}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}figure{margin:0;padding:9px;background:#171d35;border:1px solid #66739c;border-radius:8px}img{width:100%;display:block;background:#05070e}figcaption{padding-top:8px;line-height:1.5}</style>
 <h1>梦境第三关「绒梦玩偶屋」V2 视觉验收</h1><p class="status">${status}</p>
@@ -1003,6 +1086,7 @@ async function main() {
           await capturePlush(page, viewport, report, caps);
           await captureWavePhrases(page, viewport, report, caps);
           await captureLiveBatches(page, viewport, report);
+          await captureDreamBerserkDrop(page, viewport, report, caps);
           await captureMotionPolicies(page, viewport, report, caps);
           await captureMaterialCloseups(page, viewport, report, caps);
         }
@@ -1033,6 +1117,7 @@ async function main() {
       report.gifs.push(buildGif(`motion_${sample.policy}_v2`, desktop.filter((frame) => frame.group === `motion_${sample.policy}`).map((frame) => frame.file), 0.12));
     }
     report.gifs.push(buildGif('stage3_ten_wave_phrase_v2', desktop.filter((frame) => /^wave\d+$/.test(frame.group)).map((frame) => frame.file), 0.12));
+    auditRuntimeSkinMotions(report);
   }
   writeReports(report);
   console.log(`Dream Stage 3 V2 visual report: ${path.join(OUT_DIR, 'index.html')}`);
