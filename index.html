@@ -10,23 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background:#F2F7FF; overflow: hidden; }
+    html, body { margin: 0; height: 100%; background:#EFF7FF; overflow: hidden; }
     html {
       --app-vw: 100vw;
       --app-vh: 100dvh;
-      --cute-sky: #6AB8FF;
-      --cute-sky-deep: #3E8FE8;
+      --cute-sky: #58B7FF;
+      --cute-sky-deep: #3E9BF5;
+      --cute-azure: #3E9BF5;
+      --cute-mint: #4FD8E8;
       --cute-pink: #FFA4CC;
       --cute-pink-deep: #F06BA8;
       --cute-yellow: #FFD66B;
       --cute-cream: #FBFAFF;
-      --cute-ink: #3D4A6B;
-      --cute-ink-soft: rgba(61,74,107,.55);
-      --cute-hairline: rgba(120,140,190,.16);
+      --cute-ink: #2E4A6E;
+      --cute-ink-soft: rgba(46,74,110,.55);
+      --cute-hairline: rgba(110,160,220,.18);
       --cute-panel: rgba(255,255,255,.72);
     }
     body {
-      color:#3D4A6B;
+      color:#2E4A6E;
       font-family: "M PLUS Rounded 1c", "Nunito", "Hiragino Maru Gothic ProN", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
       user-select:none;
     }
@@ -34,10 +36,10 @@
       width: var(--app-vw); height: var(--app-vh);
       display:flex; align-items:center; justify-content:center;
       background:
-        radial-gradient(circle at 82% 8%, rgba(255,164,204,.20), transparent 34%),
-        radial-gradient(circle at 10% 88%, rgba(106,184,255,.22), transparent 36%),
+        radial-gradient(circle at 82% 8%, rgba(88,183,255,.20), transparent 34%),
+        radial-gradient(circle at 10% 88%, rgba(79,216,232,.20), transparent 36%),
         radial-gradient(circle at 62% 96%, rgba(255,255,255,.34), transparent 30%),
-        linear-gradient(180deg, #FBFAFF 0%, #F2F7FF 100%);
+        linear-gradient(180deg, #FAFDFF 0%, #EFF7FF 100%);
       padding:8px;
     }
     canvas {
@@ -47,7 +49,7 @@
       background:#0b1224;
       border:1.5px solid rgba(255,255,255,.90);
       border-radius:28px;
-      box-shadow:0 24px 64px rgba(90,107,158,.22), 0 4px 16px rgba(106,184,255,.14), inset 0 0 36px rgba(255,255,255,.05);
+      box-shadow:0 24px 64px rgba(90,120,176,.22), 0 4px 16px rgba(88,183,255,.14), inset 0 0 36px rgba(255,255,255,.05);
       touch-action:none;
     }
     html.mobile-game-fullscreen,
@@ -84,7 +86,7 @@
     }
     #tip {
       position: fixed; left: 12px; bottom: 10px;
-      color: rgba(61,74,107,.88); font-size: 14px; line-height: 1.6;
+      color: rgba(46,74,110,.88); font-size: 14px; line-height: 1.6;
       text-shadow: 0 1px 0 rgba(255,255,255,.85); pointer-events:none;
       max-width: 420px;
     }
@@ -94,13 +96,13 @@
     }
     #musicStatus {
       position: fixed; right: 12px; top: 10px;
-      color: #3D4A6B; font-size: 14px;
+      color: #2E4A6E; font-size: 14px;
       background: linear-gradient(180deg, rgba(255,255,255,.72), rgba(242,247,255,.62));
       -webkit-backdrop-filter: blur(14px) saturate(1.4);
       backdrop-filter: blur(14px) saturate(1.4);
       border: 1px solid rgba(255,255,255,.70);
       padding: 7px 12px; border-radius: 999px; pointer-events:none;
-      box-shadow: 0 8px 24px rgba(90,107,158,.18);
+      box-shadow: 0 8px 24px rgba(90,120,176,.18);
       text-shadow: none;
     }
     .leaderboard-dialog-backdrop {
@@ -110,25 +112,25 @@
       overflow-y: auto; -webkit-overflow-scrolling: touch;
     }
     .leaderboard-dialog {
-      width: min(92vw, 420px); color: #3D4A6B; border-radius: 28px; padding: 22px;
+      width: min(92vw, 420px); color: #2E4A6E; border-radius: 28px; padding: 22px;
       max-height: calc(100svh - 36px); overflow-y: auto; overscroll-behavior: contain;
       border: 1px solid rgba(255, 255, 255, .72);
       background:
-        radial-gradient(circle at 16% 10%, rgba(255, 164, 204, .20), transparent 38%),
-        radial-gradient(circle at 86% 12%, rgba(106, 184, 255, .18), transparent 40%),
+        radial-gradient(circle at 16% 10%, rgba(88, 183, 255, .18), transparent 38%),
+        radial-gradient(circle at 86% 12%, rgba(79, 216, 232, .16), transparent 40%),
         linear-gradient(180deg, rgba(255,255,255,.72), rgba(242,247,255,.60));
       -webkit-backdrop-filter: blur(18px) saturate(1.4);
       backdrop-filter: blur(18px) saturate(1.4);
-      box-shadow: 0 24px 64px rgba(90,107,158,.24), inset 0 1px 0 rgba(255,255,255,.65);
+      box-shadow: 0 24px 64px rgba(90,120,176,.24), inset 0 1px 0 rgba(255,255,255,.65);
       transform-origin: 50% 46%;
       animation: cute-dialog-pop .38s cubic-bezier(.34,1.56,.64,1) both;
     }
-    .leaderboard-dialog h2 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; color: #3E8FE8; }
-    .leaderboard-dialog p { margin: 0 0 14px; color: rgba(61,74,107,.72); font-size: 16px; line-height: 1.55; }
+    .leaderboard-dialog h2 { margin: 0 0 8px; font-size: 28px; letter-spacing: 0; color: #3E9BF5; }
+    .leaderboard-dialog p { margin: 0 0 14px; color: rgba(46,74,110,.72); font-size: 16px; line-height: 1.55; }
     .leaderboard-dialog input[type="text"],
     .leaderboard-dialog textarea {
-      width: 100%; height: 44px; border-radius: 18px; border: 1px solid rgba(120,140,190,.30);
-      background: rgba(255, 255, 255, .68); color: #3D4A6B; font: 800 17px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      width: 100%; height: 44px; border-radius: 18px; border: 1px solid rgba(110,160,220,.30);
+      background: rgba(255, 255, 255, .68); color: #2E4A6E; font: 800 17px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
       padding: 0 13px; outline: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.60);
     }
     .leaderboard-dialog textarea {
@@ -136,47 +138,55 @@
       font-size: 15px; font-weight: 700;
     }
     .guestbook-dialog {
-      border-color: rgba(255, 164, 204, .55);
+      border-color: rgba(88, 183, 255, .50);
       background:
-        radial-gradient(circle at 18% 12%, rgba(255, 164, 204, .22), transparent 38%),
-        radial-gradient(circle at 84% 14%, rgba(106, 184, 255, .18), transparent 40%),
-        linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,244,250,.60));
+        radial-gradient(circle at 18% 12%, rgba(88, 183, 255, .20), transparent 38%),
+        radial-gradient(circle at 84% 14%, rgba(79, 216, 232, .16), transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,.72), rgba(240,248,255,.60));
     }
     .leaderboard-dialog-row { display: flex; gap: 12px; align-items: center; margin: 14px 0; }
     .leaderboard-avatar-preview {
       width: 64px; height: 64px; border-radius: 50%; flex: 0 0 auto;
-      border: 2.5px solid rgba(255, 164, 204, .90);
-      background: radial-gradient(circle, rgba(180, 230, 255, .55), rgba(255, 220, 240, .92));
-      box-shadow: 0 0 18px rgba(255, 164, 204, .30); background-size: cover; background-position: center;
+      border: 2.5px solid rgba(88, 183, 255, .85);
+      background: radial-gradient(circle, rgba(180, 230, 255, .55), rgba(214, 238, 255, .92));
+      box-shadow: 0 0 18px rgba(88, 183, 255, .28); background-size: cover; background-position: center;
     }
+    @keyframes sky-btn-sheen { to { transform: translateX(120%); } }
     .leaderboard-dialog button {
+      position: relative; overflow: hidden;
       border: 1px solid rgba(255,255,255,.55); border-radius: 999px; padding: 11px 16px; color: #fff;
-      background: linear-gradient(180deg, #6AB8FF 0%, #3E8FE8 100%);
+      background: linear-gradient(180deg, #58B7FF 0%, #3E9BF5 100%);
       font: 800 14px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-      box-shadow: 0 10px 26px rgba(90,107,158,.26); cursor: pointer;
+      box-shadow: 0 10px 26px rgba(90,120,176,.26); cursor: pointer;
       transform: translateY(0) scale(1);
       transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, filter .18s ease;
     }
+    .leaderboard-dialog button::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+      transform: translateX(-120%);
+    }
     .leaderboard-dialog button:hover {
       transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(90,107,158,.30), 0 0 18px rgba(255,164,204,.22);
+      box-shadow: 0 12px 30px rgba(90,120,176,.30), 0 0 18px rgba(88,183,255,.26);
       filter: saturate(1.05) brightness(1.02);
     }
+    .leaderboard-dialog button:hover::after { animation: sky-btn-sheen .9s ease; }
     .leaderboard-dialog button:active {
       transform: translateY(1px) scale(.94);
       transition-duration: .07s;
     }
     .leaderboard-dialog input[type="text"]:focus,
     .leaderboard-dialog textarea:focus {
-      border-color: rgba(255, 164, 204, .70);
-      box-shadow: 0 0 0 3px rgba(106, 184, 255, .18), 0 8px 22px rgba(255, 164, 204, .14);
+      border-color: rgba(88, 183, 255, .70);
+      box-shadow: 0 0 0 3px rgba(88, 183, 255, .18), 0 8px 22px rgba(88, 183, 255, .14);
     }
     .leaderboard-dialog button.secondary {
-      color: #3D4A6B;
+      color: #2E4A6E;
       background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(242,247,255,.66));
       -webkit-backdrop-filter: blur(12px) saturate(1.3);
       backdrop-filter: blur(12px) saturate(1.3);
-      box-shadow: 0 8px 20px rgba(90,107,158,.16);
+      box-shadow: 0 8px 20px rgba(90,120,176,.16);
     }
     .leaderboard-dialog .actions {
       display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;
@@ -189,39 +199,39 @@
       max-height: min(760px, calc(100svh - 36px));
       overflow: auto;
       scroll-padding-bottom: 82px;
-      border-color: rgba(255, 164, 204, .55);
+      border-color: rgba(88, 183, 255, .50);
       background:
-        radial-gradient(circle at 14% 10%, rgba(255, 164, 204, .20), transparent 36%),
-        radial-gradient(circle at 86% 8%, rgba(106, 184, 255, .18), transparent 38%),
+        radial-gradient(circle at 14% 10%, rgba(88, 183, 255, .18), transparent 36%),
+        radial-gradient(circle at 86% 8%, rgba(79, 216, 232, .16), transparent 38%),
         linear-gradient(180deg, rgba(255,255,255,.72), rgba(242,247,255,.62));
-      box-shadow: 0 26px 68px rgba(90,107,158,.24), inset 0 1px 0 rgba(255,255,255,.65);
+      box-shadow: 0 26px 68px rgba(90,120,176,.24), inset 0 1px 0 rgba(255,255,255,.65);
     }
-    .update-notice-dialog h2 { color: #3E8FE8; text-shadow: 0 0 14px rgba(255, 164, 204, .28); }
+    .update-notice-dialog h2 { color: #3E9BF5; text-shadow: 0 0 14px rgba(88, 183, 255, .26); }
     .update-notice-kicker {
       margin-bottom: 12px;
-      color: rgba(61,74,107,.72);
+      color: rgba(46,74,110,.72);
       font-size: 16px;
       line-height: 1.55;
     }
     .update-notice-section {
       padding-top: 12px;
       margin-top: 12px;
-      border-top: 1px solid rgba(120,140,190,.24);
+      border-top: 1px solid rgba(110,160,220,.24);
     }
     .update-notice-date {
       display: inline-block;
       padding: 4px 12px;
       border-radius: 999px;
       color: #fff;
-      background: linear-gradient(180deg, #FFA4CC, #F06BA8);
+      background: linear-gradient(180deg, #58B7FF, #3E9BF5);
       font-weight: 900;
       font-size: 14px;
-      box-shadow: 0 0 14px rgba(255, 164, 204, .30);
+      box-shadow: 0 0 14px rgba(88, 183, 255, .30);
     }
     .update-notice-dialog ul {
       margin: 9px 0 0 0;
       padding-left: 18px;
-      color: rgba(61,74,107,.85);
+      color: rgba(46,74,110,.85);
       font-size: 16px;
       line-height: 1.62;
     }
@@ -3175,9 +3185,18 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-17-danmaku-visual-ui-rework';
+     const UPDATE_NOTICE_VERSION = '2026-07-17-clear-sky-glass-ui';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-17 · 晴空玻璃界面全量焕新',
+      items: [
+        '整套界面从底层重建为「晴空玻璃」体系：天蓝主色＋青碧点缀的清新配比，粉色只保留给爱心与提示，画面更简约通透。',
+        '全界面动态化：主按钮流光扫过、页签滑块弹簧移动、标题徽标天空渐变漂移与轻呼吸、结算数字滚动、卡片错峰弹入，灵动但不吵闹。',
+        '全新粒子氛围层：柔和光斑、上升小气泡、呼吸星芒与慢漂云朵会根据场景自动调节密度，标题界面还支持指针视差；战斗画面保持克制不干扰走位。',
+        '覆盖范围：标题页、梦境大厅、出战编队、战斗HUD、鲨鱼Boss血条、移动端竖屏、胜利/失败结算、排行榜与留言板弹窗全部统一为新风格，没有遗漏。',
+      ],
+    },
     {
       date: '2026-07-17 · 弹幕视觉重制与圆润玻璃UI焕新',
       items: [
@@ -47594,13 +47613,13 @@
   });
 
   const TITLE_CARD_TONES = Object.freeze([
-    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(232,244,255,.60)', edge: 'rgba(106,184,255,.55)' }),
-    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(255,238,246,.60)', edge: 'rgba(255,164,204,.55)' }),
-    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(226,240,255,.62)', edge: 'rgba(62,143,232,.50)' }),
-    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(255,232,242,.62)', edge: 'rgba(240,107,168,.50)' }),
-    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(240,247,255,.60)', edge: 'rgba(90,200,250,.50)' }),
-    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(255,248,232,.60)', edge: 'rgba(255,214,107,.50)' }),
-    Object.freeze({ top: 'rgba(255,255,255,.80)', bottom: 'rgba(255,236,246,.62)', edge: 'rgba(255,164,204,.60)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(226,242,255,.60)', edge: 'rgba(88,183,255,.55)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(214,236,255,.62)', edge: 'rgba(62,155,245,.50)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(224,250,252,.60)', edge: 'rgba(79,216,232,.50)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(232,246,255,.60)', edge: 'rgba(88,183,255,.45)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(210,234,255,.62)', edge: 'rgba(43,127,217,.48)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.78)', bottom: 'rgba(240,250,255,.60)', edge: 'rgba(110,160,220,.40)' }),
+    Object.freeze({ top: 'rgba(255,255,255,.80)', bottom: 'rgba(255,238,246,.62)', edge: 'rgba(255,164,204,.60)' }),
   ]);
 
   const TITLE_CHARACTER_COPY = Object.freeze({
@@ -47613,26 +47632,29 @@
     corruptgun: Object.freeze({ detail: '腐化穿透', hint: '分身协同' }),
   });
 
-  // 蓝白粉清新可爱风 V3：Apple 式磨砂玻璃——70% 近白 / 22% 蓝 / 8% 粉。
-  // 蓝与粉永远不直接相邻（中间以白或墨色隔开）；阴影只用蓝灰 #5a6b9e，不用黑色。
+  // 「晴空玻璃 / Clear Sky Glass」：蓝色优先的清新简约体系。
+  // 天蓝主导，青碧点缀，粉色仅留 ~3% 给爱心/Miss/选中爱意；蓝粉永不直接相邻。
+  // 阴影只用偏冷的蓝灰 #5a78b0，不用黑色。
   const TY_UI_THEME = Object.freeze({
     panelTop: 'rgba(255,255,255,.72)',
-    panelBottom: 'rgba(230,240,255,.18)',
-    panelEdge: 'rgba(120,140,190,.16)',
-    panelEdgeHot: 'rgba(255,164,204,.75)',
-    textMain: '#3D4A6B',
-    textMuted: 'rgba(61,74,107,.55)',
-    cyan: '#6AB8FF',
-    cyanDeep: '#3E8FE8',
-    violet: 'rgba(90,200,250,.85)',
+    panelBottom: 'rgba(226,242,255,.20)',
+    panelEdge: 'rgba(110,160,220,.18)',
+    panelEdgeHot: 'rgba(88,183,255,.75)',
+    textMain: '#2E4A6E',
+    textMuted: 'rgba(46,74,110,.55)',
+    cyan: '#58B7FF',
+    cyanDeep: '#3E9BF5',
+    azure: '#3E9BF5',
+    skyDeep: '#2B7FD9',
+    violet: 'rgba(79,216,232,.85)',
     pink: '#FFA4CC',
     pinkDeep: '#F06BA8',
-    mint: 'rgba(110,205,188,.90)',
+    mint: '#4FD8E8',
     lemon: '#FFD66B',
     gold: 'rgba(255,214,107,.90)',
-    hairline: 'rgba(120,140,190,.16)',
-    vibrant: '#5AC8FA',
-    barBg: 'rgba(160,200,240,.30)',
+    hairline: 'rgba(110,160,220,.18)',
+    vibrant: '#2FA8EE',
+    barBg: 'rgba(150,200,245,.28)',
   });
   const CUTE_UI_MOTION_CONFIG = Object.freeze({
     // 按压：偏硬弹簧快速压到 0.92；松手：软弹簧带回 ~8% 过冲。
@@ -47654,6 +47676,13 @@
     popDuration: 0.38,
     popFrom: 0.60,
     popRise: -12,
+    // 卡片交错入场：60-80ms 步进，最多 5 级。
+    staggerStep: 0.07,
+    staggerMax: 5,
+    // 主 CTA 流光扫过：每 ~3.5s 一次对角 gloss band，'lighter'，α≤.30。
+    shimmerPeriod: 3.5,
+    shimmerSweep: 1.1,
+    shimmerAlpha: 0.30,
     burstCounts: Object.freeze([3, 3, 2, 2]),
     poolCaps: Object.freeze([12, 10, 6, 4]),
     ambientTitle: Object.freeze([32, 24, 12, 0]),
@@ -47697,7 +47726,7 @@
   function cuteUiRectContains(rect, point) {
     return !!rect && !!point && point.x >= rect.x && point.x <= rect.x + rect.w && point.y >= rect.y && point.y <= rect.y + rect.h;
   }
-  function observeCuteUiControl(id, x, y, w, h, selected = false) {
+  function observeCuteUiControl(id, x, y, w, h, selected = false, stagger = 0) {
     const s = cuteUiState(id);
     if (!s) return null;
     s.rect = { x, y, w, h };
@@ -47705,7 +47734,13 @@
     s.pressed = cuteUiPressedId === id;
     s.selected = !!selected;
     // 入场 pop 只给标题/大堂类界面（state === 'title'），战斗 HUD 保持平静。
-    if (s.born < 0) s.born = state === 'title' ? time : -2;
+    // stagger > 0 时按 60-80ms 步进延迟入场（最多 staggerMax 级）。
+    if (s.born < 0) {
+      if (state === 'title') {
+        const cfg = CUTE_UI_MOTION_CONFIG;
+        s.born = time + Math.min(stagger, cfg.staggerMax) * cfg.staggerStep;
+      } else s.born = -2;
+    }
     return s;
   }
   function cuteEaseOutBack(t) {
@@ -47719,7 +47754,8 @@
     let scale = s.scale, dy = s.lift, alpha = 1;
     if (s.born >= 0) {
       const p = (time - s.born) / cfg.popDuration;
-      if (p < 1) {
+      if (p < 0) { scale *= cfg.popFrom; alpha = 0; }
+      else if (p < 1) {
         const e = cuteEaseOutBack(p);
         scale *= cfg.popFrom + (1 - cfg.popFrom) * e;
         dy += cfg.popRise * (1 - e);
@@ -47734,14 +47770,25 @@
   }
   // 大面板入场 pop（无悬停缩放）：scale 0.60→1 + 透明度 + y -12→0，easeOutBack 380ms。
   const cutePanelBirth = Object.create(null);
-  function applyCutePop(id, x, y, w, h) {
+  // 梦境大厅页签滑块：软弹簧跟随当前页签（x===null 时首帧吸附）
+  const dreamTabPill = { x: null, v: 0 };
+  let dreamTabPillTarget = 44;
+  // 结算数字滚动：0.4s easeOutQuint，从首次绘制起算
+  function skyRoll01(id, dur = 0.4) {
+    const key = `skyroll:${id}`;
+    let b = cutePanelBirth[key];
+    if (b === undefined) b = cutePanelBirth[key] = time;
+    const t = clamp((time - b) / dur, 0, 1);
+    return 1 - Math.pow(1 - t, 5);
+  }
+  function applyCutePop(id, x, y, w, h, stagger = 0) {
     if (state !== 'title') return;
-    let b = cutePanelBirth[id];
-    if (b === undefined) b = cutePanelBirth[id] = time;
     const cfg = CUTE_UI_MOTION_CONFIG;
+    let b = cutePanelBirth[id];
+    if (b === undefined) b = cutePanelBirth[id] = time + Math.min(stagger, cfg.staggerMax) * cfg.staggerStep;
     const p = (time - b) / cfg.popDuration;
     if (p >= 1) return;
-    const e = cuteEaseOutBack(p);
+    const e = cuteEaseOutBack(clamp(p, 0, 1));
     const scale = cfg.popFrom + (1 - cfg.popFrom) * e;
     const cx = x + w / 2, cy = y + h / 2;
     ctx.translate(cx, cy + cfg.popRise * (1 - e));
@@ -47778,7 +47825,7 @@
       p.size = rand(2.8, 4.6);
       p.spin = rand(-4, 4);
       p.rot = rand(0, TAU);
-      p.tint = i % 3 === 0 ? '255,180,220' : (i % 3 === 1 ? '150,220,255' : '155,230,205');
+      p.tint = i % 3 === 0 ? '88,183,255' : (i % 3 === 1 ? '79,216,232' : '255,164,204');
     }
   }
   function pressCuteUi(id, pointerId = null, x = null, y = null) {
@@ -47832,16 +47879,21 @@
       p.rot += p.spin * safeDt;
       if (p.life <= 0) p.active = false;
     }
+    // 页签滑块弹簧：与 releaseSpring/releaseDamping 同触感
+    if (dreamTabPill.x === null) dreamTabPill.x = dreamTabPillTarget;
+    dreamTabPill.v += (dreamTabPillTarget - dreamTabPill.x) * cfg.releaseSpring * safeDt;
+    dreamTabPill.v *= Math.exp(-cfg.releaseDamping * safeDt);
+    dreamTabPill.x += dreamTabPill.v * safeDt;
   }
 
   function tyUiGradient(x, y, w, h, a = 1) {
     // UI 面板位置尺寸稳定 → 渐变对象按定位键缓存（原为每帧新建）
-    // 蓝与粉之间以白色 stop 隔开，避免粉彩直接相混。
+    // 晴空 wash：天蓝 → 白 → 青碧，绝不引入粉色。
     return cachedGradient(`tyui_${x | 0}_${y | 0}_${w | 0}_${h | 0}_${Math.round(a * 24)}`, () => {
       const g = ctx.createLinearGradient(x, y, x + w, y + h);
-      g.addColorStop(0, `rgba(106,184,255,${0.16 * a})`);
+      g.addColorStop(0, `rgba(88,183,255,${0.15 * a})`);
       g.addColorStop(0.5, `rgba(255,255,255,${0.10 * a})`);
-      g.addColorStop(1, `rgba(255,164,204,${0.14 * a})`);
+      g.addColorStop(1, `rgba(79,216,232,${0.13 * a})`);
       return g;
     });
   }
@@ -47904,52 +47956,120 @@
     ctx.restore();
   }
 
-  function drawCuteUiAmbient(scene = 'title') {
-    // 空气感环境层：5–9 个漂浮玻璃气泡（正弦浮沉，振幅 ≤6px，周期 ≥3.2s）
-    // + 四角星芒（alpha 呼吸 .15↔.65，偶发 300ms 眨眼 scale 1→1.25→1）。
-    // 标题屏 ≤6 颗星，战斗 ≤3 颗且 α≤0.35；每屏只保留一个主角动画。
+  // ── 统一环境粒子层 skyParticles ─────────────────────────────────
+  // 类型：大号弥散 bokeh（α.05-.10）、上升微气泡（白边+摇摆）、四角星芒（呼吸+眨眼）、
+  // 慢速云团/花瓣（2-3 个）。标题屏带指针视差（反向 ≤10px）。
+  // 预算：title ≤28 / lobby ≤18 / battle ≤6（α≤.30），tier2 减半，tier3 仅 title 留 4。
+  const SKY_PARTICLE_BUDGETS = Object.freeze({
+    title: Object.freeze([28, 28, 14, 4]),
+    lobby: Object.freeze([18, 18, 9, 0]),
+    battle: Object.freeze([6, 6, 3, 0]),
+  });
+  function skySeed(i, k) {
+    const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453;
+    return v - Math.floor(v);
+  }
+  function drawSkyPuff(cx, cy, r, alpha) {
+    const rb = Math.max(6, Math.round(r));
+    const s = rb * 4;
+    const cv = cachedSprite(`puff_${rb}`, s, s / 2, (c2, sw, sh) => {
+      const g = c2.createRadialGradient(sw / 2, sh / 2, 1, sw / 2, sh / 2, rb * 1.7);
+      g.addColorStop(0, 'rgba(255,255,255,.85)');
+      g.addColorStop(0.6, 'rgba(240,250,255,.45)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      c2.fillStyle = g;
+      c2.beginPath();
+      c2.ellipse(sw / 2, sh / 2, rb * 1.8, rb * 0.78, 0, 0, Math.PI * 2);
+      c2.fill();
+    });
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, cx - s / 2, cy - s / 4);
+    ctx.restore();
+  }
+  function drawSkyBokeh(cx, cy, r, alpha) {
+    const rb = Math.max(6, Math.round(r));
+    const s = rb * 2 + 4;
+    const cv = cachedSprite(`bokeh_${rb}`, s, s, (c2) => {
+      const g = c2.createRadialGradient(s / 2, s / 2, 1, s / 2, s / 2, rb);
+      g.addColorStop(0, 'rgba(88,183,255,.34)');
+      g.addColorStop(0.55, 'rgba(160,220,255,.16)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      c2.fillStyle = g;
+      c2.beginPath(); c2.arc(s / 2, s / 2, rb, 0, Math.PI * 2); c2.fill();
+    });
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, cx - s / 2, cy - s / 2);
+    ctx.restore();
+  }
+  function drawSkyParticles(scene = 'title') {
     const q = cuteUiQualityIndex();
-    if (q >= 3) return;
-    const bubbleCount = (scene === 'title' ? [8, 7, 5][q] : [6, 5, 0][q]) || 0;
-    const starCount = (scene === 'title' ? [6, 5, 3][q] : [3, 2, 0][q]) || 0;
+    const budget = (SKY_PARTICLE_BUDGETS[scene] || SKY_PARTICLE_BUDGETS.title)[Math.min(3, q)];
+    if (budget <= 0) return;
+    // 指针视差（仅标题屏）：按粒子深度反向偏移 ≤10px
+    let parX = 0, parY = 0;
+    if (scene === 'title' && lastCanvasPointer) {
+      parX = clamp((W / 2 - lastCanvasPointer.x) / (W / 2), -1, 1);
+      parY = clamp((H / 2 - lastCanvasPointer.y) / (H / 2), -1, 1);
+    }
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-    for (let i = 0; i < bubbleCount; i++) {
-      const seed = i * 2.399;
-      const period = 3.2 + (i % 4) * 0.9;
-      const phase = time * TAU / period + seed;
-      let x, y;
-      if (scene === 'title') {
-        x = 36 + ((i * 149 + time * 5) % (W - 72));
-        y = 70 + ((i * 197) % Math.max(160, H - 200)) + Math.sin(phase) * 6;
-      } else {
-        const left = (i & 1) === 0;
-        x = left ? 22 + (i % 3) * 20 : W - 24 - (i % 3) * 20;
-        y = 120 + ((i * 211) % Math.max(160, H - 320)) + Math.sin(phase) * 5;
+    for (let i = 0; i < budget; i++) {
+      const depth = 0.35 + 0.65 * skySeed(i, 7);
+      const px = parX * 10 * depth, py = parY * 10 * depth;
+      const kind = i % 4;
+      const seedA = skySeed(i, 1), seedB = skySeed(i, 2), seedC = skySeed(i, 3);
+      if (kind === 3 && i < 3) {
+        // 慢速云团/花瓣：仅前 3 个，极慢漂移
+        const driftT = time * (0.018 + 0.012 * seedC);
+        const x = ((seedA * 1.4 + driftT) % 1.2 - 0.1) * W + px;
+        const y = (0.10 + 0.72 * seedB) * H + Math.sin(time * 0.24 + i * 2.1) * 9 + py;
+        drawSkyPuff(x, y, 15 + seedC * 13, scene === 'battle' ? 0.10 : 0.16 + 0.06 * Math.sin(time * 0.4 + i));
+        continue;
       }
-      const bob = 0.75 + 0.25 * Math.sin(phase * 0.5 + i);
-      drawGlassBubble(x, y, 3 + (i % 4) * 2, (scene === 'title' ? 0.85 : 0.5) * bob);
-    }
-    for (let i = 0; i < starCount; i++) {
-      const seed = i * 1.617 + 0.4;
-      const breathe = 0.5 + 0.5 * Math.sin(time * (TAU / 3.8) + seed * 3.1);
-      let alpha = 0.15 + 0.50 * breathe;
-      if (scene !== 'title') alpha = Math.min(0.35, alpha);
-      // 偶发眨眼：每 ~4.7s 一个 300ms 的 scale 1→1.25→1 脉冲
-      const blinkCycle = (time * 0.55 + seed) % 4.7;
-      const blink = blinkCycle < 0.3 ? 1 + 0.25 * Math.sin(Math.PI * blinkCycle / 0.3) : 1;
+      const period = 3.2 + seedC * 2.6;
+      const phase = time * TAU / period + seedA * TAU;
       let x, y;
-      if (scene === 'title') {
-        x = 52 + ((i * 233) % (W - 104));
-        y = 60 + ((i * 167) % Math.max(140, H * 0.5));
-      } else {
+      if (scene === 'battle') {
+        // 战斗：只出现在屏幕两侧边缘
         const left = (i & 1) === 0;
-        x = left ? 30 + (i % 2) * 26 : W - 32 - (i % 2) * 26;
-        y = 150 + ((i * 181) % Math.max(140, H - 420));
+        x = (left ? 18 + seedB * 30 : W - 18 - seedB * 30) + px * 0.4;
+        y = 120 + seedA * (H - 360) + Math.sin(phase) * 5;
+      } else {
+        x = (seedB * 0.92 + 0.04) * W + Math.sin(phase * 0.6) * 7 + px;
+        if (scene === 'title') y = (seedA * 0.86 + 0.05) * H + Math.sin(phase) * 6 + py;
+        else y = (seedA * 0.80 + 0.06) * H + Math.sin(phase) * 6 + py;
       }
-      drawCuteSparkle(x, y, (2.6 + (i % 3) * 0.9) * blink, alpha, time * 0.35 + seed);
+      if (kind === 0) {
+        // 大号弥散 bokeh
+        const breathe = 0.5 + 0.5 * Math.sin(phase * 0.7);
+        drawSkyBokeh(x, y, 13 + seedC * 22, (scene === 'battle' ? 0.05 : 0.05 + 0.05 * breathe));
+      } else if (kind === 1) {
+        // 上升微气泡：白边 + 左右摇摆
+        const rise = (time * (9 + seedC * 7) + seedA * H) % (H * 0.9);
+        const byy = scene === 'battle' ? y : (H * 0.94 - rise * 0.9) + py;
+        if (byy < 30) continue;
+        const wob = Math.sin(time * 1.7 + seedB * 9) * 3.5;
+        drawGlassBubble(x + wob, byy, 2.5 + seedC * 3.5, scene === 'battle' ? 0.22 : 0.5 + 0.2 * Math.sin(phase));
+      } else if (kind === 2) {
+        // 四角星芒：呼吸 + 偶发 300ms 眨眼
+        const breathe = 0.5 + 0.5 * Math.sin(time * (TAU / 3.8) + seedB * 9);
+        let alpha = 0.15 + 0.42 * breathe;
+        if (scene === 'battle') alpha = Math.min(0.30, alpha * 0.6);
+        const blinkCycle = (time * 0.5 + seedA * 7) % 4.9;
+        const blink = blinkCycle < 0.3 ? 1 + 0.25 * Math.sin(Math.PI * blinkCycle / 0.3) : 1;
+        drawCuteSparkle(x, y, (2.4 + seedC * 1.8) * blink, alpha, time * 0.3 + seedA * 4);
+      } else {
+        // 小 bokeh 补光
+        drawSkyBokeh(x, y, 6 + seedC * 8, scene === 'battle' ? 0.05 : 0.07 + 0.03 * Math.sin(phase));
+      }
     }
     ctx.restore();
+  }
+  // 旧调用点兼容：标题/战斗环境层统一走 skyParticles。
+  function drawCuteUiAmbient(scene = 'title') {
+    drawSkyParticles(scene === 'title' ? 'title' : 'battle');
   }
 
   function drawCuteUiParticles(scene = 'title') {
@@ -48087,7 +48207,7 @@
     const c2 = cv.getContext('2d');
     const px = padX, py = padT;
     c2.lineJoin = 'round'; c2.lineCap = 'round';
-    // —— L0 堆叠柔影（蓝灰 #5a6b9e，永不使用黑色；无 shadowBlur）——
+    // —— L0 堆叠柔影（冷调蓝灰 #5a78b0，永不使用黑色；无 shadowBlur）——
     // 全量：+1px/α.12，+5px/×1.02/α.08，+14px/×1.06/α.05；每层叠加 2px 内缩 α×2 伪造羽化。
     // 按钮减半；按压态 offsets ×0.4 / alpha ×0.7。
     if (shadowKind !== 'n') {
@@ -48100,10 +48220,10 @@
         const w2 = w * mul, h2 = h * mul;
         // 阴影只向下/两侧扩散（向上仅 15% 膨胀量），避免深色背景上顶部出现脏边。
         const sx = px - (w2 - w) / 2, sy = py + off - (h2 - h) * 0.15;
-        c2.fillStyle = `rgba(90,107,158,${a})`;
+        c2.fillStyle = `rgba(90,120,176,${a})`;
         tyPanelPath(c2, sx, sy, w2, h2, r * mul);
         c2.fill();
-        c2.fillStyle = `rgba(90,107,158,${Math.min(0.35, a * 2)})`;
+        c2.fillStyle = `rgba(90,120,176,${Math.min(0.35, a * 2)})`;
         tyPanelPath(c2, sx + 2, sy + 2, w2 - 4, h2 - 4, Math.max(1, r * mul - 2));
         c2.fill();
       }
@@ -48112,30 +48232,30 @@
     tyPanelPath(c2, px, py, w, h, r);
     c2.fillStyle = opts.top || 'rgba(255,255,255,.72)';
     c2.fill();
-    // —— L2 仿磨砂竖向渐变：白 .30 → 40% 处 .08 → 底部 rgba(230,240,255,.18) ——
+    // —— L2 仿磨砂竖向渐变：白 .30 → 40% 处 .08 → 底部冷调 rgba(226,242,255,.20) ——
     const frost = c2.createLinearGradient(0, py, 0, py + h);
     frost.addColorStop(0, 'rgba(255,255,255,.30)');
     frost.addColorStop(0.4, opts.mid || 'rgba(255,255,255,.08)');
-    frost.addColorStop(1, opts.bottom || 'rgba(230,240,255,.18)');
+    frost.addColorStop(1, opts.bottom || 'rgba(226,242,255,.20)');
     tyPanelPath(c2, px, py, w, h, r);
     c2.fillStyle = frost;
     c2.fill();
     c2.save();
     tyPanelPath(c2, px, py, w, h, r);
     c2.clip();
-    // 斜向空气感 wash（蓝—白—粉，白做隔离带）
+    // 斜向空气感 wash（天蓝—白—青碧，绝不引入粉色）
     const washA = (opts.wash ?? 0.42) * FEEL_V3_TUNING.uiWashMul;
     if (washA > 0.01) {
       const wg = c2.createLinearGradient(px, py, px + w, py + h);
-      wg.addColorStop(0, `rgba(106,184,255,${0.16 * washA})`);
+      wg.addColorStop(0, `rgba(88,183,255,${0.15 * washA})`);
       wg.addColorStop(0.5, `rgba(255,255,255,${0.10 * washA})`);
-      wg.addColorStop(1, `rgba(255,164,204,${0.14 * washA})`);
+      wg.addColorStop(1, `rgba(79,216,232,${0.13 * washA})`);
       c2.fillStyle = wg;
       c2.fillRect(px, py, w, h);
     }
-    // —— L3a 顶部 gloss：面板顶部 28%，白 .38→0，左右各内缩 6% 宽 ——
+    // —— L3a 顶部 gloss：面板顶部 28%，白 .42→0，左右各内缩 6% 宽 ——
     const gloss = c2.createLinearGradient(0, py, 0, py + h * 0.28);
-    gloss.addColorStop(0, 'rgba(255,255,255,.38)');
+    gloss.addColorStop(0, 'rgba(255,255,255,.42)');
     gloss.addColorStop(1, 'rgba(255,255,255,0)');
     c2.fillStyle = gloss;
     c2.fillRect(px + w * 0.06, py, w * 0.88, Math.max(1, h * 0.28));
@@ -48153,9 +48273,9 @@
     c2.beginPath(); c2.arc(hsx, hsy, hsr, 0, Math.PI * 2); c2.fill();
     c2.restore();
     c2.restore();
-    // —— L4 分裂发丝边：上半弧 rgba(255,255,255,.55)，下半 rgba(140,160,210,.22) ——
+    // —— L4 分裂发丝边：上半弧 rgba(255,255,255,.55)，下半 rgba(110,160,220,.22) ——
     // 永远不是均匀描边；hot/自定义 edge 只影响下半弧。
-    const edgeBottom = hot ? TY_UI_THEME.panelEdgeHot : (opts.edge || 'rgba(140,160,210,.22)');
+    const edgeBottom = hot ? TY_UI_THEME.panelEdgeHot : (opts.edge || 'rgba(110,160,220,.22)');
     c2.lineWidth = lw;
     c2.save();
     c2.beginPath(); c2.rect(px - 2, py - 2, w + 4, h / 2 + 2); c2.clip();
@@ -48169,6 +48289,11 @@
     tyPanelPath(c2, px + 0.5, py + 0.5, w - 1, h - 1, r);
     c2.stroke();
     c2.restore();
+    // —— L5 内侧 1px 天蓝 Identity 线：rgba(88,183,255,.10) 的「蓝玻璃」签名 ——
+    c2.strokeStyle = 'rgba(88,183,255,.10)';
+    c2.lineWidth = 1;
+    tyPanelPath(c2, px + 1.5, py + 1.5, w - 3, h - 3, Math.max(2, r - 1));
+    c2.stroke();
     tyPanelSpriteCache.set(key, cv);
     return cv;
   }
@@ -48183,10 +48308,37 @@
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     const baked = tyPanelBaked(x, y, w, h, r, opts, hot, shadowKind);
     ctx.drawImage(baked, x - baked.__padX, y - baked.__padT);
-    // —— 逐帧动态层：缎带流光（显式开启）、漂浮微气泡、角落星闪、hot 呼吸描边 ——
+    // —— 逐帧动态层：缎带流光（显式开启）、CTA 流光扫过、漂浮微气泡、角落星闪、hot 呼吸描边 ——
     const stripAlpha = opts.stripAlpha ?? 0;
     if (stripAlpha > 0.01) {
       drawCuteCandyRibbon(x + 8, y + 3, w - 16, Math.min(18, h * 0.32), stripAlpha, opts.stripSpeed || 46, opts.phase || 0);
+    }
+    // 主 CTA shimmer：每 ~3.5s 一道对角 gloss band 扫过，'lighter'，α≤.30
+    if (opts.shimmer && !cgLite()) {
+      const cfg = CUTE_UI_MOTION_CONFIG;
+      const cycle = (time + (opts.phase || 0)) % cfg.shimmerPeriod;
+      if (cycle < cfg.shimmerSweep) {
+        const p = cycle / cfg.shimmerSweep;
+        const env = Math.sin(Math.PI * p);
+        const bandCv = cachedSprite('sky_shimmer_band', 96, 96, (c2, sw, sh) => {
+          const g = c2.createLinearGradient(0, 0, sw, 0);
+          g.addColorStop(0, 'rgba(255,255,255,0)');
+          g.addColorStop(0.5, 'rgba(255,255,255,.92)');
+          g.addColorStop(1, 'rgba(255,255,255,0)');
+          c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+        });
+        ctx.save();
+        roundRect(x, y, w, h, r);
+        ctx.clip();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = cfg.shimmerAlpha * env;
+        const bandW = Math.max(56, w * 0.32);
+        ctx.translate(x + w / 2, y + h / 2);
+        ctx.rotate(-0.42);
+        const bx = -(w / 2) - bandW + (w + bandW * 2) * p;
+        ctx.drawImage(bandCv, bx, -h, bandW, h * 2.2);
+        ctx.restore();
+      }
     }
     if (!cgLite()) {
       const bn = Math.min(5, Math.max(2, Math.floor(w / 120)));
@@ -48215,28 +48367,44 @@
   }
 
   function drawTyTechBar(x, y, w, h, rate, fill, bg = TY_UI_THEME.barBg, opts = {}) {
-    // 全 pill 半径；功能条保持平静（无回弹），仅保留呼吸光点与数值脉冲。
+    // 全 pill 半径；功能条保持平静（无回弹）：数值 easeOutCubic 式 tween + 移动光泽。
     const r = opts.r ?? h / 2;
     const live = clamp(rate, 0, 1);
+    // —— 数值 tween：显示值指数趋近目标值（约 7/s），不 overshoot ——
+    const pulseKey = `${x | 0}_${y | 0}`;
+    let pulse = tyBarPulseMap.get(pulseKey);
+    if (!pulse) { pulse = { r: live, t: 0, dir: 0, t0: time }; tyBarPulseMap.set(pulseKey, pulse); }
+    const pdt = Math.min(0.1, Math.max(0, time - (pulse.t0 ?? time)));
+    pulse.t0 = time;
+    if (Math.abs(live - pulse.r) > 0.002) {
+      pulse.dir = live > pulse.r ? 1 : -1;
+      pulse.t = 1;
+      pulse.r += (live - pulse.r) * Math.min(1, pdt * 7);
+      if (Math.abs(live - pulse.r) <= 0.002) pulse.r = live;
+    } else {
+      pulse.r = live;
+      pulse.t = Math.max(0, pulse.t - pdt * 3.3);
+    }
+    const shown = pulse.r;
     ctx.save();
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     roundRect(x, y, w, h, r);
     ctx.fillStyle = bg || TY_UI_THEME.barBg;
     ctx.fill();
-    ctx.strokeStyle = opts.edge || 'rgba(120,140,190,.30)';
+    ctx.strokeStyle = opts.edge || 'rgba(110,160,220,.30)';
     ctx.lineWidth = Math.max(0.8, h * 0.08);
     ctx.stroke();
     if (live > 0) {
-      const liveW = Math.max(h * 0.7, w * live);
+      const liveW = Math.max(h * 0.7, w * shown);
       ctx.save();
       roundRect(x, y, liveW, h, r);
       ctx.clip();
-      const base = fill || '#6AB8FF';
+      const base = fill || '#58B7FF';
       const g = cachedGradient(`tybar_${x | 0}_${w | 0}_${base}_${opts.start || ''}_${opts.end || ''}`, () => {
         const grad = ctx.createLinearGradient(x, y, x + w, y);
-        grad.addColorStop(0, opts.start || 'rgba(106,184,255,.95)');
+        grad.addColorStop(0, opts.start || 'rgba(88,183,255,.95)');
         grad.addColorStop(0.48, base);
-        grad.addColorStop(1, opts.end || 'rgba(62,143,232,.96)');
+        grad.addColorStop(1, opts.end || 'rgba(62,155,245,.96)');
         return grad;
       });
       ctx.fillStyle = g;
@@ -48257,17 +48425,12 @@
       ctx.restore();
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = opts.hotEdge || 'rgba(255,164,204,.50)';
+      ctx.strokeStyle = opts.hotEdge || 'rgba(88,183,255,.50)';
       ctx.lineWidth = Math.max(1, h * 0.16);
       roundRect(x + 0.5, y + 0.5, Math.max(0, liveW - 1), Math.max(1, h - 1), r);
       ctx.stroke();
       ctx.restore();
-      // —— 可爱动效：填充头呼吸光点 + 数值变化脉冲（回复=薄荷星光 / 受损=粉闪）+ 条内上浮气泡 ——
-      const pulseKey = `${x | 0}_${y | 0}`;
-      let pulse = tyBarPulseMap.get(pulseKey);
-      if (!pulse) { pulse = { r: live, t: 0, dir: 0 }; tyBarPulseMap.set(pulseKey, pulse); }
-      if (Math.abs(live - pulse.r) > 0.004) { pulse.t = 1; pulse.dir = live > pulse.r ? 1 : -1; pulse.r = live; }
-      else pulse.t = Math.max(0, pulse.t - 0.055);
+      // —— 可爱动效：填充头呼吸光点 + 数值变化脉冲（回复=青碧星光 / 受损=粉闪）+ 条内上浮气泡 ——
       const headX = Math.min(x + liveW, x + w - 2), headY = y + h / 2;
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
@@ -48276,7 +48439,7 @@
       ctx.beginPath(); ctx.arc(headX, headY, Math.max(1.4, h * 0.22), 0, TAU); ctx.fill();
       if (pulse.t > 0.02) {
         ctx.globalAlpha = 0.5 * pulse.t;
-        ctx.fillStyle = pulse.dir >= 0 ? 'rgba(150,235,210,1)' : 'rgba(255,150,200,1)';
+        ctx.fillStyle = pulse.dir >= 0 ? 'rgba(79,216,232,1)' : 'rgba(255,164,204,1)';
         ctx.beginPath(); ctx.arc(headX, headY, h * (0.5 + (1 - pulse.t) * 1.6), 0, TAU); ctx.fill();
         if (!cgLite()) drawCuteSparkle(headX, y - 2, 3 + pulse.t * 3, 0.85 * pulse.t, time * 3);
       }
@@ -48285,7 +48448,7 @@
         for (let bi = 0; bi < 2; bi++) {
           const cyc = (time * (14 + bi * 6) + bi * 40 + x * 0.31) % Math.max(8, liveW - 8);
           const byy = y + h - 2 - ((time * (9 + bi * 4) + bi * 23) % Math.max(3, h - 4));
-          drawCuteBubble(x + 4 + cyc, byy, 1.6 + bi, 0.20, bi ? '255,190,225' : '170,225,255');
+          drawCuteBubble(x + 4 + cyc, byy, 1.6 + bi, 0.20, bi ? '79,216,232' : '150,215,255');
         }
       }
     }
@@ -48838,10 +49001,10 @@
     const sharkBarActive = state === 'boss' && boss?.kind === 'dreamshark';
     const x = W / 2 - 180, y = sharkBarActive ? 108 : (state === 'boss' ? 72 : 58), w = 360, h = 50;
     ctx.save();
-    drawTyTechPanel(x, y, w, h, { r: h / 2, top: 'rgba(255,255,255,.90)', bottom: 'rgba(240,247,255,.55)', edge: 'rgba(106,184,255,.45)', stripAlpha: 0.08, scanAlpha: 0.06 });
+    drawTyTechPanel(x, y, w, h, { r: h / 2, top: 'rgba(255,255,255,.90)', bottom: 'rgba(240,247,255,.55)', edge: 'rgba(88,183,255,.45)', stripAlpha: 0.08, scanAlpha: 0.06 });
     ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.font = cuteFont(900, 23);
-    ctx.fillStyle = '#8a5aa7'; ctx.fillText('★'.repeat(dreamRun.stars) + '☆'.repeat(3 - dreamRun.stars), x + 16, y + h / 2);
-    ctx.font = cuteFont(800, 19); ctx.fillStyle = '#315b82';
+    ctx.fillStyle = '#3E9BF5'; ctx.fillText('★'.repeat(dreamRun.stars) + '☆'.repeat(3 - dreamRun.stars), x + 16, y + h / 2);
+    ctx.font = cuteFont(800, 19); ctx.fillStyle = '#3E9BF5';
     ctx.fillText(`受击 ${dreamRun.hitCount}/3`, x + 102, y + h / 2);
     ctx.textAlign = 'right'; ctx.fillStyle = dreamRun.outgoingDamageMul < 1 ? '#b34e78' : '#39769e';
     ctx.fillText(`${Math.round(dreamRun.outgoingDamageMul * 100)}% · ${dreamElapsedText()}`, x + w - 14, y + h / 2);
@@ -48865,9 +49028,9 @@
         ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(255,255,255,0.78)';
         ctx.strokeText(boss.name, W / 2, by + 18);
         const bossNameGrad = ctx.createLinearGradient(bx + 120, 0, bx + bw - 120, 0);
-        bossNameGrad.addColorStop(0, '#6AB8FF');
-        bossNameGrad.addColorStop(0.5, '#3D4A6B');
-        bossNameGrad.addColorStop(1, '#F06BA8');
+        bossNameGrad.addColorStop(0, '#58B7FF');
+        bossNameGrad.addColorStop(0.5, '#2E4A6E');
+        bossNameGrad.addColorStop(1, '#2B7FD9');
         ctx.fillStyle = bossNameGrad; ctx.fillText(boss.name, W / 2, by + 18);
         drawTyTechBar(bx + 24, by + 26, bw - 48, 9, boss.hp / boss.maxHp, '#FFA4CC', 'rgba(150,185,225,.42)', {
           start: 'rgba(255,164,204,.96)',
@@ -48881,7 +49044,7 @@
           ? `Phase ${Math.min(bossPhase + 1, phTotal)}/${phTotal}   ${activeDreamLevel().actLabel} · 星级竞速`
           : `Phase ${Math.min(bossPhase + 1, phTotal)}/${phTotal}   轮回 ${loopCount + 1}`;
         ctx.strokeText(binfo, W / 2, by + bh + 12);
-        ctx.fillStyle = '#5AC8FA'; ctx.fillText(binfo, W / 2, by + bh + 12);
+        ctx.fillStyle = '#2FA8EE'; ctx.fillText(binfo, W / 2, by + bh + 12);
       }
       drawCgBossCorrosionWidget();
     } else if (state === 'mobs') {
@@ -48894,7 +49057,7 @@
       ctx.font = '800 16px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(255,255,255,0.78)';
       ctx.strokeText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
-      ctx.fillStyle = '#3D4A6B'; ctx.fillText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
+      ctx.fillStyle = '#2E4A6E'; ctx.fillText(`${actName} · ${waveLabel}`, W / 2, barY + 19);
       ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
       ctx.lineWidth = 2.4; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
       const info = dreamActive() ? `场上 ${enemies.length}/${DREAM_PERF_CONFIG.enemyCap}   敌弹 ${dreamSyncBulletBudget()}/${DREAM_PERF_CONFIG.bulletCap}` : `轮回 ${loopCount + 1}   强度 ×${diffMul().toFixed(1)}   击杀 ${killCount}`;
@@ -48944,13 +49107,13 @@
       ctx.textAlign = 'left';
       // 火力等级与复活数收进名字行，给技能图标留出稳定空间。
       const lv = powerLevel();
-      ctx.fillStyle = '#3E8FE8'; ctx.font = '800 13px Nunito, Arial, sans-serif';
+      ctx.fillStyle = '#3E9BF5'; ctx.font = '800 13px Nunito, Arial, sans-serif';
       ctx.fillText(`LV.${lv}`, 218, H - 93);
       for (let s = 0; s < 5; s++) {
         ctx.fillStyle = s < lv ? 'rgba(130,210,255,.95)' : 'rgba(160,190,230,.22)';
         roundRect(256 + s * 15, H - 101, 11, 7, 2); ctx.fill();
       }
-      ctx.fillStyle = '#FFA4CC'; ctx.font = '800 13px Arial';
+      ctx.fillStyle = dreamActive() ? '#3E9BF5' : '#FFA4CC'; ctx.font = '800 13px Arial';
       ctx.fillText(dreamActive() ? `★ ${dreamRun.stars}` : `♥ ${player.lives}`, 342, H - 93);
 
       // Skills
@@ -48977,11 +49140,11 @@
       ctx.fillStyle = 'rgba(255,248,252,.95)'; ctx.font = '800 18px Nunito, Arial, sans-serif'; ctx.textAlign = 'right';
       ctx.fillText(`Score ${currentLeaderboardScore()}`, W - 24, 42);
       if (grazeScore > 0) {
-        ctx.fillStyle = '#5AC8FA'; ctx.font = '800 14px Nunito, Arial, sans-serif';
+        ctx.fillStyle = '#2FA8EE'; ctx.font = '800 14px Nunito, Arial, sans-serif';
         ctx.fillText(`擦弹 +${Math.floor(grazeScore)}`, W - 24, 62);
       }
       if (player.combo > 8) {
-        ctx.fillStyle = '#5AC8FA'; ctx.font = '800 22px Nunito, Arial, sans-serif';
+        ctx.fillStyle = '#2FA8EE'; ctx.font = '800 22px Nunito, Arial, sans-serif';
         ctx.fillText(`Graze / Combo ×${player.combo}`, W - 24, grazeScore > 0 ? 90 : 72);
       }
     }
@@ -49054,13 +49217,13 @@
     ctx.strokeStyle = ready ? 'rgba(90,185,245,.95)' : 'rgba(255,150,200,.80)';
     ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(-rr + 8, -rr + 8, 12, 0, TAU); ctx.stroke();
     ctx.font = '800 13px Nunito, Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = ready ? '#3D4A6B' : '#F06BA8';
+    ctx.fillStyle = ready ? '#2E4A6E' : 'rgba(90,120,160,.88)';
     ctx.fillText(key === 'Space' ? 'S' : key, -rr + 8, -rr + 9);
     ctx.textBaseline = 'alphabetic';
     useFittedCuteFont(name, 800, 15, 14, R * 2 + 38);
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.80)';
     ctx.strokeText(name, 0, rr + 18);
-    ctx.fillStyle = ready ? '#3E8FE8' : '#F06BA8';
+    ctx.fillStyle = ready ? '#3E9BF5' : 'rgba(90,120,160,.88)';
     ctx.fillText(name, 0, rr + 18);
     ctx.restore();
   }
@@ -49085,7 +49248,7 @@
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'rgba(255,255,255,.80)';
     ctx.strokeText(label, x + w / 2, y + h / 2 + 1);
-    ctx.fillStyle = pressed ? '#F06BA8' : '#3D4A6B';
+    ctx.fillStyle = pressed ? '#2FA8EE' : '#2E4A6E';
     ctx.fillText(label, x + w / 2, y + h / 2 + 1);
     ctx.restore();
   }
@@ -49141,7 +49304,7 @@
       }
       ctx.restore();
       ctx.font = '800 14px Nunito, Arial, sans-serif';
-      ctx.fillStyle = active ? '#3D4A6B' : 'rgba(70,105,145,.72)';
+      ctx.fillStyle = active ? '#2E4A6E' : 'rgba(70,105,145,.72)';
       ctx.fillText(card.tag, railX + 31, cy + 5);
       if (active) {
         drawBar(railX - 26, cy + 33, 52, 5, player.hp / player.maxHp, '#FFA4CC', 'rgba(150,185,225,.40)');
@@ -49160,7 +49323,7 @@
 
     ctx.textAlign = 'left';
     ctx.font = '800 15px Nunito, Arial, sans-serif';
-    ctx.fillStyle = '#5AC8FA';
+    ctx.fillStyle = '#2FA8EE';
     ctx.fillText(`${mm}:${ss}`, 18, 138);
     ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillStyle = TY_UI_THEME.textMuted;
@@ -49213,11 +49376,11 @@
     ctx.fillStyle = 'rgba(255,248,252,.95)';
     ctx.fillText(`Score ${currentLeaderboardScore()}`, W - 20, 42);
     if (grazeScore > 0) {
-      ctx.fillStyle = '#5AC8FA'; ctx.font = '800 14px Nunito, Arial, sans-serif';
+      ctx.fillStyle = '#2FA8EE'; ctx.font = '800 14px Nunito, Arial, sans-serif';
       ctx.fillText(`擦弹 +${Math.floor(grazeScore)}`, W - 20, 62);
     }
     if (player.combo > 8) {
-      ctx.fillStyle = '#5AC8FA'; ctx.font = '800 20px Nunito, Arial, sans-serif';
+      ctx.fillStyle = '#2FA8EE'; ctx.font = '800 20px Nunito, Arial, sans-serif';
       ctx.fillText(`Combo ×${player.combo}`, W - 20, grazeScore > 0 ? 84 : 68);
     }
     drawMobileSystemButtons('battle');
@@ -49232,7 +49395,7 @@
     drawTyTechPanel(18, 118, 172, 56, { r: 15, stripAlpha: 0.12, scanAlpha: 0.10, phase: 18 });
     drawTyTechPanel(28, 178, 120, 70, { r: 10, stripAlpha: 0.08, scanAlpha: 0.07, cornerAlpha: 0.46 });
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#3E8FE8'; ctx.font = '800 16px Nunito, Arial, sans-serif'; ctx.fillText(`${mm}:${ss}`, 72, 151);
+    ctx.fillStyle = '#3E9BF5'; ctx.font = '800 16px Nunito, Arial, sans-serif'; ctx.fillText(`${mm}:${ss}`, 72, 151);
     ctx.fillStyle = TY_UI_THEME.textMuted; ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillText(`弹数 ${enemyBullets.length}`, 40, 198);
     ctx.fillText(`连击 ${player.combo}`, 40, 220);
@@ -49263,7 +49426,7 @@
       ctx.globalAlpha = active ? 1 : 0.62;
       if (assetReady(ch.avatar)) ctx.drawImage(assets[ch.avatar], 31, card.y + 4, 42, 42);
       ctx.globalAlpha = 1;
-      ctx.fillStyle = active ? '#3D4A6B' : 'rgba(70,105,145,.70)';
+      ctx.fillStyle = active ? '#2E4A6E' : 'rgba(70,105,145,.70)';
       ctx.font = '800 15px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
       ctx.fillText(card.tag, 80, card.y + 24);
     }
@@ -49318,13 +49481,13 @@
     }
     drawCuteOrbitRing(cx, cy, R, ready);
     ctx.lineWidth = ready ? 3 : 2;
-    ctx.strokeStyle = ready ? 'rgba(130,210,255,.96)' : 'rgba(255,180,220,.55)';
+    ctx.strokeStyle = ready ? 'rgba(130,210,255,.96)' : 'rgba(160,190,230,.45)';
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.stroke();
     if (ready) {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
       ctx.globalAlpha = 0.35 + Math.sin(time * 6) * 0.2;
-      ctx.strokeStyle = '#FFA4CC'; ctx.lineWidth = 2;
+      ctx.strokeStyle = '#58B7FF'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(cx, cy, R + 3, 0, TAU); ctx.stroke();
       ctx.restore();
     }
@@ -49332,11 +49495,11 @@
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.82)';
     ctx.font = '800 14px Nunito, Arial, sans-serif';
     ctx.strokeText(key, cx, cy - R - 8); 
-    ctx.fillStyle = ready ? '#3D4A6B' : '#F06BA8'; ctx.fillText(key, cx, cy - R - 8);
+    ctx.fillStyle = ready ? '#2E4A6E' : 'rgba(90,120,160,.88)'; ctx.fillText(key, cx, cy - R - 8);
     useFittedCuteFont(name, 800, 15, 14, 86);
     ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(0,0,0,.55)';
     ctx.strokeText(name, cx, cy + R + 16);
-    ctx.fillStyle = ready ? '#5AC8FA' : '#FFA4CC'; ctx.fillText(name, cx, cy + R + 16);
+    ctx.fillStyle = ready ? '#2FA8EE' : 'rgba(90,120,160,.88)'; ctx.fillText(name, cx, cy + R + 16);
     ctx.restore();
   }
 
@@ -49417,13 +49580,13 @@
     ctx.font = `800 ${Math.max(8, 9 * scale)}px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif`;
     ctx.lineWidth = 2.2 * scale;
     ctx.strokeStyle = 'rgba(255,255,255,0.80)';
-    ctx.fillStyle = '#3D4A6B';
+    ctx.fillStyle = '#2E4A6E';
     ctx.strokeText('跃迁', x + 6 * scale, y + h * 0.52);
     ctx.fillText('跃迁', x + 6 * scale, y + h * 0.52);
     drawSkywardBlinkChargePips(x + 62 * scale, y + h * 0.52, 0.95 * scale, true);
     ctx.textAlign = 'right';
     ctx.font = `bold ${Math.max(8, 9 * scale)}px Arial, sans-serif`;
-    ctx.fillStyle = readyCount > 0 ? '#3D4A6B' : '#6a8ab0';
+    ctx.fillStyle = readyCount > 0 ? '#2E4A6E' : '#6a8ab0';
     const t = `${readyCount}/${max}`;
     ctx.strokeText(t, x + w - 6 * scale, y + h * 0.52);
     ctx.fillText(t, x + w - 6 * scale, y + h * 0.52);
@@ -49486,11 +49649,11 @@
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.82)';
     ctx.font = '800 14px Nunito, Arial, sans-serif';
     ctx.strokeText('Space', cx, cy - R - 8);
-    ctx.fillStyle = ready ? '#3D4A6B' : '#F06BA8'; ctx.fillText('Space', cx, cy - R - 8);
+    ctx.fillStyle = ready ? '#2E4A6E' : 'rgba(90,120,160,.88)'; ctx.fillText('Space', cx, cy - R - 8);
     ctx.font = '12px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(0,0,0,.58)';
     ctx.strokeText(SKYWARD_STELLAR_BLINK.name, cx, cy + R + 16);
-    ctx.fillStyle = ready ? '#5AC8FA' : '#FFA4CC'; ctx.fillText(SKYWARD_STELLAR_BLINK.name, cx, cy + R + 16);
+    ctx.fillStyle = ready ? '#2FA8EE' : 'rgba(90,120,160,.88)'; ctx.fillText(SKYWARD_STELLAR_BLINK.name, cx, cy + R + 16);
     ctx.restore();
     const readyCount = clamp(b.charges | 0, 0, SKYWARD_STELLAR_BLINK.maxCharges);
     ctx.save();
@@ -49692,13 +49855,13 @@
     ctx.fillStyle = 'rgba(255,255,255,0.94)'; ctx.beginPath(); ctx.arc(badgeX, badgeY, 10, 0, TAU); ctx.fill();
     ctx.strokeStyle = skill.accent; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(badgeX, badgeY, 10, 0, TAU); ctx.stroke();
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.font = '800 13px Nunito, Arial, sans-serif';
-    ctx.fillStyle = '#3D4A6B'; ctx.fillText(skill.key, badgeX, badgeY + 0.5);
+    ctx.fillStyle = '#2E4A6E'; ctx.fillText(skill.key, badgeX, badgeY + 0.5);
 
     ctx.textBaseline = 'alphabetic';
     ctx.font = '800 11px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,0.80)';
     ctx.strokeText(skill.name, cx, cy + R + 16);
-    ctx.fillStyle = skill.ready ? '#3E8FE8' : 'rgba(90,120,160,0.88)';
+    ctx.fillStyle = skill.ready ? '#3E9BF5' : 'rgba(90,120,160,0.88)';
     ctx.fillText(skill.name, cx, cy + R + 16);
     ctx.restore();
   }
@@ -49721,7 +49884,7 @@
     ctx.fillStyle = 'rgba(232,244,255,.88)';
     roundRect(x, y, w, h, 12); ctx.fill();
     ctx.strokeStyle = 'rgba(140,200,245,.55)'; ctx.lineWidth = 1.2; roundRect(x, y, w, h, 12); ctx.stroke();
-    ctx.fillStyle = '#3D4A6B';
+    ctx.fillStyle = '#2E4A6E';
     for (let i = 0; i < lines.length; i++) ctx.fillText(lines[i], x + 10, y + 21 + i * 16);
     ctx.restore();
   }
@@ -49740,7 +49903,7 @@
       const gw = w * 1.18, gh = h * 1.9;
       const glowCv = cachedSprite(active ? 'dreambtn_glow_a' : 'dreambtn_glow_h', 96, 48, (c2, sw, sh) => {
         const g = c2.createRadialGradient(sw / 2, sh / 2, 1, sw / 2, sh / 2, sw / 2);
-        g.addColorStop(0, active ? 'rgba(255,164,204,.60)' : 'rgba(106,184,255,.48)');
+        g.addColorStop(0, active ? 'rgba(88,183,255,.60)' : 'rgba(79,216,232,.45)');
         g.addColorStop(1, 'rgba(255,255,255,0)');
         c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
       });
@@ -49752,24 +49915,25 @@
     }
     drawTyTechPanel(x, y, w, h, {
       r: h / 2, hot: active, shadowScale: 0.5, pressed: !!(motion && motion.pressed),
-      top: active ? 'rgba(255,255,255,.86)' : 'rgba(255,255,255,.75)',
-      bottom: active ? 'rgba(255,228,242,.62)' : 'rgba(230,240,255,.55)',
-      edge: active ? 'rgba(255,164,204,.85)' : 'rgba(140,160,210,.30)',
+      top: active ? 'rgba(255,255,255,.88)' : 'rgba(255,255,255,.75)',
+      bottom: active ? 'rgba(214,238,255,.62)' : 'rgba(226,242,255,.55)',
+      edge: active ? 'rgba(88,183,255,.85)' : 'rgba(110,160,220,.30)',
       lineWidth: active ? 1.6 : 1, stripAlpha: active ? 0.10 : 0,
+      shimmer: active, phase: x * 0.013,
     });
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const labelSize = useFittedCuteFont(label, 900, h >= 60 ? 29 : 20, 17, w - 18);
     ctx.lineJoin = 'round';
     ctx.lineWidth = Math.max(2, labelSize * 0.14); ctx.strokeStyle = 'rgba(255,255,255,.92)'; ctx.strokeText(label, x + w / 2, y + h / 2 + 0.5);
-    // 常态墨色 #3D4A6B；激活态蓝渐变 #6AB8FF→#3E8FE8
+    // 常态墨色 #2E4A6E；激活态天蓝→蔚蓝渐变 #58B7FF→#3E9BF5
     ctx.fillStyle = active
       ? cachedGradient(`dreambtn_ink_${x | 0}_${w | 0}`, () => {
           const g = ctx.createLinearGradient(x, 0, x + w, 0);
-          g.addColorStop(0, '#6AB8FF');
-          g.addColorStop(1, '#3E8FE8');
+          g.addColorStop(0, '#58B7FF');
+          g.addColorStop(1, '#3E9BF5');
           return g;
         })
-      : '#3D4A6B';
+      : '#2E4A6E';
     ctx.fillText(label, x + w / 2, y + h / 2 + 0.5);
     ctx.restore();
   }
@@ -49789,17 +49953,8 @@
       veil.addColorStop(0, 'rgba(21,31,66,.62)'); veil.addColorStop(0.48, 'rgba(41,33,79,.48)'); veil.addColorStop(1, 'rgba(220,235,255,.28)');
     }
     ctx.globalAlpha = 1; ctx.fillStyle = veil; ctx.fillRect(0, 0, W, H);
-    ctx.globalCompositeOperation = 'lighter';
-    // 梦境大厅环境层：呼吸星芒 + 弥散 bokeh 光斑；tier3 全关，高档加量。
-    const vm = DREAM_PERF_CONFIG.visualMul[Math.min(3, perfLevel)];
-    const count = perfLevel >= 3 ? 0 : (vm > 0.5 ? 22 : 10);
-    for (let i = 0; i < count; i++) {
-      const x = (i * 89 + Math.sin(time * 0.6 + i) * 32 + W) % W;
-      const y = (i * 137 + time * (10 + i % 3 * 4)) % H;
-      const breathe = 0.5 + 0.5 * Math.sin(time * 1.6 + i * 0.9);
-      if (i % 4 === 3) drawCuteBubble(x, y, 10 + (i % 3) * 6, 0.06 + 0.05 * breathe, i % 2 ? '200,225,255' : '255,205,235');
-      else drawCuteSparkle(x, y, 2.5 + i % 3, 0.12 + (i % 4) * 0.02 + 0.10 * breathe, time + i);
-    }
+    // 梦境大厅环境层：统一 skyParticles（≤18，面板后方），tier3 全关。
+    drawSkyParticles('lobby');
     ctx.restore();
   }
   function dreamPreviewVoiceSamples(voice, t, x, y, w, h, phase = 0, stageId = '') {
@@ -49934,16 +50089,17 @@
       const unlocked = !!(level && level.unlocked);
       if (unlocked) registerDreamHit('stage', x, y, w, h, i);
       ctx.save();
+      applyCutePop(`dream:stage:${i}`, x, y, w, h, i);
       drawTyTechPanel(x, y, w, h, {
         r: 14, hot: unlocked && dreamUi.selectedStage === i,
-        top: unlocked ? 'rgba(255,255,255,.96)' : 'rgba(238,242,250,.72)',
-        bottom: unlocked ? (i === 1 ? 'rgba(255,248,232,.95)' : (i === 2 ? 'rgba(255,238,246,.95)' : 'rgba(232,244,255,.95)')) : 'rgba(228,230,240,.68)',
-        edge: unlocked ? (i === 1 ? 'rgba(255,214,107,.70)' : (i === 2 ? 'rgba(255,164,204,.70)' : 'rgba(106,184,255,.70)')) : 'rgba(132,140,168,.42)',
+        top: unlocked ? 'rgba(255,255,255,.96)' : 'rgba(226,238,250,.66)',
+        bottom: unlocked ? 'rgba(232,244,255,.95)' : 'rgba(214,228,244,.60)',
+        edge: unlocked ? 'rgba(88,183,255,.70)' : 'rgba(110,160,220,.30)',
         lineWidth: unlocked ? 2.4 : 1.3, stripAlpha: unlocked ? 0.10 : 0.02, scanAlpha: unlocked ? 0.08 : 0.01,
       });
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 23 : 22); ctx.fillStyle = unlocked ? '#3D4A6B' : '#74788d'; ctx.fillText(`梦境 ${i + 1}`, x + w / 2, y + 22);
-      ctx.font = cuteFont(800, DREAM_LOBBY_PORTRAIT ? 18 : 17); ctx.fillStyle = unlocked ? '#3E8FE8' : '#8b8e9f'; ctx.fillText(unlocked ? level.name : '构筑中', x + w / 2, y + 48);
+      ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 23 : 22); ctx.fillStyle = unlocked ? '#2E4A6E' : 'rgba(46,74,110,.40)'; ctx.fillText(`梦境 ${i + 1}`, x + w / 2, y + 22);
+      ctx.font = cuteFont(800, DREAM_LOBBY_PORTRAIT ? 18 : 17); ctx.fillStyle = unlocked ? '#2FA8EE' : 'rgba(46,74,110,.32)'; ctx.fillText(unlocked ? level.name : '构筑中', x + w / 2, y + 48);
       ctx.restore();
     }
   }
@@ -49960,12 +50116,12 @@
       : ['六翼缺口扇 · 棱镜门', '迟滞星冠 · 双侧镰刃', '终焉晶格 · 五阶段']);
     if (DREAM_LOBBY_PORTRAIT) {
       const x = 42, y = 376, w = 636, h = 430;
-      drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(106,184,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05 });
+      drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05 });
       ctx.save();
-      ctx.textAlign = 'center'; ctx.font = cuteFont(900, 27); ctx.fillStyle = '#493f7d'; ctx.fillText(hasBoss ? level.bossName : '玩偶之家 · 小怪篇', x + 392, y + 37);
+      ctx.textAlign = 'center'; ctx.font = cuteFont(900, 27); ctx.fillStyle = '#2E4A6E'; ctx.fillText(hasBoss ? level.bossName : '玩偶之家 · 小怪篇', x + 392, y + 37);
       if (assetReady(bossSprite)) drawImageContain(assets[bossSprite], x + 24, y + 34, 142, 136);
-      ctx.textAlign = 'left'; ctx.font = cuteFont(900, 21); ctx.fillStyle = '#315b82'; ctx.fillText(hasBoss ? `HP ${config.balance.bossHp.toLocaleString()} · ${config.phaseNames.length}阶段` : '10波完整开放 · 本期无Boss', x + 178, y + 75);
-      ctx.font = cuteFont(800, 18); ctx.fillStyle = '#5d6490';
+      ctx.textAlign = 'left'; ctx.font = cuteFont(900, 21); ctx.fillStyle = '#3E9BF5'; ctx.fillText(hasBoss ? `HP ${config.balance.bossHp.toLocaleString()} · ${config.phaseNames.length}阶段` : '10波完整开放 · 本期无Boss', x + 178, y + 75);
+      ctx.font = cuteFont(800, 18); ctx.fillStyle = 'rgba(46,74,110,.60)';
       bossLines.forEach((line, i) => ctx.fillText(line, x + 178, y + 105 + i * 27));
       ctx.strokeStyle = 'rgba(132,160,211,.38)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x + 24, y + 178); ctx.lineTo(x + w - 24, y + 178); ctx.stroke();
       const mobs = Object.values(config.mobs);
@@ -49974,32 +50130,32 @@
         const col = i % mobCols, row = Math.floor(i / mobCols);
         const cw = (w - 32) / mobCols, cx = x + 16 + col * cw, cy = y + 218 + row * 91;
         const cardX = cx + 3, cardY = cy - 27, cardW = cw - 6, cardH = 80;
-        ctx.fillStyle = row ? 'rgba(244,226,251,.66)' : 'rgba(216,234,255,.72)'; roundRect(cardX, cardY, cardW, cardH, 14); ctx.fill();
+        ctx.fillStyle = row ? 'rgba(226,242,255,.62)' : 'rgba(216,234,255,.72)'; roundRect(cardX, cardY, cardW, cardH, 14); ctx.fill();
         ctx.fillStyle = 'rgba(255,255,255,.52)'; ctx.beginPath(); ctx.arc(cx + 27, cy + 10, 23, 0, TAU); ctx.fill();
         let key = `${mob.sprite}Idle`; if (!assetReady(key) && assetReady(mob.sprite)) key = mob.sprite;
         if (assetReady(key)) drawImageContain(assets[key], cx + 6, cy - 11, mobCols === 2 ? 48 : 42, mobCols === 2 ? 48 : 42);
-        ctx.textAlign = 'left'; ctx.font = cuteFont(900, 18); ctx.fillStyle = '#493f7d'; ctx.fillText(mob.name, cx + 52, cy + 1);
-        ctx.font = cuteFont(800, 18); ctx.fillStyle = '#5179a0'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 52, cy + 27);
+        ctx.textAlign = 'left'; ctx.font = cuteFont(900, 18); ctx.fillStyle = '#2E4A6E'; ctx.fillText(mob.name, cx + 52, cy + 1);
+        ctx.font = cuteFont(800, 18); ctx.fillStyle = '#3E9BF5'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 52, cy + 27);
       });
       const mobMinutes = Math.round(config.balance.mobTargetSeconds / 60);
       const bossMinutes = Math.round(config.balance.bossTargetSeconds / 60);
       const timing = hasBoss ? `10波约${mobMinutes}分钟 · Boss约${bossMinutes}分钟` : `10波约${mobMinutes}分钟 · 清场即通关`;
-      ctx.textAlign = 'center'; ctx.font = cuteFont(900, 19); ctx.fillStyle = '#a45586'; ctx.fillText(`${timing} · 第4次受击失败`, x + w / 2, y + h - 13);
+      ctx.textAlign = 'center'; ctx.font = cuteFont(900, 19); ctx.fillStyle = '#2B7FD9'; ctx.fillText(`${timing} · 第4次受击失败`, x + w / 2, y + h - 13);
       ctx.restore();
       return;
     }
     const bx = 52, by = 356, bw = 288, bh = 430;
-    drawTyTechPanel(bx, by, bw, bh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(255,238,246,.55)', edge: 'rgba(255,164,204,.55)', stripAlpha: 0.08, scanAlpha: 0.06 });
-    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 27); ctx.fillStyle = '#493f7d'; ctx.fillText(hasBoss ? level.bossName : '玩偶之家 · 小怪篇', bx + bw / 2, by + 38);
+    drawTyTechPanel(bx, by, bw, bh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(226,242,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.08, scanAlpha: 0.06 });
+    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 27); ctx.fillStyle = '#2E4A6E'; ctx.fillText(hasBoss ? level.bossName : '玩偶之家 · 小怪篇', bx + bw / 2, by + 38);
     if (assetReady(bossSprite)) drawImageContain(assets[bossSprite], bx + 34, by + 58, bw - 68, 208);
-    ctx.font = cuteFont(800, 18); ctx.fillStyle = '#315b82'; ctx.fillText(hasBoss ? `HP ${config.balance.bossHp.toLocaleString()} · ${config.phaseNames.length}阶段` : '10波完整开放 · Boss构筑中', bx + bw / 2, by + 294);
-    ctx.textAlign = 'left'; ctx.font = cuteFont(700, 17); ctx.fillStyle = '#5d6490';
+    ctx.font = cuteFont(800, 18); ctx.fillStyle = '#3E9BF5'; ctx.fillText(hasBoss ? `HP ${config.balance.bossHp.toLocaleString()} · ${config.phaseNames.length}阶段` : '10波完整开放 · Boss构筑中', bx + bw / 2, by + 294);
+    ctx.textAlign = 'left'; ctx.font = cuteFont(700, 17); ctx.fillStyle = 'rgba(46,74,110,.60)';
     config.phaseNames.forEach((name, i) => ctx.fillText(`${i + 1}. ${name}`, bx + 36, by + 326 + i * 20));
     ctx.restore();
 
     const rx = 352, ry = 356, rw = 316, rh = 430;
-    drawTyTechPanel(rx, ry, rw, rh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(106,184,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05 });
-    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 25); ctx.fillStyle = '#315b82'; ctx.fillText('梦境守卫', rx + rw / 2, ry + 34);
+    drawTyTechPanel(rx, ry, rw, rh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05 });
+    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 25); ctx.fillStyle = '#3E9BF5'; ctx.fillText('梦境守卫', rx + rw / 2, ry + 34);
     const mobs = Object.values(config.mobs);
     mobs.forEach((mob, i) => {
       const col = i % 2, row = Math.floor(i / 2);
@@ -50009,44 +50165,44 @@
       let key = `${mob.sprite}Idle`; if (!assetReady(key) && assetReady(mob.sprite)) key = mob.sprite;
       ctx.fillStyle = 'rgba(220,235,255,.72)'; roundRect(cx, cy - 31, cellW - 8, 66, 12); ctx.fill();
       if (assetReady(key)) drawImageContain(assets[key], cx + 4, cy - 25, 50, 50);
-      ctx.textAlign = 'left'; ctx.font = cuteFont(900, 17); ctx.fillStyle = '#493f7d'; ctx.fillText(mob.name, cx + 58, cy - 4);
-      ctx.font = cuteFont(700, 15); ctx.fillStyle = '#5179a0'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 58, cy + 18);
+      ctx.textAlign = 'left'; ctx.font = cuteFont(900, 17); ctx.fillStyle = '#2E4A6E'; ctx.fillText(mob.name, cx + 58, cy - 4);
+      ctx.font = cuteFont(700, 15); ctx.fillStyle = '#3E9BF5'; ctx.fillText(`HP ${Math.round(mob.hp / 1000)}k`, cx + 58, cy + 18);
     });
-    ctx.textAlign = 'center'; ctx.font = cuteFont(800, 18); ctx.fillStyle = '#a45586'; ctx.fillText(hasBoss ? `10波约${Math.round(config.balance.mobTargetSeconds / 60)}分钟 · Boss约${Math.round(config.balance.bossTargetSeconds / 60)}分钟` : `10波约${Math.round(config.balance.mobTargetSeconds / 60)}分钟 · 清场即通关`, rx + rw / 2, ry + rh - 45);
-    ctx.fillStyle = '#4c6f94'; ctx.fillText('3星容错 · 第4次受击失败', rx + rw / 2, ry + rh - 20);
+    ctx.textAlign = 'center'; ctx.font = cuteFont(800, 18); ctx.fillStyle = '#2B7FD9'; ctx.fillText(hasBoss ? `10波约${Math.round(config.balance.mobTargetSeconds / 60)}分钟 · Boss约${Math.round(config.balance.bossTargetSeconds / 60)}分钟` : `10波约${Math.round(config.balance.mobTargetSeconds / 60)}分钟 · 清场即通关`, rx + rw / 2, ry + rh - 45);
+    ctx.fillStyle = 'rgba(46,74,110,.55)'; ctx.fillText('3星容错 · 第4次受击失败', rx + rw / 2, ry + rh - 20);
     ctx.restore();
   }
   function drawDreamPatternsPanel() {
     const config = selectedDreamStageConfig();
     const x = DREAM_LOBBY_PORTRAIT ? 42 : 52, y = DREAM_LOBBY_PORTRAIT ? 376 : 356, w = DREAM_LOBBY_PORTRAIT ? 636 : 616, h = 430;
-    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(106,184,255,.55)' });
+    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)' });
     const pw = DREAM_LOBBY_PORTRAIT ? 294 : 276, ph = DREAM_LOBBY_PORTRAIT ? 164 : 150;
     const x2 = DREAM_LOBBY_PORTRAIT ? x + 324 : x + 318, y2 = DREAM_LOBBY_PORTRAIT ? y + 232 : y + 222;
     drawDreamPatternPreview(x + 18, y + 52, pw, ph, config.previewPatterns[0]);
     drawDreamPatternPreview(x2, y + 52, pw, ph, config.previewPatterns[1]);
     drawDreamPatternPreview(x + 18, y2, pw, ph, config.previewPatterns[2]);
     drawDreamPatternPreview(x2, y2, pw, ph, config.previewPatterns[3]);
-    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 29 : 24); ctx.fillStyle = '#493f7d'; ctx.fillText('实战同源弹幕预演', x + w / 2, y + 34); ctx.restore();
+    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 29 : 24); ctx.fillStyle = '#2E4A6E'; ctx.fillText('实战同源弹幕预演', x + w / 2, y + 34); ctx.restore();
   }
   function drawDreamLeaderboardPanel() {
     const level = selectedDreamLevel();
     const x = DREAM_LOBBY_PORTRAIT ? 42 : 52, y = DREAM_LOBBY_PORTRAIT ? 376 : 356, w = DREAM_LOBBY_PORTRAIT ? 636 : 616, h = DREAM_LOBBY_PORTRAIT ? 490 : 430;
-    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(255,238,246,.55)', edge: 'rgba(255,164,204,.55)' });
-    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 30 : 25); ctx.fillStyle = '#493f7d'; ctx.fillText(`${level.name} · 星级竞速榜`, x + w / 2, y + 38);
-    ctx.font = cuteFont(700, DREAM_LOBBY_PORTRAIT ? 22 : 16); ctx.fillStyle = '#627da1'; ctx.fillText(dreamLeaderboardMessage || '星级优先 · 同星比时间', x + w / 2, y + 68);
+    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(226,242,255,.55)', edge: 'rgba(88,183,255,.55)' });
+    ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 30 : 25); ctx.fillStyle = '#2E4A6E'; ctx.fillText(`${level.name} · 星级竞速榜`, x + w / 2, y + 38);
+    ctx.font = cuteFont(700, DREAM_LOBBY_PORTRAIT ? 22 : 16); ctx.fillStyle = 'rgba(46,74,110,.55)'; ctx.fillText(dreamLeaderboardMessage || '星级优先 · 同星比时间', x + w / 2, y + 68);
     const rowLimit = DREAM_LOBBY_PORTRAIT ? 5 : 7;
     const rows = dreamLeaderboardData.slice(0, rowLimit);
     rows.forEach((row, i) => {
       const rowH = DREAM_LOBBY_PORTRAIT ? 50 : 38, rowGap = DREAM_LOBBY_PORTRAIT ? 55 : 43;
       const ry = y + 82 + i * rowGap;
-      ctx.fillStyle = i % 2 ? 'rgba(222,238,255,.52)' : 'rgba(255,235,247,.50)'; roundRect(x + 18, ry, w - 36, rowH, 10); ctx.fill();
-      ctx.textAlign = 'left'; ctx.font = cuteFont(800, DREAM_LOBBY_PORTRAIT ? 24 : 17); ctx.fillStyle = i < 3 ? '#b47724' : '#456687'; ctx.fillText(`#${i + 1}`, x + 30, ry + rowH * 0.67);
-      ctx.fillStyle = '#344c70'; ctx.fillText(truncateChars(row.player_name || '匿名玩家', 8), x + 82, ry + rowH * 0.67);
-      ctx.fillStyle = '#8d5aa2'; ctx.fillText('★'.repeat(Math.max(0, row.stars | 0)) + '☆'.repeat(3 - Math.max(0, row.stars | 0)), x + (DREAM_LOBBY_PORTRAIT ? 310 : 292), ry + rowH * 0.67);
-      ctx.textAlign = 'right'; ctx.fillStyle = '#315b82'; ctx.fillText(dreamElapsedText(row.elapsed_ms), x + w - 30, ry + rowH * 0.67);
+      ctx.fillStyle = i % 2 ? 'rgba(222,238,255,.52)' : 'rgba(226,242,255,.50)'; roundRect(x + 18, ry, w - 36, rowH, 10); ctx.fill();
+      ctx.textAlign = 'left'; ctx.font = cuteFont(800, DREAM_LOBBY_PORTRAIT ? 24 : 17); ctx.fillStyle = i < 3 ? '#2B7FD9' : 'rgba(46,74,110,.55)'; ctx.fillText(`#${i + 1}`, x + 30, ry + rowH * 0.67);
+      ctx.fillStyle = '#2E4A6E'; ctx.fillText(truncateChars(row.player_name || '匿名玩家', 8), x + 82, ry + rowH * 0.67);
+      ctx.fillStyle = '#3E9BF5'; ctx.fillText('★'.repeat(Math.max(0, row.stars | 0)) + '☆'.repeat(3 - Math.max(0, row.stars | 0)), x + (DREAM_LOBBY_PORTRAIT ? 310 : 292), ry + rowH * 0.67);
+      ctx.textAlign = 'right'; ctx.fillStyle = '#3E9BF5'; ctx.fillText(dreamElapsedText(row.elapsed_ms), x + w - 30, ry + rowH * 0.67);
     });
     if (!rows.length) {
-      ctx.font = cuteFont(800, 20); ctx.fillStyle = '#71819a'; ctx.textAlign = 'center';
+      ctx.font = cuteFont(800, 20); ctx.fillStyle = 'rgba(46,74,110,.50)'; ctx.textAlign = 'center';
       ctx.fillText(dreamLeaderboardStatus === 'loading' ? '正在读取...' : (dreamLeaderboardStatus === 'fail' ? '排行榜维护中' : '等待第一位梦境通关者'), x + w / 2, y + 230);
     }
     ctx.restore();
@@ -50064,10 +50220,32 @@
     dreamUi.hitRects = [];
     drawDreamBackdrop();
     dreamUiButton(36, 38, 104, 52, '返回', 'back');
-    ctx.save(); ctx.textAlign = 'center'; ctx.lineJoin = 'round'; ctx.font = cuteFont(900, 36); ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(15,22,48,.75)'; ctx.strokeText('梦境模式', W / 2, 78); ctx.fillStyle = '#efe7ff'; ctx.fillText('梦境模式', W / 2, 78);
+    ctx.save(); ctx.textAlign = 'center'; ctx.lineJoin = 'round'; ctx.font = cuteFont(900, 36); ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(15,22,48,.75)'; ctx.strokeText('梦境模式', W / 2, 78); ctx.fillStyle = '#EAF6FF'; ctx.fillText('梦境模式', W / 2, 78);
     ctx.font = cuteFont(800, 20); ctx.fillStyle = '#cfe9ff'; ctx.fillText(dreamLevelLabel(config.level), W / 2, 116); ctx.restore();
     drawDreamStageNodes();
     const tabY = DREAM_LOBBY_PORTRAIT ? DREAM_LOBBY_LAYOUT.tabTop : 304, tabH = DREAM_LOBBY_PORTRAIT ? 64 : 46;
+    // 页签滑块：天空玻璃光环，弹簧跟随当前页签
+    const tabIdx = dreamUi.tab === 'patterns' ? 1 : (dreamUi.tab === 'leaderboard' ? 2 : 0);
+    dreamTabPillTarget = [44, 259, 474][tabIdx];
+    if (dreamTabPill.x === null) dreamTabPill.x = dreamTabPillTarget;
+    ctx.save();
+    if (!cgLite()) {
+      const tabGlow = cachedSprite('sky_tab_glow', 96, 48, (c2, sw, sh) => {
+        const g = c2.createRadialGradient(sw / 2, sh / 2, 1, sw / 2, sh / 2, sw / 2);
+        g.addColorStop(0, 'rgba(88,183,255,.40)');
+        g.addColorStop(1, 'rgba(88,183,255,0)');
+        c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+      });
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.drawImage(tabGlow, dreamTabPill.x - 12, tabY - 14, 226, tabH + 28);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    ctx.fillStyle = 'rgba(88,183,255,.14)';
+    ctx.strokeStyle = 'rgba(88,183,255,.55)';
+    ctx.lineWidth = 2.5;
+    roundRect(dreamTabPill.x - 5, tabY - 4, 212, tabH + 8, (tabH + 8) / 2);
+    ctx.fill(); ctx.stroke();
+    ctx.restore();
     dreamUiButton(44, tabY, 202, tabH, '关卡情报', 'tab', dreamUi.tab === 'intel', 'intel');
     dreamUiButton(259, tabY, 202, tabH, '敌人弹幕', 'tab', dreamUi.tab === 'patterns', 'patterns');
     dreamUiButton(474, tabY, 202, tabH, '本关排行', 'tab', dreamUi.tab === 'leaderboard', 'leaderboard');
@@ -50091,21 +50269,21 @@
     const tone = TITLE_CARD_TONES[index % TITLE_CARD_TONES.length];
     const copy = TITLE_CHARACTER_COPY[key] || { detail: '', hint: '' };
     ctx.save();
-    const motion = observeCuteUiControl(`dream:selChar:${key}`, x, y, w, h, selected);
+    const motion = observeCuteUiControl(`dream:selChar:${key}`, x, y, w, h, selected, index);
     applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 15, hot: selected,
       top: selected ? 'rgba(232,247,255,.97)' : tone.top,
-      bottom: selected ? 'rgba(246,225,255,.97)' : tone.bottom,
-      edge: selected ? 'rgba(145,119,221,.92)' : tone.edge,
+      bottom: selected ? 'rgba(214,238,255,.96)' : tone.bottom,
+      edge: selected ? 'rgba(88,183,255,.92)' : tone.edge,
       lineWidth: selected ? 2.8 : 1.6, stripAlpha: selected ? 0.11 : 0.03, scanAlpha: selected ? 0.09 : 0.025,
       cornerAlpha: selected ? 0.72 : 0.24,
     });
     const avatarR = Math.min(30, h * 0.34);
     const avatarCx = x + 44, avatarCy = y + h / 2;
-    ctx.fillStyle = selected ? 'rgba(255,215,235,.86)' : 'rgba(224,243,255,.82)';
+    ctx.fillStyle = selected ? 'rgba(214,238,255,.88)' : 'rgba(224,243,255,.82)';
     ctx.beginPath(); ctx.arc(avatarCx, avatarCy, avatarR + 4, 0, TAU); ctx.fill();
-    ctx.strokeStyle = selected ? 'rgba(211,76,138,.85)' : tone.edge; ctx.lineWidth = selected ? 2.6 : 1.6;
+    ctx.strokeStyle = selected ? 'rgba(62,155,245,.85)' : tone.edge; ctx.lineWidth = selected ? 2.6 : 1.6;
     ctx.beginPath(); ctx.arc(avatarCx, avatarCy, avatarR + 1.5, 0, TAU); ctx.stroke();
     const avatarKey = ch.cardAvatar || ch.avatar;
     if (assetReady(avatarKey)) {
@@ -50118,11 +50296,11 @@
     const displayName = (ch.name.split(' · ')[1]) || ch.name;
     ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
     useFittedCuteFont(displayName, 900, 25, 19, textW);
-    ctx.fillStyle = selected ? '#493f7d' : '#24415f'; ctx.fillText(displayName, textX, y + h * 0.42);
+    ctx.fillStyle = selected ? '#2B7FD9' : '#2E4A6E'; ctx.fillText(displayName, textX, y + h * 0.42);
     useFittedCuteFont(`${copy.detail} · HP${ch.maxHp}`, 800, 19, 15, textW);
-    ctx.fillStyle = selected ? '#b43a78' : '#2c78ad'; ctx.fillText(`${copy.detail} · HP${ch.maxHp}`, textX, y + h * 0.78);
+    ctx.fillStyle = selected ? '#2B7FD9' : '#3E9BF5'; ctx.fillText(`${copy.detail} · HP${ch.maxHp}`, textX, y + h * 0.78);
     if (selected) {
-      ctx.textAlign = 'right'; ctx.font = cuteFont(900, 21); ctx.fillStyle = '#8d5aa2';
+      ctx.textAlign = 'right'; ctx.font = cuteFont(900, 21); ctx.fillStyle = '#3E9BF5';
       ctx.fillText('✓', x + w - 14, y + 26);
     }
     ctx.restore();
@@ -50134,15 +50312,15 @@
     applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 13, hot: selected,
-      top: selected ? 'rgba(231,250,245,.96)' : 'rgba(240,248,255,.90)',
-      bottom: selected ? 'rgba(229,244,255,.95)' : 'rgba(255,239,247,.90)',
-      edge: selected ? 'rgba(63,159,140,.88)' : 'rgba(113,181,229,.66)',
+      top: selected ? 'rgba(227,246,255,.96)' : 'rgba(240,248,255,.90)',
+      bottom: selected ? 'rgba(229,244,255,.95)' : 'rgba(226,242,255,.90)',
+      edge: selected ? 'rgba(47,168,238,.88)' : 'rgba(113,181,229,.66)',
       stripAlpha: selected ? 0.10 : 0.03, scanAlpha: selected ? 0.08 : 0.02, cornerAlpha: selected ? 0.62 : 0.2,
     });
     drawTitleToggleMark(x + 26, y + h / 2, selected, Math.min(10, h * 0.22));
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     useFittedCuteFont(option.name, 900, 23, 17, w - 66);
-    ctx.fillStyle = selected ? '#287b6b' : '#315b82';
+    ctx.fillStyle = selected ? '#2B7FD9' : '#2E4A6E';
     ctx.fillText(option.name, x + 24 + (w - 24) / 2, y + h / 2 + 0.5);
     ctx.restore();
   }
@@ -50154,12 +50332,12 @@
     dreamUiButton(36, 38, 104, 52, '返回', 'selBack');
     ctx.save(); ctx.textAlign = 'center'; ctx.lineJoin = 'round';
     ctx.font = cuteFont(900, 36); ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(15,22,48,.75)';
-    ctx.strokeText('出战编队', W / 2, 78); ctx.fillStyle = '#efe7ff'; ctx.fillText('出战编队', W / 2, 78);
+    ctx.strokeText('出战编队', W / 2, 78); ctx.fillStyle = '#EAF6FF'; ctx.fillText('出战编队', W / 2, 78);
     ctx.font = cuteFont(800, 20); ctx.fillStyle = '#cfe9ff'; ctx.fillText(`${level.actLabel} · 选择 1 架战机与 1 名僚机`, W / 2, 116);
     ctx.restore();
     // —— 战机分区：7 卡，双列，末卡居中 ——
     ctx.save(); ctx.textAlign = 'left'; ctx.font = cuteFont(900, 24); ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(15,22,48,.7)';
-    ctx.strokeText('选择战机', 46, 168); ctx.fillStyle = '#ffe5f0'; ctx.fillText('选择战机', 46, 168); ctx.restore();
+    ctx.strokeText('选择战机', 46, 168); ctx.fillStyle = '#EAF6FF'; ctx.fillText('选择战机', 46, 168); ctx.restore();
     const order = ['witch', 'yanuxiya', 'anna', 'reaver', 'motherlife', 'skyward', 'corruptgun'];
     const cw = 306, chh = 88, cgx = 24, cgy = 12;
     const cx0 = (W - cw * 2 - cgx) / 2;
@@ -50186,7 +50364,7 @@
     const pickedWing = WING_OPTIONS.find(o => o.key === dreamUi.pendWing);
     const summary = `${pickedChar ? ((pickedChar.name.split(' · ')[1]) || pickedChar.name) : '—'}  ×  ${pickedWing ? pickedWing.name : '—'}`;
     ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 24); ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(15,22,48,.72)';
-    ctx.strokeText(summary, W / 2, summaryY); ctx.fillStyle = '#fff3d9'; ctx.fillText(summary, W / 2, summaryY);
+    ctx.strokeText(summary, W / 2, summaryY); ctx.fillStyle = '#DFF2FF'; ctx.fillText(summary, W / 2, summaryY);
     ctx.font = cuteFont(700, 18); ctx.fillStyle = '#b9cdf2';
     ctx.fillText('进入后编队锁定 · 数字键 1-7 选战机 · ←→ 切僚机', W / 2, summaryY + 30);
     ctx.restore();
@@ -50200,15 +50378,24 @@
     const clear = dreamRun.finished && !dreamRun.failed;
     ctx.save(); ctx.textAlign = 'center'; ctx.lineJoin = 'round';
     ctx.font = cuteFont(900, 56); ctx.lineWidth = 8; ctx.strokeStyle = 'rgba(8,12,30,.82)';
-    const title = clear ? '梦境通关' : '梦境破碎'; ctx.strokeText(title, W / 2, 250); ctx.fillStyle = clear ? '#f2e8ff' : '#ffd4e1'; ctx.fillText(title, W / 2, 250);
-    ctx.font = cuteFont(900, 76); ctx.fillStyle = '#ffd9f0'; ctx.fillText('★'.repeat(dreamRun.stars) + '☆'.repeat(3 - dreamRun.stars), W / 2, 365);
-    drawTyTechPanel(106, 420, W - 212, 330, { r: 22, hot: clear, top: 'rgba(255,255,255,.86)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(106,184,255,.55)' });
-    ctx.font = cuteFont(900, 30); ctx.fillStyle = '#493f7d'; ctx.fillText(dreamLevelLabel(activeDreamLevel()), W / 2, 480);
-    ctx.font = cuteFont(800, 24); ctx.fillStyle = '#315b82'; ctx.fillText(`通关时间  ${dreamElapsedText()}`, W / 2, 548);
-    ctx.fillText(`受击 ${dreamRun.hitCount} 次 · 最终输出 ${Math.round(dreamRun.outgoingDamageMul * 100)}%`, W / 2, 596);
+    const title = clear ? '梦境通关' : '梦境破碎'; ctx.strokeText(title, W / 2, 250); ctx.fillStyle = clear ? '#EAF6FF' : '#ffd4e1'; ctx.fillText(title, W / 2, 250);
+    // 星级：已得暖金，未得霜蓝
+    const starStr = '★'.repeat(dreamRun.stars), emptyStr = '☆'.repeat(3 - dreamRun.stars);
+    ctx.font = cuteFont(900, 76);
+    const starW = ctx.measureText(starStr).width, emptyW = ctx.measureText(emptyStr).width;
+    const starX = W / 2 - (starW + emptyW) / 2;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#FFD66B'; ctx.fillText(starStr, starX, 365);
+    ctx.fillStyle = 'rgba(226,242,255,.40)'; ctx.fillText(emptyStr, starX + starW, 365);
+    ctx.textAlign = 'center';
+    drawTyTechPanel(106, 420, W - 212, 330, { r: 22, hot: clear, top: 'rgba(255,255,255,.86)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)' });
+    ctx.font = cuteFont(900, 30); ctx.fillStyle = '#2E4A6E'; ctx.fillText(dreamLevelLabel(activeDreamLevel()), W / 2, 480);
+    const roll = skyRoll01(`dreamResult:${clear ? 'clear' : 'fail'}`);
+    ctx.font = cuteFont(800, 24); ctx.fillStyle = '#3E9BF5'; ctx.fillText(`通关时间  ${dreamElapsedText(dreamRun.elapsedMs * roll)}`, W / 2, 548);
+    ctx.fillText(`受击 ${Math.round(dreamRun.hitCount * roll)} 次 · 最终输出 ${Math.round(dreamRun.outgoingDamageMul * 100 * roll)}%`, W / 2, 596);
     const uploadNeedsAttention = dreamLeaderboardUploadStatus === 'fail' || dreamLeaderboardUploadStatus === 'needsName';
-    ctx.fillStyle = uploadNeedsAttention ? '#bb526f' : '#6a5b9c'; ctx.fillText(dreamLeaderboardMessage || (clear ? '正在结算梦境记录...' : '失败记录不进入排行榜'), W / 2, 656);
-    if (dreamRun.resultRank) { ctx.fillStyle = '#b77b25'; ctx.fillText(`当前排名 #${dreamRun.resultRank}`, W / 2, 704); }
+    ctx.fillStyle = uploadNeedsAttention ? '#bb526f' : '#3E9BF5'; ctx.fillText(dreamLeaderboardMessage || (clear ? '正在结算梦境记录...' : '失败记录不进入排行榜'), W / 2, 656);
+    if (dreamRun.resultRank) { ctx.fillStyle = '#2B7FD9'; ctx.fillText(`当前排名 #${dreamRun.resultRank}`, W / 2, 704); }
     ctx.restore();
     dreamUiButton(72, 830, 176, 64, '再挑战', 'retry', true);
     dreamUiButton(272, 830, 176, 64, '关卡大厅', 'hub');
@@ -50454,7 +50641,7 @@
       const motion = observeCuteUiControl(`title:quality:${key}`, x, y, bw, bh, on);
       applyCuteUiMotion(motion, x, y, bw, bh);
       drawTyTechPanel(x, y, bw, bh, { r: 10, hot: on, stripAlpha: on ? 0.14 : 0.06, scanAlpha: on ? 0.14 : 0.05, cornerAlpha: on ? 0.85 : 0.35 });
-      ctx.fillStyle = on ? '#3D4A6B' : 'rgba(70,105,145,.78)';
+      ctx.fillStyle = on ? '#2E4A6E' : 'rgba(70,105,145,.78)';
       ctx.font = `900 ${compact ? 22 : 24}px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif`;
       ctx.textBaseline = 'middle';
       ctx.fillText(q.label, x + bw * 0.5, y + bh * 0.5 + 0.5);
@@ -50475,7 +50662,7 @@
     ctx.lineWidth = 3;
     ctx.strokeStyle = active ? 'rgba(255,255,255,.85)' : 'rgba(255,255,255,.70)';
     ctx.strokeText(label, x + w / 2, y + h / 2 + 0.5);
-    ctx.fillStyle = active ? '#3D4A6B' : '#3a6aa8';
+    ctx.fillStyle = active ? '#2E4A6E' : '#3a6aa8';
     ctx.shadowColor = active ? 'rgba(140,210,255,.75)' : 'rgba(255,160,205,.45)';
     ctx.shadowBlur = active ? 8 : 4;
     ctx.fillText(label, x + w / 2, y + h / 2 + 0.5);
@@ -50588,9 +50775,9 @@
     ctx.strokeStyle = 'rgba(255,255,255,.82)';
     ctx.strokeText(title, x + w / 2, y + 46);
     const tg = ctx.createLinearGradient(x + 40, 0, x + w - 40, 0);
-    tg.addColorStop(0, '#3a8fd0');
-    tg.addColorStop(0.5, '#3D4A6B');
-    tg.addColorStop(1, '#F06BA8');
+    tg.addColorStop(0, '#3E9BF5');
+    tg.addColorStop(0.5, '#2E4A6E');
+    tg.addColorStop(1, '#2FA8EE');
     ctx.fillStyle = tg;
     ctx.fillText(title, x + w / 2, y + 46);
     ctx.restore();
@@ -50605,9 +50792,9 @@
     ctx.strokeStyle = 'rgba(255,255,255,.82)';
     ctx.strokeText(title, x + w / 2, y + 42);
     const tg = ctx.createLinearGradient(x + 40, 0, x + w - 40, 0);
-    tg.addColorStop(0, '#3a8fd0');
-    tg.addColorStop(0.52, '#3D4A6B');
-    tg.addColorStop(1, '#F06BA8');
+    tg.addColorStop(0, '#3E9BF5');
+    tg.addColorStop(0.52, '#2E4A6E');
+    tg.addColorStop(1, '#2FA8EE');
     ctx.fillStyle = tg;
     ctx.fillText(title, x + w / 2, y + 42);
     ctx.restore();
@@ -50709,7 +50896,7 @@
       ctx.textAlign = 'left';
       const playerLabel = truncateChars(row.player_name || '匿名玩家', 7);
       useFittedCuteFont(playerLabel, 800, 20, 16, Math.max(72, boardW - 270));
-      ctx.fillStyle = mine ? '#c07020' : '#3D4A6B';
+      ctx.fillStyle = mine ? '#2B7FD9' : '#2E4A6E';
       ctx.fillText(playerLabel, x + 116, ry + 26);
       ctx.font = cuteFont(700, 16);
       ctx.fillStyle = 'rgba(80,125,175,.80)';
@@ -50771,7 +50958,7 @@
         ctx.fillText(`#${rankNo}`, guestX + 34, ry + 24);
         ctx.textAlign = 'left';
         ctx.font = cuteFont(800, 16);
-        ctx.fillStyle = '#3D4A6B';
+        ctx.fillStyle = '#2E4A6E';
         ctx.fillText(truncateChars(row.player_name || '匿名玩家', 7), guestX + 58, ry + 16);
         ctx.font = '12px Menlo, Monaco, Consolas, monospace';
         ctx.fillStyle = 'rgba(80,125,175,.78)';
@@ -50811,7 +50998,7 @@
         drawLeaderboardAvatar(row[LEADERBOARD_AVATAR_COLUMN], guestX + 38, ry + 24, 19, row.player_name);
         ctx.textAlign = 'left';
         ctx.font = cuteFont(800, 16);
-        ctx.fillStyle = '#3D4A6B';
+        ctx.fillStyle = '#2E4A6E';
         ctx.fillText(truncateChars(row.player_name || '匿名玩家', 6), guestX + 66, ry + 15);
         ctx.font = '12px Menlo, Monaco, Consolas, monospace';
         ctx.fillStyle = 'rgba(80,125,175,.78)';
@@ -50861,7 +51048,7 @@
     ctx.lineWidth = 4;
     ctx.strokeStyle = 'rgba(0,0,0,.66)';
     ctx.strokeText(line, W / 2, y + 32);
-    ctx.fillStyle = leaderboardUploadStatus === 'fail' ? '#F06BA8' : '#3D4A6B';
+    ctx.fillStyle = leaderboardUploadStatus === 'fail' ? '#F06BA8' : '#2E4A6E';
     ctx.fillText(line, W / 2, y + 32);
     ctx.font = '13px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
     ctx.fillStyle = TY_UI_THEME.textMuted;
@@ -50878,7 +51065,7 @@
     veil.addColorStop(0, 'rgba(226,245,255,0)');
     veil.addColorStop(0.16, 'rgba(226,245,255,.10)');
     veil.addColorStop(0.58, 'rgba(236,250,247,.18)');
-    veil.addColorStop(1, 'rgba(255,230,243,.20)');
+    veil.addColorStop(1, 'rgba(226,242,255,.18)');
     ctx.fillStyle = veil;
     ctx.fillRect(0, topY, W, H - topY);
     ctx.restore();
@@ -50891,17 +51078,20 @@
     ctx.textBaseline = 'alphabetic';
     ctx.lineJoin = 'round';
     const size = useFittedCuteFont(label, 900, preferredSize, 58, W - 92);
+    // 晴空呼吸：极轻整体缩放 + 渐变流光（青蓝 mid stop 缓慢游走）
+    const breathe = 1 + 0.0075 * (1 + Math.sin(time * 1.35));
+    ctx.translate(W / 2, y); ctx.scale(breathe, breathe); ctx.translate(-W / 2, -y);
     ctx.lineWidth = Math.max(9, size * 0.14);
     ctx.strokeStyle = 'rgba(255,255,255,.92)';
     ctx.strokeText(label, W / 2, y);
-    // 柔和投影：双层 fillText（y+2 蓝灰 .28），不用 shadowBlur
-    ctx.fillStyle = 'rgba(90,107,158,.28)';
+    // 柔和投影：双层 fillText（y+2 冷蓝灰 .28），不用 shadowBlur
+    ctx.fillStyle = 'rgba(90,120,176,.28)';
     ctx.fillText(label, W / 2, y + 2);
+    const drift = 0.5 + 0.20 * Math.sin(time * 0.55);
     const grad = ctx.createLinearGradient(W * 0.19, 0, W * 0.81, 0);
-    grad.addColorStop(0, '#6AB8FF');
-    grad.addColorStop(0.52, '#3E8FE8');
-    grad.addColorStop(0.78, '#8fd8ff');
-    grad.addColorStop(1, '#5AC8FA');
+    grad.addColorStop(0, '#58B7FF');
+    grad.addColorStop(Math.max(0.08, Math.min(0.92, drift)), '#4FD8E8');
+    grad.addColorStop(1, '#3E9BF5');
     ctx.fillStyle = grad;
     ctx.fillText(label, W / 2, y);
     ctx.restore();
@@ -50916,35 +51106,35 @@
     ctx.lineWidth = Math.max(3, size * 0.14);
     ctx.strokeStyle = 'rgba(255,255,255,.92)';
     ctx.strokeText(text, W / 2, y);
-    ctx.fillStyle = 'rgba(90,107,158,.28)';
+    ctx.fillStyle = 'rgba(90,120,176,.28)';
     ctx.fillText(text, W / 2, y + 2);
-    ctx.fillStyle = '#3E8FE8';
+    ctx.fillStyle = '#2FA8EE';
     ctx.fillText(text, W / 2, y);
     ctx.restore();
   }
 
   function drawTitleNumberBadge(cx, cy, number, selected) {
     ctx.save();
-    ctx.fillStyle = selected ? '#d34c8a' : 'rgba(255,255,255,.92)';
+    ctx.fillStyle = selected ? '#3E9BF5' : 'rgba(255,255,255,.92)';
     ctx.strokeStyle = selected ? 'rgba(255,255,255,.94)' : 'rgba(90,160,215,.78)';
     ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(cx, cy, 13, 0, TAU); ctx.fill(); ctx.stroke();
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = cuteFont(900, 17);
-    ctx.fillStyle = selected ? '#ffffff' : '#315b82';
+    ctx.fillStyle = selected ? '#ffffff' : '#2E4A6E';
     ctx.fillText(String(number), cx, cy + 0.5);
     ctx.restore();
   }
 
   function drawTitleToggleMark(cx, cy, enabled, radius = 10) {
     ctx.save();
-    ctx.fillStyle = enabled ? '#dff7ef' : 'rgba(255,255,255,.70)';
-    ctx.strokeStyle = enabled ? '#3f9f8c' : 'rgba(70,120,165,.82)';
+    ctx.fillStyle = enabled ? '#E3F6FF' : 'rgba(255,255,255,.70)';
+    ctx.strokeStyle = enabled ? '#2FA8EE' : 'rgba(70,120,165,.82)';
     ctx.lineWidth = enabled ? 2.5 : 2;
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, TAU); ctx.fill(); ctx.stroke();
     if (enabled) {
-      ctx.strokeStyle = '#287b6b';
+      ctx.strokeStyle = '#2B7FD9';
       ctx.lineWidth = 2.8;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -50962,7 +51152,7 @@
     const tone = TITLE_CARD_TONES[index % TITLE_CARD_TONES.length];
     const copy = TITLE_CHARACTER_COPY[key] || { detail: '', hint: '点击选择' };
     ctx.save();
-    const motion = observeCuteUiControl(`title:char:${key}`, x, y, w, h, selected);
+    const motion = observeCuteUiControl(`title:char:${key}`, x, y, w, h, selected, index);
     applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 18,
@@ -50980,9 +51170,9 @@
     const avatarCy = y + h / 2;
     const avatarR = Math.min(38, h * 0.34);
     const avatarKey = ch.cardAvatar || ch.avatar;
-    ctx.fillStyle = selected ? 'rgba(255,215,235,.84)' : 'rgba(224,243,255,.82)';
+    ctx.fillStyle = selected ? 'rgba(214,238,255,.88)' : 'rgba(224,243,255,.82)';
     ctx.beginPath(); ctx.arc(avatarCx, avatarCy, avatarR + 5, 0, TAU); ctx.fill();
-    ctx.strokeStyle = selected ? 'rgba(211,76,138,.82)' : tone.edge;
+    ctx.strokeStyle = selected ? 'rgba(62,155,245,.85)' : tone.edge;
     ctx.lineWidth = selected ? 2.8 : 1.8;
     ctx.beginPath(); ctx.arc(avatarCx, avatarCy, avatarR + 2, 0, TAU); ctx.stroke();
     if (assetReady(avatarKey)) {
@@ -51003,12 +51193,12 @@
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     useFittedCuteFont(displayName, 900, compact ? 27 : 29, 22, textWidth);
-    ctx.fillStyle = '#24415f';
+    ctx.fillStyle = '#2E4A6E';
     ctx.fillText(displayName, textX, nameY);
 
     const detail = `${copy.detail} · HP${ch.maxHp}`;
     useFittedCuteFont(detail, 800, compact ? 20 : 22, 18, textWidth);
-    ctx.fillStyle = selected ? '#b43a78' : '#2c78ad';
+    ctx.fillStyle = selected ? '#2B7FD9' : '#3E9BF5';
     ctx.fillText(detail, textX, detailY);
 
     useFittedCuteFont(copy.hint, 700, compact ? 18 : 22, 17, textWidth);
@@ -51024,9 +51214,9 @@
     drawTyTechPanel(x, y, w, h, {
       r: 14,
       hot: enabled,
-      top: enabled ? 'rgba(231,250,245,.94)' : 'rgba(240,248,255,.90)',
-      bottom: enabled ? 'rgba(229,244,255,.92)' : 'rgba(255,239,247,.90)',
-      edge: enabled ? 'rgba(63,159,140,.82)' : 'rgba(113,181,229,.72)',
+      top: enabled ? 'rgba(227,246,255,.94)' : 'rgba(240,248,255,.90)',
+      bottom: enabled ? 'rgba(229,244,255,.92)' : 'rgba(226,242,255,.90)',
+      edge: enabled ? 'rgba(47,168,238,.82)' : 'rgba(113,181,229,.72)',
       stripAlpha: enabled ? 0.09 : 0.03,
       scanAlpha: enabled ? 0.08 : 0.025,
       cornerAlpha: enabled ? 0.64 : 0.22,
@@ -51039,7 +51229,7 @@
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     useFittedCuteFont(option.name, 900, 24, 18, textW);
-    ctx.fillStyle = enabled ? '#287b6b' : '#315b82';
+    ctx.fillStyle = enabled ? '#2B7FD9' : '#2E4A6E';
     ctx.fillText(option.name, textX + textW / 2, cy + 0.5);
     ctx.restore();
   }
@@ -51065,7 +51255,7 @@
         const gw = rect.w * 1.12, gh = rect.h * 1.9;
         const glowCv = cachedSprite(dream ? 'titlebtn_glow_b' : 'titlebtn_glow_p', 96, 48, (c2, sw, sh) => {
           const g = c2.createRadialGradient(sw / 2, sh / 2, 1, sw / 2, sh / 2, sw / 2);
-          g.addColorStop(0, dream ? 'rgba(106,184,255,.50)' : 'rgba(255,164,204,.50)');
+          g.addColorStop(0, dream ? 'rgba(79,216,232,.45)' : 'rgba(88,183,255,.50)');
           g.addColorStop(1, 'rgba(255,255,255,0)');
           c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
         });
@@ -51081,12 +51271,14 @@
         shadowScale: 0.5,
         pressed: !!(motion && motion.pressed),
         top: 'rgba(255,255,255,.96)',
-        bottom: dream ? 'rgba(232,242,255,.94)' : 'rgba(255,236,246,.94)',
-        edge: dream ? 'rgba(106,184,255,.85)' : 'rgba(255,164,204,.85)',
+        bottom: dream ? 'rgba(232,242,255,.94)' : 'rgba(214,238,255,.94)',
+        edge: dream ? 'rgba(62,155,245,.70)' : 'rgba(88,183,255,.85)',
         lineWidth: 2.2,
         stripAlpha: 0.12,
         scanSpeed: dream ? 74 : 92,
         cornerAlpha: 0.78,
+        shimmer: !dream,
+        phase: rect.x * 0.013,
       });
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.lineJoin = 'round';
@@ -51094,7 +51286,7 @@
       ctx.lineWidth = Math.max(3, labelSize * 0.14);
       ctx.strokeStyle = 'rgba(255,255,255,.92)';
       ctx.strokeText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
-      ctx.fillStyle = dream ? '#3E8FE8' : '#3D4A6B';
+      ctx.fillStyle = dream ? '#3E9BF5' : '#2E4A6E';
       ctx.fillText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
       ctx.restore();
     };
@@ -51115,7 +51307,7 @@
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     const bloom = ctx.createRadialGradient(W * 0.46, 104, 12, W * 0.46, 104, 280);
-    bloom.addColorStop(0, 'rgba(255,204,230,.30)');
+    bloom.addColorStop(0, 'rgba(184,224,255,.30)');
     bloom.addColorStop(0.46, 'rgba(154,224,255,.18)');
     bloom.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = bloom; ctx.fillRect(0, 0, W, 280);
@@ -51137,7 +51329,7 @@
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'rgba(43,76,112,.76)';
     ctx.strokeText('选择角色与僚机编队', W / 2, layout.subtitleY);
-    ctx.fillStyle = '#ffe6f1';
+    ctx.fillStyle = '#EAF6FF';
     ctx.fillText('选择角色与僚机编队', W / 2, layout.subtitleY);
     ctx.restore();
     drawMobileSystemButtons('title');
@@ -51204,7 +51396,7 @@
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     const bloom = ctx.createRadialGradient(W * 0.5, H * 0.24, 12, W * 0.5, H * 0.24, 300);
-    bloom.addColorStop(0, 'rgba(255,204,230,.28)');
+    bloom.addColorStop(0, 'rgba(184,224,255,.28)');
     bloom.addColorStop(0.48, 'rgba(154,224,255,.17)');
     bloom.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = bloom;
@@ -51237,7 +51429,7 @@
     ctx.lineWidth = 5;
     ctx.strokeStyle = 'rgba(43,76,112,.74)';
     ctx.strokeText('苍夜契约 · 第一章', W / 2, layout.subtitleY);
-    ctx.fillStyle = '#ffe5f0';
+    ctx.fillStyle = '#EAF6FF';
     ctx.fillText('苍夜契约 · 第一章', W / 2, layout.subtitleY);
     ctx.restore();
 
@@ -51382,18 +51574,19 @@
     } else {
       ctx.font = '900 58px Nunito, Arial, sans-serif'; ctx.lineWidth = 8; ctx.strokeStyle = 'rgba(255,255,255,.82)'; ctx.strokeText(title, W/2, H*0.42);
       const rg = ctx.createLinearGradient(W * 0.32, 0, W * 0.68, 0);
-      rg.addColorStop(0, '#3a8fd0');
-      rg.addColorStop(0.5, '#3D4A6B');
-      rg.addColorStop(1, title === 'VICTORY' ? '#F06BA8' : '#F06BA8');
+      rg.addColorStop(0, '#3E9BF5');
+      rg.addColorStop(0.5, '#2E4A6E');
+      rg.addColorStop(1, title === 'VICTORY' ? '#58B7FF' : '#F06BA8');
       ctx.fillStyle = rg; ctx.fillText(title, W/2, H*0.42);
     }
-    ctx.font = '24px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = '#3D4A6B'; ctx.fillText(subtitle, W/2, H*0.48);
+    ctx.font = '24px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif'; ctx.fillStyle = '#2E4A6E'; ctx.fillText(subtitle, W/2, H*0.48);
     ctx.font = '20px Arial'; ctx.fillStyle = 'rgba(70,105,145,.90)';
-    ctx.fillText(`总分: ${currentLeaderboardScore()}   Kills: ${killCount}   轮回 ${loopCount + 1}`, W/2, H*0.53);
+    const resultRoll = skyRoll01('chapterResult');
+    ctx.fillText(`总分: ${Math.round(currentLeaderboardScore() * resultRoll)}   Kills: ${Math.round(killCount * resultRoll)}   轮回 ${loopCount + 1}`, W/2, H*0.53);
     if (grazeScore > 0) {
       ctx.font = '16px "M PLUS Rounded 1c", Nunito, Hiragino Maru Gothic ProN, PingFang SC, Microsoft YaHei, sans-serif';
-      ctx.fillStyle = '#5AC8FA';
-      ctx.fillText(`战斗分 ${Math.floor(score)} + 擦弹分 ${Math.floor(grazeScore)}（${grazeCount} 次）`, W/2, H*0.565);
+      ctx.fillStyle = '#2FA8EE';
+      ctx.fillText(`战斗分 ${Math.floor(score * resultRoll)} + 擦弹分 ${Math.floor(grazeScore * resultRoll)}（${Math.round(grazeCount * resultRoll)} 次）`, W/2, H*0.565);
     }
     drawLeaderboardResultPanel();
     ctx.restore();
