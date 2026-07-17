@@ -490,10 +490,45 @@
       background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC);
     }
     .sky-hangar-detail-role { margin: 8px 0 0; font-size: 12px; line-height: 1.6; color: rgba(46,74,110,.8); font-weight: 700; }
+    /* —— Round2：侧栏卡角饰星 + 顶边扫光 + 顶部极光带 —— */
+    .sky-card { overflow: hidden; }
+    .sky-card::before {
+      content: "✦"; position: absolute; top: 13px; right: 17px; font-size: 11.5px; color: rgba(88,183,255,.70);
+      pointer-events: none; animation: sky-charm-breathe 3.8s ease-in-out infinite;
+    }
+    .sky-hangar::before { content: none; } /* 机库卡右上角已有折叠 chevron */
+    .sky-card::after {
+      content: ""; position: absolute; top: 1px; left: 0; width: 34%; height: 2px; border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), rgba(255,164,204,.55), transparent);
+      opacity: 0; pointer-events: none;
+      animation: sky-edge-sweep 6.2s ease-in-out infinite;
+    }
+    @keyframes sky-charm-breathe { 0%,100% { opacity: .35; transform: scale(.85) rotate(-6deg); } 50% { opacity: .9; transform: scale(1.08) rotate(8deg); } }
+    @keyframes sky-edge-sweep { 0% { left: -34%; opacity: 0; } 6% { opacity: .55; } 22% { left: 100%; opacity: .55; } 26%, 100% { left: 100%; opacity: 0; } }
+    .sky-aurora {
+      position: absolute; top: -56px; left: -10%; right: -10%; height: 130px;
+      background: linear-gradient(90deg, rgba(88,183,255,.20), rgba(255,164,204,.22), rgba(79,216,232,.18), rgba(88,183,255,.20));
+      filter: blur(36px); opacity: .5;
+      animation: sky-aurora-drift 46s ease-in-out infinite alternate;
+    }
+    @keyframes sky-aurora-drift { from { transform: translateX(-3%) scaleY(1); } to { transform: translateX(3%) scaleY(1.12); } }
+    .sky-marquee:hover { filter: brightness(1.07) saturate(1.2); }
+    /* —— Round2：机库头像错峰浮动 + ✦ 分隔线 —— */
+    .sky-hangar-ava { animation: sky-hangar-bob 3.4s ease-in-out infinite; }
+    .sky-hangar-ship:nth-child(2n) .sky-hangar-ava { animation-delay: -.7s; }
+    .sky-hangar-ship:nth-child(3n) .sky-hangar-ava { animation-delay: -1.4s; }
+    .sky-hangar-ship:nth-child(4n) .sky-hangar-ava { animation-delay: -2.1s; }
+    .sky-hangar-ship:nth-child(5n) .sky-hangar-ava { animation-delay: -2.8s; }
+    @keyframes sky-hangar-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    .sky-hangar-div { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: rgba(88,183,255,.6); font-size: 11px; }
+    .sky-hangar-div::before, .sky-hangar-div::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(110,160,220,.45)); }
+    .sky-hangar-div::after { background: linear-gradient(90deg, rgba(110,160,220,.45), transparent); }
     @media (prefers-reduced-motion: reduce) {
-      .sky-blob, .sky-sparkle-fx, .sky-marquee-track, .sky-card, .sky-gb-item, .sky-like,
+      .sky-blob, .sky-sparkle-fx, .sky-marquee-track, .sky-card, .sky-card::before, .sky-card::after,
+      .sky-aurora, .sky-gb-item, .sky-like,
       .sky-gb-submit, .sky-more-btn, .sky-rail, .sky-parallax, .sky-overlay-card,
-      .sky-hangar-body, .sky-hangar-chev, .sky-hangar-ship, .sky-hangar-wing, .sky-hangar-detail { animation: none !important; transition: none !important; }
+      .sky-hangar-body, .sky-hangar-chev, .sky-hangar-ship, .sky-hangar-wing, .sky-hangar-detail,
+      .sky-hangar-ava { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
@@ -508,6 +543,7 @@
   <div id="badge">V1.0 移动端自适应 / Mobile Ready</div>
   <!-- ===== 晴空玻璃 · 桌面侧栏 page widgets（纯 DOM，≥1180px 显示） ===== -->
   <div class="sky-fx" aria-hidden="true">
+    <div class="sky-aurora"></div>
     <div class="sky-parallax" id="skyParallax">
       <div class="sky-blob sky-blob-a"></div>
       <div class="sky-blob sky-blob-b"></div>
@@ -580,6 +616,7 @@
       </button>
       <div class="sky-hangar-body" id="skyHangarBody">
         <div class="sky-hangar-grid" id="skyHangarShips"></div>
+        <div class="sky-hangar-div">✦</div>
         <div class="sky-hangar-wings" id="skyHangarWings"></div>
         <div class="sky-hangar-detail" id="skyHangarDetail" hidden></div>
       </div>
@@ -3502,9 +3539,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-17-campaign-visual-pink-ui';
+     const UPDATE_NOTICE_VERSION = '2026-07-17-campaign-danmaku-system-ui-round2';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-17 · 战役弹幕体系重铸与界面装饰升级',
+      items: [
+        '章节模式迎来全新弹幕发射器体系：环形/扇形/螺旋/波浪四类几何发射器＋逐波种子随机（同一场次完全可复现），全场齐射对齐共同节拍，弹幕从"杂乱堆叠"变为"有呼吸感的几何乐章"，难度不降但更公平可读。',
+        '全部17个Boss共73个阶段完成「1主＋1对照」谱面规整：每个阶段保留一个标志性主弹幕主题，配一层对照弹幕，删除混杂噪声层并收紧节奏补偿难度——炽天使的五臂极光螺旋、雪月歌者的冰月双旋、蚀环守望者的终幕审判线都焕然一新。',
+        '界面装饰升级：面板角落星光点缀、顶边柔光巡回、标题星座点阵、上升小爱心与星形彩带粒子、角色卡指针微倾斜、关卡节点悬停浮起、点击星芒爆发，全部按画质档位自动调节，低配设备不受影响。',
+      ],
+    },
     {
       date: '2026-07-17 · 章节弹幕质感升级与蓝粉渐变界面',
       items: [
@@ -27139,10 +27184,10 @@
       }
     }
   }
-  function emitThunderCascade(cx, cy, rows, speed, color, r, kind) {
-    // 雷球阶梯下落：错位缺口形成走位走廊
+  function emitThunderCascade(cx, cy, rows, speed, color, r, kind, seedPhase) {
+    // 雷球阶梯下落：错位缺口形成走位走廊；seedPhase 由调用方按敌种子派生（V3.27），缺省退回旧全局同步相位
     const n = 7;
-    const phase = Math.floor((boss ? boss.t : time) * 1.6);
+    const phase = seedPhase !== undefined ? seedPhase : Math.floor((boss ? boss.t : time) * 1.6);
     for (let row = 0; row < rows; row++) {
       const y = cy - 10 - row * 26;
       for (let i = 0; i < n; i++) {
@@ -27164,11 +27209,11 @@
       b.spin = 0;
     }
   }
-  function emitCrystalSpearRain(speed, color, r, kind, cols, gapLane) {
-    // 晶矛雨：竖向矛阵，移动缺口
+  function emitCrystalSpearRain(speed, color, r, kind, cols, gapLane, seedPhase) {
+    // 晶矛雨：竖向矛阵，移动缺口；seedPhase 由调用方按敌种子派生（V3.27），缺省退回旧全局相位
     cols = cols || 9;
     const margin = 36, span = W - margin * 2;
-    const phase = boss ? Math.floor(boss.t * 1.8) : 0;
+    const phase = seedPhase !== undefined ? seedPhase : (boss ? Math.floor(boss.t * 1.8) : 0);
     for (let i = 0; i < cols; i++) {
       const bx = margin + span * i / Math.max(1, cols - 1);
       if (gapLane !== undefined && Math.abs(bx - gapLane) < 95) continue;
@@ -27238,11 +27283,11 @@
       applyPseudo3dDepth(b, { depth: -0.7, depthSpeed: 0.65, squish: 0.6 });
     }
   }
-  function emitPrismGateWall(speed, color, r, kind, gapLane) {
-    // 棱晶门墙：高塔棱晶横排，缺口移动
+  function emitPrismGateWall(speed, color, r, kind, gapLane, seedPhase) {
+    // 棱晶门墙：高塔棱晶横排，缺口移动；seedPhase 由调用方按敌种子派生（V3.27），缺省退回旧全局相位
     const n = 10;
     const margin = 30, span = W - margin * 2;
-    const phase = boss ? Math.floor(boss.t * 1.5) : 0;
+    const phase = seedPhase !== undefined ? seedPhase : (boss ? Math.floor(boss.t * 1.5) : 0);
     for (let i = 0; i < n; i++) {
       const bx = margin + span * i / (n - 1);
       if (gapLane !== undefined && Math.abs(bx - gapLane) < 100) continue;
@@ -37772,12 +37817,94 @@
   }
 
   // 整环 + 全局朝向偏移（可叠多层不同速度，形成"呼吸"同心环）
-  function emitRing(cx, cy, count, speed, color, r, kind, offset) {
-    const off = offset || 0;
-    for (let i = 0; i < count; i++) {
-      const a = off + i * TAU / count;
-      addEnemyBullet(cx, cy, Math.cos(a) * speed, Math.sin(a) * speed, r, color, 7, 7, kind, speed <= 145 ? 'deco' : 'spread');
+  // ═══════════════════════════════════════════════════════════════
+  // V3.27 战役弹幕发射器工具集：种子化 RNG + 几何原语 + 节拍网格
+  // ①同一波次同一格位的同一敌种，每次游戏弹幕形态可复现（种子 = segment|type|homeX）；
+  // ②逐发用 shotN 派生确定性漂移，同屏多敌不再叠出同一形状；
+  // ③几何原语统一处理安全缝/威胁语义，enemyFire 层只做短语化编排。
+  // ═══════════════════════════════════════════════════════════════
+  function campaignHashString(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+  // 哈希混洗 → [0,1)：seed 为敌种子，a/b 为用途编号（如 (1, shotN)）
+  function campaignRandom01(seed, a, b) {
+    let h = (seed ^ Math.imul((a | 0) + 0x9e3779b9, 0x85ebca6b) ^ Math.imul((b | 0) + 0xc2b2ae35, 0x27d4eb2f)) >>> 0;
+    h = Math.imul(h ^ (h >>> 15), 0x2c1b3c6d);
+    h = Math.imul(h ^ (h >>> 12), 0x297a2d39);
+    h ^= h >>> 15;
+    return (h >>> 0) / 4294967296;
+  }
+  function campaignEnemySeed(e) {
+    return campaignHashString((segment || 'seg') + '|' + (e.type || 'mob') + '|' + Math.round(e.homeX !== undefined ? e.homeX : e.x));
+  }
+  // 节拍网格：fireBase 量化到 0.155s（半拍），全场齐射落在共同脉搏上；实测全敌种偏差 ≤±7.5%，不改难度
+  function mobBeatInterval(fireBase) {
+    return Math.max(0.62, Math.round((fireBase || 3) / 0.155) * 0.155);
+  }
+  // 环形齐射。gaps: 安全缝方向数组(弧度)，gapWidth: 缝全宽；radius>0 弹出生在环上；tweak(b,i,a) 逐弹定制
+  function emitRing(x, y, o) {
+    o = o || {};
+    const n = Math.max(3, o.n || 12);
+    const speed = o.speed !== undefined ? o.speed : 170;
+    const radius = o.radius || 0;
+    const gapWidth = o.gapWidth !== undefined ? o.gapWidth : 0;
+    const gaps = o.gaps || null;
+    const a0 = o.angle0 || 0;
+    for (let i = 0; i < n; i++) {
+      const a = a0 + i * TAU / n;
+      if (gaps && gapWidth > 0) {
+        let inGap = false;
+        for (const g of gaps) {
+          const d = Math.abs((((a - g + Math.PI) % TAU) + TAU) % TAU - Math.PI);
+          if (d < gapWidth * 0.5) { inGap = true; break; }
+        }
+        if (inGap) continue;
+      }
+      const b = addEnemyBullet(x + Math.cos(a) * radius, y + Math.sin(a) * radius, Math.cos(a) * speed, Math.sin(a) * speed, o.r || 7, o.col, o.dmg || 8, o.life || 8, o.kind || 'orb', o.threat || 'spread');
+      if (o.waveAmp) { b.waveAmp = o.waveAmp; b.wavePhase = (o.wavePhase0 || 0) + i * (TAU / n); }
+      if (o.tweak) o.tweak(b, i, a);
     }
+  }
+  // 扇形齐射。at 省略时朝玩家；centerGap>0 跳过中央道（公平缝）；falloff 边道减速比例
+  function emitFan(x, y, o) {
+    o = o || {};
+    const lanes = Math.max(1, o.lanes || 3);
+    const spread = o.spread !== undefined ? o.spread : 0.6;
+    const speed = o.speed || 230;
+    const base = o.at !== undefined ? o.at : angleTo(x, y, player.x, player.y);
+    for (let i = 0; i < lanes; i++) {
+      const t = lanes === 1 ? 0 : i / (lanes - 1) - 0.5;
+      if (o.centerGap && Math.abs(t) < o.centerGap) continue;
+      const a = base + t * spread;
+      const sp = speed * (1 - (o.falloff || 0) * Math.abs(t) * 2);
+      const b = addEnemyBullet(x, y, Math.cos(a) * sp, Math.sin(a) * sp, o.r || 7, o.col, o.dmg || 8, o.life || 8, o.kind || 'orb', o.threat || 'aimed');
+      if (o.waveAmp) { b.waveAmp = o.waveAmp; b.wavePhase = (o.wavePhase0 || 0) + i * 2.1; }
+      if (o.tweak) o.tweak(b, i, a);
+    }
+  }
+  // 螺旋臂：angle0 由调用方按 shotN 步进实现逐发漂移；echoSpeed>0 每臂补一颗半相位减速弹（缎带质感）
+  function emitSpiral(x, y, o) {
+    o = o || {};
+    const arms = Math.max(1, o.arms || 2);
+    const speed = o.speed || 165;
+    for (let k = 0; k < arms; k++) {
+      const a = (o.angle0 || 0) + k * TAU / arms;
+      const b = addEnemyBullet(x, y, Math.cos(a) * speed, Math.sin(a) * speed, o.r || 7, o.col, o.dmg || 8, o.life || 8, o.kind || 'orb', o.threat || 'spread');
+      if (o.tweak) o.tweak(b, k, a);
+      if (o.echoSpeed) {
+        const a2 = a + Math.PI / arms;
+        const b2 = addEnemyBullet(x, y, Math.cos(a2) * speed * o.echoSpeed, Math.sin(a2) * speed * o.echoSpeed, o.r || 7, o.col, o.dmg || 8, o.life || 8, o.kind || 'orb', o.threat || 'spread');
+        if (o.tweak) o.tweak(b2, k, a2);
+      }
+    }
+  }
+  // 波浪弹道扇：emitFan + 解析正弦侧向偏移（复用 updateEnemyBullets 的 wavePhase 机制，首帧无偏移）
+  function emitWaveLanes(x, y, o) {
+    o = o || {};
+    if (!o.waveAmp) o.waveAmp = 46;
+    emitFan(x, y, o);
   }
 
   // 减速瞄准弹：初速快、带反向加速度→中途减速悬停再缓行（强烈预警感，需精准走位）
@@ -37856,6 +37983,9 @@
 
   function enemyFire(e) {
     const c = e.color;
+    // V3.27 逐敌种子：同波同位同种敌弹幕可复现；esR(用途编号, shotN) 派生逐发确定性漂移
+    const es = campaignEnemySeed(e);
+    const esR = (a, b) => campaignRandom01(es, a, b);
     switch (e.pattern) {
       // —— 杂兵：瞄准弹（玩家横向移动即可躲避） ——
       case 'aimed1':
@@ -38029,64 +38159,68 @@
       // —— V3.26 新外观+新形式（素材已目视确认）——
       case 'flowerfan': {
         const k = pickKind(e, ['v3flower3', 'v3blossom2', 'petalpink', 'v3petalr']);
-        emitFlowerFanBurst(e.x, e.y, 5 + Math.min(3, e.tier), 150 + e.tier * 10, c, 6.5, k, e.t * 0.55 + e.shotN * 0.2);
+        emitFlowerFanBurst(e.x, e.y, 5 + Math.min(3, e.tier), 150 + e.tier * 10, c, 6.5, k, esR(1, 0) * TAU + e.shotN * 0.35);
         break;
       }
       case 'thundercascade': {
         const k = pickKind(e, ['v3thundera', 'v3thunder2', 'v3spark', 'electric']);
-        emitThunderCascade(e.x, e.y, 2 + (e.tier >= 3 ? 1 : 0), 175 + e.tier * 12, c, 7, k);
+        emitThunderCascade(e.x, e.y, 2 + (e.tier >= 3 ? 1 : 0), 175 + e.tier * 12, c, 7, k, Math.floor(esR(2, e.shotN) * 4));
         break;
       }
       case 'firedive': {
         const k = pickKind(e, ['v3firecore', 'v3fire2', 'v3ember', 'fireball']);
-        emitFireDiveCurtain(e.x, e.y, 7 + e.tier, 210 + e.tier * 14, c, 7, k);
+        emitFan(e.x, e.y, { lanes: 7 + e.tier, spread: 0.95, speed: 210 + e.tier * 14, centerGap: 0.12, col: c, r: 8, dmg: 9, kind: k, threat: 'aimed', tweak: (b) => { b.spin = 0; } });
         break;
       }
       case 'crystalrain': {
         const k = pickKind(e, ['v3crystg', 'v3crystb', 'v3crystc', 'v3diag2']);
-        const gap = 90 + ((Math.floor(e.t * 1.1 + e.shotN) % 5) * ((W - 180) / 4));
-        emitCrystalSpearRain(190 + e.tier * 12, c, 7, k, 8 + e.tier, gap);
+        const gap = 90 + Math.floor(esR(3, e.shotN) * 5) * ((W - 180) / 4);
+        emitCrystalSpearRain(190 + e.tier * 12, c, 7, k, 8 + e.tier, gap, Math.floor(esR(4, e.shotN) * 5));
         break;
       }
       case 'slashcross': {
         const k = pickKind(e, ['v3slashx', 'v3daow', 'v3cleaveg', 'v3cleavev']);
-        emitSlashCrossBurst(e.x, e.y, 165 + e.tier * 12, c, 7.5, k, e.t * 0.8);
+        emitSpiral(e.x, e.y, { arms: 4, angle0: esR(5, 0) * TAU + Math.PI / 4 + e.shotN * 0.5, speed: 165 + e.tier * 12, col: c, r: 9.5, dmg: 10, kind: k, threat: 'hazard', tweak: (b) => { b.spin = 6; b.pseudo3d = true; } });
         break;
       }
       case 'ribbonhelix': {
         const k = pickKind(e, ['v3path2', 'v3path', 'v3ribbon', 'v3cresw']);
-        emitRibbonHelix(e.x, e.y, 4 + Math.min(2, e.tier), 155 + e.tier * 10, c, 6.5, k, e.t * 1.5);
+        emitSpiral(e.x, e.y, { arms: 4 + Math.min(2, e.tier), angle0: esR(6, 0) * TAU + e.shotN * 0.7, speed: 155 + e.tier * 10, echoSpeed: 0.88, col: c, r: 6.5, kind: k, threat: 'spread' });
         break;
       }
       case 'stararrow': {
         const k = pickKind(e, ['v3arrowv', 'v3arrowr', 'v3starr1', 'v3needleg']);
-        emitStarArrowBarrage(e.x, e.y, 6 + e.tier, 230 + e.tier * 15, c, 7, k);
+        const saOpt = { lanes: 6 + e.tier, spread: 0.72, speed: 230 + e.tier * 15, centerGap: 0.08, col: c, r: 7, dmg: 9, kind: k, threat: 'aimed' };
+        if (e.tier >= 3) { saOpt.waveAmp = 42; saOpt.wavePhase0 = esR(7, 0) * TAU; emitWaveLanes(e.x, e.y, saOpt); }
+        else emitFan(e.x, e.y, saOpt);
         break;
       }
       case 'daowave': {
         const k = pickKind(e, ['v3daow', 'v3slashx', 'v3dome', 'bladebig']);
-        emitDaoWaveCorridor(e.y + 8, 170 + e.tier * 12, c, 7.5, k, player.x);
+        emitDaoWaveCorridor(e.y + 8, 170 + e.tier * 12, c, 7.5, k, player.x + (esR(8, e.shotN) - 0.5) * 120);
         break;
       }
       case 'ghostorbit': {
         const k = pickKind(e, ['v3wisp', 'v3soule', 'v3ghost', 'v3soulc']);
-        emitGhostOrbitRelease(e.x, e.y, 6 + e.tier, 48 + e.tier * 6, 150 + e.tier * 12, c, 7, k, e.t * 1.2);
+        emitRing(e.x, e.y, { n: 6 + e.tier, speed: 0, radius: 48 + e.tier * 6, angle0: esR(9, 0) * TAU + e.shotN * 0.55, col: c, r: 7, life: 9, kind: k, threat: 'spread', tweak: (b, i, a) => { const th = 150 + e.tier * 12; b.ax = Math.cos(a) * th; b.ay = Math.sin(a) * th; b.spin = 4; } });
         break;
       }
       case 'raypulse': {
         const k = pickKind(e, ['v3raysph', 'v3galaxyt', 'v3ring', 'v3glowc']);
-        emitRaySpherePulse(e.x, e.y, 12 + e.tier, 165 + e.tier * 10, c, 7, k, e.t * 0.5);
+        const rpSp = 165 + e.tier * 10;
+        const rpA0 = esR(10, 0) * TAU + e.shotN * 0.3;
+        emitRing(e.x, e.y, { n: 12 + e.tier, speed: rpSp * 0.4, angle0: rpA0, gaps: [rpA0, rpA0 + Math.PI], gapWidth: 0.64, col: c, r: 8, kind: k, threat: 'spread', tweak: (b, i, a) => { b.ax = Math.cos(a) * rpSp; b.ay = Math.sin(a) * rpSp; applyPseudo3dDepth(b, { depth: -0.7, depthSpeed: 0.65, squish: 0.6 }); } });
         break;
       }
       case 'prismgate': {
         const k = pickKind(e, ['v3prism', 'v3crystbar', 'v3crystg', 'v3hsorb']);
-        const gap = 100 + ((Math.floor(e.t * 0.9 + e.shotN) % 5) * ((W - 200) / 4));
-        emitPrismGateWall(185 + e.tier * 10, c, 7, k, gap);
+        const gap = 100 + Math.floor(esR(11, e.shotN) * 5) * ((W - 200) / 4);
+        emitPrismGateWall(185 + e.tier * 10, c, 7, k, gap, Math.floor(esR(12, e.shotN) * 4));
         break;
       }
       case 'crackerring': {
         const k = pickKind(e, ['v3crackera', 'v3cracker', 'v3cracker2', 'v3dot']);
-        emitPulseRingBurst(e.x, e.y, 14 + e.tier, 170 + e.tier * 10, c, 7, k, e.t * 0.7);
+        emitPulseRingBurst(e.x, e.y, 14 + e.tier, 170 + e.tier * 10, c, 7, k, esR(13, 0) * TAU + e.shotN * 0.45);
         break;
       }
 
@@ -38282,7 +38416,7 @@
         const crowdMul = crowd > 6 ? 1 + (crowd - 6) * 0.10 : 1;   // 拥挤时拉长开火间隔
         const budget = perfBudget();
         const softCap = (state === 'boss') ? budget.bossSoftCap : budget.mobSoftCap;
-        e.fireTimer += e.fireBase * crowdMul;                      // 固定节奏(含人群因子)
+        e.fireTimer += mobBeatInterval(e.fireBase) * crowdMul;   // V3.27 节拍网格：间隔量化到半拍(0.155s)，全场齐射对齐共同脉搏，实测偏差≤±7.5%
         if (enemyBullets.length < softCap) {
           e.attackFlash = 0.25;
           enemyFire(e);
@@ -39713,14 +39847,17 @@
     
     if (bossPhase === 0) {
       // Phase 0: 蚀环六瓣 + 对旋月牙走廊
-      if (tickEvery(t, dt, 1.05)) patHexBloom(boss, 155, '#ffd46d', 7, 'goldcrescent');
-      if (tickEvery(t, dt, 0.48)) emitCounterSpiral(boss.x, boss.y + 20, 4, boss.t * 1.1, 150, '#ffd46d', '#fff2a8', 6.5, 'goldcrescent', 'whitecrescent');
-      if (tickEvery(t, dt, 2.2)) patChaseFork(boss, 265, '#fff2a8', 7, 'whitecrescent');
+      // V3.28 1主+1对照：主=金白月旋(每6拍绽6臂花形,折叠原hexBloom,0.48→0.44)；对照=白羽追踪叉(aimed,2.2→2.05)
+      if (tickEvery(t, dt, 0.44)) {
+        const p0bloom = Math.round(t / 0.44) % 6 === 5;
+        emitCounterSpiral(boss.x, boss.y + 20, p0bloom ? 6 : 4, boss.t * 1.1, 150, '#ffd46d', '#fff2a8', 6.5, 'goldcrescent', 'whitecrescent');
+      }
+      if (tickEvery(t, dt, 2.05)) patChaseFork(boss, 265, '#fff2a8', 7, 'whitecrescent');
     } else if (bossPhase === 1) {
       // Phase 1: 玫瑰螺旋 + 刃轮 + 电锯
-      if (tickEvery(t, dt, 0.20)) patRoseSpiral(boss, 170, '#8fd0ff', 7, 'diamond');
-      if (tickEvery(t, dt, 2.0)) emitBladeWheel(boss.x, boss.y + 20, 8, 95, boss.t * 0.9, 155, '#ffd36d', 7.5, 'bladebig');
-      if (tickEvery(t, dt, 2.6)) patSpinSaw(boss, 205, '#ffd36d', 8, 'bladebig');
+      // V3.28：主=玫瑰螺旋回廊(0.20→0.19)；对照=月刃轮(hazard,2.0→1.85)；删重复刃类patSpinSaw
+      if (tickEvery(t, dt, 0.19)) patRoseSpiral(boss, 170, '#8fd0ff', 7, 'diamond');
+      if (tickEvery(t, dt, 1.85)) emitBladeWheel(boss.x, boss.y + 20, 8, 95, boss.t * 0.9, 155, '#ffd36d', 7.5, 'bladebig');
     } else if (bossPhase === 2) {
       // Phase 2: 主主题=迟滞环爆（几何环阵），对照层=带缝瞄准波浪。
       // V3.15 的 5 层混合（环爆+弹跳刃+波浪+矛雨+刀波廊）规整为 1 主 + 1 对照，
@@ -39729,17 +39866,14 @@
       if (tickEvery(t, dt, 0.44)) patWave(boss, 150, '#9fe6ff', 6.5, 'crystal', 9, true);
     } else if (bossPhase === 3) {
       // Phase 3: 镰刀回廊 + 冲撞 + 车道激光
-      if (tickEvery(t, dt, 1.35)) patScytheLane(boss, 185, '#c984ff', 8, 'scytherose');
-      if (tickEvery(t, dt, 2.1)) patChargeRam(boss, 365, '#fff2a8', 8, 'homingspear');
-      if (tickEvery(t, dt, 2.5)) emitLaneLasers(2, boss.t * 0.75, 28, 0.9, 0.5);
-      if (tickEvery(t, dt, 1.7)) emitBladeWheel(boss.x, boss.y + 20, 10, 110, -boss.t, 170, '#c984ff', 7.5, 'scytherose');
+      // V3.28：主=血月镰刀蛇行(1.35→1.25)；对照=冲撞月矛(aimed,2.1→1.95)；删车道激光+刃轮噪声
+      if (tickEvery(t, dt, 1.25)) patScytheLane(boss, 185, '#c984ff', 8, 'scytherose');
+      if (tickEvery(t, dt, 1.95)) patChargeRam(boss, 365, '#fff2a8', 8, 'homingspear');
     } else if (bossPhase === 4) {
       // Phase 4: 飞盘 + 羽刃 + 对旋终幕
-      if (tickEvery(t, dt, 1.0)) patPseudoDisc(boss, 155, '#e8f5ff', 8, 'v2ring');
-      if (tickEvery(t, dt, 1.8)) emitDepthApproachRing(boss.x, boss.y + 20, 16, 170, '#c9e8ff', 7, 'v3galaxyt', boss.t * 0.5);
-      if (tickEvery(t, dt, 1.35)) patFeatherStorm(boss, 255, '#ff5a85', 7, null);
-      if (tickEvery(t, dt, 0.36)) emitCounterSpiral(boss.x, boss.y + 20, 6, boss.t * 1.8, 175, '#e8f5ff', '#ffd46d', 6.5, 'v2ring', 'goldcrescent');
-      if (tickEvery(t, dt, 2.2)) emitRotatingLaserSpokes(boss.x, boss.y, 3, boss.t * 0.55, 30, 0.75, 0.48);
+      // V3.28：主=终幕双旋(0.36→0.33)；对照=审判线旋转辐条(2.2→2.0)；删伪盘/深环/羽暴噪声
+      if (tickEvery(t, dt, 0.33)) emitCounterSpiral(boss.x, boss.y + 20, 6, boss.t * 1.8, 175, '#e8f5ff', '#ffd46d', 6.5, 'v2ring', 'goldcrescent');
+      if (tickEvery(t, dt, 2.0)) emitRotatingLaserSpokes(boss.x, boss.y, 3, boss.t * 0.55, 30, 0.75, 0.48);
     }
   }
 
@@ -39756,23 +39890,17 @@
   function midbossPatterns(t, dt) {
     const cx = boss.x, cy = boss.y + 18;
     if (bossPhase === 0) {
-      // 墓灯初燃：火核扇 + 鬼火环抛，中央留缝
-      if (tickEvery(t, dt, 1.15)) emitFireDiveCurtain(cx, cy, 7, 195, '#ff9a4a', 7, 'v3firecore');
-      if (tickEvery(t, dt, 1.8)) emitGhostOrbitRelease(cx, cy, 6, 58, 145, '#c9a0ff', 7, 'v3wisp', boss.t * 1.1);
-      if (tickEvery(t, dt, 2.4)) emitAimedRingGap(cx, cy, 12, 170, '#ffe6a8', 6.5, 'v3ember', 0.55);
+      // 墓灯初燃：V3.28 主=火核俯冲帘(1.15→1.05)；对照=瞄准金环缝(2.4→2.2)；删鬼火环噪声
+      if (tickEvery(t, dt, 1.05)) emitFireDiveCurtain(cx, cy, 7, 195, '#ff9a4a', 7, 'v3firecore');
+      if (tickEvery(t, dt, 2.2)) emitAimedRingGap(cx, cy, 12, 170, '#ffe6a8', 6.5, 'v3ember', 0.55);
     } else if (bossPhase === 1) {
-      // 棺链回廊：缎带螺旋 + 刀光走廊 + 迟滞环
-      if (tickEvery(t, dt, 0.55)) emitRibbonHelix(cx, cy, 4, 150, '#b0a0ff', 6.5, 'v3path2', boss.t * 1.35);
-      if (tickEvery(t, dt, 1.9)) emitDaoWaveCorridor(cy + 24, 160, '#ffd46d', 7.5, 'v3daow', player.x);
-      if (tickEvery(t, dt, 1.35)) emitPulseRingBurst(cx, cy, 14, 185, '#9fe6ff', 7, 'v3ghost', boss.t * 0.55);
-      if (tickEvery(t, dt, 2.5)) patChaseFork(boss, 240, '#ffb070', 7, 'v3firecore');
+      // 棺链回廊：V3.28 主=缎带螺旋(signature,0.55→0.50)；对照=刀光走廊缝(1.9→1.75)；删脉冲环/追踪叉噪声
+      if (tickEvery(t, dt, 0.5)) emitRibbonHelix(cx, cy, 4, 150, '#b0a0ff', 6.5, 'v3path2', boss.t * 1.35);
+      if (tickEvery(t, dt, 1.75)) emitDaoWaveCorridor(cy + 24, 160, '#ffd46d', 7.5, 'v3daow', player.x);
     } else {
-      // 终幕·启棺：交叉刃 + 鬼火抛射 + 棱晶门，压迫但有移动缺口
-      if (tickEvery(t, dt, 1.4)) emitSlashCrossBurst(cx, cy, 165, '#c984ff', 7.5, 'v3slashx', boss.t);
-      if (tickEvery(t, dt, 1.1)) emitGhostOrbitRelease(cx, cy, 8, 72, 170, '#e8c0ff', 7, 'v3wisp', -boss.t * 1.2);
-      if (tickEvery(t, dt, 2.0)) emitPrismGateWall(180, '#ffe6a8', 7, 'v3prism', player.x);
-      if (tickEvery(t, dt, 0.7)) emitRibbonHelix(cx, cy, 5, 165, '#ff8a5c', 6.5, 'v3path2', boss.t * 1.6);
-      if (tickEvery(t, dt, 2.6)) emitFireDiveCurtain(cx, cy, 9, 220, '#ff7040', 7, 'v3firecore');
+      // 终幕·启棺：V3.28 主=鬼火抛射(1.1→1.0)；对照=棱晶门墙缝(2.0→1.85)；删交叉刃/缎带/火帘噪声
+      if (tickEvery(t, dt, 1.0)) emitGhostOrbitRelease(cx, cy, 8, 72, 170, '#e8c0ff', 7, 'v3wisp', -boss.t * 1.2);
+      if (tickEvery(t, dt, 1.85)) emitPrismGateWall(180, '#ffe6a8', 7, 'v3prism', player.x);
     }
   }
 
@@ -39798,38 +39926,31 @@
     const cx = boss.x, cy = boss.y + 14;
     // 六翼堕辉：每相位强调六向翼扇 + 极光色轮换，华丽可读
     if (bossPhase === 0) {
-      if (tickEvery(t, dt, 1.0)) patHexBloom(boss, 160, seraphColor(0), 6.5, seraphHue(0));
-      if (tickEvery(t, dt, 0.55)) {
+      // V3.28：主=六翼圣光扇(signature,0.55→0.50)；对照=镜像花瓣扇(aimed,2.2→2.05)；删hexBloom噪声
+      if (tickEvery(t, dt, 0.5)) {
         for (let w = 0; w < 6; w++) seraphWingFan(w, boss.t, 155, 2, 0.22, w);
       }
-      if (tickEvery(t, dt, 2.2)) patMirrorFan(boss, 245, '#bfe8ff', 6, 'petal');
+      if (tickEvery(t, dt, 2.05)) patMirrorFan(boss, 245, '#bfe8ff', 6, 'petal');
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.22)) patRoseSpiral(boss, 172, seraphColor(1), 6.5, seraphHue(1));
-      if (tickEvery(t, dt, 1.9)) patOrbitRing(boss, 150, '#9fe6ff', 6.5, 'crystal');
-      if (tickEvery(t, dt, 2.1)) emitPerspectiveDisc(cx, cy, 7, 145, seraphColor(1), 7.5, 'bosspentagon', boss.t * 0.4);
-      if (tickEvery(t, dt, 0.48)) emitCounterSpiral(cx, cy, 4, boss.t * 1.25, 155, seraphColor(0), seraphColor(1), 6.5, seraphHue(0), seraphHue(1));
-      if (tickEvery(t, dt, 2.4)) emitBladeWheel(cx, cy, 8, 95, boss.t * 0.85, 155, seraphColor(2), 7.5, 'gbscythe');
+      // V3.28：主=极光双色螺旋(0.48→0.37)；对照=圣刃轮(hazard,2.4→2.0)；删玫瑰/轨道环/透视盘噪声
+      if (tickEvery(t, dt, 0.37)) emitCounterSpiral(cx, cy, 4, boss.t * 1.25, 155, seraphColor(0), seraphColor(1), 6.5, seraphHue(0), seraphHue(1));
+      if (tickEvery(t, dt, 2.0)) emitBladeWheel(cx, cy, 8, 95, boss.t * 0.85, 155, seraphColor(2), 7.5, 'gbscythe');
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.1)) emitPulseRingBurst(cx, cy, 18, 215, seraphColor(2), 7, seraphHue(2), boss.t * 0.55);
-      if (tickEvery(t, dt, 1.7)) patPendulumArc(boss, 260, '#eaffff', 6, 'petal');
-      if (tickEvery(t, dt, 0.6)) {
+      // V3.28：主=圣光脉冲环(1.1→1.0)；对照=三翼扇(signature变体,0.6→0.56)；删钟摆弧噪声
+      if (tickEvery(t, dt, 1.0)) emitPulseRingBurst(cx, cy, 18, 215, seraphColor(2), 7, seraphHue(2), boss.t * 0.55);
+      if (tickEvery(t, dt, 0.56)) {
         for (let w = 0; w < 6; w += 2) seraphWingFan(w, boss.t, 170, 3, 0.28, w);
       }
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 2.4)) {
+      // V3.28：主=五臂极光螺旋(0.4→0.33)；对照=六辐圣光轮(2.4→2.2)；删锯/刃轮/斩十字/星箭噪声
+      if (tickEvery(t, dt, 2.2)) {
         emitRotatingLaserSpokes(cx, cy, 6, boss.t * 0.55 - Math.PI / 2, 26, 0.85, 0.5);
       }
-      if (tickEvery(t, dt, 1.45)) patSpinSaw(boss, 190, seraphColor(0), 8, 'gbscythe');
-      if (tickEvery(t, dt, 1.8)) emitBladeWheel(cx, cy, 10, 110, -boss.t * 1.05, 170, seraphColor(1), 7.5, 'qswsword');
-      if (tickEvery(t, dt, 0.4)) emitCounterSpiral(cx, cy, 5, boss.t * 1.6, 165, seraphColor(1), seraphColor(2), 6.5, seraphHue(1), seraphHue(2));
-      if (tickEvery(t, dt, 1.65)) emitSlashCrossBurst(cx, cy, 175, seraphColor(2), 7.5, 'v3slashx', boss.t);
-      if (tickEvery(t, dt, 2.0)) emitStarArrowBarrage(cx, cy, 8, 245, seraphColor(0), 7, 'v3arrowv');
+      if (tickEvery(t, dt, 0.33)) emitCounterSpiral(cx, cy, 5, boss.t * 1.6, 165, seraphColor(1), seraphColor(2), 6.5, seraphHue(1), seraphHue(2));
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 1.7)) patChargeRam(boss, 355, '#c79bff', 8, 'qswsword');
-      if (tickEvery(t, dt, 1.15)) patPseudoDisc(boss, 152, seraphColor(1), 8, 'bosspentagon');
-      if (tickEvery(t, dt, 0.32)) emitCounterSpiral(cx, cy, 6, boss.t * 1.95, 180, seraphColor(0), seraphColor(2), 6.5, seraphHue(0), seraphHue(2));
-      if (tickEvery(t, dt, 2.0)) emitLaneLasers(2, boss.t * 0.85, 30, 0.7, 0.45);
-      if (tickEvery(t, dt, 0.7)) {
+      // V3.28：主=全六翼终幕扇(0.7→0.64)；对照=圣剑冲锋(aimed,1.7→1.55)；删伪盘/螺旋/车道激光噪声
+      if (tickEvery(t, dt, 1.55)) patChargeRam(boss, 355, '#c79bff', 8, 'qswsword');
+      if (tickEvery(t, dt, 0.64)) {
         for (let w = 0; w < 6; w++) seraphWingFan(w, boss.t * 1.2, 185, 2, 0.18, w + 1);
       }
     }
@@ -39840,29 +39961,25 @@
   function finalbossPatterns(t, dt) {
     const cx = boss.x, cy = boss.y + 20;
     if (bossPhase === 0) {
-      if (tickEvery(t, dt, 1.05)) patHexBloom(boss, 155, '#c9e8ff', 7, 'crystalblue');
-      if (tickEvery(t, dt, 0.5)) emitCounterSpiral(cx, cy, 4, boss.t * 1.15, 150, '#c9e8ff', '#e8f5ff', 6.5, 'crystalblue', 'whitecrescent');
-      if (tickEvery(t, dt, 2.0)) emitDepthDiveSpears(cx, cy, 4, 240, '#e8f5ff', 7, 'homingspear');
-      if (tickEvery(t, dt, 2.2)) patChaseFork(boss, 250, '#fff2a8', 7, 'whitecrescent');
+      // V3.28：主=冰月双旋(0.5→0.46)；对照=深潜冰矛(aimed,2.0→1.85)；删hexBloom/追踪叉噪声
+      if (tickEvery(t, dt, 0.46)) emitCounterSpiral(cx, cy, 4, boss.t * 1.15, 150, '#c9e8ff', '#e8f5ff', 6.5, 'crystalblue', 'whitecrescent');
+      if (tickEvery(t, dt, 1.85)) emitDepthDiveSpears(cx, cy, 4, 240, '#e8f5ff', 7, 'homingspear');
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.24)) patRoseSpiral(boss, 170, '#a8d8ff', 7, 'diamond');
-      if (tickEvery(t, dt, 1.7)) patTwinSnake(boss, 195, '#d0ecff', 7, 'crystal');
-      if (tickEvery(t, dt, 2.3)) emitPetalCascade(cx, cy, 6, 2, 150, '#ffb0d8', 6.5, 'petalpink', boss.t * 0.5);
+      // V3.28：主=冰晶玫瑰螺旋(0.24→0.22)；对照=霜双蛇(1.7→1.55)；删花瓣雨噪声
+      if (tickEvery(t, dt, 0.22)) patRoseSpiral(boss, 170, '#a8d8ff', 7, 'diamond');
+      if (tickEvery(t, dt, 1.55)) patTwinSnake(boss, 195, '#d0ecff', 7, 'crystal');
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.15)) emitPulseRingBurst(cx, cy, 18, 210, '#9fe6ff', 7, 'crystal', boss.t * 0.55);
-      if (tickEvery(t, dt, 1.55)) patMirrorFan(boss, 235, '#fff2c0', 7, 'whitecrescent');
-      if (tickEvery(t, dt, 0.55)) emitCounterSpiral(cx, cy, 5, -boss.t * 1.35, 165, '#a8d8ff', '#ffb0d8', 6.5, 'diamond', 'petalpink');
-      if (tickEvery(t, dt, 1.7)) emitRibbonHelix(cx, cy, 5, 170, '#c9e8ff', 6.5, 'v3path2', boss.t * 1.4);
-      if (tickEvery(t, dt, 2.0)) emitRaySpherePulse(cx, cy, 16, 180, '#e8f5ff', 7, 'v3raysph', boss.t * 0.6);
+      // V3.28：主=雪月五臂双旋(0.55→0.44)；对照=月华光球脉冲(2.0→1.65)；删脉冲环/镜扇/缎带噪声
+      if (tickEvery(t, dt, 0.44)) emitCounterSpiral(cx, cy, 5, -boss.t * 1.35, 165, '#a8d8ff', '#ffb0d8', 6.5, 'diamond', 'petalpink');
+      if (tickEvery(t, dt, 1.65)) emitRaySpherePulse(cx, cy, 16, 180, '#e8f5ff', 7, 'v3raysph', boss.t * 0.6);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 2.0)) addLaserWarning(player.x, 0, player.x, H, 0.85, 0.55);
-      if (tickEvery(t, dt, 1.2)) patMeteorShower(boss, 210, '#c9e8ff', 7, 'crystalblue');
-      if (tickEvery(t, dt, 1.6)) emitBladeWheel(cx, cy, 10, 110, boss.t, 170, '#fff2a8', 7.5, 'homingspear');
+      // V3.28：主=冰陨星雨(1.2→1.1)；对照=月轨审判激光(2.0→1.85)；删刃轮噪声
+      if (tickEvery(t, dt, 1.85)) addLaserWarning(player.x, 0, player.x, H, 0.85, 0.55);
+      if (tickEvery(t, dt, 1.1)) patMeteorShower(boss, 210, '#c9e8ff', 7, 'crystalblue');
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 1.0)) patGatePulse(boss, 200, '#9fe6ff', 7, 'crystal');
-      if (tickEvery(t, dt, 1.25)) patBoomerangFan(boss, 280, '#ffb0d8', 7, 'petalpink');
-      if (tickEvery(t, dt, 0.32)) emitCounterSpiral(cx, cy, 6, boss.t * 1.9, 180, '#c9e8ff', '#fff2a8', 6.5, 'crystalblue', 'whitecrescent');
-      if (tickEvery(t, dt, 2.2)) emitRotatingLaserSpokes(cx, cy, 4, boss.t * 0.65, 26, 0.7, 0.45);
+      // V3.28：主=终幕六臂冰旋(0.32→0.30)；对照=雪门脉冲(1.0→0.93)；删回旋扇/辐条噪声
+      if (tickEvery(t, dt, 0.93)) patGatePulse(boss, 200, '#9fe6ff', 7, 'crystal');
+      if (tickEvery(t, dt, 0.3)) emitCounterSpiral(cx, cy, 6, boss.t * 1.9, 180, '#c9e8ff', '#fff2a8', 6.5, 'crystalblue', 'whitecrescent');
     }
   }
 
@@ -39978,26 +40095,21 @@
       if (tickEvery(t, dt, 0.42)) emitCounterSpiral(cx, cy, 5, boss.t * 1.15, 155, th.c1, th.c3, 6.5, th.ring, th.spiral);
       if (tickEvery(t, dt, 2.4)) emitAimedRingGap(cx, cy, 18, 210, th.c3, 7, th.aim, 0.55);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.38)) emitCounterSpiral(cx, cy, 6, boss.t * 1.4, 165, th.c2, th.c1, 6.5, th.spiral, th.ring);
-      if (tickEvery(t, dt, 1.6)) emitVortex(cx, cy, 12, 220, 90, 0.55, th.c2, 7, sig);
-      if (tickEvery(t, dt, 2.8)) patChaseFork(boss, 240, th.c3, 7, th.aim);
+      // V3.28：主=虚灵双旋(0.38→0.35)；对照=漩涡抛射(1.6→1.5)；删追踪叉噪声
+      if (tickEvery(t, dt, 0.35)) emitCounterSpiral(cx, cy, 6, boss.t * 1.4, 165, th.c2, th.c1, 6.5, th.spiral, th.ring);
+      if (tickEvery(t, dt, 1.5)) emitVortex(cx, cy, 12, 220, 90, 0.55, th.c2, 7, sig);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.15)) emitPulseRingBurst(cx, cy, 20, 200, th.c1, 7, th.ring, boss.t * 0.7);
-      if (tickEvery(t, dt, 1.9)) emitDepthApproachRing(cx, cy, 16, 175, th.c3, 7, th.sig || th.ring, boss.t * 0.55);
-      if (tickEvery(t, dt, 0.5)) emitDualSpiral(cx, cy, 4, boss.t * 1.6, 160, th.c2, 6.5, th.spiral);
-      if (tickEvery(t, dt, 1.75)) emitGhostOrbitRelease(cx, cy, 8, 70, 165, th.c2, 7, 'v3wisp', boss.t);
-      if (tickEvery(t, dt, 2.2)) emitRaySpherePulse(cx, cy, 18, 185, th.c1, 7, 'v3raysph', -boss.t * 0.7);
-      if (tickEvery(t, dt, 2.6)) emitLaserFan(cx, cy, 3, 0.85, angleTo(cx, cy, player.x, player.y), 26, 0.85, 0.5);
+      // V3.28：主=虚灵四臂双螺旋(0.5→0.46)；对照=鬼火环抛(1.75→1.6)；删脉冲环/深环/光球/激光扇噪声
+      if (tickEvery(t, dt, 0.46)) emitDualSpiral(cx, cy, 4, boss.t * 1.6, 160, th.c2, 6.5, th.spiral);
+      if (tickEvery(t, dt, 1.6)) emitGhostOrbitRelease(cx, cy, 8, 70, 165, th.c2, 7, 'v3wisp', boss.t);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.34)) emitCounterSpiral(cx, cy, 7, boss.t * 1.7, 175, th.c1, th.c3, 6.5, th.ring, sig);
-      if (tickEvery(t, dt, 1.4)) emitVortex(cx, cy, 16, 240, 105, -0.55, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 2.5)) emitAimedRingGap(cx, cy, 24, 230, th.c3, 7, th.aim, 0.48);
-      if (tickEvery(t, dt, 3.2)) emitLaneLasers(2, boss.t * 0.7, 28, 0.85, 0.5);
+      // V3.28：主=七臂虚灵螺旋(0.34→0.31)；对照=瞄准环缝(2.5→2.3)；删漩涡/车道激光噪声
+      if (tickEvery(t, dt, 0.31)) emitCounterSpiral(cx, cy, 7, boss.t * 1.7, 175, th.c1, th.c3, 6.5, th.ring, sig);
+      if (tickEvery(t, dt, 2.3)) emitAimedRingGap(cx, cy, 24, 230, th.c3, 7, th.aim, 0.48);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.28)) emitCounterSpiral(cx, cy, 8, boss.t * 2.1, 185, th.c1, th.c2, 6.5, th.ring, th.spiral);
-      if (tickEvery(t, dt, 1.05)) emitPulseRingBurst(cx, cy, 22, 220, th.c3, 7, sig, -boss.t * 0.9);
-      if (tickEvery(t, dt, 1.5)) patTwinSnake(boss, 190, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 3.6)) emitLaserFan(cx, cy, 5, 2.0, Math.PI / 2, 24, 0.75, 0.45);
+      // V3.28：主=八臂终幕螺旋(0.28→0.26)；对照=双蛇(1.5→1.4)；删脉冲环/激光扇噪声
+      if (tickEvery(t, dt, 0.26)) emitCounterSpiral(cx, cy, 8, boss.t * 2.1, 185, th.c1, th.c2, 6.5, th.ring, th.spiral);
+      if (tickEvery(t, dt, 1.4)) patTwinSnake(boss, 190, th.c2, 7, th.spiral);
     }
   }
 
@@ -40005,30 +40117,28 @@
   // 签名：多层落雨墙 + 移动缺口 + 冰晶波浪，逼迫横向走位
   function abysswalkerPatterns(t, dt, th, cx, cy) {
     const sig = th.sig || th.spiral;
-    const gapLane = 110 + ((Math.floor(boss.t * 0.7) % 5) * ((W - 220) / 4));
+    // V3.28 种子缝隙：同一 Boss 同一相位缝隙档可复现，按节拍换档（原为 boss.t 连续相位）
+    const abGap = campaignRandom01(campaignHashString('boss|abyss|' + bossPhase), 7, Math.floor(t * 0.7));
+    const gapLane = 110 + (Math.floor(abGap * 5) * ((W - 220) / 4));
     if (bossPhase === 0) {
       if (tickEvery(t, dt, 0.95)) emitRainCurtain(195, th.c1, 6.5, th.ring, 11, gapLane, 125);
       if (tickEvery(t, dt, 2.4)) emitAimedRingGap(cx, cy, 14, 165, th.c3, 7, th.aim, 0.58);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.42)) patWave(boss, 150, th.c2, 6.5, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.1)) emitSweepCorridor(205, th.c1, 6.5, th.ring, 2, gapLane, 120);
-      if (tickEvery(t, dt, 2.2)) patGatePulse(boss, 195, th.c3, 6.5, sig);
+      // V3.28：主=深渊波(0.42→0.39)；对照=横扫走廊缝(1.1→1.0)；删门脉冲噪声
+      if (tickEvery(t, dt, 0.39)) patWave(boss, 150, th.c2, 6.5, th.spiral, 9, true);
+      if (tickEvery(t, dt, 1.0)) emitSweepCorridor(205, th.c1, 6.5, th.ring, 2, gapLane, 120);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 0.9)) emitRainCurtain(215, th.c1, 6.5, th.ring, 12, gapLane, 115);
-      if (tickEvery(t, dt, 0.48)) patWave(boss, 155, th.c2, 6.5, th.spiral, 9, true);
-      if (tickEvery(t, dt, 2.0)) patTwinSnake(boss, 200, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 1.6)) emitCrystalSpearRain(205, th.c3, 7, 'v3crystg', 10, gapLane);
-      if (tickEvery(t, dt, 2.3)) emitPrismGateWall(195, th.c1, 7, 'v3prism', gapLane);
+      // V3.28：主=深渊雨帘缝(0.9→0.83)；对照=双蛇(2.0→1.85)；删波/晶矛/棱晶门噪声
+      if (tickEvery(t, dt, 0.83)) emitRainCurtain(215, th.c1, 6.5, th.ring, 12, gapLane, 115);
+      if (tickEvery(t, dt, 1.85)) patTwinSnake(boss, 200, th.c3, 7, th.aim);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.85)) emitSweepCorridor(220, th.c1, 6.5, th.ring, 3, gapLane, 110);
-      if (tickEvery(t, dt, 1.1)) patPendulumArc(boss, 220, th.c2, 6.5, sig);
-      if (tickEvery(t, dt, 2.6)) emitLaneLasers(2, boss.t * 0.7, 28, 0.85, 0.5);
-      if (tickEvery(t, dt, 1.8)) patMeteorShower(boss, 210, th.c3, 6.5, th.aim);
+      // V3.28：主=三排横扫走廊(0.85→0.79)；对照=陨石雨(1.8→1.66)；删钟摆/车道激光噪声
+      if (tickEvery(t, dt, 0.79)) emitSweepCorridor(220, th.c1, 6.5, th.ring, 3, gapLane, 110);
+      if (tickEvery(t, dt, 1.66)) patMeteorShower(boss, 210, th.c3, 6.5, th.aim);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.72)) emitRainCurtain(235, th.c1, 7, th.ring, 13, gapLane, 105);
-      if (tickEvery(t, dt, 0.38)) patWave(boss, 175, th.c2, 7, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.5)) patBoomerangFan(boss, 275, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 2.8)) emitRotatingLaserSpokes(cx, cy, 3, boss.t * 0.65, 28, 0.7, 0.45);
+      // V3.28：主=终幕雨帘(0.72→0.66)；对照=回旋扇(1.5→1.4)；删波/辐条噪声
+      if (tickEvery(t, dt, 0.66)) emitRainCurtain(235, th.c1, 7, th.ring, 13, gapLane, 105);
+      if (tickEvery(t, dt, 1.4)) patBoomerangFan(boss, 275, th.c3, 7, th.aim);
     }
   }
 
@@ -40040,25 +40150,21 @@
       if (tickEvery(t, dt, 1.7)) emitStickyMine(cx, cy, 6, th.c1, 9, th.ring);
       if (tickEvery(t, dt, 2.5)) patDiamondLattice(boss, 145, th.c2, 8, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 1.5)) emitStickyMine(cx, cy, 7, th.c1, 9, th.ring);
-      if (tickEvery(t, dt, 1.4)) patGatePulse(boss, 150, th.c3, 8, th.aim);
-      if (tickEvery(t, dt, 2.8)) emitBladeWheel(cx, cy, 8, 90, boss.t * 0.8, 140, th.c2, 8, sig);
+      // V3.28：主=黏着地雷(1.5→1.4)；对照=门脉冲(1.4→1.3)；删刃轮噪声
+      if (tickEvery(t, dt, 1.4)) emitStickyMine(cx, cy, 7, th.c1, 9, th.ring);
+      if (tickEvery(t, dt, 1.3)) patGatePulse(boss, 150, th.c3, 8, th.aim);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 2.3)) emitWallWithMovingGap(-20, 155, th.c2, 11, Math.floor(boss.t * 1.25));
-      if (tickEvery(t, dt, 1.35)) emitStickyMine(cx, cy, 8, th.c1, 9, th.ring);
-      if (tickEvery(t, dt, 1.4)) patOrbitRing(boss, 130, th.c3, 7, th.ring);
-      if (tickEvery(t, dt, 1.9)) emitDaoWaveCorridor(cy + 40, 160, th.c2, 8, 'v3daow', player.x);
-      if (tickEvery(t, dt, 2.4)) emitSlashCrossBurst(cx, cy, 150, th.c3, 8, 'v3slashx', boss.t * 0.5);
+      // V3.28：主=移动缝墙(2.3→2.1)；对照=黏着地雷(1.35→1.25)；删轨道环/道波/斩十字噪声
+      if (tickEvery(t, dt, 2.1)) emitWallWithMovingGap(-20, 155, th.c2, 11, Math.floor(boss.t * 1.25));
+      if (tickEvery(t, dt, 1.25)) emitStickyMine(cx, cy, 8, th.c1, 9, th.ring);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 1.25)) emitStickyMine(cx, cy, 9, th.c1, 9, th.ring);
-      if (tickEvery(t, dt, 2.1)) patMeteorShower(boss, 175, th.c2, 8, th.aim);
-      if (tickEvery(t, dt, 2.0)) emitBladeWheel(cx, cy, 10, 110, -boss.t * 0.9, 160, th.c3, 8, sig);
-      if (tickEvery(t, dt, 3.0)) emitLaneLasers(2, boss.t * 0.5, 34, 0.95, 0.55);
+      // V3.28：主=黏着地雷(1.25→1.15)；对照=炎刃轮(2.0→1.85)；删陨石/车道激光噪声
+      if (tickEvery(t, dt, 1.15)) emitStickyMine(cx, cy, 9, th.c1, 9, th.ring);
+      if (tickEvery(t, dt, 1.85)) emitBladeWheel(cx, cy, 10, 110, -boss.t * 0.9, 160, th.c3, 8, sig);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 1.1)) emitStickyMine(cx, cy, 10, th.c1, 9.5, th.ring);
-      if (tickEvery(t, dt, 1.9)) emitWallWithMovingGap(-20, 175, th.c2, 12, Math.floor(boss.t * 1.45));
-      if (tickEvery(t, dt, 1.35)) patDelayRing(boss, 205, th.c3, 7, th.ring);
-      if (tickEvery(t, dt, 2.4)) emitBladeWheel(cx, cy, 12, 120, boss.t * 1.1, 175, th.c2, 8, sig);
+      // V3.28：主=黏着地雷(1.1→1.0)；对照=移动缝墙(1.9→1.75)；删迟滞环/刃轮噪声
+      if (tickEvery(t, dt, 1.0)) emitStickyMine(cx, cy, 10, th.c1, 9.5, th.ring);
+      if (tickEvery(t, dt, 1.75)) emitWallWithMovingGap(-20, 175, th.c2, 12, Math.floor(boss.t * 1.45));
     }
   }
 
@@ -40071,24 +40177,21 @@
       if (tickEvery(t, dt, 0.30)) emitSpiralArm(cx, cy, 6, boss.t * 1.35 + jitter, 155, th.c1, 7, th.spiral, 0);
       if (tickEvery(t, dt, 2.3)) emitAimedRingGap(cx, cy, 16, 175, th.c3, 7, th.aim, 0.55);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.26)) emitSpiralArm(cx, cy, 7, boss.t * 1.55 + jitter, 165, th.c2, 7, th.spiral, 7);
-      if (tickEvery(t, dt, 1.9)) patChaseFork(boss, 225, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 2.6)) emitPulseRingBurst(cx, cy, 16, 190, th.c3, 7, sig, boss.t);
+      // V3.28：主=雷纹螺旋臂(0.26→0.24)；对照=追踪叉(1.9→1.75)；删脉冲环噪声
+      if (tickEvery(t, dt, 0.24)) emitSpiralArm(cx, cy, 7, boss.t * 1.55 + jitter, 165, th.c2, 7, th.spiral, 7);
+      if (tickEvery(t, dt, 1.75)) patChaseFork(boss, 225, th.c1, 7, th.ring);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 0.24)) emitCounterSpiral(cx, cy, 6, boss.t * 1.7 + jitter, 170, th.c1, th.c2, 7, th.spiral, th.ring);
-      if (tickEvery(t, dt, 1.7)) patDiamondLattice(boss, 175, th.c2, 7, th.aim);
-      if (tickEvery(t, dt, 2.0)) emitLaneLasers(2, boss.t * 0.9, 26, 0.75, 0.45);
-      if (tickEvery(t, dt, 1.35)) emitThunderCascade(cx, cy, 3, 185, th.c1, 7, 'v3thundera');
-      if (tickEvery(t, dt, 1.85)) emitFireDiveCurtain(cx, cy, 9, 230, th.c3, 7, 'v3firecore');
+      // V3.28：主=古灵双旋(0.24→0.22)；对照=雷电阶梯(1.35→1.25)；删菱格/车道激光/火帘噪声
+      if (tickEvery(t, dt, 0.22)) emitCounterSpiral(cx, cy, 6, boss.t * 1.7 + jitter, 170, th.c1, th.c2, 7, th.spiral, th.ring);
+      if (tickEvery(t, dt, 1.25)) emitThunderCascade(cx, cy, 3, 185, th.c1, 7, 'v3thundera');
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.22)) emitSpiralArm(cx, cy, 9, -boss.t * 1.7 + jitter * 1.2, 175, th.c2, 7, th.spiral, 5);
-      if (tickEvery(t, dt, 1.4)) patMirrorFan(boss, 240, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 2.2)) emitRotatingLaserSpokes(cx, cy, 3, boss.t * 0.55, 28, 0.7, 0.45);
-      if (tickEvery(t, dt, 1.8)) emitPulseRingBurst(cx, cy, 18, 205, th.c1, 7, sig, -boss.t);
+      // V3.28：主=九臂螺旋(0.22→0.21)；对照=镜像扇(1.4→1.3)；删辐条/脉冲环噪声
+      if (tickEvery(t, dt, 0.21)) emitSpiralArm(cx, cy, 9, -boss.t * 1.7 + jitter * 1.2, 175, th.c2, 7, th.spiral, 5);
+      if (tickEvery(t, dt, 1.3)) patMirrorFan(boss, 240, th.c3, 7, th.aim);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.20)) emitCounterSpiral(cx, cy, 8, boss.t * 2.0 + jitter * 1.4, 185, th.c1, th.c3, 7, th.spiral, sig);
-      if (tickEvery(t, dt, 1.15)) patHexBloom(boss, 175, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 2.3)) emitRotatingLaserSpokes(cx, cy, 4, boss.t * 0.7, 24, 0.65, 0.42);
+      // V3.28：主=终幕八臂双旋(0.20→0.19)；对照=古花绽放(1.15→1.05)；删辐条噪声
+      if (tickEvery(t, dt, 0.19)) emitCounterSpiral(cx, cy, 8, boss.t * 2.0 + jitter * 1.4, 185, th.c1, th.c3, 7, th.spiral, sig);
+      if (tickEvery(t, dt, 1.05)) patHexBloom(boss, 175, th.c3, 7, th.aim);
     }
   }
 
@@ -40100,27 +40203,21 @@
       if (tickEvery(t, dt, 1.15)) emitFlowerBloom(cx, cy, 6, 4, 155, th.c1, 7, th.ring, boss.t * 0.5);
       if (tickEvery(t, dt, 2.2)) patMirrorFan(boss, 235, th.c3, 6.5, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.95)) emitPetalCascade(cx, cy, 7, 2, 150, th.c1, 6.5, sig, boss.t * 0.7);
-      if (tickEvery(t, dt, 1.2)) patPendulumArc(boss, 200, th.c2, 6.5, th.ring);
-      if (tickEvery(t, dt, 2.4)) addEnemyBullet(cx, cy, 0, 0, 8, th.c3, 8, 8, th.aim, 'aimed').homingSoul = true;
+      // V3.28：主=花瓣雨(0.95→0.88)；对照=钟摆弧(1.2→1.1)；删追踪魂弹噪声
+      if (tickEvery(t, dt, 0.88)) emitPetalCascade(cx, cy, 7, 2, 150, th.c1, 6.5, sig, boss.t * 0.7);
+      if (tickEvery(t, dt, 1.1)) patPendulumArc(boss, 200, th.c2, 6.5, th.ring);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.15)) patDelayRing(boss, 210, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.45)) emitFlowerBloom(cx, cy, 7, 5, 170, th.c3, 7, th.aim, boss.t * 0.65);
-      if (tickEvery(t, dt, 2.0)) emitPetalCascade(cx, cy, 8, 2, 160, th.c2, 6.5, sig, -boss.t * 0.6);
-      if (tickEvery(t, dt, 1.25)) emitFlowerFanBurst(cx, cy, 7, 165, th.c1, 6.5, 'v3flower3', boss.t * 0.7);
-      if (tickEvery(t, dt, 2.15)) emitRibbonHelix(cx, cy, 6, 175, th.c3, 6.5, 'v3path2', -boss.t * 1.3);
+      // V3.28：主=女王花绽(1.45→1.34)；对照=迟滞环(1.15→1.06)；删花瓣雨/花扇/缎带噪声
+      if (tickEvery(t, dt, 1.06)) patDelayRing(boss, 210, th.c1, 7, th.ring);
+      if (tickEvery(t, dt, 1.34)) emitFlowerBloom(cx, cy, 7, 5, 170, th.c3, 7, th.aim, boss.t * 0.65);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.95)) patRoseSpiral(boss, 175, th.c1, 6.5, th.ring);
-      if (tickEvery(t, dt, 1.5)) emitFlowerBloom(cx, cy, 8, 5, 175, th.c3, 7, sig, boss.t * 0.8);
-      if (tickEvery(t, dt, 2.3)) emitConverge(5, 235, th.c2, 7, th.aim);
-      if (tickEvery(t, dt, 2.7)) addEnemyBullet(cx, cy, 0, 0, 8, th.c2, 8, 8, th.aim, 'aimed').homingSoul = true;
-      if (tickEvery(t, dt, 3.0)) emitLaneLasers(2, boss.t * 0.75, 28, 0.85, 0.5);
+      // V3.28：主=蔷薇螺旋(0.95→0.88)；对照=集束弹(2.3→2.1)；删花绽/魂弹/车道激光噪声
+      if (tickEvery(t, dt, 0.88)) patRoseSpiral(boss, 175, th.c1, 6.5, th.ring);
+      if (tickEvery(t, dt, 2.1)) emitConverge(5, 235, th.c2, 7, th.aim);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 1.05)) emitFlowerBloom(cx, cy, 9, 6, 185, th.c1, 7, th.ring, boss.t * 0.9);
-      if (tickEvery(t, dt, 0.85)) emitPetalCascade(cx, cy, 8, 3, 170, th.c2, 6.5, sig, boss.t);
-      if (tickEvery(t, dt, 1.35)) patBoomerangFan(boss, 285, th.c3, 6.5, th.aim);
-      if (tickEvery(t, dt, 0.45)) emitSpiralArm(cx, cy, 3, boss.t * 2.5, 190, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 2.4)) addEnemyBullet(cx, cy, 0, 0, 8.5, th.c2, 9, 9, th.aim, 'aimed').homingSoul = true;
+      // V3.28：主=终幕花绽(1.05→0.97)；对照=回旋扇(1.35→1.25)；删花瓣雨/螺旋臂/魂弹噪声
+      if (tickEvery(t, dt, 0.97)) emitFlowerBloom(cx, cy, 9, 6, 185, th.c1, 7, th.ring, boss.t * 0.9);
+      if (tickEvery(t, dt, 1.25)) patBoomerangFan(boss, 285, th.c3, 6.5, th.aim);
     }
   }
 
@@ -40132,25 +40229,21 @@
       if (tickEvery(t, dt, 1.25)) patMirrorFan(boss, 225, th.c1, 7, th.aim);
       if (tickEvery(t, dt, 2.2)) emitBladeWheel(cx, cy, 8, 85, boss.t * 0.9, 150, th.c3, 7, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 1.05)) patRoseSpiral(boss, 165, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 1.8)) emitBladeWheel(cx, cy, 10, 100, -boss.t * 1.0, 165, th.c1, 7, th.aim);
-      if (tickEvery(t, dt, 2.3)) patChaseFork(boss, 245, th.c3, 7, sig);
+      // V3.28：主=夜蔷薇螺旋(1.05→0.97)；对照=刃轮(1.8→1.66)；删追踪叉噪声
+      if (tickEvery(t, dt, 0.97)) patRoseSpiral(boss, 165, th.c2, 7, th.spiral);
+      if (tickEvery(t, dt, 1.66)) emitBladeWheel(cx, cy, 10, 100, -boss.t * 1.0, 165, th.c1, 7, th.aim);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.0)) patDelayRing(boss, 210, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.5)) patBoomerangFan(boss, 275, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 0.55)) emitSpiralArm(cx, cy, 4, boss.t * 1.8, 170, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 1.7)) emitStarArrowBarrage(cx, cy, 8, 240, th.c1, 7, 'v3arrowv');
-      if (tickEvery(t, dt, 2.1)) emitGhostOrbitRelease(cx, cy, 8, 80, 170, th.c2, 7, 'v3wisp', boss.t * 1.1);
+      // V3.28：主=迟滞环(1.0→0.93)；对照=螺旋臂(0.55→0.51)；删回旋扇/星箭/鬼火环噪声
+      if (tickEvery(t, dt, 0.93)) patDelayRing(boss, 210, th.c1, 7, th.ring);
+      if (tickEvery(t, dt, 0.51)) emitSpiralArm(cx, cy, 4, boss.t * 1.8, 170, th.c2, 7, th.spiral);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.9)) patTwinSnake(boss, 190, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 1.35)) emitBladeWheel(cx, cy, 12, 115, boss.t * 1.2, 180, th.c1, 7, th.aim);
-      if (tickEvery(t, dt, 2.2)) emitAimedRingGap(cx, cy, 20, 225, th.c3, 7, sig, 0.48);
-      if (tickEvery(t, dt, 2.9)) emitLaneLasers(2, boss.t * 0.7, 28, 0.85, 0.5);
+      // V3.28：主=夜双蛇(0.9→0.83)；对照=刃轮(1.35→1.25)；删瞄准环缝/车道激光噪声
+      if (tickEvery(t, dt, 0.83)) patTwinSnake(boss, 190, th.c2, 7, th.spiral);
+      if (tickEvery(t, dt, 1.25)) emitBladeWheel(cx, cy, 12, 115, boss.t * 1.2, 180, th.c1, 7, th.aim);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.8)) patRoseSpiral(boss, 180, th.c1, 7, th.spiral);
-      if (tickEvery(t, dt, 1.15)) patMirrorFan(boss, 250, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 1.25)) emitBladeWheel(cx, cy, 14, 125, -boss.t * 1.35, 190, th.c2, 7, th.aim);
-      if (tickEvery(t, dt, 3.0)) emitRotatingLaserSpokes(cx, cy, 4, boss.t * 0.6, 26, 0.7, 0.45);
+      // V3.28：主=终幕蔷薇螺旋(0.8→0.74)；对照=十四刃轮(1.25→1.15)；删镜像扇/辐条噪声
+      if (tickEvery(t, dt, 0.74)) patRoseSpiral(boss, 180, th.c1, 7, th.spiral);
+      if (tickEvery(t, dt, 1.15)) emitBladeWheel(cx, cy, 14, 125, -boss.t * 1.35, 190, th.c2, 7, th.aim);
     }
   }
 
@@ -40158,31 +40251,28 @@
   // 签名：雷暴落雨与冰浪交替 + 耀斑斩击，节奏分明
   function stormreaverPatterns(t, dt, th, cx, cy) {
     const sig = th.sig || th.aim;
-    const gapLane = 100 + ((Math.floor(boss.t * 0.85) % 5) * ((W - 200) / 4));
+    // V3.28 种子缝隙：同一 Boss 同一相位缝隙档可复现，按节拍换档
+    const stGap = campaignRandom01(campaignHashString('boss|storm|' + bossPhase), 7, Math.floor(t * 0.85));
+    const gapLane = 100 + (Math.floor(stGap * 5) * ((W - 200) / 4));
     if (bossPhase === 0) {
       if (tickEvery(t, dt, 1.05)) patMeteorShower(boss, 200, th.c1, 7, th.ring);
       if (tickEvery(t, dt, 2.3)) patPendulumArc(boss, 220, th.c3, 7, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.45)) patWave(boss, 155, th.c2, 7, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.8)) patGatePulse(boss, 190, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 2.4)) emitBladeWheel(cx, cy, 8, 95, boss.t, 170, th.c3, 7, sig);
+      // V3.28：主=雷波(0.45→0.42)；对照=刃轮(2.4→2.2)；删门脉冲噪声
+      if (tickEvery(t, dt, 0.42)) patWave(boss, 155, th.c2, 7, th.spiral, 9, true);
+      if (tickEvery(t, dt, 2.2)) emitBladeWheel(cx, cy, 8, 95, boss.t, 170, th.c3, 7, sig);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 0.9)) emitSweepCorridor(215, th.c1, 7, th.ring, 2, gapLane, 115);
-      if (tickEvery(t, dt, 1.5)) patBoomerangFan(boss, 280, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 1.2)) patMeteorShower(boss, 215, th.c2, 7, sig);
-      if (tickEvery(t, dt, 1.35)) emitThunderCascade(cx, cy, 3, 195, th.c1, 7, 'v3thundera');
-      if (tickEvery(t, dt, 2.0)) emitFireDiveCurtain(cx, cy, 9, 235, th.c3, 7, 'v3firecore');
+      // V3.28：主=横扫走廊缝(0.9→0.83)；对照=陨石雨(1.2→1.1)；删回旋扇/雷阶梯/火帘噪声
+      if (tickEvery(t, dt, 0.83)) emitSweepCorridor(215, th.c1, 7, th.ring, 2, gapLane, 115);
+      if (tickEvery(t, dt, 1.1)) patMeteorShower(boss, 215, th.c2, 7, sig);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.40)) patWave(boss, 165, th.c2, 7, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.15)) patPendulumArc(boss, 235, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 2.0)) emitBladeWheel(cx, cy, 10, 110, -boss.t * 1.1, 185, th.c3, 7, sig);
-      if (tickEvery(t, dt, 2.7)) emitLaneLasers(3, boss.t * 0.8, 26, 0.8, 0.48);
+      // V3.28：主=雷波(0.40→0.37)；对照=钟摆弧(1.15→1.06)；删刃轮/车道激光噪声
+      if (tickEvery(t, dt, 0.37)) patWave(boss, 165, th.c2, 7, th.spiral, 9, true);
+      if (tickEvery(t, dt, 1.06)) patPendulumArc(boss, 235, th.c1, 7, th.ring);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.8)) patMeteorShower(boss, 235, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 0.35)) patWave(boss, 175, th.c2, 7, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.15)) patTwinSnake(boss, 205, th.c3, 7, th.spiral);
-      if (tickEvery(t, dt, 2.3)) emitRotatingLaserSpokes(cx, cy, 3, boss.t * 0.75, 28, 0.7, 0.45);
-      if (tickEvery(t, dt, 1.6)) emitBladeWheel(cx, cy, 12, 120, boss.t * 1.3, 195, th.c1, 7, sig);
+      // V3.28：主=终幕雷波(0.35→0.33)；对照=十二刃轮(1.6→1.5)；删陨石/双蛇/辐条噪声
+      if (tickEvery(t, dt, 0.33)) patWave(boss, 175, th.c2, 7, th.spiral, 9, true);
+      if (tickEvery(t, dt, 1.5)) emitBladeWheel(cx, cy, 12, 120, boss.t * 1.3, 195, th.c1, 7, sig);
     }
   }
 
@@ -40194,26 +40284,21 @@
       if (tickEvery(t, dt, 1.2)) patHexBloom(boss, 150, th.c1, 7, th.ring);
       if (tickEvery(t, dt, 2.2)) patOrbitRing(boss, 145, th.c3, 7, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 1.05)) patDiamondLattice(boss, 170, th.c2, 7, th.aim);
-      if (tickEvery(t, dt, 1.9)) emitPulseRingBurst(cx, cy, 16, 185, th.c1, 7, sig, boss.t * 0.5);
-      if (tickEvery(t, dt, 2.15)) emitPerspectiveDisc(cx, cy, 8, 150, th.c3, 7.5, sig, boss.t * 0.35);
-      if (tickEvery(t, dt, 2.3)) patDelayRing(boss, 200, th.c3, 7, th.ring);
-      if (tickEvery(t, dt, 1.4)) emitCrystalSpearRain(200, th.c1, 7, 'v3crystg', 10, player.x);
-      if (tickEvery(t, dt, 1.85)) emitPrismGateWall(190, th.c2, 7, 'v3prism', player.x);
+      // V3.28：主=晶格阵列(1.05→0.97)；对照=晶矛雨缝(1.4→1.3)；删脉冲环/透视盘/迟滞环/棱晶门噪声
+      if (tickEvery(t, dt, 0.97)) patDiamondLattice(boss, 170, th.c2, 7, th.aim);
+      if (tickEvery(t, dt, 1.3)) emitCrystalSpearRain(200, th.c1, 7, 'v3crystg', 10, player.x);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.0)) patHexBloom(boss, 160, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.5)) emitFlowerBloom(cx, cy, 6, 5, 165, th.c3, 7, th.aim, boss.t * 0.55);
-      if (tickEvery(t, dt, 2.0)) emitBladeWheel(cx, cy, 8, 100, boss.t * 0.7, 155, th.c2, 7, sig);
+      // V3.28：主=晶花绽放(1.0→0.93)；对照=刃轮(2.0→1.85)；删花环噪声
+      if (tickEvery(t, dt, 0.93)) patHexBloom(boss, 160, th.c1, 7, th.ring);
+      if (tickEvery(t, dt, 1.85)) emitBladeWheel(cx, cy, 8, 100, boss.t * 0.7, 155, th.c2, 7, sig);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.9)) patDiamondLattice(boss, 185, th.c2, 7, th.aim);
-      if (tickEvery(t, dt, 1.4)) patRoseSpiral(boss, 170, th.c1, 7, th.spiral);
-      if (tickEvery(t, dt, 1.8)) emitPulseRingBurst(cx, cy, 18, 200, th.c3, 7, sig, -boss.t * 0.6);
-      if (tickEvery(t, dt, 2.9)) emitLaneLasers(2, boss.t * 0.6, 30, 0.9, 0.52);
+      // V3.28：主=晶格阵列(0.9→0.83)；对照=蔷薇螺旋(1.4→1.3)；删脉冲环/车道激光噪声
+      if (tickEvery(t, dt, 0.83)) patDiamondLattice(boss, 185, th.c2, 7, th.aim);
+      if (tickEvery(t, dt, 1.3)) patRoseSpiral(boss, 170, th.c1, 7, th.spiral);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.85)) patHexBloom(boss, 175, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.2)) patDelayRing(boss, 225, th.c3, 7, th.spiral);
-      if (tickEvery(t, dt, 1.35)) emitFlowerBloom(cx, cy, 8, 5, 180, th.c2, 7, th.aim, boss.t * 0.75);
-      if (tickEvery(t, dt, 2.5)) emitAimedRingGap(cx, cy, 22, 215, th.c2, 7, sig, 0.45);
+      // V3.28：主=终幕晶花(0.85→0.79)；对照=瞄准环缝(2.5→2.3)；删迟滞环/花环噪声
+      if (tickEvery(t, dt, 0.79)) patHexBloom(boss, 175, th.c1, 7, th.ring);
+      if (tickEvery(t, dt, 2.3)) emitAimedRingGap(cx, cy, 22, 215, th.c2, 7, sig, 0.45);
     }
   }
 
@@ -40225,25 +40310,21 @@
       if (tickEvery(t, dt, 1.25)) patOrbitRing(boss, 150, th.c1, 7, th.ring);
       if (tickEvery(t, dt, 2.3)) patChaseFork(boss, 235, th.c3, 7, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 1.1)) patGatePulse(boss, 185, th.c2, 7, th.ring);
-      if (tickEvery(t, dt, 1.85)) patMirrorFan(boss, 230, th.c1, 7, th.aim);
-      if (tickEvery(t, dt, 2.4)) emitBladeWheel(cx, cy, 9, 95, boss.t * 0.85, 160, th.c3, 7, sig);
+      // V3.28：主=门脉冲(1.1→1.0)；对照=刃轮(2.4→2.2)；删镜像扇噪声
+      if (tickEvery(t, dt, 1.0)) patGatePulse(boss, 185, th.c2, 7, th.ring);
+      if (tickEvery(t, dt, 2.2)) emitBladeWheel(cx, cy, 9, 95, boss.t * 0.85, 160, th.c3, 7, sig);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.0)) patScytheLane(boss, 180, th.c1, 8, th.aim);
-      if (tickEvery(t, dt, 1.55)) patTwinSnake(boss, 195, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 2.1)) emitBladeWheel(cx, cy, 10, 110, -boss.t, 175, th.c3, 7, sig);
-      if (tickEvery(t, dt, 1.7)) emitDaoWaveCorridor(cy + 25, 180, th.c1, 7.5, 'v3daow', player.x);
-      if (tickEvery(t, dt, 2.25)) emitSlashCrossBurst(cx, cy, 175, th.c3, 7.5, 'v3slashx', boss.t);
+      // V3.28：主=镰刀行道(1.0→0.93)；对照=道波走廊缝(1.7→1.57)；删双蛇/刃轮/斩十字噪声
+      if (tickEvery(t, dt, 0.93)) patScytheLane(boss, 180, th.c1, 8, th.aim);
+      if (tickEvery(t, dt, 1.57)) emitDaoWaveCorridor(cy + 25, 180, th.c1, 7.5, 'v3daow', player.x);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.95)) patDelayRing(boss, 215, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.4)) patBoomerangFan(boss, 280, th.c3, 7, th.aim);
-      if (tickEvery(t, dt, 1.7)) patScytheLane(boss, 190, th.c2, 8, sig);
-      if (tickEvery(t, dt, 2.9)) emitLaneLasers(2, boss.t * 0.7, 30, 0.85, 0.5);
+      // V3.28：主=迟滞环(0.95→0.88)；对照=镰刀行道(1.7→1.57)；删回旋扇/车道激光噪声
+      if (tickEvery(t, dt, 0.88)) patDelayRing(boss, 215, th.c1, 7, th.ring);
+      if (tickEvery(t, dt, 1.57)) patScytheLane(boss, 190, th.c2, 8, sig);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.85)) patRoseSpiral(boss, 175, th.c2, 7, th.spiral);
-      if (tickEvery(t, dt, 1.15)) patGatePulse(boss, 205, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.25)) emitBladeWheel(cx, cy, 12, 125, boss.t * 1.25, 190, th.c3, 7, sig);
-      if (tickEvery(t, dt, 2.5)) emitRotatingLaserSpokes(cx, cy, 4, boss.t * 0.65, 26, 0.7, 0.45);
+      // V3.28：主=蔷薇螺旋(0.85→0.79)；对照=十二刃轮(1.25→1.15)；删门脉冲/辐条噪声
+      if (tickEvery(t, dt, 0.79)) patRoseSpiral(boss, 175, th.c2, 7, th.spiral);
+      if (tickEvery(t, dt, 1.15)) emitBladeWheel(cx, cy, 12, 125, boss.t * 1.25, 190, th.c3, 7, sig);
     }
   }
 
@@ -40255,26 +40336,21 @@
       if (tickEvery(t, dt, 1.15)) patPendulumArc(boss, 210, th.c1, 7, th.ring);
       if (tickEvery(t, dt, 2.2)) patHexBloom(boss, 150, th.c3, 7, th.aim);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.45)) patWave(boss, 150, th.c2, 7, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.9)) patMirrorFan(boss, 225, th.c1, 7, th.aim);
-      if (tickEvery(t, dt, 2.3)) emitPetalCascade(cx, cy, 6, 2, 145, th.c3, 6.5, sig, boss.t * 0.5);
+      // V3.28：主=海妖波(0.45→0.42)；对照=镜像扇(1.9→1.75)；删花瓣雨噪声
+      if (tickEvery(t, dt, 0.42)) patWave(boss, 150, th.c2, 7, th.spiral, 9, true);
+      if (tickEvery(t, dt, 1.75)) patMirrorFan(boss, 225, th.c1, 7, th.aim);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 1.0)) patRoseSpiral(boss, 165, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.55)) emitFlowerBloom(cx, cy, 7, 5, 170, th.c3, 7, th.aim, boss.t * 0.6);
-      if (tickEvery(t, dt, 0.55)) emitSpiralArm(cx, cy, 3, boss.t * 1.9, 165, th.c2, 7, sig);
-      if (tickEvery(t, dt, 1.35)) emitFlowerFanBurst(cx, cy, 7, 160, th.c1, 6.5, 'v3flower3', boss.t * 0.55);
-      if (tickEvery(t, dt, 1.9)) emitRibbonHelix(cx, cy, 5, 170, th.c3, 6.5, 'v3path2', boss.t * 1.5);
+      // V3.28：主=蔷薇螺旋(1.0→0.93)；对照=海妖花绽(1.55→1.43)；删螺旋臂/花扇/缎带噪声
+      if (tickEvery(t, dt, 0.93)) patRoseSpiral(boss, 165, th.c1, 7, th.ring);
+      if (tickEvery(t, dt, 1.43)) emitFlowerBloom(cx, cy, 7, 5, 170, th.c3, 7, th.aim, boss.t * 0.6);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 0.40)) patWave(boss, 160, th.c2, 7, th.spiral, 9, true);
-      if (tickEvery(t, dt, 1.25)) patBoomerangFan(boss, 270, th.c1, 7, th.aim);
-      if (tickEvery(t, dt, 1.6)) emitPetalCascade(cx, cy, 8, 3, 160, th.c3, 6.5, sig, -boss.t * 0.7);
-      if (tickEvery(t, dt, 2.7)) emitLaneLasers(2, boss.t * 0.75, 28, 0.85, 0.5);
+      // V3.28：主=海妖波(0.40→0.37)；对照=花瓣雨(1.6→1.5)；删回旋扇/车道激光噪声
+      if (tickEvery(t, dt, 0.37)) patWave(boss, 160, th.c2, 7, th.spiral, 9, true);
+      if (tickEvery(t, dt, 1.5)) emitPetalCascade(cx, cy, 8, 3, 160, th.c3, 6.5, sig, -boss.t * 0.7);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 0.9)) patHexBloom(boss, 170, th.c1, 7, th.ring);
-      if (tickEvery(t, dt, 1.2)) patTwinSnake(boss, 195, th.c3, 7, th.spiral);
-      if (tickEvery(t, dt, 0.5)) addEnemyBullet(cx, cy, 0, 0, 8, th.c2, 8, 8, th.aim, 'aimed').homingSoul = true;
-      if (tickEvery(t, dt, 1.4)) emitFlowerBloom(cx, cy, 8, 5, 180, th.c2, 7, sig, boss.t * 0.85);
-      if (tickEvery(t, dt, 2.6)) emitAimedRingGap(cx, cy, 22, 225, th.c3, 7, th.aim, 0.48);
+      // V3.28：主=终幕花绽(1.4→1.3)；对照=双蛇(1.2→1.1)；删晶花/魂弹/瞄准环缝噪声
+      if (tickEvery(t, dt, 1.3)) emitFlowerBloom(cx, cy, 8, 5, 180, th.c2, 7, sig, boss.t * 0.85);
+      if (tickEvery(t, dt, 1.1)) patTwinSnake(boss, 195, th.c3, 7, th.spiral);
     }
   }
 
@@ -40647,36 +40723,25 @@
   function suiyiPatterns(t, dt) {
     if (!boss || boss.kind !== 'suiyi') return;
     if (bossPhase === 0) {
-      if (tickEvery(t, dt, 0.52)) suiyiCodeArrowRain(0);
-      if (tickEvery(t, dt, 1.10)) suiyiBinaryWaterfall(0);
-      if (tickEvery(t, dt, 1.85)) suiyiCompileFan(0);
+      // V3.28：主=代码箭雨(0.52→0.48)；对照=编译扇(aimed,1.85→1.7)；删二进制瀑布噪声
+      if (tickEvery(t, dt, 0.48)) suiyiCodeArrowRain(0);
+      if (tickEvery(t, dt, 1.7)) suiyiCompileFan(0);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.43)) suiyiCodeArrowRain(1);
-      if (tickEvery(t, dt, 1.35)) suiyiFunctionCallRing(1);
-      if (tickEvery(t, dt, 3.80)) suiyiSyntaxError(1);
-      if (tickEvery(t, dt, 2.18)) suiyiBinaryGateSweep(1);
-      if (tickEvery(t, dt, 2.65)) suiyiCompileFan(1);
+      // V3.28：主=代码箭雨(0.43→0.40)；对照=二进制门扫(缝隙hazard,2.18→2.0)；删函数环/语法错误/编译扇噪声
+      if (tickEvery(t, dt, 0.4)) suiyiCodeArrowRain(1);
+      if (tickEvery(t, dt, 2.0)) suiyiBinaryGateSweep(1);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 0.19)) suiyiRecursiveSpiral(2);
-      if (tickEvery(t, dt, 1.18)) suiyiMemoryLeak(2);
-      if (tickEvery(t, dt, 0.92)) suiyiBinaryWaterfall(2);
-      if (tickEvery(t, dt, 0.78)) suiyiCodeSnakeWeave(2);
-      if (tickEvery(t, dt, 2.55)) suiyiDebugGridWeave(2);
+      // V3.28：主=递归螺旋(0.19→0.18)；对照=内存泄漏(1.18→1.1)；删瀑布/蛇形/调试网格噪声
+      if (tickEvery(t, dt, 0.18)) suiyiRecursiveSpiral(2);
+      if (tickEvery(t, dt, 1.1)) suiyiMemoryLeak(2);
     } else if (bossPhase === 3) {
-      if (tickEvery(t, dt, 2.00)) suiyiSyntaxError(3);
-      if (tickEvery(t, dt, 1.45)) suiyiMergeConflict(3);
-      if (tickEvery(t, dt, 2.55)) suiyiStackOverflow(3);
-      if (tickEvery(t, dt, 1.72)) suiyiVirusBloom(3);
-      if (tickEvery(t, dt, 2.35)) suiyiTargetLockFork(3);
+      // V3.28：主=合并冲突(1.45→1.34)；对照=目标锁定叉(aimed,2.35→2.15)；删语法错误/栈溢出/病毒噪声
+      if (tickEvery(t, dt, 1.34)) suiyiMergeConflict(3);
+      if (tickEvery(t, dt, 2.15)) suiyiTargetLockFork(3);
     } else if (bossPhase === 4) {
-      if (tickEvery(t, dt, 1.95)) suiyiDeadlockThreads(4);
-      if (tickEvery(t, dt, 3.25)) suiyiHotfixRewrite(4);
-      if (tickEvery(t, dt, 0.92)) suiyiMemoryLeak(4);
-      if (tickEvery(t, dt, 0.34)) suiyiRecursiveSpiral(4);
-      if (tickEvery(t, dt, 1.55)) suiyiTargetLockFork(4);
-      if (tickEvery(t, dt, 2.05)) suiyiBinaryGateSweep(4);
-      if (tickEvery(t, dt, 2.45)) suiyiOverclockCrossLanes(4);
-      if (tickEvery(t, dt, 2.75)) suiyiVirusBloom(4);
+      // V3.28：主=递归螺旋(0.34→0.31)；对照=死锁线程(1.95→1.8)；删热修/泄漏/锁定/门扫/超频/病毒噪声
+      if (tickEvery(t, dt, 0.31)) suiyiRecursiveSpiral(4);
+      if (tickEvery(t, dt, 1.8)) suiyiDeadlockThreads(4);
     } else {
       suiyiSystemCrash(t, dt);
     }
@@ -41030,25 +41095,21 @@
   function miguaPatterns(t, dt) {
     if (!boss || boss.kind !== 'migua') return;
     if (bossPhase === 0) {
-      if (tickEvery(t, dt, 0.58)) miguaSeedBarrage(0);
-      if (tickEvery(t, dt, 1.55)) miguaCompressedKernelFan(0);
-      if (tickEvery(t, dt, 2.85)) miguaThrowMelonBomb(0);
-      if (tickEvery(t, dt, 2.35)) miguaBubbleLane(0);
+      // V3.28：主=瓜籽齐射(0.58→0.53)；对照=甜瓜炸弹(signature,2.85→2.6)；删压缩核扇/泡泡道噪声
+      if (tickEvery(t, dt, 0.53)) miguaSeedBarrage(0);
+      if (tickEvery(t, dt, 2.6)) miguaThrowMelonBomb(0);
     } else if (bossPhase === 1) {
-      if (tickEvery(t, dt, 0.74)) miguaJuiceStream(1);
-      if (tickEvery(t, dt, 1.38)) miguaSplashBurst(1);
-      if (tickEvery(t, dt, 2.05)) miguaThrowMelonBomb(1);
-      if (tickEvery(t, dt, 2.24)) miguaSeedBarrage(1);
+      // V3.28：主=瓜籽齐射(2.24→0.62提频)；对照=甜瓜炸弹(2.05→1.9)；删果汁流/溅射噪声
+      if (tickEvery(t, dt, 0.62)) miguaSeedBarrage(1);
+      if (tickEvery(t, dt, 1.9)) miguaThrowMelonBomb(1);
     } else if (bossPhase === 2) {
-      if (tickEvery(t, dt, 0.88)) miguaSliceCarousel(2);
-      if (tickEvery(t, dt, 1.54)) miguaArmySeeding(2);
-      if (tickEvery(t, dt, 2.55)) miguaThrowMelonBomb(2);
-      if (tickEvery(t, dt, 2.15)) miguaBubbleLane(2);
+      // V3.28：主=切片旋转木马(0.88→0.8)；对照=甜瓜炸弹(2.55→2.35)；删播种/泡泡道噪声
+      if (tickEvery(t, dt, 0.8)) miguaSliceCarousel(2);
+      if (tickEvery(t, dt, 2.35)) miguaThrowMelonBomb(2);
     } else {
-      if (tickEvery(t, dt, 0.48)) miguaFinalBloom(3);
-      if (tickEvery(t, dt, 1.12)) miguaSweetFlood(3);
-      if (tickEvery(t, dt, 1.86)) miguaThrowMelonBomb(3);
-      if (tickEvery(t, dt, 3.2)) miguaUltimatePulpBurst(3);
+      // V3.28：主=终幕甜蜜绽放(0.48→0.44)；对照=终极果肉爆发(3.2→2.9)；删甜洪/瓜弹噪声
+      if (tickEvery(t, dt, 0.44)) miguaFinalBloom(3);
+      if (tickEvery(t, dt, 2.9)) miguaUltimatePulpBurst(3);
     }
   }
 
@@ -48260,8 +48321,9 @@
     shimmerPeriod: 3.5,
     shimmerSweep: 1.1,
     shimmerAlpha: 0.30,
-    burstCounts: Object.freeze([3, 3, 2, 2]),
-    poolCaps: Object.freeze([12, 10, 6, 4]),
+    // 按钮点击星芒爆发：一次 6-8 颗（高档），按画质档 [q0,q1,q2,q3] 递减；对象池同步放大。
+    burstCounts: Object.freeze([7, 7, 4, 2]),
+    poolCaps: Object.freeze([18, 14, 8, 4]),
     ambientTitle: Object.freeze([32, 24, 12, 0]),
     ambientBattle: Object.freeze([16, 12, 6, 0]),
     particleLife: Object.freeze([0.46, 0.38]),
@@ -48287,6 +48349,8 @@
   const cuteUiParticles = Array.from({ length: CUTE_UI_MOTION_CONFIG.poolCaps[0] }, () => ({
     active: false, scene: 'title', kind: 0, x: 0, y: 0, vx: 0, vy: 0, life: 0, maxLife: 0, size: 0, spin: 0, rot: 0, tint: '150,220,255',
   }));
+  // 系统「减弱动态效果」：新增环境动效（星座/爱心/彩带/扫光/倾斜）统一降级为静止或关闭。
+  const SKY_REDUCE_MOTION = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   let cuteUiPressedId = '';
   let cuteUiPointerId = null;
   const tyBarPulseMap = new Map(); // 血条/能量条数值变化脉冲状态
@@ -48580,6 +48644,49 @@
     ctx.drawImage(cv, cx - s / 2, cy - s / 2);
     ctx.restore();
   }
+  // 上升小爱心（标题/大堂稀疏粉色点缀）：按尺寸烘焙精灵，零每帧渐变
+  function drawTinyHeart(cx, cy, size, alpha, rot = 0) {
+    const rs = Math.max(3, Math.round(size));
+    const cv = cachedSprite(`heart_${rs}`, rs * 2 + 6, rs * 2 + 6, (c2, sw, sh) => {
+      c2.translate(sw / 2, sh / 2);
+      c2.beginPath();
+      c2.moveTo(0, rs * 0.72);
+      c2.bezierCurveTo(-rs * 1.25, -rs * 0.18, -rs * 0.52, -rs * 0.95, 0, -rs * 0.30);
+      c2.bezierCurveTo(rs * 0.52, -rs * 0.95, rs * 1.25, -rs * 0.18, 0, rs * 0.72);
+      c2.closePath();
+      const g = c2.createLinearGradient(0, -rs, 0, rs);
+      g.addColorStop(0, 'rgba(255,190,220,.95)');
+      g.addColorStop(1, 'rgba(255,164,204,.80)');
+      c2.fillStyle = g; c2.fill();
+      c2.fillStyle = 'rgba(255,255,255,.75)';
+      c2.beginPath(); c2.arc(-rs * 0.32, -rs * 0.30, Math.max(0.8, rs * 0.20), 0, Math.PI * 2); c2.fill();
+    });
+    ctx.save();
+    ctx.translate(cx, cy); ctx.rotate(rot); ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, -(rs + 3), -(rs + 3));
+    ctx.restore();
+  }
+  // 慢落星形彩带（仅标题）：天蓝/粉两款烘焙精灵，自旋下落
+  function drawStarConfetti(cx, cy, size, alpha, rot, pink) {
+    const rs = Math.max(3, Math.round(size));
+    const cv = cachedSprite(`confetti_${pink ? 'p' : 's'}_${rs}`, rs * 2 + 4, rs * 2 + 4, (c2, sw, sh) => {
+      c2.translate(sw / 2, sh / 2);
+      c2.fillStyle = pink ? 'rgba(255,164,204,.92)' : 'rgba(150,205,255,.92)';
+      c2.beginPath();
+      c2.moveTo(0, -rs);
+      c2.quadraticCurveTo(rs * 0.14, -rs * 0.14, rs, 0);
+      c2.quadraticCurveTo(rs * 0.14, rs * 0.14, 0, rs);
+      c2.quadraticCurveTo(-rs * 0.14, rs * 0.14, -rs, 0);
+      c2.quadraticCurveTo(-rs * 0.14, -rs * 0.14, 0, -rs);
+      c2.closePath(); c2.fill();
+      c2.fillStyle = 'rgba(255,255,255,.85)';
+      c2.beginPath(); c2.arc(0, 0, Math.max(0.7, rs * 0.18), 0, Math.PI * 2); c2.fill();
+    });
+    ctx.save();
+    ctx.translate(cx, cy); ctx.rotate(rot); ctx.globalAlpha = alpha;
+    ctx.drawImage(cv, -(rs + 2), -(rs + 2));
+    ctx.restore();
+  }
   function drawSkyParticles(scene = 'title') {
     const q = cuteUiQualityIndex();
     const budget = (SKY_PARTICLE_BUDGETS[scene] || SKY_PARTICLE_BUDGETS.title)[Math.min(3, q)];
@@ -48595,7 +48702,14 @@
     for (let i = 0; i < budget; i++) {
       const depth = 0.35 + 0.65 * skySeed(i, 7);
       const px = parX * 10 * depth, py = parY * 10 * depth;
-      const kind = i % 4;
+      const kind = (() => {
+        let k = i % 6;
+        // 新增类型场景/动效降级：小爱心仅标题+大堂，星形彩带仅标题；reduced-motion 退回星芒
+        if (k === 4 && scene === 'battle') k = 2;
+        if (k === 5 && scene !== 'title') k = 2;
+        if (SKY_REDUCE_MOTION && k >= 4) k = 2;
+        return k;
+      })();
       const seedA = skySeed(i, 1), seedB = skySeed(i, 2), seedC = skySeed(i, 3);
       if (kind === 3 && i < 3) {
         // 慢速云团/花瓣：仅前 3 个，极慢漂移
@@ -48637,6 +48751,22 @@
         const blinkCycle = (time * 0.5 + seedA * 7) % 4.9;
         const blink = blinkCycle < 0.3 ? 1 + 0.25 * Math.sin(Math.PI * blinkCycle / 0.3) : 1;
         drawCuteSparkle(x, y, (2.4 + seedC * 1.8) * blink, alpha, time * 0.3 + seedA * 4);
+      } else if (kind === 4) {
+        // 上升小爱心：稀疏粉色，慢速上升 + 轻摆 + 呼吸（标题/大堂限定）
+        const rise = (time * (5.5 + seedC * 4) + seedA * H) % (H * 0.9);
+        const hy = (H * 0.96 - rise * 0.9) + py;
+        if (hy < 30) continue;
+        const wob = Math.sin(time * 1.1 + seedB * 9) * 5;
+        const breathe = 0.5 + 0.5 * Math.sin(phase * 0.8);
+        drawTinyHeart(x + wob, hy, 4.5 + seedC * 3, 0.16 + 0.22 * breathe, Math.sin(time * 0.9 + seedA * 7) * 0.22);
+      } else if (kind === 5) {
+        // 慢落星形彩带：极慢下落 + 自旋，天蓝/粉交替（标题限定）
+        const fall = (time * (7 + seedC * 5) + seedA * H) % (H * 0.92);
+        const fy = H * 0.03 + fall * 0.92 + py;
+        if (fy > H - 20) continue;
+        const spin = time * (0.45 + seedB * 0.55) + seedA * TAU;
+        const breathe = 0.5 + 0.5 * Math.sin(phase);
+        drawStarConfetti(x + Math.sin(time * 0.7 + seedB * 8) * 6, fy, 3.2 + seedC * 2.2, 0.20 + 0.24 * breathe, spin, (i & 1) === 0);
       } else {
         // 小 bokeh 补光
         drawSkyBokeh(x, y, 6 + seedC * 8, scene === 'battle' ? 0.05 : 0.07 + 0.03 * Math.sin(phase));
@@ -48930,6 +49060,54 @@
       const tw2 = 0.5 + 0.5 * Math.sin(time * 2.1 + x * 0.19 + y * 0.23 + 2.6);
       if (tw2 > 0.6) drawCuteSparkle(x + w - r * 0.7, y + h - r * 0.7, 2.5, (tw2 - 0.6) * 1.4, -time);
       drawTyCornerTicks(x, y, w, h, Math.min(r, 18), (opts.cornerAlpha ?? (hot ? 0.8 : 0.45)));
+    }
+    // —— 角饰小星：大面板（w≥240 且 h≥78）或显式 charm，两颗对角烘焙四角星，α 缓慢呼吸 ——
+    if (!cgLite() && (opts.charm || (w >= 240 && h >= 78))) {
+      const charmCv = cachedSprite('ty_charm_star', 28, 28, (c2) => {
+        c2.translate(14, 14);
+        c2.fillStyle = 'rgba(255,255,255,.95)';
+        c2.beginPath();
+        c2.moveTo(0, -9);
+        c2.quadraticCurveTo(1.3, -1.3, 9, 0);
+        c2.quadraticCurveTo(1.3, 1.3, 0, 9);
+        c2.quadraticCurveTo(-1.3, 1.3, -9, 0);
+        c2.quadraticCurveTo(-1.3, -1.3, 0, -9);
+        c2.closePath(); c2.fill();
+        c2.fillStyle = 'rgba(88,183,255,.85)';
+        c2.beginPath(); c2.arc(0, 0, 2.1, 0, Math.PI * 2); c2.fill();
+      });
+      const breatheA = SKY_REDUCE_MOTION ? 0.28 : 0.22 + 0.14 * Math.sin(time * 1.4 + x * 0.11 + y * 0.07);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = Math.max(0, breatheA);
+      ctx.drawImage(charmCv, x + w - 30, y + 2);
+      ctx.drawImage(charmCv, x + 2, y + h - 30);
+      ctx.restore();
+    }
+    // —— 顶边扫光：hero 面板（opts.edgeSweep）每 ~6.2s 一道柔光沿顶部发丝边滑过，'lighter'，α≤.25 ——
+    if (opts.edgeSweep && !cgLite() && !SKY_REDUCE_MOTION) {
+      const period = 6.2, dur = 1.35;
+      const cycle = (time + (opts.phase || 0)) % period;
+      if (cycle < dur) {
+        const p = cycle / dur;
+        const env = Math.sin(Math.PI * p);
+        const sweepCv = cachedSprite('ty_edge_sweep', 96, 12, (c2, sw, sh) => {
+          const g = c2.createLinearGradient(0, 0, sw, 0);
+          g.addColorStop(0, 'rgba(255,255,255,0)');
+          g.addColorStop(0.5, 'rgba(255,255,255,.95)');
+          g.addColorStop(1, 'rgba(255,255,255,0)');
+          c2.fillStyle = g;
+          c2.beginPath(); c2.ellipse(sw / 2, sh / 2, sw / 2, sh / 2 - 1, 0, 0, Math.PI * 2); c2.fill();
+        });
+        const bandW = Math.max(64, w * 0.30);
+        ctx.save();
+        roundRect(x + 2, y, w - 4, Math.min(14, h * 0.3), Math.min(r, 12));
+        ctx.clip();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = 0.25 * env;
+        ctx.drawImage(sweepCv, x - bandW + (w + bandW) * p, y - 2, bandW, 12);
+        ctx.restore();
+      }
     }
     if (hot) {
       ctx.save();
@@ -49573,18 +49751,29 @@
     ctx.restore();
   }
 
+  const dreamHudPop = { hits: -1, mul: -1, tHits: -9, tMul: -9 };
   function drawDreamHud() {
     if (!dreamActive() || state === 'title' || state === 'win' || state === 'lose') return;
     const sharkBarActive = state === 'boss' && boss?.kind === 'dreamshark';
     const x = W / 2 - 180, y = sharkBarActive ? 108 : (state === 'boss' ? 72 : 58), w = 360, h = 50;
+    // 数值微弹：受击/输出变化时对应文字 220ms 弹一下（高档且非 reduced-motion，战斗保持平静）
+    const popOk = !cgLite() && !SKY_REDUCE_MOTION;
+    if (dreamHudPop.hits !== dreamRun.hitCount) { dreamHudPop.hits = dreamRun.hitCount; dreamHudPop.tHits = time; }
+    const mulPct = Math.round(dreamRun.outgoingDamageMul * 100);
+    if (dreamHudPop.mul !== mulPct) { dreamHudPop.mul = mulPct; dreamHudPop.tMul = time; }
+    const popScale = (t0) => { const p = (time - t0) / 0.22; return popOk && p >= 0 && p < 1 ? 1 + 0.22 * Math.sin(Math.PI * p) : 1; };
+    const drawPop = (fn, ax, ay, s) => { if (s !== 1) { ctx.save(); ctx.translate(ax, ay); ctx.scale(s, s); fn(0, 0); ctx.restore(); } else fn(ax, ay); };
     ctx.save();
     drawTyTechPanel(x, y, w, h, { r: h / 2, top: 'rgba(255,255,255,.90)', bottom: 'rgba(240,247,255,.55)', edge: 'rgba(88,183,255,.45)', stripAlpha: 0.08, scanAlpha: 0.06 });
-    ctx.textBaseline = 'middle'; ctx.textAlign = 'left'; ctx.font = cuteFont(900, 23);
-    ctx.fillStyle = '#3E9BF5'; ctx.fillText('★'.repeat(dreamRun.stars) + '☆'.repeat(3 - dreamRun.stars), x + 16, y + h / 2);
-    ctx.font = cuteFont(800, 19); ctx.fillStyle = '#3E9BF5';
-    ctx.fillText(`受击 ${dreamRun.hitCount}/3`, x + 102, y + h / 2);
-    ctx.textAlign = 'right'; ctx.fillStyle = dreamRun.outgoingDamageMul < 1 ? '#b34e78' : '#39769e';
-    ctx.fillText(`${Math.round(dreamRun.outgoingDamageMul * 100)}% · ${dreamElapsedText()}`, x + w - 14, y + h / 2);
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    const sHits = popScale(dreamHudPop.tHits);
+    ctx.font = cuteFont(900, 23);
+    ctx.fillStyle = '#3E9BF5';
+    drawPop((tx, ty) => ctx.fillText('★'.repeat(dreamRun.stars) + '☆'.repeat(3 - dreamRun.stars), tx, ty), x + 16, y + h / 2, sHits);
+    ctx.font = cuteFont(800, 19);
+    drawPop((tx, ty) => ctx.fillText(`受击 ${dreamRun.hitCount}/3`, tx, ty), x + 102, y + h / 2, sHits);
+    ctx.textAlign = 'right'; ctx.fillStyle = mulPct < 100 ? '#b34e78' : '#39769e';
+    drawPop((tx, ty) => ctx.fillText(`${mulPct}% · ${dreamElapsedText()}`, tx, ty), x + w - 14, y + h / 2, popScale(dreamHudPop.tMul));
     ctx.restore();
   }
 
@@ -50680,6 +50869,25 @@
       if (unlocked) registerDreamHit('stage', x, y, w, h, i);
       ctx.save();
       applyCutePop(`dream:stage:${i}`, x, y, w, h, i);
+      // 悬停微浮起 2px + 柔光（未解锁节点不注册，保持安静）
+      if (unlocked) {
+        const motion = observeCuteUiControl(`dream:stage:${i}`, x, y, w, h, dreamUi.selectedStage === i);
+        applyCuteUiMotion(motion, x, y, w, h);
+        const glowA = motion ? motion.glow * CUTE_UI_MOTION_CONFIG.glowMax : 0;
+        if (!cgLite() && glowA > 0.01) {
+          const glowCv = cachedSprite('dreamstage_glow', 96, 48, (c2, sw, sh) => {
+            const g = c2.createRadialGradient(sw / 2, sh / 2, 1, sw / 2, sh / 2, sw / 2);
+            g.addColorStop(0, 'rgba(88,183,255,.42)');
+            g.addColorStop(1, 'rgba(255,255,255,0)');
+            c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+          });
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.globalAlpha = Math.min(1, glowA / 0.42);
+          ctx.drawImage(glowCv, x - w * 0.09, y - h * 0.45, w * 1.18, h * 1.9);
+          ctx.restore();
+        }
+      }
       drawTyTechPanel(x, y, w, h, {
         r: 14, hot: unlocked && dreamUi.selectedStage === i,
         top: unlocked ? 'rgba(255,255,255,.96)' : 'rgba(226,238,250,.66)',
@@ -50706,7 +50914,7 @@
       : ['六翼缺口扇 · 棱镜门', '迟滞星冠 · 双侧镰刃', '终焉晶格 · 五阶段']);
     if (DREAM_LOBBY_PORTRAIT) {
       const x = 42, y = 376, w = 636, h = 430;
-      drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05 });
+      drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05, edgeSweep: true });
       ctx.save();
       ctx.textAlign = 'center'; ctx.font = cuteFont(900, 27); ctx.fillStyle = '#2E4A6E'; ctx.fillText(hasBoss ? level.bossName : '玩偶之家 · 小怪篇', x + 392, y + 37);
       if (assetReady(bossSprite)) drawImageContain(assets[bossSprite], x + 24, y + 34, 142, 136);
@@ -50735,7 +50943,7 @@
       return;
     }
     const bx = 52, by = 356, bw = 288, bh = 430;
-    drawTyTechPanel(bx, by, bw, bh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(226,242,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.08, scanAlpha: 0.06 });
+    drawTyTechPanel(bx, by, bw, bh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(226,242,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.08, scanAlpha: 0.06, edgeSweep: true });
     ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 27); ctx.fillStyle = '#2E4A6E'; ctx.fillText(hasBoss ? level.bossName : '玩偶之家 · 小怪篇', bx + bw / 2, by + 38);
     if (assetReady(bossSprite)) drawImageContain(assets[bossSprite], bx + 34, by + 58, bw - 68, 208);
     ctx.font = cuteFont(800, 18); ctx.fillStyle = '#3E9BF5'; ctx.fillText(hasBoss ? `HP ${config.balance.bossHp.toLocaleString()} · ${config.phaseNames.length}阶段` : '10波完整开放 · Boss构筑中', bx + bw / 2, by + 294);
@@ -50744,7 +50952,7 @@
     ctx.restore();
 
     const rx = 352, ry = 356, rw = 316, rh = 430;
-    drawTyTechPanel(rx, ry, rw, rh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05 });
+    drawTyTechPanel(rx, ry, rw, rh, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', stripAlpha: 0.07, scanAlpha: 0.05, edgeSweep: true });
     ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, 25); ctx.fillStyle = '#3E9BF5'; ctx.fillText('梦境守卫', rx + rw / 2, ry + 34);
     const mobs = Object.values(config.mobs);
     mobs.forEach((mob, i) => {
@@ -50765,7 +50973,7 @@
   function drawDreamPatternsPanel() {
     const config = selectedDreamStageConfig();
     const x = DREAM_LOBBY_PORTRAIT ? 42 : 52, y = DREAM_LOBBY_PORTRAIT ? 376 : 356, w = DREAM_LOBBY_PORTRAIT ? 636 : 616, h = 430;
-    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)' });
+    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.85)', bottom: 'rgba(232,244,255,.55)', edge: 'rgba(88,183,255,.55)', edgeSweep: true });
     const pw = DREAM_LOBBY_PORTRAIT ? 294 : 276, ph = DREAM_LOBBY_PORTRAIT ? 164 : 150;
     const x2 = DREAM_LOBBY_PORTRAIT ? x + 324 : x + 318, y2 = DREAM_LOBBY_PORTRAIT ? y + 232 : y + 222;
     drawDreamPatternPreview(x + 18, y + 52, pw, ph, config.previewPatterns[0]);
@@ -50777,7 +50985,7 @@
   function drawDreamLeaderboardPanel() {
     const level = selectedDreamLevel();
     const x = DREAM_LOBBY_PORTRAIT ? 42 : 52, y = DREAM_LOBBY_PORTRAIT ? 376 : 356, w = DREAM_LOBBY_PORTRAIT ? 636 : 616, h = DREAM_LOBBY_PORTRAIT ? 490 : 430;
-    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(226,242,255,.55)', edge: 'rgba(88,183,255,.55)' });
+    drawTyTechPanel(x, y, w, h, { r: 22, top: 'rgba(255,255,255,.86)', bottom: 'rgba(226,242,255,.55)', edge: 'rgba(88,183,255,.55)', edgeSweep: true });
     ctx.save(); ctx.textAlign = 'center'; ctx.font = cuteFont(900, DREAM_LOBBY_PORTRAIT ? 30 : 25); ctx.fillStyle = '#2E4A6E'; ctx.fillText(`${level.name} · 星级竞速榜`, x + w / 2, y + 38);
     ctx.font = cuteFont(700, DREAM_LOBBY_PORTRAIT ? 22 : 16); ctx.fillStyle = 'rgba(46,74,110,.55)'; ctx.fillText(dreamLeaderboardMessage || '星级优先 · 同星比时间', x + w / 2, y + 68);
     const rowLimit = DREAM_LOBBY_PORTRAIT ? 5 : 7;
@@ -51665,6 +51873,36 @@
     ctx.restore();
   }
 
+  // 标题装饰：logo 后方的星座点阵（整层烘焙 + 极慢漂移），低档/reduced-motion 关闭
+  function drawTitleConstellation(cy) {
+    if (cgLite() || SKY_REDUCE_MOTION) return;
+    const cv = cachedSprite('title_constellation', 720, 260, (c2, sw, sh) => {
+      const pts = [];
+      for (let i = 0; i < 11; i++) {
+        pts.push([(0.06 + 0.88 * skySeed(i, 21)) * sw, (0.12 + 0.76 * skySeed(i, 22)) * sh]);
+      }
+      c2.strokeStyle = 'rgba(150,205,255,.28)';
+      c2.lineWidth = 1;
+      for (let i = 0; i < pts.length - 1; i++) {
+        if (skySeed(i, 23) < 0.35) continue;
+        c2.beginPath(); c2.moveTo(pts[i][0], pts[i][1]); c2.lineTo(pts[i + 1][0], pts[i + 1][1]); c2.stroke();
+      }
+      pts.forEach((p, i) => {
+        const r = 1.8 + skySeed(i, 24) * 2.4;
+        c2.fillStyle = i % 3 === 2 ? 'rgba(255,164,204,.85)' : 'rgba(190,225,255,.85)';
+        c2.beginPath(); c2.arc(p[0], p[1], r, 0, Math.PI * 2); c2.fill();
+        c2.fillStyle = 'rgba(255,255,255,.9)';
+        c2.beginPath(); c2.arc(p[0], p[1], r * 0.4, 0, Math.PI * 2); c2.fill();
+      });
+    });
+    const drift = Math.sin(time * 0.16) * 8;
+    const bob = Math.cos(time * 0.12) * 5;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = 0.50 + 0.12 * Math.sin(time * 0.4);
+    ctx.drawImage(cv, W / 2 - 360 + drift, cy - 150 + bob);
+    ctx.restore();
+  }
   function drawTitleLogo(y, preferredSize) {
     const label = '月蚀弹幕';
     ctx.save();
@@ -51747,6 +51985,7 @@
     ctx.restore();
   }
 
+  const titleCardTilt = Object.create(null); // 角色卡微倾斜状态（key → {a}）
   function drawTitleCharacterCard(key, index, x, y, w, h, selected) {
     const ch = CHARACTERS[key];
     const tone = TITLE_CARD_TONES[index % TITLE_CARD_TONES.length];
@@ -51754,6 +51993,18 @@
     ctx.save();
     const motion = observeCuteUiControl(`title:char:${key}`, x, y, w, h, selected, index);
     applyCuteUiMotion(motion, x, y, w, h);
+    // 卡片微倾斜：指针在卡片附近时向指针倾 ≤3°，离开平滑回正（桌面/reduced-motion 关闭）
+    if (!IS_MOBILE_RUNTIME && !SKY_REDUCE_MOTION) {
+      let tilt = titleCardTilt[key];
+      if (!tilt) tilt = titleCardTilt[key] = { a: 0 };
+      const near = lastCanvasPointer && lastCanvasPointer.x >= x - 30 && lastCanvasPointer.x <= x + w + 30 && lastCanvasPointer.y >= y - 30 && lastCanvasPointer.y <= y + h + 30;
+      const target = near ? clamp(((lastCanvasPointer.x - (x + w / 2)) / (w / 2)) * 0.052, -0.052, 0.052) : 0;
+      tilt.a += (target - tilt.a) * 0.16;
+      if (Math.abs(tilt.a) > 0.0005) {
+        const tcx = x + w / 2, tcy = y + h / 2;
+        ctx.translate(tcx, tcy); ctx.rotate(tilt.a); ctx.translate(-tcx, -tcy);
+      }
+    }
     // 选中卡：粉色径向光环（'lighter'，元素内部光晕），边缘仍由面板 sky 描边承担
     if (selected && !cgLite()) {
       const haloCv = cachedSprite('titlechar_halo_pink', 96, 48, (c2, sw, sh) => {
@@ -51960,6 +52211,7 @@
       ctx.drawImage(assets[cc.cutin], -70, 86, W + 140, 420);
       ctx.restore();
     }
+    drawTitleConstellation(layout.titleY);
     drawTitleLogo(layout.titleY, layout.titleSize);
     ctx.save();
     ctx.textAlign = 'center';
@@ -52060,6 +52312,7 @@
       ctx.drawImage(assets.uiEmblemLoop, -size / 2, -size / 2, size, size);
       ctx.restore();
     }
+    drawTitleConstellation(layout.titleY);
     drawTitleLogo(layout.titleY, layout.titleSize);
     ctx.save();
     ctx.textAlign = 'center';
