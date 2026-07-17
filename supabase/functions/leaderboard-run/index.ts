@@ -13,6 +13,7 @@
 //   POST /functions/v1/leaderboard-run/submit  交分校验   → { ok, status, reasons? }
 //   POST /functions/v1/leaderboard-run/dream-start   梦境开局令牌（绑定关卡/谱面/编队）
 //   POST /functions/v1/leaderboard-run/dream-submit  梦境通关提交（星级优先、同星用时优先）
+//   POST /functions/v1/leaderboard-run/message   留言板写入（公开读、函数写，免令牌）
 //        status = accepted | rejected
 // ============================================================
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -35,6 +36,11 @@ const DREAM_STAGES = new Map([
   ["dream-02-zero-compile", { clearVersion: "dream-02-v1", seed: 7130202 }],
   ["dream-03-plush-room", { clearVersion: "dream-03-v2", seed: 7130303 }],
 ]);
+
+// 留言板契约：与 index.html 的 GUESTBOOK_* 常量保持一致
+const GUESTBOOK_ID_MAX = 16;
+const GUESTBOOK_NAME_MAX = 12;
+const GUESTBOOK_MESSAGE_MAX = 96;
 
 const cors = {
   "Access-Control-Allow-Origin": "*", // 上线后可改成你的 Pages 域名收紧
@@ -79,11 +85,29 @@ function sameWingLoadout(a: unknown, b: unknown): boolean {
   return aa !== null && bb !== null && JSON.stringify(aa) === JSON.stringify(bb);
 }
 
+// 留言板字段规整：去控制字符、压缩空白、按码点截断
+function cleanDisplayText(value: unknown, maxChars: number): string {
+  const cleaned = String(value ?? "")
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return [...cleaned].slice(0, maxChars).join("");
+}
+function charLength(value: string): number {
+  return [...String(value || "")].length;
+}
+function normalizedAvatar(value: unknown): string | null {
+  if (typeof value !== "string" || !value) return null;
+  if (value.length > 22000) return null;
+  if (!value.startsWith("data:image/")) return null;
+  return value;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
 
-  const action = new URL(req.url).pathname.split("/").pop(); // health | start | submit | dream-start | dream-submit
+  const action = new URL(req.url).pathname.split("/").pop(); // health | start | submit | dream-start | dream-submit | message
 
   try {
     // ---------------- /health ----------------
@@ -112,6 +136,7 @@ Deno.serve(async (req) => {
         capabilities: {
           normal_leaderboard: true,
           corruptgun: CHARACTERS.has("corruptgun"),
+          guestbook_message: true,
           dream_leaderboard: dreamLeaderboardReady,
           dream_stage: "dream-01-seraph",
           dream_clear_version: DREAM_ACTIVE_CLEAR_VERSION,
@@ -399,7 +424,34 @@ Deno.serve(async (req) => {
       return json({ ok: true, status: "accepted" });
     }
 
-    return json({ ok: false, error: "unknown action, use /health, /start, /submit, /dream-start or /dream-submit" }, 404);
+    // ---------------- /message ----------------
+    // 留言板写入：表对 anon 只读，写入只能走这里（service_role）。免运行令牌，
+    // 字段上限与客户端 GUESTBOOK_* 校验一致；失败时 reasons 会被客户端直接展示。
+    if (action === "message") {
+      const p = await req.json();
+      const player_id = cleanDisplayText(p.player_id, GUESTBOOK_ID_MAX);
+      const player_name = cleanDisplayText(p.player_name, GUESTBOOK_NAME_MAX) || "匿名玩家";
+      const message = cleanDisplayText(p.message, GUESTBOOK_MESSAGE_MAX);
+      const reject: string[] = [];
+
+      if (charLength(player_id) < 1 || charLength(player_id) > GUESTBOOK_ID_MAX) reject.push("invalid id");
+      if (charLength(player_name) < 1 || charLength(player_name) > GUESTBOOK_NAME_MAX) reject.push("invalid name");
+      if (charLength(message) < 1 || charLength(message) > GUESTBOOK_MESSAGE_MAX) reject.push("invalid message");
+
+      if (reject.length) return json({ ok: false, status: "rejected", reasons: reject }, 400);
+
+      const { error } = await admin.from("guestbook_messages").insert({
+        player_id,
+        player_name,
+        message,
+        avatar_data: normalizedAvatar(p.avatar_data),
+      });
+
+      if (error) return json({ ok: false, error: error.message }, 500);
+      return json({ ok: true, status: "accepted" });
+    }
+
+    return json({ ok: false, error: "unknown action, use /health, /start, /submit, /dream-start, /dream-submit or /message" }, 404);
   } catch (e) {
     return json({ ok: false, error: String((e as Error)?.message ?? e) }, 500);
   }

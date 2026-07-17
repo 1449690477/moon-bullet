@@ -78,6 +78,7 @@ async function main() {
   if (!healthResponse.ok) failures.push(`health endpoint returned ${healthResponse.status}`);
   if (health.edge_version !== expectedVersion) failures.push(`Edge version is ${health.edge_version || 'missing'}, expected ${expectedVersion}`);
   if (health.capabilities?.corruptgun !== true) failures.push('corruptgun is missing from the deployed Edge allowlist');
+  if (health.capabilities?.guestbook_message !== true) failures.push('deployed Edge Function is missing the guestbook /message route');
   if (health.capabilities?.dream_leaderboard !== true) failures.push('deployed Edge Function cannot read dream_leaderboard');
   if (health.capabilities?.dream_clear_version !== expectedDreamClearVersion) failures.push(`Dream clear version is ${health.capabilities?.dream_clear_version || 'missing'}, expected ${expectedDreamClearVersion}`);
   if (health.capabilities?.dream_stage_contract !== expectedDreamStageContract) failures.push(`Dream stage contract is ${health.capabilities?.dream_stage_contract || 'missing'}, expected ${expectedDreamStageContract}`);

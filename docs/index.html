@@ -36,7 +36,7 @@
       width: var(--app-vw); height: var(--app-vh);
       display:flex; align-items:center; justify-content:center;
       background:
-        radial-gradient(circle at 82% 8%, rgba(88,183,255,.20), transparent 34%),
+        radial-gradient(circle at 82% 8%, rgba(255,164,204,.18), transparent 34%),
         radial-gradient(circle at 10% 88%, rgba(79,216,232,.20), transparent 36%),
         radial-gradient(circle at 62% 96%, rgba(255,255,255,.34), transparent 30%),
         linear-gradient(180deg, #FAFDFF 0%, #EFF7FF 100%);
@@ -155,7 +155,7 @@
     .leaderboard-dialog button {
       position: relative; overflow: hidden;
       border: 1px solid rgba(255,255,255,.55); border-radius: 999px; padding: 11px 16px; color: #fff;
-      background: linear-gradient(180deg, #58B7FF 0%, #3E9BF5 100%);
+      background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC);
       font: 800 14px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
       box-shadow: 0 10px 26px rgba(90,120,176,.26); cursor: pointer;
       transform: translateY(0) scale(1);
@@ -223,7 +223,7 @@
       padding: 4px 12px;
       border-radius: 999px;
       color: #fff;
-      background: linear-gradient(180deg, #58B7FF, #3E9BF5);
+      background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC);
       font-weight: 900;
       font-size: 14px;
       box-shadow: 0 0 14px rgba(88, 183, 255, .30);
@@ -274,6 +274,7 @@
     .sky-blob-a { width: 26rem; height: 26rem; left: -8rem; top: 6%; background: rgba(88,183,255,.30); animation: sky-blob-drift 16s ease-in-out infinite; }
     .sky-blob-b { width: 24rem; height: 24rem; right: -7rem; top: 30%; background: rgba(79,216,232,.26); animation: sky-blob-drift 19s ease-in-out infinite; animation-delay: -5s; }
     .sky-blob-c { width: 20rem; height: 20rem; left: 30%; bottom: -9rem; background: rgba(62,155,245,.20); animation: sky-blob-drift 22s ease-in-out infinite; animation-delay: -11s; }
+    .sky-blob-d { width: 22rem; height: 22rem; right: 12%; bottom: -8rem; background: rgba(255,164,204,.24); animation: sky-blob-drift 20s ease-in-out infinite; animation-delay: -8s; }
     @keyframes sky-blob-drift {
       0%, 100% { transform: translate(0, 0) scale(1); }
       33% { transform: translate(42px, -48px) scale(1.10); }
@@ -288,7 +289,7 @@
       position: fixed; top: 10px; left: 0; right: 0; z-index: 1; overflow: hidden; display: none;
       transform: rotate(-.6deg); padding: 7px 0;
       border-top: 1px solid rgba(255,255,255,.65); border-bottom: 1px solid rgba(255,255,255,.65);
-      background: linear-gradient(90deg, rgba(88,183,255,.16), rgba(255,255,255,.30), rgba(79,216,232,.16));
+      background: linear-gradient(90deg, rgba(88,183,255,.16), rgba(255,164,204,.14), rgba(255,255,255,.30), rgba(79,216,232,.16));
       backdrop-filter: blur(10px) saturate(1.3); -webkit-backdrop-filter: blur(10px) saturate(1.3);
     }
     .sky-marquee-track { display: flex; width: max-content; gap: 34px; white-space: nowrap; animation: sky-marquee-x 30s linear infinite; }
@@ -369,7 +370,7 @@
     .sky-gb-count { font-size: 11px; color: rgba(46,74,110,.45); font-weight: 800; margin-left: auto; }
     .sky-gb-submit {
       position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.55); border-radius: 999px; padding: 10px 18px;
-      color: #fff; background: linear-gradient(180deg, #58B7FF, #3E9BF5); box-shadow: 0 10px 24px rgba(90,120,176,.26);
+      color: #fff; background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC); box-shadow: 0 10px 24px rgba(90,120,176,.26);
       font: 900 13px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
       cursor: pointer; letter-spacing: .06em;
       transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, filter .18s ease;
@@ -382,7 +383,7 @@
     .sky-notice-item:first-of-type { border-top: none; padding-top: 2px; }
     .sky-notice-date {
       display: inline-block; border-radius: 999px; padding: 3px 11px; font: 900 11px Nunito, sans-serif; color: #fff;
-      background: linear-gradient(180deg, #58B7FF, #3E9BF5); box-shadow: 0 0 12px rgba(88,183,255,.28);
+      background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC); box-shadow: 0 0 12px rgba(88,183,255,.28);
     }
     .sky-notice-tag { margin-left: 7px; font-size: 12px; font-weight: 900; color: #2E4A6E; }
     .sky-notice-item p {
@@ -429,9 +430,70 @@
     .sky-overlay-card h2 { margin: 0 0 12px; font-size: 22px; color: #2E4A6E; display: flex; align-items: center; gap: 8px; }
     .sky-overlay-card .sky-notice-item p { -webkit-line-clamp: unset; }
     .sky-overlay-note { margin: 12px 0 0; font-size: 11.5px; font-weight: 700; color: rgba(46,74,110,.45); }
+    /* —— 机库预览：可折叠玻璃卡（7 战机 + 6 僚机，静态展示） —— */
+    .sky-hangar-head {
+      display: block; width: 100%; border: none; background: none; cursor: pointer; padding: 0;
+      text-align: left; font: inherit; color: inherit;
+    }
+    .sky-hangar-title { margin: 9px 0 2px; font-size: 21px; font-weight: 900; color: #2E4A6E; display: flex; align-items: center; gap: 8px; }
+    .sky-hangar-chev {
+      position: absolute; top: 24px; right: 20px; color: #3E9BF5; font-size: 15px; font-weight: 900;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .sky-hangar-body { overflow: hidden; max-height: 920px; opacity: 1; transition: max-height .45s cubic-bezier(.22,.61,.36,1), opacity .3s ease; }
+    .sky-hangar.collapsed .sky-hangar-body { max-height: 0; opacity: 0; pointer-events: none; }
+    .sky-hangar.collapsed .sky-hangar-chev { transform: rotate(-90deg); }
+    .sky-hangar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 13px; }
+    .sky-hangar-ship {
+      position: relative; border: 1px solid rgba(255,255,255,.6); border-radius: 18px; padding: 8px 4px 7px;
+      background: linear-gradient(160deg, rgba(255,255,255,.72), rgba(232,244,255,.55));
+      cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease;
+    }
+    .sky-hangar-ship:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 22px rgba(90,120,176,.20), 0 0 12px rgba(255,164,204,.22); }
+    .sky-hangar-ship.active { border-color: rgba(88,183,255,.75); box-shadow: 0 0 0 2px rgba(255,164,204,.35), 0 8px 18px rgba(90,120,176,.18); }
+    .sky-hangar-ava {
+      width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
+      border: 2px solid rgba(88,183,255,.55); background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC);
+      box-shadow: 0 3px 8px rgba(90,120,176,.18);
+    }
+    .sky-hangar-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sky-hangar-ship span { font-size: 11px; font-weight: 900; color: #2E4A6E; white-space: nowrap; }
+    .sky-hangar-wings { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .sky-hangar-wing {
+      border: 1px solid rgba(255,255,255,.6); border-radius: 999px; padding: 4px 10px; cursor: pointer;
+      font: 900 11px Nunito, sans-serif; color: #2B7FD9;
+      background: linear-gradient(90deg, rgba(88,183,255,.16), rgba(255,164,204,.14));
+      transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
+    }
+    .sky-hangar-wing:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 14px rgba(90,120,176,.18); }
+    .sky-hangar-wing.active { color: #F06BA8; border-color: rgba(255,164,204,.6); }
+    .sky-hangar-detail {
+      margin-top: 12px; border-radius: 20px; padding: 12px 14px;
+      background: linear-gradient(160deg, rgba(255,255,255,.78), rgba(240,248,255,.60));
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: 0 10px 24px rgba(90,120,176,.16), inset 0 1px 0 rgba(255,255,255,.7);
+      animation: cute-dialog-pop .32s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .sky-hangar-detail[hidden] { display: none; }
+    .sky-hangar-detail-head { display: flex; align-items: center; gap: 10px; }
+    .sky-hangar-detail-ava {
+      width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: 0 0 auto;
+      border: 2px solid rgba(255,164,204,.55); background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC);
+    }
+    .sky-hangar-detail-ava img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sky-hangar-detail-wingmark { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; }
+    .sky-hangar-detail-name { font-size: 14.5px; font-weight: 900; color: #2E4A6E; }
+    .sky-hangar-detail-hp {
+      display: inline-block; margin-top: 3px; border-radius: 999px; padding: 2px 9px;
+      font: 900 10.5px Nunito, sans-serif; color: #fff;
+      background: linear-gradient(135deg, #58B7FF, #7FB5FF 45%, #FFA4CC);
+    }
+    .sky-hangar-detail-role { margin: 8px 0 0; font-size: 12px; line-height: 1.6; color: rgba(46,74,110,.8); font-weight: 700; }
     @media (prefers-reduced-motion: reduce) {
       .sky-blob, .sky-sparkle-fx, .sky-marquee-track, .sky-card, .sky-gb-item, .sky-like,
-      .sky-gb-submit, .sky-more-btn, .sky-rail, .sky-parallax, .sky-overlay-card { animation: none !important; transition: none !important; }
+      .sky-gb-submit, .sky-more-btn, .sky-rail, .sky-parallax, .sky-overlay-card,
+      .sky-hangar-body, .sky-hangar-chev, .sky-hangar-ship, .sky-hangar-wing, .sky-hangar-detail { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
@@ -450,6 +512,7 @@
       <div class="sky-blob sky-blob-a"></div>
       <div class="sky-blob sky-blob-b"></div>
       <div class="sky-blob sky-blob-c"></div>
+      <div class="sky-blob sky-blob-d"></div>
     </div>
     <span class="sky-sparkle-fx" style="left:6%;top:15%;animation-delay:0s">✦</span>
     <span class="sky-sparkle-fx" style="left:11%;top:64%;animation-delay:.7s">✦</span>
@@ -508,6 +571,18 @@
       <div class="sky-clock-time" id="skyClockTime">--:--:--</div>
       <div class="sky-clock-date" id="skyClockDate"></div>
       <span class="sky-visit" id="skyVisit"></span>
+    </section>
+    <section class="sky-card sky-hangar" id="skyHangar">
+      <button class="sky-hangar-head" id="skyHangarHead" type="button" aria-expanded="true">
+        <span class="sky-card-tag">✈ HANGAR</span>
+        <span class="sky-hangar-title">机库预览 <span class="sky-sp">✦</span></span>
+        <span class="sky-hangar-chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="sky-hangar-body" id="skyHangarBody">
+        <div class="sky-hangar-grid" id="skyHangarShips"></div>
+        <div class="sky-hangar-wings" id="skyHangarWings"></div>
+        <div class="sky-hangar-detail" id="skyHangarDetail" hidden></div>
+      </div>
     </section>
   </aside>
   <div class="sky-overlay" id="skyNoticeOverlay" hidden>
@@ -3427,9 +3502,19 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-17-perf-governor-and-side-rails';
+     const UPDATE_NOTICE_VERSION = '2026-07-17-campaign-visual-pink-ui';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-17 · 章节弹幕质感升级与蓝粉渐变界面',
+      items: [
+        '章节模式弹幕视觉全面升级：所有弹体按经典STG规范重制——深色描边、提亮边缘环、近白亮芯、按弹径分级的底部体积阴影，刃弹追加中轴脊线高光，Boss弹使用双层描边，轮廓更清晰、更好辨认躲避。',
+        'PNG贴图弹幕现在经过烘焙弹壳处理：统一剪影描边与恒定底光，删除会随弹量忽闪的整屏底光，任何密度下每颗弹的光泽保持一致。',
+        '蚀环守望者·艾莉娅第三阶段弹幕谱面重排：多层混杂改为「环阵主层＋瞄准波浪对照层」的整洁几何结构，规律清晰但压力不减。',
+        '界面迎来蓝粉渐变：主按钮、页签滑块、标题徽标与选中态加入天蓝→樱粉渐变点缀，可爱度回升同时保持简约高级；网页右侧新增「机库预览」卡片，7位战机与6架僚机的头像、血量与定位一键速览，新手快速上手。',
+        '留言板与梦境二/三关排行上传的服务端修复已完成并排期部署，恢复后我们会第一时间在公告告知。',
+      ],
+    },
     {
       date: '2026-07-17 · 流畅度大优化与网页侧栏小天地',
       items: [
@@ -26957,6 +27042,7 @@
     const speedHint = Math.hypot(vx || 0, vy || 0);
     const b = {
       x, y, vx, vy, ax: 0, ay: 0, r, color, damage, life, maxLife: life, kind,
+      fromBoss: state === 'boss', // Boss 源弹标记：烘焙双 rim 用（boss 战期间经此漏斗的弹均属 boss 体系）
       grazed: false, rot: rand(0, TAU), spin: rand(-3, 3),
       threat: threat || inferBulletThreat(kind, speedHint),
     };
@@ -39636,12 +39722,11 @@
       if (tickEvery(t, dt, 2.0)) emitBladeWheel(boss.x, boss.y + 20, 8, 95, boss.t * 0.9, 155, '#ffd36d', 7.5, 'bladebig');
       if (tickEvery(t, dt, 2.6)) patSpinSaw(boss, 205, '#ffd36d', 8, 'bladebig');
     } else if (bossPhase === 2) {
-      // Phase 2: 迟滞环爆 + 弹跳刃 + 带缝波浪
-      if (tickEvery(t, dt, 1.25)) emitPulseRingBurst(boss.x, boss.y + 20, 18, 210, '#9fe6ff', 7.5, 'crystal', boss.t * 0.6);
-      if (tickEvery(t, dt, 1.85)) patBounceBlade(boss, 245, '#ffdd91', 7, 'qswsword');
-      if (tickEvery(t, dt, 0.48)) patWave(boss, 150, '#9fe6ff', 6.5, 'crystal', 9, true);
-      if (tickEvery(t, dt, 1.55)) emitCrystalSpearRain(200, '#ffe6a8', 7, 'v3crystg', 9, player.x);
-      if (tickEvery(t, dt, 2.1)) emitDaoWaveCorridor(boss.y + 30, 175, '#ffd46d', 7.5, 'v3daow', player.x);
+      // Phase 2: 主主题=迟滞环爆（几何环阵），对照层=带缝瞄准波浪。
+      // V3.15 的 5 层混合（环爆+弹跳刃+波浪+矛雨+刀波廊）规整为 1 主 + 1 对照，
+      // 节奏略收紧补偿密度，保持公平缝隙。
+      if (tickEvery(t, dt, 1.15)) emitPulseRingBurst(boss.x, boss.y + 20, 18, 210, '#9fe6ff', 7.5, 'crystal', boss.t * 0.6);
+      if (tickEvery(t, dt, 0.44)) patWave(boss, 150, '#9fe6ff', 6.5, 'crystal', 9, true);
     } else if (bossPhase === 3) {
       // Phase 3: 镰刀回廊 + 冲撞 + 车道激光
       if (tickEvery(t, dt, 1.35)) patScytheLane(boss, 185, '#c984ff', 8, 'scytherose');
@@ -45921,9 +46006,9 @@
   // 彻底消除每帧成千上万次 createRadialGradient（Windows 卡顿主因）。
   // ═══════════════════════════════════════════════════════════════
   const _bulletSpriteCache = new Map();
-  function getBulletSprite(shape, col, r) {
+  function getBulletSprite(shape, col, r, boss) {
     const rq = Math.round(r * 2) / 2; // 半径量化到 0.5，限制缓存条目数
-    const key = shape + '|' + col.r + ',' + col.g + ',' + col.b + '|' + rq;
+    const key = shape + '|' + col.r + ',' + col.g + ',' + col.b + '|' + rq + (boss ? '|B' : '');
     let spr = _bulletSpriteCache.get(key);
     if (spr) return spr;
     const body = rq * 1.5;
@@ -45933,46 +46018,86 @@
     oc.width = size; oc.height = size;
     const g = oc.getContext('2d');
     g.translate(pad, pad);
-    // rim 色环亮度 col*0.55（旧 0.3 过暗，小尺寸下色相丢失）
+    // RESEARCH_A 规范：rim 色环 col*0.55；暗描边 rgba(16,12,36,.88) ≥ max(2px, 0.10R)
     const rimC = `rgba(${col.r * 0.55 | 0},${col.g * 0.55 | 0},${col.b * 0.55 | 0},0.95)`;
     const fillC = `rgb(${col.r},${col.g},${col.b})`;
-    // 外发光（additive）：单极径向渐变 (0,0.40)(0.55,0.12)(1,0)，半径 1.5R
+    const outlineW = Math.max(2.4, body * 0.20);
+    // 外发光（additive）：单极径向渐变 (0,0.24)(0.55,0.09)(1,0)，半径 1.5R（规范峰值 α≤0.28）
     g.globalCompositeOperation = 'lighter';
     const gl = g.createRadialGradient(0, 0, 0, 0, 0, body * 1.5);
-    gl.addColorStop(0, `rgba(${col.r},${col.g},${col.b},0.4)`);
-    gl.addColorStop(0.55, `rgba(${col.r},${col.g},${col.b},0.12)`);
+    gl.addColorStop(0, `rgba(${col.r},${col.g},${col.b},0.24)`);
+    gl.addColorStop(0.55, `rgba(${col.r},${col.g},${col.b},0.09)`);
     gl.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
     g.fillStyle = gl; g.beginPath(); g.arc(0, 0, body * 1.5, 0, TAU); g.fill();
     g.globalCompositeOperation = 'source-over';
-    if (shape === 'orb') {
-      g.strokeStyle = 'rgba(3,7,18,0.88)';
-      g.lineWidth = 2.8;
-      g.beginPath(); g.arc(0, 0, body * 1.08, 0, TAU); g.stroke();
-      g.fillStyle = fillC; g.beginPath(); g.arc(0, 0, body, 0, TAU); g.fill();
-      g.strokeStyle = rimC; g.lineWidth = 1.8; g.beginPath(); g.arc(0, 0, body, 0, TAU); g.stroke();
-      g.fillStyle = 'rgba(255,255,255,0.96)';
-      g.beginPath(); g.arc(-body * 0.18, -body * 0.18, body * 0.46, 0, TAU); g.fill();
-    } else {
-      buildBulletShape(g, shape, body);
-      g.strokeStyle = 'rgba(3,7,18,0.88)';
-      g.lineWidth = 3.0;
+    // 尺寸分级底部阴影：0.42 大 / 0.28 中 / 0.15 小（立体感与"上亮下暗"读法来源）
+    const shadeA = body >= 9 ? 0.42 : (body >= 6 ? 0.28 : 0.15);
+    function bakeBottomShade(pathFn) {
+      g.save();
+      pathFn();
+      g.clip();
+      const sh = g.createLinearGradient(0, -body, 0, body);
+      sh.addColorStop(0, 'rgba(8,10,26,0)');
+      sh.addColorStop(0.48, 'rgba(8,10,26,0)');
+      sh.addColorStop(1, `rgba(8,10,26,${shadeA})`);
+      g.fillStyle = sh;
+      g.fillRect(-body * 1.6, -body * 1.6, body * 3.2, body * 3.2);
+      g.restore();
+    }
+    // Boss 源弹双 rim：rim 内侧细暗环 + 提亮内环，读作"精英/高威胁"
+    function bakeBossDoubleRim(pathFn, scale) {
+      g.save();
+      g.scale(scale, scale);
+      pathFn();
+      g.strokeStyle = 'rgba(16,12,36,0.55)';
+      g.lineWidth = Math.max(1, body * 0.07) / scale;
       g.stroke();
-      buildBulletShape(g, shape, body);
+      g.restore();
+      g.save();
+      g.scale(scale * 0.88, scale * 0.88);
+      pathFn();
+      g.strokeStyle = `rgba(${Math.min(255, col.r * 0.85 + 60 | 0)},${Math.min(255, col.g * 0.85 + 60 | 0)},${Math.min(255, col.b * 0.85 + 60 | 0)},0.85)`;
+      g.lineWidth = Math.max(0.9, body * 0.05) / (scale * 0.88);
+      g.stroke();
+      g.restore();
+    }
+    if (shape === 'orb') {
+      const orbPath = () => { g.beginPath(); g.arc(0, 0, body, 0, TAU); };
+      g.strokeStyle = 'rgba(16,12,36,0.88)';
+      g.lineWidth = outlineW;
+      g.beginPath(); g.arc(0, 0, body * 1.04, 0, TAU); g.stroke();
+      orbPath(); g.fillStyle = fillC; g.fill();
+      bakeBottomShade(orbPath);
+      orbPath(); g.strokeStyle = rimC; g.lineWidth = 1.8; g.stroke();
+      if (boss) bakeBossDoubleRim(orbPath, 0.84);
+      // 亮核：0.46R（规范 0.42-0.50R），偏移 (-0.10R, -0.12R)
+      g.fillStyle = 'rgba(255,255,255,0.96)';
+      g.beginPath(); g.arc(-body * 0.10, -body * 0.12, body * 0.46, 0, TAU); g.fill();
+    } else {
+      const shapePath = () => buildBulletShape(g, shape, body);
+      shapePath();
+      g.strokeStyle = 'rgba(16,12,36,0.88)';
+      g.lineWidth = outlineW;
+      g.stroke();
+      shapePath();
       g.fillStyle = fillC; g.fill();
+      bakeBottomShade(shapePath);
+      shapePath();
       g.strokeStyle = rimC; g.lineWidth = 1.8; g.stroke();
+      if (boss) bakeBossDoubleRim(shapePath, 0.82);
       g.fillStyle = 'rgba(255,255,255,0.95)';
-      g.beginPath(); g.arc(0, 0, body * 0.44, 0, TAU); g.fill();
+      g.beginPath(); g.arc(-body * 0.10, -body * 0.12, body * 0.44, 0, TAU); g.fill();
     }
     spr = { canvas: oc, pad };
-    if (_bulletSpriteCache.size < 600) _bulletSpriteCache.set(key, spr);
+    if (_bulletSpriteCache.size < 1000) _bulletSpriteCache.set(key, spr);
     return spr;
   }
 
-  // 方向性弹精灵缓存（沿速度拉伸的菱形 + 暗边 + 亮核）
+  // 方向性弹精灵缓存（沿速度拉伸的菱形 + 暗边 + 亮核 + 脊线高光）
   const _dirSpriteCache = new Map();
-  function getDirSprite(col, r) {
+  function getDirSprite(col, r, boss) {
     const rq = Math.round(r * 2) / 2;
-    const key = col.r + ',' + col.g + ',' + col.b + '|' + rq;
+    const key = col.r + ',' + col.g + ',' + col.b + '|' + rq + (boss ? '|B' : '');
     let spr = _dirSpriteCache.get(key);
     if (spr) return spr;
     const L = rq * 2.6, Wd = rq * 1.15;
@@ -45984,25 +46109,108 @@
     g.translate(pad, pad);
     g.globalCompositeOperation = 'lighter';
     const gl = g.createRadialGradient(0, 0, 0, 0, 0, L * 1.3);
-    gl.addColorStop(0, `rgba(${col.r},${col.g},${col.b},0.4)`);
-    gl.addColorStop(0.55, `rgba(${col.r},${col.g},${col.b},0.12)`);
+    gl.addColorStop(0, `rgba(${col.r},${col.g},${col.b},0.24)`);
+    gl.addColorStop(0.55, `rgba(${col.r},${col.g},${col.b},0.09)`);
     gl.addColorStop(1, `rgba(${col.r},${col.g},${col.b},0)`);
     g.fillStyle = gl; g.beginPath(); g.arc(0, 0, L * 1.3, 0, TAU); g.fill();
     g.globalCompositeOperation = 'source-over';
+    const dartPath = () => {
+      g.beginPath();
+      g.moveTo(L, 0); g.lineTo(0, -Wd); g.lineTo(-L * 0.7, 0); g.lineTo(0, Wd); g.closePath();
+    };
+    // 暗描边：rgba(16,12,36,.88)，≥ max(2px, 0.10R)
+    dartPath();
     g.fillStyle = `rgb(${col.r},${col.g},${col.b})`;
-    g.beginPath();
-    g.moveTo(L, 0); g.lineTo(0, -Wd); g.lineTo(-L * 0.7, 0); g.lineTo(0, Wd); g.closePath();
-    g.strokeStyle = 'rgba(3,7,18,0.88)';
-    g.lineWidth = 2.8;
+    g.strokeStyle = 'rgba(16,12,36,0.88)';
+    g.lineWidth = Math.max(2.4, Wd * 0.30);
+    g.lineJoin = 'round';
     g.stroke();
     g.fill();
+    // 下缘阴影（沿 +Wd 侧，尺寸分级 α：0.42/0.28/0.15）
+    const shadeA = Wd >= 9 ? 0.42 : (Wd >= 6 ? 0.28 : 0.15);
+    g.save();
+    dartPath(); g.clip();
+    const sh = g.createLinearGradient(0, -Wd, 0, Wd);
+    sh.addColorStop(0, 'rgba(8,10,26,0)');
+    sh.addColorStop(0.45, 'rgba(8,10,26,0)');
+    sh.addColorStop(1, `rgba(8,10,26,${shadeA})`);
+    g.fillStyle = sh; g.fillRect(-L, -Wd, L * 2, Wd * 2);
+    g.restore();
+    // rim 色环 col*0.55
+    dartPath();
     g.strokeStyle = `rgba(${col.r * 0.55 | 0},${col.g * 0.55 | 0},${col.b * 0.55 | 0},0.9)`;
     g.lineWidth = 1.6; g.stroke();
+    if (boss) {
+      // Boss 源弹双 rim：内侧细暗环 + 提亮内环
+      g.save(); g.scale(0.82, 0.74);
+      dartPath();
+      g.strokeStyle = 'rgba(16,12,36,0.55)'; g.lineWidth = Math.max(1, Wd * 0.14); g.stroke();
+      g.restore();
+      g.save(); g.scale(0.68, 0.58);
+      dartPath();
+      g.strokeStyle = `rgba(${Math.min(255, col.r * 0.85 + 60 | 0)},${Math.min(255, col.g * 0.85 + 60 | 0)},${Math.min(255, col.b * 0.85 + 60 | 0)},0.85)`;
+      g.lineWidth = Math.max(0.9, Wd * 0.10); g.stroke();
+      g.restore();
+    }
+    // 刃/矛脊线高光：沿长轴偏上缘一道亮线，立体感来源
+    g.strokeStyle = 'rgba(255,255,255,0.55)';
+    g.lineWidth = Math.max(1, rq * 0.20);
+    g.lineCap = 'round';
+    g.beginPath(); g.moveTo(-L * 0.40, -Wd * 0.22); g.lineTo(L * 0.64, -Wd * 0.07); g.stroke();
+    // 亮核
     g.fillStyle = 'rgba(255,255,255,0.95)';
-    g.beginPath(); g.ellipse(L * 0.15, 0, rq * 0.7, rq * 0.5, 0, 0, TAU); g.fill();
+    g.beginPath(); g.ellipse(L * 0.15, -Wd * 0.08, rq * 0.7, rq * 0.5, 0, 0, TAU); g.fill();
     spr = { canvas: oc, pad };
-    if (_dirSpriteCache.size < 400) _dirSpriteCache.set(key, spr);
+    if (_dirSpriteCache.size < 600) _dirSpriteCache.set(key, spr);
     return spr;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // PNG 弹壳烘焙：暗色剪影描边（8 向冲压）+ 单极柔和底光 + 原图，
+  // 按「素材 key + 尺寸桶」一次烘焙缓存，运行时仅 1 次 drawImage。
+  // 替代旧的「弹数预算开关的 'lighter' 底光」——弹数跨过预算线时整屏
+  // 底光进出闪烁（与梦境材质条同一修复哲学：烘焙化、与弹数解耦）。
+  // ═══════════════════════════════════════════════════════════════
+  const _bulletPngShellCache = new Map();
+  function getBulletPngShell(key, img, drawW, drawH) {
+    const qw = Math.max(8, Math.round(drawW / 8) * 8);
+    const qh = Math.max(8, Math.round(drawH / 8) * 8);
+    const ck = key + '|' + qw + 'x' + qh;
+    let shell = _bulletPngShellCache.get(ck);
+    if (shell) return shell;
+    const pad = Math.ceil(Math.max(qw, qh) * 0.24) + 3;
+    const cw = qw + pad * 2, ch = qh + pad * 2;
+    const oc = document.createElement('canvas');
+    oc.width = cw; oc.height = ch;
+    const g = oc.getContext('2d');
+    // 单极柔和底光（中性冷白，峰值 α0.20，恒定存在不再随预算开关）
+    g.globalCompositeOperation = 'lighter';
+    const gr = Math.max(qw, qh) * 0.72;
+    const gl = g.createRadialGradient(cw / 2, ch / 2, 0, cw / 2, ch / 2, gr);
+    gl.addColorStop(0, 'rgba(190,220,255,0.20)');
+    gl.addColorStop(0.55, 'rgba(170,200,255,0.08)');
+    gl.addColorStop(1, 'rgba(170,200,255,0)');
+    g.fillStyle = gl; g.beginPath(); g.arc(cw / 2, ch / 2, gr, 0, TAU); g.fill();
+    g.globalCompositeOperation = 'source-over';
+    // 暗色剪影：source-in 把原图染成规范描边色 rgba(16,12,36)
+    const sil = document.createElement('canvas');
+    sil.width = cw; sil.height = ch;
+    const s2 = sil.getContext('2d');
+    s2.drawImage(img, pad, pad, qw, qh);
+    s2.globalCompositeOperation = 'source-in';
+    s2.fillStyle = 'rgba(16,12,36,0.92)';
+    s2.fillRect(0, 0, cw, ch);
+    // 8 向冲压成描边环，宽度 ≥ max(1.6px, 4.5% 短边)
+    const t = Math.max(1.6, Math.min(qw, qh) * 0.045);
+    for (let i = 0; i < 8; i++) {
+      const a = i * TAU / 8;
+      g.drawImage(sil, Math.cos(a) * t, Math.sin(a) * t);
+    }
+    // 原图置顶
+    g.drawImage(img, pad, pad, qw, qh);
+    shell = { canvas: oc, pad, qw, qh };
+    if (_bulletPngShellCache.size < 260) _bulletPngShellCache.set(ck, shell);
+    return shell;
   }
 
   function miguaSeedBoundaryPath(long, wide) {
@@ -47304,8 +47512,6 @@
 
   function drawEnemyBullets() {
     ctx.save();
-    const budget = perfBudget();
-    const drawExtraGlow = budget.bulletGlow && enemyBullets.length < budget.enemyBulletMax * 0.72;
     if (dreamActive() && dreamSyncBulletBudget() > 0) drawDreamBulletsBatch();
     for (const b of enemyBullets) {
         ctx.globalAlpha = 1;
@@ -47322,7 +47528,8 @@
       }
 	      if (b.dream) continue;
 	      if (b.suiyiTech) drawSuiyiTechBulletTrail(b);
-	      drawHostileBulletRedEdge(b, b.suiyiTech ? 1.92 : (DIRECTIONAL_BULLETS.has(b.kind) ? 1.66 : 1.48), b.suiyiTech ? 0.86 : (drawExtraGlow ? 0.74 : 0.58));
+	      // 红边已与弹数预算解耦（底光烘焙进精灵/弹壳），alpha 恒定不闪烁
+	      drawHostileBulletRedEdge(b, b.suiyiTech ? 1.92 : (DIRECTIONAL_BULLETS.has(b.kind) ? 1.66 : 1.48), b.suiyiTech ? 0.86 : 0.66);
       // —— V2 海洋贴图弹：整套 drawImage（方向性按速度旋转，其余自旋）+ 加法底光 ——
       if (SPRITE_BULLETS_V2.has(b.kind)) {
         const key = BULLET_KEY[b.kind];
@@ -47332,6 +47539,9 @@
           const pulse = b.scalePulse || 1;
           const size = r * 4.6 * pulse;
           const h = size * ar;
+          // 烘焙弹壳（剪影描边 + 恒定底光）：按素材+尺寸桶缓存，运行时仅 1 次 drawImage
+          const shell = getBulletPngShell(key, img, r * 4.6, r * 4.6 * ar);
+          const shellW = shell.canvas.width * (size / shell.qw), shellH = shell.canvas.height * (size / shell.qw);
           ctx.save();
           ctx.translate(b.x, b.y);
           if (b.spinSaw) ctx.rotate(b.rot || 0);
@@ -47343,8 +47553,7 @@
             ctx.globalAlpha *= (b.depth != null) ? bulletDepthAlpha(b) : 1;
             ctx.scale(ds, (sq + (1 - sq) * Math.min(1, pulse)) * ds);
           }
-	          if (drawExtraGlow) { ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.4; const gs = size * 1.2; ctx.drawImage(img, -gs / 2, -gs * ar / 2, gs, gs * ar); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; }
-	          ctx.drawImage(img, -size / 2, -h / 2, size, h);
+	          ctx.drawImage(shell.canvas, -shellW / 2, -shellH / 2, shellW, shellH);
 	          ctx.restore();
 	          drawHostileBulletRimOverlay(b, b.suiyiTech ? 1.28 : 1.18, b.suiyiTech ? 0.84 : 0.72);
 	          continue;
@@ -47368,16 +47577,13 @@
           const isScythe = b.kind.startsWith('scythe') || b.kind === 'gbscythe' || b.kind === 'gbscythe2';
           const isSpear = b.kind === 'homingspear' || b.kind === 'qswsword' || b.kind === 'qswsword2';
           const isBlade = b.kind === 'bladebig' || b.kind === 'bladesmall' || b.kind === 'bloodblade';
-          const size = (isScythe ? r * 6.6 : (isSpear ? r * 7.0 : (isBlade ? r * 6.2 : r * 5.4))) * pulse;
-          if (drawExtraGlow) {
-            ctx.globalCompositeOperation = 'lighter';
-            ctx.globalAlpha = 0.5;
-            ctx.drawImage(assets[key], -size / 2, -size / 2, size, size);
-            ctx.globalAlpha = 1;
-            ctx.globalCompositeOperation = 'source-over';
-	          }
-	          ctx.drawImage(assets[key], -size / 2, -size / 2, size, size);
-	          ctx.restore();
+          const baseSize = isScythe ? r * 6.6 : (isSpear ? r * 7.0 : (isBlade ? r * 6.2 : r * 5.4));
+          const size = baseSize * pulse;
+          // 烘焙弹壳（剪影描边 + 恒定底光）：刃/矛/镰刀同样获得清晰轮廓
+          const shell = getBulletPngShell(key, assets[key], baseSize, baseSize);
+          const shellW = shell.canvas.width * (size / shell.qw);
+          ctx.drawImage(shell.canvas, -shellW / 2, -shellW / 2, shellW, shellW);
+          ctx.restore();
 	          drawHostileBulletRimOverlay(b, 1.22, 0.76);
 	          continue;
 	        }
@@ -47388,7 +47594,7 @@
       // —— 方向性弹（针/钻石/月牙）：用缓存精灵，按朝向旋转 ——
       if (DIRECTIONAL_BULLETS.has(b.kind)) {
         const ang = Math.atan2(b.vy, b.vx);
-        const spr = getDirSprite(col, r);
+        const spr = getDirSprite(col, r, b.fromBoss);
         ctx.save();
         ctx.translate(b.x, b.y);
 	        ctx.rotate(ang);
@@ -47401,7 +47607,7 @@
       // —— 圆形/异形"糖果弹"：用缓存精灵 ——
       const shape = BULLET_SHAPE[b.kind] || 'orb';
       const rEff = b.grazed ? r * 1.15 : r;
-      const spr = getBulletSprite(shape, col, rEff);
+      const spr = getBulletSprite(shape, col, rEff, b.fromBoss);
 	      if (shape === 'orb') {
 	        // 圆形无需旋转，直接贴图（最快路径）
 	        ctx.drawImage(spr.canvas, b.x - spr.pad, b.y - spr.pad);
@@ -48002,8 +48208,9 @@
     corruptgun: Object.freeze({ detail: '腐化穿透', hint: '分身协同' }),
   });
 
-  // 「晴空玻璃 / Clear Sky Glass」：蓝色优先的清新简约体系。
-  // 天蓝主导，青碧点缀，粉色仅留 ~3% 给爱心/Miss/选中爱意；蓝粉永不直接相邻。
+  // 「晴空玻璃 / Clear Sky Glass」：蓝色优先的清新简约体系，蓝粉相间 ~80/20。
+  // 天蓝主导，青碧点缀，粉色回到渐变搭档（主CTA/页签边/选中光环，占比 ~15-20%）；
+  // 渐变只在元素内部（填充/光晕/shimmer），蓝粉不做文字-底色相邻，墨色 #2E4A6E 不动。
   // 阴影只用偏冷的蓝灰 #5a78b0，不用黑色。
   const TY_UI_THEME = Object.freeze({
     panelTop: 'rgba(255,255,255,.72)',
@@ -50283,10 +50490,23 @@
       ctx.drawImage(glowCv, x + w / 2 - gw / 2, y + h / 2 - gh / 2, gw, gh);
       ctx.restore();
     }
+    // active（主CTA/当前页签）：sky→粉 135° 渐变打底，玻璃层低透明度透出
+    if (active) {
+      ctx.save();
+      roundRect(x, y, w, h, h / 2);
+      const ctaGrad = ctx.createLinearGradient(x, y, x + w, y + h);
+      ctaGrad.addColorStop(0, '#58B7FF');
+      ctaGrad.addColorStop(0.45, '#7FB5FF');
+      ctaGrad.addColorStop(1, '#FFA4CC');
+      ctx.fillStyle = ctaGrad;
+      ctx.fill();
+      ctx.restore();
+    }
     drawTyTechPanel(x, y, w, h, {
       r: h / 2, hot: active, shadowScale: 0.5, pressed: !!(motion && motion.pressed),
-      top: active ? 'rgba(255,255,255,.88)' : 'rgba(255,255,255,.75)',
-      bottom: active ? 'rgba(214,238,255,.62)' : 'rgba(226,242,255,.55)',
+      top: active ? 'rgba(255,255,255,.16)' : 'rgba(255,255,255,.75)',
+      mid: active ? 'rgba(255,255,255,.05)' : undefined,
+      bottom: active ? 'rgba(255,255,255,.10)' : 'rgba(226,242,255,.55)',
       edge: active ? 'rgba(88,183,255,.85)' : 'rgba(110,160,220,.30)',
       lineWidth: active ? 1.6 : 1, stripAlpha: active ? 0.10 : 0,
       shimmer: active, phase: x * 0.013,
@@ -50294,17 +50514,17 @@
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     const labelSize = useFittedCuteFont(label, 900, h >= 60 ? 29 : 20, 17, w - 18);
     ctx.lineJoin = 'round';
-    ctx.lineWidth = Math.max(2, labelSize * 0.14); ctx.strokeStyle = 'rgba(255,255,255,.92)'; ctx.strokeText(label, x + w / 2, y + h / 2 + 0.5);
-    // 常态墨色 #2E4A6E；激活态天蓝→蔚蓝渐变 #58B7FF→#3E9BF5
-    ctx.fillStyle = active
-      ? cachedGradient(`dreambtn_ink_${x | 0}_${w | 0}`, () => {
-          const g = ctx.createLinearGradient(x, 0, x + w, 0);
-          g.addColorStop(0, '#58B7FF');
-          g.addColorStop(1, '#3E9BF5');
-          return g;
-        })
-      : '#2E4A6E';
-    ctx.fillText(label, x + w / 2, y + h / 2 + 0.5);
+    if (active) {
+      // 渐变填充上白字 + 冷蓝灰柔和投影，绝不蓝字
+      ctx.fillStyle = 'rgba(46,74,110,.35)';
+      ctx.fillText(label, x + w / 2, y + h / 2 + 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(label, x + w / 2, y + h / 2 + 0.5);
+    } else {
+      ctx.lineWidth = Math.max(2, labelSize * 0.14); ctx.strokeStyle = 'rgba(255,255,255,.92)'; ctx.strokeText(label, x + w / 2, y + h / 2 + 0.5);
+      ctx.fillStyle = '#2E4A6E';
+      ctx.fillText(label, x + w / 2, y + h / 2 + 0.5);
+    }
     ctx.restore();
   }
   function drawDreamBackdrop() {
@@ -50611,7 +50831,11 @@
       ctx.globalCompositeOperation = 'source-over';
     }
     ctx.fillStyle = 'rgba(88,183,255,.14)';
-    ctx.strokeStyle = 'rgba(88,183,255,.55)';
+    // 页签滑块边：沿整行 44→676 天蓝→粉渐变（滑块移动时边缘色相随位置变化）
+    const pillEdge = ctx.createLinearGradient(44, 0, 676, 0);
+    pillEdge.addColorStop(0, 'rgba(88,183,255,.62)');
+    pillEdge.addColorStop(1, 'rgba(255,164,204,.62)');
+    ctx.strokeStyle = pillEdge;
     ctx.lineWidth = 2.5;
     roundRect(dreamTabPill.x - 5, tabY - 4, 212, tabH + 8, (tabH + 8) / 2);
     ctx.fill(); ctx.stroke();
@@ -50682,7 +50906,7 @@
     applyCuteUiMotion(motion, x, y, w, h);
     drawTyTechPanel(x, y, w, h, {
       r: 13, hot: selected,
-      top: selected ? 'rgba(227,246,255,.96)' : 'rgba(240,248,255,.90)',
+      top: selected ? 'rgba(255,228,241,.96)' : 'rgba(240,248,255,.90)',
       bottom: selected ? 'rgba(229,244,255,.95)' : 'rgba(226,242,255,.90)',
       edge: selected ? 'rgba(47,168,238,.88)' : 'rgba(113,181,229,.66)',
       stripAlpha: selected ? 0.10 : 0.03, scanAlpha: selected ? 0.08 : 0.02, cornerAlpha: selected ? 0.62 : 0.2,
@@ -51448,7 +51672,7 @@
     ctx.textBaseline = 'alphabetic';
     ctx.lineJoin = 'round';
     const size = useFittedCuteFont(label, 900, preferredSize, 58, W - 92);
-    // 晴空呼吸：极轻整体缩放 + 渐变流光（青蓝 mid stop 缓慢游走）
+    // 晴空呼吸：极轻整体缩放 + 渐变流光（mid stop 缓慢游走，颜色在青碧 ↔ 粉之间 ~18s 交叉）
     const breathe = 1 + 0.0075 * (1 + Math.sin(time * 1.35));
     ctx.translate(W / 2, y); ctx.scale(breathe, breathe); ctx.translate(-W / 2, -y);
     ctx.lineWidth = Math.max(9, size * 0.14);
@@ -51458,9 +51682,15 @@
     ctx.fillStyle = 'rgba(90,120,176,.28)';
     ctx.fillText(label, W / 2, y + 2);
     const drift = 0.5 + 0.20 * Math.sin(time * 0.55);
+    const pinkMix = 0.5 + 0.5 * Math.sin(time * 0.35);
+    const mixC = (a, b, t) => {
+      const pa = [parseInt(a.slice(1, 3), 16), parseInt(a.slice(3, 5), 16), parseInt(a.slice(5, 7), 16)];
+      const pb = [parseInt(b.slice(1, 3), 16), parseInt(b.slice(3, 5), 16), parseInt(b.slice(5, 7), 16)];
+      return `rgb(${pa.map((v, i) => Math.round(v + (pb[i] - v) * t)).join(',')})`;
+    };
     const grad = ctx.createLinearGradient(W * 0.19, 0, W * 0.81, 0);
     grad.addColorStop(0, '#58B7FF');
-    grad.addColorStop(Math.max(0.08, Math.min(0.92, drift)), '#4FD8E8');
+    grad.addColorStop(Math.max(0.08, Math.min(0.92, drift)), mixC('#4FD8E8', '#FFA4CC', pinkMix));
     grad.addColorStop(1, '#3E9BF5');
     ctx.fillStyle = grad;
     ctx.fillText(label, W / 2, y);
@@ -51499,7 +51729,7 @@
 
   function drawTitleToggleMark(cx, cy, enabled, radius = 10) {
     ctx.save();
-    ctx.fillStyle = enabled ? '#E3F6FF' : 'rgba(255,255,255,.70)';
+    ctx.fillStyle = enabled ? '#FFE4F1' : 'rgba(255,255,255,.70)';
     ctx.strokeStyle = enabled ? '#2FA8EE' : 'rgba(70,120,165,.82)';
     ctx.lineWidth = enabled ? 2.5 : 2;
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, TAU); ctx.fill(); ctx.stroke();
@@ -51524,6 +51754,19 @@
     ctx.save();
     const motion = observeCuteUiControl(`title:char:${key}`, x, y, w, h, selected, index);
     applyCuteUiMotion(motion, x, y, w, h);
+    // 选中卡：粉色径向光环（'lighter'，元素内部光晕），边缘仍由面板 sky 描边承担
+    if (selected && !cgLite()) {
+      const haloCv = cachedSprite('titlechar_halo_pink', 96, 48, (c2, sw, sh) => {
+        const g = c2.createRadialGradient(sw / 2, sh / 2, 1, sw / 2, sh / 2, sw / 2);
+        g.addColorStop(0, 'rgba(255,164,204,.40)');
+        g.addColorStop(1, 'rgba(255,164,204,0)');
+        c2.fillStyle = g; c2.fillRect(0, 0, sw, sh);
+      });
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.drawImage(haloCv, x - w * 0.06, y - h * 0.30, w * 1.12, h * 1.6);
+      ctx.restore();
+    }
     drawTyTechPanel(x, y, w, h, {
       r: 18,
       hot: selected,
@@ -51584,7 +51827,7 @@
     drawTyTechPanel(x, y, w, h, {
       r: 14,
       hot: enabled,
-      top: enabled ? 'rgba(227,246,255,.94)' : 'rgba(240,248,255,.90)',
+      top: enabled ? 'rgba(255,228,241,.94)' : 'rgba(240,248,255,.90)',
       bottom: enabled ? 'rgba(229,244,255,.92)' : 'rgba(226,242,255,.90)',
       edge: enabled ? 'rgba(47,168,238,.82)' : 'rgba(113,181,229,.72)',
       stripAlpha: enabled ? 0.09 : 0.03,
@@ -51635,13 +51878,26 @@
         ctx.drawImage(glowCv, rect.x + rect.w / 2 - gw / 2, rect.y + rect.h / 2 - gh / 2, gw, gh);
         ctx.restore();
       }
+      // 主 CTA：sky→粉 135° 渐变填充打底，玻璃层改低透明度让渐变透出（渐变只在元素内部）
+      if (!dream) {
+        ctx.save();
+        roundRect(rect.x, rect.y, rect.w, rect.h, rect.h / 2);
+        const ctaGrad = ctx.createLinearGradient(rect.x, rect.y, rect.x + rect.w, rect.y + rect.h);
+        ctaGrad.addColorStop(0, '#58B7FF');
+        ctaGrad.addColorStop(0.45, '#7FB5FF');
+        ctaGrad.addColorStop(1, '#FFA4CC');
+        ctx.fillStyle = ctaGrad;
+        ctx.fill();
+        ctx.restore();
+      }
       drawTyTechPanel(rect.x, rect.y, rect.w, rect.h, {
         r: rect.h / 2,
         hot: true,
         shadowScale: 0.5,
         pressed: !!(motion && motion.pressed),
-        top: 'rgba(255,255,255,.96)',
-        bottom: dream ? 'rgba(232,242,255,.94)' : 'rgba(214,238,255,.94)',
+        top: dream ? 'rgba(255,255,255,.96)' : 'rgba(255,255,255,.16)',
+        mid: dream ? undefined : 'rgba(255,255,255,.05)',
+        bottom: dream ? 'rgba(232,242,255,.94)' : 'rgba(255,255,255,.10)',
         edge: dream ? 'rgba(62,155,245,.70)' : 'rgba(88,183,255,.85)',
         lineWidth: 2.2,
         stripAlpha: 0.12,
@@ -51653,11 +51909,24 @@
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.lineJoin = 'round';
       const labelSize = useFittedCuteFont(label, 900, mobile ? 31 : 30, 24, rect.w - 24);
-      ctx.lineWidth = Math.max(3, labelSize * 0.14);
-      ctx.strokeStyle = 'rgba(255,255,255,.92)';
-      ctx.strokeText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
-      ctx.fillStyle = dream ? '#3E9BF5' : '#2E4A6E';
-      ctx.fillText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
+      if (dream) {
+        ctx.lineWidth = Math.max(3, labelSize * 0.14);
+        ctx.strokeStyle = 'rgba(255,255,255,.92)';
+        ctx.strokeText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
+        // 次 CTA 文字：天蓝→蔚蓝→粉 三色渐变（文字渐变，底色仍是白玻璃）
+        const ink = ctx.createLinearGradient(rect.x, 0, rect.x + rect.w, 0);
+        ink.addColorStop(0, '#58B7FF');
+        ink.addColorStop(0.5, '#3E9BF5');
+        ink.addColorStop(1, '#FFA4CC');
+        ctx.fillStyle = ink;
+        ctx.fillText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
+      } else {
+        // 主 CTA 白字：冷蓝灰柔和投影代替描边，绝不蓝字
+        ctx.fillStyle = 'rgba(46,74,110,.35)';
+        ctx.fillText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 2.5);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(label, rect.x + rect.w / 2, rect.y + rect.h / 2 + 1);
+      }
       ctx.restore();
     };
     drawModeButton(titleStartRect, 'title:start', '章节战斗', false);
@@ -56654,6 +56923,121 @@
       gbSubmit.disabled = false;
       gbSubmit.textContent = '寄出 ♡';
     }
+  });
+
+  /* —— 机库预览：静态抄录引擎 CHARACTERS / WING_OPTIONS（只读展示，不碰游戏内部状态） —— */
+  const HANGAR_SHIPS = [
+    { key: 'witch', name: '伊丽莎白', full: '始祖血族 · 伊丽莎白', hp: 130, role: '赤红血刃 · 血蚀全屏冲击波', avatar: 'assets/characters/player_witch_avatar.png' },
+    { key: 'yanuxiya', name: '雅努西娅', full: '白夜咏者 · 雅努西娅', hp: 112, role: '激光束 · 暴走分裂锁敌', avatar: 'assets/characters/player_yanuxiya_avatar.png' },
+    { key: 'anna', name: '安娜', full: '黑羽镰者 · 安娜', hp: 120, role: '镰刀月牙 · 扇形收割', avatar: 'assets/characters/player_anna_avatar.png' },
+    { key: 'reaver', name: '夜裁', full: '魔王刀锋 · 夜裁', hp: 122, role: '空间斩 · 裂界黑洞', avatar: 'assets/characters/player_reaver_avatar.png' },
+    { key: 'motherlife', name: '生命之母', full: '生命圣母 · 生命之母', hp: 160, role: '生命飘带 · 濒死反哺', avatar: 'assets/player/mother_life/ship/avatar.png' },
+    { key: 'skyward', name: '苍穹圣巡', full: '圣仪巡航 · 苍穹圣巡', hp: 138, role: '圣枪穿刺 · 光翼晶刃', avatar: 'assets/player/skyward_paladin/ui/skyward_avatar.png' },
+    { key: 'corruptgun', name: '腐蚀裁决', full: '罪渊魔枪 · 腐蚀裁决', hp: 126, role: '腐化穿透 · 投影分身', avatar: 'assets/player/corrupt_gun/ui/cg_avatar.png' },
+  ];
+  const HANGAR_WINGS = [
+    { key: 'moonfeather', name: '月泪·圣羽', role: '两架圣羽随身护航，暴走化为金红形态' },
+    { key: 'reaverwing', name: '夜裁之影', role: '黑银刀阵随行，协同空间斩击' },
+    { key: 'saintcrown', name: '圣冕圣械', role: '双机分列两侧，天罚光束齐射' },
+    { key: 'nightcoffin', name: '夜棺·八芒浮骸', role: '八台浮游炮脱手作战，按 E 切换冲撞 / 激光' },
+    { key: 'skyglory', name: '天耀·三璇光阵', role: '前置三联高能激光，天耀之手镇场' },
+    { key: 'motherhive', name: '母巢蝶环', role: '蝶环晶体炮台，生命印记弹幕' },
+  ];
+  const hangar = $('skyHangar'), hangarHead = $('skyHangarHead');
+  const hangarShips = $('skyHangarShips'), hangarWings = $('skyHangarWings'), hangarDetail = $('skyHangarDetail');
+  let hangarSel = null; // { kind: 'ship' | 'wing', key }
+  function syncHangarActive() {
+    if (hangarShips) hangarShips.querySelectorAll('.sky-hangar-ship').forEach((el) => {
+      el.classList.toggle('active', !!hangarSel && hangarSel.kind === 'ship' && el.dataset.key === hangarSel.key);
+    });
+    if (hangarWings) hangarWings.querySelectorAll('.sky-hangar-wing').forEach((el) => {
+      el.classList.toggle('active', !!hangarSel && hangarSel.kind === 'wing' && el.dataset.key === hangarSel.key);
+    });
+  }
+  function renderHangarDetail() {
+    if (!hangarDetail) return;
+    const ship = hangarSel && hangarSel.kind === 'ship' ? HANGAR_SHIPS.find((s) => s.key === hangarSel.key) : null;
+    const wing = hangarSel && hangarSel.kind === 'wing' ? HANGAR_WINGS.find((w) => w.key === hangarSel.key) : null;
+    hangarDetail.textContent = '';
+    if (!ship && !wing) { hangarDetail.hidden = true; return; }
+    const head = document.createElement('div');
+    head.className = 'sky-hangar-detail-head';
+    const ava = document.createElement('div');
+    ava.className = 'sky-hangar-detail-ava' + (ship ? '' : ' sky-hangar-detail-wingmark');
+    if (ship) {
+      const img = document.createElement('img');
+      img.src = ship.avatar; img.alt = ship.full;
+      img.addEventListener('error', () => { img.remove(); });
+      ava.appendChild(img);
+    } else {
+      ava.textContent = '✦';
+    }
+    const meta = document.createElement('div');
+    const nm = document.createElement('div');
+    nm.className = 'sky-hangar-detail-name';
+    nm.textContent = ship ? ship.full : wing.name;
+    const hp = document.createElement('span');
+    hp.className = 'sky-hangar-detail-hp';
+    hp.textContent = ship ? `HP ${ship.hp}` : '僚机 · WING';
+    meta.append(nm, hp);
+    head.append(ava, meta);
+    const role = document.createElement('p');
+    role.className = 'sky-hangar-detail-role';
+    role.textContent = ship ? ship.role : wing.role;
+    hangarDetail.append(head, role);
+    hangarDetail.hidden = false;
+    // 侧栏可滚动：打开详情时把卡片滚入视野（reduced-motion 时直接跳转）
+    try { hangarDetail.scrollIntoView({ block: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' }); } catch {}
+  }
+  function toggleHangarSel(kind, key) {
+    hangarSel = hangarSel && hangarSel.kind === kind && hangarSel.key === key ? null : { kind, key };
+    syncHangarActive();
+    renderHangarDetail();
+  }
+  if (hangarShips) {
+    HANGAR_SHIPS.forEach((s) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'sky-hangar-ship';
+      b.dataset.key = s.key;
+      b.setAttribute('aria-label', s.full);
+      const ava = document.createElement('div');
+      ava.className = 'sky-hangar-ava';
+      const img = document.createElement('img');
+      img.src = s.avatar; img.alt = s.name; img.loading = 'lazy';
+      img.addEventListener('error', () => { img.remove(); });
+      ava.appendChild(img);
+      const lb = document.createElement('span');
+      lb.textContent = s.name;
+      b.append(ava, lb);
+      b.addEventListener('click', () => toggleHangarSel('ship', s.key));
+      hangarShips.appendChild(b);
+    });
+  }
+  if (hangarWings) {
+    HANGAR_WINGS.forEach((w) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'sky-hangar-wing';
+      b.dataset.key = w.key;
+      b.textContent = w.name;
+      b.addEventListener('click', () => toggleHangarSel('wing', w.key));
+      hangarWings.appendChild(b);
+    });
+  }
+  if (hangar && hangarHead) {
+    if (store.get('sky-hangar-collapsed', false)) {
+      hangar.classList.add('collapsed');
+      hangarHead.setAttribute('aria-expanded', 'false');
+    }
+    hangarHead.addEventListener('click', () => {
+      const collapsed = hangar.classList.toggle('collapsed');
+      hangarHead.setAttribute('aria-expanded', String(!collapsed));
+      store.set('sky-hangar-collapsed', collapsed);
+    });
+  }
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && hangarSel) { hangarSel = null; syncHangarActive(); renderHangarDetail(); }
   });
 
   loadGuestbook();
