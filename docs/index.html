@@ -264,6 +264,175 @@
       .leaderboard-dialog { animation: none; }
       .leaderboard-dialog button { transition: none; }
     }
+
+    /* ===== 晴空玻璃 · 桌面侧栏 page widgets（仅 ≥1180px 且边距够宽时显示） ===== */
+    #wrap { position: relative; z-index: 2; pointer-events: none; }
+    #wrap canvas { pointer-events: auto; }
+    .sky-fx { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .sky-parallax { position: absolute; inset: -48px; transition: transform .9s cubic-bezier(.22,.61,.36,1); will-change: transform; }
+    .sky-blob { position: absolute; border-radius: 50%; filter: blur(64px); }
+    .sky-blob-a { width: 26rem; height: 26rem; left: -8rem; top: 6%; background: rgba(88,183,255,.30); animation: sky-blob-drift 16s ease-in-out infinite; }
+    .sky-blob-b { width: 24rem; height: 24rem; right: -7rem; top: 30%; background: rgba(79,216,232,.26); animation: sky-blob-drift 19s ease-in-out infinite; animation-delay: -5s; }
+    .sky-blob-c { width: 20rem; height: 20rem; left: 30%; bottom: -9rem; background: rgba(62,155,245,.20); animation: sky-blob-drift 22s ease-in-out infinite; animation-delay: -11s; }
+    @keyframes sky-blob-drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(42px, -48px) scale(1.10); }
+      66% { transform: translate(-32px, 28px) scale(.93); }
+    }
+    .sky-sparkle-fx { position: absolute; font-size: 15px; color: rgba(88,183,255,.80); animation: sky-sparkle-pop 2.6s ease-in-out infinite; }
+    @keyframes sky-sparkle-pop {
+      0%, 100% { opacity: .18; transform: scale(.7) rotate(-8deg); }
+      50% { opacity: .95; transform: scale(1.15) rotate(8deg); }
+    }
+    .sky-marquee {
+      position: fixed; top: 10px; left: 0; right: 0; z-index: 1; overflow: hidden; display: none;
+      transform: rotate(-.6deg); padding: 7px 0;
+      border-top: 1px solid rgba(255,255,255,.65); border-bottom: 1px solid rgba(255,255,255,.65);
+      background: linear-gradient(90deg, rgba(88,183,255,.16), rgba(255,255,255,.30), rgba(79,216,232,.16));
+      backdrop-filter: blur(10px) saturate(1.3); -webkit-backdrop-filter: blur(10px) saturate(1.3);
+    }
+    .sky-marquee-track { display: flex; width: max-content; gap: 34px; white-space: nowrap; animation: sky-marquee-x 30s linear infinite; }
+    .sky-marquee:hover .sky-marquee-track { animation-play-state: paused; }
+    .sky-marquee-track span { display: flex; align-items: center; gap: 34px; font-size: 13px; font-weight: 900; letter-spacing: .16em; color: #3E9BF5; }
+    .sky-marquee-track i { font-style: normal; color: #4FD8E8; }
+    @keyframes sky-marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .sky-rail {
+      position: fixed; top: 50%; z-index: 3; width: 330px; max-height: calc(100vh - 96px); overflow-y: auto;
+      display: flex; flex-direction: column; gap: 18px; padding: 4px; scrollbar-width: thin;
+      opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(var(--slide, -14px));
+      transition: opacity .45s ease, transform .45s cubic-bezier(.22,.61,.36,1);
+    }
+    .sky-rail-left { left: 16px; --slide: -14px; }
+    .sky-rail-right { right: 16px; --slide: 14px; }
+    body.sky-rails-fit .sky-rail { opacity: 1; pointer-events: auto; transform: translateY(-50%) translateX(0); }
+    @media (min-width: 1180px) { .sky-marquee { display: block; } }
+    @media (max-width: 1179.98px) { .sky-rail, .sky-marquee { display: none !important; } }
+    html.mobile-game-fullscreen .sky-rail, html.mobile-game-fullscreen .sky-marquee, html.mobile-game-fullscreen .sky-overlay { display: none !important; }
+    .sky-card {
+      position: relative; border-radius: 2rem; padding: 20px; flex: 0 0 auto;
+      background: linear-gradient(180deg, rgba(255,255,255,.66), rgba(240,248,255,.52));
+      backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+      border: 1px solid rgba(255,255,255,.55);
+      box-shadow: 0 18px 44px rgba(90,120,176,.18), 0 3px 12px rgba(88,183,255,.10), inset 0 1px 0 rgba(255,255,255,.7);
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+    }
+    .sky-card:hover {
+      transform: translateY(-5px) rotate(var(--tilt, -.5deg));
+      box-shadow: 0 26px 60px rgba(90,120,176,.24), 0 6px 18px rgba(88,183,255,.16), inset 0 1px 0 rgba(255,255,255,.75);
+    }
+    .sky-rail .sky-card:nth-child(even) { --tilt: .5deg; }
+    .sky-card-tag {
+      display: inline-block; border-radius: 999px; padding: 4px 12px;
+      font: 900 11px Nunito, sans-serif; letter-spacing: .14em; color: #2FA8EE;
+      background: linear-gradient(90deg, rgba(88,183,255,.16), rgba(79,216,232,.14));
+    }
+    .sky-card h2 { margin: 9px 0 2px; font-size: 21px; color: #2E4A6E; display: flex; align-items: center; gap: 8px; }
+    .sky-card h2 .sky-sp { color: #58B7FF; font-size: 17px; animation: sky-sparkle-pop 2.4s ease-in-out infinite; }
+    .sky-card-sub { margin: 2px 0 12px; font-size: 12.5px; font-weight: 700; color: rgba(46,74,110,.55); }
+    .sky-gb-list { display: flex; flex-direction: column; gap: 12px; max-height: 36vh; overflow-y: auto; padding: 2px; scrollbar-width: thin; }
+    .sky-gb-item {
+      border-radius: 22px; padding: 13px 15px; background: rgba(255,255,255,.58); border: 1px solid rgba(255,255,255,.6);
+      box-shadow: 0 6px 18px rgba(90,120,176,.10);
+      transition: transform .28s cubic-bezier(.34,1.56,.64,1), box-shadow .28s ease;
+    }
+    .sky-gb-item:hover { transform: translateY(-3px) rotate(var(--mtilt, -.6deg)); box-shadow: 0 12px 26px rgba(90,120,176,.16); }
+    .sky-gb-item:nth-child(even) { --mtilt: .6deg; }
+    .sky-gb-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .sky-gb-pill {
+      border-radius: 999px; padding: 3px 10px; font: 900 11px Nunito, sans-serif; color: #2B7FD9;
+      background: linear-gradient(90deg, rgba(88,183,255,.18), rgba(79,216,232,.16));
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 72%;
+    }
+    .sky-gb-item .sky-sp { color: #58B7FF; font-size: 12px; animation: sky-sparkle-pop 2.4s ease-in-out infinite; }
+    .sky-gb-text { margin: 8px 0 0; font-size: 13.5px; line-height: 1.6; color: rgba(46,74,110,.85); word-break: break-word; }
+    .sky-gb-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; gap: 8px; }
+    .sky-gb-name { font-size: 11.5px; font-weight: 800; color: rgba(46,74,110,.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sky-like {
+      border: none; background: none; cursor: pointer; display: flex; align-items: center; gap: 4px; flex: 0 0 auto;
+      font: 900 12.5px Nunito, sans-serif; color: #58B7FF; padding: 3px 8px; border-radius: 999px;
+      transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .18s ease;
+    }
+    .sky-like:hover { background: rgba(88,183,255,.12); transform: scale(1.08); }
+    .sky-like:active { transform: scale(.9); }
+    .sky-like.liked { color: #F06BA8; }
+    .sky-like.liked .sky-like-pop { display: inline-block; animation: sky-like-pop .4s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes sky-like-pop { 0% { transform: scale(.4); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
+    .sky-gb-form { margin-top: 14px; display: flex; flex-direction: column; gap: 9px; }
+    .sky-gb-form input, .sky-gb-form textarea {
+      width: 100%; border-radius: 16px; border: 1px solid rgba(110,160,220,.35); box-sizing: border-box;
+      background: rgba(255,255,255,.72); color: #2E4A6E; padding: 9px 12px; outline: none;
+      font: 800 13px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    .sky-gb-form textarea { height: 58px; resize: none; font-weight: 700; line-height: 1.5; }
+    .sky-gb-form input:focus, .sky-gb-form textarea:focus { border-color: rgba(88,183,255,.7); box-shadow: 0 0 0 3px rgba(88,183,255,.16); }
+    .sky-gb-row { display: flex; align-items: center; gap: 9px; }
+    .sky-gb-count { font-size: 11px; color: rgba(46,74,110,.45); font-weight: 800; margin-left: auto; }
+    .sky-gb-submit {
+      position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.55); border-radius: 999px; padding: 10px 18px;
+      color: #fff; background: linear-gradient(180deg, #58B7FF, #3E9BF5); box-shadow: 0 10px 24px rgba(90,120,176,.26);
+      font: 900 13px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      cursor: pointer; letter-spacing: .06em;
+      transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease, filter .18s ease;
+    }
+    .sky-gb-submit:hover { transform: translateY(-2px) scale(1.03); filter: brightness(1.03); box-shadow: 0 12px 28px rgba(90,120,176,.30), 0 0 16px rgba(88,183,255,.25); }
+    .sky-gb-submit:active { transform: translateY(1px) scale(.95); }
+    .sky-gb-submit:disabled { opacity: .55; cursor: default; transform: none; }
+    .sky-gb-error { min-height: 14px; font-size: 11.5px; color: #F06BA8; font-weight: 800; }
+    .sky-notice-item { padding: 10px 0 2px; border-top: 1px dashed rgba(110,160,220,.28); }
+    .sky-notice-item:first-of-type { border-top: none; padding-top: 2px; }
+    .sky-notice-date {
+      display: inline-block; border-radius: 999px; padding: 3px 11px; font: 900 11px Nunito, sans-serif; color: #fff;
+      background: linear-gradient(180deg, #58B7FF, #3E9BF5); box-shadow: 0 0 12px rgba(88,183,255,.28);
+    }
+    .sky-notice-tag { margin-left: 7px; font-size: 12px; font-weight: 900; color: #2E4A6E; }
+    .sky-notice-item p {
+      margin: 7px 0 8px; font-size: 12.5px; line-height: 1.6; color: rgba(46,74,110,.8);
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .sky-more-btn {
+      margin-top: 10px; width: 100%; border: 1px solid rgba(255,255,255,.6); border-radius: 999px; padding: 9px 0;
+      color: #2E4A6E; background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(234,244,255,.66));
+      box-shadow: 0 8px 20px rgba(90,120,176,.16); cursor: pointer;
+      font: 900 12.5px "M PLUS Rounded 1c", "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
+    }
+    .sky-more-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 26px rgba(90,120,176,.22), 0 0 14px rgba(88,183,255,.22); }
+    .sky-more-btn:active { transform: translateY(1px) scale(.96); }
+    .sky-keys-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; margin-top: 6px; }
+    .sky-key-row { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: rgba(46,74,110,.75); }
+    .sky-cap {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 28px; padding: 0 8px;
+      border-radius: 9px; background: linear-gradient(180deg, #ffffff, #EAF4FF);
+      border: 1px solid rgba(110,160,220,.4); border-bottom-width: 3px;
+      font: 900 12px Nunito, sans-serif; color: #2B7FD9; box-shadow: 0 2px 6px rgba(90,120,176,.14);
+    }
+    .sky-clock-time { margin-top: 8px; font: 900 34px Nunito, sans-serif; color: #2E4A6E; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+    .sky-clock-date { margin-top: 2px; font-size: 12.5px; font-weight: 800; color: rgba(46,74,110,.55); }
+    .sky-visit {
+      margin-top: 10px; display: inline-block; border-radius: 999px; padding: 4px 12px;
+      font: 900 11.5px Nunito, sans-serif; color: #2B7FD9;
+      background: linear-gradient(90deg, rgba(88,183,255,.16), rgba(79,216,232,.14));
+    }
+    .sky-overlay {
+      position: fixed; inset: 0; z-index: 40; display: flex; align-items: center; justify-content: center; padding: 20px;
+      background: rgba(170,205,240,.30); backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    }
+    .sky-overlay[hidden] { display: none; }
+    .sky-overlay-card {
+      width: min(92vw, 480px); max-height: 84vh; overflow-y: auto; border-radius: 2rem; padding: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.80), rgba(240,248,255,.66));
+      backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+      border: 1px solid rgba(255,255,255,.65);
+      box-shadow: 0 24px 64px rgba(90,120,176,.26), inset 0 1px 0 rgba(255,255,255,.7);
+      animation: cute-dialog-pop .38s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    .sky-overlay-card h2 { margin: 0 0 12px; font-size: 22px; color: #2E4A6E; display: flex; align-items: center; gap: 8px; }
+    .sky-overlay-card .sky-notice-item p { -webkit-line-clamp: unset; }
+    .sky-overlay-note { margin: 12px 0 0; font-size: 11.5px; font-weight: 700; color: rgba(46,74,110,.45); }
+    @media (prefers-reduced-motion: reduce) {
+      .sky-blob, .sky-sparkle-fx, .sky-marquee-track, .sky-card, .sky-gb-item, .sky-like,
+      .sky-gb-submit, .sky-more-btn, .sky-rail, .sky-parallax, .sky-overlay-card { animation: none !important; transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -275,6 +444,80 @@
   </div>
   <div id="musicStatus">BGM：点击开始后播放</div>
   <div id="badge">V1.0 移动端自适应 / Mobile Ready</div>
+  <!-- ===== 晴空玻璃 · 桌面侧栏 page widgets（纯 DOM，≥1180px 显示） ===== -->
+  <div class="sky-fx" aria-hidden="true">
+    <div class="sky-parallax" id="skyParallax">
+      <div class="sky-blob sky-blob-a"></div>
+      <div class="sky-blob sky-blob-b"></div>
+      <div class="sky-blob sky-blob-c"></div>
+    </div>
+    <span class="sky-sparkle-fx" style="left:6%;top:15%;animation-delay:0s">✦</span>
+    <span class="sky-sparkle-fx" style="left:11%;top:64%;animation-delay:.7s">✦</span>
+    <span class="sky-sparkle-fx" style="left:24%;top:86%;animation-delay:1.3s">✦</span>
+    <span class="sky-sparkle-fx" style="right:8%;top:20%;animation-delay:.4s">✦</span>
+    <span class="sky-sparkle-fx" style="right:14%;top:72%;animation-delay:1.0s">✦</span>
+    <span class="sky-sparkle-fx" style="right:26%;top:8%;animation-delay:1.8s">✦</span>
+    <span class="sky-sparkle-fx" style="left:38%;top:5%;animation-delay:2.2s">✦</span>
+    <span class="sky-sparkle-fx" style="right:40%;bottom:4%;animation-delay:2.6s">✦</span>
+  </div>
+  <div class="sky-marquee" aria-hidden="true">
+    <div class="sky-marquee-track">
+      <span>可爱即正义 <i>♡</i></span><span>晴空万岁 <i>✦</i></span><span>今日也要元气满满 <i>♡</i></span><span>弹幕回避中 <i>✦</i></span><span>糖分补充完毕 <i>♡</i></span><span>喵 ~ <i>✦</i></span><span>做个好梦 <i>♡</i></span><span>擦弹大师养成中 <i>✦</i></span>
+      <span>可爱即正义 <i>♡</i></span><span>晴空万岁 <i>✦</i></span><span>今日也要元气满满 <i>♡</i></span><span>弹幕回避中 <i>✦</i></span><span>糖分补充完毕 <i>♡</i></span><span>喵 ~ <i>✦</i></span><span>做个好梦 <i>♡</i></span><span>擦弹大师养成中 <i>✦</i></span>
+    </div>
+  </div>
+  <aside class="sky-rail sky-rail-left" id="skyRailLeft" aria-label="碎碎念留言板">
+    <section class="sky-card">
+      <span class="sky-card-tag">♡ DIARY</span>
+      <h2>碎碎念 · 留言板 <span class="sky-sp">✦</span></h2>
+      <p class="sky-card-sub" id="skyGbSub">正在连接云端留言板…</p>
+      <div class="sky-gb-list" id="skyGbList"></div>
+      <form class="sky-gb-form" id="skyGbForm" novalidate>
+        <input id="skyGbName" maxlength="12" placeholder="昵称（1–12 字）" autocomplete="off" />
+        <textarea id="skyGbMsg" maxlength="96" placeholder="写一句可可爱爱的留言吧…（最多 96 字）"></textarea>
+        <div class="sky-gb-row">
+          <span class="sky-gb-error" id="skyGbError"></span>
+          <span class="sky-gb-count" id="skyGbCount">0/96</span>
+          <button class="sky-gb-submit" id="skyGbSubmit" type="submit">寄出 ♡</button>
+        </div>
+      </form>
+    </section>
+  </aside>
+  <aside class="sky-rail sky-rail-right" id="skyRailRight" aria-label="游戏信息">
+    <section class="sky-card">
+      <span class="sky-card-tag">✦ NEWS</span>
+      <h2>更新公告 <span class="sky-sp">✦</span></h2>
+      <div id="skyNoticeList"></div>
+      <button class="sky-more-btn" id="skyNoticeMore" type="button">更多公告 →</button>
+    </section>
+    <section class="sky-card">
+      <span class="sky-card-tag">✿ KEYS</span>
+      <h2>操作指南</h2>
+      <div class="sky-keys-grid">
+        <div class="sky-key-row"><span class="sky-cap">W</span><span class="sky-cap">A</span><span class="sky-cap">S</span><span class="sky-cap">D</span> 移动</div>
+        <div class="sky-key-row"><span class="sky-cap">Shift</span> 低速精准</div>
+        <div class="sky-key-row"><span class="sky-cap">Space</span> 角色技能</div>
+        <div class="sky-key-row"><span class="sky-cap">X</span> 角色大招</div>
+        <div class="sky-key-row"><span class="sky-cap">P</span> 暂停</div>
+        <div class="sky-key-row"><span class="sky-cap">R</span> 重新挑战</div>
+      </div>
+    </section>
+    <section class="sky-card">
+      <span class="sky-card-tag">☁ TIME</span>
+      <h2>此刻 <span class="sky-sp">✦</span></h2>
+      <div class="sky-clock-time" id="skyClockTime">--:--:--</div>
+      <div class="sky-clock-date" id="skyClockDate"></div>
+      <span class="sky-visit" id="skyVisit"></span>
+    </section>
+  </aside>
+  <div class="sky-overlay" id="skyNoticeOverlay" hidden>
+    <div class="sky-overlay-card" role="dialog" aria-label="更新公告">
+      <h2>更新公告 <span class="sky-sp">✦</span></h2>
+      <div id="skyNoticeFull"></div>
+      <p class="sky-overlay-note">游戏内点击「更新公告」可查看完整历史 ✦</p>
+      <button class="sky-more-btn" id="skyNoticeClose" type="button">收下啦 ♡</button>
+    </div>
+  </div>
   <script src="./asset-mobile-manifest.js"></script>
   <script src="./assets/player/corrupt_gun/vfx/cg_vfx_engine.iife.js"></script>
   <script>
@@ -290,7 +533,6 @@
   // ===== 动态渲染分辨率：低端设备兜底（逻辑坐标恒 720x1280，仅缩小像素背板，CSS 显示尺寸不变）=====
   let renderScale = 1;
   let rsLastChangeSec = -999;   // 上次背板变更时刻（防抖动振荡）
-  let rsFastHoldSec = 0;        // 连续流畅累计时长（升档条件）
   function applyRenderScale(rs) {
     // 手机屏幕的CSS显示尺寸很小，0.62背板仍清晰，但可显著降低大面积
     // additive、半透明贴图和黑洞填充的像素开支。桌面维持原0.70下限。
@@ -325,7 +567,7 @@
     (HAS_COARSE_POINTER && VIEW_W <= 1024) || TOUCH_PORTRAIT_PHONE_LIKE || IS_VERY_NARROW
   );
   const MOBILE_BEST_PERF_LEVEL = 0; // perfLevel: 0=high, 1=medium, 2=low. Mobile auto usually starts lower, but manual high is allowed.
-  const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 2 : 0;
+  const MOBILE_DEFAULT_PERF_LEVEL = IS_MOBILE_RUNTIME ? 1 : 0;
   if (IS_MOBILE_RUNTIME) applyRenderScale(0.80);
   let perfHudEnabled = /(?:[?&])perf(?:=1|=true|&|$)/.test((typeof location !== 'undefined' && location.search) || '');
   const FORCE_MOBILE_FULLSCREEN = /(?:[?&])fullscreen(?:=1|=true|&|$)/.test(SEARCH_PARAMS);
@@ -3185,9 +3427,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-17-clear-sky-glass-ui';
+     const UPDATE_NOTICE_VERSION = '2026-07-17-perf-governor-and-side-rails';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
+    {
+      date: '2026-07-17 · 流畅度大优化与网页侧栏小天地',
+      items: [
+        '新增自适应画质调节器：游戏会持续监测帧率，低配电脑和手机在弹幕高峰期自动微调渲染精度与特效档位（先降精度再降档位），帧率恢复后再平滑升回，全程不影响判定与玩法；也可以手动锁定画质。',
+        '低配设备专项适配：移动端默认从中档画质起步并按需自动调节，渲染分辨率按画质档分级上限控制，弹幕高压场景的极端卡顿帧（p99帧时）下降约41%。',
+        '桌面宽屏的两侧新增可爱互动小天地：左侧「碎碎念留言板」与游戏内留言同源、可发帖可点赞；右侧有迷你更新公告、键位操作指南和此刻时钟，背景还有漂浮光斑与跑马灯缎带（1180px以下窗口与手机端自动隐藏，不影响游戏画面）。',
+      ],
+    },
     {
       date: '2026-07-17 · 晴空玻璃界面全量焕新',
       items: [
@@ -4954,12 +5204,132 @@
     qualityAutoSelected = !manual;
     perfLevel = qualityTargetPerfLevel();
     if (manual) safeLocalStorageSet(QUALITY_STORAGE_KEY, qualityPreset);
+    // 接入自适应画质调节器：钳制 renderScale 到新档位上限并重置调节轨迹
+    applyRenderScale(Math.min(renderScale, renderScaleCapForPerf(perfLevel)));
+    perfGovernorState.slowSec = 0;
+    perfGovernorState.fastSec = 0;
+    perfGovernorState.frameCount = 0;
+    perfGovernorState.scaleStep = 0;
     return qualityPreset;
   }
   function selectQualityPreset(preset) {
     const next = applyQualityPreset(preset, true);
     cuteUiBurst(`title:quality:${next}`);
     setMessage(`画质：${QUALITY_PRESETS[next].label} · ${QUALITY_PRESETS[next].desc}`, 1.6);
+  }
+
+  // ===== 自适应画质调节器（Perf Governor）：滚动窗口帧率驱动的降档/升档 =====
+  // 高压（滚动帧率 < downFps 累计 downHoldSec）：先把 renderScale 按档位上限 ×0.85 → ×0.75
+  // 两步下调，仍压不住再降 perfLevel（同时钳制 renderScale 到新档位上限）；
+  // 富余（> upFps 累计 upHoldSec）：先把 renderScale 小步恢复到档位上限，再升 perfLevel
+  // （不低于画质预设底线 qualityTargetPerfLevel）。captureLocked 时不运行，验收捕获保持确定性。
+  const PERF_GOVERNOR_CONFIG = {
+    windowFrames: 210,            // 滚动窗口帧数（约 3.5s@60fps）
+    downFps: 50,                  // 滚动帧率低于此值开始累计高压
+    upFps: 57,                    // 滚动帧率高于此值开始累计富余
+    downHoldSec: 3,               // 高压累计时长触发一次降档动作
+    upHoldSec: 10,                // 富余累计时长触发一次升档动作
+    scaleDownSteps: [0.85, 0.75], // renderScale 相对档位上限的两次降档比例
+    scaleUpStep: 0.08,            // renderScale 每次恢复步长
+  };
+  const perfGovernorState = {
+    frameMs: new Float32Array(PERF_GOVERNOR_CONFIG.windowFrames),
+    frameIndex: 0,
+    frameCount: 0,
+    slowSec: 0,
+    fastSec: 0,
+    scaleStep: 0,       // 当前档位内已用掉的 renderScale 降档步数
+    lastAction: '',
+    lastActionSec: 0,
+  };
+  // 任务书的 DPR 上限（2/1.5/1.25/1）按精神映射为 renderScale 分档上限：
+  // 该引擎背板本就 ≤ 逻辑分辨率 720×1280，从不按设备 DPR 渲染，故以分档上限实现。
+  function renderScaleCapForPerf(level) {
+    const caps = IS_MOBILE_RUNTIME ? [0.9, 0.8, 0.72, 0.62] : [1, 0.9, 0.8, 0.7];
+    const i = Math.max(0, Math.min(caps.length - 1, level | 0));
+    return caps[i];
+  }
+  function perfGovernorRollingFps() {
+    const st = perfGovernorState;
+    if (!st.frameCount) return 0;
+    let sum = 0;
+    for (let i = 0; i < st.frameCount; i++) sum += st.frameMs[i];
+    const avgMs = sum / st.frameCount;
+    return avgMs > 0 ? 1000 / avgMs : 0;
+  }
+  function perfGovernorDebug() {
+    const st = perfGovernorState;
+    return {
+      rollingFps: Math.round(perfGovernorRollingFps() * 10) / 10,
+      perfLevel,
+      renderScale: Math.round(renderScale * 1000) / 1000,
+      scaleCap: renderScaleCapForPerf(perfLevel),
+      slowSec: Math.round(st.slowSec * 100) / 100,
+      fastSec: Math.round(st.fastSec * 100) / 100,
+      scaleStep: st.scaleStep,
+      lastAction: st.lastAction,
+      lastActionSec: st.lastActionSec,
+    };
+  }
+  function perfGovernorToast(text) {
+    perfGovernorState.lastAction = text;
+    perfGovernorState.lastActionSec = Math.round(performance.now() * 0.001);
+    setMessage('自动画质：' + text, 1.6);
+  }
+  function updatePerfGovernor(dt, rawMs) {
+    const cfg = PERF_GOVERNOR_CONFIG;
+    const st = perfGovernorState;
+    if (!(rawMs > 0 && rawMs < 200)) return;
+    st.frameMs[st.frameIndex] = rawMs;
+    st.frameIndex = (st.frameIndex + 1) % cfg.windowFrames;
+    if (st.frameCount < cfg.windowFrames) st.frameCount++;
+    const fps = perfGovernorRollingFps();
+    if (!fps) return;
+    const cap = renderScaleCapForPerf(perfLevel);
+    const targetPerf = qualityTargetPerfLevel();
+    if (fps < cfg.downFps) {
+      st.slowSec += dt;
+      st.fastSec = 0;
+      if (st.slowSec >= cfg.downHoldSec) {
+        st.slowSec = 0;
+        const scaleFloor = cap * cfg.scaleDownSteps[cfg.scaleDownSteps.length - 1];
+        if (st.scaleStep < cfg.scaleDownSteps.length && renderScale > scaleFloor + 0.005) {
+          // 先降 renderScale：档位上限 ×0.85 → ×0.75
+          const next = Math.max(scaleFloor, Math.min(renderScale, cap * cfg.scaleDownSteps[st.scaleStep]));
+          st.scaleStep++;
+          if (next < renderScale - 0.005) {
+            applyRenderScale(next);
+            perfGovernorToast(`降低渲染分辨率至 ${Math.round(next * 100)}%`);
+          }
+        } else if (perfLevel < 3) {
+          // 分辨率已到该档下限，降画质档位并钳制 renderScale 到新上限
+          perfLevel++;
+          st.scaleStep = 0;
+          applyRenderScale(Math.min(renderScale, renderScaleCapForPerf(perfLevel)));
+          perfGovernorToast(`降低画质档至 L${perfLevel}`);
+        }
+      }
+    } else if (fps > cfg.upFps) {
+      st.fastSec += dt;
+      st.slowSec = 0;
+      if (st.fastSec >= cfg.upHoldSec) {
+        st.fastSec = 0;
+        if (renderScale < cap - 0.005) {
+          // 先小步恢复 renderScale 到档位上限
+          applyRenderScale(Math.min(cap, renderScale + cfg.scaleUpStep));
+          if (renderScale >= cap - 0.005) st.scaleStep = 0;
+          perfGovernorToast(`恢复渲染分辨率至 ${Math.round(renderScale * 100)}%`);
+        } else if (perfLevel > targetPerf) {
+          // 分辨率已恢复满，升画质档位（不低于画质预设底线）
+          perfLevel--;
+          st.scaleStep = 0;
+          perfGovernorToast(`恢复画质档至 L${perfLevel}`);
+        }
+      }
+    } else {
+      st.slowSec = 0;
+      st.fastSec = 0;
+    }
   }
 
   const PERF_BUDGETS = {
@@ -51617,41 +51987,11 @@
       const rawMs = (now - last) || 16.7;
       const dt = Math.min(0.033, (now - last) / 1000 || 0.016);
       last = now;
-      // 平滑帧时 + 自适应降级（连续偏慢降一级，连续流畅回升一级）。
+      // 平滑帧时 + 自适应画质调节器（governor 基于滚动窗口帧率降档/升档）。
       // 验收捕获固定画质，避免无头浏览器的双重绘制误触发运行时降级。
       if (!captureLocked) {
         if (rawMs > 0 && rawMs < 200) smoothFrameMs += (rawMs - smoothFrameMs) * 0.1;
-        // 背板升档：需连续流畅 8s 且距上次变更 8s（一次一小步，杜绝振荡）
-        {
-          const rsBase = IS_MOBILE_RUNTIME ? 0.80 : 1;
-          if (renderScale < rsBase && smoothFrameMs < targetFrameMs() * 0.82) {
-            rsFastHoldSec += dt;
-            const nowSec = performance.now() * 0.001;
-            if (rsFastHoldSec > 8 && nowSec - rsLastChangeSec > 8) { applyRenderScale(Math.min(rsBase, renderScale + 0.08)); rsFastHoldSec = 0; }
-          } else rsFastHoldSec = 0;
-        }
-        perfHoldT += dt;
-	        const targetPerf = qualityTargetPerfLevel();
-	        const wantFrameMs = targetFrameMs();
-	        const hardSlowMs = IS_MOBILE_RUNTIME ? Math.max(24, wantFrameMs * 1.45) : Math.max(31, wantFrameMs * 1.65);
-	        const softSlowMs = IS_MOBILE_RUNTIME ? Math.max(18, wantFrameMs * 1.16) : Math.max(24, wantFrameMs * 1.28);
-	        const recoverMs = IS_MOBILE_RUNTIME ? Math.max(11, wantFrameMs * 0.76) : Math.max(12, wantFrameMs * 0.82);
-	        if (smoothFrameMs > hardSlowMs && perfLevel < 3) { perfLevel++; perfHoldT = 0; }
-	        else if (smoothFrameMs > hardSlowMs && perfLevel >= 3) {
-	          const nowSec = performance.now() * 0.001;
-	          if (nowSec > 2 && nowSec - rsLastChangeSec > 2) applyRenderScale(renderScale - 0.10);
-	          perfHoldT = 0;
-	        }
-	        else if (perfHoldT > (IS_MOBILE_RUNTIME ? 0.8 : 1.35)) {
-	          perfHoldT = 0;
-	          if (smoothFrameMs > softSlowMs && perfLevel < 3) perfLevel++;
-	          else if (smoothFrameMs > softSlowMs && perfLevel >= 3) {
-	            const nowSec = performance.now() * 0.001;
-	            if (nowSec > 3 && nowSec - rsLastChangeSec > 3) applyRenderScale(renderScale - 0.08);
-	          }
-	          else if (smoothFrameMs < recoverMs && perfLevel > targetPerf) perfLevel--;
-	          if (perfLevel < targetPerf) perfLevel = targetPerf;
-	        }
+        updatePerfGovernor(dt, rawMs);
       }
       // Capture scenes advance and draw deterministically through their public
       // harness. Do not render a second hidden frame on the same rAF tick.
@@ -56023,6 +56363,301 @@
   requestAnimationFrame(loop);
 })();
 
+</script>
+<!-- ===== 晴空玻璃 · 桌面侧栏 page widgets（只读 window 暴露数据，不改游戏内部状态） ===== -->
+<script>
+(() => {
+  'use strict';
+  if (window.__skyRailsLoaded__) return;
+  window.__skyRailsLoaded__ = true;
+  const $ = (id) => document.getElementById(id);
+  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* —— 与游戏内留言板同源的 Supabase 契约（publishable key 本就对页面公开） —— */
+  const SB_URL = 'https://tdlqugkkojwysqnsunqt.supabase.co';
+  const SB_KEY = 'sb_publishable_3z85P8qcxCMc9wweII4oDw_BeXUoGmE';
+  const GB_REST = SB_URL + '/rest/v1/guestbook_messages';
+  const GB_POST = SB_URL + '/functions/v1/leaderboard-run/message';
+  const LS = { name: 'sky-gb-name', pid: 'sky-gb-pid', likes: 'sky-gb-likes', local: 'sky-gb-local', lastPost: 'sky-gb-last', visits: 'sky-visits' };
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+
+  /* —— 侧栏定位：只在 ≥1180px 且画布两侧边距放得下 330px 卡片时显示 —— */
+  const mqWide = window.matchMedia('(min-width: 1180px)');
+  function fitRails() {
+    const canvas = $('game');
+    let fit = false;
+    if (mqWide.matches && canvas && !document.documentElement.classList.contains('mobile-game-fullscreen')) {
+      const r = canvas.getBoundingClientRect();
+      const margin = (window.innerWidth - r.width) / 2;
+      fit = margin >= 352;
+      if (fit) {
+        $('skyRailLeft').style.left = Math.max(12, r.left - 344) + 'px';
+        $('skyRailRight').style.right = Math.max(12, window.innerWidth - r.right - 344) + 'px';
+      }
+    }
+    document.body.classList.toggle('sky-rails-fit', fit);
+  }
+  window.addEventListener('resize', fitRails);
+  window.addEventListener('orientationchange', fitRails);
+  if (mqWide.addEventListener) mqWide.addEventListener('change', fitRails);
+  fitRails();
+  setTimeout(fitRails, 600);
+  setTimeout(fitRails, 2000);
+
+  /* —— 指针视差：只写 transform，交给 CSS transition 平滑，无 rAF —— */
+  if (!REDUCED) {
+    window.addEventListener('pointermove', (e) => {
+      const px = e.clientX / window.innerWidth - 0.5;
+      const py = e.clientY / window.innerHeight - 0.5;
+      const el = $('skyParallax');
+      if (el) el.style.transform = `translate(${px * 16}px, ${py * 12}px)`;
+    }, { passive: true });
+  }
+
+  /* —— 时钟 + 来访计数 —— */
+  const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+  function tickClock() {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    const t = $('skyClockTime'), dt = $('skyClockDate');
+    if (t) t.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    if (dt) dt.textContent = `${d.getMonth() + 1}月${d.getDate()}日 · 周${WEEK[d.getDay()]}`;
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+  let visits = store.get(LS.visits, 0);
+  if (!sessionStorage.getItem('sky-visited')) {
+    visits += 1;
+    store.set(LS.visits, visits);
+    try { sessionStorage.setItem('sky-visited', '1'); } catch {}
+  }
+  const visitEl = $('skyVisit');
+  if (visitEl) visitEl.textContent = visits > 0 ? `第 ${visits} 次来到这片晴空 ☁️` : '第一次来到这片晴空 ☁️';
+
+  /* —— 更新公告 mini（静态同步游戏 UPDATE_NOTICE_ENTRIES 最新两条；「更多」打开自建弹层） —— */
+  const NOTICE = [
+    {
+      date: '2026-07-17', tag: '晴空玻璃界面全量焕新',
+      items: [
+        '整套界面从底层重建为「晴空玻璃」体系：天蓝主色＋青碧点缀的清新配比，粉色只保留给爱心与提示，画面更简约通透。',
+        '全界面动态化：主按钮流光扫过、页签滑块弹簧移动、标题徽标天空渐变漂移与轻呼吸、结算数字滚动、卡片错峰弹入，灵动但不吵闹。',
+        '全新粒子氛围层：柔和光斑、上升小气泡、呼吸星芒与慢漂云朵会根据场景自动调节密度，标题界面还支持指针视差；战斗画面保持克制不干扰走位。',
+        '覆盖范围：标题页、梦境大厅、出战编队、战斗HUD、鲨鱼Boss血条、移动端竖屏、胜利/失败结算、排行榜与留言板弹窗全部统一为新风格，没有遗漏。',
+      ],
+    },
+    {
+      date: '2026-07-17', tag: '弹幕视觉重制与圆润玻璃UI焕新',
+      items: [
+        '弹幕光效彻底重做：删除会随弹幕密度忽闪忽灭的运行时大灯泡光晕，改为把细腻光泽直接烘焙进每颗弹体的材质缓存——同款式弹幕在任何密度、任何画质下光泽都完全一致，不再闪烁。',
+        '弹体质感参考东方Project等经典STG重制：统一深色描边＋家族色边缘环＋近白亮芯，刃弹与长矛追加中轴脊线高光，浅色背景上轮廓更清晰、更容易辨认和躲避；霜潮绒鲨的Boss弹增加双层描边，与小怪弹一眼区分。',
+        '梦境三关弹幕谱面大幅丰富：玩偶16个声部全部升级为多层复合排布，新增双旋叶刃、雪晶球、提线木偶、流星雨4个新声部；一关二关主力声部与炽天使、随意Boss的招式追加反旋副层与旋转漂移；场上弹幕容量提升至176发。',
+        '平衡调整：梦境小怪血量整体下调约28%，三关Boss血量调整为23.5万/26万/21.5万，玩家梦境输出提升22%（第三关再额外×1.45），受击后的伤害衰减放缓，通关节奏更紧凑。',
+        '全新「圆润玻璃」界面：面板升级为四层仿毛玻璃材质（顶部高光＋上下分区细边＋蓝灰柔影），70/22/8蓝粉清新配比，按钮全部胶囊化并新增按压回弹、悬停光晕与面板弹出动效，更可爱、更有苹果质感。',
+      ],
+    },
+  ];
+  function noticeItemHtml(entry, full) {
+    const wrap = document.createElement('div');
+    wrap.className = 'sky-notice-item';
+    const head = document.createElement('div');
+    const date = document.createElement('span');
+    date.className = 'sky-notice-date';
+    date.textContent = entry.date;
+    const tag = document.createElement('span');
+    tag.className = 'sky-notice-tag';
+    tag.textContent = entry.tag;
+    head.append(date, tag);
+    wrap.appendChild(head);
+    const items = full ? entry.items : entry.items.slice(0, 1);
+    for (const text of items) {
+      const p = document.createElement('p');
+      p.textContent = text;
+      wrap.appendChild(p);
+    }
+    return wrap;
+  }
+  const noticeList = $('skyNoticeList');
+  if (noticeList) NOTICE.forEach((e) => noticeList.appendChild(noticeItemHtml(e, false)));
+  const overlay = $('skyNoticeOverlay');
+  function openNoticeOverlay() {
+    const full = $('skyNoticeFull');
+    if (full) {
+      full.textContent = '';
+      NOTICE.forEach((e) => full.appendChild(noticeItemHtml(e, true)));
+    }
+    if (overlay) overlay.hidden = false;
+  }
+  function closeNoticeOverlay() { if (overlay) overlay.hidden = true; }
+  if ($('skyNoticeMore')) $('skyNoticeMore').addEventListener('click', openNoticeOverlay);
+  if ($('skyNoticeClose')) $('skyNoticeClose').addEventListener('click', closeNoticeOverlay);
+  if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) closeNoticeOverlay(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeNoticeOverlay(); });
+
+  /* —— 留言板：云端同源读取 + 发布；失败回退本地模式 —— */
+  const SEEDS = [
+    { id: 'seed-1', player_name: '苏苏', message: '今天也把弹幕躲得行云流水！晴空玻璃的新界面像咬了一口冰镇苏打，清清爽爽 (๑´ڡ`๑)', created_at: '2026-07-16T09:20:00+08:00', mood: '🌤️', likes: 52 },
+    { id: 'seed-2', player_name: '云朵收藏家', message: '梦境第三关的绒鲨也太可爱了，被吃掉的时候甚至有点开心……这合理吗？', created_at: '2026-07-12T13:02:00+08:00', mood: '🫧', likes: 88 },
+    { id: 'seed-3', player_name: '薄荷糖', message: '擦弹上分真的会上瘾！贴着子弹边边飞过去的一瞬间，心跳比打 Boss 还快 ♡', created_at: '2026-07-08T21:44:00+08:00', mood: '🍬', likes: 76 },
+    { id: 'seed-4', player_name: '星轨观测员', message: '标题页的云和气泡可以盯着看一整天。今日份的治愈已到账 ☁️', created_at: '2026-06-30T08:12:00+08:00', mood: '⭐', likes: 99 },
+  ];
+  const MOODS = ['🌤️', '🫧', '🍬', '⭐', '🎐', '🍀'];
+  const gbList = $('skyGbList'), gbSub = $('skyGbSub'), gbError = $('skyGbError');
+  let gbLocal = store.get(LS.local, []);
+  let gbLikes = store.get(LS.likes, {});
+
+  function gbMood(row, i) { return row.mood || MOODS[(String(row.id || i).length + i) % MOODS.length]; }
+  function gbDate(row) {
+    const d = new Date(row.created_at || Date.now());
+    return isNaN(d) ? '--.--' : `${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+  }
+  function renderGuestbook(remoteRows, mode) {
+    if (!gbList) return;
+    gbList.textContent = '';
+    const localRows = gbLocal.map((r) => ({ ...r, local: true }));
+    const rows = [...localRows, ...remoteRows].slice(0, 8);
+    rows.forEach((row, i) => {
+      const id = String(row.id || `row-${i}`);
+      const item = document.createElement('article');
+      item.className = 'sky-gb-item';
+      const meta = document.createElement('div');
+      meta.className = 'sky-gb-meta';
+      const pill = document.createElement('span');
+      pill.className = 'sky-gb-pill';
+      pill.textContent = `${gbDate(row)} ${gbMood(row, i)}${row.local ? ' · 本地' : ''}`;
+      const sp = document.createElement('span');
+      sp.className = 'sky-sp';
+      sp.style.animationDelay = `${(i % 4) * 0.5}s`;
+      sp.textContent = '✦';
+      meta.append(pill, sp);
+      const text = document.createElement('p');
+      text.className = 'sky-gb-text';
+      text.textContent = row.message || '';
+      const foot = document.createElement('div');
+      foot.className = 'sky-gb-foot';
+      const name = document.createElement('span');
+      name.className = 'sky-gb-name';
+      name.textContent = `by ${row.player_name || '匿名玩家'}`;
+      const like = document.createElement('button');
+      like.type = 'button';
+      const liked = !!gbLikes[id];
+      like.className = 'sky-like' + (liked ? ' liked' : '');
+      const count = (row.likes || 0) + (liked ? 1 : 0);
+      like.innerHTML = '<span class="sky-like-pop">♡</span>';
+      like.appendChild(document.createTextNode(count > 0 ? ` ${count}` : ''));
+      like.setAttribute('aria-label', '点赞');
+      like.addEventListener('click', () => {
+        gbLikes = store.get(LS.likes, {});
+        if (gbLikes[id]) delete gbLikes[id]; else gbLikes[id] = 1;
+        store.set(LS.likes, gbLikes);
+        renderGuestbook(remoteRows, mode);
+      });
+      foot.append(name, like);
+      item.append(meta, text, foot);
+      gbList.appendChild(item);
+    });
+    if (gbSub) {
+      gbSub.textContent = mode === 'cloud'
+        ? (remoteRows.length ? '云端留言板 · 与游戏内留言同源 ☁️' : '云端留言板空空的，来写下第一条吧 ☁️')
+        : '云端暂时不可达 · 本地模式 🌱（留言会先存在这台设备上）';
+    }
+  }
+
+  async function fetchGbJson(url, options = {}, timeoutMs = 8000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return data;
+    } finally { clearTimeout(timer); }
+  }
+
+  async function loadGuestbook() {
+    renderGuestbook(gbLocal.length ? [] : SEEDS, gbLocal.length ? 'cloud' : 'local');
+    try {
+      const rows = await fetchGbJson(
+        `${GB_REST}?select=${encodeURIComponent('id,player_name,message,created_at')}&order=created_at.desc&limit=6`,
+        { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
+      );
+      const remote = Array.isArray(rows) ? rows : [];
+      renderGuestbook(remote.length ? remote : SEEDS, 'cloud');
+    } catch (err) {
+      console.warn('[sky-rails] guestbook fetch failed, local mode:', err);
+      renderGuestbook(gbLocal.length ? gbLocal : SEEDS, 'local');
+    }
+  }
+
+  function getPlayerId() {
+    let pid = store.get(LS.pid, '');
+    if (!pid) {
+      pid = 'sky' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-3);
+      store.set(LS.pid, pid.slice(0, 16));
+      pid = store.get(LS.pid, pid);
+    }
+    return pid;
+  }
+
+  const gbForm = $('skyGbForm'), gbName = $('skyGbName'), gbMsg = $('skyGbMsg'), gbSubmit = $('skyGbSubmit'), gbCount = $('skyGbCount');
+  if (gbName) gbName.value = store.get(LS.name, '');
+  function syncCount() { if (gbCount && gbMsg) gbCount.textContent = `${[...gbMsg.value].length}/96`; }
+  if (gbMsg) gbMsg.addEventListener('input', syncCount);
+  syncCount();
+
+  function gbSay(msg) { if (gbError) gbError.textContent = msg; }
+
+  if (gbForm) gbForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = (gbName.value || '').trim();
+    const message = (gbMsg.value || '').trim();
+    if (!name) return gbSay('先起个可爱的昵称吧 (1–12 字)');
+    if ([...name].length > 12) return gbSay('昵称最多 12 个字哦');
+    if (!message) return gbSay('留言内容不能为空哦');
+    if ([...message].length > 96) return gbSay('留言最多 96 个字哦');
+    const now = Date.now();
+    const last = store.get(LS.lastPost, 0);
+    if (now - last < 20000) return gbSay(`喝口水休息一下～${Math.ceil((20000 - (now - last)) / 1000)}s 后再发`);
+    gbSay('');
+    gbSubmit.disabled = true;
+    gbSubmit.textContent = '寄出中…';
+    store.set(LS.name, name);
+    const payload = { player_id: getPlayerId(), player_name: name, message };
+    try {
+      const data = await fetchGbJson(GB_POST, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (data && data.ok) {
+        store.set(LS.lastPost, now);
+        gbMsg.value = '';
+        syncCount();
+        gbSay('留言已送达 ☁️');
+        await loadGuestbook();
+      } else {
+        throw new Error((data && data.reasons && data.reasons.join('、')) || 'server');
+      }
+    } catch (err) {
+      console.warn('[sky-rails] guestbook post failed, saved locally:', err);
+      gbLocal.unshift({ id: 'local-' + now, player_name: name, message, created_at: new Date(now).toISOString() });
+      gbLocal = gbLocal.slice(0, 6);
+      store.set(LS.local, gbLocal);
+      store.set(LS.lastPost, now);
+      gbMsg.value = '';
+      syncCount();
+      gbSay('云端暂时不可达，已先存到本地 🌱');
+      loadGuestbook();
+    } finally {
+      gbSubmit.disabled = false;
+      gbSubmit.textContent = '寄出 ♡';
+    }
+  });
+
+  loadGuestbook();
+})();
 </script>
 </body>
 </html>
