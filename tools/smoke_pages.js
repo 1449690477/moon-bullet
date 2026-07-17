@@ -417,7 +417,7 @@ async function main() {
       throw new Error('找不到 Chrome/Edge。可设置 PUPPETEER_EXECUTABLE_PATH 指向浏览器可执行文件。');
     }
     browser = await puppeteer.launch({
-      headless: 'new',
+      headless: true, // Chrome 150+ 已移除 --headless=new 变体，布尔 true 走标准 --headless
       executablePath,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
     });
