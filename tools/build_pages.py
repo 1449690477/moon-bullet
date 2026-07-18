@@ -34,6 +34,7 @@ DREAM_STAGE3_LOSSLESS_MOBILE_PREFIXES = (
     "assets/dream_stage3/bullets/",
     "assets/dream_stage3/ui/",
     "assets/dream_stage3/vfx/",
+    "assets/companions/ice_crystal_dragon/",
 )
 MHR_BLACKHOLE_SEQUENCE_PHASES = {"deploy": 16, "loop": 32, "overload": 16, "collapse": 12}
 CORRUPTGUN_VFX_MANIFEST_REL = "assets/player/corrupt_gun/cg_vfx_v2_manifest.json"
@@ -583,7 +584,7 @@ def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) ->
 
     if out.exists() and out.stat().st_size > 0:
         if requires_lossless_mobile(rel) and b"VP8L" not in out.read_bytes()[:64]:
-            raise RuntimeError(f"Dream Stage 3 combat asset was not encoded as lossless WebP: {rel}")
+            raise RuntimeError(f"Lossless combat asset was not encoded as lossless WebP: {rel}")
         if rel.startswith("assets/player/corrupt_gun/ult/"):
             with Image.open(out) as encoded:
                 clean_mobile_ultimate(encoded)

@@ -14,6 +14,7 @@ let cachedSkywardInternals = null;
 let cachedDragonBreathInternals = null;
 let cachedCorruptGunInternals = null;
 let cachedDreamModeInternals = null;
+let cachedIceDragonInternals = null;
 
 function makeGradient() {
   return { addColorStop() {} };
@@ -87,7 +88,8 @@ class FakeAudio {
 export function loadInternals() {
   if (cachedInternals) return cachedInternals;
   const html = readFileSync(indexUrl, 'utf8');
-  const script = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n');
+  const scripts = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  const script = scripts.find((source) => source.includes('window.__saintWingBerserkInternals__')) || scripts.join('\n');
   const ctx = makeCtx();
   const canvas = {
     width: 720,
@@ -121,6 +123,7 @@ export function loadInternals() {
     performance: { now: () => 0 },
     requestAnimationFrame() {},
     cancelAnimationFrame() {},
+    matchMedia() { return { matches: false, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} }; },
     addEventListener() {},
     removeEventListener() {},
     setTimeout() {},
@@ -144,6 +147,7 @@ export function loadInternals() {
   cachedDragonBreathInternals = context.window.__dragonBreathInternals__;
   cachedCorruptGunInternals = context.window.__corruptgunInternals__;
   cachedDreamModeInternals = context.window.__dreamModeInternals__;
+  cachedIceDragonInternals = context.window.__iceDragonInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
   return cachedInternals;
 }
@@ -223,6 +227,13 @@ export function loadDreamModeInternals() {
   loadInternals();
   if (!cachedDreamModeInternals) throw new Error('window.__dreamModeInternals__ was not exposed');
   return cachedDreamModeInternals;
+}
+
+export function loadIceDragonInternals() {
+  if (cachedIceDragonInternals) return cachedIceDragonInternals;
+  loadInternals();
+  if (!cachedIceDragonInternals) throw new Error('window.__iceDragonInternals__ was not exposed');
+  return cachedIceDragonInternals;
 }
 
 export function makeCtxIn(opts = {}) {

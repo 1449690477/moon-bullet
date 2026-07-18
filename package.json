@@ -7,13 +7,14 @@
     "test": "tests"
   },
   "scripts": {
-    "build:pages": "npm run assets:dream-stage3 && npm run assets:corruptgun && npm run assets:corruptgun-vfx-v2 && npm run assets:corruptgun-ultimate && npm run build:corruptgun-vfx && npm run assets:corruptgun-infection && node tools/run_python.js tools/build_pages.py",
+    "build:pages": "npm run assets:ice-dragon && npm run assets:dream-stage3 && npm run assets:corruptgun && npm run assets:corruptgun-vfx-v2 && npm run assets:corruptgun-ultimate && npm run build:corruptgun-vfx && npm run assets:corruptgun-infection && node tools/run_python.js tools/build_pages.py",
     "build:corruptgun-vfx": "node tools/build_corruptgun_vfx.js",
     "assets:corruptgun": "node tools/run_python.js tools/import_corruptgun_assets.py",
     "assets:corruptgun-vfx-v2": "node tools/run_python.js tools/generate_corruptgun_vfx_v2.py",
     "assets:corruptgun-infection": "node tools/run_python.js tools/process_corruptgun_infection_assets.py",
     "assets:corruptgun-ultimate": "node tools/run_python.js tools/process_corruptgun_ultimate_assets.py",
     "assets:dream-stage3": "node tools/run_python.js tools/process_dream_stage3_assets.py",
+    "assets:ice-dragon": "node tools/run_python.js tools/process_ice_crystal_dragon_assets.py",
     "manifest:root": "node tools/run_python.js tools/build_pages.py --root-manifest-only",
     "sync:main": "node tools/sync_main_mirror.js",
     "verify:publish": "node tools/verify_publish_consistency.js",
@@ -35,6 +36,7 @@
     "capture:corruptgun-ribbons": "node tools/capture_corruptgun_ribbon_vortex.js",
     "perf:corruptgun-mobile": "node tools/capture_corruptgun_mobile_perf.js",
     "capture:dragon": "node tools/capture_dragon_breath_acceptance.js",
+    "capture:ice-dragon": "node tools/capture_ice_crystal_dragon_acceptance.js",
     "capture:dream": "node tools/capture_dream_mode_acceptance.js",
     "render:dragon": "node tools/headless_dragon_render.js"
   },

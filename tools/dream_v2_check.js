@@ -162,7 +162,7 @@ if (cap && internals) {
   assert(afterLoadout.character === beforeLoadout.character && JSON.stringify(afterLoadout.wings) === JSON.stringify(beforeLoadout.wings), '退出梦境后章节编队还原');
 
   const modeSpec = internals.modeSpec();
-  assert(modeSpec.loadoutSelect && modeSpec.loadoutSelect.planes === 7 && modeSpec.loadoutSelect.wingmen === 6, 'modeSpec 标注 7 战机 / 6 僚机');
+  assert(modeSpec.loadoutSelect && modeSpec.loadoutSelect.planes === 7 && modeSpec.loadoutSelect.wingmen === 7, 'modeSpec 标注 7 战机 / 7 僚机');
 
   // ── 2. 精英移动平滑（抽搐修复） ────────────────────────────
   const hooks = sandbox.window.__DREAM_TEST__;

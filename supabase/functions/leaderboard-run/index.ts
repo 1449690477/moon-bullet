@@ -30,7 +30,7 @@ const TOKEN_TTL_MS = 2 * 60 * 60 * 1000; // 令牌有效期 2 小时
 const DREAM_ACTIVE_CLEAR_VERSION = "dream-01-v2";
 const DREAM_STAGE_CONTRACT_VERSION = "dream-03-v2";
 const DREAM_TOKEN_TTL_MS = 90 * 60 * 1000;
-const DREAM_WINGS = new Set(["moonfeather", "reaverwing", "saintcrown", "nightcoffin", "skyglory", "motherhive"]);
+const DREAM_WINGS = new Set(["moonfeather", "reaverwing", "saintcrown", "nightcoffin", "skyglory", "motherhive", "icedragon"]);
 const DREAM_STAGES = new Map([
   ["dream-01-seraph", { clearVersion: DREAM_ACTIVE_CLEAR_VERSION, seed: 7130101 }],
   ["dream-02-zero-compile", { clearVersion: "dream-02-v1", seed: 7130202 }],

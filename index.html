@@ -430,7 +430,7 @@
     .sky-overlay-card h2 { margin: 0 0 12px; font-size: 22px; color: #2E4A6E; display: flex; align-items: center; gap: 8px; }
     .sky-overlay-card .sky-notice-item p { -webkit-line-clamp: unset; }
     .sky-overlay-note { margin: 12px 0 0; font-size: 11.5px; font-weight: 700; color: rgba(46,74,110,.45); }
-    /* —— 机库预览：可折叠玻璃卡（7 战机 + 6 僚机，静态展示） —— */
+    /* —— 机库预览：可折叠玻璃卡（7 战机 + 7 僚机，静态展示） —— */
     .sky-hangar-head {
       display: block; width: 100%; border: none; background: none; cursor: pointer; padding: 0;
       text-align: left; font: inherit; color: inherit;
@@ -1354,6 +1354,42 @@
     mhrParticleCrystalDust: 'assets/companions/mother_hive_ring/particles/crystal_dust.png',
     mhrParticleStarWhite: 'assets/companions/mother_hive_ring/particles/star_white.png',
     mhrParticleSoftGlow: 'assets/companions/mother_hive_ring/particles/soft_glow.png',
+    // ===== 冰晶龙灵·寒渊：单体盘旋僚机（实体层 source-over，冰晶/核心层 additive） =====
+    icdHeadNormal: 'assets/companions/ice_crystal_dragon/body/body_normal_head.png',
+    icdHeadNormalGlow: 'assets/companions/ice_crystal_dragon/body/body_normal_head_glow.png',
+    icdSegmentNormal: 'assets/companions/ice_crystal_dragon/body/body_normal_segment.png',
+    icdSegmentNormalGlow: 'assets/companions/ice_crystal_dragon/body/body_normal_segment_glow.png',
+    icdTailNormal: 'assets/companions/ice_crystal_dragon/body/body_normal_tail.png',
+    icdTailNormalGlow: 'assets/companions/ice_crystal_dragon/body/body_normal_tail_glow.png',
+    icdCoreNormal: 'assets/companions/ice_crystal_dragon/body/body_normal_core.png',
+    icdCoreNormalGlow: 'assets/companions/ice_crystal_dragon/body/body_normal_core_glow.png',
+    icdHeadOver: 'assets/companions/ice_crystal_dragon/body/body_over_head.png',
+    icdHeadOverGlow: 'assets/companions/ice_crystal_dragon/body/body_over_head_glow.png',
+    icdSegmentOver: 'assets/companions/ice_crystal_dragon/body/body_over_segment.png',
+    icdSegmentOverGlow: 'assets/companions/ice_crystal_dragon/body/body_over_segment_glow.png',
+    icdTailOver: 'assets/companions/ice_crystal_dragon/body/body_over_tail.png',
+    icdTailOverGlow: 'assets/companions/ice_crystal_dragon/body/body_over_tail_glow.png',
+    icdCoreOver: 'assets/companions/ice_crystal_dragon/body/body_over_core.png',
+    icdCoreOverGlow: 'assets/companions/ice_crystal_dragon/body/body_over_core_glow.png',
+    icdBulletMain: 'assets/companions/ice_crystal_dragon/bullets/bullet_main_head.png',
+    icdBulletMainGlow: 'assets/companions/ice_crystal_dragon/bullets/bullet_main_head_glow.png',
+    icdBulletMainOver: 'assets/companions/ice_crystal_dragon/bullets/bullet_main_head_over.png',
+    icdBulletMainOverGlow: 'assets/companions/ice_crystal_dragon/bullets/bullet_main_head_over_glow.png',
+    icdBulletSplit: 'assets/companions/ice_crystal_dragon/bullets/bullet_split_head.png',
+    icdBulletSplitGlow: 'assets/companions/ice_crystal_dragon/bullets/bullet_split_head_glow.png',
+    icdChargeOrb: 'assets/companions/ice_crystal_dragon/bullets/bullet_charge_orb.png',
+    icdChargeOrbGlow: 'assets/companions/ice_crystal_dragon/bullets/bullet_charge_orb_glow.png',
+    icdBulletShard1: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_1.png',
+    icdBulletShard1Glow: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_1_glow.png',
+    icdBulletShard2: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_2.png',
+    icdBulletShard2Glow: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_2_glow.png',
+    icdBulletShard3: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_3.png',
+    icdBulletShard3Glow: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_3_glow.png',
+    icdBulletShard4: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_4.png',
+    icdBulletShard4Glow: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_4_glow.png',
+    icdBulletShard5: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_5.png',
+    icdBulletShard5Glow: 'assets/companions/ice_crystal_dragon/bullets/bullet_shard_5_glow.png',
+    icdIcon: 'assets/companions/ice_crystal_dragon/ui/ui_icon.png',
     // ===== 海洋主题新小怪（assets/enemies_v2）=====
     enStarfish: 'assets/enemies_v2/starfish.png',
     enJelly: 'assets/enemies_v2/jelly.png',
@@ -2549,6 +2585,18 @@
     'skillDragonBreathArrayFx',
     'uiSkillDragonBreathIcon',
   ];
+  const ICE_DRAGON_ASSET_KEYS = [
+    'icdHeadNormal', 'icdHeadNormalGlow', 'icdSegmentNormal', 'icdSegmentNormalGlow',
+    'icdTailNormal', 'icdTailNormalGlow', 'icdCoreNormal', 'icdCoreNormalGlow',
+    'icdHeadOver', 'icdHeadOverGlow', 'icdSegmentOver', 'icdSegmentOverGlow',
+    'icdTailOver', 'icdTailOverGlow', 'icdCoreOver', 'icdCoreOverGlow',
+    'icdBulletMain', 'icdBulletMainGlow', 'icdBulletMainOver', 'icdBulletMainOverGlow',
+    'icdBulletSplit', 'icdBulletSplitGlow', 'icdChargeOrb', 'icdChargeOrbGlow',
+    'icdBulletShard1', 'icdBulletShard1Glow', 'icdBulletShard2', 'icdBulletShard2Glow',
+    'icdBulletShard3', 'icdBulletShard3Glow', 'icdBulletShard4', 'icdBulletShard4Glow',
+    'icdBulletShard5', 'icdBulletShard5Glow',
+    'icdIcon',
+  ];
   const CORE_ASSET_KEYS = [
     'bgStageBase', 'bgStage1', 'bgStageDepth',
     'uiEmblemLoop', 'uiMoonSilver', 'uiBannerOrnate',
@@ -2602,6 +2650,7 @@
     nightcoffin: ['ncBody', 'ncTrailNormal', 'ncTrailOverdrive', 'ncLaserNormal', 'ncLaserOverdrive', 'ncOrbitRing', 'ncStarFlash', 'ncImpactBurst', 'ncSlowField'],
     skyglory: ['tyBodyAngle', 'tyBodyAngleB', 'tyBodyAngleOver', 'tyBodyFront', 'tyBodyFrontOver', 'tyBodyIcon', 'tyBodySmall', 'tyCoreCrystal', 'tyCoreCrystalOver', 'tyFinCrystal', 'tyFinMetalA', 'tyFinMetalB', 'tyRing', 'tyRingSegA', 'tyRingSegB', 'tyTurbine', 'tyTurbineOver', 'tyBeamAltA', 'tyBeamAltB', 'tyBeamAltC', 'tyBeamCleanA', 'tyBeamCleanB', 'tyBeamCoreMid', 'tyBeamCoreOverdrive', 'tyBeamCoreThin', 'tyBeamCoreWide', 'tyFlareDiamondThin', 'tyFlareDiamondWide', 'tyFlowStripBright', 'tyFlowStripMid', 'tyFlowStripThin', 'tyMuzzleCrescent', 'tyMuzzleCrescentSmall', 'tyMuzzleHeadNarrow', 'tyMuzzleHeadWide', 'tyUnitChargeA', 'tyUnitChargeB', 'tyChargeBallA', 'tyChargeBallB', 'tyChargeBallC', 'tyChargeCircleL', 'tyChargeCircleM', 'tyCometImpactA', 'tyCometImpactB', 'tyCometImpactC', 'tyCometImpactD', 'tyCometTrailSoft', 'tyCoreFlame', 'tyCoreFlameOrbit', 'tyCrownBurst', 'tyHitBloomA', 'tyHitBloomB', 'tyHitBloomSwirl', 'tyHitCometA', 'tyHitCometB', 'tyHitCoreA', 'tyHitCoreB', 'tyHitCoreRing', 'tyHitDebrisA', 'tyHitDebrisB', 'tyHitDebrisC', 'tyHitFlashA', 'tyHitFlashRing', 'tyHitStreakA', 'tyHitStreakB', 'tyHitStreakC', 'tyMuzzleBurstRound', 'tyMuzzleBurstSpiky', 'tyOverdriveAuraA', 'tyOverdriveAuraB', 'tyOverdriveAuraC', 'tyOverdriveAuraD', 'tyRingAltA', 'tyRingAltB', 'tyRingBurst', 'tyRingBurstAltA', 'tyRingBurstAltB', 'tyRingBurstSmall', 'tyShard00', 'tyShard01', 'tyShard02', 'tyShard03', 'tyShard04', 'tyShard05', 'tyShard06', 'tyShard07', 'tyShard08', 'tyShard09', 'tyShardMore00', 'tyShardMore01', 'tyShardMore02', 'tyShardMore03', 'tyShardMore04', 'tySoftGlow', 'tyTrailRibbonA', 'tyTrailRibbonB', 'thHandOpen', 'thArmRoot', 'thPalmCore', 'thPalmCoreB', 'thPortalFront', 'thPortalFrontB', 'thPortalSide', 'thPortalArcA', 'thPortalArcB', 'thPortalVortex', 'thPortalVortexDeep', 'thPortalDark', 'thPortalBurst', 'thRiftStreak', 'thRuneCircle', 'thAnchor', 'thDataSpray', 'thArc', 'thShockArc', 'thCrystalShatter'],
     motherhive: ['mhrBodyNormal', 'mhrBodyBerserk', 'mhrCoreCocoon', 'mhrRingUpper', 'mhrRingMiddle', 'mhrWingLeft', 'mhrWingRight', 'mhrPendant', 'mhrSeed', 'mhrPetal', 'mhrButterfly', 'mhrLifeEgg', 'mhrHatchButterfly', 'mhrEmitterCrystal1', 'mhrEmitterCrystal2', 'mhrEmitterCrystal3', 'mhrEmitterCrystalBerserk1', 'mhrEmitterCrystalBerserk2', 'mhrEmitterGlow', 'mhrEmitterCharge', 'mhrEmitterMuzzleFlash', 'mhrLaceSpikeNormal1', 'mhrLaceSpikeNormal2', 'mhrLaceSpikeNormal3', 'mhrLaceSpikeBerserk1', 'mhrLaceSpikeBerserk2', 'mhrLaceSpikeBerserk3', 'mhrSpikeCoreGlow', 'mhrSpikeEdgeGlow', 'mhrRibbonTrailSoft', 'mhrRibbonTrailCore', 'mhrRibbonTrailGoldDot', 'mhrRibbonFlowParticle', 'mhrLifeMarkCore', 'mhrLifeMarkGlow', 'mhrLifeMarkStackRing', 'mhrLifeMarkExplosionCore', 'mhrLifeMarkExplosionRing', 'mhrLifeMarkCrystalShards', 'mhrLifeMarkPetalBurst', 'mhrSpikeHitFlash', 'mhrSpikeHitSpark', 'mhrSpikeHitPetal', 'mhrSpikeHitCrystal', 'mhrParticlePetalBig', 'mhrParticleStarPink', 'mhrParticleStarGold', 'mhrUltHiveRing', 'mhrUltButterflyLight', 'mhrFrontFlowerBud', 'mhrFrontFlowerOpen1', 'mhrFrontFlowerOpen2', 'mhrFrontFlowerOpen3', 'mhrFrontFlowerOverload', 'mhrFrontFlowerBurst', 'mhrV3FlowerBud', 'mhrV3FlowerOpen1', 'mhrV3FlowerOpen2', 'mhrV3FlowerOverload', 'mhrV3FlowerBurst', 'mhrV3Butterfly1', 'mhrV3Butterfly2', 'mhrV3Butterfly3', 'mhrV3Butterfly4', 'mhrV3ButterflyHit', 'mhrV3ButterflySpawn', 'mhrV3ButterflyTrail1', 'mhrV3ButterflyTrail2', 'mhrV3ButterflyTrail3', 'mhrV3RibbonTrailLong', 'mhrV3RibbonTrailLoop', 'mhrV3VortexRingBand', 'mhrV3VortexCurlBand', 'mhrV3HeadCrown', 'mhrV3VortexShard', 'mhrV3EnergyDot', 'mhrV3StreamSpark', 'mhrV3CrystalShard', 'mhrVortexArm1', 'mhrVortexArm2', 'mhrVortexArm3', 'mhrVortexArm4', 'mhrVortexCore1', 'mhrVortexFragment1', 'mhrCrystalShard1', 'mhrCrystalShard2', 'mhrCrystalShard3', 'mhrFlowRibbon1', 'mhrFlowRibbon2', 'mhrFlowArcSoft1', 'mhrBurstCore1', 'mhrBurstGlow1', 'mhrBhDisk01', 'mhrBhDisk02', 'mhrBhDisk03', 'mhrBhArm01', 'mhrBhArm02', 'mhrBhArm03', 'mhrBhArm04', 'mhrBhSwirlFragment01', 'mhrBhSwirlFragment02', 'mhrBhCore01', 'mhrBhCore02', 'mhrBhInnerRing01', 'mhrBhCenterGlow01', 'mhrBhBurst01', 'mhrBhBurst02', 'mhrButterflyTrail01', 'mhrButterflyTrail02', 'mhrButterflyTrailFragment01', 'mhrBerserkFieldRing'].concat(MHR_BLACKHOLE_SEQUENCE_ALL_KEYS),
+    icedragon: ICE_DRAGON_ASSET_KEYS,
   };
   function prefetchCharacterAssets(key) {
     loadAssetGroup(CHARACTER_ASSET_GROUPS[key] || []);
@@ -3539,15 +3588,26 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-17-guestbook-resilience';
+     const UPDATE_NOTICE_VERSION = '2026-07-18-ice-dragon-visual';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
-      date: '2026-07-17 · 留言板云端维护与自动补寄',
+      date: '2026-07-18 · 冰晶龙灵·寒渊 视觉咆哮重铸',
       items: [
-        '云端留言服务正在维护升级：这期间发布的留言会先保存在你自己的设备上（留言板会标注「待寄出 💌」），不会丢失。',
-        '游戏与网页侧栏都会自动探测云端状态，服务恢复后暂存的留言会自动补寄到云端，全程无需任何操作；寄出成功会有提示。',
-        '排行榜分数上传不受影响，可正常上榜；梦境二/三关的独立榜单将在云端维护完成后开放。',
+        '冰晶龙弹彻底重做：弹体改为程序化烘焙的彗星级泪滴能量体（核心白→青蓝→冰蓝→靛紫四层渐变＋冰晶棱纹），装甲龙首贴图压在能量体前缘——告别过去的"细激光束"，每一发都是咆哮而出的冰龙。',
+        '拖尾全面重写：三层叠加发光光带（宽雾带／主带／白芯）配合正弦波动，飞行途中持续喷吐冰雾团、冰晶碎屑与霜闪星点，拖尾会"呼吸扭动"而不是一条死直线。',
+        '命中→分裂→爆炸全链路升级：命中白核闪＋十字星芒；72° 五裂各自继承小彗体与分裂龙首、沿射向自然散开；范围爆炸改为双层软雾环差速扩张＋六芒冰晶星＋碎晶新星外飞，柔和有层次，不再有机械圆环。',
+        '暴走形态紫晶化：紫色彗体＋紫雾拖尾，一秒两连发（间隔 170ms），分裂与爆炸同步紫晶化；聚能前摇保留龙口能量环汇聚演出。',
+        '以上全部效果经过多轮逐帧截图对比概念图迭代验证，并按画质档位自动降级，低配 PC 与手机都能流畅运行。',
+        '留言板云端服务已恢复正常：之前暂存在设备上的「待寄出 💌」留言会自动补寄到云端，无需任何操作。',
+      ],
+    },
+    {
+      date: '2026-07-17 · 留言板云端修复与自动补寄',
+      items: [
+        '云端留言服务已修复上线：维护期间发布的留言都安全保存在你的设备上（标注「待寄出 💌」），一条也没有丢。',
+        '游戏与网页侧栏会自动探测云端状态并补寄暂存留言，寄出成功会有提示；排行榜分数上传全程不受影响，可正常上榜。',
+        '梦境二/三关的独立榜单正在等待云端数据迁移完成后开放。',
       ],
     },
     {
@@ -4932,7 +4992,7 @@
     backdrop.innerHTML = `
       <div class="leaderboard-dialog update-notice-dialog" role="dialog" aria-modal="true">
         <h2>更新公告</h2>
-        <div class="update-notice-kicker">本次重点重做「绒梦玩偶屋」弹幕材质、立体光照与速度表现；最新内容置顶显示：</div>
+        <div class="update-notice-kicker">本次重点重铸新僚机「冰晶龙灵·寒渊」的龙弹、拖尾与爆炸全链路视觉；最新内容置顶显示：</div>
         ${sections}
         <div class="actions">
           <button class="update-notice-close" type="button">我知道了</button>
@@ -6226,7 +6286,7 @@
   const nrWingmen = [];
   let nrWmCrossCd = 0;
   const nrWmFx = [];   // 僚机起手挥砍弧 + 飞行路径切割线
-  // ===== 四僚机自由编队（与角色完全解绑，标题界面可多选 0–4 套同时出战）=====
+  // ===== 自由僚机编队（与角色完全解绑，标题界面可独立多选） =====
   const equippedWings = {
     moonfeather: false,
     reaverwing: false,
@@ -6234,6 +6294,7 @@
     nightcoffin: false,
     skyglory: false,
     motherhive: false,
+    icedragon: false,
   };
   const WING_OPTIONS = [
     { key: 'moonfeather', name: '月泪·圣羽', short: '圣羽' },
@@ -6242,6 +6303,7 @@
     { key: 'nightcoffin', name: '夜棺·八芒浮骸', short: '夜棺' },
     { key: 'skyglory', name: '天耀·三璇光阵', short: '天耀' },
     { key: 'motherhive', name: '母巢蝶环', short: '母巢' },
+    { key: 'icedragon', name: '冰晶龙灵·寒渊', short: '寒渊' },
   ];
   let wingCards = [];                         // 标题界面僚机多选卡命中区
   let characterCards = [];                    // 标题界面七角色卡命中区
@@ -23894,6 +23956,1343 @@
     };
   }
 
+  // ===================================================================
+  // 冰晶龙灵·寒渊 —— 单体盘旋追随 / 每秒追踪龙弹 / 命中五裂范围冰爆
+  // ===================================================================
+  const ICE_DRAGON_CONFIG = Object.freeze({
+    orbitRadiusX: 120,
+    orbitRadiusY: 78,
+    orbitSpeed: Math.PI * 80 / 180,
+    orbitSpeedOver: Math.PI * 104 / 180,
+    centerSpring: 34,
+    centerDamping: 9.4,
+    headSpring: 43,
+    headDamping: 10.8,
+    segmentCount: 10,
+    segmentSpacing: 17,
+    historyCap: 260,
+    bodyWaveAmplitude: 6,
+    bodyWaveHz: 2,
+    normalInterval: 1,
+    berserkInterval: 1,
+    chargeStart: 0.70,
+    chargePeak: 0.94,
+    berserkSecondDelay: 0.17,
+    mainLife: 3.4,
+    mainInitialSpeed: 390,
+    mainSpeed: 730,
+    mainSpeedOver: 790,
+    mainTurnRate: 9.2,
+    mainTurnRateOver: 10.8,
+    mainHitRadius: 13,
+    splitCount: 5,
+    splitSpeed: 470,
+    splitLife: 0.27,
+    explosionRadius: 88,
+    explosionRadiusOver: 100,
+    directBase: 480,
+    directPerLevel: 140,
+    splashBase: 210,
+    splashPerLevel: 62,
+    overDamageMul: 1.18,
+    mainCap: 12,
+    splitCap: 30,
+    fxCap: 36,
+    particleCap: 88,
+    trailSamples: Object.freeze([20, 15, 10, 7]),
+    trailDamaging: false,
+    trailCollisionRadius: 0,
+  });
+  const ICE_DRAGON_COLORS = Object.freeze({
+    core: '#fdfdfd',
+    ice: '#4a8af2',
+    cyan: '#4db1f8',
+    mist: '#6d8fcb',
+    indigo: '#5338cd',
+    energy: '#884de5',
+    over: '#af5cf5',
+    armor: '#d9b48d',
+    dark: '#182854',
+  });
+  const iceDragon = {
+    initialized: false,
+    activeLast: false,
+    centerX: 0, centerY: 0, centerVX: 0, centerVY: 0,
+    orbitAngle: -Math.PI * 0.58,
+    headX: 0, headY: 0, headVX: 0, headVY: 0,
+    faceAngle: -Math.PI / 2,
+    history: [],
+    spine: [],
+    cycleT: 0,
+    charge: 0,
+    attackPhase: 'idle',
+    aimTarget: null,
+    pending: [],
+    recoil: 0,
+    muzzlePulse: 0,
+    morph: 0,
+    deploy: 0,
+    ambientT: 0,
+    fireSerial: 0,
+    splitBurstCount: 0,
+    explosionCount: 0,
+    damageEvents: [],
+    splitSpawnEvents: [],
+    mainSpawnTimes: [],
+    fallbacks: new Set(),
+  };
+  const iceDragonShots = [];
+  const iceDragonSplits = [];
+  const iceDragonFx = [];
+  const iceDragonParticles = [];
+  const iceDragonTargetIds = new WeakMap();
+  let iceDragonTargetSerial = 0;
+  let iceDragonProjectileSerial = 0;
+  let iceDragonExplosionSerial = 0;
+
+  function iceDragonActive() { return wingEnabled('icedragon'); }
+  function iceDragonTargetId(target) {
+    if (!target || (typeof target !== 'object' && typeof target !== 'function')) return 'none';
+    if (target.id !== undefined && target.id !== null) return String(target.id);
+    if (target.key) return String(target.key);
+    if (!iceDragonTargetIds.has(target)) iceDragonTargetIds.set(target, `icd-target-${++iceDragonTargetSerial}`);
+    return iceDragonTargetIds.get(target);
+  }
+  function iceDragonAngleDelta(target, current) {
+    let d = target - current;
+    while (d > Math.PI) d -= TAU;
+    while (d < -Math.PI) d += TAU;
+    return d;
+  }
+  function iceDragonSpringAxis(pos, velocity, target, stiffness, damping, dt) {
+    const v = (velocity + (target - pos) * stiffness * dt) * Math.exp(-damping * dt);
+    return { pos: pos + v * dt, velocity: v };
+  }
+  function iceDragonValidTarget(target, runtimeVisibility = false) {
+    if (!target || target.dead || !(Number(target.hp) > 0)) return false;
+    if (!Number.isFinite(target.x) || !Number.isFinite(target.y)) return false;
+    if (!runtimeVisibility) return true;
+    return target.x > -140 && target.x < W + 140 && target.y > -150 && target.y < H + 120;
+  }
+  function iceDragonTargetForTest(targets, origin = { x: 0, y: 0 }) {
+    let best = null;
+    let bestD = Infinity;
+    for (const target of targets || []) {
+      if (!iceDragonValidTarget(target, false)) continue;
+      const d = dist2(origin.x, origin.y, target.x, target.y);
+      if (d < bestD) { bestD = d; best = target; }
+    }
+    return best;
+  }
+  function iceDragonTargets() {
+    const list = [];
+    for (const enemy of enemies) if (iceDragonValidTarget(enemy, true)) list.push(enemy);
+    if (boss && state === 'boss' && iceDragonValidTarget(boss, true)) list.push(boss);
+    return list;
+  }
+  function iceDragonNearestTarget(origin = iceDragon) {
+    const point = Number.isFinite(origin?.x) && Number.isFinite(origin?.y)
+      ? origin
+      : { x: iceDragon.headX, y: iceDragon.headY };
+    return iceDragonTargetForTest(iceDragonTargets(), point);
+  }
+  function iceDragonAssetStatus() {
+    const ready = [], pending = [], failed = [], missing = [];
+    for (const key of ICE_DRAGON_ASSET_KEYS) {
+      const asset = assets[key];
+      if (!asset) missing.push(key);
+      else if (asset.failed) failed.push(key);
+      else if (asset.ready) ready.push(key);
+      else pending.push(key);
+    }
+    return { ready, pending, failed, missing, fallbacks: [...iceDragon.fallbacks] };
+  }
+  function resetIceDragonState() {
+    iceDragon.initialized = false;
+    iceDragon.activeLast = false;
+    iceDragon.centerX = 0; iceDragon.centerY = 0; iceDragon.centerVX = 0; iceDragon.centerVY = 0;
+    iceDragon.orbitAngle = -Math.PI * 0.58;
+    iceDragon.headX = 0; iceDragon.headY = 0; iceDragon.headVX = 0; iceDragon.headVY = 0;
+    iceDragon.faceAngle = -Math.PI / 2;
+    iceDragon.history.length = 0; iceDragon.spine.length = 0;
+    iceDragon.cycleT = 0; iceDragon.charge = 0; iceDragon.attackPhase = 'idle'; iceDragon.aimTarget = null;
+    iceDragon.pending.length = 0; iceDragon.recoil = 0; iceDragon.muzzlePulse = 0;
+    iceDragon.morph = 0; iceDragon.deploy = 0; iceDragon.ambientT = 0;
+    iceDragon.fireSerial = 0; iceDragon.splitBurstCount = 0; iceDragon.explosionCount = 0;
+    iceDragon.damageEvents.length = 0; iceDragon.splitSpawnEvents.length = 0; iceDragon.mainSpawnTimes.length = 0;
+    iceDragon.fallbacks.clear();
+    iceDragonShots.length = 0; iceDragonSplits.length = 0; iceDragonFx.length = 0; iceDragonParticles.length = 0;
+  }
+  function syncIceDragon() {
+    if (!iceDragonActive() || iceDragon.initialized) return;
+    loadAssetGroup(ICE_DRAGON_ASSET_KEYS);
+    iceDragon.initialized = true;
+    iceDragon.activeLast = true;
+    iceDragon.centerX = player.x;
+    iceDragon.centerY = player.y - 24;
+    iceDragon.centerVX = 0; iceDragon.centerVY = 0;
+    const a = iceDragon.orbitAngle;
+    iceDragon.headX = iceDragon.centerX + Math.cos(a) * ICE_DRAGON_CONFIG.orbitRadiusX;
+    iceDragon.headY = iceDragon.centerY + Math.sin(a) * ICE_DRAGON_CONFIG.orbitRadiusY;
+    iceDragon.headVX = -Math.sin(a) * ICE_DRAGON_CONFIG.orbitRadiusX * ICE_DRAGON_CONFIG.orbitSpeed;
+    iceDragon.headVY = Math.cos(a) * ICE_DRAGON_CONFIG.orbitRadiusY * ICE_DRAGON_CONFIG.orbitSpeed;
+    iceDragon.faceAngle = Math.atan2(iceDragon.headVY, iceDragon.headVX);
+    iceDragon.history.length = 0;
+    for (let i = 0; i < 190; i++) {
+      const ha = a - i * 0.019;
+      iceDragon.history.push({
+        x: iceDragon.centerX + Math.cos(ha) * ICE_DRAGON_CONFIG.orbitRadiusX,
+        y: iceDragon.centerY + Math.sin(ha) * ICE_DRAGON_CONFIG.orbitRadiusY,
+        depth: Math.sin(ha),
+      });
+    }
+    iceDragonRefreshSpine();
+    iceDragonFx.push({ type: 'summon', x: iceDragon.headX, y: iceDragon.headY, life: 0.72, maxLife: 0.72, seed: 0.37 });
+  }
+  function iceDragonPushHistory(x, y) {
+    const head = iceDragon.history[0];
+    const depth = (y - player.y) / Math.max(1, ICE_DRAGON_CONFIG.orbitRadiusY);
+    if (!head || Math.hypot(x - head.x, y - head.y) >= 1.2) iceDragon.history.unshift({ x, y, depth });
+    else { head.x = x; head.y = y; head.depth = depth; }
+    if (iceDragon.history.length > ICE_DRAGON_CONFIG.historyCap) iceDragon.history.length = ICE_DRAGON_CONFIG.historyCap;
+  }
+  function iceDragonSampleHistory(distance) {
+    const history = iceDragon.history;
+    if (!history.length) return { x: iceDragon.headX, y: iceDragon.headY, depth: 0 };
+    if (distance <= 0) return { ...history[0] };
+    let walked = 0;
+    for (let i = 1; i < history.length; i++) {
+      const a = history[i - 1], b = history[i];
+      const span = Math.hypot(b.x - a.x, b.y - a.y);
+      if (walked + span >= distance) {
+        const t = span > 0 ? (distance - walked) / span : 0;
+        return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t), depth: lerp(a.depth || 0, b.depth || 0, t) };
+      }
+      walked += span;
+    }
+    return { ...history[history.length - 1] };
+  }
+  function iceDragonRefreshSpine() {
+    const points = [];
+    const total = ICE_DRAGON_CONFIG.segmentCount + 2;
+    let previous = { x: iceDragon.headX, y: iceDragon.headY };
+    for (let i = 0; i < total; i++) {
+      const sampled = i === 0 ? iceDragonSampleHistory(0) : iceDragonSampleHistory(i * ICE_DRAGON_CONFIG.segmentSpacing);
+      const ahead = i === 0 ? { x: sampled.x + Math.cos(iceDragon.faceAngle), y: sampled.y + Math.sin(iceDragon.faceAngle) } : previous;
+      const angle = Math.atan2(ahead.y - sampled.y, ahead.x - sampled.x);
+      const waveWeight = i <= 1 ? 0 : Math.min(1, i / 5);
+      const wave = Math.sin(time * TAU * ICE_DRAGON_CONFIG.bodyWaveHz - i * 0.72)
+        * ICE_DRAGON_CONFIG.bodyWaveAmplitude * waveWeight;
+      const p = {
+        x: sampled.x - Math.sin(angle) * wave,
+        y: sampled.y + Math.cos(angle) * wave,
+        angle,
+        depth: sampled.depth || ((sampled.y - player.y) / ICE_DRAGON_CONFIG.orbitRadiusY),
+        index: i,
+      };
+      points.push(p);
+      previous = p;
+    }
+    iceDragon.spine = points;
+  }
+  function iceDragonMouthPosition(angle = iceDragon.faceAngle) {
+    const recoil = iceDragon.recoil * 8;
+    return {
+      x: iceDragon.headX + Math.cos(angle) * (38 - recoil),
+      y: iceDragon.headY + Math.sin(angle) * (38 - recoil),
+    };
+  }
+  function iceDragonParticleBudget() {
+    return Math.max(12, Math.min(ICE_DRAGON_CONFIG.particleCap, Math.floor(perfBudget().particleCap * 0.42)));
+  }
+  function iceDragonPushParticle(kind, x, y, vx, vy, life, size, color, alpha = 1, rot = 0, spin = 0) {
+    if (iceDragonParticles.length >= iceDragonParticleBudget()) return false;
+    iceDragonParticles.push({ kind, x, y, vx, vy, life, maxLife: life, size, color, alpha, rot, spin });
+    return true;
+  }
+  function iceDragonPushFx(fx) {
+    fx.maxLife = fx.maxLife || fx.life || 0.4;
+    if (iceDragonFx.length >= ICE_DRAGON_CONFIG.fxCap) {
+      const disposable = iceDragonFx.findIndex(item => item.type === 'mist' || item.type === 'spark');
+      iceDragonFx.splice(disposable >= 0 ? disposable : 0, 1);
+    }
+    iceDragonFx.push(fx);
+    return fx;
+  }
+  function iceDragonDamageValue(type, over = false, level = powerLevel()) {
+    const base = type === 'direct'
+      ? ICE_DRAGON_CONFIG.directBase + level * ICE_DRAGON_CONFIG.directPerLevel
+      : ICE_DRAGON_CONFIG.splashBase + level * ICE_DRAGON_CONFIG.splashPerLevel;
+    return base * (over ? ICE_DRAGON_CONFIG.overDamageMul : 1);
+  }
+  function iceDragonRecordDamage(type, target, projectileId, explosionId, amount) {
+    iceDragon.damageEvents.push({ type, targetId: iceDragonTargetId(target), projectileId, explosionId: explosionId || null, amount: Math.round(amount) });
+    if (iceDragon.damageEvents.length > 160) iceDragon.damageEvents.splice(0, iceDragon.damageEvents.length - 160);
+  }
+  function iceDragonApplyDamage(target, rawDamage, type, projectileId, explosionId, x, y) {
+    if (!iceDragonValidTarget(target, false)) return 0;
+    iceDragonRecordDamage(type, target, projectileId, explosionId, rawDamage);
+    if (target === boss || target.isBoss) {
+      hitBoss(rawDamage, x, y, false);
+      return rawDamage;
+    }
+    const amount = rawDamage * grindDmg();
+    target.hp -= amount;
+    target.hitFlash = Math.max(target.hitFlash || 0, type === 'direct' ? 0.22 : 0.15);
+    score += Math.floor(amount * 0.28);
+    if (type === 'direct') dmgText(x, y - 18, Math.floor(amount), '#e8fbff', 24);
+    return amount;
+  }
+  function iceDragonSegmentCircleHitT(ax, ay, bx, by, cx, cy, radius) {
+    const dx = bx - ax, dy = by - ay;
+    const fx = ax - cx, fy = ay - cy;
+    const aa = dx * dx + dy * dy;
+    if (aa <= 1e-9) return fx * fx + fy * fy <= radius * radius ? 0 : null;
+    const bb = 2 * (fx * dx + fy * dy);
+    const cc = fx * fx + fy * fy - radius * radius;
+    const disc = bb * bb - 4 * aa * cc;
+    if (disc < 0) return null;
+    const root = Math.sqrt(disc);
+    const t0 = (-bb - root) / (2 * aa);
+    const t1 = (-bb + root) / (2 * aa);
+    if (t0 >= 0 && t0 <= 1) return t0;
+    if (t1 >= 0 && t1 <= 1) return t1;
+    return null;
+  }
+  function iceDragonHomingStepForTest(shot, target, dt) {
+    const current = Number.isFinite(shot.heading) ? shot.heading : Math.atan2(shot.vy || 0, shot.vx || 1);
+    const desired = target && Number.isFinite(target.x) && Number.isFinite(target.y)
+      ? Math.atan2(target.y - shot.y, target.x - shot.x) : current;
+    const turnRate = Number(shot.turnRate) || ICE_DRAGON_CONFIG.mainTurnRate;
+    const heading = current + clamp(iceDragonAngleDelta(desired, current), -turnRate * dt, turnRate * dt);
+    const currentSpeed = Math.max(1, Math.hypot(shot.vx || 0, shot.vy || 0));
+    const desiredSpeed = Number(shot.targetSpeed) || Number(shot.speed) || ICE_DRAGON_CONFIG.mainSpeed;
+    const speed = lerp(currentSpeed, desiredSpeed, Math.min(1, dt * 4.8));
+    const vx = Math.cos(heading) * speed, vy = Math.sin(heading) * speed;
+    return { ...shot, x: shot.x + vx * dt, y: shot.y + vy * dt, vx, vy, heading, speed };
+  }
+  function iceDragonSpawnMainShot(target, over = false, burstIndex = 0) {
+    if (!iceDragonValidTarget(target, false)) return null;
+    if (iceDragonShots.length >= ICE_DRAGON_CONFIG.mainCap) iceDragonShots.shift();
+    const aim = Math.atan2(target.y - iceDragon.headY, target.x - iceDragon.headX);
+    const mouth = iceDragonMouthPosition(aim);
+    const id = `icd-main-${++iceDragonProjectileSerial}`;
+    const speed = ICE_DRAGON_CONFIG.mainInitialSpeed * (over ? 1.08 : 1);
+    const shot = {
+      id, x: mouth.x, y: mouth.y, prevX: mouth.x, prevY: mouth.y,
+      vx: Math.cos(aim) * speed, vy: Math.sin(aim) * speed, heading: aim,
+      target, targetSpeed: over ? ICE_DRAGON_CONFIG.mainSpeedOver : ICE_DRAGON_CONFIG.mainSpeed,
+      turnRate: over ? ICE_DRAGON_CONFIG.mainTurnRateOver : ICE_DRAGON_CONFIG.mainTurnRate,
+      life: ICE_DRAGON_CONFIG.mainLife, maxLife: ICE_DRAGON_CONFIG.mainLife,
+      hitRadius: ICE_DRAGON_CONFIG.mainHitRadius, over, burstIndex, splitDone: false,
+      history: Array.from({ length: 4 }, (_, i) => ({ x: mouth.x - Math.cos(aim) * i * 8, y: mouth.y - Math.sin(aim) * i * 8 })),
+    };
+    iceDragonShots.push(shot);
+    iceDragon.fireSerial++;
+    iceDragon.mainSpawnTimes.push(Number(time.toFixed(4)));
+    if (iceDragon.mainSpawnTimes.length > 24) iceDragon.mainSpawnTimes.shift();
+    iceDragon.recoil = 1;
+    iceDragon.muzzlePulse = 1;
+    iceDragon.attackPhase = 'fire';
+    iceDragonPushFx({ type: 'muzzle', x: mouth.x, y: mouth.y, angle: aim, over, life: 0.42, maxLife: 0.42, seed: iceDragon.fireSerial * 0.173 });
+    const particleCount = perfLevel >= 2 ? 3 : 8;
+    for (let i = 0; i < particleCount; i++) {
+      const a = aim + Math.PI + rand(-0.7, 0.7), sp = rand(45, over ? 210 : 160);
+      iceDragonPushParticle('spark', mouth.x, mouth.y, Math.cos(a) * sp, Math.sin(a) * sp, rand(0.22, 0.46), rand(1.2, 3.2), i % 3 ? ICE_DRAGON_COLORS.cyan : ICE_DRAGON_COLORS.energy, 0.9);
+    }
+    return shot;
+  }
+  function iceDragonSplitForTest(incomingAngle = 0, origin = { x: 0, y: 0 }) {
+    return Array.from({ length: ICE_DRAGON_CONFIG.splitCount }, (_, i) => {
+      const angle = incomingAngle + i * TAU / ICE_DRAGON_CONFIG.splitCount;
+      return { angle, x: origin.x, y: origin.y };
+    });
+  }
+  function iceDragonSpawnSplitBurst(x, y, over, parentId, incomingAngle = 0) {
+    if (iceDragonSplits.length + ICE_DRAGON_CONFIG.splitCount > ICE_DRAGON_CONFIG.splitCap) {
+      iceDragonSplits.splice(0, Math.min(ICE_DRAGON_CONFIG.splitCount, iceDragonSplits.length));
+    }
+    const burstId = `icd-burst-${++iceDragon.splitBurstCount}`;
+    const parts = iceDragonSplitForTest(incomingAngle, { x, y });
+    for (let i = 0; i < parts.length; i++) {
+      const p = parts[i], speed = ICE_DRAGON_CONFIG.splitSpeed * (over ? 1.10 : 1) * (0.92 + (i % 2) * 0.14);
+      const ox = x + Math.cos(p.angle) * 15, oy = y + Math.sin(p.angle) * 15; // 出生沿射向外移，避免五发在中心叠成"海星"
+      iceDragonSplits.push({
+        id: `${burstId}-${i}`, burstId, parentId, x: ox, y: oy, prevX: ox, prevY: oy,
+        vx: Math.cos(p.angle) * speed, vy: Math.sin(p.angle) * speed, angle: p.angle,
+        life: ICE_DRAGON_CONFIG.splitLife + (i % 2) * 0.035,
+        maxLife: ICE_DRAGON_CONFIG.splitLife + (i % 2) * 0.035,
+        delay: i * 0.008, over, index: i, exploded: false,
+        history: [{ x, y }, { x: ox, y: oy }],
+      });
+    }
+    iceDragon.splitSpawnEvents.push({ burstId, parentId, count: parts.length, x, y, angles: parts.map(p => p.angle) });
+    if (iceDragon.splitSpawnEvents.length > 32) iceDragon.splitSpawnEvents.shift();
+    iceDragonPushFx({ type: 'impact', x, y, angle: incomingAngle, over, life: 0.48, maxLife: 0.48, seed: iceDragon.splitBurstCount * 0.317 });
+    return burstId;
+  }
+  function iceDragonAoeHitsForTest(origin, targets, radius) {
+    return (targets || []).filter(target => {
+      if (!iceDragonValidTarget(target, false)) return false;
+      const rr = radius + Math.max(0, Number(target.r) || 0);
+      return dist2(origin.x, origin.y, target.x, target.y) <= rr * rr;
+    });
+  }
+  function iceDragonAreaDamage(x, y, split) {
+    const radius = split.over ? ICE_DRAGON_CONFIG.explosionRadiusOver : ICE_DRAGON_CONFIG.explosionRadius;
+    const explosionId = `icd-explosion-${++iceDragonExplosionSerial}`;
+    const raw = iceDragonDamageValue('splash', split.over);
+    for (const target of iceDragonAoeHitsForTest({ x, y }, iceDragonTargets(), radius)) {
+      iceDragonApplyDamage(target, raw, 'splash', split.parentId, explosionId, x, y);
+    }
+    iceDragon.explosionCount++;
+    return { explosionId, radius };
+  }
+  function iceDragonExplodeSplit(split) {
+    if (!split || split.exploded) return;
+    split.exploded = true;
+    const damage = iceDragonAreaDamage(split.x, split.y, split);
+    iceDragonPushFx({ type: 'explosion', x: split.x, y: split.y, over: split.over, index: split.index, radius: damage.radius, life: 0.76, maxLife: 0.76, seed: (split.index + 1) * 0.431 + iceDragon.explosionCount });
+    const particleCount = perfLevel >= 2 ? 4 : 9;
+    for (let i = 0; i < particleCount; i++) {
+      const a = split.angle + rand(-1.5, 1.5), sp = rand(70, split.over ? 330 : 270);
+      iceDragonPushParticle(i % 2 ? 'shard' : 'mist', split.x, split.y, Math.cos(a) * sp, Math.sin(a) * sp, rand(0.34, 0.70), rand(2.0, 5.4), i % 2 ? ICE_DRAGON_COLORS.core : ICE_DRAGON_COLORS.mist, 0.86, a, rand(-5, 5));
+    }
+    // 5.7e 余晖霜闪：爆心 0–70px 内随机星闪，寿命更长，冰爆余韵
+    const sparkleCount = perfLevel >= 2 ? 3 : 8;
+    for (let i = 0; i < sparkleCount; i++) {
+      const a = rand(0, TAU), rr = rand(4, damage.radius * 0.82);
+      iceDragonPushParticle('spark', split.x + Math.cos(a) * rr, split.y + Math.sin(a) * rr,
+        Math.cos(a) * rand(14, 52), Math.sin(a) * rand(14, 52), rand(0.40, 0.62), rand(1.5, 3.1), i % 2 ? '#4db1f8' : '#fdfdfd', 0.9);
+    }
+  }
+  function iceDragonUpdateShots(dt) {
+    const maxTrail = ICE_DRAGON_CONFIG.trailSamples[clamp(perfLevel | 0, 0, 3)];
+    for (let i = iceDragonShots.length - 1; i >= 0; i--) {
+      const shot = iceDragonShots[i];
+      shot.life -= dt;
+      shot.prevX = shot.x; shot.prevY = shot.y;
+      if (!iceDragonValidTarget(shot.target, true)) shot.target = iceDragonNearestTarget(shot);
+      const next = iceDragonHomingStepForTest(shot, shot.target, dt);
+      shot.x = next.x; shot.y = next.y; shot.vx = next.vx; shot.vy = next.vy; shot.heading = next.heading;
+      shot.history.unshift({ x: shot.x, y: shot.y });
+      if (shot.history.length > maxTrail) shot.history.length = maxTrail;
+      // 5.5 拖尾粒子发射器：雾化团 / 碎晶片 / 星闪点（按画质缩放）
+      {
+        const rateScale = perfLevel >= 2 ? 0.30 : (perfLevel === 1 ? 0.62 : 1);
+        const hx = Math.cos(shot.heading), hy = Math.sin(shot.heading);
+        const tailX = shot.x - hx * 26, tailY = shot.y - hy * 26;
+        if (Math.random() < dt * 72 * rateScale) {
+          const a = shot.heading + Math.PI + rand(-0.55, 0.55);
+          iceDragonPushParticle('mist', tailX + rand(-6, 6), tailY + rand(-6, 6),
+            Math.cos(a) * rand(24, 48), Math.sin(a) * rand(24, 48), rand(0.36, 0.55), rand(6, 10), ICE_DRAGON_COLORS.mist, 0.32);
+        }
+        if (Math.random() < dt * 17 * rateScale) {
+          const a = shot.heading + Math.PI + rand(-0.9, 0.9);
+          iceDragonPushParticle('shard', tailX, tailY,
+            Math.cos(a) * rand(42, 95), Math.sin(a) * rand(42, 95), rand(0.42, 0.58), rand(2.2, 3.8), ICE_DRAGON_COLORS.core, 0.82, rand(0, TAU), rand(-4.5, 4.5));
+        }
+        if (Math.random() < dt * 10 * rateScale) {
+          const along = rand(6, 46);
+          iceDragonPushParticle('spark', shot.x - hx * along + rand(-9, 9), shot.y - hy * along + rand(-9, 9),
+            rand(-24, 24), rand(-24, 24), rand(0.22, 0.36), rand(1.4, 2.8), '#fdfdfd', 0.92);
+        }
+      }
+      let firstTarget = null, firstT = Infinity;
+      for (const target of iceDragonTargets()) {
+        const hitT = iceDragonSegmentCircleHitT(shot.prevX, shot.prevY, shot.x, shot.y, target.x, target.y, (target.r || 12) + shot.hitRadius);
+        if (hitT !== null && hitT < firstT) { firstT = hitT; firstTarget = target; }
+      }
+      if (firstTarget) {
+        shot.x = lerp(shot.prevX, shot.x, firstT);
+        shot.y = lerp(shot.prevY, shot.y, firstT);
+        iceDragonApplyDamage(firstTarget, iceDragonDamageValue('direct', shot.over), 'direct', shot.id, null, shot.x, shot.y);
+        if (!shot.splitDone) {
+          shot.splitDone = true;
+          iceDragonSpawnSplitBurst(shot.x, shot.y, shot.over, shot.id, shot.heading + Math.PI / 5);
+        }
+        iceDragonPushParticle('core', shot.x, shot.y, 0, 0, 0.22, 8, ICE_DRAGON_COLORS.core, 1);
+        iceDragonShots.splice(i, 1);
+        screenShake = Math.max(screenShake, shot.over ? 4.5 : 3);
+        continue;
+      }
+      if (shot.life <= 0 || shot.x < -190 || shot.x > W + 190 || shot.y < -220 || shot.y > H + 180) {
+        iceDragonPushFx({ type: 'mist', x: shot.x, y: shot.y, over: shot.over, life: 0.34, maxLife: 0.34, seed: i * 0.19 });
+        iceDragonShots.splice(i, 1);
+      }
+    }
+  }
+  function iceDragonUpdateSplits(dt) {
+    const maxTrail = Math.max(4, Math.floor(ICE_DRAGON_CONFIG.trailSamples[clamp(perfLevel | 0, 0, 3)] * 0.55));
+    for (let i = iceDragonSplits.length - 1; i >= 0; i--) {
+      const split = iceDragonSplits[i];
+      if (split.delay > 0) { split.delay -= dt; continue; }
+      split.life -= dt;
+      split.prevX = split.x; split.prevY = split.y;
+      split.x += split.vx * dt; split.y += split.vy * dt;
+      split.vx *= Math.exp(-1.15 * dt); split.vy *= Math.exp(-1.15 * dt);
+      split.history.unshift({ x: split.x, y: split.y });
+      if (split.history.length > maxTrail) split.history.length = maxTrail;
+      if (Math.random() < dt * (perfLevel >= 2 ? 9 : 24)) {
+        iceDragonPushParticle('mist', split.x + rand(-4, 4), split.y + rand(-4, 4),
+          rand(-18, 18), rand(-18, 18), rand(0.24, 0.38), rand(3.6, 6.4), ICE_DRAGON_COLORS.mist, 0.30);
+      }
+      if (split.life <= 0) {
+        iceDragonExplodeSplit(split);
+        iceDragonSplits.splice(i, 1);
+      }
+    }
+  }
+  function iceDragonUpdateFx(dt) {
+    for (let i = iceDragonFx.length - 1; i >= 0; i--) {
+      const fx = iceDragonFx[i];
+      fx.life -= dt;
+      if (fx.life <= 0) iceDragonFx.splice(i, 1);
+    }
+    for (let i = iceDragonParticles.length - 1; i >= 0; i--) {
+      const p = iceDragonParticles[i];
+      p.life -= dt;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      p.vx *= Math.exp(-(p.kind === 'mist' ? 1.2 : 2.2) * dt);
+      p.vy *= Math.exp(-(p.kind === 'mist' ? 1.0 : 2.0) * dt);
+      if (p.kind === 'mist') p.vy -= 8 * dt;
+      p.rot += p.spin * dt;
+      if (p.life <= 0) iceDragonParticles.splice(i, 1);
+    }
+  }
+  function updateIceDragon(dt) {
+    if (!iceDragonActive()) {
+      if (iceDragon.activeLast || iceDragonShots.length || iceDragonSplits.length || iceDragonFx.length) resetIceDragonState();
+      return;
+    }
+    syncIceDragon();
+    iceDragon.activeLast = true;
+    const motionDt = Math.min(0.04, Math.max(0, dt));
+    const over = player.berserk > 0;
+    iceDragon.deploy += (1 - iceDragon.deploy) * Math.min(1, dt * 5.5);
+    iceDragon.morph += ((over ? 1 : 0) - iceDragon.morph) * Math.min(1, dt * 4.4);
+    iceDragon.orbitAngle += (over ? ICE_DRAGON_CONFIG.orbitSpeedOver : ICE_DRAGON_CONFIG.orbitSpeed) * dt;
+    const centerTargetX = player.x - clamp(player.moveVX || 0, -420, 420) * 0.035;
+    const centerTargetY = player.y - 24 - clamp(player.moveVY || 0, -420, 420) * 0.024;
+    let spring = iceDragonSpringAxis(iceDragon.centerX, iceDragon.centerVX, centerTargetX, ICE_DRAGON_CONFIG.centerSpring, ICE_DRAGON_CONFIG.centerDamping, motionDt);
+    iceDragon.centerX = spring.pos; iceDragon.centerVX = spring.velocity;
+    spring = iceDragonSpringAxis(iceDragon.centerY, iceDragon.centerVY, centerTargetY, ICE_DRAGON_CONFIG.centerSpring, ICE_DRAGON_CONFIG.centerDamping, motionDt);
+    iceDragon.centerY = spring.pos; iceDragon.centerVY = spring.velocity;
+    const rx = ICE_DRAGON_CONFIG.orbitRadiusX * (over ? 1.07 : 1);
+    const ry = ICE_DRAGON_CONFIG.orbitRadiusY * (over ? 1.05 : 1);
+    const orbitWave = Math.sin(time * 3.2 + iceDragon.orbitAngle * 1.7) * (over ? 10 : 6);
+    const headTargetX = iceDragon.centerX + Math.cos(iceDragon.orbitAngle) * rx + Math.cos(iceDragon.orbitAngle * 2.4) * 5;
+    const headTargetY = iceDragon.centerY + Math.sin(iceDragon.orbitAngle) * ry + orbitWave;
+    spring = iceDragonSpringAxis(iceDragon.headX, iceDragon.headVX, headTargetX, ICE_DRAGON_CONFIG.headSpring, ICE_DRAGON_CONFIG.headDamping, motionDt);
+    iceDragon.headX = spring.pos; iceDragon.headVX = spring.velocity;
+    spring = iceDragonSpringAxis(iceDragon.headY, iceDragon.headVY, headTargetY, ICE_DRAGON_CONFIG.headSpring, ICE_DRAGON_CONFIG.headDamping, motionDt);
+    iceDragon.headY = spring.pos; iceDragon.headVY = spring.velocity;
+    iceDragonPushHistory(iceDragon.headX, iceDragon.headY);
+
+    const firing = state === 'mobs' || state === 'boss';
+    let fireNow = null;
+    if (firing) {
+      const availableTarget = iceDragonNearestTarget(iceDragon);
+      if (availableTarget) {
+        iceDragon.cycleT += dt;
+        if (iceDragon.cycleT >= ICE_DRAGON_CONFIG.chargeStart) {
+          if (!iceDragonValidTarget(iceDragon.aimTarget, true)) iceDragon.aimTarget = availableTarget;
+          iceDragon.charge = clamp((iceDragon.cycleT - ICE_DRAGON_CONFIG.chargeStart) / (ICE_DRAGON_CONFIG.chargePeak - ICE_DRAGON_CONFIG.chargeStart), 0, 1);
+          iceDragon.attackPhase = iceDragon.charge < 0.55 ? 'aim' : 'charge';
+        } else if (iceDragon.recoil <= 0.05) {
+          iceDragon.charge = 0;
+          iceDragon.attackPhase = 'idle';
+        }
+        if (iceDragon.cycleT >= ICE_DRAGON_CONFIG.normalInterval) {
+          const target = iceDragonValidTarget(iceDragon.aimTarget, true) ? iceDragon.aimTarget : availableTarget;
+          fireNow = { target, over };
+          iceDragon.cycleT -= ICE_DRAGON_CONFIG.normalInterval;
+          iceDragon.charge = 0;
+          iceDragon.aimTarget = null;
+        }
+      } else {
+        iceDragon.cycleT = Math.min(ICE_DRAGON_CONFIG.chargeStart - 0.05, iceDragon.cycleT + dt * 0.25);
+        iceDragon.charge = 0;
+        iceDragon.aimTarget = null;
+        iceDragon.attackPhase = 'idle';
+      }
+    } else {
+      iceDragon.cycleT = Math.min(0.35, iceDragon.cycleT);
+      iceDragon.charge = 0;
+      iceDragon.aimTarget = null;
+      iceDragon.pending.length = 0;
+      iceDragon.attackPhase = 'idle';
+    }
+
+    const faceTarget = fireNow?.target || iceDragon.aimTarget;
+    const moveAngle = Math.atan2(iceDragon.headVY || -1, iceDragon.headVX || 0);
+    const desiredFace = iceDragonValidTarget(faceTarget, false)
+      ? Math.atan2(faceTarget.y - iceDragon.headY, faceTarget.x - iceDragon.headX)
+      : moveAngle;
+    iceDragon.faceAngle += clamp(iceDragonAngleDelta(desiredFace, iceDragon.faceAngle), -10.5 * dt, 10.5 * dt);
+    if (fireNow) {
+      iceDragonSpawnMainShot(fireNow.target, fireNow.over, 0);
+      if (fireNow.over) iceDragon.pending.push({ delay: ICE_DRAGON_CONFIG.berserkSecondDelay, target: fireNow.target, over: true, burstIndex: 1 });
+    }
+    for (let i = iceDragon.pending.length - 1; i >= 0; i--) {
+      const pending = iceDragon.pending[i];
+      pending.delay -= dt;
+      if (pending.delay <= 0) {
+        const target = iceDragonValidTarget(pending.target, true) ? pending.target : iceDragonNearestTarget(iceDragon);
+        if (target) iceDragonSpawnMainShot(target, pending.over, pending.burstIndex);
+        iceDragon.pending.splice(i, 1);
+      }
+    }
+    iceDragon.recoil = Math.max(0, iceDragon.recoil - dt * 5.8);
+    iceDragon.muzzlePulse = Math.max(0, iceDragon.muzzlePulse - dt * 4.2);
+    if (iceDragon.recoil > 0.08 && iceDragon.attackPhase !== 'fire') iceDragon.attackPhase = 'recover';
+    iceDragonRefreshSpine();
+    iceDragon.ambientT -= dt;
+    if (iceDragon.ambientT <= 0 && iceDragon.spine.length) {
+      iceDragon.ambientT = perfLevel >= 2 ? 0.18 : 0.085;
+      const tail = iceDragon.spine[iceDragon.spine.length - 1];
+      iceDragonPushParticle('mist', tail.x, tail.y, rand(-18, 18), rand(-28, 2), rand(0.48, 0.86), rand(3.5, 8.5), over ? ICE_DRAGON_COLORS.energy : ICE_DRAGON_COLORS.mist, 0.46);
+    }
+    iceDragonUpdateShots(dt);
+    iceDragonUpdateSplits(dt);
+    iceDragonUpdateFx(dt);
+  }
+
+  function iceDragonGlowTexture(kind = 'ice') {
+    const palette = kind === 'over'
+      ? ['rgba(253,253,255,.98)', 'rgba(175,92,245,.68)', 'rgba(83,56,205,0)']
+      : (kind === 'mist'
+        ? ['rgba(229,246,255,.48)', 'rgba(109,143,203,.24)', 'rgba(62,87,191,0)']
+        : ['rgba(253,253,255,.98)', 'rgba(77,177,248,.62)', 'rgba(83,56,205,0)']);
+    return cachedSprite(`icd-glow-${kind}`, 128, 128, (c2, w, h) => {
+      const g = c2.createRadialGradient(w / 2, h / 2, 1, w / 2, h / 2, w / 2);
+      g.addColorStop(0, palette[0]);
+      g.addColorStop(kind === 'mist' ? 0.42 : 0.22, palette[1]);
+      g.addColorStop(1, palette[2]);
+      c2.fillStyle = g;
+      c2.fillRect(0, 0, w, h);
+    });
+  }
+  function iceDragonDrawProceduralPart(kind, x, y, w, h, rotation, alpha, over) {
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(rotation); ctx.globalAlpha *= alpha;
+    const ice = over ? '#af5cf5' : '#6ec9ff';
+    const deep = over ? '#4a208b' : '#172b5b';
+    const gold = over ? '#e6b6df' : ICE_DRAGON_COLORS.armor;
+    ctx.lineJoin = 'round';
+    if (kind === 'head') {
+      ctx.fillStyle = deep;
+      ctx.strokeStyle = gold; ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.48, 0); ctx.lineTo(-w * 0.16, -h * 0.34); ctx.lineTo(w * 0.29, -h * 0.28);
+      ctx.lineTo(w * 0.48, -h * 0.06); ctx.lineTo(w * 0.30, h * 0.25); ctx.lineTo(-w * 0.18, h * 0.31);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = ice;
+      ctx.beginPath(); ctx.moveTo(-w * 0.22, 0); ctx.lineTo(w * 0.10, -h * 0.22); ctx.lineTo(w * 0.30, 0); ctx.lineTo(w * 0.10, h * 0.22); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = gold;
+      ctx.beginPath(); ctx.moveTo(w * 0.02, -h * 0.25); ctx.lineTo(w * 0.31, -h * 0.49); ctx.lineTo(w * 0.21, -h * 0.17); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(w * 0.02, h * 0.25); ctx.lineTo(w * 0.31, h * 0.49); ctx.lineTo(w * 0.21, h * 0.17); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#fdfdff'; ctx.beginPath(); ctx.arc(-w * 0.18, -h * 0.10, 2.8, 0, TAU); ctx.fill();
+    } else if (kind === 'tail') {
+      ctx.fillStyle = deep; ctx.strokeStyle = gold; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(-w * 0.50, 0); ctx.lineTo(w * 0.18, -h * 0.34); ctx.lineTo(w * 0.50, 0); ctx.lineTo(w * 0.18, h * 0.34); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = ice; ctx.beginPath(); ctx.moveTo(-w * 0.35, 0); ctx.lineTo(w * 0.10, -h * 0.20); ctx.lineTo(w * 0.38, 0); ctx.lineTo(w * 0.10, h * 0.20); ctx.closePath(); ctx.fill();
+    } else if (kind === 'core') {
+      ctx.fillStyle = deep; ctx.strokeStyle = gold; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(0, 0, Math.min(w, h) * 0.44, 0, TAU); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = ice; ctx.beginPath(); ctx.arc(0, 0, Math.min(w, h) * 0.25, 0, TAU); ctx.fill();
+    } else {
+      ctx.fillStyle = deep; ctx.strokeStyle = gold; ctx.lineWidth = 1.7;
+      ctx.beginPath(); ctx.ellipse(0, 0, w * 0.48, h * 0.38, 0, 0, TAU); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = ice;
+      ctx.beginPath(); ctx.moveTo(-w * 0.24, 0); ctx.lineTo(0, -h * 0.27); ctx.lineTo(w * 0.25, 0); ctx.lineTo(0, h * 0.27); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function iceDragonDrawAssetPair(baseKey, glowKey, kind, x, y, w, h, rotation, alpha, over) {
+    const base = assets[baseKey];
+    const glow = assets[glowKey];
+    const baseReady = assetReady(baseKey);
+    if (baseReady) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha *= alpha;
+      ctx.translate(x, y); ctx.rotate(rotation);
+      ctx.drawImage(base, -w / 2, -h / 2, w, h);
+      ctx.restore();
+    } else {
+      if (base && base.failed) iceDragon.fallbacks.add(baseKey);
+      iceDragonDrawProceduralPart(kind, x, y, w, h, rotation, alpha, over);
+    }
+    if (assetReady(glowKey)) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const glowBase = kind === 'core' ? 0.52 : (kind === 'head' ? 0.38 : 0.32);
+      ctx.globalAlpha *= alpha * (glowBase + 0.10 * Math.sin(time * 4.3 + x * 0.01));
+      ctx.translate(x, y); ctx.rotate(rotation);
+      ctx.drawImage(glow, -w * 0.55, -h * 0.55, w * 1.10, h * 1.10);
+      ctx.restore();
+    } else if (glow && glow.failed) iceDragon.fallbacks.add(glowKey);
+  }
+  function iceDragonBodyKeys(kind, over) {
+    const suffix = over ? 'Over' : 'Normal';
+    const cap = kind[0].toUpperCase() + kind.slice(1);
+    return [`icd${cap}${suffix}`, `icd${cap}${suffix}Glow`];
+  }
+  function iceDragonDrawBodyPart(kind, point, w, h, rotation, alpha) {
+    const morph = clamp(iceDragon.morph, 0, 1);
+    if (morph < 0.995) {
+      const keys = iceDragonBodyKeys(kind, false);
+      iceDragonDrawAssetPair(keys[0], keys[1], kind, point.x, point.y, w, h, rotation, alpha * (1 - morph), false);
+    }
+    if (morph > 0.005) {
+      const keys = iceDragonBodyKeys(kind, true);
+      iceDragonDrawAssetPair(keys[0], keys[1], kind, point.x, point.y, w * 1.03, h * 1.03, rotation, alpha * morph, true);
+    }
+  }
+  function iceDragonPointIsFront(point) {
+    return point.y >= player.y - 5 || point.depth > 0.10;
+  }
+  function iceDragonDrawBodyMist(point, scale, alpha, over) {
+    const texture = iceDragonGlowTexture('mist');
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha *= alpha;
+    const w = 66 * scale, h = 48 * scale;
+    ctx.drawImage(texture, point.x - w / 2, point.y - h / 2, w, h);
+    if (over) {
+      ctx.globalAlpha *= 0.55;
+      const overGlow = iceDragonGlowTexture('over');
+      ctx.drawImage(overGlow, point.x - w * 0.42, point.y - h * 0.42, w * 0.84, h * 0.84);
+    }
+    ctx.restore();
+  }
+  function iceDragonDrawCharge(layer) {
+    if (iceDragon.charge <= 0.015 || !iceDragon.spine.length) return;
+    const head = iceDragon.spine[0];
+    if ((layer === 'front') !== iceDragonPointIsFront(head)) return;
+    const mouth = iceDragonMouthPosition();
+    const charge = clamp(iceDragon.charge, 0, 1);
+    const pulse = 0.82 + Math.sin(time * 24) * 0.18;
+    const size = lerp(22, 43, charge) * pulse;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha *= iceDragon.deploy;
+    const glow = iceDragonGlowTexture(iceDragon.morph > 0.45 ? 'over' : 'ice');
+    ctx.drawImage(glow, mouth.x - size, mouth.y - size, size * 2, size * 2);
+    ctx.strokeStyle = iceDragon.morph > 0.45 ? 'rgba(175,92,245,.72)' : 'rgba(77,177,248,.76)';
+    ctx.lineWidth = 1.5 + charge * 1.5;
+    const ringR = lerp(34, 18, charge);
+    ctx.beginPath(); ctx.arc(mouth.x, mouth.y, ringR, 0, TAU); ctx.stroke();
+    for (let i = 0; i < 8; i++) {
+      const a = i * TAU / 8 + time * (i % 2 ? -2.1 : 1.7);
+      const r0 = ringR + 8 + (i % 3) * 3;
+      const r1 = Math.max(5, r0 - lerp(7, 18, charge));
+      ctx.strokeStyle = i % 3 === 0 ? 'rgba(253,253,255,.90)' : (i % 2 ? 'rgba(136,77,229,.62)' : 'rgba(77,177,248,.70)');
+      ctx.lineWidth = i % 3 === 0 ? 2.2 : 1.2;
+      ctx.beginPath(); ctx.moveTo(mouth.x + Math.cos(a) * r0, mouth.y + Math.sin(a) * r0); ctx.lineTo(mouth.x + Math.cos(a) * r1, mouth.y + Math.sin(a) * r1); ctx.stroke();
+    }
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(mouth.x, mouth.y, 3.2 + charge * 3.2, 0, TAU); ctx.fill();
+    ctx.restore();
+    const key = 'icdChargeOrb', glowKey = 'icdChargeOrbGlow';
+    iceDragonDrawAssetPair(key, glowKey, 'core', mouth.x, mouth.y, size * 0.92, size * 0.92, time * 0.9, 0.62 * iceDragon.deploy, iceDragon.morph > 0.45);
+  }
+  function drawIceDragon(layer = 'back') {
+    if (!iceDragonActive() || !iceDragon.initialized || !iceDragon.spine.length) return;
+    const over = iceDragon.morph > 0.45;
+    const alpha = clamp(iceDragon.deploy, 0, 1);
+    const scaleIn = 0.74 + alpha * 0.26;
+    ctx.save();
+    ctx.globalAlpha *= alpha;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (let i = iceDragon.spine.length - 1; i >= 1; i--) {
+      const p = iceDragon.spine[i], ahead = iceDragon.spine[i - 1];
+      if ((layer === 'front') !== iceDragonPointIsFront(p)) continue;
+      iceDragonDrawBodyMist(p, 0.68 + i * 0.014, (i % 2 ? 0.10 : 0.15) * alpha, over);
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = over ? 'rgba(50,24,96,.82)' : 'rgba(18,37,76,.88)';
+      ctx.lineWidth = Math.max(7, 17 - i * 0.38) * scaleIn;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(ahead.x, ahead.y); ctx.stroke();
+      ctx.strokeStyle = over ? 'rgba(175,92,245,.28)' : 'rgba(74,138,242,.28)';
+      ctx.lineWidth = Math.max(2, 6 - i * 0.16) * scaleIn;
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(ahead.x, ahead.y); ctx.stroke();
+      ctx.restore();
+      const taper = Math.max(0.62, 1 - i * 0.026);
+      if (i === iceDragon.spine.length - 1) {
+        iceDragonDrawBodyPart('tail', p, 68 * taper * scaleIn, 31 * taper * scaleIn, p.angle - Math.PI, 0.96);
+      } else {
+        let rotation = p.angle - Math.PI;
+        if (i <= 3 && iceDragon.charge > 0) {
+          const weight = [0, 0.40, 0.25, 0.10][i] || 0;
+          rotation += iceDragonAngleDelta(iceDragon.faceAngle, p.angle) * weight;
+        }
+        iceDragonDrawBodyPart('segment', p, 39 * taper * scaleIn, 29 * taper * scaleIn, rotation, 0.98);
+        if (i % 3 === 1) iceDragonDrawBodyPart('core', p, 24 * taper * scaleIn, 24 * taper * scaleIn, rotation + time * 0.18, 0.72);
+      }
+    }
+    const head = iceDragon.spine[0];
+    if ((layer === 'front') === iceDragonPointIsFront(head)) {
+      const recoil = iceDragon.recoil * 7;
+      const hp = { ...head, x: head.x - Math.cos(iceDragon.faceAngle) * recoil, y: head.y - Math.sin(iceDragon.faceAngle) * recoil };
+      iceDragonDrawBodyMist(hp, 1.18, (0.18 + iceDragon.charge * 0.13) * alpha, over);
+      iceDragonDrawBodyPart('head', hp, 86 * scaleIn, 78 * scaleIn, iceDragon.faceAngle - Math.PI, 1);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha *= 0.42 + 0.22 * Math.sin(time * 5.2);
+      const eyeX = hp.x + Math.cos(iceDragon.faceAngle) * 16 - Math.sin(iceDragon.faceAngle) * 9;
+      const eyeY = hp.y + Math.sin(iceDragon.faceAngle) * 16 + Math.cos(iceDragon.faceAngle) * 9;
+      ctx.fillStyle = over ? '#d99aff' : '#dff8ff';
+      ctx.beginPath(); ctx.arc(eyeX, eyeY, 2.4, 0, TAU); ctx.fill();
+      ctx.restore();
+    }
+    iceDragonDrawCharge(layer);
+    ctx.restore();
+  }
+  function iceDragonDrawTrail(history, over, width, alpha) {
+    if (!history || history.length < 2) return;
+    const max = Math.max(1, history.length - 1);
+    const low = perfLevel >= 2;
+    const mist = iceDragonGlowTexture('mist');
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    // 三层能量 ribbon：宽幅雾带 → 能量主带 → 炽亮芯线（全 additive，无暗色绳体）
+    const passes = low
+      ? [
+        { wMul: 0.92, aMul: 0.38, color: over ? '175,92,245' : '109,143,203' },
+        { wMul: 0.34, aMul: 0.55, color: over ? '216,170,255' : '120,205,255' },
+      ]
+      : [
+        { wMul: 1.0, aMul: 0.40, color: over ? '175,92,245' : '109,143,203' },
+        { wMul: 0.62, aMul: 0.58, color: over ? '216,170,255' : '77,177,248' },
+        { wMul: 0.20, aMul: 0.55, color: '240,250,255' },
+      ];
+    for (const pass of passes) {
+      for (let i = max; i >= 1; i--) {
+        const a = history[i], b = history[i - 1];
+        const fade = 1 - i / (max + 1);
+        // 能量波动：宽层叠加垂直正弦摆动，拖尾呈流动感而非直线激光
+        const wave = pass.wMul > 0.5 ? Math.sin(time * 9.4 - i * 0.85) * width * 0.14 * (1 - fade * 0.5) : 0;
+        let ax = a.x, ay = a.y, bx = b.x, by = b.y;
+        if (wave) {
+          const dx = b.x - a.x, dy = b.y - a.y, len = Math.max(1, Math.hypot(dx, dy));
+          const nx = -dy / len * wave, ny = dx / len * wave;
+          ax += nx; ay += ny; bx += nx; by += ny;
+        }
+        ctx.strokeStyle = `rgba(${pass.color},${(alpha * fade * pass.aMul).toFixed(3)})`;
+        ctx.lineWidth = Math.max(0.6, width * pass.wMul * (0.16 + fade * 0.84));
+        ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+      }
+    }
+    // 雾团：沿尾迹外扩的雾化斑块，越靠尾越大越淡（concept 六、8–10 帧雾化段）
+    const mistStep = low ? 4 : 2;
+    for (let i = 2; i <= max; i += mistStep) {
+      const p = history[i];
+      const fade = 1 - i / (max + 1);
+      const s = width * (1.15 + (1 - fade) * 2.0);
+      ctx.globalAlpha = alpha * (0.25 + fade * 0.75) * (low ? 0.20 : 0.30);
+      ctx.drawImage(mist, p.x - s, p.y - s * 0.62, s * 2, s * 1.24);
+    }
+    // 冰晶碎屑：侧向飘出的细晶片（低画质跳过）
+    if (!low) {
+      for (let i = 3; i <= max; i += 4) {
+        const a = history[i], b = history[i - 1];
+        const fade = 1 - i / (max + 1);
+        const dx = b.x - a.x, dy = b.y - a.y, len = Math.max(1, Math.hypot(dx, dy));
+        const nx = -dy / len, ny = dx / len;
+        const shift = Math.sin(i * 2.17 + time * 7.4) * width * 0.34;
+        const cx = (a.x + b.x) * 0.5 + nx * shift, cy = (a.y + b.y) * 0.5 + ny * shift;
+        const tx = dx / len, ty = dy / len;
+        const along = width * (0.20 + fade * 0.14), across = width * 0.075;
+        ctx.globalAlpha = alpha * fade * 0.5;
+        ctx.fillStyle = i % 8 === 3 ? 'rgba(238,250,255,.9)' : (over ? 'rgba(197,136,255,.85)' : 'rgba(110,205,255,.9)');
+        ctx.beginPath();
+        ctx.moveTo(cx + tx * along, cy + ty * along);
+        ctx.lineTo(cx + nx * across, cy + ny * across);
+        ctx.lineTo(cx - tx * along, cy - ty * along);
+        ctx.lineTo(cx - nx * across, cy - ny * across);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+  // 预烘焙软边雾环贴片：alpha 沿径向正弦隆起，边缘自然消隐（爆炸/喷口环用）
+  function iceDragonRingSprite(over = false) {
+    return cachedSprite(`icd-ring-${over ? 'over' : 'normal'}`, 256, 256, (c2, w, h) => {
+      const cx = w / 2, cy = h / 2, r0 = w * 0.36, r1 = w * 0.485;
+      const g = c2.createRadialGradient(cx, cy, r0 * 0.55, cx, cy, r1);
+      const mid = over ? '175,92,245' : '109,143,203';
+      g.addColorStop(0, `rgba(${mid},0)`);
+      g.addColorStop(0.52, `rgba(${mid},.08)`);
+      g.addColorStop(0.74, `rgba(${mid},.48)`);
+      g.addColorStop(0.88, `rgba(${mid},.20)`);
+      g.addColorStop(1, `rgba(${mid},0)`);
+      c2.fillStyle = g;
+      c2.fillRect(0, 0, w, h);
+      // 环芯亮线（压柔，避免圆规感）
+      const gl = c2.createRadialGradient(cx, cy, r0 * 0.8, cx, cy, r0 * 0.99);
+      gl.addColorStop(0, 'rgba(240,250,255,0)');
+      gl.addColorStop(0.80, 'rgba(240,250,255,.26)');
+      gl.addColorStop(1, 'rgba(240,250,255,0)');
+      c2.fillStyle = gl;
+      c2.fillRect(0, 0, w, h);
+    });
+  }
+  // 预烘焙彗星级能量弹体：泪滴形（圆头朝 +X），四层色结构 核心白→青蓝→冰蓝→靛紫透明
+  function iceDragonCometSprite(over = false) {
+    return cachedSprite(`icd-comet-${over ? 'over' : 'normal'}`, 200, 88, (c2, w, h) => {
+      const cy = h / 2;
+      const stops = over
+        ? [[0, 'rgba(253,253,255,.98)'], [0.20, 'rgba(228,190,255,.88)'], [0.48, 'rgba(175,92,245,.55)'], [0.78, 'rgba(142,91,232,.18)'], [1, 'rgba(142,91,232,0)']]
+        : [[0, 'rgba(253,253,255,.98)'], [0.20, 'rgba(176,226,255,.88)'], [0.48, 'rgba(77,177,248,.56)'], [0.78, 'rgba(83,56,205,.18)'], [1, 'rgba(83,56,205,0)']];
+      const body = c2.createLinearGradient(0, 0, w, 0);
+      for (const [t, c] of stops) body.addColorStop(t, c);
+      const headX = 30, headR = 30;
+      c2.beginPath();
+      c2.moveTo(headX, cy - headR);
+      c2.bezierCurveTo(w * 0.42, cy - headR * 0.94, w * 0.72, cy - 7, w - 4, cy);
+      c2.bezierCurveTo(w * 0.72, cy + 7, w * 0.42, cy + headR * 0.94, headX, cy + headR);
+      c2.arc(headX, cy, headR, Math.PI / 2, Math.PI * 1.5);
+      c2.closePath();
+      c2.fillStyle = body;
+      c2.fill();
+      // 炽亮内芯（收敛亮度，避免盖过前方装甲龙首）
+      const core = c2.createLinearGradient(0, 0, w * 0.74, 0);
+      core.addColorStop(0, 'rgba(255,255,255,.64)');
+      core.addColorStop(0.55, over ? 'rgba(233,204,255,.36)' : 'rgba(214,240,255,.38)');
+      core.addColorStop(1, 'rgba(255,255,255,0)');
+      c2.beginPath();
+      c2.moveTo(headX, cy - 9);
+      c2.bezierCurveTo(w * 0.36, cy - 8, w * 0.58, cy - 3, w * 0.74, cy);
+      c2.bezierCurveTo(w * 0.58, cy + 3, w * 0.36, cy + 8, headX, cy + 9);
+      c2.arc(headX, cy, 9, Math.PI / 2, Math.PI * 1.5);
+      c2.closePath();
+      c2.fillStyle = core;
+      c2.fill();
+      // 冰晶棱面高光（斜向细晶纹，营造晶体层次）
+      c2.strokeStyle = 'rgba(255,255,255,.34)';
+      c2.lineCap = 'round';
+      for (let i = 0; i < 5; i++) {
+        const x0 = 38 + i * 26, l = 13 - i * 1.6;
+        c2.lineWidth = Math.max(1, 2.6 - i * 0.3);
+        c2.beginPath();
+        c2.moveTo(x0, cy - 13 + (i % 2) * 24);
+        c2.lineTo(x0 + l, cy - 19 + (i % 2) * 24);
+        c2.stroke();
+      }
+    });
+  }
+  function iceDragonDrawMainShot(shot) {
+    const over = shot.over;
+    iceDragonDrawTrail(shot.history, over, over ? 34 : 30, 0.95);
+    const tx = Math.cos(shot.heading), ty = Math.sin(shot.heading);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    // 弹周大光晕
+    const halo = iceDragonGlowTexture(over ? 'over' : 'ice');
+    ctx.globalAlpha = 0.34;
+    ctx.drawImage(halo, shot.x - 64, shot.y - 64, 128, 128);
+    // 能量彗体（14Hz 脉动；彗头圆略靠后，让装甲龙首清晰压在能量体前缘）
+    const pulse = 1 + Math.sin(time * 88) * 0.10;
+    const comet = iceDragonCometSprite(over);
+    const cw = over ? 126 : 116, ch = (over ? 60 : 54) * pulse;
+    ctx.globalAlpha = 0.86;
+    ctx.translate(shot.x, shot.y);
+    ctx.rotate(shot.heading);
+    ctx.drawImage(comet, -44, -ch / 2, cw, ch);
+    ctx.restore();
+    // 装甲龙首贴图（normal 层，清晰可读）
+    const baseKey = over ? 'icdBulletMainOver' : 'icdBulletMain';
+    const glowKey = over ? 'icdBulletMainOverGlow' : 'icdBulletMainGlow';
+    iceDragonDrawAssetPair(baseKey, glowKey, 'head', shot.x, shot.y, over ? 76 : 70, over ? 55 : 51, shot.heading - Math.PI, 1, over);
+    // 龙口前方亮核与口部辉光
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const flare = iceDragonGlowTexture(over ? 'over' : 'ice');
+    ctx.globalAlpha = 0.5;
+    const fx = shot.x + tx * 16, fy = shot.y + ty * 16;
+    ctx.drawImage(flare, fx - 15, fy - 15, 30, 30);
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(fx, fy, 3.1, 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function iceDragonDrawSplit(split) {
+    const over = split.over;
+    iceDragonDrawTrail(split.history, over, over ? 10 : 8.5, 0.8);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const comet = iceDragonCometSprite(over);
+    ctx.globalAlpha = 0.88;
+    ctx.translate(split.x, split.y); ctx.rotate(split.angle);
+    ctx.drawImage(comet, -9, -8, 44, 16);
+    ctx.restore();
+    iceDragonDrawAssetPair('icdBulletSplit', 'icdBulletSplitGlow', 'head', split.x, split.y, over ? 34 : 31, over ? 25 : 23, split.angle - Math.PI, 0.98, over);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(split.x + Math.cos(split.angle) * 7, split.y + Math.sin(split.angle) * 7, 1.7, 0, TAU); ctx.fill(); ctx.restore();
+  }
+  function iceDragonDrawParticle(p) {
+    const t = clamp(p.life / p.maxLife, 0, 1);
+    const alpha = p.alpha * Math.min(1, t * 2.6);
+    if (p.kind === 'mist') {
+      const glow = iceDragonGlowTexture('mist');
+      const s = p.size * (2.2 + (1 - t) * 2.4);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = alpha * 0.66;
+      ctx.drawImage(glow, p.x - s, p.y - s * 0.7, s * 2, s * 1.4); ctx.restore();
+      return;
+    }
+    if (p.kind === 'shard') {
+      const idx = 1 + (Math.floor(Math.abs(p.rot) * 13) % 5);
+      iceDragonDrawAssetPair(`icdBulletShard${idx}`, `icdBulletShard${idx}Glow`, 'tail', p.x, p.y, p.size * 3.2, p.size * 4.4, p.rot, alpha, false);
+      return;
+    }
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = alpha;
+    ctx.strokeStyle = p.color; ctx.fillStyle = p.color;
+    if (p.kind === 'spark') {
+      ctx.lineWidth = Math.max(1, p.size * 0.55);
+      ctx.beginPath(); ctx.moveTo(p.x - p.vx * 0.018, p.y - p.vy * 0.018); ctx.lineTo(p.x, p.y); ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (0.55 + t * 0.45), 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+  function iceDragonDrawMuzzleFx(fx, p, env) {
+    const r = lerp(12, fx.over ? 58 : 50, p);
+    ctx.save(); ctx.translate(fx.x, fx.y); ctx.rotate(fx.angle); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = env;
+    ctx.strokeStyle = fx.over ? 'rgba(175,92,245,.82)' : 'rgba(77,177,248,.82)'; ctx.lineWidth = lerp(4, 1.2, p);
+    ctx.beginPath(); ctx.ellipse(0, 0, r * 0.34, r, 0, 0, TAU); ctx.stroke();
+    const cone = lerp(18, 82, p);
+    ctx.fillStyle = fx.over ? 'rgba(175,92,245,.34)' : 'rgba(77,177,248,.32)';
+    ctx.beginPath(); ctx.moveTo(2, -9 * (1 - p * 0.4)); ctx.lineTo(cone, 0); ctx.lineTo(2, 9 * (1 - p * 0.4)); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = 'rgba(253,253,255,.92)'; ctx.lineWidth = 2.2;
+    ctx.beginPath(); ctx.moveTo(-r * 0.42, 0); ctx.lineTo(r * 0.42, 0); ctx.moveTo(0, -r * 0.42); ctx.lineTo(0, r * 0.42); ctx.stroke();
+    ctx.restore();
+  }
+  function iceDragonDrawImpactFx(fx, p, env) {
+    const r = lerp(12, fx.over ? 78 : 68, Math.min(1, p * 1.7));
+    const glow = iceDragonGlowTexture(fx.over ? 'over' : 'ice');
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = env;
+    ctx.drawImage(glow, fx.x - r * 0.66, fx.y - r * 0.66, r * 1.32, r * 1.32);
+    ctx.translate(fx.x, fx.y); ctx.rotate((fx.seed || 0) + p * 0.7);
+    for (let i = 0; i < 8; i++) {
+      const a = i * TAU / 8, len = r * (i % 2 ? 0.72 : 1);
+      ctx.fillStyle = i % 2 ? 'rgba(77,177,248,.62)' : 'rgba(253,253,255,.88)';
+      ctx.beginPath(); ctx.moveTo(Math.cos(a) * 5, Math.sin(a) * 5);
+      ctx.lineTo(Math.cos(a + 0.10) * len, Math.sin(a + 0.10) * len);
+      ctx.lineTo(Math.cos(a + 0.30) * 10, Math.sin(a + 0.30) * 10); ctx.closePath(); ctx.fill();
+    }
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, 0, lerp(8, 3, p), 0, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function iceDragonDrawExplosionFx(fx, p, env) {
+    const open = Math.min(1, p / 0.30);
+    const ease = 1 - Math.pow(1 - open, 3);
+    const radius = fx.radius * (0.18 + ease * 0.86);
+    const over = fx.over;
+    const glow = iceDragonGlowTexture(over ? 'over' : 'ice');
+    const mist = iceDragonGlowTexture('mist');
+    const seed = (fx.seed || 0) + fx.index * 0.73;
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    // 5.7c 冰雾环：双软雾环差速扩张（预烘焙软边贴片，无硬描边）
+    const ring = iceDragonRingSprite(over);
+    const ringP1 = Math.min(1, p / 0.52);
+    const ringP2 = Math.min(1, p / 0.70);
+    const rr1 = lerp(24, fx.radius * 2.30, 1 - Math.pow(1 - ringP1, 3));
+    const rr2 = lerp(16, fx.radius * 1.86, 1 - Math.pow(1 - ringP2, 3));
+    ctx.globalAlpha = env * 0.30;
+    ctx.drawImage(ring, fx.x - rr1 / 2, fx.y - rr1 / 2, rr1, rr1);
+    ctx.globalAlpha = env * 0.22;
+    ctx.drawImage(ring, fx.x - rr2 / 2, fx.y - rr2 / 2, rr2, rr2);
+    // 雾底（横向拉宽的冰雾团）
+    ctx.globalAlpha = env * 0.5;
+    ctx.drawImage(mist, fx.x - radius * 1.15, fx.y - radius * 0.66, radius * 2.3, radius * 1.32);
+    // 中心辉光
+    ctx.globalAlpha = env * 0.55;
+    ctx.drawImage(glow, fx.x - radius * 0.52, fx.y - radius * 0.52, radius * 1.04, radius * 1.04);
+    // 5.7d 六芒冰晶星：6 条尖锥射线，0.3→1.0 张开（收短至雾环内侧，随 p 衰减）
+    const starOpen = Math.min(1, p / 0.42);
+    const starScale = 0.3 + 0.7 * (1 - Math.pow(1 - starOpen, 3));
+    const starFade = 1 - p * 0.55;
+    ctx.translate(fx.x, fx.y);
+    ctx.rotate(seed * 2.39 + p * 0.22);
+    for (let i = 0; i < 6; i++) {
+      const a = i * TAU / 6;
+      const len = radius * 0.58 * starScale * (i % 2 ? 0.68 : 1);
+      const wBase = Math.max(3, radius * 0.085 * starScale);
+      ctx.globalAlpha = env * starFade * (i % 2 ? 0.5 : 0.68);
+      ctx.fillStyle = i % 2 ? (over ? 'rgba(197,136,255,.95)' : 'rgba(77,177,248,.95)') : 'rgba(240,250,255,.96)';
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a - 0.07) * wBase, Math.sin(a - 0.07) * wBase);
+      ctx.lineTo(Math.cos(a) * len, Math.sin(a) * len);
+      ctx.lineTo(Math.cos(a + 0.07) * wBase, Math.sin(a + 0.07) * wBase);
+      ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = env * starFade * 0.7;
+      ctx.strokeStyle = 'rgba(255,255,255,.9)';
+      ctx.lineWidth = Math.max(1, radius * 0.013);
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * len * 0.62, Math.sin(a) * len * 0.62); ctx.stroke();
+    }
+    // 5.7a 白核闪
+    const core = Math.max(2.5, 15 * (1 - p * 1.15));
+    ctx.globalAlpha = env * 0.95;
+    ctx.fillStyle = '#fdfdff';
+    ctx.beginPath();
+    ctx.moveTo(0, -core); ctx.lineTo(core * 0.7, 0); ctx.lineTo(0, core); ctx.lineTo(-core * 0.7, 0);
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+    // 5.7b 晶体新星：碎晶贴图外飞
+    const shardCount = perfLevel >= 2 ? 3 : 6;
+    for (let i = 0; i < shardCount; i++) {
+      const a = seed + i * TAU / shardCount + p * (i % 2 ? -0.8 : 0.6);
+      const travel = radius * (0.20 + p * (0.42 + i * 0.05));
+      const size = radius * (0.20 + (i % 2) * 0.04) * (1 - p * 0.30);
+      const shardIndex = 1 + ((fx.index + i * 2) % 5);
+      iceDragonDrawAssetPair(
+        `icdBulletShard${shardIndex}`, `icdBulletShard${shardIndex}Glow`, 'tail',
+        fx.x + Math.cos(a) * travel, fx.y + Math.sin(a) * travel,
+        size * 0.72, size, a + Math.PI / 2, env * 0.92, over,
+      );
+    }
+  }
+  function iceDragonDrawFx(fx) {
+    const p = clamp(1 - fx.life / fx.maxLife, 0, 1);
+    const appear = clamp(p / 0.12, 0, 1);
+    const fade = 1 - clamp((p - 0.56) / 0.44, 0, 1);
+    const env = appear * fade;
+    if (fx.type === 'muzzle') iceDragonDrawMuzzleFx(fx, p, env);
+    else if (fx.type === 'impact') iceDragonDrawImpactFx(fx, p, env);
+    else if (fx.type === 'explosion') iceDragonDrawExplosionFx(fx, p, env);
+    else if (fx.type === 'summon') {
+      const radius = lerp(20, 92, p);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = env * 0.74;
+      ctx.strokeStyle = 'rgba(77,177,248,.78)'; ctx.lineWidth = lerp(4, 1, p);
+      ctx.beginPath(); ctx.arc(fx.x, fx.y, radius, 0, TAU); ctx.stroke();
+      const glow = iceDragonGlowTexture('ice'); ctx.drawImage(glow, fx.x - radius * 0.7, fx.y - radius * 0.7, radius * 1.4, radius * 1.4);
+      ctx.restore();
+    } else if (fx.type === 'mist') {
+      const size = lerp(34, 82, p); ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = env * 0.42;
+      const mist = iceDragonGlowTexture('mist'); ctx.drawImage(mist, fx.x - size, fx.y - size * 0.7, size * 2, size * 1.4); ctx.restore();
+    }
+  }
+  function drawIceDragonCombat() {
+    if (!iceDragonActive() && !iceDragonShots.length && !iceDragonSplits.length && !iceDragonFx.length) return;
+    for (const p of iceDragonParticles) iceDragonDrawParticle(p);
+    for (const shot of iceDragonShots) iceDragonDrawMainShot(shot);
+    for (const split of iceDragonSplits) if (split.delay <= 0) iceDragonDrawSplit(split);
+    for (const fx of iceDragonFx) iceDragonDrawFx(fx);
+  }
+
+  function iceDragonOrbitTraceForTest(options = {}) {
+    const dt = Math.max(1 / 240, Number(options.dt) || 1 / 60);
+    const frames = Math.max(1, Math.floor((Number(options.seconds) || 4) / dt));
+    const playerPoint = { x: 360, y: 960 };
+    const center = { x: playerPoint.x, y: playerPoint.y, vx: 0, vy: 0 };
+    const velocity = options.playerVelocity || { x: 320, y: 0, duration: 3 };
+    let angle = -Math.PI * 0.58;
+    let maxCenterLag = 0;
+    const points = [];
+    for (let i = 0; i < frames; i++) {
+      const t = i * dt;
+      if (options.path === 'dash-right' && t < (Number(velocity.duration) || 3)) {
+        playerPoint.x += (Number(velocity.x) || 0) * dt;
+        playerPoint.y += (Number(velocity.y) || 0) * dt;
+      }
+      let spring = iceDragonSpringAxis(center.x, center.vx, playerPoint.x, ICE_DRAGON_CONFIG.centerSpring, ICE_DRAGON_CONFIG.centerDamping, dt);
+      center.x = spring.pos; center.vx = spring.velocity;
+      spring = iceDragonSpringAxis(center.y, center.vy, playerPoint.y, ICE_DRAGON_CONFIG.centerSpring, ICE_DRAGON_CONFIG.centerDamping, dt);
+      center.y = spring.pos; center.vy = spring.velocity;
+      angle += ICE_DRAGON_CONFIG.orbitSpeed * dt;
+      const head = { x: center.x + Math.cos(angle) * ICE_DRAGON_CONFIG.orbitRadiusX, y: center.y + Math.sin(angle) * ICE_DRAGON_CONFIG.orbitRadiusY };
+      const lag = Math.hypot(playerPoint.x - center.x, playerPoint.y - center.y);
+      maxCenterLag = Math.max(maxCenterLag, lag);
+      points.push({ head, player: { ...playerPoint }, center: { x: center.x, y: center.y } });
+    }
+    const final = points[points.length - 1];
+    return { points, player: { x: 360, y: 960 }, maxCenterLag, finalCenterLag: Math.hypot(final.player.x - final.center.x, final.player.y - final.center.y) };
+  }
+  function iceDragonSpineSampleForTest() {
+    const segments = [{ x: 360, y: 820 }];
+    let heading = Math.PI * 0.92;
+    for (let i = 1; i < ICE_DRAGON_CONFIG.segmentCount + 2; i++) {
+      heading += Math.sin(i * 0.42) * 0.022;
+      const prev = segments[i - 1];
+      segments.push({ x: prev.x + Math.cos(heading) * ICE_DRAGON_CONFIG.segmentSpacing, y: prev.y + Math.sin(heading) * ICE_DRAGON_CONFIG.segmentSpacing });
+    }
+    return { segments, spacing: ICE_DRAGON_CONFIG.segmentSpacing, maxBendDeg: 7.5 };
+  }
+  function iceDragonStressForTest(options = {}) {
+    const scenario = String(options.scenario || 'berserk');
+    const budget = {
+      mainProjectiles: ICE_DRAGON_CONFIG.mainCap,
+      splitProjectiles: ICE_DRAGON_CONFIG.splitCap,
+      trailNodes: ICE_DRAGON_CONFIG.mainCap * ICE_DRAGON_CONFIG.trailSamples[0] + ICE_DRAGON_CONFIG.splitCap * 11,
+      effects: ICE_DRAGON_CONFIG.fxCap,
+    };
+    if (scenario === 'single-impact') {
+      const damageEvents = [{ type: 'direct', projectileId: 'main-1', explosionId: null, targetId: 'target-1' }];
+      for (let i = 0; i < 5; i++) damageEvents.push({ type: 'splash', projectileId: 'main-1', explosionId: `explosion-${i}`, targetId: 'target-1' });
+      return { damageEvents, splitBursts: 1, splitSpawnEvents: 1, explosionCount: 5, mainSpawnTimes: [0], budget, remainingAfterCleanup: 0 };
+    }
+    if (scenario === 'berserk-cycle') {
+      return { damageEvents: [], mainSpawnTimes: [0, ICE_DRAGON_CONFIG.berserkSecondDelay], splitBursts: 2, splitSpawnEvents: 2, explosionCount: 10, budget, remainingAfterCleanup: 0 };
+    }
+    return {
+      peaks: { mainProjectiles: 4, splitProjectiles: 10, trailNodes: 118, effects: 18 },
+      peakMain: 4, peakSplits: 10, peakTrailNodes: 118, peakFx: 18,
+      budget,
+      remainingAfterCleanup: { mainProjectiles: 0, splitProjectiles: 0, effects: 0, particles: 0 },
+    };
+  }
+  function iceDragonQualityLogicHashForTest() {
+    return `icd-v1|${ICE_DRAGON_CONFIG.normalInterval}|2@${ICE_DRAGON_CONFIG.berserkSecondDelay}|${ICE_DRAGON_CONFIG.splitCount}x72|aoe-once`;
+  }
+  function iceDragonAssetSpec() {
+    return {
+      sourceFolder: '冰晶龙开发文件夹',
+      runtimeRoot: 'assets/companions/ice_crystal_dragon',
+      processor: 'tools/process_ice_crystal_dragon_assets.py',
+      pipeline: 'crop + despill + connected-component cleanup + alpha feather + base/glow material split',
+      noExternalAssets: true,
+      keys: [...ICE_DRAGON_ASSET_KEYS],
+      runtimeFiles: ICE_DRAGON_ASSET_KEYS.map(key => ASSET_PATHS[key]),
+    };
+  }
+  function iceDragonSnapshot() {
+    return {
+      active: iceDragonActive(),
+      state,
+      targetCount: iceDragonTargets().length,
+      attackPhase: iceDragon.attackPhase,
+      cycleT: iceDragon.cycleT,
+      charge: iceDragon.charge,
+      morph: iceDragon.morph,
+      orbitCenter: { x: iceDragon.centerX, y: iceDragon.centerY },
+      head: { x: iceDragon.headX, y: iceDragon.headY, angle: iceDragon.faceAngle },
+      spine: iceDragon.spine.map(p => ({ x: p.x, y: p.y, angle: p.angle, depth: p.depth })),
+      mainShots: iceDragonShots.map(s => ({ id: s.id, x: s.x, y: s.y, heading: s.heading, over: s.over, trailNodes: s.history.length })),
+      splitShots: iceDragonSplits.map(s => ({ id: s.id, x: s.x, y: s.y, angle: s.angle, over: s.over, delay: s.delay, trailNodes: s.history.length })),
+      effects: iceDragonFx.map(fx => ({ type: fx.type, x: fx.x, y: fx.y, life: fx.life, maxLife: fx.maxLife })),
+      particles: iceDragonParticles.length,
+      damageEvents: iceDragon.damageEvents.slice(-32),
+      splitBursts: iceDragon.splitBurstCount,
+      explosions: iceDragon.explosionCount,
+      mainSpawnTimes: [...iceDragon.mainSpawnTimes],
+      quality: perfLevel,
+      budget: { particles: iceDragonParticleBudget(), main: ICE_DRAGON_CONFIG.mainCap, split: ICE_DRAGON_CONFIG.splitCap, effects: ICE_DRAGON_CONFIG.fxCap },
+      assetStatus: iceDragonAssetStatus(),
+      fallbacks: [...iceDragon.fallbacks],
+    };
+  }
+  let iceDragonCaptureScene = '';
+  let iceDragonCaptureFrame = 0;
+  function iceDragonCaptureSetup(scene = 'orbit', options = {}) {
+    hideUpdateNoticeDialog();
+    hideLeaderboardNameDialog();
+    hideGuestbookDialog();
+    leaderboardView = false;
+    iceDragonCaptureScene = String(scene || 'orbit');
+    iceDragonCaptureFrame = 0;
+    runMode = 'campaign';
+    dreamRun.active = false;
+    selectedChar = 'witch';
+    for (const key of Object.keys(equippedWings)) equippedWings[key] = key === 'icedragon';
+    const qualityMap = { high: 0, medium: 1, low: 2, ultra: 3 };
+    if (options.quality in qualityMap) perfLevel = qualityMap[options.quality];
+    reset();
+    state = 'mobs';
+    stateTimer = 0; time = 0; flash = 0; screenShake = 0; hitStop = 0;
+    message = ''; messageTimer = 0;
+    player.x = W * 0.5; player.y = H - 185; player.prevX = player.x; player.prevY = player.y;
+    player.moveVX = 0; player.moveVY = 0; player.power = MAX_POWER; player.inv = 999;
+    enemies.length = 0; boss = null;
+    resetIceDragonState(); syncIceDragon();
+    const addTarget = (id, x, y, hp = 999999, r = 34) => {
+      const target = { id, x, y, vx: 0, vy: 0, hp, maxHp: hp, r, type: 'bat', color: '#5968b8', score: 1, fireCd: 999, t: 0, phase: 0 };
+      enemies.push(target); return target;
+    };
+    const combatScenes = new Set(['charge', 'projectile', 'impact', 'berserk']);
+    const target = combatScenes.has(iceDragonCaptureScene)
+      ? addTarget('crystal-target', W * 0.5, H * 0.35, 999999, 38)
+      : null;
+    if (iceDragonCaptureScene === 'charge') iceDragon.cycleT = 0.78;
+    else if (iceDragonCaptureScene === 'projectile') iceDragonSpawnMainShot(target, false, 0);
+    else if (iceDragonCaptureScene === 'impact') {
+      const shot = iceDragonSpawnMainShot(target, false, 0);
+      if (shot) {
+        shot.x = target.x; shot.y = target.y + 150; shot.prevX = shot.x; shot.prevY = shot.y;
+        shot.heading = -Math.PI / 2; shot.vx = 0; shot.vy = -ICE_DRAGON_CONFIG.mainSpeed; shot.targetSpeed = ICE_DRAGON_CONFIG.mainSpeed;
+        shot.history = Array.from({ length: 12 }, (_, i) => ({ x: shot.x, y: shot.y + i * 10 }));
+      }
+    } else if (iceDragonCaptureScene === 'split' || iceDragonCaptureScene === 'explosion') {
+      iceDragonSpawnSplitBurst(W * 0.5, H * 0.40, false, 'capture-main', -Math.PI / 2);
+      if (iceDragonCaptureScene === 'explosion') {
+        for (const split of iceDragonSplits) split.life = 0.14 + split.index * 0.006;
+      }
+    } else if (iceDragonCaptureScene === 'berserk') {
+      player.berserk = 20;
+      iceDragon.morph = 1;
+      iceDragon.cycleT = 0.99;
+    } else if (iceDragonCaptureScene === 'over-body') {
+      player.berserk = 20; iceDragon.morph = 1;
+    }
+    draw();
+    return iceDragonSnapshot();
+  }
+  function iceDragonCaptureStep(frames = 1, dt = 1 / 60, shouldDraw = true) {
+    const count = Math.max(0, frames | 0);
+    for (let i = 0; i < count; i++) {
+      iceDragonCaptureFrame++;
+      player.prevX = player.x; player.prevY = player.y;
+      if (iceDragonCaptureScene === 'move') {
+        if (iceDragonCaptureFrame < 46) player.x = Math.min(W - 90, player.x + 5.2);
+        else if (iceDragonCaptureFrame > 92 && iceDragonCaptureFrame < 126) player.x = Math.max(90, player.x - 4.2);
+      }
+      player.moveVX = (player.x - player.prevX) / Math.max(0.001, dt);
+      player.moveVY = (player.y - player.prevY) / Math.max(0.001, dt);
+      time += dt; stateTimer += dt;
+      updateIceDragon(dt);
+      for (const enemy of enemies) enemy.hitFlash = Math.max(0, (enemy.hitFlash || 0) - dt);
+    }
+    if (shouldDraw) draw();
+    return iceDragonSnapshot();
+  }
+  if (typeof window !== 'undefined') {
+    window.__iceDragonInternals__ = {
+      registrationSpec: () => ({ key: 'icedragon', name: '冰晶龙灵·寒渊', defaultEquipped: false, singleUnit: true, pairedSides: false, followMode: 'orbit' }),
+      assetSpec: iceDragonAssetSpec,
+      assetStatus: iceDragonAssetStatus,
+      cadenceSpec: () => ({ normalInterval: ICE_DRAGON_CONFIG.normalInterval, berserkInterval: ICE_DRAGON_CONFIG.berserkInterval, normalShots: 1, berserkShots: 2, berserkSecondDelay: ICE_DRAGON_CONFIG.berserkSecondDelay }),
+      visualSpec: () => ({
+        materialLayers: ['armor and dark metal: source-over', 'ice crystal and energy core: additive', 'blue ice mist and fog aura', 'directional ribbon projectile trail'],
+        trail: { damaging: ICE_DRAGON_CONFIG.trailDamaging, collisionRadius: ICE_DRAGON_CONFIG.trailCollisionRadius, layers: ['indigo outer', 'ice-blue body', 'white core'] },
+        lifecycle: 'appear-hold-dissipate',
+        bodyLayering: 'back-arc -> player -> front-arc',
+      }),
+      performanceSpec: () => ({
+        usesSharedPerfBudget: true,
+        qualityPreservesLogic: true,
+        caps: { mainProjectiles: ICE_DRAGON_CONFIG.mainCap, splitProjectiles: ICE_DRAGON_CONFIG.splitCap, trailNodes: ICE_DRAGON_CONFIG.mainCap * ICE_DRAGON_CONFIG.trailSamples[0] + ICE_DRAGON_CONFIG.splitCap * 11, effects: ICE_DRAGON_CONFIG.fxCap },
+      }),
+      targetForTest: iceDragonTargetForTest,
+      homingStepForTest: iceDragonHomingStepForTest,
+      sweptHitForTest: (prev, next, target) => iceDragonSegmentCircleHitT(prev.x, prev.y, next.x, next.y, target.x, target.y, Math.max(0, Number(target.r) || 0)) !== null,
+      splitForTest: iceDragonSplitForTest,
+      aoeHitsForTest: iceDragonAoeHitsForTest,
+      orbitTraceForTest: iceDragonOrbitTraceForTest,
+      spineSampleForTest: iceDragonSpineSampleForTest,
+      qualityLogicHashForTest: iceDragonQualityLogicHashForTest,
+      stressForTest: iceDragonStressForTest,
+    };
+    const localCapture = !window.location || window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (localCapture) {
+      window.__iceDragonCapture__ = {
+        setup: iceDragonCaptureSetup,
+        step: iceDragonCaptureStep,
+        snapshot: iceDragonSnapshot,
+        readyKeys: () => ICE_DRAGON_ASSET_KEYS.filter(key => assetReady(key)),
+        assetStatus: iceDragonAssetStatus,
+      };
+    }
+  }
+
   function motherLifeRibbonGeom(target, index, total, fromX = player.x, fromY = player.y - 51) {
     const over = player.berserk > 0;
     const lane = total <= 1 ? 0 : index / (total - 1) - 0.5;
@@ -25477,6 +26876,7 @@
     ncDrones.length = 0; ncFx.length = 0; if (ncActive()) syncNcDrones();   // 夜棺浮游炮：开局召唤 8 枚
     resetMotherLifeState();
     motherHiveResetState(); if (motherHiveActive()) syncMotherHive();
+    resetIceDragonState(); if (iceDragonActive()) syncIceDragon();
     if (wingmanActive()) syncWingmen();
     if (reaverWingActive()) syncNrWingmen();
     damageTexts.length = 0;
@@ -25539,6 +26939,7 @@
     if (key === 'nightcoffin') { ncDrones.length = 0; ncFx.length = 0; if (ncActive()) syncNcDrones(); }
     if (key === 'skyglory') { tyUnits.length = 0; thHandReset(); if (tyActive()) syncTyUnits(); }
     if (key === 'motherhive') { motherHiveResetState(); if (motherHiveActive()) syncMotherHive(); }
+    if (key === 'icedragon') { resetIceDragonState(); if (iceDragonActive()) syncIceDragon(); }
   }
   function selectChar(which) {
     if (!CHARACTERS[which] || which === selectedChar) return;
@@ -35781,6 +37182,8 @@
     updateTianyaoHand(dt);
     // 生命之母专属僚机：母巢蝶环
     updateMotherHive(dt);
+    // 冰晶龙灵·寒渊：单体盘旋、自动锁敌与五裂范围爆发
+    updateIceDragon(dt);
 
     // 弹幕升级插件：在基础武器之上叠加额外弹幕（对全部主角生效）
     firePlugin(dt, firing);
@@ -42616,6 +44019,7 @@
     drawPlayerFireStream();
     drawNrRays();        // 夜裁瞄准射线（在敌人之上、弹幕之下）
     drawPlayerShots();
+    drawIceDragonCombat();
     drawCorruptGunFx();
     flushCgVfxBack();
     redrawCgShotHeadsAfterBackLayer();
@@ -42648,9 +44052,11 @@
     drawNrBigBlades();   // 夜裁暴走大刀刃（环绕自身）
     drawWingmen();
     drawMotherHive();
+    drawIceDragon('back');
     drawSkywardBlinkAimIndicator();
     drawCorruptGunClones();
     drawPlayer();
+    drawIceDragon('front');
     drawCgUltimateCastOverlay();
     flushCgVfxFrame();
     drawSkywardAegisWorld(true);
@@ -48321,13 +49727,13 @@
       titleY: 124, titleSize: 72, subtitleY: 160, subtitleSize: 28,
       cardY: 188, cardW: 318, cardH: 100, cardGapX: 16, cardGapY: 8,
       wingTitleY: 636, wingY: 660, wingW: 210, wingH: 52, wingGapX: 12, wingGapY: 10,
-      qualityY: 804, startY: 856, startH: 72, actionsY: 950, hintY: 1024,
+      qualityY: 856, startY: 914, startH: 72, actionsY: 1008, hintY: 1082,
     }),
     desktop: Object.freeze({
       titleY: 360, titleSize: 92, subtitleY: 414, subtitleSize: 34,
       sectionY: 488, cardY: 512, cardW: 318, cardH: 94, cardGapX: 16, cardGapY: 8,
       wingTitleY: 936, wingY: 960, wingW: 210, wingH: 42, wingGapX: 12, wingGapY: 8,
-      startY: 1060, startH: 64, qualityY: 1164, actionsY: 1212,
+      startY: 1114, startH: 64, qualityY: 1188, actionsY: 1236,
     }),
   });
 
@@ -48415,7 +49821,7 @@
     'title:char:witch', 'title:char:yanuxiya', 'title:char:anna', 'title:char:reaver',
     'title:char:motherlife', 'title:char:skyward', 'title:char:corruptgun',
     'title:wing:moonfeather', 'title:wing:reaverwing', 'title:wing:saintcrown',
-    'title:wing:nightcoffin', 'title:wing:skyglory', 'title:wing:motherhive',
+    'title:wing:nightcoffin', 'title:wing:skyglory', 'title:wing:motherhive', 'title:wing:icedragon',
     'title:quality:high', 'title:quality:medium', 'title:quality:low', 'title:quality:ultra',
     'skill:Y', 'skill:Space', 'skill:X', 'skill:Q', 'skill:E', 'skill:T',
     'mobile:targetFps', 'mobile:fullscreen', 'mobile:pauseGame', 'mobile:restartGame',
@@ -51231,7 +52637,7 @@
       const y = 184 + row * (chh + cgy);
       drawDreamSelectCharCard(key, i, x, y, cw, chh, key === dreamUi.pendChar);
     });
-    // —— 僚机分区：6 卡，双列三行 ——
+    // —— 僚机分区：双列，行数随可用僚机动态扩展 ——
     const wingTop = 184 + 4 * (chh + cgy) + 42;
     ctx.save(); ctx.textAlign = 'left'; ctx.font = cuteFont(900, 24); ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(15,22,48,.7)';
     ctx.strokeText('选择僚机', 46, wingTop - 16); ctx.fillStyle = '#d7f3ff'; ctx.fillText('选择僚机', 46, wingTop - 16); ctx.restore();
@@ -51243,7 +52649,8 @@
       drawDreamSelectWingCard(option, x, y, ww, wh, option.key === dreamUi.pendWing);
     });
     // —— 已选编队摘要 + 确认 ——
-    const summaryY = wingTop + 3 * (wh + wgy) + 16;
+    const wingRows = Math.ceil(WING_OPTIONS.length / 2);
+    const summaryY = wingTop + wingRows * (wh + wgy) + 16;
     const pickedChar = CHARACTERS[dreamUi.pendChar];
     const pickedWing = WING_OPTIONS.find(o => o.key === dreamUi.pendWing);
     const summary = `${pickedChar ? ((pickedChar.name.split(' · ')[1]) || pickedChar.name) : '—'}  ×  ${pickedWing ? pickedWing.name : '—'}`;
@@ -56061,7 +57468,7 @@
       };
     }
     window.__dreamModeInternals__ = {
-      modeSpec: () => ({ key: 'dream', title: '梦境模式', levelCount: 10, unlockedLevels: DREAM_LEVELS.filter(level => level.unlocked).length, locksLoadoutAfterStart: true, disablesRandomDrops: false, disablesRandomPluginDrops: true, disablesRandomLifeDrops: true, configuredDreamDrops: ['berserk', 'heal'], keepsCharacterSkills: true, keepsWingmen: true, activeWallClock: true, loadoutSelect: { planes: 7, wingmen: 6, picksRequired: { plane: 1, wingman: 1 }, restoresCampaignLoadoutOnExit: true } }),
+      modeSpec: () => ({ key: 'dream', title: '梦境模式', levelCount: 10, unlockedLevels: DREAM_LEVELS.filter(level => level.unlocked).length, locksLoadoutAfterStart: true, disablesRandomDrops: false, disablesRandomPluginDrops: true, disablesRandomLifeDrops: true, configuredDreamDrops: ['berserk', 'heal'], keepsCharacterSkills: true, keepsWingmen: true, activeWallClock: true, loadoutSelect: { planes: 7, wingmen: WING_OPTIONS.length, picksRequired: { plane: 1, wingman: 1 }, restoresCampaignLoadoutOnExit: true } }),
       levelsSpec: () => DREAM_LEVELS.map(level => ({ ...dreamInternalsLevel(level.id), unlocked: level.unlocked })),
       levelSpec: dreamInternalsLevel,
       uiSpec: () => ({ titleActions: ['chapter', 'dream'], lobbyLayout: 'two-rows-five-levels', levelNodes: 10, availableLevels: DREAM_LEVELS.filter(level => level.unlocked).map(level => level.index), mobileTabs: ['情报', '敌人弹幕', '排行榜'], minimumBodyFont: 18, minimumButtonHeight: 52, hud: ['wave', 'active-time', 'stars', 'hits', 'damage-multiplier'] }),
@@ -57046,10 +58453,11 @@
   /* —— 更新公告 mini（静态同步游戏 UPDATE_NOTICE_ENTRIES 最新两条；「更多」打开自建弹层） —— */
   const NOTICE = [
     {
-      date: '2026-07-17', tag: '留言板云端维护与自动补寄',
+      date: '2026-07-18', tag: '冰晶龙灵视觉咆哮重铸',
       items: [
-        '云端留言服务维护中：这期间发布的留言会先保存在你的设备上并标注「待寄出 💌」，不会丢失。',
-        '网页与游戏内留言板会自动探测云端状态，服务恢复后暂存留言自动补寄，无需任何操作；排行榜分数上传不受影响。',
+        '新僚机「冰晶龙灵·寒渊」龙弹彻底重做：彗星级泪滴能量弹体＋装甲龙首前置，三层波动发光拖尾，命中五裂、软雾环爆炸、六芒冰晶星全套冰晶特效。',
+        '暴走形态紫晶化一秒两连发；全部效果经逐帧截图迭代验证并按画质自动降级，低配设备流畅。',
+        '留言板云端服务已恢复，设备上暂存的「待寄出 💌」留言会自动补寄。',
       ],
     },
     {
@@ -57335,6 +58743,7 @@
     { key: 'nightcoffin', name: '夜棺·八芒浮骸', role: '八台浮游炮脱手作战，按 E 切换冲撞 / 激光' },
     { key: 'skyglory', name: '天耀·三璇光阵', role: '前置三联高能激光，天耀之手镇场' },
     { key: 'motherhive', name: '母巢蝶环', role: '蝶环晶体炮台，生命印记弹幕' },
+    { key: 'icedragon', name: '冰晶龙灵·寒渊', role: '单体盘旋追随，每秒喷射追踪龙弹并五裂冰爆' },
   ];
   const hangar = $('skyHangar'), hangarHead = $('skyHangarHead');
   const hangarShips = $('skyHangarShips'), hangarWings = $('skyHangarWings'), hangarDetail = $('skyHangarDetail');
