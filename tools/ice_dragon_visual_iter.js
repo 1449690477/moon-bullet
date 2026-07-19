@@ -60,6 +60,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 (async () => {
   const filter = process.argv.slice(2);
+  const QUALITY = process.env.QUALITY || 'high';
   const scenarios = filter.length ? ALL_SCENARIOS.filter(([s]) => filter.includes(s)) : ALL_SCENARIOS;
   fs.mkdirSync(OUT, { recursive: true });
   const server = await startServer();
@@ -89,7 +90,10 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     await page.waitForFunction(() => !!window.__iceDragonCapture__, { timeout: 30000 });
     // 等资产就绪（懒加载触发于 reset/equip）
     await page.evaluate(() => window.__iceDragonCapture__.setup('orbit', { quality: 'high' }));
-    await page.waitForFunction(() => window.__iceDragonCapture__.readyKeys().length >= 34, { timeout: 60000 });
+    await page.waitForFunction(() => {
+      const status = window.__iceDragonCapture__.assetStatus();
+      return status.pending.length === 0 && status.ready.length >= 34;
+    }, { timeout: 60000 });
 
     const canvas = await page.$('#game');
     const box = await canvas.boundingBox();
@@ -100,7 +104,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     let lastScene = null;
     for (const [scene, steps, tag] of scenarios) {
       if (scene !== lastScene) {
-        await page.evaluate((s) => window.__iceDragonCapture__.setup(s, { quality: 'high' }), scene);
+        await page.evaluate((s, q) => window.__iceDragonCapture__.setup(s, { quality: q }), scene, QUALITY);
         lastScene = scene;
       }
       const snap = await page.evaluate((n) => window.__iceDragonCapture__.step(n), steps);
