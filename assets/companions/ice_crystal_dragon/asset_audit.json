@@ -1,0 +1,3139 @@
+{
+  "pipeline": "ice-crystal-dragon-assets-v4-split-summon-sequences",
+  "source_folder": "冰晶龙开发文件夹",
+  "source_available": true,
+  "crop_contract": "实现文档_冰晶龙灵寒渊_v1.0.md section 2.3",
+  "cleanup": {
+    "despill": "visible G clamped to max(R,B)",
+    "dark_green_alpha_multiplier": 0.2,
+    "hard_green_alpha_multiplier": 0.08,
+    "alpha_erosion_pixels": 1,
+    "alpha_feather_radius_pixels": 0.9,
+    "transparent_padding_pixels": 16,
+    "split_summon_canvas": [
+      256,
+      160
+    ],
+    "split_summon_anchor": "left, vertically centered",
+    "principal_alpha_island_only": true
+  },
+  "assets": [
+    {
+      "key": "body_normal_head",
+      "source": "drg_parts_normal_main.png",
+      "source_rect": [
+        796,
+        58,
+        254,
+        250
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "a071eb53ffd00d1f6baaa9eca5381eb48c55c4c16d39247a73e0e22c0db72a83",
+        "crop_content_box_before_padding": [
+          7,
+          8,
+          240,
+          236
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 31859,
+        "green_residue_pixels": 990,
+        "green_residue_ratio": 0.03107442,
+        "green_excess_pixels": 1991,
+        "green_excess_ratio": 0.06249411,
+        "edge_visible_pixels": 1550,
+        "edge_green_residue_pixels": 859,
+        "edge_green_residue_ratio": 0.55419355
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_head.png",
+        "width": 272,
+        "height": 268,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "3e70875376bf4ebc94d423e9a1236591de0aea7a2dacea8168236a8d5a0f7a8d",
+        "visible_pixels": 30356,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1513,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_head_glow.png",
+        "width": 272,
+        "height": 268,
+        "transparent_margins": {
+          "left": 15,
+          "top": 17,
+          "right": 17,
+          "bottom": 17
+        },
+        "sha256": "5f98cc46d0b414bd4d151833ae82ed8c06985586ede3fa6ee6c289e7cc5425d9",
+        "visible_pixels": 23062,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 5504,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_normal_segment",
+      "source": "drg_parts_normal_main.png",
+      "source_rect": [
+        1234,
+        402,
+        192,
+        129
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "a071eb53ffd00d1f6baaa9eca5381eb48c55c4c16d39247a73e0e22c0db72a83",
+        "crop_content_box_before_padding": [
+          7,
+          7,
+          178,
+          115
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 16720,
+        "green_residue_pixels": 541,
+        "green_residue_ratio": 0.03235646,
+        "green_excess_pixels": 836,
+        "green_excess_ratio": 0.05,
+        "edge_visible_pixels": 638,
+        "edge_green_residue_pixels": 470,
+        "edge_green_residue_ratio": 0.73667712
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_segment.png",
+        "width": 210,
+        "height": 147,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "0aa964224202078f6c8de01533f0d5440d489b7987e612a0f6c318886ed56f5e",
+        "visible_pixels": 16084,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 644,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_segment_glow.png",
+        "width": 210,
+        "height": 147,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "6e25ccc85c489ddb2b30388dad3a8734a05a61e259227aa5b65020201539013a",
+        "visible_pixels": 7078,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3064,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_normal_tail",
+      "source": "drg_parts_normal_alt.png",
+      "source_rect": [
+        56,
+        591,
+        401,
+        144
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "f911565238700508fcd1700f3cf48b87342d087315a92e200daa9e8a99313cd3",
+        "crop_content_box_before_padding": [
+          8,
+          6,
+          384,
+          131
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 26097,
+        "green_residue_pixels": 1370,
+        "green_residue_ratio": 0.05249646,
+        "green_excess_pixels": 1924,
+        "green_excess_ratio": 0.07372495,
+        "edge_visible_pixels": 1223,
+        "edge_green_residue_pixels": 934,
+        "edge_green_residue_ratio": 0.76369583
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_tail.png",
+        "width": 416,
+        "height": 163,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "adb1a14221fc56004d10a0b7581ba8321b07c44a3d7c68bfd6e38092095f704d",
+        "visible_pixels": 24501,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1184,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_tail_glow.png",
+        "width": 416,
+        "height": 163,
+        "transparent_margins": {
+          "left": 17,
+          "top": 16,
+          "right": 17,
+          "bottom": 23
+        },
+        "sha256": "17127b731b1596ca73e31ceb89c69058a0296a6a6ca3ee3178eef395a94e5d51",
+        "visible_pixels": 13172,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2920,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_normal_core",
+      "source": "drg_parts_normal_main.png",
+      "source_rect": [
+        1023,
+        367,
+        183,
+        175
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "a071eb53ffd00d1f6baaa9eca5381eb48c55c4c16d39247a73e0e22c0db72a83",
+        "crop_content_box_before_padding": [
+          7,
+          7,
+          169,
+          161
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 21071,
+        "green_residue_pixels": 602,
+        "green_residue_ratio": 0.02857007,
+        "green_excess_pixels": 895,
+        "green_excess_ratio": 0.04247544,
+        "edge_visible_pixels": 691,
+        "edge_green_residue_pixels": 517,
+        "edge_green_residue_ratio": 0.74819103
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_core.png",
+        "width": 201,
+        "height": 193,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "83675f7f6299301b8d446ec10de0a0345231ae5cfa3954402028628421e9a99b",
+        "visible_pixels": 20380,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 691,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_normal_core_glow.png",
+        "width": 201,
+        "height": 193,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "4755c9614b0902879779b0bdb040d826a4d3cd90e04fa376afb7d51ca16dda9d",
+        "visible_pixels": 18395,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2073,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_over_head",
+      "source": "drg_parts_over_main.png",
+      "source_rect": [
+        26,
+        606,
+        248,
+        269
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "5a4f57f0e511f86541f2fa578d8d1aff0c33349e6ccdc79040cc633b1639363d",
+        "crop_content_box_before_padding": [
+          7,
+          7,
+          234,
+          255
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 32619,
+        "green_residue_pixels": 1456,
+        "green_residue_ratio": 0.04463656,
+        "green_excess_pixels": 2565,
+        "green_excess_ratio": 0.07863515,
+        "edge_visible_pixels": 1490,
+        "edge_green_residue_pixels": 1048,
+        "edge_green_residue_ratio": 0.7033557
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_head.png",
+        "width": 266,
+        "height": 287,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "09124e07c547e5bbd711b44386e402cfe0c978a6eacb08c692f074d6d2c8fa14",
+        "visible_pixels": 30617,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1592,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_head_glow.png",
+        "width": 266,
+        "height": 287,
+        "transparent_margins": {
+          "left": 15,
+          "top": 17,
+          "right": 17,
+          "bottom": 17
+        },
+        "sha256": "ad984aae1228b75701aba3a3ef03e62a6f8bb5d82e30bdc3e54cb8b7798d8c29",
+        "visible_pixels": 24330,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 5294,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_over_segment",
+      "source": "drg_parts_over_main.png",
+      "source_rect": [
+        213,
+        906,
+        192,
+        131
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "5a4f57f0e511f86541f2fa578d8d1aff0c33349e6ccdc79040cc633b1639363d",
+        "crop_content_box_before_padding": [
+          7,
+          6,
+          178,
+          118
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 17434,
+        "green_residue_pixels": 732,
+        "green_residue_ratio": 0.04198692,
+        "green_excess_pixels": 983,
+        "green_excess_ratio": 0.05638408,
+        "edge_visible_pixels": 649,
+        "edge_green_residue_pixels": 513,
+        "edge_green_residue_ratio": 0.79044684
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_segment.png",
+        "width": 210,
+        "height": 150,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "d38640414028e4c649e68a42b1f9872dc0c1983668cd37e985b88bcf67a0a74e",
+        "visible_pixels": 16629,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 644,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_segment_glow.png",
+        "width": 210,
+        "height": 150,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 17,
+          "bottom": 17
+        },
+        "sha256": "3991cd055207e5fc551a960d9736522ddf840c323b1ac83c989601979a2ec800",
+        "visible_pixels": 7655,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3254,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_over_tail",
+      "source": "drg_parts_over_main.png",
+      "source_rect": [
+        403,
+        887,
+        252,
+        166
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "5a4f57f0e511f86541f2fa578d8d1aff0c33349e6ccdc79040cc633b1639363d",
+        "crop_content_box_before_padding": [
+          8,
+          7,
+          237,
+          152
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 20833,
+        "green_residue_pixels": 1020,
+        "green_residue_ratio": 0.04896078,
+        "green_excess_pixels": 1808,
+        "green_excess_ratio": 0.08678539,
+        "edge_visible_pixels": 1170,
+        "edge_green_residue_pixels": 746,
+        "edge_green_residue_ratio": 0.63760684
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_tail.png",
+        "width": 269,
+        "height": 184,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "479ec0eeb1305468a7a23d32625bc2dba2d502a7842b2cf415ea43f4fd817a5c",
+        "visible_pixels": 19358,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1234,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_tail_glow.png",
+        "width": 269,
+        "height": 184,
+        "transparent_margins": {
+          "left": 17,
+          "top": 17,
+          "right": 17,
+          "bottom": 16
+        },
+        "sha256": "cdd40039f3f8297d72fccd35cd7f1987cd93c15d91fed3578b887a4413d816be",
+        "visible_pixels": 14511,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3186,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "body_over_core",
+      "source": "drg_parts_over_main.png",
+      "source_rect": [
+        20,
+        886,
+        176,
+        171
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "5a4f57f0e511f86541f2fa578d8d1aff0c33349e6ccdc79040cc633b1639363d",
+        "crop_content_box_before_padding": [
+          7,
+          5,
+          162,
+          159
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 19445,
+        "green_residue_pixels": 789,
+        "green_residue_ratio": 0.04057598,
+        "green_excess_pixels": 1107,
+        "green_excess_ratio": 0.0569298,
+        "edge_visible_pixels": 693,
+        "edge_green_residue_pixels": 544,
+        "edge_green_residue_ratio": 0.78499278
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_core.png",
+        "width": 194,
+        "height": 191,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "223fae90f9426dc5a021cc07ca68fd4b52e21f73ac1bd0bcfb154c5720665919",
+        "visible_pixels": 18545,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 718,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/body/body_over_core_glow.png",
+        "width": 194,
+        "height": 191,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "c68ba6056c732cbc7b057e0bae24420f29aaceda4cb19c3cbdbb9089fa68d894",
+        "visible_pixels": 16431,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1982,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_main_head",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        20,
+        108,
+        165,
+        123
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          7,
+          10,
+          158,
+          106
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 12351,
+        "green_residue_pixels": 1040,
+        "green_residue_ratio": 0.08420371,
+        "green_excess_pixels": 1639,
+        "green_excess_ratio": 0.13270181,
+        "edge_visible_pixels": 652,
+        "edge_green_residue_pixels": 501,
+        "edge_green_residue_ratio": 0.76840491
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_head.png",
+        "width": 190,
+        "height": 138,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "8adfb0704be2674ec62624207a5f25122c53504c87a021bbe7f68a2da1497935",
+        "visible_pixels": 11053,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 825,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_head_glow.png",
+        "width": 190,
+        "height": 138,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "ea0f7e00b4c8b5961ebd21c703819dfb50d3932ce78efc41dcd424bfca0f9dc4",
+        "visible_pixels": 6087,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2517,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_main_stream_a",
+      "source": "blt_parts_split_head.png",
+      "source_rect": [
+        180,
+        20,
+        1010,
+        185
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "cd2025e68f2f90b1c459eb8b5a3afa016570cbbf969efb82b2521ff9b6275043",
+        "crop_content_box_before_padding": [
+          23,
+          11,
+          961,
+          171
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 92934,
+        "green_residue_pixels": 19575,
+        "green_residue_ratio": 0.21063335,
+        "green_excess_pixels": 35544,
+        "green_excess_ratio": 0.38246498,
+        "edge_visible_pixels": 3622,
+        "edge_green_residue_pixels": 3170,
+        "edge_green_residue_ratio": 0.87520707
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_stream_a.png",
+        "width": 993,
+        "height": 203,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "fe3f60da1ee7743957016bc9dbe20a7c2afcb03037245d06749ba3ce3d68b116",
+        "visible_pixels": 67407,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 5679,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_stream_a_glow.png",
+        "width": 993,
+        "height": 203,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "687a785b8f01709c52cca803ae5a786cb6651d00f1b843654b980c97ba7b14a1",
+        "visible_pixels": 67098,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 6040,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_main_stream_b",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        10,
+        325,
+        820,
+        145
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          14,
+          18,
+          765,
+          125
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 54614,
+        "green_residue_pixels": 12452,
+        "green_residue_ratio": 0.22800015,
+        "green_excess_pixels": 17836,
+        "green_excess_ratio": 0.32658293,
+        "edge_visible_pixels": 2541,
+        "edge_green_residue_pixels": 2206,
+        "edge_green_residue_ratio": 0.86816214
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_stream_b.png",
+        "width": 797,
+        "height": 157,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "bd704f5f130e3289fd45e19bd7ba77e3b56d53d2ee0f92c991c95ae95f205f15",
+        "visible_pixels": 41062,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3611,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_stream_b_glow.png",
+        "width": 797,
+        "height": 157,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "fd514e4d9a96d5b3e8583d3fc68766dfbec6dc9c54ec1bdc28037e218f1c8c25",
+        "visible_pixels": 39408,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 4925,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_main_stream_c",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        10,
+        475,
+        855,
+        150
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          14,
+          18,
+          808,
+          132
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 53314,
+        "green_residue_pixels": 12778,
+        "green_residue_ratio": 0.23967438,
+        "green_excess_pixels": 17867,
+        "green_excess_ratio": 0.33512773,
+        "edge_visible_pixels": 2366,
+        "edge_green_residue_pixels": 2061,
+        "edge_green_residue_ratio": 0.87109045
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_stream_c.png",
+        "width": 840,
+        "height": 164,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "fe43ec940d01ab96967d06bda793f60ca28ef8fcaba1a576849f594636d0ad41",
+        "visible_pixels": 39268,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3051,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_stream_c_glow.png",
+        "width": 840,
+        "height": 164,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 15
+        },
+        "sha256": "46c2e24706606d055eeb180152aa20c7a01f69ca3fd77e51155280e36515051a",
+        "visible_pixels": 37150,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 4256,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_main_crystal_head",
+      "source": "blt_parts_split_head.png",
+      "source_rect": [
+        93,
+        472,
+        313,
+        225
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "cd2025e68f2f90b1c459eb8b5a3afa016570cbbf969efb82b2521ff9b6275043",
+        "crop_content_box_before_padding": [
+          7,
+          7,
+          298,
+          211
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 34981,
+        "green_residue_pixels": 1546,
+        "green_residue_ratio": 0.04419542,
+        "green_excess_pixels": 3173,
+        "green_excess_ratio": 0.09070638,
+        "edge_visible_pixels": 1699,
+        "edge_green_residue_pixels": 1136,
+        "edge_green_residue_ratio": 0.66862861
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_crystal_head.png",
+        "width": 330,
+        "height": 243,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "47646a4429f01a63579aeb3f61481cb47b40fd2b43c085ea28dfb9c8f9a0b93b",
+        "visible_pixels": 32592,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1903,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_crystal_head_glow.png",
+        "width": 330,
+        "height": 243,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 17,
+          "bottom": 16
+        },
+        "sha256": "8867b17ed6cd24529885fab8ab649cf0dcc9b1389d686caf63b67f5352badb42",
+        "visible_pixels": 31228,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2931,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_charge_orb",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        188,
+        108,
+        89,
+        110
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          0,
+          8,
+          82,
+          88
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 6361,
+        "green_residue_pixels": 226,
+        "green_residue_ratio": 0.035529,
+        "green_excess_pixels": 917,
+        "green_excess_ratio": 0.14415972,
+        "edge_visible_pixels": 292,
+        "edge_green_residue_pixels": 134,
+        "edge_green_residue_ratio": 0.45890411
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_charge_orb.png",
+        "width": 114,
+        "height": 120,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "7f7f102acd210bc0f3ba6744695c3c66e9ea35f18e70b65b8d2df8a7d50f4182",
+        "visible_pixels": 5649,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 333,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_charge_orb_glow.png",
+        "width": 114,
+        "height": 120,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "3fe5213d00e26f618d49bed6a75ac7865ff9e5e86c2104322b2b001e534adb95",
+        "visible_pixels": 5662,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 330,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_split_head",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        1080,
+        385,
+        335,
+        80
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          0,
+          0,
+          295,
+          80
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 9333,
+        "green_residue_pixels": 1318,
+        "green_residue_ratio": 0.14121933,
+        "green_excess_pixels": 2291,
+        "green_excess_ratio": 0.24547305,
+        "edge_visible_pixels": 835,
+        "edge_green_residue_pixels": 555,
+        "edge_green_residue_ratio": 0.66467066
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_split_head.png",
+        "width": 327,
+        "height": 112,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "3d82a226b07d2e67be9c062fad7223254cd3d3c774c72f0ddb6387f19af11ca3",
+        "visible_pixels": 7678,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1104,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_split_head_glow.png",
+        "width": 327,
+        "height": 112,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 16,
+          "bottom": 15
+        },
+        "sha256": "84ab1bc7f8a41ff4637bdecde72aabe1d747e93e90b912c5adb335c7fa7dd325",
+        "visible_pixels": 7534,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1223,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_impact_0",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        10,
+        625,
+        265,
+        160
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          16,
+          19,
+          203,
+          124
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 12820,
+        "green_residue_pixels": 1377,
+        "green_residue_ratio": 0.1074103,
+        "green_excess_pixels": 2854,
+        "green_excess_ratio": 0.2226209,
+        "edge_visible_pixels": 1101,
+        "edge_green_residue_pixels": 791,
+        "edge_green_residue_ratio": 0.71843778
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_0.png",
+        "width": 235,
+        "height": 156,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "0f56cb4a16e335aef746b3975af3af6112b5cab68d0b76927940337c5fb663da",
+        "visible_pixels": 10837,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1440,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_0_glow.png",
+        "width": 235,
+        "height": 156,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "e7919d085a1d85f38482f7a62d6b867dc2b94253300cb3a9edafe3d822b511f8",
+        "visible_pixels": 11203,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1434,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_impact_1",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        270,
+        635,
+        145,
+        150
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          9,
+          19,
+          113,
+          111
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 5585,
+        "green_residue_pixels": 727,
+        "green_residue_ratio": 0.1301701,
+        "green_excess_pixels": 1459,
+        "green_excess_ratio": 0.26123545,
+        "edge_visible_pixels": 608,
+        "edge_green_residue_pixels": 436,
+        "edge_green_residue_ratio": 0.71710526
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_1.png",
+        "width": 145,
+        "height": 143,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "28b2aebe671f2a9623ae2bc105df212fc247ae60c0af0aef8137993d7d8ad5c1",
+        "visible_pixels": 4588,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 753,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_1_glow.png",
+        "width": 145,
+        "height": 143,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "3ed1c7ef0e50f3cc87fdf422f75e185dfa712f1e765f8b29087f08882dacf6c7",
+        "visible_pixels": 4800,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 726,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_impact_2",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        405,
+        630,
+        170,
+        160
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          13,
+          22,
+          144,
+          123
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 8032,
+        "green_residue_pixels": 1414,
+        "green_residue_ratio": 0.17604582,
+        "green_excess_pixels": 2299,
+        "green_excess_ratio": 0.28623008,
+        "edge_visible_pixels": 941,
+        "edge_green_residue_pixels": 696,
+        "edge_green_residue_ratio": 0.73963868
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_2.png",
+        "width": 176,
+        "height": 155,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "bf95b1445de06dfc71ee5d0cd29b22643ff2e344dbdc15e659056a6a3e7f9e95",
+        "visible_pixels": 6289,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1144,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_2_glow.png",
+        "width": 176,
+        "height": 155,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "990716afc2e0fd939518d18f7dc37cddd99173bae7a05de4892b5134c99c8530",
+        "visible_pixels": 6560,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1120,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_impact_3",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        565,
+        615,
+        200,
+        185
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          17,
+          7,
+          159,
+          173
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 14312,
+        "green_residue_pixels": 1809,
+        "green_residue_ratio": 0.12639743,
+        "green_excess_pixels": 3031,
+        "green_excess_ratio": 0.21178032,
+        "edge_visible_pixels": 1100,
+        "edge_green_residue_pixels": 861,
+        "edge_green_residue_ratio": 0.78272727
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_3.png",
+        "width": 191,
+        "height": 205,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "8fe7c829fed50f616b094fb416b2161850203641341d5a208e993e56edc014c2",
+        "visible_pixels": 12139,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1666,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_3_glow.png",
+        "width": 191,
+        "height": 205,
+        "transparent_margins": {
+          "left": 16,
+          "top": 15,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "165ecdb53e8be86e9c583f22fcbc2547e437ac64e67fff3e3702e7bc0756dd55",
+        "visible_pixels": 12562,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1617,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_impact_4",
+      "source": "ref_blt_armored_full.png",
+      "source_rect": [
+        750,
+        605,
+        200,
+        215
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "123e6cf43c65787609159f2f1c176d5427cc93e68832d4709bcc605077e8c252",
+        "crop_content_box_before_padding": [
+          19,
+          24,
+          180,
+          182
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 20603,
+        "green_residue_pixels": 3452,
+        "green_residue_ratio": 0.16754842,
+        "green_excess_pixels": 5705,
+        "green_excess_ratio": 0.27690142,
+        "edge_visible_pixels": 1570,
+        "edge_green_residue_pixels": 1274,
+        "edge_green_residue_ratio": 0.81146497
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_4.png",
+        "width": 212,
+        "height": 214,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "7d996452651832d02ad68fa39d08529cafd71441e7e4c069438090b1a4381e79",
+        "visible_pixels": 16356,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2303,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_impact_4_glow.png",
+        "width": 212,
+        "height": 214,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "76c15848b3e2fdb4c7e62e94328b42d9ec29b798fc139836b58dba04132d4421",
+        "visible_pixels": 16976,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2297,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_explosion_0",
+      "source": "ref_fx_explosion.png",
+      "source_rect": [
+        35,
+        20,
+        465,
+        330
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "d145e9938970f9036682a27c3b76690bffff2afe05c9d8b9cceee39330ada2ea",
+        "crop_content_box_before_padding": [
+          5,
+          9,
+          457,
+          321
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 88223,
+        "green_residue_pixels": 11977,
+        "green_residue_ratio": 0.13575825,
+        "green_excess_pixels": 23738,
+        "green_excess_ratio": 0.26906816,
+        "edge_visible_pixels": 2999,
+        "edge_green_residue_pixels": 2644,
+        "edge_green_residue_ratio": 0.88162721
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_0.png",
+        "width": 489,
+        "height": 353,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "2e1a6d5f4bc0de1a291e7f41b08d9872bc0783acb33ac9155d306296b9e644ad",
+        "visible_pixels": 71797,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 5313,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_0_glow.png",
+        "width": 489,
+        "height": 353,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 16,
+          "bottom": 15
+        },
+        "sha256": "0844065f66b2f5559d9534fb63086ad402299b195b317749127e1701d428fd0c",
+        "visible_pixels": 72615,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 5170,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_explosion_1",
+      "source": "ref_fx_explosion.png",
+      "source_rect": [
+        535,
+        25,
+        335,
+        315
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "d145e9938970f9036682a27c3b76690bffff2afe05c9d8b9cceee39330ada2ea",
+        "crop_content_box_before_padding": [
+          20,
+          15,
+          303,
+          284
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 48008,
+        "green_residue_pixels": 11417,
+        "green_residue_ratio": 0.23781453,
+        "green_excess_pixels": 20060,
+        "green_excess_ratio": 0.41784703,
+        "edge_visible_pixels": 2722,
+        "edge_green_residue_pixels": 2476,
+        "edge_green_residue_ratio": 0.90962528
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_1.png",
+        "width": 335,
+        "height": 316,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "6589bace356cbbd9935d46e08660470151fd37e3c1c59ded426cdd016bc3324b",
+        "visible_pixels": 33112,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3363,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_1_glow.png",
+        "width": 335,
+        "height": 316,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "60828411105794a5f25472cc830f0637355468bb9ad39c901b96cf43dfe3a9e1",
+        "visible_pixels": 33457,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3289,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_explosion_2",
+      "source": "ref_fx_explosion.png",
+      "source_rect": [
+        875,
+        20,
+        555,
+        385
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "d145e9938970f9036682a27c3b76690bffff2afe05c9d8b9cceee39330ada2ea",
+        "crop_content_box_before_padding": [
+          3,
+          4,
+          544,
+          381
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 145470,
+        "green_residue_pixels": 13593,
+        "green_residue_ratio": 0.09344195,
+        "green_excess_pixels": 33753,
+        "green_excess_ratio": 0.23202722,
+        "edge_visible_pixels": 2959,
+        "edge_green_residue_pixels": 2734,
+        "edge_green_residue_ratio": 0.9239608
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_2.png",
+        "width": 576,
+        "height": 413,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "af3ab43b82e637231d93abf941e442745bf16dfc384455b5df457e74c0f81189",
+        "visible_pixels": 125796,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 6018,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_2_glow.png",
+        "width": 576,
+        "height": 413,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "ceff1ee489386e3c00e376cfe7efad4d60134fde9aea4fefa266712dec0bf88c",
+        "visible_pixels": 126224,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 5796,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_explosion_3",
+      "source": "ref_fx_explosion.png",
+      "source_rect": [
+        500,
+        365,
+        360,
+        285
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "d145e9938970f9036682a27c3b76690bffff2afe05c9d8b9cceee39330ada2ea",
+        "crop_content_box_before_padding": [
+          0,
+          0,
+          343,
+          280
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 0,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 39382,
+        "green_residue_pixels": 11611,
+        "green_residue_ratio": 0.29483013,
+        "green_excess_pixels": 20228,
+        "green_excess_ratio": 0.51363567,
+        "edge_visible_pixels": 2582,
+        "edge_green_residue_pixels": 2304,
+        "edge_green_residue_ratio": 0.89233153
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_3.png",
+        "width": 375,
+        "height": 312,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "eaf54a7cf6549624e228cf7c894aec3ff6124e4b98ced8c4fef44d6c882209ca",
+        "visible_pixels": 24383,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3596,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_explosion_3_glow.png",
+        "width": 375,
+        "height": 312,
+        "transparent_margins": {
+          "left": 15,
+          "top": 15,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "e06f40731614781cb86be2d1bdf710b7f6e916d60a155aef71abdc1de649483d",
+        "visible_pixels": 24816,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 3479,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_shard_1",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        832,
+        841,
+        69,
+        85
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          6,
+          7,
+          56,
+          72
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 2334,
+        "green_residue_pixels": 165,
+        "green_residue_ratio": 0.07069409,
+        "green_excess_pixels": 290,
+        "green_excess_ratio": 0.12425021,
+        "edge_visible_pixels": 258,
+        "edge_green_residue_pixels": 165,
+        "edge_green_residue_ratio": 0.63953488
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_1.png",
+        "width": 88,
+        "height": 104,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "99910347e352d19b62da9d557c2b149b3fe6ea43e9db050f784428d3ac9829f8",
+        "visible_pixels": 2110,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 248,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_1_glow.png",
+        "width": 88,
+        "height": 104,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "a5ef08093dd28459cf74a478c2f597de116a5e9b2e4f01f4d20ccb697a5170a1",
+        "visible_pixels": 2102,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 248,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_shard_2",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        961,
+        854,
+        62,
+        72
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          7,
+          7,
+          48,
+          58
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 1337,
+        "green_residue_pixels": 127,
+        "green_residue_ratio": 0.09498878,
+        "green_excess_pixels": 264,
+        "green_excess_ratio": 0.19745699,
+        "edge_visible_pixels": 233,
+        "edge_green_residue_pixels": 110,
+        "edge_green_residue_ratio": 0.472103
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_2.png",
+        "width": 80,
+        "height": 90,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "b3038c64d9dba31b8f83d0da515384c4dd8e28441d219c4f9064ed6c787641a1",
+        "visible_pixels": 1124,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 222,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_2_glow.png",
+        "width": 80,
+        "height": 90,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 15
+        },
+        "sha256": "3157a1de71ac22400e3d266fe3bb61e0cb7ea4a6e141e38e2482b86a7154acb5",
+        "visible_pixels": 1118,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 219,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_shard_3",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        775,
+        918,
+        38,
+        75
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          6,
+          7,
+          25,
+          61
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 1136,
+        "green_residue_pixels": 129,
+        "green_residue_ratio": 0.11355634,
+        "green_excess_pixels": 242,
+        "green_excess_ratio": 0.21302817,
+        "edge_visible_pixels": 190,
+        "edge_green_residue_pixels": 122,
+        "edge_green_residue_ratio": 0.64210526
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_3.png",
+        "width": 57,
+        "height": 93,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "7070949f27096b3454bd88136b3f35680c0858fc66adc2e13a40ca3fec1d032d",
+        "visible_pixels": 939,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 178,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_3_glow.png",
+        "width": 57,
+        "height": 93,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "577a8652f07a75a59148b0ac2e4c25e518933f2863fd3320583d2a1174418a2a",
+        "visible_pixels": 927,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 178,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_shard_4",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        940,
+        935,
+        40,
+        57
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          6,
+          6,
+          28,
+          43
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 877,
+        "green_residue_pixels": 53,
+        "green_residue_ratio": 0.0604333,
+        "green_excess_pixels": 116,
+        "green_excess_ratio": 0.1322691,
+        "edge_visible_pixels": 141,
+        "edge_green_residue_pixels": 53,
+        "edge_green_residue_ratio": 0.37588652
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_4.png",
+        "width": 60,
+        "height": 75,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "fd6e14687f0bc86dc808139d7a7687683bb181882827cae8bc7e3f06c7b9f849",
+        "visible_pixels": 789,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 134,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_4_glow.png",
+        "width": 60,
+        "height": 75,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "06072e2bd0b7446bfc74a936954a33d9a995a22d285023115e5ad78ac69d3161",
+        "visible_pixels": 784,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 132,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_shard_5",
+      "source": "blt_parts_head_trails.png",
+      "source_rect": [
+        1333,
+        838,
+        39,
+        58
+      ],
+      "fixed_canvas": null,
+      "source_audit": {
+        "sheet_width": 1448,
+        "sheet_height": 1086,
+        "sheet_sha256": "647b75d9230bcdb80664c9b988e75e51d82c60b1f4fbc94295d1252639130e03",
+        "crop_content_box_before_padding": [
+          6,
+          7,
+          26,
+          44
+        ],
+        "principal_alpha_island_only": true,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": null,
+        "fixed_canvas_placement": null,
+        "fixed_canvas_anchor": null,
+        "visible_pixels": 737,
+        "green_residue_pixels": 63,
+        "green_residue_ratio": 0.08548168,
+        "green_excess_pixels": 139,
+        "green_excess_ratio": 0.18860244,
+        "edge_visible_pixels": 144,
+        "edge_green_residue_pixels": 63,
+        "edge_green_residue_ratio": 0.4375
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_5.png",
+        "width": 58,
+        "height": 76,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "f32688230c2692807bd441383243c1ec94cc74ac35d47ac29ebb3d353872cf69",
+        "visible_pixels": 630,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 135,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_shard_5_glow.png",
+        "width": 58,
+        "height": 76,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 15,
+          "bottom": 15
+        },
+        "sha256": "5b20b6a687b4983aee1441938bbbec922a39abdfc480be55092b39c050ae3fcf",
+        "visible_pixels": 623,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 133,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_normal_0",
+      "source": "新素材2.png",
+      "source_rect": [
+        0,
+        10,
+        129,
+        125
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6018f49626241b1877ec49088df26cff54a94b8e77749d26f7014aa2b118e222",
+        "crop_content_box_before_padding": [
+          22,
+          14,
+          96,
+          98
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          31,
+          96,
+          98
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 5715,
+        "green_residue_pixels": 610,
+        "green_residue_ratio": 0.10673666,
+        "green_excess_pixels": 945,
+        "green_excess_ratio": 0.16535433,
+        "edge_visible_pixels": 584,
+        "edge_green_residue_pixels": 420,
+        "edge_green_residue_ratio": 0.71917808
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_0.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 31,
+          "right": 142,
+          "bottom": 31
+        },
+        "sha256": "ba1f4d5f0c5452a028495841949ac136a18aa254455bbcbe9f09a9ffefb7c2c7",
+        "visible_pixels": 4900,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 567,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_0_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 32,
+          "right": 146,
+          "bottom": 31
+        },
+        "sha256": "1e77c3460a53441502ec9b25377e171340df2fe13131d03a3de65d7148d3fb68",
+        "visible_pixels": 4077,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 798,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_normal_1",
+      "source": "新素材2.png",
+      "source_rect": [
+        129,
+        10,
+        127,
+        125
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6018f49626241b1877ec49088df26cff54a94b8e77749d26f7014aa2b118e222",
+        "crop_content_box_before_padding": [
+          8,
+          20,
+          100,
+          84
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          38,
+          100,
+          84
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 5372,
+        "green_residue_pixels": 532,
+        "green_residue_ratio": 0.09903202,
+        "green_excess_pixels": 860,
+        "green_excess_ratio": 0.16008935,
+        "edge_visible_pixels": 527,
+        "edge_green_residue_pixels": 332,
+        "edge_green_residue_ratio": 0.62998102
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_1.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 38,
+          "right": 138,
+          "bottom": 38
+        },
+        "sha256": "7893b5df63df5def348c0ffab7bfa1bd6d8070f9e53aa7b1439ea02bc0cdd42e",
+        "visible_pixels": 4652,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 518,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_1_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 17,
+          "top": 39,
+          "right": 138,
+          "bottom": 38
+        },
+        "sha256": "fcdad3b9b66e4a7a50faafb2b5ceccf8461f7325030b98a2b2d0675073c85779",
+        "visible_pixels": 4161,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 672,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_normal_2",
+      "source": "新素材2.png",
+      "source_rect": [
+        256,
+        10,
+        145,
+        125
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6018f49626241b1877ec49088df26cff54a94b8e77749d26f7014aa2b118e222",
+        "crop_content_box_before_padding": [
+          6,
+          21,
+          129,
+          82
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          39,
+          129,
+          82
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 6793,
+        "green_residue_pixels": 517,
+        "green_residue_ratio": 0.07610776,
+        "green_excess_pixels": 1060,
+        "green_excess_ratio": 0.15604299,
+        "edge_visible_pixels": 631,
+        "edge_green_residue_pixels": 426,
+        "edge_green_residue_ratio": 0.67511886
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_2.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 39,
+          "right": 109,
+          "bottom": 39
+        },
+        "sha256": "8d1216c3382534528e290740554944cdef107b8a46b182f60f7c0140c17cffbd",
+        "visible_pixels": 5957,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 534,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_2_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 39,
+          "right": 109,
+          "bottom": 40
+        },
+        "sha256": "d577aa9def6418b74002cebfce1729ee895620d213efc09b052366c2f301be9f",
+        "visible_pixels": 5686,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 637,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_normal_3",
+      "source": "新素材2.png",
+      "source_rect": [
+        401,
+        10,
+        165,
+        125
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6018f49626241b1877ec49088df26cff54a94b8e77749d26f7014aa2b118e222",
+        "crop_content_box_before_padding": [
+          0,
+          21,
+          151,
+          84
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          38,
+          151,
+          84
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 7972,
+        "green_residue_pixels": 716,
+        "green_residue_ratio": 0.08981435,
+        "green_excess_pixels": 1430,
+        "green_excess_ratio": 0.17937782,
+        "edge_visible_pixels": 775,
+        "edge_green_residue_pixels": 511,
+        "edge_green_residue_ratio": 0.65935484
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_3.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 38,
+          "right": 87,
+          "bottom": 38
+        },
+        "sha256": "a8bd15829207dd613573bab8bda1903b5fe15702dc54eefb79097b3e0fc89a13",
+        "visible_pixels": 6768,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 630,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_3_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 17,
+          "top": 38,
+          "right": 87,
+          "bottom": 38
+        },
+        "sha256": "b06eb765b3e8962b4121da2e0272f2d6a7f37e1353055002786696597e740871",
+        "visible_pixels": 6506,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 677,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_normal_4",
+      "source": "新素材2.png",
+      "source_rect": [
+        566,
+        10,
+        182,
+        125
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6018f49626241b1877ec49088df26cff54a94b8e77749d26f7014aa2b118e222",
+        "crop_content_box_before_padding": [
+          0,
+          21,
+          176,
+          81
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          39,
+          176,
+          81
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 9603,
+        "green_residue_pixels": 1368,
+        "green_residue_ratio": 0.14245548,
+        "green_excess_pixels": 2423,
+        "green_excess_ratio": 0.25231698,
+        "edge_visible_pixels": 963,
+        "edge_green_residue_pixels": 742,
+        "edge_green_residue_ratio": 0.77050883
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_4.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 39,
+          "right": 62,
+          "bottom": 40
+        },
+        "sha256": "420424796bd61d3f4c951096f532e961f18746041a9cbd2105e23e7ed1b4688a",
+        "visible_pixels": 7628,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 680,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_normal_4_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 17,
+          "top": 39,
+          "right": 63,
+          "bottom": 41
+        },
+        "sha256": "e234fa96eb4a99c55f754cd827fe0a9ce393d78317690d56f8f57ce5909dbf35",
+        "visible_pixels": 7299,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 773,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_over_0",
+      "source": "新素材1.png",
+      "source_rect": [
+        0,
+        20,
+        130,
+        115
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6a2458ec2a65676197991a6569d91d82b312c738fb6fa91478e86b9018062bd5",
+        "crop_content_box_before_padding": [
+          36,
+          19,
+          80,
+          80
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          40,
+          80,
+          80
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 4018,
+        "green_residue_pixels": 541,
+        "green_residue_ratio": 0.1346441,
+        "green_excess_pixels": 774,
+        "green_excess_ratio": 0.19263315,
+        "edge_visible_pixels": 475,
+        "edge_green_residue_pixels": 373,
+        "edge_green_residue_ratio": 0.78526316
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_0.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 40,
+          "right": 158,
+          "bottom": 40
+        },
+        "sha256": "7f3e8aab8f9273f044926e7e6bd933772d57e81ec1a11f3ef1ffd34c8a47d6bb",
+        "visible_pixels": 3360,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 440,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_0_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 40,
+          "right": 160,
+          "bottom": 42
+        },
+        "sha256": "25b45392f92d5e02f827f1983c433c49e242eae6a88db9237bfa377d3c0ec198",
+        "visible_pixels": 2590,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 624,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_over_1",
+      "source": "新素材1.png",
+      "source_rect": [
+        130,
+        20,
+        114,
+        115
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6a2458ec2a65676197991a6569d91d82b312c738fb6fa91478e86b9018062bd5",
+        "crop_content_box_before_padding": [
+          17,
+          28,
+          74,
+          60
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          50,
+          74,
+          60
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 2840,
+        "green_residue_pixels": 415,
+        "green_residue_ratio": 0.14612676,
+        "green_excess_pixels": 615,
+        "green_excess_ratio": 0.2165493,
+        "edge_visible_pixels": 366,
+        "edge_green_residue_pixels": 262,
+        "edge_green_residue_ratio": 0.71584699
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_1.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 50,
+          "right": 164,
+          "bottom": 50
+        },
+        "sha256": "398f69a866f9c7180a49b432fff7104082e524cca2b2c0f78e9b1f771b2abe9a",
+        "visible_pixels": 2281,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 320,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_1_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 50,
+          "right": 169,
+          "bottom": 52
+        },
+        "sha256": "facfc58c1c9efb1f29c0d4a32f6431997f7c1e6ea08f6f0adeff2f6c67a45553",
+        "visible_pixels": 1952,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 399,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_over_2",
+      "source": "新素材1.png",
+      "source_rect": [
+        244,
+        20,
+        124,
+        115
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6a2458ec2a65676197991a6569d91d82b312c738fb6fa91478e86b9018062bd5",
+        "crop_content_box_before_padding": [
+          20,
+          30,
+          81,
+          56
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          52,
+          81,
+          56
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 2806,
+        "green_residue_pixels": 282,
+        "green_residue_ratio": 0.10049893,
+        "green_excess_pixels": 486,
+        "green_excess_ratio": 0.17320029,
+        "edge_visible_pixels": 329,
+        "edge_green_residue_pixels": 219,
+        "edge_green_residue_ratio": 0.6656535
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_2.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 52,
+          "right": 157,
+          "bottom": 52
+        },
+        "sha256": "fb7f32fbb8bc14c4473fecfc46728c1c56bac642b6ac5a47f81489325a1d3e1b",
+        "visible_pixels": 2412,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 305,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_2_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 52,
+          "right": 158,
+          "bottom": 54
+        },
+        "sha256": "b17640b66330c6036f726be26ff674c2556abc9c3552f3e40cddd41a25e54525",
+        "visible_pixels": 2190,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 309,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_over_3",
+      "source": "新素材1.png",
+      "source_rect": [
+        368,
+        20,
+        135,
+        115
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6a2458ec2a65676197991a6569d91d82b312c738fb6fa91478e86b9018062bd5",
+        "crop_content_box_before_padding": [
+          7,
+          22,
+          115,
+          71
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          44,
+          115,
+          71
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 5471,
+        "green_residue_pixels": 592,
+        "green_residue_ratio": 0.10820691,
+        "green_excess_pixels": 1032,
+        "green_excess_ratio": 0.18863096,
+        "edge_visible_pixels": 543,
+        "edge_green_residue_pixels": 409,
+        "edge_green_residue_ratio": 0.75322284
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_3.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 44,
+          "right": 123,
+          "bottom": 45
+        },
+        "sha256": "30a29c7cb75241be15bebd3adc7fb9caa35118a2f4dbd10b556db2603f7b19a7",
+        "visible_pixels": 4647,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 485,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_3_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 45,
+          "right": 124,
+          "bottom": 45
+        },
+        "sha256": "5beacad9baa4bc3d42bf10ccedc521ab62168d6969b31cae643285737553cc6e",
+        "visible_pixels": 4334,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 485,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "split_summon_over_4",
+      "source": "新素材1.png",
+      "source_rect": [
+        503,
+        20,
+        164,
+        115
+      ],
+      "fixed_canvas": [
+        256,
+        160
+      ],
+      "source_audit": {
+        "sheet_width": 1536,
+        "sheet_height": 1024,
+        "sheet_sha256": "6a2458ec2a65676197991a6569d91d82b312c738fb6fa91478e86b9018062bd5",
+        "crop_content_box_before_padding": [
+          0,
+          17,
+          144,
+          80
+        ],
+        "principal_alpha_island_only": false,
+        "alpha_erosion_pixels": 1,
+        "fixed_canvas_size": [
+          256,
+          160
+        ],
+        "fixed_canvas_placement": [
+          18,
+          40,
+          144,
+          80
+        ],
+        "fixed_canvas_anchor": "left, vertically centered",
+        "visible_pixels": 7613,
+        "green_residue_pixels": 1219,
+        "green_residue_ratio": 0.16012085,
+        "green_excess_pixels": 1937,
+        "green_excess_ratio": 0.25443321,
+        "edge_visible_pixels": 747,
+        "edge_green_residue_pixels": 615,
+        "edge_green_residue_ratio": 0.82329317
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_4.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 40,
+          "right": 94,
+          "bottom": 40
+        },
+        "sha256": "4941bf71cd148911f500e8aecd6e7f3ff2a086cc62a711952880d71c27a9ad76",
+        "visible_pixels": 5924,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 629,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/effects/split_summon_over_4_glow.png",
+        "width": 256,
+        "height": 160,
+        "transparent_margins": {
+          "left": 19,
+          "top": 40,
+          "right": 95,
+          "bottom": 41
+        },
+        "sha256": "88407c0566eefd4f1d08f8a080e69dbeb2c68f2b2e35ead7be084441a6175e99",
+        "visible_pixels": 5537,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 627,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "bullet_main_head_over",
+      "derived_from": "bullet_main_head",
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_head_over.png",
+        "width": 190,
+        "height": 138,
+        "transparent_margins": {
+          "left": 16,
+          "top": 16,
+          "right": 16,
+          "bottom": 16
+        },
+        "sha256": "aeea6cbf1cc63e6f741438fc466e587f46ac9c87c6290a063e2de5d7f59e7744",
+        "visible_pixels": 11053,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 825,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/bullets/bullet_main_head_over_glow.png",
+        "width": 190,
+        "height": 138,
+        "transparent_margins": {
+          "left": 15,
+          "top": 16,
+          "right": 15,
+          "bottom": 16
+        },
+        "sha256": "4681a6a2defff27ee8b4e490998f5659c77f059e88893cc9d72e4867ee458593",
+        "visible_pixels": 6277,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2559,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "ui_icon",
+      "derived_from": "body_normal_head",
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ui/ui_icon.png",
+        "width": 256,
+        "height": 256,
+        "transparent_margins": {
+          "left": 22,
+          "top": 24,
+          "right": 23,
+          "bottom": 24
+        },
+        "sha256": "3001dbf87864218313395479ff4403865d50cba958b36a59c5bd2ba50ec1245a",
+        "visible_pixels": 29851,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 844,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": null
+    }
+  ],
+  "contacts": {
+    "black": "assets/companions/ice_crystal_dragon/contact_sheet_black.png",
+    "white": "assets/companions/ice_crystal_dragon/contact_sheet_white.png",
+    "checker": "assets/companions/ice_crystal_dragon/contact_sheet_checker.png"
+  },
+  "summary": {
+    "base_asset_count": 41,
+    "glow_asset_count": 40,
+    "max_green_residue_ratio": 0.0,
+    "max_glow_green_residue_ratio": 0.0,
+    "green_residue_limit": 0.0001,
+    "validation_errors": []
+  }
+}
