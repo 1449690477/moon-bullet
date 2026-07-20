@@ -592,10 +592,19 @@ def make_mobile_variant(key: str, rel: str, lossless_sources: dict[str, str]) ->
     return None
 
 
-def inject_pages_manifest(index_html: str) -> str:
-    tag = '  <script src="./asset-mobile-manifest.js"></script>\n'
-    if tag in index_html:
-        return index_html
+def inject_pages_manifest(index_html: str, version: str = "") -> str:
+    # 带版本 query，避免旧 manifest 被浏览器/中间缓存粘住（缺冰龙 key 会整组贴图失败）
+    bust = f"?v={version}" if version else ""
+    tag = f'  <script src="./asset-mobile-manifest.js{bust}"></script>\n'
+    # 替换已有标签（含旧 query）或插入
+    replaced, n = re.subn(
+        r'  <script src="\./asset-mobile-manifest\.js[^"]*"></script>\n',
+        tag,
+        index_html,
+        count=1,
+    )
+    if n:
+        return replaced
     return index_html.replace("  <script>\n(() => {", tag + "  <script>\n(() => {", 1)
 
 
@@ -668,11 +677,17 @@ self.addEventListener('fetch', event => {{
   const isAsset = url.pathname.includes('/assets/') || url.pathname.includes('/assets_mobile/');
   if (!isAsset) return;
   event.respondWith(
-    caches.match(req).then(hit => hit || fetch(req).then(res => {{
-      const copy = res.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-      return res;
-    }}).catch(() => hit))
+    caches.match(req).then(hit => {{
+      // 跳过缓存里的非 OK 响应（历史上 404 会被永久粘住，冰龙贴图全丢）
+      if (hit && hit.ok) return hit;
+      return fetch(req).then(res => {{
+        if (res && res.ok) {{
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
+        }}
+        return res;
+      }}).catch(() => (hit && hit.ok ? hit : undefined));
+    }})
   );
 }});
 """
@@ -748,12 +763,15 @@ def main() -> None:
     (DIST / "asset-mobile-manifest.js").write_text(manifest_js, encoding="utf-8")
     # Root index.html is also a supported local preview entry; keep its availability map fresh.
     (ROOT / "asset-mobile-manifest.js").write_text(manifest_js, encoding="utf-8")
-    (DIST / "index.html").write_text(inject_pages_manifest(source), encoding="utf-8")
+    (DIST / "index.html").write_text(inject_pages_manifest(source, version), encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
 
     core_keys = [
         "bgStageBase", "bgStage1", "playerAvatar", "yanuxiyaBAvatar", "annaAvatar",
         "reaverAvatar", "motherlifeAvatar", "cgAvatar", "uiSkillBeamIcon", "uiSkillBombIcon",
+        # 冰晶龙关键贴图：进核心预缓存，避免首局僚机只剩程序化回退
+        "icdHeadNormal", "icdHeadNormalGlow", "icdSegmentNormal", "icdTailNormal",
+        "icdBulletMain", "icdBulletMainGlow", "icdIcon",
     ]
     core_urls = [
         "./",

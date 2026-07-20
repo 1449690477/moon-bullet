@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moon-bullet-pages-36736178267d';
+const CACHE_NAME = 'moon-bullet-pages-d6f662005ee0';
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -28,7 +28,21 @@ const CORE_ASSETS = [
   "./assets/ui/ui_skill_beam_icon.png",
   "./assets_mobile/ui/ui_skill_beam_icon.webp",
   "./assets/ui/ui_skill_bomb_icon.png",
-  "./assets_mobile/ui/ui_skill_bomb_icon.webp"
+  "./assets_mobile/ui/ui_skill_bomb_icon.webp",
+  "./assets/companions/ice_crystal_dragon/body/body_normal_head.png",
+  "./assets_mobile/companions/ice_crystal_dragon/body/body_normal_head.webp",
+  "./assets/companions/ice_crystal_dragon/body/body_normal_head_glow.png",
+  "./assets_mobile/companions/ice_crystal_dragon/body/body_normal_head_glow.webp",
+  "./assets/companions/ice_crystal_dragon/body/body_normal_segment.png",
+  "./assets_mobile/companions/ice_crystal_dragon/body/body_normal_segment.webp",
+  "./assets/companions/ice_crystal_dragon/body/body_normal_tail.png",
+  "./assets_mobile/companions/ice_crystal_dragon/body/body_normal_tail.webp",
+  "./assets/companions/ice_crystal_dragon/bullets/bullet_main_crystal_head.png",
+  "./assets_mobile/companions/ice_crystal_dragon/bullets/bullet_main_crystal_head.webp",
+  "./assets/companions/ice_crystal_dragon/bullets/bullet_main_crystal_head_glow.png",
+  "./assets_mobile/companions/ice_crystal_dragon/bullets/bullet_main_crystal_head_glow.webp",
+  "./assets/companions/ice_crystal_dragon/ui/ui_icon.png",
+  "./assets_mobile/companions/ice_crystal_dragon/ui/ui_icon.webp"
 ];
 
 self.addEventListener('install', event => {
@@ -55,10 +69,16 @@ self.addEventListener('fetch', event => {
   const isAsset = url.pathname.includes('/assets/') || url.pathname.includes('/assets_mobile/');
   if (!isAsset) return;
   event.respondWith(
-    caches.match(req).then(hit => hit || fetch(req).then(res => {
-      const copy = res.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-      return res;
-    }).catch(() => hit))
+    caches.match(req).then(hit => {
+      // 跳过缓存里的非 OK 响应（历史上 404 会被永久粘住，冰龙贴图全丢）
+      if (hit && hit.ok) return hit;
+      return fetch(req).then(res => {
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
+        }
+        return res;
+      }).catch(() => (hit && hit.ok ? hit : undefined));
+    })
   );
 });
