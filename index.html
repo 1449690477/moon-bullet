@@ -26532,6 +26532,128 @@
         );
       }
     }
+    // ===== 点对点位点特效:每个解剖位点一层专属效果 =====
+    // P1 脊柱能量流:一道亮波每 ~1.6s 从颈部流向尾梢,经过的节筒短暂
+    // 提亮并在节缝处亮起能量脉络——"能量在身体里流动"。
+    if (iceDragon.spine.length > 5 && perfLevel < 3) {
+      const n = iceDragon.spine.length - 1;
+      const pulseCycle = (time * 0.62) % 1.35;
+      const pulsePos = pulseCycle / 0.82; // >1 时处于休止段
+      if (pulsePos <= 1.12) {
+        const glowTexture = iceDragonGlowTexture(over ? 'over' : 'ice');
+        ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+        for (let i = 1; i <= n; i++) {
+          const point = iceDragon.spine[i];
+          if ((layer === 'front') !== iceDragonPointIsFront(point)) continue;
+          const segT = i / n;
+          const wave = Math.exp(-Math.pow((segT - pulsePos) * 5.4, 2));
+          if (wave < 0.05) continue;
+          const prev = iceDragon.spine[i - 1];
+          // 节缝能量脉络:相邻节筒之间的短弧线被亮波点亮
+          ctx.globalAlpha = alpha * wave * 0.55;
+          ctx.strokeStyle = over ? 'rgba(226,185,255,.9)' : 'rgba(190,240,255,.92)';
+          ctx.lineWidth = 1.3;
+          const mx2 = (point.x + prev.x) * 0.5, my2 = (point.y + prev.y) * 0.5;
+          const sdx = point.x - prev.x, sdy = point.y - prev.y;
+          const slen = Math.max(1, Math.hypot(sdx, sdy));
+          const snx = -sdy / slen, sny = sdx / slen;
+          ctx.beginPath();
+          ctx.moveTo(mx2 + snx * 7, my2 + sny * 7);
+          ctx.quadraticCurveTo(mx2, my2, mx2 - snx * 7, my2 - sny * 7);
+          ctx.stroke();
+          // 节筒提亮
+          const gs = (16 + wave * 10) * (1 - segT * 0.3);
+          ctx.globalAlpha = alpha * wave * 0.34;
+          ctx.drawImage(glowTexture, point.x - gs, point.y - gs, gs * 2, gs * 2);
+        }
+        ctx.restore();
+      }
+    }
+    // P2 核心盘(链位3):环绕光尘×3 + 周期性能量脉冲环
+    if (iceDragon.spine.length > 4) {
+      const corePoint = iceDragon.spine[3];
+      if (corePoint && (layer === 'front') === iceDragonPointIsFront(corePoint)) {
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        const moteCount = perfLevel >= 2 ? 2 : 3;
+        for (let i = 0; i < moteCount; i++) {
+          const ma = time * (i % 2 ? 2.6 : -2.1) + i * TAU / moteCount;
+          const mr = 15 + (i % 2) * 4;
+          const mx2 = corePoint.x + Math.cos(ma) * mr;
+          const my2 = corePoint.y + Math.sin(ma) * mr * 0.72;
+          const front = Math.sin(ma) > -0.2;
+          const ms = (1.4 + (i % 2) * 0.5) * (front ? 1.1 : 0.75);
+          ctx.globalAlpha = alpha * (front ? 0.85 : 0.5);
+          ctx.fillStyle = i % 2 ? (over ? '#e3c2ff' : '#cfeeff') : (over ? '#c98cff' : '#a678f0');
+          ctx.beginPath(); ctx.arc(mx2, my2, ms, 0, TAU); ctx.fill();
+        }
+        // 脉冲环:每 2.2s 从核心涨开一圈细环
+        const ringT = (time % 2.2) / 0.9;
+        if (ringT <= 1 && perfLevel < 2) {
+          const rr = lerp(6, 24, ringT);
+          ctx.globalAlpha = alpha * (1 - ringT) * 0.6;
+          ctx.strokeStyle = over ? 'rgba(201,140,255,.9)' : 'rgba(166,120,240,.9)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.ellipse(corePoint.x, corePoint.y, rr, rr * 0.72, corePoint.angle || 0, 0, TAU); ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }
+    // P3+P4 头部位点:角尖霜汽/闪点 + 龙口待机冷息(呼吸节律)
+    if (iceDragon.spine.length > 1) {
+      const hp = iceDragon.spine[0];
+      if ((layer === 'front') === iceDragonPointIsFront(hp)) {
+        const face = iceDragon.faceAngle;
+        const fx2 = Math.cos(face), fy2 = Math.sin(face);
+        const nx2 = -fy2, ny2 = fx2;
+        // P3 角尖:两处角尖坐标上的霜汽小团(上飘)+偶发白闪
+        if (perfLevel < 2) {
+          const hornSmoke = iceDragonSmokeTexture(over ? 'over' : 'ice');
+          for (let i = 0; i < 2; i++) {
+            const hornX = hp.x - fx2 * (10 + i * 8) + nx2 * (-12 - i * 4);
+            const hornY = hp.y - fy2 * (10 + i * 8) + ny2 * (-12 - i * 4);
+            const vaporT = (time * (0.9 + i * 0.23) + i * 0.5) % 1;
+            const vs = 6 + vaporT * 7;
+            ctx.save(); ctx.globalCompositeOperation = 'source-over';
+            ctx.globalAlpha = alpha * (1 - vaporT) * 0.30;
+            ctx.translate(hornX - nx2 * vaporT * 9, hornY - ny2 * vaporT * 9);
+            ctx.rotate(vaporT * 1.6 + i);
+            ctx.drawImage(hornSmoke, -vs, -vs * 0.5, vs * 2, vs);
+            ctx.restore();
+            const tw = Math.max(0, Math.sin(time * (2.2 + i * 0.9) + i * 2.8));
+            if (tw > 0.86) {
+              ctx.save(); ctx.globalCompositeOperation = 'lighter';
+              ctx.globalAlpha = alpha * (tw - 0.86) / 0.14 * 0.9;
+              ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 0.8; ctx.lineCap = 'round';
+              ctx.beginPath(); ctx.moveTo(hornX - 3, hornY); ctx.lineTo(hornX + 3, hornY);
+              ctx.moveTo(hornX, hornY - 3); ctx.lineTo(hornX, hornY + 3); ctx.stroke();
+              ctx.restore();
+            }
+          }
+        }
+        // P4 龙口待机冷息:呼吸节律的窄雾楔,攻击相位时由聚能/喷口特效接管
+        if (iceDragon.attackPhase === 'idle' || iceDragon.attackPhase === 'recover') {
+          const breathGate = Math.max(0, Math.sin(time * 1.7 + 0.6));
+          if (breathGate > 0.25) {
+            const bAlpha = (breathGate - 0.25) / 0.75;
+            const mouth = iceDragonMouthPosition();
+            const blen = 16 + bAlpha * 12;
+            ctx.save(); ctx.translate(mouth.x, mouth.y); ctx.rotate(face);
+            ctx.globalCompositeOperation = 'source-over';
+            const bGrad = ctx.createLinearGradient(0, 0, blen, 0);
+            bGrad.addColorStop(0, over ? 'rgba(203,150,255,.34)' : 'rgba(196,236,255,.36)');
+            bGrad.addColorStop(1, 'rgba(120,160,230,0)');
+            ctx.globalAlpha = alpha * bAlpha * 0.5;
+            ctx.fillStyle = bGrad;
+            ctx.beginPath();
+            ctx.moveTo(0, -1.5);
+            ctx.quadraticCurveTo(blen * 0.5, -4 - bAlpha * 3, blen, Math.sin(time * 5.2) * 2);
+            ctx.quadraticCurveTo(blen * 0.5, 4 + bAlpha * 3, 0, 1.5);
+            ctx.closePath(); ctx.fill();
+            ctx.restore();
+          }
+        }
+      }
+    }
     // Tail mist wake: curling cold-fog puffs shed behind the tail as the
     // dragon swims, so the body visibly trails mist instead of ending dry.
     if (iceDragon.spine.length > 4) {
@@ -26872,6 +26994,41 @@
       }
       ctx.restore();
     }
+  }
+  // 螺旋冰晶粒子带:沿轨迹轴心以正弦相位缠绕的发光粒子链(DNA 式双股),
+  // 粒子逐点计算在路径法线上的偏移,是"点对点"的环绕粒子层。
+  function iceDragonDrawSpiralStrands(history, radius, alpha, over, seed = 0, strands = 2) {
+    if (!history || history.length < 3 || alpha <= 0.01 || perfLevel >= 3) return;
+    const max = history.length - 1;
+    const dots = perfLevel >= 2 ? 7 : 12;
+    const glowTexture = iceDragonGlowTexture(over ? 'over' : 'ice');
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let strand = 0; strand < strands; strand++) {
+      const strandPhase = strand * Math.PI + seed * 2.7;
+      for (let d = 0; d < dots; d++) {
+        const t = (d + 0.5) / dots;
+        const fi = Math.min(max - 1, Math.max(0, Math.floor(t * max)));
+        const a = history[fi], b = history[fi + 1] || a;
+        const sub = t * max - fi;
+        const px = lerp(a.x, b.x, sub), py = lerp(a.y, b.y, sub);
+        const dx = b.x - a.x, dy = b.y - a.y, len = Math.max(1, Math.hypot(dx, dy));
+        const nx = -dy / len, ny = dx / len;
+        // 相位沿轨迹传播,时间项让粒子看起来绕轴旋进
+        const wave = Math.sin(strandPhase + t * Math.PI * 3.2 - time * 7.5);
+        const depth = Math.cos(strandPhase + t * Math.PI * 3.2 - time * 7.5);
+        const off = wave * radius * (0.55 + t * 0.45);
+        const gx = px + nx * off, gy = py + ny * off;
+        const front = depth > 0;
+        const fade = (1 - t * 0.55) * (front ? 1 : 0.55);
+        const s = (1.5 + (d % 3) * 0.6) * (front ? 1.15 : 0.8);
+        ctx.globalAlpha = alpha * fade * 0.6;
+        ctx.drawImage(glowTexture, gx - s * 2.2, gy - s * 2.2, s * 4.4, s * 4.4);
+        ctx.globalAlpha = alpha * fade * 0.95;
+        ctx.fillStyle = d % 4 === 0 ? '#ffffff' : (over ? '#e3c2ff' : '#cfeeff');
+        ctx.beginPath(); ctx.arc(gx, gy, s * 0.55, 0, TAU); ctx.fill();
+      }
+    }
+    ctx.restore();
   }
   // Crystal refraction twinkles riding a wake: hash-picked history nodes get
   // a brief cross-glint + cold glow, so the trail visibly "catches light".
@@ -27589,6 +27746,16 @@
     ctx.beginPath(); ctx.arc(orbX, orbY, orbR, 0, TAU); ctx.fill();
     ctx.globalAlpha = alpha * 0.9; ctx.fillStyle = '#ffffff';
     ctx.beginPath(); ctx.arc(orbX - orbR * 0.30, orbY - orbR * 0.32, Math.max(0.8, orbR * 0.22), 0, TAU); ctx.fill();
+    // P10 口珠脉冲环:能量珠每 ~0.9s 涨开一圈细环渐隐,珠体在"供能"
+    if (perfLevel < 3) {
+      const ringT = ((time * 1.1 + phase * 0.37) % 0.9) / 0.55;
+      if (ringT <= 1) {
+        ctx.globalAlpha = alpha * (1 - ringT) * 0.7;
+        ctx.strokeStyle = over ? 'rgba(226,188,255,.9)' : 'rgba(196,146,255,.9)';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.arc(orbX, orbY, orbR * (1.1 + ringT * 1.5), 0, TAU); ctx.stroke();
+      }
+    }
     ctx.restore();
     // L7b 晶尖辉光闪点(角尖/颌下,冰晶反光细节)
     if (perfLevel < 2) {
@@ -27656,6 +27823,28 @@
     // 拖尾冰晶反光闪点:轨迹节点上随机眨动的十字反光+冷辉光。
     iceDragonDrawTrailGlints(shot.tailHistory, over ? 24 : 22, formEase * 0.9, over, seed);
     iceDragonDrawTrail(shot.tailHistory, over, over ? 17 : 15, formEase * (over ? 0.40 : 0.36));
+    // P6 螺旋冰晶粒子带:双股粒子链绕拖尾轴旋进(点对点逐粒计算法线偏移)
+    iceDragonDrawSpiralStrands(shot.tailHistory, over ? 21 : 19, formEase * 0.85, over, seed, 2);
+    // P8 尾端碎晶消散:拖尾末端不做硬截断,由 2-3 枚小碎晶剥离渐隐收尾
+    if (shot.tailHistory.length > 4 && perfLevel < 3) {
+      const endNode = shot.tailHistory[shot.tailHistory.length - 1];
+      const preEnd = shot.tailHistory[shot.tailHistory.length - 2];
+      const edx = endNode.x - preEnd.x, edy = endNode.y - preEnd.y;
+      const elen = Math.max(1, Math.hypot(edx, edy));
+      const shardsN = perfLevel >= 2 ? 2 : 3;
+      for (let i = 0; i < shardsN; i++) {
+        const dropT = (time * (0.8 + i * 0.21) + i * 0.37 + seed * 0.5) % 1;
+        const drift = 8 + dropT * 26;
+        const side = (i % 2 ? 1 : -1) * (4 + dropT * 10);
+        iceDragonDrawCodeCrystalShard(
+          endNode.x + edx / elen * drift - edy / elen * side,
+          endNode.y + edy / elen * drift + edx / elen * side,
+          Math.atan2(edy, edx) + dropT * (i % 2 ? 2.4 : -2.1),
+          (8 - dropT * 4.5) * (1 + (i % 2) * 0.3), 3.2 - dropT * 1.6,
+          formEase * (1 - dropT) * 0.6, over, seed + i * 3.3,
+        );
+      }
+    }
     iceDragonDrawEnergyEnvelope(shot.x, shot.y, rotation, w, h, age, formEase * 0.56, over, shot.burstIndex * 1.91, false);
     // Crystal lattice wake: the electric-crystal material from 新素材 rides on
     // top of the procedural volume so the trail reads as faceted ice, not haze.
@@ -27683,6 +27872,38 @@
       lerp(68, over ? 126 : 118, formEase), lerp(50, over ? 96 : 90, formEase),
       formEase, over, shot.burstIndex + age * 0.2,
     );
+    // P7 口部持续冰息喷流:飞行中龙口向前喷出的窄冰息(渐变楔+3粒随喷
+    // 流加速的微粒),让"龙在呼吸推进"而不是贴图被推着走。
+    if (formEase > 0.5 && perfLevel < 3) {
+      const headScale = lerp(68, over ? 126 : 118, formEase);
+      const jetLen = headScale * (0.42 + 0.10 * Math.sin(time * 11 + seed * 3));
+      const fx2 = -Math.cos(rotation), fy2 = -Math.sin(rotation);
+      const mouthX = shot.x + fx2 * headScale * 0.34;
+      const mouthY = shot.y + fy2 * headScale * 0.34;
+      ctx.save(); ctx.translate(mouthX, mouthY); ctx.rotate(rotation + Math.PI);
+      ctx.globalCompositeOperation = 'lighter';
+      const jet = ctx.createLinearGradient(0, 0, jetLen, 0);
+      jet.addColorStop(0, over ? 'rgba(240,206,255,.85)' : 'rgba(214,244,255,.88)');
+      jet.addColorStop(0.4, over ? 'rgba(196,126,250,.42)' : 'rgba(130,200,250,.46)');
+      jet.addColorStop(1, 'rgba(110,150,230,0)');
+      ctx.globalAlpha = formEase * (over ? 0.60 : 0.54);
+      ctx.fillStyle = jet;
+      const jw = 2.2 + Math.sin(time * 13 + seed) * 0.8;
+      ctx.beginPath();
+      ctx.moveTo(0, -jw);
+      ctx.quadraticCurveTo(jetLen * 0.55, -jw * 2.4, jetLen, Math.sin(time * 9.5 + seed) * 2.4);
+      ctx.quadraticCurveTo(jetLen * 0.55, jw * 2.4, 0, jw);
+      ctx.closePath(); ctx.fill();
+      for (let i = 0; i < 3; i++) {
+        const jt = (time * (2.2 + i * 0.37) + i * 0.41 + seed) % 1;
+        const jx = jetLen * jt * (0.9 + i * 0.05);
+        const jy = Math.sin(jt * 7 + i * 2.1) * (1.5 + jt * 3.5);
+        ctx.globalAlpha = formEase * (1 - jt) * 0.85;
+        ctx.fillStyle = i === 0 ? '#ffffff' : (over ? '#e3c2ff' : '#cfeeff');
+        ctx.beginPath(); ctx.arc(jx, jy, 1.1 + (1 - jt) * 0.9, 0, TAU); ctx.fill();
+      }
+      ctx.restore();
+    }
   }
   function iceDragonDrawSplit(split) {
     const over = split.over;
@@ -27707,6 +27928,8 @@
     iceDragonDrawTrail(visibleHistory, over, over ? 14 : 12, reveal * (over ? 0.30 : 0.28));
     iceDragonDrawFlameFlow(visibleHistory, over ? 17 : 15, reveal * 0.70, over, split.index * 1.83);
     iceDragonDrawTrailGlints(visibleHistory, over ? 18 : 16, reveal * 0.95, over, split.index * 2.61);
+    // P9 单股螺旋冰晶粒子带:小龙拖尾绕轴旋进的粒子链(主弹为双股)
+    iceDragonDrawSpiralStrands(visibleHistory, over ? 13 : 12, reveal * 0.75, over, split.index * 3.17, 1);
     // 摆身动画:摇头摆尾 + 垂直浮沉(出生 0.12s 内渐入防跳变)
     const wagRamp = clamp(age / 0.12, 0, 1);
     const wag = Math.sin(age * TAU * 2.0 + split.index * 1.256) * 0.055 * wagRamp;
