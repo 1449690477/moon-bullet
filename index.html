@@ -24125,7 +24125,7 @@
     projectileFacetCount: 14,
     projectileMistLobes: 16,
     projectileWakeNodes: 11,
-    bodyMistAlpha: 0.20,
+    bodyMistAlpha: 0.24,
     bodyFacetAlpha: 0.68,
     bodyCrystalInclusionAlpha: 0.34,
     bodyCrystalSpecPeriod: 1.65,
@@ -24692,7 +24692,7 @@
         const tailX = shot.x - hx * tailAnchorDistance, tailY = shot.y - hy * tailAnchorDistance;
         shot.tailHistory.unshift({ x: tailX, y: tailY });
         if (shot.tailHistory.length > ICE_DRAGON_CONFIG.projectileWakeNodes) shot.tailHistory.length = ICE_DRAGON_CONFIG.projectileWakeNodes;
-        if (Math.random() < dt * 110 * rateScale) {
+        if (Math.random() < dt * 150 * rateScale) {
           const backwards = shot.heading + Math.PI;
           const along = visualLength * rand(0.38, 1.05);
           const side = rand(-1, 1) * visualWidth * 0.34;
@@ -24702,9 +24702,9 @@
           iceDragonPushParticle('mist', mx + rand(-4, 4), my + rand(-4, 4),
             Math.cos(backwards) * rand(35, 75) - hy * sideVelocity,
             Math.sin(backwards) * rand(35, 75) + hx * sideVelocity,
-            rand(0.48, 0.72), rand(8, 14), shot.over ? ICE_DRAGON_COLORS.energy : ICE_DRAGON_COLORS.mist, 0.50);
+            rand(0.52, 0.80), rand(9, 16), shot.over ? ICE_DRAGON_COLORS.energy : ICE_DRAGON_COLORS.mist, 0.56);
         }
-        if (Math.random() < dt * 36 * rateScale) {
+        if (Math.random() < dt * 50 * rateScale) {
           const a = shot.heading + Math.PI + rand(-0.9, 0.9);
           const along = visualLength * rand(0.48, 1.03);
           const side = rand(-1, 1) * visualWidth * 0.32;
@@ -24714,10 +24714,10 @@
             Math.cos(a) * rand(48, 110), Math.sin(a) * rand(48, 110), rand(0.44, 0.62), rand(2.4, 4.2),
             shot.over ? ICE_DRAGON_COLORS.over : ICE_DRAGON_COLORS.cyan, 0.88, rand(0, TAU), rand(-5, 5));
         }
-        if (Math.random() < dt * 22 * rateScale) {
+        if (Math.random() < dt * 34 * rateScale) {
           const along = rand(18, visualLength * 0.88);
           iceDragonPushParticle('glint', shot.x - hx * along - hy * rand(-20, 20), shot.y - hy * along + hx * rand(-20, 20),
-            rand(-20, 20), rand(-20, 20), rand(0.24, 0.40), rand(1.6, 3.2), shot.over ? '#f0dcff' : '#fdfdfd', 0.95);
+            rand(-20, 20), rand(-20, 20), rand(0.24, 0.44), rand(1.6, 3.4), shot.over ? '#f0dcff' : '#fdfdfd', 0.95);
         }
       }
       let firstTarget = null, firstT = Infinity;
@@ -24769,7 +24769,7 @@
       split.history.unshift({ x: split.x, y: split.y });
       if (split.history.length > maxTrail) split.history.length = maxTrail;
       const radialDistance = split.radialDistance;
-      if (radialDistance > 74 && split.history.length > 2 && Math.random() < dt * (perfLevel >= 2 ? 28 : 62)) {
+      if (radialDistance > 74 && split.history.length > 2 && Math.random() < dt * (perfLevel >= 2 ? 34 : 86)) {
         const sampleIndex = Math.min(split.history.length - 1, 2 + Math.floor(Math.random() * Math.min(5, split.history.length - 2)));
         const sample = split.history[sampleIndex];
         const sideVelocity = rand(-24, 24);
@@ -24779,7 +24779,7 @@
           Math.sin(split.motionAngle) * rand(8, 28) + ny * sideVelocity,
           rand(0.36, 0.56), rand(6.0, 11.0), split.over ? ICE_DRAGON_COLORS.energy : ICE_DRAGON_COLORS.mist, 0.58);
       }
-      if (radialDistance > 86 && split.history.length > 3 && Math.random() < dt * (perfLevel >= 2 ? 10 : 24)) {
+      if (radialDistance > 86 && split.history.length > 3 && Math.random() < dt * (perfLevel >= 2 ? 13 : 34)) {
         const sample = split.history[Math.min(split.history.length - 1, 3 + Math.floor(Math.random() * Math.min(4, split.history.length - 3)))];
         const drift = split.motionAngle + rand(-0.64, 0.64);
         iceDragonPushParticle('shard', sample.x, sample.y,
@@ -24790,7 +24790,7 @@
       {
         const hx = Math.cos(split.motionAngle), hy = Math.sin(split.motionAngle);
         const bodyLen = split.over ? 166 : 150;
-        if (Math.random() < dt * (perfLevel >= 2 ? 8 : 20)) {
+        if (Math.random() < dt * (perfLevel >= 2 ? 10 : 28)) {
           iceDragonPushParticle('glint',
             split.x - hx * rand(0, bodyLen * 0.40) - hy * rand(-11, 11),
             split.y - hy * rand(0, bodyLen * 0.40) + hx * rand(-11, 11),
@@ -24939,7 +24939,7 @@
     iceDragonRefreshSpine();
     iceDragon.ambientT -= dt;
     if (iceDragon.ambientT <= 0 && iceDragon.spine.length > 5) {
-      iceDragon.ambientT = perfLevel >= 2 ? 0.09 : 0.048;
+      iceDragon.ambientT = perfLevel >= 2 ? 0.075 : 0.036;
       const last = iceDragon.spine.length - 1;
       const mistIndex = 4 + Math.floor(Math.random() * Math.max(1, last - 3));
       const mistPoint = iceDragon.spine[Math.min(last, mistIndex)];
@@ -24952,7 +24952,7 @@
       iceDragonPushParticle(
         'mist', mistPoint.x + nx * offset, mistPoint.y + ny * offset,
         tx * tailSpeed + nx * normalSpeed, ty * tailSpeed + ny * normalSpeed - rand(3, 10),
-        rand(0.64, 0.96), rand(6.0, 10.0), over ? ICE_DRAGON_COLORS.energy : ICE_DRAGON_COLORS.mist, 0.70,
+        rand(0.70, 1.05), rand(7.0, 12.0), over ? ICE_DRAGON_COLORS.energy : ICE_DRAGON_COLORS.mist, 0.78,
       );
       const glintIndex = 4 + (Math.floor(time * 11 + iceDragon.fireSerial) % Math.max(1, last - 3));
       const glint = iceDragon.spine[Math.min(last, glintIndex)];
@@ -25487,7 +25487,7 @@
         const breath = 0.75 + 0.25 * Math.sin(time * 2.9 - index * 0.5);
         ctx.save(); ctx.translate(point.x, point.y); ctx.rotate(rotation);
         ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = alpha * 0.30 * breath;
+        ctx.globalAlpha = alpha * 0.36 * breath;
         ctx.drawImage(assets[auraKey], -w * 0.62, -h * 0.62, w * 1.24, h * 1.24);
         ctx.restore();
       }
@@ -25523,7 +25523,7 @@
       const glowTexture = iceDragonGlowTexture(over ? 'over' : 'ice');
       const gs = Math.max(w, h) * (strong ? (kind === 'head' ? 1.15 : 1.35) : 0.95) * (0.9 + breath * 0.2);
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = alpha * (strong ? (kind === 'head' ? 0.26 : 0.32) : 0.16) * (0.5 + breath * 0.5);
+      ctx.globalAlpha = alpha * (strong ? (kind === 'head' ? 0.30 : 0.38) : 0.20) * (0.5 + breath * 0.5);
       ctx.drawImage(glowTexture, point.x - gs / 2, point.y - gs / 2, gs, gs);
       ctx.restore();
     }
@@ -26551,7 +26551,7 @@
           ctx.save();
           ctx.translate(tailPoint.x + bx2 * along - by2 * sway, tailPoint.y + by2 * along + bx2 * sway);
           ctx.rotate(Math.atan2(by2, bx2) + Math.sin(time * 2.6 + i * 1.7) * 0.4);
-          ctx.globalAlpha = alpha * (0.30 - i * 0.07) * (0.8 + 0.2 * Math.sin(time * 4.1 + i));
+          ctx.globalAlpha = alpha * (0.38 - i * 0.08) * (0.8 + 0.2 * Math.sin(time * 4.1 + i));
           ctx.drawImage(wakeSmoke, -ws, -ws * 0.5, ws * 2, ws);
           ctx.restore();
         }
@@ -27661,7 +27661,7 @@
     // top of the procedural volume so the trail reads as faceted ice, not haze.
     iceDragonDrawLatticeStream(
       shot.x, shot.y, rotation, w * 0.92, h * (over ? 0.88 : 0.82),
-      formEase * 0.98, over, seed, { startX: h * 0.30, baseAlpha: 0.92, glowAlpha: 0.72 },
+      formEase * 0.98, over, seed, { startX: h * 0.30, baseAlpha: 0.92, glowAlpha: 0.80 },
     );
     // 弹头环绕微晶：贴身公转碎晶，强化"冰晶龙弹"读感（非外扩光球）
     if (formEase > 0.35 && perfLevel < 3) {
