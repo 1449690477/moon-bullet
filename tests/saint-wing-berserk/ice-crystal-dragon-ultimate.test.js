@@ -86,26 +86,29 @@ describe('ice crystal dragon ultimate', () => {
     const targets = [
       { id: 'line', x: 470, y: 340, hp: 100, r: 12 },
       { id: 'inner', x: 445, y: 470, hp: 100, r: 8 },
-      { id: 'edge-outside', x: 620, y: 470, hp: 100, r: 8 },
+      { id: 'expanded-edge', x: 645, y: 470, hp: 100, r: 8 },
+      { id: 'edge-outside', x: 690, y: 470, hp: 100, r: 8 },
       { id: 'outside', x: 40, y: 920, hp: 100, r: 10 },
     ];
-    expect(ultimate.breathHitsForTest(targets, center).map(target => target.id)).toEqual(['line', 'inner']);
+    expect(ultimate.breathHitsForTest(targets, center).map(target => target.id)).toEqual(['line', 'inner', 'expanded-edge']);
     expect(spec.breath).toMatchObject({
       shape: 'fixed circle',
-      radius: 275,
+      radius: 330,
       locksAt: 2.05,
       travelTime: 0.2,
       impactStartsAt: 2.25,
       impactFadeIn: 0.18,
-      frostGrowTime: 0.75,
+      frostGrowTime: 0.9,
+      rangeInitialScale: 0.74,
+      rangeSettleTime: 0.46,
       slowStartsAt: 2.25,
       hostileBulletSlowScale: 0.22,
-      hostileBulletSlowFeather: 56,
+      hostileBulletSlowFeather: 72,
       hostileBulletVelocityMutated: false,
     });
     expect(ultimate.bulletSlowScaleForTest({ x: 330, y: 470 }, center)).toBeCloseTo(0.22, 8);
-    expect(ultimate.bulletSlowScaleForTest({ x: 605, y: 470 }, center)).toBeGreaterThan(0.22);
-    expect(ultimate.bulletSlowScaleForTest({ x: 700, y: 470 }, center)).toBe(1);
+    expect(ultimate.bulletSlowScaleForTest({ x: 660, y: 470 }, center)).toBeGreaterThan(0.22);
+    expect(ultimate.bulletSlowScaleForTest({ x: 760, y: 470 }, center)).toBe(1);
     expect(ultimate.bulletSlowScaleForTest({ x: 330, y: 470 }, center, false)).toBe(1);
     expect(spec.target.maxTrackSpeed).toBe(90);
     expect(spec.target.breathLocksAtChargeEnd).toBe(true);
@@ -161,14 +164,19 @@ describe('ice crystal dragon ultimate', () => {
       'continuous snowflake flow',
     ]));
     expect(spec.vfx.field).toEqual(expect.arrayContaining([
-      'fixed circular damage domain',
+      'expanded target-centred circular domain',
+      'immediate full-range frost footprint',
+      'broken twelve-sector frost wall',
+      'raised multi-face frost boundary',
+      'processed frost-grain overlays',
+      'depth-sorted three-face ice massifs',
       'procedural angular frost facets',
       'directional ice-flame impact',
       'faceted contact prisms',
       'volumetric cold fog banks',
-      'broken three-dimensional shell arcs',
+      'coherent three-dimensional shell arcs',
       'growing branching fractures',
-      'broken frost boundary',
+      'boundary blizzard streamers',
     ]));
   });
 });

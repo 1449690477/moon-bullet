@@ -29906,15 +29906,17 @@
     meteorDamagePerLevel: 36000,
     meteorBossCredit: 6,
     targetTrackSpeed: 90,
-    breathRadius: 275,
+    breathRadius: 330,
     breathSlowScale: 0.22,
-    breathSlowFeather: 56,
+    breathSlowFeather: 72,
     breathFieldFadeIn: 0.42,
     breathFieldFadeOut: 0.48,
     breathTravelTime: 0.20,
     breathImpactFadeIn: 0.18,
-    breathFrostGrowTime: 0.75,
-    breathTelegraphAlpha: 0.14,
+    breathFrostGrowTime: 0.90,
+    breathRangeInitialScale: 0.74,
+    breathRangeSettleTime: 0.46,
+    breathTelegraphAlpha: 0.42,
     breathTextureDetailAlpha: 0.10,
     // Keep the deity inside the frozen domain while leaving a readable mouth-to-impact lane.
     breathDragonOffsetX: 260,
@@ -29931,15 +29933,18 @@
     breathCoilAxisCorrection: -0.42,
     breathMistRate: Object.freeze([34, 29, 22, 18]),
     breathDustRate: Object.freeze([42, 34, 25, 18]),
-    fieldSnowRate: Object.freeze([64, 52, 38, 28]),
-    fieldShardRate: Object.freeze([22, 18, 13, 9]),
-    fieldFacetAlpha: 0.56,
-    fieldShellAlpha: 0.78,
-    fieldFogAlpha: 0.66,
-    fieldPillarAlpha: 0.82,
+    fieldSnowRate: Object.freeze([76, 62, 46, 34]),
+    fieldShardRate: Object.freeze([30, 24, 17, 12]),
+    fieldFacetAlpha: 0.44,
+    fieldShellAlpha: 0.52,
+    fieldFogAlpha: 0.48,
+    fieldFoundationAlpha: 0.72,
+    fieldBoundaryAlpha: 0.88,
+    fieldMassifAlpha: 0.88,
+    fieldBoundaryWidth: 28,
     contactPrismAlpha: 0.58,
     cancelFade: 0.4,
-    particleCaps: Object.freeze([280, 210, 150, 104]),
+    particleCaps: Object.freeze([340, 260, 184, 128]),
   });
   const iceDragonUltimate = {
     active: false,
@@ -30212,6 +30217,15 @@
       - ICE_DRAGON_ULT_CONFIG.breathTravelTime;
     return iceDragonUltimateEase(contactAge / ICE_DRAGON_ULT_CONFIG.breathFrostGrowTime);
   }
+  function iceDragonUltimateRangeGrowth() {
+    const contactAge = iceDragonUltimate.t
+      - ICE_DRAGON_ULT_CONFIG.chargeEnd
+      - ICE_DRAGON_ULT_CONFIG.breathTravelTime;
+    const initial = ICE_DRAGON_ULT_CONFIG.breathRangeInitialScale;
+    return initial + iceDragonUltimateEase(
+      contactAge / ICE_DRAGON_ULT_CONFIG.breathRangeSettleTime,
+    ) * (1 - initial);
+  }
   function iceDragonUltimatePointInBreath(target, center) {
     const radius = ICE_DRAGON_ULT_CONFIG.breathRadius + Math.max(0, Number(target.r) || 0);
     return Math.hypot(target.x - center.x, target.y - center.y) <= radius;
@@ -30418,8 +30432,11 @@
         const serial = ++u.particleSerial;
         const seed = u.castSerial * 31000 + serial * 21.11;
         const radial = iceDragonUltimateHash(seed + 1) * TAU;
-        const distance = Math.sqrt(iceDragonUltimateHash(seed + 2))
-          * ICE_DRAGON_ULT_CONFIG.breathRadius * 0.78;
+        const edgeBiased = serial % 3 === 0;
+        const distance = (edgeBiased
+          ? 0.80 + iceDragonUltimateHash(seed + 2) * 0.17
+          : Math.sqrt(iceDragonUltimateHash(seed + 2)) * 0.88)
+          * ICE_DRAGON_ULT_CONFIG.breathRadius;
         const tangent = radial + (serial % 2 ? Math.PI * 0.5 : -Math.PI * 0.5);
         const outward = 32 + iceDragonUltimateHash(seed + 3) * 74;
         const swirl = 28 + iceDragonUltimateHash(seed + 4) * 62;
@@ -30446,13 +30463,16 @@
       'fieldShardCarry', ICE_DRAGON_ULT_CONFIG.fieldShardRate[quality], dt, () => {
         const serial = ++u.particleSerial;
         const seed = u.castSerial * 37000 + serial * 11.47;
+        const radial = iceDragonUltimateHash(seed + 8) * TAU;
+        const distance = Math.sqrt(iceDragonUltimateHash(seed + 9))
+          * ICE_DRAGON_ULT_CONFIG.breathRadius * 0.78;
         const direction = angle + Math.PI
           + (iceDragonUltimateHash(seed + 1) - 0.5) * 3.5;
         const speed = 86 + iceDragonUltimateHash(seed + 2) * 155;
         iceDragonUltimatePushParticle(
           'shard',
-          center.x + (iceDragonUltimateHash(seed + 3) - 0.5) * 72,
-          center.y + (iceDragonUltimateHash(seed + 4) - 0.5) * 58,
+          center.x + Math.cos(radial) * distance,
+          center.y + Math.sin(radial) * distance,
           Math.cos(direction) * speed,
           Math.sin(direction) * speed - 48,
           0.44 + iceDragonUltimateHash(seed + 5) * 0.38,
@@ -30538,9 +30558,11 @@
   }
   function iceDragonUltimateLockBreathCenter() {
     if (iceDragonUltimate.breathLocked) return;
-    const radius = ICE_DRAGON_ULT_CONFIG.breathRadius;
-    iceDragonUltimate.breathX = clamp(iceDragonUltimate.targetX, radius + 20, W - radius - 20);
-    iceDragonUltimate.breathY = clamp(iceDragonUltimate.targetY, radius + 60, H - radius - 220);
+    // The enlarged domain remains target-centred and may naturally clip at a
+    // screen edge; forcing a full radius margin would collapse every cast to
+    // the middle of a 720-wide playfield.
+    iceDragonUltimate.breathX = clamp(iceDragonUltimate.targetX, 90, W - 90);
+    iceDragonUltimate.breathY = clamp(iceDragonUltimate.targetY, 180, H - 260);
     iceDragonUltimate.targetX = iceDragonUltimate.breathX;
     iceDragonUltimate.targetY = iceDragonUltimate.breathY;
     iceDragonUltimate.targetVX = 0;
@@ -30904,15 +30926,26 @@
       / (ICE_DRAGON_ULT_CONFIG.chargeEnd - ICE_DRAGON_ULT_CONFIG.ingressEnd),
     );
     const alpha = p * ICE_DRAGON_ULT_CONFIG.breathTelegraphAlpha * u.alpha;
+    const mouth = iceDragonUltimateMouthPosition();
+    const incoming = Math.atan2(center.y - mouth.y, center.x - mouth.x);
     ctx.save();
     const veil = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, radius);
-    veil.addColorStop(0, `rgba(103,177,235,${alpha * 0.18})`);
-    veil.addColorStop(0.72, `rgba(70,116,197,${alpha * 0.16})`);
+    veil.addColorStop(0, `rgba(103,177,235,${alpha * 0.28})`);
+    veil.addColorStop(0.72, `rgba(70,116,197,${alpha * 0.24})`);
     veil.addColorStop(1, 'rgba(42,76,159,0)');
     ctx.fillStyle = veil;
     ctx.beginPath(); ctx.arc(center.x, center.y, radius, 0, TAU); ctx.fill();
     ctx.restore();
-    iceDragonUltimateDrawBrokenFrostRim(center, radius, alpha, p, 1.7);
+    iceDragonUltimateDrawRangeFoundation(
+      center, radius, incoming, alpha * 0.64, p, u.t,
+    );
+    iceDragonUltimateDrawRangeBoundary(
+      center, radius, incoming, alpha * 1.15, p, u.t, 'back',
+    );
+    iceDragonUltimateDrawBrokenFrostRim(center, radius, alpha * 0.42, p, 1.7);
+    iceDragonUltimateDrawRangeBoundary(
+      center, radius, incoming, alpha * 1.15, p, u.t, 'front',
+    );
   }
   function iceDragonUltimateDrawImpactFrostWisp(x, y, angle, length, width, alpha, phase) {
     if (alpha <= 0.01 || length <= 4) return;
@@ -31380,34 +31413,691 @@
     ctx.restore();
   }
 
+  function iceDragonUltimateRangeEdgeRadius(radius, growth, angle, phase = 0) {
+    const seed = iceDragonUltimate.castSerial * 0.73 + phase;
+    const ripple = Math.sin(angle * 7 + seed) * 0.018
+      + Math.sin(angle * 13 - seed * 1.7) * 0.011
+      + Math.sin(angle * 3 + time * 0.26 + seed) * 0.007;
+    return radius * growth * (0.988 + ripple);
+  }
+
+  function iceDragonUltimateDrawRangeFoundation(
+    center, radius, incoming, alpha, growth, age,
+  ) {
+    if (alpha <= 0.001 || growth <= 0.001) return;
+    const r = radius * growth;
+    const edgePoints = perfLevel >= 2 ? 34 : 52;
+    ctx.save();
+
+    // A dark under-volume anchors the domain to the playfield. The irregular
+    // edge and offset shadow keep it from reading as a flat UI disc.
+    const shadow = ctx.createRadialGradient(
+      center.x + Math.cos(incoming + Math.PI) * r * 0.04,
+      center.y + Math.sin(incoming + Math.PI) * r * 0.04 + 12,
+      r * 0.12,
+      center.x, center.y + 12, r * 1.10,
+    );
+    shadow.addColorStop(0, 'rgba(8,23,69,.48)');
+    shadow.addColorStop(0.54, 'rgba(13,42,102,.38)');
+    shadow.addColorStop(0.88, 'rgba(18,54,119,.24)');
+    shadow.addColorStop(1, 'rgba(5,14,48,0)');
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha * 0.78;
+    ctx.fillStyle = shadow;
+    ctx.beginPath();
+    for (let edge = 0; edge <= edgePoints; edge++) {
+      const angle = edge * TAU / edgePoints;
+      const rr = iceDragonUltimateRangeEdgeRadius(radius * 1.08, growth, angle, 7.1);
+      const x = center.x + Math.cos(angle) * rr;
+      const y = center.y + Math.sin(angle) * rr + 10;
+      if (edge === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath(); ctx.fill();
+
+    const ice = ctx.createRadialGradient(
+      center.x - Math.cos(incoming) * r * 0.08,
+      center.y - Math.sin(incoming) * r * 0.08,
+      r * 0.04,
+      center.x, center.y, r,
+    );
+    ice.addColorStop(0, 'rgba(93,169,224,.34)');
+    ice.addColorStop(0.30, 'rgba(42,104,181,.30)');
+    ice.addColorStop(0.64, 'rgba(24,69,150,.25)');
+    ice.addColorStop(0.88, 'rgba(19,47,117,.20)');
+    ice.addColorStop(1, 'rgba(9,25,77,.08)');
+    ctx.globalAlpha = alpha * 0.88;
+    ctx.fillStyle = ice;
+    ctx.beginPath();
+    for (let edge = 0; edge <= edgePoints; edge++) {
+      const angle = edge * TAU / edgePoints;
+      const rr = iceDragonUltimateRangeEdgeRadius(radius, growth, angle, 2.4);
+      const x = center.x + Math.cos(angle) * rr;
+      const y = center.y + Math.sin(angle) * rr;
+      if (edge === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath(); ctx.fill();
+
+    // Moving broken caustics supply material texture without placing a single
+    // circular decal over the battlefield.
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+    const contourCount = perfLevel >= 2 ? 3 : 5;
+    for (let contour = 0; contour < contourCount; contour++) {
+      const seed = contour * 19.37 + iceDragonUltimate.castSerial * 2.7;
+      const contourRadius = r * (0.30 + contour * 0.135);
+      const start = iceDragonUltimateHash(seed) * TAU
+        + age * (contour % 2 ? -0.07 : 0.06);
+      const span = 0.72 + iceDragonUltimateHash(seed + 1) * 0.54;
+      ctx.globalAlpha = alpha * (0.12 + contour * 0.018);
+      ctx.strokeStyle = contour % 2
+        ? 'rgba(171,229,255,.80)'
+        : 'rgba(188,173,244,.72)';
+      ctx.lineWidth = 0.8 + contour * 0.16;
+      ctx.beginPath();
+      const steps = 10;
+      for (let step = 0; step <= steps; step++) {
+        const t = step / steps;
+        const angle = start + span * t;
+        const wobble = Math.sin(t * Math.PI * 3 + seed) * r * 0.012;
+        const rr = contourRadius + wobble;
+        const x = center.x + Math.cos(angle) * rr;
+        const y = center.y + Math.sin(angle) * rr;
+        if (step === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function iceDragonUltimateDrawRangeBoundary(
+    center, radius, incoming, alpha, growth, age, pass,
+  ) {
+    if (alpha <= 0.001 || growth <= 0.001) return;
+    const sectorCount = 12;
+    const boundarySeed = iceDragonUltimate.castSerial * 7.31;
+    const subdivisions = perfLevel >= 2 ? 3 : 5;
+    ctx.save();
+    ctx.translate(center.x, center.y);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    for (let sector = 0; sector < sectorCount; sector++) {
+      // Three missing sectors leave unmistakable breaks in the frost wall.
+      // The gaps rotate per cast so the boundary never resembles a fixed HUD ring.
+      if ((sector + iceDragonUltimate.castSerial) % 4 === 1) continue;
+      const seed = sector * 29.73 + boundarySeed;
+      const middle = sector * TAU / sectorCount
+        + (iceDragonUltimateHash(seed) - 0.5) * 0.12;
+      const frontness = clamp((Math.sin(middle) + 1) * 0.5, 0, 1);
+      const isFront = Math.sin(middle) >= 0;
+      if ((pass === 'front') !== isFront) continue;
+      const reveal = iceDragonUltimateEase(
+        (growth - sector * 0.012) / Math.max(0.30, 1 - sector * 0.012),
+      );
+      if (reveal <= 0.001) continue;
+      const span = 0.34 + iceDragonUltimateHash(seed + 1) * 0.11;
+      const outer = [];
+      const inner = [];
+      for (let point = 0; point <= subdivisions; point++) {
+        const t = point / subdivisions;
+        const angle = middle + (t - 0.5) * span;
+        const edgeNoise = (iceDragonUltimateHash(seed + point * 5.17) - 0.5)
+          * radius * 0.030 * growth;
+        const outerRadius = iceDragonUltimateRangeEdgeRadius(
+          radius, growth, angle, 12.3,
+        ) + edgeNoise;
+        const localWidth = ICE_DRAGON_ULT_CONFIG.fieldBoundaryWidth
+          * growth
+          * (0.72 + frontness * 0.30
+            + iceDragonUltimateHash(seed + point * 7.91 + 2) * 0.34);
+        const innerRadius = outerRadius - localWidth;
+        outer.push({
+          x: Math.cos(angle) * outerRadius,
+          y: Math.sin(angle) * outerRadius,
+          angle,
+        });
+        inner.push({
+          x: Math.cos(angle) * innerRadius,
+          y: Math.sin(angle) * innerRadius,
+          angle,
+        });
+      }
+
+      const wallDrop = (7 + frontness * frontness * 22)
+        * growth * (0.82 + iceDragonUltimateHash(seed + 3) * 0.24);
+      const lightFacing = 0.62 + Math.max(0, Math.cos(middle - incoming)) * 0.38;
+
+      // Contact shadow and vertical outer faces are normal-blended. They carry
+      // most of the boundary readability, leaving the snow crest free of neon.
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = alpha * reveal * (0.30 + frontness * 0.20);
+      ctx.strokeStyle = 'rgba(3,15,54,.78)';
+      ctx.lineWidth = ICE_DRAGON_ULT_CONFIG.fieldBoundaryWidth
+        * growth * (0.66 + frontness * 0.30);
+      ctx.beginPath();
+      outer.forEach((point, index) => {
+        const y = point.y + wallDrop * (0.70 + index / subdivisions * 0.12);
+        if (index === 0) ctx.moveTo(point.x, y); else ctx.lineTo(point.x, y);
+      });
+      ctx.stroke();
+
+      for (let panel = 0; panel < subdivisions; panel++) {
+        const drop0 = wallDrop * (0.76 + panel / subdivisions * 0.18);
+        const drop1 = wallDrop * (0.76 + (panel + 1) / subdivisions * 0.18);
+        const wall = ctx.createLinearGradient(
+          0, Math.min(outer[panel].y, outer[panel + 1].y),
+          0, Math.max(outer[panel].y, outer[panel + 1].y) + wallDrop,
+        );
+        wall.addColorStop(0, sector % 3
+          ? 'rgba(35,95,165,.78)'
+          : 'rgba(63,70,162,.74)');
+        wall.addColorStop(0.46, 'rgba(13,45,111,.88)');
+        wall.addColorStop(1, 'rgba(3,16,56,.94)');
+        ctx.globalAlpha = alpha * reveal * (0.52 + frontness * 0.28);
+        ctx.fillStyle = wall;
+        ctx.beginPath();
+        ctx.moveTo(outer[panel].x, outer[panel].y);
+        ctx.lineTo(outer[panel + 1].x, outer[panel + 1].y);
+        ctx.lineTo(outer[panel + 1].x, outer[panel + 1].y + drop1);
+        ctx.lineTo(outer[panel].x, outer[panel].y + drop0);
+        ctx.closePath(); ctx.fill();
+      }
+
+      const top = ctx.createLinearGradient(
+        inner[0].x, inner[0].y,
+        outer[outer.length - 1].x, outer[outer.length - 1].y,
+      );
+      top.addColorStop(0, sector % 3
+        ? 'rgba(17,53,125,.88)'
+        : 'rgba(47,48,132,.86)');
+      top.addColorStop(0.40, 'rgba(52,126,190,.82)');
+      top.addColorStop(0.72, 'rgba(119,198,227,.76)');
+      top.addColorStop(1, 'rgba(205,241,247,.84)');
+      ctx.globalAlpha = alpha * reveal * lightFacing * (0.68 + frontness * 0.14);
+      ctx.fillStyle = top;
+      ctx.beginPath();
+      outer.forEach((point, index) => {
+        if (index === 0) ctx.moveTo(point.x, point.y);
+        else ctx.lineTo(point.x, point.y);
+      });
+      for (let point = inner.length - 1; point >= 0; point--) {
+        ctx.lineTo(inner[point].x, inner[point].y);
+      }
+      ctx.closePath(); ctx.fill();
+
+      if ((sector + iceDragonUltimate.castSerial) % 2 === 0) {
+        const snow = ctx.createLinearGradient(
+          inner[0].x, inner[0].y,
+          outer[outer.length - 1].x, outer[outer.length - 1].y,
+        );
+        snow.addColorStop(0, 'rgba(121,190,220,.22)');
+        snow.addColorStop(0.42, 'rgba(214,245,250,.62)');
+        snow.addColorStop(0.72, 'rgba(157,220,237,.46)');
+        snow.addColorStop(1, 'rgba(213,198,248,.30)');
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = alpha * reveal * (0.46 + frontness * 0.10);
+        ctx.fillStyle = snow;
+        ctx.beginPath();
+        outer.forEach((point, index) => {
+          const lift = Math.sin(index * 2.31 + seed) * (1.6 + frontness);
+          if (index === 0) ctx.moveTo(point.x, point.y - lift);
+          else ctx.lineTo(point.x, point.y - lift);
+        });
+        for (let point = inner.length - 1; point >= 0; point--) {
+          const capX = lerp(inner[point].x, outer[point].x, 0.58);
+          const capY = lerp(inner[point].y, outer[point].y, 0.58);
+          ctx.lineTo(capX, capY);
+        }
+        ctx.closePath(); ctx.fill();
+      }
+
+      // A cleaned frost-field crop supplies the hand-painted snow grain and
+      // micro-spikes that gradients cannot reproduce. It sits on the code-drawn
+      // top, wall, seams and shadow rather than replacing their volume.
+      const boundaryFrame = (sector * 3 + iceDragonUltimate.castSerial) % 8;
+      const boundaryRadius = iceDragonUltimateRangeEdgeRadius(
+        radius, growth, middle, 12.3,
+      ) - ICE_DRAGON_ULT_CONFIG.fieldBoundaryWidth * growth * 0.16;
+      iceDragonUltimateDrawAssetPair(
+        `icduFrostField${boundaryFrame}`,
+        `icduFrostField${boundaryFrame}Glow`,
+        Math.cos(middle) * boundaryRadius,
+        Math.sin(middle) * boundaryRadius - frontness * 2.2,
+        radius * growth * span * (0.78 + frontness * 0.10),
+        ICE_DRAGON_ULT_CONFIG.fieldBoundaryWidth
+          * growth * (1.42 + frontness * 0.42),
+        middle + Math.PI * 0.5,
+        alpha * reveal * (0.40 + frontness * 0.08),
+        'frost boundary snow grain',
+        0.21 + Math.sin(age * 1.7 + seed) * 0.025,
+      );
+
+      // Short refraction seams break up the slab. Only alternating sectors get
+      // a bright snow crest, keeping additive coverage below half the circle.
+      ctx.globalCompositeOperation = 'lighter';
+      for (let seam = 1; seam < subdivisions; seam++) {
+        ctx.globalAlpha = alpha * reveal * (0.11 + lightFacing * 0.07);
+        ctx.strokeStyle = seam % 2
+          ? 'rgba(184,233,248,.84)'
+          : 'rgba(197,178,243,.76)';
+        ctx.lineWidth = 0.68 + seam % 2 * 0.24;
+        ctx.beginPath();
+        ctx.moveTo(inner[seam].x, inner[seam].y);
+        ctx.lineTo(outer[seam].x, outer[seam].y);
+        ctx.stroke();
+      }
+      if ((sector + iceDragonUltimate.castSerial) % 2 === 0) {
+        ctx.globalAlpha = alpha * reveal * (0.32 + frontness * 0.12);
+        ctx.strokeStyle = sector % 3
+          ? 'rgba(220,250,255,.94)'
+          : 'rgba(218,203,255,.90)';
+        ctx.lineWidth = 1.0 + frontness * 0.42;
+        ctx.beginPath();
+        const first = Math.max(0, Math.floor(subdivisions * 0.18));
+        const last = Math.min(subdivisions, Math.ceil(subdivisions * 0.82));
+        for (let point = first; point <= last; point++) {
+          const frostLift = Math.sin(
+            point * 2.7 + seed + age * 0.28,
+          ) * (1.4 + frontness * 0.8);
+          if (point === first) {
+            ctx.moveTo(outer[point].x, outer[point].y - frostLift);
+          } else {
+            ctx.lineTo(outer[point].x, outer[point].y - frostLift);
+          }
+        }
+        ctx.stroke();
+      }
+
+      const shardPoint = 1 + Math.floor(
+        iceDragonUltimateHash(seed + 8) * Math.max(1, subdivisions - 1),
+      );
+      const shardIndex = Math.min(subdivisions - 1, shardPoint);
+      const shardSize = (6 + iceDragonUltimateHash(seed + 9) * 6)
+        * (0.84 + frontness * 0.22) * growth;
+      iceDragonUltimateDrawFrostDiamond(
+        lerp(inner[shardIndex].x, outer[shardIndex].x, 0.64),
+        lerp(inner[shardIndex].y, outer[shardIndex].y, 0.64)
+          - shardSize * (0.28 + frontness * 0.24),
+        shardSize, middle,
+        alpha * reveal * (0.48 + frontness * 0.16),
+        sector % 3 ? '#c8f1ff' : '#c9bbff',
+      );
+    }
+    ctx.restore();
+
+    const wispCount = pass === 'front'
+      ? (perfLevel >= 2 ? 4 : 7)
+      : (perfLevel >= 2 ? 3 : 5);
+    for (let wisp = 0; wisp < wispCount; wisp++) {
+      const phase = (
+        age * (0.045 + wisp * 0.004)
+        + wisp / wispCount
+        + (pass === 'front' ? 0.08 : 0.53)
+      ) % 1;
+      const angle = phase * TAU;
+      if ((pass === 'front') !== (Math.sin(angle) >= 0)) continue;
+      const rr = iceDragonUltimateRangeEdgeRadius(radius, growth, angle, 12.3);
+      iceDragonUltimateDrawVolumetricFogBank(
+        center.x + Math.cos(angle) * rr,
+        center.y + Math.sin(angle) * rr,
+        angle + Math.PI * 0.5,
+        54 + wisp * 12,
+        18 + wisp * 4,
+        alpha * (pass === 'front' ? 0.30 : 0.22),
+        wisp * 17.41 + iceDragonUltimate.castSerial * 5.2,
+      );
+    }
+  }
+
+  function iceDragonUltimateDrawIceCrystalPrism(
+    x, y, height, width, lean, alpha, depth, phase,
+  ) {
+    if (alpha <= 0.001 || height <= 3 || width <= 2) return;
+    const fog = iceDragonSmokeTexture('ice');
+    const apex = { x: lean, y: -height };
+    const left = { x: -width, y: 2 };
+    const right = { x: width, y: 2 };
+    const front = { x: 0, y: width * 0.46 };
+    const ridge = { x: lean * 0.14, y: -height * 0.18 };
+    ctx.save();
+    ctx.translate(x, y);
+
+    const shadow = ctx.createRadialGradient(
+      -lean * 0.2, width * 0.26, 0,
+      -lean * 0.2, width * 0.26, width * 2.2,
+    );
+    shadow.addColorStop(0, 'rgba(3,16,58,.58)');
+    shadow.addColorStop(0.55, 'rgba(13,39,96,.34)');
+    shadow.addColorStop(1, 'rgba(8,24,70,0)');
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha * (0.50 + depth * 0.18);
+    ctx.fillStyle = shadow;
+    ctx.beginPath();
+    ctx.ellipse(-lean * 0.18, width * 0.22, width * 2.2, width * 0.72, 0, 0, TAU);
+    ctx.fill();
+
+    const darkFace = ctx.createLinearGradient(left.x, 0, apex.x, apex.y);
+    darkFace.addColorStop(0, 'rgba(8,29,83,.94)');
+    darkFace.addColorStop(0.56, 'rgba(20,59,126,.88)');
+    darkFace.addColorStop(1, 'rgba(73,93,174,.72)');
+    ctx.globalAlpha = alpha * (0.84 + depth * 0.08);
+    ctx.fillStyle = darkFace;
+    ctx.beginPath();
+    ctx.moveTo(apex.x, apex.y);
+    ctx.lineTo(left.x, left.y);
+    ctx.lineTo(ridge.x, ridge.y);
+    ctx.closePath(); ctx.fill();
+
+    const litFace = ctx.createLinearGradient(ridge.x, ridge.y, right.x, right.y);
+    litFace.addColorStop(0, 'rgba(219,249,255,.90)');
+    litFace.addColorStop(0.28, 'rgba(119,207,235,.86)');
+    litFace.addColorStop(0.70, 'rgba(56,135,207,.78)');
+    litFace.addColorStop(1, 'rgba(60,74,164,.76)');
+    ctx.globalAlpha = alpha * (0.76 + depth * 0.12);
+    ctx.fillStyle = litFace;
+    ctx.beginPath();
+    ctx.moveTo(apex.x, apex.y);
+    ctx.lineTo(ridge.x, ridge.y);
+    ctx.lineTo(right.x, right.y);
+    ctx.closePath(); ctx.fill();
+
+    const frontFace = ctx.createLinearGradient(0, ridge.y, 0, front.y);
+    frontFace.addColorStop(0, 'rgba(108,105,205,.60)');
+    frontFace.addColorStop(0.50, 'rgba(48,122,194,.74)');
+    frontFace.addColorStop(1, 'rgba(14,48,119,.90)');
+    ctx.globalAlpha = alpha * (0.72 + depth * 0.18);
+    ctx.fillStyle = frontFace;
+    ctx.beginPath();
+    ctx.moveTo(left.x, left.y);
+    ctx.lineTo(ridge.x, ridge.y);
+    ctx.lineTo(right.x, right.y);
+    ctx.lineTo(front.x, front.y);
+    ctx.closePath(); ctx.fill();
+
+    // Fine internal fracture planes move independently from the silhouette.
+    // They give the transparent body refractive texture without outlining the
+    // whole sprite into a flat glowing sticker.
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(apex.x, apex.y);
+    ctx.lineTo(left.x, left.y);
+    ctx.lineTo(front.x, front.y);
+    ctx.lineTo(right.x, right.y);
+    ctx.closePath();
+    ctx.clip();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+    const fractureCount = perfLevel >= 2 ? 2 : 4;
+    for (let fracture = 0; fracture < fractureCount; fracture++) {
+      const fSeed = phase * 7.3 + fracture * 19.17;
+      const vertical = 0.20 + fracture / Math.max(1, fractureCount) * 0.62;
+      const fy = lerp(apex.y, front.y, vertical);
+      const span = width * (0.44 + iceDragonUltimateHash(fSeed) * 0.42);
+      const offset = (iceDragonUltimateHash(fSeed + 1) - 0.5) * width * 0.62;
+      ctx.globalAlpha = alpha * (0.10 + depth * 0.04)
+        * (0.72 + Math.sin(time * 1.3 + fSeed) * 0.12);
+      ctx.strokeStyle = fracture % 3
+        ? 'rgba(186,238,255,.86)'
+        : 'rgba(199,177,255,.82)';
+      ctx.lineWidth = 0.58 + fracture % 2 * 0.32;
+      ctx.beginPath();
+      ctx.moveTo(offset - span, fy + width * 0.10);
+      ctx.lineTo(offset - span * 0.20, fy - width * 0.16);
+      ctx.lineTo(offset + span * 0.42, fy + width * 0.04);
+      ctx.lineTo(offset + span, fy - width * 0.14);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    const core = ctx.createLinearGradient(apex.x, apex.y, front.x, front.y);
+    core.addColorStop(0, 'rgba(244,253,255,.80)');
+    core.addColorStop(0.46, 'rgba(121,220,246,.46)');
+    core.addColorStop(1, 'rgba(129,112,224,.18)');
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha * (0.20 + Math.sin(time * 2.4 + phase) * 0.035);
+    ctx.fillStyle = core;
+    ctx.beginPath();
+    ctx.moveTo(apex.x, apex.y);
+    ctx.lineTo(ridge.x, ridge.y);
+    ctx.lineTo(front.x, front.y);
+    ctx.closePath(); ctx.fill();
+
+    ctx.globalAlpha = alpha * (0.50 + depth * 0.18);
+    ctx.strokeStyle = 'rgba(233,252,255,.96)';
+    ctx.lineWidth = 0.9 + depth * 0.55;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(apex.x, apex.y);
+    ctx.lineTo(ridge.x, ridge.y);
+    ctx.lineTo(front.x, front.y);
+    ctx.moveTo(apex.x, apex.y);
+    ctx.lineTo(right.x, right.y);
+    ctx.stroke();
+
+    const sweep = (time * 0.58 + phase * 0.13) % 1;
+    const sweepY = lerp(apex.y * 0.76, front.y * 0.60, sweep);
+    ctx.globalAlpha = alpha * Math.sin(Math.PI * sweep) * 0.38;
+    ctx.strokeStyle = 'rgba(197,245,255,.96)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(lerp(apex.x, left.x, sweep) - width * 0.08, sweepY);
+    ctx.lineTo(lerp(apex.x, right.x, sweep) + width * 0.10, sweepY + width * 0.08);
+    ctx.stroke();
+
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha * (0.18 + depth * 0.08);
+    ctx.drawImage(
+      fog,
+      -width * 2.0, -width * 0.20,
+      width * 4.0, width * 1.10,
+    );
+    ctx.restore();
+  }
+
+  function iceDragonUltimateDrawIceMassifShelf(
+    x, y, width, alpha, depth, phase,
+  ) {
+    if (alpha <= 0.001 || width <= 3) return;
+    const topLift = width * (0.22 + depth * 0.10);
+    const frontDrop = width * (0.18 + depth * 0.16);
+    const jitter = Math.sin(phase * 1.71) * width * 0.08;
+    const points = [
+      { x: -width * 1.78, y: jitter * 0.18 },
+      { x: -width * 0.88, y: -topLift },
+      { x: width * 0.24, y: -topLift * 0.78 },
+      { x: width * 1.72, y: -width * 0.04 - jitter * 0.12 },
+      { x: width * 1.10, y: width * 0.44 },
+      { x: -width * 0.78, y: width * 0.48 },
+    ];
+    ctx.save();
+    ctx.translate(x, y);
+
+    const shadow = ctx.createRadialGradient(0, width * 0.36, 0, 0, width * 0.36, width * 2.1);
+    shadow.addColorStop(0, 'rgba(2,13,48,.60)');
+    shadow.addColorStop(0.62, 'rgba(6,25,76,.32)');
+    shadow.addColorStop(1, 'rgba(5,18,54,0)');
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha * (0.50 + depth * 0.16);
+    ctx.fillStyle = shadow;
+    ctx.beginPath();
+    ctx.ellipse(0, width * 0.34, width * 2.08, width * 0.66, 0, 0, TAU);
+    ctx.fill();
+
+    const front = ctx.createLinearGradient(0, width * 0.06, 0, width * 0.62 + frontDrop);
+    front.addColorStop(0, 'rgba(25,72,145,.86)');
+    front.addColorStop(0.44, 'rgba(13,43,109,.90)');
+    front.addColorStop(1, 'rgba(4,17,56,.94)');
+    ctx.globalAlpha = alpha * (0.60 + depth * 0.24);
+    ctx.fillStyle = front;
+    ctx.beginPath();
+    ctx.moveTo(points[5].x, points[5].y);
+    ctx.lineTo(points[4].x, points[4].y);
+    ctx.lineTo(points[4].x, points[4].y + frontDrop);
+    ctx.lineTo(points[5].x, points[5].y + frontDrop);
+    ctx.closePath(); ctx.fill();
+
+    const top = ctx.createLinearGradient(
+      -width * 1.4, -topLift,
+      width * 1.4, width * 0.42,
+    );
+    top.addColorStop(0, 'rgba(13,43,109,.92)');
+    top.addColorStop(0.36, 'rgba(50,118,185,.84)');
+    top.addColorStop(0.72, 'rgba(111,193,224,.72)');
+    top.addColorStop(1, 'rgba(82,76,169,.58)');
+    ctx.globalAlpha = alpha * (0.64 + depth * 0.18);
+    ctx.fillStyle = top;
+    ctx.beginPath();
+    points.forEach((point, index) => {
+      if (index === 0) ctx.moveTo(point.x, point.y);
+      else ctx.lineTo(point.x, point.y);
+    });
+    ctx.closePath(); ctx.fill();
+
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = alpha * (0.22 + depth * 0.08);
+    ctx.strokeStyle = 'rgba(207,245,255,.92)';
+    ctx.lineWidth = 0.9 + depth * 0.35;
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    ctx.lineTo(points[1].x, points[1].y);
+    ctx.lineTo(points[2].x, points[2].y);
+    ctx.lineTo(points[3].x, points[3].y);
+    ctx.stroke();
+    ctx.globalAlpha *= 0.72;
+    ctx.strokeStyle = 'rgba(197,176,255,.82)';
+    ctx.beginPath();
+    ctx.moveTo(points[1].x, points[1].y);
+    ctx.lineTo(0, width * 0.10);
+    ctx.lineTo(points[4].x, points[4].y);
+    ctx.moveTo(points[2].x, points[2].y);
+    ctx.lineTo(-width * 0.28, width * 0.42);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function iceDragonUltimateDrawIceMassifField(
+    center, radius, incoming, alpha, growth, age,
+  ) {
+    if (alpha <= 0.001 || growth <= 0.001) return;
+    const groupCount = perfLevel >= 2 ? 6 : 10;
+    const groups = [];
+    for (let group = 0; group < groupCount; group++) {
+      const seed = group * 37.19 + iceDragonUltimate.castSerial * 9.7;
+      const angle = group * TAU / groupCount
+        + (iceDragonUltimateHash(seed) - 0.5) * 0.54;
+      const distance = radius * growth
+        * (0.20 + iceDragonUltimateHash(seed + 1) * 0.67);
+      const x = center.x + Math.cos(angle) * distance;
+      const y = center.y + Math.sin(angle) * distance;
+      const depth = clamp((y - (center.y - radius)) / Math.max(1, radius * 2), 0, 1);
+      groups.push({ group, seed, angle, x, y, depth });
+    }
+    groups.sort((a, b) => a.y - b.y);
+    for (const group of groups) {
+      const scale = (0.78 + group.depth * 0.42) * growth;
+      const mainHeight = (52 + iceDragonUltimateHash(group.seed + 2) * 72) * scale;
+      const mainWidth = (23 + iceDragonUltimateHash(group.seed + 3) * 21) * scale;
+      const lean = Math.cos(group.angle) * mainHeight
+        * (0.08 + iceDragonUltimateHash(group.seed + 4) * 0.10);
+      const reveal = iceDragonUltimateEase(
+        (growth - group.group * 0.045) / Math.max(0.30, 1 - group.group * 0.045),
+      );
+      if (reveal <= 0.001) continue;
+
+      const frostFrame = (Math.floor(Math.max(0, age) * 7.4) + group.group) % 8;
+      iceDragonUltimateDrawAssetPair(
+        `icduFrostField${frostFrame}`,
+        `icduFrostField${frostFrame}Glow`,
+        group.x, group.y + mainWidth * 0.12,
+        mainWidth * (3.2 + group.depth * 0.34),
+        mainWidth * (1.55 + group.depth * 0.20),
+        Math.sin(group.seed) * 0.07,
+        alpha * reveal * (0.24 + group.depth * 0.05),
+        'frost massif root texture',
+        0.18,
+      );
+      iceDragonUltimateDrawIceMassifShelf(
+        group.x, group.y + mainWidth * 0.10,
+        mainWidth * (0.86 + group.depth * 0.18),
+        alpha * reveal * (0.72 + group.depth * 0.12),
+        group.depth,
+        group.seed,
+      );
+      iceDragonUltimateDrawVolumetricFogBank(
+        group.x, group.y + mainWidth * 0.18,
+        group.angle + Math.PI * 0.5,
+        mainWidth * 2.6, mainWidth * 0.72,
+        alpha * reveal * (0.18 + group.depth * 0.08),
+        group.seed + age * 0.14,
+      );
+
+      const sideCount = perfLevel >= 2 ? 1 : 2;
+      for (let side = 0; side < sideCount; side++) {
+        const sign = side ? 1 : -1;
+        const sideHeight = mainHeight
+          * (0.48 + iceDragonUltimateHash(group.seed + 8 + side) * 0.22);
+        const sideWidth = mainWidth
+          * (0.55 + iceDragonUltimateHash(group.seed + 11 + side) * 0.16);
+        iceDragonUltimateDrawIceCrystalPrism(
+          group.x + sign * mainWidth * (0.72 + side * 0.15),
+          group.y + mainWidth * (0.16 + side * 0.10),
+          sideHeight, sideWidth,
+          lean * (0.42 + side * 0.12) - sign * sideWidth * 0.12,
+          alpha * reveal * (0.70 + group.depth * 0.10),
+          group.depth,
+          group.seed + side * 3.1,
+        );
+      }
+      iceDragonUltimateDrawIceCrystalPrism(
+        group.x, group.y,
+        mainHeight, mainWidth, lean,
+        alpha * reveal * (0.82 + group.depth * 0.14),
+        group.depth,
+        group.seed,
+      );
+    }
+  }
+
   function iceDragonUltimateDrawFrostFacetField(
     center, radius, incoming, alpha, growth,
   ) {
     if (alpha <= 0.001 || growth <= 0.001) return;
-    const facetCount = perfLevel >= 2 ? 20 : 34;
+    const facetCount = perfLevel >= 2 ? 18 : 28;
     ctx.save();
     ctx.lineJoin = 'round';
     for (let facet = 0; facet < facetCount; facet++) {
       const seed = facet * 23.41 + iceDragonUltimate.castSerial * 6.7;
       const polar = iceDragonUltimateHash(seed) * TAU;
       const radial = Math.sqrt(iceDragonUltimateHash(seed + 1))
-        * radius * 0.84 * growth;
+        * radius * 0.95 * growth;
       const reveal = iceDragonUltimateEase(
         (growth - facet * 0.018) / Math.max(0.26, 1 - facet * 0.018),
       );
       if (reveal <= 0.001) continue;
       const x = center.x + Math.cos(polar) * radial;
       const y = center.y + Math.sin(polar) * radial;
-      const length = (18 + iceDragonUltimateHash(seed + 2) * 38) * reveal;
-      const width = (7 + iceDragonUltimateHash(seed + 3) * 16) * reveal;
+      const length = (24 + iceDragonUltimateHash(seed + 2) * 52) * reveal;
+      const width = (10 + iceDragonUltimateHash(seed + 3) * 22) * reveal;
       const angle = incoming
         + (iceDragonUltimateHash(seed + 4) - 0.5) * 2.6
         + Math.sin(time * 0.17 + seed) * 0.035;
       const edgeFade = 1 - clamp(radial / Math.max(1, radius), 0, 1);
+      const depth = clamp(
+        (y - (center.y - radius)) / Math.max(1, radius * 2),
+        0, 1,
+      );
       ctx.save();
       ctx.translate(x, y); ctx.rotate(angle);
       ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = alpha * reveal * (0.28 + edgeFade * 0.32);
+      ctx.globalAlpha = alpha * reveal * (0.24 + depth * 0.14);
+      ctx.fillStyle = 'rgba(4,19,68,.78)';
+      ctx.beginPath();
+      ctx.moveTo(-length * 0.62, width * 0.08 + 4 + depth * 5);
+      ctx.lineTo(-length * 0.16, -width * 0.72 + 4 + depth * 5);
+      ctx.lineTo(length * 0.58, -width * 0.16 + 4 + depth * 5);
+      ctx.lineTo(length * 0.34, width * 0.48 + 4 + depth * 5);
+      ctx.lineTo(-length * 0.28, width * 0.66 + 4 + depth * 5);
+      ctx.closePath(); ctx.fill();
+      ctx.globalAlpha = alpha * reveal * (0.46 + edgeFade * 0.18 + depth * 0.12);
       const face = ctx.createLinearGradient(-length * 0.55, -width, length * 0.55, width);
       face.addColorStop(0, 'rgba(13,37,102,.76)');
       face.addColorStop(0.38, facet % 4
@@ -31446,7 +32136,7 @@
     center, radius, incoming, alpha, growth, age,
   ) {
     if (alpha <= 0.001 || growth <= 0.001) return;
-    const shellCount = perfLevel >= 2 ? 4 : 6;
+    const shellCount = perfLevel >= 2 ? 1 : 2;
     ctx.save();
     ctx.translate(center.x, center.y);
     ctx.lineCap = 'round';
@@ -31454,22 +32144,23 @@
       const seed = shell * 29.73 + iceDragonUltimate.castSerial * 2.9;
       const phase = (Math.max(0, age) * (0.16 + shell * 0.008)
         + iceDragonUltimateHash(seed)) % 1;
-      const rx = radius * growth * (0.46 + shell * 0.085);
-      const ry = rx * (0.32 + iceDragonUltimateHash(seed + 1) * 0.28);
-      const rotation = incoming + (iceDragonUltimateHash(seed + 2) - 0.5) * 2.2;
+      const rx = radius * growth * (0.70 + shell * (0.30 / Math.max(1, shellCount - 1)));
+      const ry = rx * (0.76 + shell * 0.025);
+      const rotation = incoming * 0.04
+        + (iceDragonUltimateHash(seed + 2) - 0.5) * 0.10;
       const start = iceDragonUltimateHash(seed + 3) * TAU + phase * 0.42;
-      const span = 0.56 + iceDragonUltimateHash(seed + 4) * 0.82;
+      const span = 0.36 + iceDragonUltimateHash(seed + 4) * 0.26;
       ctx.save();
       ctx.rotate(rotation);
       ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = alpha * (0.18 + Math.sin(Math.PI * phase) * 0.14);
+      ctx.globalAlpha = alpha * (0.24 + Math.sin(Math.PI * phase) * 0.12);
       ctx.strokeStyle = shell % 2
         ? 'rgba(22,56,132,.70)'
         : 'rgba(55,55,137,.68)';
-      ctx.lineWidth = 5.5 + shell % 3 * 2.2;
+      ctx.lineWidth = 7.0 + shell % 3 * 2.4;
       ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, start, start + span); ctx.stroke();
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = alpha * (0.34 + Math.sin(Math.PI * phase) * 0.24);
+      ctx.globalAlpha = alpha * (0.30 + Math.sin(Math.PI * phase) * 0.20);
       ctx.strokeStyle = shell % 3
         ? 'rgba(176,235,255,.90)'
         : 'rgba(198,177,255,.86)';
@@ -31659,9 +32350,22 @@
       - ICE_DRAGON_ULT_CONFIG.breathTravelTime;
     const contact = iceDragonUltimateBreathContactEnvelope();
     const growth = iceDragonUltimateFrostGrowth();
+    const rangeGrowth = iceDragonUltimateRangeGrowth();
     if (contact <= 0.001) return;
     const incoming = Math.atan2(center.y - mouth.y, center.x - mouth.x);
     const fog = iceDragonSmokeTexture('ice');
+
+    iceDragonUltimateDrawRangeFoundation(
+      center, radius, incoming,
+      env * contact * ICE_DRAGON_ULT_CONFIG.fieldFoundationAlpha,
+      rangeGrowth, contactAge,
+    );
+    iceDragonUltimateDrawRangeBoundary(
+      center, radius, incoming,
+      env * contact * ICE_DRAGON_ULT_CONFIG.fieldBoundaryAlpha
+        * (0.42 + growth * 0.58),
+      rangeGrowth, contactAge, 'back',
+    );
 
     // Programmatic angular facets replace the former ellipse-shaped islands,
     // which read as blue leaves in motion. The separate shell arcs establish
@@ -31680,13 +32384,13 @@
     // Tangential cold banks occupy the middle and outer sectors of the field.
     // Their distributed anchors make the large radius legible without closing
     // into a flat circle.
-    const bankCount = perfLevel >= 2 ? 7 : 11;
+    const bankCount = perfLevel >= 2 ? 5 : 8;
     for (let bank = 0; bank < bankCount; bank++) {
       const seed = bank * 27.61 + u.castSerial * 8.3;
       const angle = bank * TAU / bankCount
         + (iceDragonUltimateHash(seed) - 0.5) * 0.34;
       const distance = radius * growth
-        * (0.24 + iceDragonUltimateHash(seed + 1) * 0.58);
+        * (0.28 + iceDragonUltimateHash(seed + 1) * 0.66);
       iceDragonUltimateDrawVolumetricFogBank(
         center.x + Math.cos(angle) * distance,
         center.y + Math.sin(angle) * distance,
@@ -31752,7 +32456,7 @@
     // ground-aligned ring.
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    const columnCount = perfLevel >= 2 ? 4 : 7;
+    const columnCount = perfLevel >= 2 ? 3 : 5;
     for (let column = 0; column < columnCount; column++) {
       const seed = column * 18.37 + u.castSerial * 6.4;
       const phase = (
@@ -31801,7 +32505,7 @@
     // frost islands instead of sitting as circular alpha patches.
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    const fogCount = perfLevel >= 2 ? 7 : 12;
+    const fogCount = perfLevel >= 2 ? 5 : 8;
     for (let i = 0; i < fogCount; i++) {
       const seed = i * 11.23 + u.castSerial * 9.1;
       const phase = (Math.max(0, contactAge) * (0.17 + i % 3 * 0.022)
@@ -31823,37 +32527,14 @@
     }
     ctx.restore();
 
-    // Small ice rises supply height and refraction at the contact area.
-    const pillarCount = perfLevel >= 2 ? 5 : 8;
-    ctx.save();
-    ctx.globalCompositeOperation = 'source-over';
-    for (let i = 0; i < pillarCount; i++) {
-      const seed = i * 15.83 + u.castSerial * 8.2;
-      const angle = incoming + Math.PI + (iceDragonUltimateHash(seed) - 0.5) * 3.8;
-      const distance = radius * (0.08 + iceDragonUltimateHash(seed + 1) * 0.48) * growth;
-      const x = center.x + Math.cos(angle) * distance;
-      const y = center.y + Math.sin(angle) * distance;
-      const height = (28 + iceDragonUltimateHash(seed + 2) * 58)
-        * (0.82 + Math.sin(time * 1.6 + seed) * 0.08);
-      const width = 9 + iceDragonUltimateHash(seed + 3) * 15;
-      const gradient = ctx.createLinearGradient(x - width, y, x + width * 0.4, y - height);
-      gradient.addColorStop(0, 'rgba(25,54,134,.74)');
-      gradient.addColorStop(0.52, 'rgba(112,190,235,.62)');
-      gradient.addColorStop(0.78, 'rgba(226,251,255,.88)');
-      gradient.addColorStop(1, 'rgba(133,112,223,.58)');
-      ctx.globalAlpha = contact * env * growth * ICE_DRAGON_ULT_CONFIG.fieldPillarAlpha;
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.moveTo(x - width, y + 4); ctx.lineTo(x, y - height);
-      ctx.lineTo(x + width, y + 4); ctx.lineTo(x + width * 0.15, y - height * 0.18);
-      ctx.closePath(); ctx.fill();
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha *= 0.82;
-      ctx.strokeStyle = 'rgba(235,253,255,.92)'; ctx.lineWidth = 0.9;
-      ctx.beginPath(); ctx.moveTo(x, y - height); ctx.lineTo(x + width * 0.15, y - height * 0.18); ctx.stroke();
-      ctx.globalCompositeOperation = 'source-over';
-    }
-    ctx.restore();
+    // Depth-sorted three-face massifs replace the former single polygon
+    // pillars. Side faces, ground shadows and base fog give each cluster an
+    // actual volume and establish rear/middle/front planes.
+    iceDragonUltimateDrawIceMassifField(
+      center, radius, incoming,
+      contact * env * ICE_DRAGON_ULT_CONFIG.fieldMassifAlpha,
+      growth, contactAge,
+    );
 
     // Cycling prismatic vents keep the impact centre alive for the full ten
     // seconds. They are spatially offset and never form a uniform radial star.
@@ -31880,7 +32561,14 @@
     }
 
     iceDragonUltimateDrawBrokenFrostRim(
-      center, radius, env * contact * 0.96, growth, contactAge * 0.72,
+      center, radius, env * contact * 0.52,
+      Math.max(rangeGrowth * 0.96, growth), contactAge * 0.72,
+    );
+    iceDragonUltimateDrawRangeBoundary(
+      center, radius, incoming,
+      env * contact * ICE_DRAGON_ULT_CONFIG.fieldBoundaryAlpha
+        * (0.42 + growth * 0.58),
+      rangeGrowth, contactAge, 'front',
     );
   }
 
@@ -33168,6 +33856,8 @@
         impactStartsAt: ICE_DRAGON_ULT_CONFIG.chargeEnd + ICE_DRAGON_ULT_CONFIG.breathTravelTime,
         impactFadeIn: ICE_DRAGON_ULT_CONFIG.breathImpactFadeIn,
         frostGrowTime: ICE_DRAGON_ULT_CONFIG.breathFrostGrowTime,
+        rangeInitialScale: ICE_DRAGON_ULT_CONFIG.breathRangeInitialScale,
+        rangeSettleTime: ICE_DRAGON_ULT_CONFIG.breathRangeSettleTime,
         slowStartsAt: ICE_DRAGON_ULT_CONFIG.chargeEnd + ICE_DRAGON_ULT_CONFIG.breathTravelTime,
         hostileBulletSlowScale: ICE_DRAGON_ULT_CONFIG.breathSlowScale,
         hostileBulletSlowFeather: ICE_DRAGON_ULT_CONFIG.breathSlowFeather,
@@ -33197,7 +33887,7 @@
       vfx: {
         dragon: ['hard-surface base', 'full-body alpha-masked volume', 'full-body crystal caustics', 'gold-black metal sweep', 'asymmetric tail fins', 'tail-to-throat energy packets', 'eye and throat cores', 'front-layer tail fog', 'detached ice dust', 'coil-to-deity pose blend', 'fog wake'],
         breath: ['true-mouth muzzle layers', 'advancing procedural ice-flame front', 'low-alpha crystal-lattice detail', 'procedural fluid filaments', 'traveling light packets', 'rolling frost mist', 'continuous snowflake flow', 'crystal shards'],
-        field: ['fixed circular damage domain', 'procedural angular frost facets', 'directional ice-flame impact', 'faceted contact prisms', 'volumetric cold fog banks', 'broken three-dimensional shell arcs', 'growing branching fractures', 'broken frost boundary'],
+        field: ['expanded target-centred circular domain', 'immediate full-range frost footprint', 'broken twelve-sector frost wall', 'raised multi-face frost boundary', 'processed frost-grain overlays', 'depth-sorted three-face ice massifs', 'procedural angular frost facets', 'directional ice-flame impact', 'faceted contact prisms', 'volumetric cold fog banks', 'coherent three-dimensional shell arcs', 'growing branching fractures', 'boundary blizzard streamers'],
         meteor: ['processed crystal body', 'procedural fog trail', 'specular streaks', 'impact flipbook', 'frost cracks', 'ice blocks'],
         lifecycle: 'appear-hold-dissipate',
         fallbackVisuallyComplete: true,

@@ -220,7 +220,7 @@ async function run() {
             const outsideMove = Math.hypot(finalOutside.x - initialOutside.x, finalOutside.y - initialOutside.y);
             const ratio = insideMove / Math.max(0.001, outsideMove);
             report.slowChecks.push({ viewport: viewport.id, scene: scene.id, insideMove, outsideMove, ratio, locked: snapshot.breath?.locked, radius: snapshot.breath?.radius });
-            if (!snapshot.breath?.locked || snapshot.breath?.radius !== 275 || ratio > 0.32 || ratio < 0.16) {
+            if (!snapshot.breath?.locked || snapshot.breath?.radius !== 330 || ratio > 0.32 || ratio < 0.16) {
               report.failures.push(`${viewport.id}/${scene.id}: frost slow ratio ${ratio.toFixed(3)} (expected 0.16..0.32), locked=${snapshot.breath?.locked}, radius=${snapshot.breath?.radius}`);
             }
           }
