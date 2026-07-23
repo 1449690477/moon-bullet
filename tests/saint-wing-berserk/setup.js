@@ -15,6 +15,7 @@ let cachedDragonBreathInternals = null;
 let cachedCorruptGunInternals = null;
 let cachedDreamModeInternals = null;
 let cachedIceDragonInternals = null;
+let cachedIceDragonUltimateInternals = null;
 
 function makeGradient() {
   return { addColorStop() {} };
@@ -148,6 +149,7 @@ export function loadInternals() {
   cachedCorruptGunInternals = context.window.__corruptgunInternals__;
   cachedDreamModeInternals = context.window.__dreamModeInternals__;
   cachedIceDragonInternals = context.window.__iceDragonInternals__;
+  cachedIceDragonUltimateInternals = context.window.__iceDragonUltimateInternals__;
   if (!cachedInternals) throw new Error('window.__saintWingBerserkInternals__ was not exposed');
   return cachedInternals;
 }
@@ -234,6 +236,13 @@ export function loadIceDragonInternals() {
   loadInternals();
   if (!cachedIceDragonInternals) throw new Error('window.__iceDragonInternals__ was not exposed');
   return cachedIceDragonInternals;
+}
+
+export function loadIceDragonUltimateInternals() {
+  if (cachedIceDragonUltimateInternals) return cachedIceDragonUltimateInternals;
+  loadInternals();
+  if (!cachedIceDragonUltimateInternals) throw new Error('window.__iceDragonUltimateInternals__ was not exposed');
+  return cachedIceDragonUltimateInternals;
 }
 
 export function makeCtxIn(opts = {}) {

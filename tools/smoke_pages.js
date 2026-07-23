@@ -193,6 +193,7 @@ async function runScenario(browser, scenario, baseUrl) {
   const result = {
     name: scenario.name,
     jsErrors: [],
+    notFoundUrls: [],
     has404: false,
     hasMobileManifest: false,
     hasCorruptgunVfxBundle: false,
@@ -263,7 +264,10 @@ async function runScenario(browser, scenario, baseUrl) {
     }
   });
   page.on('response', response => {
-    if (response.status() === 404) result.has404 = true;
+    if (response.status() === 404) {
+      result.has404 = true;
+      if (result.notFoundUrls.length < 240) result.notFoundUrls.push(response.url());
+    }
   });
 
   try {
@@ -454,6 +458,10 @@ async function main() {
       if (r.jsErrors.length > 0) {
         console.log(`     ⚠️  错误 (${r.jsErrors.length}):`);
         for (const e of r.jsErrors.slice(0, 5)) console.log(`       · ${e}`);
+      }
+      if (r.notFoundUrls.length > 0) {
+        console.log(`     ⚠️  404 URL (${r.notFoundUrls.length}):`);
+        for (const url of r.notFoundUrls.slice(0, 12)) console.log(`       · ${url}`);
       }
     }
     console.log('─'.repeat(50));

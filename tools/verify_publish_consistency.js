@@ -157,6 +157,13 @@ function countManifestTags(html) {
   return (html.match(/asset-mobile-manifest\.js/g) || []).length;
 }
 
+function normalizeManifestCacheBust(html) {
+  return html.replace(
+    /asset-mobile-manifest\.js\?v=[^"]+/g,
+    'asset-mobile-manifest.js',
+  );
+}
+
 function relative(file) {
   return path.relative(ROOT, file) || '.';
 }
@@ -194,8 +201,8 @@ const rootManifest = read(FILES.rootManifest);
 const docsSw = read(FILES.docsSw);
 const expectedVersion = buildVersion(source);
 
-if (source !== docs) {
-  errors.push('index.html 与 docs/index.html 不一致，docs 不是当前源码构建产物');
+if (normalizeManifestCacheBust(source) !== normalizeManifestCacheBust(docs)) {
+  errors.push('index.html 与 docs/index.html 除发布缓存版本外不一致，docs 不是当前源码构建产物');
 }
 
 for (const [label, html] of [['index.html', source], ['docs/index.html', docs]]) {
@@ -205,6 +212,9 @@ for (const [label, html] of [['index.html', source], ['docs/index.html', docs]])
 
 if (!docsManifest.includes(`window.__PAGE_BUILD_VERSION__ = "${expectedVersion}"`)) {
   errors.push(`docs/asset-mobile-manifest.js 版本号不是当前 index.html 的 ${expectedVersion}`);
+}
+if (!docs.includes(`asset-mobile-manifest.js?v=${expectedVersion}`)) {
+  errors.push(`docs/index.html 未引用当前缓存版本 asset-mobile-manifest.js?v=${expectedVersion}`);
 }
 if (rootManifest !== docsManifest) {
   errors.push('根目录 asset-mobile-manifest.js 与 docs/asset-mobile-manifest.js 不一致');
