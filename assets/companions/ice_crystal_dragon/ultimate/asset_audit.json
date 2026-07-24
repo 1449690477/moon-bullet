@@ -1,5 +1,5 @@
 {
-  "pipeline": "ice-crystal-dragon-ultimate-assets-v4-phase2-main-body",
+  "pipeline": "ice-crystal-dragon-ultimate-assets-v5-crystal-debris",
   "source_folder": "龙僚机大招开发",
   "source_available": true,
   "source_inventory": [
@@ -23,8 +23,8 @@
     },
     {
       "file": "冰陨石详细素材.png",
-      "runtime_crop_source": false,
-      "role": "reference-only visual study",
+      "runtime_crop_source": true,
+      "role": "runtime crop source",
       "present": true,
       "width": 1448,
       "height": 1086,
@@ -360,6 +360,421 @@
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
         "edge_visible_pixels": 704,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "dragon_head_armor",
+      "source": "冰龙主体 和 细节零件.png",
+      "source_rect": [
+        12,
+        598,
+        190,
+        145
+      ],
+      "canvas_size": [
+        240,
+        190
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "ba996b70d60941ae5a175824df8861d2f11cde27ef0acae9275bcef5eb2bdf73",
+        "crop_content_box_before_padding": [
+          11,
+          7,
+          165,
+          124
+        ],
+        "fixed_canvas_placement": [
+          18,
+          33,
+          165,
+          124
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 10984,
+        "green_residue_pixels": 924,
+        "green_residue_ratio": 0.08412236,
+        "green_excess_pixels": 1628,
+        "green_excess_ratio": 0.14821559,
+        "edge_visible_pixels": 822,
+        "edge_green_residue_pixels": 535,
+        "edge_green_residue_ratio": 0.65085158
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_armor.png",
+        "width": 240,
+        "height": 190,
+        "transparent_margins": {
+          "left": 18,
+          "top": 33,
+          "right": 57,
+          "bottom": 33
+        },
+        "sha256": "046f1a5d074510120aece657ed3e2949077d194560a2b73c1578cdcc3b8c3451",
+        "visible_pixels": 9859,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1036,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_armor_glow.png",
+        "width": 240,
+        "height": 190,
+        "transparent_margins": {
+          "left": 17,
+          "top": 33,
+          "right": 56,
+          "bottom": 32
+        },
+        "sha256": "c4ebb92aacb32a162cc298f7bd817eeb3203f87f9f4728d1d526351780ef9def",
+        "visible_pixels": 8752,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2346,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "dragon_head_open",
+      "source": "冰龙主体 和 细节零件.png",
+      "source_rect": [
+        485,
+        596,
+        145,
+        145
+      ],
+      "canvas_size": [
+        200,
+        190
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "ba996b70d60941ae5a175824df8861d2f11cde27ef0acae9275bcef5eb2bdf73",
+        "crop_content_box_before_padding": [
+          9,
+          9,
+          125,
+          125
+        ],
+        "fixed_canvas_placement": [
+          18,
+          32,
+          125,
+          125
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 7844,
+        "green_residue_pixels": 666,
+        "green_residue_ratio": 0.08490566,
+        "green_excess_pixels": 1227,
+        "green_excess_ratio": 0.15642529,
+        "edge_visible_pixels": 717,
+        "edge_green_residue_pixels": 457,
+        "edge_green_residue_ratio": 0.63737796
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_open.png",
+        "width": 200,
+        "height": 190,
+        "transparent_margins": {
+          "left": 18,
+          "top": 32,
+          "right": 57,
+          "bottom": 33
+        },
+        "sha256": "34381f03444d8a1d4e6dfcd27b5946ea1fb1ce6e7a62aaed49ba361d2378b70d",
+        "visible_pixels": 7003,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 829,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_open_glow.png",
+        "width": 200,
+        "height": 190,
+        "transparent_margins": {
+          "left": 17,
+          "top": 32,
+          "right": 56,
+          "bottom": 33
+        },
+        "sha256": "9dc1c62b1579295a086a324fac945855ec522cd79cbd296045cf5eb4f9000130",
+        "visible_pixels": 6259,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1792,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "dragon_spine_long",
+      "source": "冰龙主体 和 细节零件.png",
+      "source_rect": [
+        168,
+        870,
+        195,
+        82
+      ],
+      "canvas_size": [
+        240,
+        130
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "ba996b70d60941ae5a175824df8861d2f11cde27ef0acae9275bcef5eb2bdf73",
+        "crop_content_box_before_padding": [
+          10,
+          11,
+          170,
+          60
+        ],
+        "fixed_canvas_placement": [
+          18,
+          35,
+          170,
+          60
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 8097,
+        "green_residue_pixels": 661,
+        "green_residue_ratio": 0.08163517,
+        "green_excess_pixels": 1107,
+        "green_excess_ratio": 0.1367173,
+        "edge_visible_pixels": 574,
+        "edge_green_residue_pixels": 461,
+        "edge_green_residue_ratio": 0.80313589
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_spine_long.png",
+        "width": 240,
+        "height": 130,
+        "transparent_margins": {
+          "left": 18,
+          "top": 35,
+          "right": 52,
+          "bottom": 35
+        },
+        "sha256": "6d2523e96aa3f3d838269b1df1dd6a5a18365f3e63d52a4334b28444325a8a5c",
+        "visible_pixels": 7468,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 618,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_spine_long_glow.png",
+        "width": 240,
+        "height": 130,
+        "transparent_margins": {
+          "left": 17,
+          "top": 34,
+          "right": 51,
+          "bottom": 35
+        },
+        "sha256": "905c8e01652e46bb343bfacad006841e5a1f3ebde778a8f44b0b3212629bf2ef",
+        "visible_pixels": 3951,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 2013,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "dragon_tail_energy",
+      "source": "冰龙主体 和 细节零件.png",
+      "source_rect": [
+        15,
+        976,
+        300,
+        95
+      ],
+      "canvas_size": [
+        340,
+        140
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "ba996b70d60941ae5a175824df8861d2f11cde27ef0acae9275bcef5eb2bdf73",
+        "crop_content_box_before_padding": [
+          8,
+          12,
+          275,
+          67
+        ],
+        "fixed_canvas_placement": [
+          18,
+          36,
+          275,
+          67
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 8161,
+        "green_residue_pixels": 1201,
+        "green_residue_ratio": 0.14716334,
+        "green_excess_pixels": 2570,
+        "green_excess_ratio": 0.31491239,
+        "edge_visible_pixels": 926,
+        "edge_green_residue_pixels": 640,
+        "edge_green_residue_ratio": 0.69114471
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_tail_energy.png",
+        "width": 340,
+        "height": 140,
+        "transparent_margins": {
+          "left": 18,
+          "top": 36,
+          "right": 47,
+          "bottom": 37
+        },
+        "sha256": "f273dbf0c700865812ebd0f91024ccf2e78ed014652bdc39cebee43b33d9f5f5",
+        "visible_pixels": 6253,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1044,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_tail_energy_glow.png",
+        "width": 340,
+        "height": 140,
+        "transparent_margins": {
+          "left": 17,
+          "top": 35,
+          "right": 47,
+          "bottom": 36
+        },
+        "sha256": "6f13648d1be9f8b6bf4c4748f03164e8678136be361c89c64acaaff003c231cb",
+        "visible_pixels": 6300,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 1174,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "dragon_crystal_fin",
+      "source": "冰龙主体 和 细节零件.png",
+      "source_rect": [
+        1010,
+        615,
+        160,
+        108
+      ],
+      "canvas_size": [
+        210,
+        160
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "ba996b70d60941ae5a175824df8861d2f11cde27ef0acae9275bcef5eb2bdf73",
+        "crop_content_box_before_padding": [
+          12,
+          11,
+          133,
+          82
+        ],
+        "fixed_canvas_placement": [
+          18,
+          39,
+          133,
+          82
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 3974,
+        "green_residue_pixels": 286,
+        "green_residue_ratio": 0.07196779,
+        "green_excess_pixels": 609,
+        "green_excess_ratio": 0.1532461,
+        "edge_visible_pixels": 452,
+        "edge_green_residue_pixels": 220,
+        "edge_green_residue_ratio": 0.48672566
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_crystal_fin.png",
+        "width": 210,
+        "height": 160,
+        "transparent_margins": {
+          "left": 18,
+          "top": 39,
+          "right": 59,
+          "bottom": 39
+        },
+        "sha256": "fcafb5c24623da1e7cb9fe184a20a27cb705beb76fc5d3772ded6a446ccfa517",
+        "visible_pixels": 3586,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 508,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_crystal_fin_glow.png",
+        "width": 210,
+        "height": 160,
+        "transparent_margins": {
+          "left": 17,
+          "top": 39,
+          "right": 58,
+          "bottom": 38
+        },
+        "sha256": "79fff7b4796d8386db4a14d6cd26d2ecfe0d42c382d6c0e0bcd118f5ac6b6828",
+        "visible_pixels": 3706,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 495,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       }
@@ -5262,6 +5677,504 @@
       }
     },
     {
+      "key": "impact_crystal_0",
+      "source": "冰陨石详细素材.png",
+      "source_rect": [
+        10,
+        858,
+        58,
+        76
+      ],
+      "canvas_size": [
+        132,
+        132
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "10c49084cc2d3ec790f199b09dcbf26874ae2978bc3c529f153c1148d8e864b1",
+        "crop_content_box_before_padding": [
+          4,
+          15,
+          33,
+          34
+        ],
+        "fixed_canvas_placement": [
+          18,
+          49,
+          33,
+          34
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 1291,
+        "green_residue_pixels": 176,
+        "green_residue_ratio": 0.13632843,
+        "green_excess_pixels": 296,
+        "green_excess_ratio": 0.22927963,
+        "edge_visible_pixels": 255,
+        "edge_green_residue_pixels": 161,
+        "edge_green_residue_ratio": 0.63137255
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_0.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 49,
+          "right": 81,
+          "bottom": 49
+        },
+        "sha256": "81accbebff1baffe34fdb74ca176e49d2604cbfc311f19c7d17fe0e19f55b7e3",
+        "visible_pixels": 764,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 133,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_0_glow.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 17,
+          "top": 48,
+          "right": 80,
+          "bottom": 48
+        },
+        "sha256": "713818f746210867a81eeef7c083525e2125aed9177be2dd4daad188a79f73d4",
+        "visible_pixels": 795,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 156,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "impact_crystal_1",
+      "source": "冰陨石详细素材.png",
+      "source_rect": [
+        66,
+        868,
+        46,
+        53
+      ],
+      "canvas_size": [
+        132,
+        132
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "10c49084cc2d3ec790f199b09dcbf26874ae2978bc3c529f153c1148d8e864b1",
+        "crop_content_box_before_padding": [
+          0,
+          13,
+          20,
+          22
+        ],
+        "fixed_canvas_placement": [
+          18,
+          55,
+          20,
+          22
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 680,
+        "green_residue_pixels": 93,
+        "green_residue_ratio": 0.13676471,
+        "green_excess_pixels": 155,
+        "green_excess_ratio": 0.22794118,
+        "edge_visible_pixels": 132,
+        "edge_green_residue_pixels": 89,
+        "edge_green_residue_ratio": 0.67424242
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_1.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 55,
+          "right": 94,
+          "bottom": 55
+        },
+        "sha256": "7dc1c2dfccfe33eb35fceb6331a7b5af58e1f35daddb44a749a603590cdf7725",
+        "visible_pixels": 320,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 79,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_1_glow.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 17,
+          "top": 55,
+          "right": 93,
+          "bottom": 54
+        },
+        "sha256": "3beebdf3e6e88cee756f472b9da91501c390e13a224851813efcbd6d2ab168df",
+        "visible_pixels": 354,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 82,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "impact_crystal_2",
+      "source": "冰陨石详细素材.png",
+      "source_rect": [
+        100,
+        855,
+        70,
+        78
+      ],
+      "canvas_size": [
+        132,
+        132
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "10c49084cc2d3ec790f199b09dcbf26874ae2978bc3c529f153c1148d8e864b1",
+        "crop_content_box_before_padding": [
+          2,
+          16,
+          48,
+          40
+        ],
+        "fixed_canvas_placement": [
+          18,
+          46,
+          48,
+          40
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 1991,
+        "green_residue_pixels": 239,
+        "green_residue_ratio": 0.12004018,
+        "green_excess_pixels": 365,
+        "green_excess_ratio": 0.18332496,
+        "edge_visible_pixels": 313,
+        "edge_green_residue_pixels": 228,
+        "edge_green_residue_ratio": 0.7284345
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_2.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 46,
+          "right": 66,
+          "bottom": 46
+        },
+        "sha256": "378059207f7d74fb688356bd366cd5fd922e55e6edb97cd243e75bb3db51cf55",
+        "visible_pixels": 1327,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 182,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_2_glow.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 17,
+          "top": 45,
+          "right": 65,
+          "bottom": 45
+        },
+        "sha256": "4afd0b4aad6a2bbff9f9d2cca78b09d1c3d7ab45f10bce02a3bf11b4be195f71",
+        "visible_pixels": 1372,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 182,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "impact_crystal_3",
+      "source": "冰陨石详细素材.png",
+      "source_rect": [
+        166,
+        856,
+        64,
+        82
+      ],
+      "canvas_size": [
+        132,
+        132
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "10c49084cc2d3ec790f199b09dcbf26874ae2978bc3c529f153c1148d8e864b1",
+        "crop_content_box_before_padding": [
+          0,
+          20,
+          41,
+          51
+        ],
+        "fixed_canvas_placement": [
+          18,
+          40,
+          41,
+          51
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 1755,
+        "green_residue_pixels": 134,
+        "green_residue_ratio": 0.07635328,
+        "green_excess_pixels": 236,
+        "green_excess_ratio": 0.13447293,
+        "edge_visible_pixels": 228,
+        "edge_green_residue_pixels": 129,
+        "edge_green_residue_ratio": 0.56578947
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_3.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 40,
+          "right": 73,
+          "bottom": 41
+        },
+        "sha256": "19f6753968cf4dcd68fd4951f05e93da5bb83813bc08cd199daab8e6c3575739",
+        "visible_pixels": 1403,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 186,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_3_glow.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 17,
+          "top": 39,
+          "right": 72,
+          "bottom": 40
+        },
+        "sha256": "2c2039d91f7e249af1b3384e4519870810c09a2adf7d9a8d044e0328b73af617",
+        "visible_pixels": 1475,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 187,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "impact_crystal_4",
+      "source": "冰陨石详细素材.png",
+      "source_rect": [
+        439,
+        852,
+        68,
+        70
+      ],
+      "canvas_size": [
+        132,
+        132
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "10c49084cc2d3ec790f199b09dcbf26874ae2978bc3c529f153c1148d8e864b1",
+        "crop_content_box_before_padding": [
+          20,
+          34,
+          48,
+          36
+        ],
+        "fixed_canvas_placement": [
+          18,
+          48,
+          48,
+          36
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 1222,
+        "green_residue_pixels": 204,
+        "green_residue_ratio": 0.16693944,
+        "green_excess_pixels": 325,
+        "green_excess_ratio": 0.26595745,
+        "edge_visible_pixels": 246,
+        "edge_green_residue_pixels": 191,
+        "edge_green_residue_ratio": 0.77642276
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_4.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 48,
+          "right": 66,
+          "bottom": 48
+        },
+        "sha256": "073f8f4fb7defcc18d441ad2972627f30ef1ddb79f426c52a55c42daecf31165",
+        "visible_pixels": 746,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 190,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_4_glow.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 17,
+          "top": 47,
+          "right": 65,
+          "bottom": 47
+        },
+        "sha256": "a66d09c6566a1ee260a676c353754c10b89c1e99163fe13c72c79c7c00b8e55d",
+        "visible_pixels": 833,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 199,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
+      "key": "impact_crystal_5",
+      "source": "冰陨石详细素材.png",
+      "source_rect": [
+        558,
+        848,
+        96,
+        88
+      ],
+      "canvas_size": [
+        132,
+        132
+      ],
+      "source_audit": {
+        "sheet_size": [
+          1448,
+          1086
+        ],
+        "sheet_sha256": "10c49084cc2d3ec790f199b09dcbf26874ae2978bc3c529f153c1148d8e864b1",
+        "crop_content_box_before_padding": [
+          5,
+          22,
+          91,
+          58
+        ],
+        "fixed_canvas_placement": [
+          18,
+          37,
+          91,
+          58
+        ],
+        "preserve_islands": false,
+        "alpha_erosion_pixels": 0,
+        "visible_pixels": 3236,
+        "green_residue_pixels": 395,
+        "green_residue_ratio": 0.12206428,
+        "green_excess_pixels": 611,
+        "green_excess_ratio": 0.18881335,
+        "edge_visible_pixels": 402,
+        "edge_green_residue_pixels": 282,
+        "edge_green_residue_ratio": 0.70149254
+      },
+      "base": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_5.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 37,
+          "right": 23,
+          "bottom": 37
+        },
+        "sha256": "39baf967716efe602396e0c8399fb3b5535708a04aefbcda178d992727e93d55",
+        "visible_pixels": 2608,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 403,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      },
+      "glow": {
+        "file": "assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_5_glow.png",
+        "width": 132,
+        "height": 132,
+        "transparent_margins": {
+          "left": 18,
+          "top": 36,
+          "right": 22,
+          "bottom": 36
+        },
+        "sha256": "de54f16fda855d789a6c80d0b42fcc19f13ef293d84b70ca73c1bd5f682dad90",
+        "visible_pixels": 2729,
+        "green_residue_pixels": 0,
+        "green_residue_ratio": 0.0,
+        "green_excess_pixels": 0,
+        "green_excess_ratio": 0.0,
+        "edge_visible_pixels": 408,
+        "edge_green_residue_pixels": 0,
+        "edge_green_residue_ratio": 0.0
+      }
+    },
+    {
       "key": "ultimate_icon",
       "derived_from": [
         "dragon_flight_0",
@@ -5295,8 +6208,8 @@
     "checker": "assets/companions/ice_crystal_dragon/ultimate/contact_sheet_checker.png"
   },
   "summary": {
-    "base_asset_count": 63,
-    "glow_asset_count": 62,
+    "base_asset_count": 74,
+    "glow_asset_count": 73,
     "max_green_residue_ratio": 0.0,
     "max_glow_green_residue_ratio": 0.0,
     "green_residue_limit": 0.0001,

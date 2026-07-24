@@ -124,7 +124,7 @@ describe('ice crystal dragon ultimate', () => {
       referenceSheetsRuntime: false,
       baseGlowSplit: true,
     });
-    expect(spec.assets.keys.length).toBe(125);
+    expect(spec.assets.keys.length).toBe(148);
     expect(new Set(spec.assets.keys).size).toBe(spec.assets.keys.length);
     for (const file of new Set(spec.assets.runtimeFiles)) {
       const absolute = resolve(ROOT, file);
@@ -144,6 +144,13 @@ describe('ice crystal dragon ultimate', () => {
       ...Array.from({ length: 5 }, (_, frame) => `icduImpactBloom${frame}Glow`),
       ...Array.from({ length: 5 }, (_, frame) => `icduImpactCrater${frame}`),
       ...Array.from({ length: 5 }, (_, frame) => `icduImpactCrater${frame}Glow`),
+      ...Array.from({ length: 6 }, (_, frame) => `icduImpactCrystal${frame}`),
+      ...Array.from({ length: 6 }, (_, frame) => `icduImpactCrystal${frame}Glow`),
+      'icduDragonHeadArmor', 'icduDragonHeadArmorGlow',
+      'icduDragonSpineLong', 'icduDragonSpineLongGlow',
+      'icduDragonTailEnergy', 'icduDragonTailEnergyGlow',
+      'icduDragonCrystalFin', 'icduDragonCrystalFinGlow',
+      'bvSnowflake',
     ]));
   });
 
@@ -154,9 +161,21 @@ describe('ice crystal dragon ultimate', () => {
     expect(spec.vfx.fallbackVisuallyComplete).toBe(true);
     expect(spec.vfx.directImpactTextureDominant).toBe(false);
     expect(spec.vfx.wholeFrameJawBlend).toBe(false);
+    expect(spec.vfx.summon).toEqual(expect.arrayContaining([
+      'procedural perspective entry rift',
+      'segmented rotating ice rings',
+      'three-face perimeter prisms',
+      'orbiting code-drawn snow crystals',
+      'no dominant summon-circle sprite',
+    ]));
     expect(spec.vfx.dragon).toEqual(expect.arrayContaining([
       'full-body alpha-masked volume',
       'full-body crystal caustics',
+      'independent head armour',
+      'articulated metal spine',
+      'independent energy tail',
+      'rear-body crystal facets',
+      'multi-plane fin occlusion',
       'asymmetric tail fins',
       'tail-to-throat energy packets',
       'front-layer tail fog',
@@ -204,7 +223,10 @@ describe('ice crystal dragon ultimate', () => {
       'three-face impact spires',
       'dual full-screen freeze waves',
       'persistent refractive crater',
-      'staged impact particles',
+      'staggered debris ejection',
+      'hand-painted crystal debris',
+      'textured snowflake plume',
+      'weighted bouncing ice chunks',
       'edge frost vignette',
     ]));
   });

@@ -39,7 +39,7 @@ SOURCE_CANDIDATES = (
 )
 OUT = ROOT / "assets" / "companions" / "ice_crystal_dragon" / "ultimate"
 AUDIT_OUTPUT = OUT / "asset_audit.json"
-PIPELINE_VERSION = "ice-crystal-dragon-ultimate-assets-v4-phase2-main-body"
+PIPELINE_VERSION = "ice-crystal-dragon-ultimate-assets-v5-crystal-debris"
 TRANSPARENT_PAD = 16
 ALL_SOURCE_SHEETS = (
     "冰法阵 冰龙细节 冰龙主体.png",
@@ -119,6 +119,31 @@ FRAMES = (
     FrameSpec(
         "dragon_tail_fin", "冰龙主体 和 细节零件.png",
         (892, 740, 120, 120), "dragon/dragon_tail_fin.png", (150, 140),
+        erode_pixels=0,
+    ),
+    FrameSpec(
+        "dragon_head_armor", "冰龙主体 和 细节零件.png",
+        (12, 598, 190, 145), "dragon/dragon_head_armor.png", (240, 190),
+        erode_pixels=0,
+    ),
+    FrameSpec(
+        "dragon_head_open", "冰龙主体 和 细节零件.png",
+        (485, 596, 145, 145), "dragon/dragon_head_open.png", (200, 190),
+        erode_pixels=0,
+    ),
+    FrameSpec(
+        "dragon_spine_long", "冰龙主体 和 细节零件.png",
+        (168, 870, 195, 82), "dragon/dragon_spine_long.png", (240, 130),
+        erode_pixels=0,
+    ),
+    FrameSpec(
+        "dragon_tail_energy", "冰龙主体 和 细节零件.png",
+        (15, 976, 300, 95), "dragon/dragon_tail_energy.png", (340, 140),
+        erode_pixels=0,
+    ),
+    FrameSpec(
+        "dragon_crystal_fin", "冰龙主体 和 细节零件.png",
+        (1010, 615, 160, 108), "dragon/dragon_crystal_fin.png", (210, 160),
         erode_pixels=0,
     ),
     *frame_group(
@@ -216,6 +241,22 @@ FRAMES = (
             (860, 654, 275, 132), (1154, 669, 274, 134),
         ),
         "impact", (420, 280), preserve_islands=True, full_emissive=True, erode_pixels=0,
+    ),
+    # Phase-two debris is cut from the dedicated meteor detail sheet instead
+    # of being represented by generic white Canvas quadrilaterals. Each crop
+    # keeps one hand-painted crystal silhouette on a stable padded canvas; the
+    # runtime adds weight, tumbling, facet sweeps, snow and mist independently.
+    *frame_group(
+        "impact_crystal", "冰陨石详细素材.png",
+        (
+            (10, 858, 58, 76),
+            (66, 868, 46, 53),
+            (100, 855, 70, 78),
+            (166, 856, 64, 82),
+            (439, 852, 68, 70),
+            (558, 848, 96, 88),
+        ),
+        "particles", (132, 132), erode_pixels=0,
     ),
 )
 

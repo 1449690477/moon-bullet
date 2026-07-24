@@ -1556,12 +1556,34 @@
     icduImpactCrater3Glow: 'assets/companions/ice_crystal_dragon/ultimate/impact/impact_crater_3_glow.png',
     icduImpactCrater4: 'assets/companions/ice_crystal_dragon/ultimate/impact/impact_crater_4.png',
     icduImpactCrater4Glow: 'assets/companions/ice_crystal_dragon/ultimate/impact/impact_crater_4_glow.png',
+    icduImpactCrystal0: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_0.png',
+    icduImpactCrystal0Glow: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_0_glow.png',
+    icduImpactCrystal1: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_1.png',
+    icduImpactCrystal1Glow: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_1_glow.png',
+    icduImpactCrystal2: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_2.png',
+    icduImpactCrystal2Glow: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_2_glow.png',
+    icduImpactCrystal3: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_3.png',
+    icduImpactCrystal3Glow: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_3_glow.png',
+    icduImpactCrystal4: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_4.png',
+    icduImpactCrystal4Glow: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_4_glow.png',
+    icduImpactCrystal5: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_5.png',
+    icduImpactCrystal5Glow: 'assets/companions/ice_crystal_dragon/ultimate/particles/impact_crystal_5_glow.png',
     icduDragonDeity: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_deity.png',
     icduDragonDeityGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_deity_glow.png',
     icduDragonSpineSegment: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_spine_segment.png',
     icduDragonSpineSegmentGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_spine_segment_glow.png',
     icduDragonTailFin: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_tail_fin.png',
     icduDragonTailFinGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_tail_fin_glow.png',
+    icduDragonHeadArmor: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_armor.png',
+    icduDragonHeadArmorGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_armor_glow.png',
+    icduDragonHeadOpen: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_open.png',
+    icduDragonHeadOpenGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_head_open_glow.png',
+    icduDragonSpineLong: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_spine_long.png',
+    icduDragonSpineLongGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_spine_long_glow.png',
+    icduDragonTailEnergy: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_tail_energy.png',
+    icduDragonTailEnergyGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_tail_energy_glow.png',
+    icduDragonCrystalFin: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_crystal_fin.png',
+    icduDragonCrystalFinGlow: 'assets/companions/ice_crystal_dragon/ultimate/dragon/dragon_crystal_fin_glow.png',
     icduIcon: 'assets/companions/ice_crystal_dragon/ultimate/ui/ice_dragon_ultimate_icon.png',
     // ===== 海洋主题新小怪（assets/enemies_v2）=====
     enStarfish: 'assets/enemies_v2/starfish.png',
@@ -2806,6 +2828,11 @@
     'icduDragonDeity', 'icduDragonDeityGlow',
     'icduDragonSpineSegment', 'icduDragonSpineSegmentGlow',
     'icduDragonTailFin', 'icduDragonTailFinGlow',
+    'icduDragonHeadArmor', 'icduDragonHeadArmorGlow',
+    'icduDragonHeadOpen', 'icduDragonHeadOpenGlow',
+    'icduDragonSpineLong', 'icduDragonSpineLongGlow',
+    'icduDragonTailEnergy', 'icduDragonTailEnergyGlow',
+    'icduDragonCrystalFin', 'icduDragonCrystalFinGlow',
     ...iceDragonUltimateSequenceKeys('icduDragonFlight', 6),
     ...iceDragonUltimateSequenceKeys('icduDragonCoil', 6),
     ...iceDragonUltimateSequenceKeys('icduDragonBreath', 4),
@@ -2817,6 +2844,8 @@
     ...iceDragonUltimateSequenceKeys('icduMeteor', 4),
     ...iceDragonUltimateSequenceKeys('icduImpactBloom', 5),
     ...iceDragonUltimateSequenceKeys('icduImpactCrater', 5),
+    ...iceDragonUltimateSequenceKeys('icduImpactCrystal', 6),
+    'bvSnowflake',
     'icduIcon',
   ]);
   const CORE_ASSET_KEYS = [
@@ -3810,17 +3839,17 @@
       rows: Object.freeze([{"id":33,"player_name":"蜜瓜二号","character":"reaver","score":6499875,"kill_count":5855,"loop_count":1,"elapsed":528,"bosses_cleared":4,"created_at":"2026-06-30T07:05:50.89152+00:00"},{"id":69,"player_name":"aaa","character":"anna","score":4999875,"kill_count":10584,"loop_count":3,"elapsed":530,"bosses_cleared":7,"created_at":"2026-07-03T08:59:58.164842+00:00"},{"id":23,"player_name":"GSXDY","character":"motherlife","score":1989600,"kill_count":3060,"loop_count":1,"elapsed":268,"bosses_cleared":2,"created_at":"2026-06-30T06:30:56.716817+00:00"},{"id":62,"player_name":"被骗了！","character":"reaver","score":1982079,"kill_count":2348,"loop_count":1,"elapsed":234,"bosses_cleared":1,"created_at":"2026-07-03T01:37:09.344207+00:00"},{"id":50,"player_name":"哼哼。","character":"motherlife","score":1889082,"kill_count":3113,"loop_count":1,"elapsed":299,"bosses_cleared":2,"created_at":"2026-07-01T12:26:07.627198+00:00"},{"id":13,"player_name":"苏晓晴","character":"motherlife","score":1569448,"kill_count":2585,"loop_count":1,"elapsed":277,"bosses_cleared":2,"created_at":"2026-06-30T05:43:25.593806+00:00"},{"id":73,"player_name":"bhm","character":"witch","score":1448384,"kill_count":1745,"loop_count":1,"elapsed":226,"bosses_cleared":1,"created_at":"2026-07-04T06:12:30.688235+00:00"},{"id":5,"player_name":"苏苏呀","character":"motherlife","score":1392931,"kill_count":2291,"loop_count":1,"elapsed":219,"bosses_cleared":1,"created_at":"2026-06-30T05:17:50.957117+00:00"},{"id":40,"player_name":"111","character":"reaver","score":1323290,"kill_count":1682,"loop_count":1,"elapsed":225,"bosses_cleared":1,"created_at":"2026-06-30T11:04:30.505784+00:00"},{"id":44,"player_name":"麻豆传媒","character":"reaver","score":1297752,"kill_count":2516,"loop_count":1,"elapsed":317,"bosses_cleared":2,"created_at":"2026-07-01T02:21:12.396381+00:00"},{"id":67,"player_name":"花嘤レ","character":"yanuxiya","score":1111427,"kill_count":1638,"loop_count":1,"elapsed":166,"bosses_cleared":1,"created_at":"2026-07-03T03:17:00.093819+00:00"},{"id":51,"player_name":"气笑了","character":"yanuxiya","score":1059708,"kill_count":1643,"loop_count":1,"elapsed":189,"bosses_cleared":2,"created_at":"2026-07-01T13:27:43.57043+00:00"},{"id":49,"player_name":"狗带带","character":"yanuxiya","score":1044187,"kill_count":1705,"loop_count":1,"elapsed":174,"bosses_cleared":1,"created_at":"2026-07-01T11:12:39.915298+00:00"},{"id":47,"player_name":"神鬼未生","character":"witch","score":869701,"kill_count":1355,"loop_count":1,"elapsed":221,"bosses_cleared":1,"created_at":"2026-07-01T08:17:44.778623+00:00"},{"id":31,"player_name":"Yoka","character":"witch","score":861469,"kill_count":1485,"loop_count":1,"elapsed":217,"bosses_cleared":1,"created_at":"2026-06-30T06:53:52.63728+00:00"},{"id":41,"player_name":"苏苏二号","character":"motherlife","score":673272,"kill_count":1529,"loop_count":1,"elapsed":207,"bosses_cleared":1,"created_at":"2026-06-30T11:23:56.586141+00:00"},{"id":75,"player_name":"哈基米哈哈哈","character":"witch","score":601493,"kill_count":607,"loop_count":1,"elapsed":103,"bosses_cleared":0,"created_at":"2026-07-04T13:38:51.188842+00:00"},{"id":48,"player_name":"123","character":"yanuxiya","score":541618,"kill_count":766,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-01T08:52:34.97357+00:00"},{"id":64,"player_name":"。。。","character":"yanuxiya","score":541051,"kill_count":803,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-03T02:11:17.872613+00:00"},{"id":68,"player_name":"vallette","character":"motherlife","score":489977,"kill_count":1048,"loop_count":1,"elapsed":150,"bosses_cleared":1,"created_at":"2026-07-03T08:51:38.428022+00:00"},{"id":9,"player_name":"shao","character":"motherlife","score":460727,"kill_count":774,"loop_count":1,"elapsed":85,"bosses_cleared":0,"created_at":"2026-06-30T05:33:08.248488+00:00"},{"id":61,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:53.049669+00:00"},{"id":60,"player_name":"碎影孤狼","character":"witch","score":438076,"kill_count":703,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-03T01:32:52.892331+00:00"},{"id":45,"player_name":"墨染绯樱","character":"anna","score":430823,"kill_count":616,"loop_count":1,"elapsed":119,"bosses_cleared":0,"created_at":"2026-07-01T06:51:00.754952+00:00"},{"id":54,"player_name":"鹧鸪1","character":"witch","score":397213,"kill_count":659,"loop_count":1,"elapsed":84,"bosses_cleared":0,"created_at":"2026-07-02T00:47:21.305579+00:00"},{"id":77,"player_name":"WUM","character":"anna","score":349721,"kill_count":478,"loop_count":1,"elapsed":107,"bosses_cleared":0,"created_at":"2026-07-04T15:52:20.718036+00:00"},{"id":63,"player_name":"管制一号","character":"witch","score":347536,"kill_count":806,"loop_count":1,"elapsed":133,"bosses_cleared":1,"created_at":"2026-07-03T01:48:01.424392+00:00"},{"id":37,"player_name":"骂不过","character":"reaver","score":321154,"kill_count":676,"loop_count":1,"elapsed":112,"bosses_cleared":0,"created_at":"2026-06-30T07:50:30.398674+00:00"},{"id":43,"player_name":"唐代斯","character":"anna","score":315600,"kill_count":739,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-06-30T13:27:36.354503+00:00"},{"id":76,"player_name":"MUSHROOM","character":"anna","score":299606,"kill_count":547,"loop_count":1,"elapsed":101,"bosses_cleared":0,"created_at":"2026-07-04T14:53:20.706952+00:00"},{"id":56,"player_name":"Eugen!","character":"witch","score":295813,"kill_count":686,"loop_count":1,"elapsed":105,"bosses_cleared":0,"created_at":"2026-07-03T00:52:20.291709+00:00"},{"id":46,"player_name":"人间正好","character":"witch","score":272815,"kill_count":536,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-01T07:11:26.630505+00:00"},{"id":11,"player_name":"准时不早退的炫神","character":"witch","score":270972,"kill_count":555,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-06-30T05:38:27.172938+00:00"},{"id":58,"player_name":"江恒月","character":"reaver","score":261393,"kill_count":568,"loop_count":1,"elapsed":95,"bosses_cleared":0,"created_at":"2026-07-03T01:01:48.774142+00:00"},{"id":39,"player_name":"Rafa","character":"witch","score":234786,"kill_count":326,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-06-30T08:11:44.672565+00:00"},{"id":74,"player_name":"一个人","character":"witch","score":208543,"kill_count":432,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-04T10:56:59.309394+00:00"},{"id":66,"player_name":"tool","character":"motherlife","score":203679,"kill_count":505,"loop_count":1,"elapsed":87,"bosses_cleared":0,"created_at":"2026-07-03T03:06:27.005421+00:00"},{"id":71,"player_name":"忴雲的雲","character":"reaver","score":195747,"kill_count":512,"loop_count":1,"elapsed":86,"bosses_cleared":0,"created_at":"2026-07-03T18:10:38.505569+00:00"},{"id":57,"player_name":"all","character":"motherlife","score":169750,"kill_count":563,"loop_count":1,"elapsed":93,"bosses_cleared":0,"created_at":"2026-07-03T01:01:20.744899+00:00"},{"id":42,"player_name":"宇智波佑树","character":"yanuxiya","score":153643,"kill_count":441,"loop_count":1,"elapsed":42,"bosses_cleared":0,"created_at":"2026-06-30T12:41:29.367354+00:00"},{"id":55,"player_name":"GA丫","character":"motherlife","score":144197,"kill_count":529,"loop_count":1,"elapsed":88,"bosses_cleared":0,"created_at":"2026-07-02T12:03:02.241077+00:00"},{"id":70,"player_name":"333","character":"witch","score":92417,"kill_count":271,"loop_count":1,"elapsed":35,"bosses_cleared":0,"created_at":"2026-07-03T09:48:45.728744+00:00"},{"id":35,"player_name":"啊啊啊","character":"witch","score":88959,"kill_count":188,"loop_count":1,"elapsed":27,"bosses_cleared":0,"created_at":"2026-06-30T07:23:49.951454+00:00"},{"id":16,"player_name":"NepNepNe","character":"reaver","score":81328,"kill_count":283,"loop_count":1,"elapsed":51,"bosses_cleared":0,"created_at":"2026-06-30T05:55:25.101335+00:00"},{"id":65,"player_name":"Nyx1","character":"motherlife","score":32959,"kill_count":112,"loop_count":1,"elapsed":16,"bosses_cleared":0,"created_at":"2026-07-03T03:05:25.680701+00:00"},{"id":14,"player_name":"assss","character":"witch","score":21161,"kill_count":51,"loop_count":1,"elapsed":12,"bosses_cleared":0,"created_at":"2026-06-30T05:44:02.775183+00:00"},{"id":53,"player_name":"pro","character":"witch","score":15657,"kill_count":32,"loop_count":1,"elapsed":15,"bosses_cleared":0,"created_at":"2026-07-01T22:41:43.93495+00:00"},{"id":8,"player_name":"summer","character":"witch","score":11229,"kill_count":10,"loop_count":1,"elapsed":9,"bosses_cleared":0,"created_at":"2026-06-30T05:31:15.554183+00:00"},{"id":52,"player_name":"？？？","character":"witch","score":7121,"kill_count":8,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-07-01T14:07:29.90426+00:00"},{"id":28,"player_name":"yoka","character":"witch","score":6999,"kill_count":18,"loop_count":1,"elapsed":8,"bosses_cleared":0,"created_at":"2026-06-30T06:40:27.039096+00:00"},{"id":59,"player_name":"wanghan","character":"witch","score":6179,"kill_count":12,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-03T01:05:02.01+00:00"},{"id":72,"player_name":"Dat","character":"anna","score":6043,"kill_count":6,"loop_count":1,"elapsed":6,"bosses_cleared":0,"created_at":"2026-07-04T05:28:47.585737+00:00"},{"id":32,"player_name":"古月向阳","character":"witch","score":5510,"kill_count":32,"loop_count":1,"elapsed":7,"bosses_cleared":0,"created_at":"2026-06-30T07:03:04.419867+00:00"},{"id":29,"player_name":"爱喝旺仔","character":"reaver","score":2965,"kill_count":25,"loop_count":1,"elapsed":14,"bosses_cleared":0,"created_at":"2026-06-30T06:42:03.805625+00:00"},{"id":34,"player_name":"Muziyi","character":"motherlife","score":2657,"kill_count":5,"loop_count":1,"elapsed":4,"bosses_cleared":0,"created_at":"2026-06-30T07:19:55.356939+00:00"}]),
     }),
   ]);
-     const UPDATE_NOTICE_VERSION = '2026-07-24-ice-dragon-ultimate-meteor-impact-v2';
+     const UPDATE_NOTICE_VERSION = '2026-07-24-ice-dragon-ultimate-frozen-debris-v3';
   const UPDATE_NOTICE_STORAGE_KEY = 'moonBulletSeenUpdateNotice';
   const UPDATE_NOTICE_ENTRIES = Object.freeze([
     {
-      date: '2026-07-24 · 极寒天陨二段视觉重铸',
+      date: '2026-07-24 · 极寒天陨冰封碎裂与龙神材质重铸',
       items: [
-        '冰晶陨石入场全面重做：改为尖端锚定的加速贝塞尔俯冲，陨石本体逐帧交叉过渡，并叠加四层体积冰尾、流动晶格、寒雾、环绕碎晶与紫蓝折射核心。',
-        '砸地爆发已从平面贴图升级为完整打击链：接触暗核与白芯闪爆、五柱立体冰冠、景深冰棱、分层寒雾、抛射冰块、双重全屏冻结波与屏幕边缘结霜依次展开。',
-        '落点序列重新校正视觉中心，爆发与冰坑改为逐帧交叉淡化；余波保留折射冰坑、竖立冰柱和消散冷雾，不再出现贴图偏位、硬切或撞击后立即消失。',
-        '陨石素材重新处理，仅保留主晶体并独立生成碎晶；全部二段素材已通过去绿边、透明边、404 与 fallback 审计，桌面端和手机端共完成 122 帧逐帧验收。',
-        '二段仍保持全屏超高伤害与清除敌弹、预警、激光的原有战斗逻辑；本轮只强化演出、材质层次和落点可读性。',
+        '陨石破碎粒子彻底重做：六组手绘冰晶碎片按远、中、近景分批抛射，加入重量、旋转、落地回弹和折射扫光；雪花改为纹理底层叠加程序化六棱枝晶，冰雾、霜尘与冰块不再混成通用白色碎片。',
+        '按下大招时原有的蓝色召唤贴图已经移除，改为龙神实际入场位置上的透视冰裂隙：分段旋转冰环、三面冰棱、竖向冷光和环绕雪晶共同完成开合演出，不再用单张贴图冒充范围中心。',
+        '冰晶龙神本体新增独立头甲、金属脊椎、后景晶体鳍、能量尾与全身晶面体积层；头部金属采用正常混合保留暗面和反光，水晶及尾部辉光独立叠加，尾巴不再只是平面贴图。',
+        '陨石砸地仍保留尖端锚定俯冲、立体冰冠、双重全屏冻结波和持续冰坑冷雾；新增碎片会在主爆发后继续散落，让冰晶、雪花、冰块与寒雾的层次在余波阶段仍清楚可见。',
+        '大招专用素材已完成 148 项加载审计，无缺失、404 或静默 fallback；桌面端与手机端均完成召唤、龙息、陨石、撞击和余波的多帧验收。',
       ],
     },
     {
@@ -5315,7 +5344,7 @@
     backdrop.innerHTML = `
       <div class="leaderboard-dialog update-notice-dialog" role="dialog" aria-modal="true">
         <h2>更新公告</h2>
-        <div class="update-notice-kicker">本次重点重铸「冰晶龙神·极寒天陨」二段的陨石俯冲、砸地冰爆与全屏冻结余波；最新内容置顶显示：</div>
+        <div class="update-notice-kicker">本次重点重铸「冰晶龙神·极寒天陨」的冰封碎裂粒子、召唤入口与龙神全身材质；最新内容置顶显示：</div>
         ${sections}
         <div class="actions">
           <button class="update-notice-close" type="button">我知道了</button>
@@ -29934,8 +29963,10 @@
     breathDragonOffsetY: -260,
     breathDragonRightMargin: 190,
     breathDragonTopMargin: 170,
-    breathSpriteWidth: 440,
-    breathSpriteHeight: 235,
+    // Preserve the processed 620:240 canvas aspect ratio. The previous
+    // 440x235 draw stretched the deity vertically and flattened its long tail.
+    breathSpriteWidth: 520,
+    breathSpriteHeight: 201,
     breathSpriteCanvasWidth: 620,
     breathSpriteCanvasHeight: 240,
     breathMouthAnchorX: 22,
@@ -29965,6 +29996,10 @@
     fieldFreezePulsePeriod: 1.68,
     fieldFreezePulseAlpha: 0.52,
     contactPrismAlpha: 0.58,
+    summonRiftRadius: 174,
+    summonRiftDepth: 0.42,
+    summonRiftPrismCount: Object.freeze([12, 10, 8, 7]),
+    summonRiftSnowCount: Object.freeze([18, 15, 12, 9]),
     meteorTelegraphRadius: 264,
     meteorTelegraphDepth: 0.46,
     meteorStartOffsetX: 70,
@@ -29993,9 +30028,12 @@
     impactCraterAlpha: 0.88,
     impactFogAlpha: 0.68,
     impactSpireCount: Object.freeze([10, 8, 6, 4]),
-    impactParticleCount: Object.freeze([132, 108, 82, 64]),
+    impactParticleCount: Object.freeze([210, 168, 122, 90]),
+    impactCrystalGlowAlpha: 0.30,
+    impactSnowflakeAlpha: 0.90,
+    impactDebrisBounce: 0.34,
     cancelFade: 0.4,
-    particleCaps: Object.freeze([340, 260, 184, 128]),
+    particleCaps: Object.freeze([440, 330, 232, 164]),
   });
   const ICE_DRAGON_ULT_FRAME_LAYOUT = Object.freeze({
     meteorCanvas: Object.freeze([420, 300]),
@@ -30454,6 +30492,15 @@
       stretch: Number(options.stretch) || 1,
       depth: clamp(Number(options.depth) || 0.5, 0, 1),
       source: options.source || '',
+      delay: Math.max(0, Number(options.delay) || 0),
+      variant: Number.isFinite(options.variant)
+        ? (Math.max(0, Number(options.variant)) | 0)
+        : Math.floor(iceDragonUltimateHash(seed + 9.9) * 6),
+      flip: options.flip === -1 ? -1 : 1,
+      groundY: Number.isFinite(options.groundY) ? Number(options.groundY) : null,
+      bounce: Math.max(0, Number(options.bounce) || 0),
+      bounceCount: 0,
+      materialPhase: iceDragonUltimateHash(seed + 8.3) * TAU,
       seed,
     });
     return true;
@@ -30644,41 +30691,76 @@
       const seed = iceDragonUltimate.castSerial * 10000 + iceDragonUltimate.impactSerial * 337 + i;
       const angle = iceDragonUltimateHash(seed) * TAU;
       const depth = iceDragonUltimateHash(seed + 9);
-      const band = i % 10;
-      const kind = band < 3
+      const band = (i % 100) / 100;
+      const kind = band < 0.18
         ? 'mist'
-        : (band < 5 ? 'iceblock' : (band < 8 ? 'shard' : (band === 8 ? 'snowflake' : 'spark')));
+        : (band < 0.48
+          ? 'crystalShard'
+          : (band < 0.66
+            ? 'iceChunk'
+            : (band < 0.86
+              ? 'snowflake'
+              : (band < 0.96 ? 'frostDust' : 'spark'))));
       const radialSpeed = kind === 'mist'
-        ? 74 + iceDragonUltimateHash(seed + 1) * 190
-        : (kind === 'iceblock'
-          ? 150 + iceDragonUltimateHash(seed + 1) * 430
-          : 220 + iceDragonUltimateHash(seed + 1) * 560);
+        ? 58 + iceDragonUltimateHash(seed + 1) * 168
+        : (kind === 'iceChunk'
+          ? 128 + iceDragonUltimateHash(seed + 1) * 332
+          : (kind === 'snowflake'
+            ? 112 + iceDragonUltimateHash(seed + 1) * 280
+            : 210 + iceDragonUltimateHash(seed + 1) * 520));
       const life = kind === 'mist'
-        ? 1.32 + iceDragonUltimateHash(seed + 4) * 1.02
-        : (kind === 'iceblock'
-          ? 0.82 + iceDragonUltimateHash(seed + 4) * 0.74
-          : 0.64 + iceDragonUltimateHash(seed + 4) * 0.72);
+        ? 1.52 + iceDragonUltimateHash(seed + 4) * 1.18
+        : (kind === 'iceChunk'
+          ? 1.28 + iceDragonUltimateHash(seed + 4) * 0.94
+          : (kind === 'snowflake'
+            ? 1.34 + iceDragonUltimateHash(seed + 4) * 1.08
+            : 0.92 + iceDragonUltimateHash(seed + 4) * 0.82));
       const size = kind === 'mist'
-        ? 44 + iceDragonUltimateHash(seed + 5) * 76
-        : (kind === 'iceblock'
-          ? 10 + iceDragonUltimateHash(seed + 6) * 19
-          : 4 + iceDragonUltimateHash(seed + 6) * 11);
+        ? 42 + iceDragonUltimateHash(seed + 5) * 68
+        : (kind === 'iceChunk'
+          ? 18 + iceDragonUltimateHash(seed + 6) * 20
+          : (kind === 'crystalShard'
+            ? 10 + iceDragonUltimateHash(seed + 6) * 17
+            : (kind === 'snowflake'
+              ? 6 + iceDragonUltimateHash(seed + 6) * 10
+              : 2.6 + iceDragonUltimateHash(seed + 6) * 7.2)));
+      const delayBand = i % 4;
+      const delay = delayBand === 0
+        ? 0
+        : (0.045 * delayBand + iceDragonUltimateHash(seed + 12) * 0.055);
+      const variant = kind === 'iceChunk'
+        ? 4 + (i % 2)
+        : (kind === 'crystalShard'
+          ? (depth > 0.55 ? 2 + (i % 2) : i % 2)
+          : (i + Math.floor(iceDragonUltimateHash(seed + 11) * 7)) % 4);
+      const groundY = y + 32 + depth * 62;
       iceDragonUltimatePushParticle(
         kind,
-        x + Math.cos(angle) * (18 + iceDragonUltimateHash(seed + 2) * 92),
-        y + Math.sin(angle) * (10 + iceDragonUltimateHash(seed + 3) * 56),
+        x + Math.cos(angle) * (12 + iceDragonUltimateHash(seed + 2) * 76),
+        y + Math.sin(angle) * (8 + iceDragonUltimateHash(seed + 3) * 44),
         Math.cos(angle) * radialSpeed,
-        Math.sin(angle) * radialSpeed * (0.66 + depth * 0.30)
-          - (kind === 'mist' ? 42 : 118 + depth * 56),
+        Math.sin(angle) * radialSpeed * (0.56 + depth * 0.34)
+          - (kind === 'mist'
+            ? 34
+            : (kind === 'snowflake' ? 92 : 144 + depth * 82)),
         life,
         size,
-        i % 3 === 0 ? '#ffffff' : (i % 3 === 1 ? '#8bdcff' : '#7b8bf2'), seed,
+        i % 3 === 0 ? '#f7feff' : (i % 3 === 1 ? '#83dfff' : '#8f92f5'), seed,
         {
-          gravity: kind === 'iceblock' || kind === 'shard' ? 210 : (kind === 'mist' ? -18 : 38),
-          flow: kind === 'mist' ? 32 : (kind === 'snowflake' ? 12 : 0),
-          stretch: kind === 'mist' ? 1.58 : (kind === 'shard' ? 1.3 : 1),
+          gravity: kind === 'iceChunk' || kind === 'crystalShard'
+            ? 252
+            : (kind === 'mist' ? -18 : (kind === 'snowflake' ? 42 : 72)),
+          flow: kind === 'mist' ? 34 : (kind === 'snowflake' ? 46 : (kind === 'frostDust' ? 20 : 0)),
+          stretch: kind === 'mist' ? 1.62 : (kind === 'crystalShard' ? 1.18 : 1),
           depth,
           source: 'meteor-impact',
+          delay,
+          variant,
+          flip: i % 2 ? -1 : 1,
+          groundY,
+          bounce: kind === 'iceChunk' || kind === 'crystalShard'
+            ? ICE_DRAGON_ULT_CONFIG.impactDebrisBounce
+            : 0,
         },
       );
     }
@@ -30731,6 +30813,10 @@
   function updateIceDragonUltimateParticles(dt) {
     for (let i = iceDragonUltimateParticles.length - 1; i >= 0; i--) {
       const p = iceDragonUltimateParticles[i];
+      if (p.delay > 0) {
+        p.delay -= dt;
+        continue;
+      }
       p.life -= dt; p.age += dt;
       if (p.flow > 0) {
         const curl = Math.sin(p.x * 0.0107 + p.y * 0.0079 + time * 1.72 + p.seed * 0.013)
@@ -30742,11 +30828,26 @@
       p.x += p.vx * dt; p.y += p.vy * dt;
       const drag = p.kind === 'mist'
         ? 1.55
-        : (p.kind === 'snowflake' || p.kind === 'frostDust' ? 0.72 : 0.88);
+        : (p.kind === 'snowflake' || p.kind === 'frostDust'
+          ? 0.72
+          : (p.kind === 'iceChunk' ? 1.02 : 0.88));
       p.vx *= Math.exp(-drag * dt);
       p.vy *= Math.exp(-drag * dt);
       p.vy += p.gravity * dt;
       p.rot += p.spin * dt;
+      if (
+        p.groundY !== null
+        && p.bounce > 0
+        && p.bounceCount < 2
+        && p.y >= p.groundY
+        && p.vy > 0
+      ) {
+        p.y = p.groundY;
+        p.vy *= -p.bounce * (p.bounceCount ? 0.46 : 1);
+        p.vx *= p.bounceCount ? 0.42 : 0.68;
+        p.spin *= 0.64;
+        p.bounceCount++;
+      }
       if (p.life <= 0) {
         const last = iceDragonUltimateParticles.length - 1;
         if (i !== last) iceDragonUltimateParticles[i] = iceDragonUltimateParticles[last];
@@ -31039,23 +31140,141 @@
     ctx.restore();
   }
   function iceDragonUltimateDrawCircle(x, y, progress, alpha, scale = 1) {
-    const frame = Math.min(4, Math.max(0, Math.floor(clamp(progress, 0, 0.999) * 5)));
-    const pulse = 0.88 + Math.sin(time * 5.4) * 0.08;
-    const size = 340 * scale * pulse;
-    iceDragonUltimateDrawAssetPair(
-      `icduSummonCircle${frame}`, `icduSummonCircle${frame}Glow`,
-      x, y, size, size, time * 0.22, alpha, 'summon magic array',
-    );
+    const open = iceDragonUltimateEase(progress / 0.68);
+    const pulse = 0.985 + Math.sin(time * 5.4) * 0.015;
+    const radius = ICE_DRAGON_ULT_CONFIG.summonRiftRadius
+      * scale
+      * lerp(0.48, 1, open)
+      * pulse;
+    const depth = ICE_DRAGON_ULT_CONFIG.summonRiftDepth;
+    const quality = clamp(perfLevel | 0, 0, 3);
+    const riftAlpha = alpha * open;
+
+    // This is a code-built entry rift at the dragon's actual ingress edge,
+    // not the former full-frame blue spell-circle sprite or a fake damage
+    // radius. Three perspective rings establish depth without a solid disc.
     ctx.save();
-    ctx.translate(x, y); ctx.rotate(-time * 0.34);
+    ctx.translate(x, y);
+    ctx.scale(1, depth);
+    const floorCold = ctx.createRadialGradient(0, 0, radius * 0.04, 0, 0, radius * 1.14);
+    floorCold.addColorStop(0, `rgba(223,250,255,${0.30 * riftAlpha})`);
+    floorCold.addColorStop(0.28, `rgba(74,151,224,${0.24 * riftAlpha})`);
+    floorCold.addColorStop(0.70, `rgba(58,75,172,${0.14 * riftAlpha})`);
+    floorCold.addColorStop(1, 'rgba(25,41,112,0)');
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = floorCold;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 1.14, 0, TAU);
+    ctx.fill();
+
+    for (let ring = 0; ring < 3; ring++) {
+      const ringRadius = radius * (0.54 + ring * 0.22);
+      const segments = 7 + ring * 3;
+      const rotation = time * (ring % 2 ? -0.52 : 0.38) + ring * 0.77;
+      for (let segment = 0; segment < segments; segment++) {
+        const start = rotation + segment * TAU / segments + 0.055;
+        const end = rotation + (segment + 1) * TAU / segments - 0.055;
+        const flicker = 0.78 + Math.sin(time * 7.2 + segment * 1.9 + ring) * 0.22;
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = riftAlpha * (0.48 + ring * 0.08);
+        ctx.strokeStyle = 'rgba(8,31,91,.94)';
+        ctx.lineWidth = 9 - ring * 1.8;
+        ctx.beginPath();
+        ctx.arc(0, 0, ringRadius, start, end);
+        ctx.stroke();
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = riftAlpha * flicker * (0.58 + ring * 0.10);
+        ctx.strokeStyle = ring === 1
+          ? 'rgba(196,177,255,.96)'
+          : 'rgba(201,246,255,.98)';
+        ctx.lineWidth = 2.2 - ring * 0.35;
+        ctx.beginPath();
+        ctx.arc(0, 0, ringRadius, start, end);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+
+    // The vertical rift and rising mist make the gate volumetric. It remains
+    // open long enough for the deity to visibly travel through it.
+    ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = alpha * 0.68;
-    ctx.strokeStyle = 'rgba(190,242,255,.84)'; ctx.lineWidth = 1.5;
+    const pillar = ctx.createLinearGradient(x, y - radius * 0.88, x, y + radius * 0.28);
+    pillar.addColorStop(0, 'rgba(112,191,255,0)');
+    pillar.addColorStop(0.38, `rgba(122,211,255,${0.18 * riftAlpha})`);
+    pillar.addColorStop(0.72, `rgba(209,184,255,${0.24 * riftAlpha})`);
+    pillar.addColorStop(1, 'rgba(238,253,255,0)');
+    ctx.fillStyle = pillar;
+    ctx.beginPath();
+    ctx.moveTo(x - radius * 0.16, y + radius * 0.12);
+    ctx.quadraticCurveTo(x - radius * 0.30, y - radius * 0.30, x - radius * 0.09, y - radius * 0.88);
+    ctx.lineTo(x + radius * 0.08, y - radius * 0.88);
+    ctx.quadraticCurveTo(x + radius * 0.27, y - radius * 0.28, x + radius * 0.17, y + radius * 0.12);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    const prismCount = ICE_DRAGON_ULT_CONFIG.summonRiftPrismCount[quality];
+    for (let i = 0; i < prismCount; i++) {
+      const seed = iceDragonUltimate.castSerial * 307 + i * 23.7;
+      const angle = i * TAU / prismCount + time * 0.11;
+      const front = (Math.sin(angle) + 1) * 0.5;
+      const edgeX = x + Math.cos(angle) * radius * 0.88;
+      const edgeY = y + Math.sin(angle) * radius * depth * 0.88;
+      const rise = (20 + iceDragonUltimateHash(seed) * 42)
+        * open
+        * (0.66 + front * 0.36);
+      iceDragonUltimateDrawImpactPrism(
+        edgeX,
+        edgeY + 5,
+        -Math.PI * 0.5 + (iceDragonUltimateHash(seed + 1) - 0.5) * 0.24,
+        rise,
+        6 + iceDragonUltimateHash(seed + 2) * 9,
+        riftAlpha * (0.48 + front * 0.34),
+        seed,
+      );
+    }
+
+    const snowCount = ICE_DRAGON_ULT_CONFIG.summonRiftSnowCount[quality];
+    for (let i = 0; i < snowCount; i++) {
+      const seed = iceDragonUltimate.castSerial * 401 + i * 31.17;
+      const phase = (time * (0.38 + i % 3 * 0.06) + i / snowCount) % 1;
+      const angle = i * TAU / snowCount + time * (i % 2 ? -0.42 : 0.36);
+      const orbit = radius * (0.42 + iceDragonUltimateHash(seed) * 0.62);
+      const px = x + Math.cos(angle) * orbit;
+      const py = y + Math.sin(angle) * orbit * depth - phase * radius * 0.58;
+      const snowAlpha = riftAlpha * Math.sin(Math.PI * phase)
+        * (0.42 + iceDragonUltimateHash(seed + 2) * 0.36);
+      const size = 2.8 + iceDragonUltimateHash(seed + 3) * 4.8;
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(time * (i % 2 ? -0.68 : 0.61) + seed);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = snowAlpha;
+      ctx.strokeStyle = i % 3 ? '#e9fbff' : '#c8baff';
+      ctx.lineWidth = Math.max(0.7, size * 0.12);
+      for (let arm = 0; arm < 6; arm++) {
+        const armAngle = arm * TAU / 6;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(armAngle) * size * 1.8, Math.sin(armAngle) * size * 1.8);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(-time * 0.34);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = riftAlpha * 0.76;
+    ctx.strokeStyle = 'rgba(220,249,255,.96)';
+    ctx.lineWidth = 1.4;
     for (let i = 0; i < 6; i++) {
       const a = i * TAU / 6;
       ctx.beginPath();
-      ctx.moveTo(Math.cos(a) * size * 0.26, Math.sin(a) * size * 0.26);
-      ctx.lineTo(Math.cos(a) * size * 0.43, Math.sin(a) * size * 0.43);
+      ctx.moveTo(Math.cos(a) * radius * 0.22, Math.sin(a) * radius * 0.22 * depth);
+      ctx.lineTo(Math.cos(a) * radius * 0.46, Math.sin(a) * radius * 0.46 * depth);
       ctx.stroke();
     }
     ctx.restore();
@@ -33577,7 +33796,19 @@
     iceDragonUltimateDrawSnow(alpha * 0.72, false);
     if (u.phase === 'summon' || u.phase === 'ingress') {
       const p = u.phase === 'summon' ? u.t / ICE_DRAGON_ULT_CONFIG.summonEnd : 1;
-      iceDragonUltimateDrawCircle(u.targetX, u.targetY - 80, p, alpha * 0.94, 1.05);
+      const ingressFade = u.phase === 'ingress'
+        ? 1 - iceDragonUltimateEase(
+          (u.t - ICE_DRAGON_ULT_CONFIG.summonEnd)
+          / (ICE_DRAGON_ULT_CONFIG.ingressEnd - ICE_DRAGON_ULT_CONFIG.summonEnd),
+        )
+        : 1;
+      iceDragonUltimateDrawCircle(
+        W - 126,
+        Math.max(96, H * 0.18),
+        p,
+        alpha * ingressFade * 0.96,
+        1,
+      );
     }
     if (u.phase === 'charge') iceDragonUltimateDrawFrostTelegraph();
     if (u.phase === 'breath' || u.phase === 'release') iceDragonUltimateDrawFrostDomainVolumetric();
@@ -34089,14 +34320,22 @@
   function iceDragonUltimateDrawFullBodyMaterial(baseKey, x, y, rotation, width, height, alpha) {
     const entry = iceDragonUltimateUpdateBodyMaterial(baseKey);
     if (!entry) return;
-    const drawLayer = (canvas, composite, layerAlpha) => {
+    const nx = -Math.sin(rotation), ny = Math.cos(rotation);
+    const drawLayer = (canvas, composite, layerAlpha, normalOffset = 0, scale = 1) => {
       iceDragonUltimateDrawTailWaveLayer(
-        canvas, x, y, rotation, width, height, alpha * layerAlpha, composite,
+        canvas,
+        x + nx * normalOffset,
+        y + ny * normalOffset,
+        rotation,
+        width * scale,
+        height * scale,
+        alpha * layerAlpha,
+        composite,
       );
     };
-    drawLayer(entry.volume, 'multiply', 0.58);
-    drawLayer(entry.energy, 'screen', 0.48);
-    drawLayer(entry.metal, 'screen', 0.72);
+    drawLayer(entry.volume, 'multiply', 0.72, 3.6, 1.015);
+    drawLayer(entry.energy, 'screen', 0.64, -1.8, 0.992);
+    drawLayer(entry.metal, 'screen', 0.84, -3.2, 0.985);
   }
   function iceDragonUltimateBodyHistory(x, y, rotation) {
     const face = rotation + Math.PI;
@@ -34112,9 +34351,91 @@
     }
     return points;
   }
+  function iceDragonUltimateDrawBodyFacetRibbon(history, alpha) {
+    if (history.length < 2 || alpha <= 0.001) return;
+    ctx.save();
+    ctx.lineJoin = 'round';
+    for (let i = 0; i < history.length - 1; i++) {
+      const a = history[i], b = history[i + 1];
+      const t0 = i / (history.length - 1);
+      const t1 = (i + 1) / (history.length - 1);
+      const angle = Math.atan2(b.y - a.y, b.x - a.x);
+      const nx = -Math.sin(angle), ny = Math.cos(angle);
+      const width0 = lerp(25, 6, t0) + Math.sin(Math.PI * t0) * 11;
+      const width1 = lerp(25, 6, t1) + Math.sin(Math.PI * t1) * 11;
+      const topA = { x: a.x + nx * width0, y: a.y + ny * width0 };
+      const topB = { x: b.x + nx * width1, y: b.y + ny * width1 };
+      const bottomA = { x: a.x - nx * width0 * 0.78, y: a.y - ny * width0 * 0.78 };
+      const bottomB = { x: b.x - nx * width1 * 0.78, y: b.y - ny * width1 * 0.78 };
+      const body = ctx.createLinearGradient(
+        bottomA.x, bottomA.y, topA.x, topA.y,
+      );
+      body.addColorStop(0, i % 2
+        ? 'rgba(7,21,68,.92)'
+        : 'rgba(14,26,84,.92)');
+      body.addColorStop(0.42, i % 3
+        ? 'rgba(42,93,171,.68)'
+        : 'rgba(66,76,178,.66)');
+      body.addColorStop(0.74, 'rgba(106,193,228,.50)');
+      body.addColorStop(1, 'rgba(211,246,255,.62)');
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = alpha * (0.42 + (1 - t0) * 0.12);
+      ctx.fillStyle = body;
+      ctx.strokeStyle = 'rgba(9,29,82,.88)';
+      ctx.lineWidth = 2.8;
+      ctx.beginPath();
+      ctx.moveTo(topA.x, topA.y);
+      ctx.lineTo(topB.x, topB.y);
+      ctx.lineTo(bottomB.x, bottomB.y);
+      ctx.lineTo(bottomA.x, bottomA.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = alpha * (0.34 + (i % 3) * 0.05);
+      ctx.strokeStyle = i % 2
+        ? 'rgba(190,174,255,.86)'
+        : 'rgba(196,242,255,.92)';
+      ctx.lineWidth = 1.05;
+      ctx.beginPath();
+      ctx.moveTo(
+        lerp(bottomA.x, topA.x, 0.60),
+        lerp(bottomA.y, topA.y, 0.60),
+      );
+      ctx.lineTo(
+        lerp(bottomB.x, topB.x, 0.44),
+        lerp(bottomB.y, topB.y, 0.44),
+      );
+      ctx.lineTo(topB.x, topB.y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
   function iceDragonUltimateDrawDragonBackMaterial(x, y, rotation, width, height, alpha) {
     const history = iceDragonUltimateBodyHistory(x, y, rotation);
     iceDragonDrawMistChain(history, 34, alpha * 0.46, false, 8.4);
+    iceDragonUltimateDrawBodyFacetRibbon(history, alpha * 0.82);
+
+    // Back fins are drawn before the deity base; the sprite then occludes
+    // their roots, creating an actual rear/body/front layer relationship.
+    const backFinNodes = perfLevel >= 2 ? [4, 8] : [3, 5, 8, 10];
+    for (let index = 0; index < backFinNodes.length; index++) {
+      const node = Math.min(history.length - 2, backFinNodes[index]);
+      const current = history[node], next = history[node + 1] || current;
+      const t = node / (history.length - 1);
+      const segmentAngle = Math.atan2(next.y - current.y, next.x - current.x);
+      const lift = lerp(23, 12, t);
+      iceDragonUltimateDrawAssetPair(
+        'icduDragonCrystalFin', 'icduDragonCrystalFinGlow',
+        current.x + Math.sin(segmentAngle) * lift,
+        current.y - Math.cos(segmentAngle) * lift,
+        lerp(54, 29, t), lerp(39, 20, t),
+        segmentAngle - 0.50 + Math.sin(time * 1.16 + index) * 0.05,
+        alpha * (0.48 + (1 - t) * 0.10),
+        'rear deity crystal fin', 0.16,
+      );
+    }
 
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
@@ -34254,7 +34575,7 @@
 
     // Independent supplied hard-surface pieces articulate the rear body. They
     // are normal-blended first, then receive a restrained crystal-only glow.
-    const armorNodes = perfLevel >= 2 ? [7] : [6, 9];
+    const armorNodes = perfLevel >= 2 ? [6, 9] : [4, 6, 8, 10];
     for (let index = 0; index < armorNodes.length; index++) {
       const node = Math.min(history.length - 2, armorNodes[index]);
       const current = history[node], next = history[node + 1] || current;
@@ -34263,16 +34584,19 @@
       const phaseOffset = Math.sin(time * 1.72 - node * 0.64) * lerp(0.5, 3.2, t);
       const px = current.x - Math.sin(segmentAngle) * phaseOffset;
       const py = current.y + Math.cos(segmentAngle) * phaseOffset;
+      const longArmor = index % 2 === 0;
       iceDragonUltimateDrawAssetPair(
-        'icduDragonSpineSegment', 'icduDragonSpineSegmentGlow',
+        longArmor ? 'icduDragonSpineLong' : 'icduDragonSpineSegment',
+        longArmor ? 'icduDragonSpineLongGlow' : 'icduDragonSpineSegmentGlow',
         px, py,
-        lerp(74, 31, t), lerp(48, 22, t),
-        segmentAngle, alpha * lerp(0.66, 0.54, t),
+        lerp(longArmor ? 104 : 76, longArmor ? 45 : 31, t),
+        lerp(longArmor ? 46 : 48, longArmor ? 23 : 22, t),
+        segmentAngle, alpha * lerp(0.74, 0.58, t),
         'articulated deity spine', 0.22,
       );
     }
 
-    const finNodes = perfLevel >= 2 ? [4, 8] : [3, 5, 7, 9];
+    const finNodes = perfLevel >= 2 ? [4, 8] : [3, 5, 7, 9, 10];
     for (let index = 0; index < finNodes.length; index++) {
       const node = Math.min(history.length - 2, finNodes[index]);
       const current = history[node], next = history[node + 1] || current;
@@ -34280,16 +34604,33 @@
       const segmentAngle = Math.atan2(next.y - current.y, next.x - current.x);
       const side = index % 2 ? 1 : -1;
       const lift = lerp(27, 14, t);
+      const crystalFin = index % 2 === 0;
       iceDragonUltimateDrawAssetPair(
-        'icduDragonTailFin', 'icduDragonTailFinGlow',
+        crystalFin ? 'icduDragonCrystalFin' : 'icduDragonTailFin',
+        crystalFin ? 'icduDragonCrystalFinGlow' : 'icduDragonTailFinGlow',
         current.x - Math.sin(segmentAngle) * side * lift,
         current.y + Math.cos(segmentAngle) * side * lift,
-        lerp(48, 26, t), lerp(43, 24, t),
+        lerp(crystalFin ? 58 : 48, crystalFin ? 30 : 26, t),
+        lerp(crystalFin ? 40 : 43, crystalFin ? 22 : 24, t),
         segmentAngle + side * (0.52 + Math.sin(time * 1.2 + index) * 0.045),
-        alpha * (0.72 + (1 - t) * 0.16),
-        'asymmetric deity crystal fin', 0.34,
+        alpha * (0.78 + (1 - t) * 0.14),
+        'asymmetric deity crystal fin', 0.28,
       );
     }
+
+    const tailNode = Math.max(1, history.length - 3);
+    const tailPoint = history[tailNode];
+    const tailNext = history[tailNode + 1] || tailPoint;
+    const tailAngle = Math.atan2(tailNext.y - tailPoint.y, tailNext.x - tailPoint.x);
+    const tailFlow = 0.96 + Math.sin(time * 2.4) * 0.04;
+    iceDragonUltimateDrawAssetPair(
+      'icduDragonTailEnergy', 'icduDragonTailEnergyGlow',
+      tailPoint.x, tailPoint.y,
+      146 * tailFlow, 53 / tailFlow,
+      tailAngle + Math.sin(time * 1.3) * 0.045,
+      alpha * 0.66,
+      'independent deity energy tail', 0.38,
+    );
 
     // Front-layer anisotropic fog keeps the lower body and tail suspended in
     // cold vapour instead of leaving the supplied silhouette as a flat spear.
@@ -34311,10 +34652,10 @@
       );
       ctx.rotate(tangent + Math.sin(time * 0.54 + node) * 0.12);
       ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = alpha * (0.16 + index % 3 * 0.035);
+      ctx.globalAlpha = alpha * (0.24 + index % 3 * 0.045);
       ctx.drawImage(bodyFog, -width * 0.56, -height * 0.5, width, height);
       ctx.globalCompositeOperation = 'lighter';
-      ctx.globalAlpha = alpha * (0.08 + index % 2 * 0.035);
+      ctx.globalAlpha = alpha * (0.14 + index % 2 * 0.045);
       ctx.strokeStyle = index % 2 ? 'rgba(197,177,255,.76)' : 'rgba(178,235,255,.78)';
       ctx.lineWidth = 1.05;
       ctx.beginPath(); ctx.moveTo(-width * 0.34, 0); ctx.lineTo(width * 0.18, 0); ctx.stroke();
@@ -34383,6 +34724,21 @@
       ctx.beginPath(); ctx.arc(px, py, size * 2.5, 0, TAU); ctx.fill();
     }
     ctx.restore();
+
+    // The supplied head armour is redrawn as a separate normal-blended plate
+    // over the deity sheet, followed only by a restrained eye/crystal glow.
+    // This keeps the gold/black metal reflective instead of blooming with the
+    // body energy and gives the snout a distinct foreground plane.
+    const headCenterX = x + Math.cos(rotation) * -208;
+    const headCenterY = y + Math.sin(rotation) * -208;
+    iceDragonUltimateDrawAssetPair(
+      'icduDragonHeadArmor', 'icduDragonHeadArmorGlow',
+      headCenterX, headCenterY,
+      176, 134,
+      rotation,
+      alpha * 0.80,
+      'independent deity head armour', 0.20,
+    );
 
     // Eye and throat positions are derived from the true mouth anchor.
     const eyeX = mouth.x - ux * 52 - nx * 18;
@@ -34561,7 +34917,7 @@
       );
     }
     if (assetReady(baseKey)) {
-      const glowStrength = u.phase === 'breath' ? 0.14 : 0.58;
+      const glowStrength = u.phase === 'breath' ? 0.26 : 0.52;
       if (u.phase === 'breath') {
         iceDragonUltimateDrawTailWaveLayer(
           assets[baseKey], u.dragonX, u.dragonY, rotation, width, height,
@@ -34582,11 +34938,25 @@
         iceDragonUltimateDrawDeityFrontMaterial(
           u.dragonX, u.dragonY, rotation, deityAlpha,
         );
+        iceDragonUltimateDrawDragonFrontMaterial(
+          u.dragonX, u.dragonY, rotation, width, height, deityAlpha * 0.72,
+        );
       } else {
         iceDragonUltimateDrawAssetPair(
           baseKey, `${baseKey}Glow`, u.dragonX, u.dragonY, width, height,
           rotation, alpha, 'ice dragon god body', glowStrength,
         );
+        // Flight and coil poses also receive material separation. Low quality
+        // reduces detail density elsewhere but never falls back to a bare
+        // base+glow sticker.
+        iceDragonUltimateDrawFullBodyMaterial(
+          baseKey, u.dragonX, u.dragonY, rotation, width, height, alpha * 0.62,
+        );
+        if (u.phase !== 'charge') {
+          iceDragonUltimateDrawDragonFrontMaterial(
+            u.dragonX, u.dragonY, rotation, width, height, alpha * 0.42,
+          );
+        }
       }
     } else {
       iceDragonUltimateReportFallback(baseKey, 'ice dragon god body');
@@ -35181,8 +35551,29 @@
       } else if (p.kind === 'snowflake') {
         ctx.rotate(p.rot);
         ctx.globalCompositeOperation = 'source-over';
-        const snowAlpha = env * (0.66 + p.depth * 0.20);
+        const snowAlpha = env
+          * (0.72 + p.depth * 0.22)
+          * ICE_DRAGON_ULT_CONFIG.impactSnowflakeAlpha;
         const radius = p.size * depthScale;
+        const snowTexture = assetReady('bvSnowflake')
+          ? assets.bvSnowflake
+          : (assetReady('bSnowflake') ? assets.bSnowflake : null);
+        if (snowTexture) {
+          const textureSize = radius * 3.1;
+          ctx.globalAlpha = snowAlpha * 0.64;
+          ctx.shadowColor = 'rgba(118,205,255,.72)';
+          ctx.shadowBlur = radius * 0.55;
+          ctx.drawImage(
+            snowTexture,
+            -textureSize * 0.5,
+            -textureSize * 0.5,
+            textureSize,
+            textureSize,
+          );
+          ctx.shadowBlur = 0;
+        } else {
+          iceDragonUltimateReportFallback('bvSnowflake', 'meteor impact snowflake texture');
+        }
         for (let pass = 0; pass < 2; pass++) {
           ctx.globalAlpha = snowAlpha * (pass ? 1 : 0.58);
           ctx.strokeStyle = pass
@@ -35209,6 +35600,90 @@
         ctx.globalAlpha = env * 0.58;
         ctx.fillStyle = '#ffffff';
         ctx.beginPath(); ctx.arc(0, 0, Math.max(0.7, p.size * 0.12), 0, TAU); ctx.fill();
+      } else if (p.kind === 'crystalShard' || p.kind === 'iceChunk') {
+        const chunk = p.kind === 'iceChunk';
+        const variant = chunk ? 4 + (p.variant % 2) : p.variant % 4;
+        const baseKey = `icduImpactCrystal${variant}`;
+        const glowKey = `${baseKey}Glow`;
+        const baseReady = assetReady(baseKey);
+        const glowReady = assetReady(glowKey);
+        const settle = p.bounceCount > 0
+          ? clamp((p.groundY - p.y + 12) / 24, 0, 1)
+          : 0;
+        if (p.groundY !== null && p.bounceCount > 0) {
+          ctx.save();
+          ctx.rotate(-p.rot);
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.globalAlpha = env * 0.26 * settle;
+          ctx.fillStyle = 'rgba(8,24,72,.86)';
+          ctx.scale(1, 0.34);
+          ctx.beginPath();
+          ctx.ellipse(0, 11, p.size * (chunk ? 1.18 : 0.82), p.size * 0.42, 0, 0, TAU);
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.rotate(p.rot);
+        ctx.scale(p.flip, 1);
+        const s = p.size * depthScale;
+        const drawWidth = s * (chunk ? 2.72 : 2.16) * p.stretch;
+        const drawHeight = s * (chunk ? 2.10 : 1.84);
+        if (baseReady) {
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.globalAlpha = env * (chunk ? 0.92 : 0.88);
+          ctx.filter = 'brightness(0.34) saturate(1.45)';
+          ctx.drawImage(
+            assets[baseKey],
+            -drawWidth * 0.5 + 3.5,
+            -drawHeight * 0.5 + 5,
+            drawWidth,
+            drawHeight,
+          );
+          ctx.filter = 'none';
+          ctx.globalAlpha = env * (chunk ? 0.98 : 0.94);
+          ctx.drawImage(
+            assets[baseKey],
+            -drawWidth * 0.5,
+            -drawHeight * 0.5,
+            drawWidth,
+            drawHeight,
+          );
+        } else {
+          iceDragonUltimateReportFallback(baseKey, 'meteor impact hand-painted crystal debris');
+        }
+        if (glowReady) {
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.globalAlpha = env
+            * ICE_DRAGON_ULT_CONFIG.impactCrystalGlowAlpha
+            * (0.72 + p.depth * 0.28);
+          ctx.drawImage(
+            assets[glowKey],
+            -drawWidth * 0.54,
+            -drawHeight * 0.54,
+            drawWidth * 1.08,
+            drawHeight * 1.08,
+          );
+        } else {
+          iceDragonUltimateReportFallback(glowKey, 'meteor impact crystal debris glow');
+        }
+        const sweep = ((p.age * (chunk ? 0.82 : 1.28) + p.materialPhase / TAU) % 1) - 0.5;
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.globalAlpha = env * (chunk ? 0.70 : 0.82);
+        ctx.strokeStyle = 'rgba(248,255,255,.96)';
+        ctx.lineWidth = Math.max(0.75, s * 0.075);
+        ctx.beginPath();
+        ctx.moveTo(sweep * drawWidth - s * 0.34, -drawHeight * 0.34);
+        ctx.lineTo(sweep * drawWidth + s * 0.42, drawHeight * 0.32);
+        ctx.stroke();
+        ctx.globalAlpha = env * 0.34;
+        ctx.strokeStyle = variant % 2
+          ? 'rgba(188,172,255,.94)'
+          : 'rgba(159,232,255,.96)';
+        ctx.lineWidth = Math.max(0.6, s * 0.045);
+        ctx.beginPath();
+        ctx.moveTo(-drawWidth * 0.29, drawHeight * 0.18);
+        ctx.lineTo(0, -drawHeight * 0.22);
+        ctx.lineTo(drawWidth * 0.31, drawHeight * 0.08);
+        ctx.stroke();
       } else if (p.kind === 'frostDust') {
         ctx.rotate(velocityAngle);
         ctx.globalCompositeOperation = 'lighter';
@@ -35330,10 +35805,11 @@
         baseGlowSplit: true,
       },
       vfx: {
-        dragon: ['hard-surface base', 'full-body alpha-masked volume', 'full-body crystal caustics', 'gold-black metal sweep', 'asymmetric tail fins', 'tail-to-throat energy packets', 'eye and throat cores', 'front-layer tail fog', 'detached ice dust', 'coil-to-deity pose blend', 'fog wake'],
+        summon: ['procedural perspective entry rift', 'segmented rotating ice rings', 'three-face perimeter prisms', 'orbiting code-drawn snow crystals', 'no dominant summon-circle sprite'],
+        dragon: ['hard-surface base', 'full-body alpha-masked volume', 'full-body crystal caustics', 'gold-black metal sweep', 'independent head armour', 'articulated metal spine', 'independent energy tail', 'rear-body crystal facets', 'multi-plane fin occlusion', 'asymmetric tail fins', 'tail-to-throat energy packets', 'eye and throat cores', 'front-layer tail fog', 'detached ice dust', 'coil-to-deity pose blend', 'fog wake'],
         breath: ['true-mouth muzzle layers', 'advancing procedural ice-flame front', 'low-alpha crystal-lattice detail', 'procedural fluid filaments', 'traveling light packets', 'rolling frost mist', 'continuous snowflake flow', 'crystal shards'],
         field: ['expanded target-centred circular domain', 'immediate full-range frost footprint', 'broken twelve-sector frost wall', 'raised multi-face frost boundary', 'raised boundary ice spires', 'processed frost-grain overlays', 'cross-faded frost-grain overlays', 'staggered flipbook frost bursts', 'orbiting textured ice shards', 'layered glacier current ribbons', 'expanding irregular freeze waves', 'animated glacier refraction sweeps', 'depth-sorted three-face ice massifs', 'moving massif refraction sweeps', 'procedural angular frost facets', 'directional ice-flame impact', 'faceted contact prisms', 'volumetric cold fog banks', 'coherent three-dimensional shell arcs', 'growing branching fractures', 'growing branching fractures with travelling glints', 'boundary blizzard streamers'],
-        meteor: ['anchored meteor tip', 'accelerated bezier fall', 'layered volumetric ice trail', 'orbiting independent ice shards', 'crystal-core refraction sweeps', 'cross-faded impact materials', 'three-face impact spires', 'dual full-screen freeze waves', 'persistent refractive crater', 'staged impact particles', 'edge frost vignette'],
+        meteor: ['anchored meteor tip', 'accelerated bezier fall', 'layered volumetric ice trail', 'orbiting independent ice shards', 'crystal-core refraction sweeps', 'cross-faded impact materials', 'three-face impact spires', 'dual full-screen freeze waves', 'persistent refractive crater', 'staggered debris ejection', 'hand-painted crystal debris', 'textured snowflake plume', 'weighted bouncing ice chunks', 'edge frost vignette'],
         lifecycle: 'appear-hold-dissipate',
         fallbackVisuallyComplete: true,
         directImpactTextureDominant: false,
@@ -68694,11 +69170,11 @@
   /* —— 更新公告 mini（静态同步游戏 UPDATE_NOTICE_ENTRIES 最新两条；「更多」打开自建弹层） —— */
   const NOTICE = [
     {
-      date: '2026-07-24', tag: '极寒天陨二段重铸',
+      date: '2026-07-24', tag: '极寒天陨冰封碎裂重铸',
       items: [
-        '冰晶陨石改为尖端锚定的加速俯冲，叠加四层体积冰尾、寒雾、晶格流光、环绕碎晶与折射核心。',
-        '砸地新增接触暗核、立体冰冠、双重全屏冻结波、边缘结霜、抛射冰块和持续冰坑冷雾；偏位与硬切已修正。',
-        '桌面端与手机端完成 122 帧逐帧验收，二段全屏高伤和清除敌弹逻辑保持不变。',
+        '陨石破碎新增六组真实冰晶、纹理雪花、冰块重量与落地回弹，远中近景分批抛射并在余波继续散落。',
+        '原蓝色召唤贴图已移除，改为分段冰环、三面冰棱、冷光裂隙与环绕雪晶组成的程序化龙神入口。',
+        '龙神新增独立头甲、金属脊椎、后景晶体鳍、能量尾和全身晶面体积层；148 项大招素材完成加载审计。',
       ],
     },
     {
