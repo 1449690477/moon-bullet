@@ -30,7 +30,7 @@ describe('ice crystal dragon ultimate', () => {
     expect(dragon.ultimateSpec()).toEqual(spec);
   });
 
-  it('uses the exact 16.45-second two-phase timeline and ten-second breath window', () => {
+  it('uses the exact 16.85-second two-phase timeline and ten-second breath window', () => {
     expect(spec.timeline).toEqual({
       summon: [0, 0.65],
       ingress: [0.65, 1.55],
@@ -41,7 +41,7 @@ describe('ice crystal dragon ultimate', () => {
       meteorTelegraph: [13.35, 14.15],
       meteorFall: [14.15, 14.95],
       impact: [14.95, 15.65],
-      aftermath: [15.65, 16.45],
+      aftermath: [15.65, 16.85],
     });
     expect(spec.breath.duration).toBeCloseTo(10, 8);
     expect(spec.breath.tickInterval).toBeCloseTo(0.2, 8);
@@ -50,7 +50,8 @@ describe('ice crystal dragon ultimate', () => {
     expect(ultimate.phaseAtForTest(2.5)).toBe('breath');
     expect(ultimate.phaseAtForTest(14.5)).toBe('meteor-fall');
     expect(ultimate.phaseAtForTest(15.2)).toBe('impact');
-    expect(ultimate.phaseAtForTest(16.5)).toBe('done');
+    expect(ultimate.phaseAtForTest(16.5)).toBe('aftermath');
+    expect(ultimate.phaseAtForTest(16.85)).toBe('done');
   });
 
   it('exceeds the previous 631800 benchmark in both phases from level one', () => {
@@ -136,6 +137,14 @@ describe('ice crystal dragon ultimate', () => {
     expect(audit.summary.validation_errors).toEqual([]);
     expect(audit.summary.max_green_residue_ratio).toBeLessThanOrEqual(0.0001);
     expect(audit.summary.max_glow_green_residue_ratio).toBeLessThanOrEqual(0.0001);
+    expect(spec.assets.keys).toEqual(expect.arrayContaining([
+      ...Array.from({ length: 4 }, (_, frame) => `icduMeteor${frame}`),
+      ...Array.from({ length: 4 }, (_, frame) => `icduMeteor${frame}Glow`),
+      ...Array.from({ length: 5 }, (_, frame) => `icduImpactBloom${frame}`),
+      ...Array.from({ length: 5 }, (_, frame) => `icduImpactBloom${frame}Glow`),
+      ...Array.from({ length: 5 }, (_, frame) => `icduImpactCrater${frame}`),
+      ...Array.from({ length: 5 }, (_, frame) => `icduImpactCrater${frame}Glow`),
+    ]));
   });
 
   it('keeps hostile readability and clears hostile hazards only on meteor impact', () => {
@@ -186,6 +195,17 @@ describe('ice crystal dragon ultimate', () => {
       'growing branching fractures',
       'growing branching fractures with travelling glints',
       'boundary blizzard streamers',
+    ]));
+    expect(spec.vfx.meteor).toEqual(expect.arrayContaining([
+      'anchored meteor tip',
+      'accelerated bezier fall',
+      'layered volumetric ice trail',
+      'cross-faded impact materials',
+      'three-face impact spires',
+      'dual full-screen freeze waves',
+      'persistent refractive crater',
+      'staged impact particles',
+      'edge frost vignette',
     ]));
   });
 });

@@ -39,7 +39,7 @@ SOURCE_CANDIDATES = (
 )
 OUT = ROOT / "assets" / "companions" / "ice_crystal_dragon" / "ultimate"
 AUDIT_OUTPUT = OUT / "asset_audit.json"
-PIPELINE_VERSION = "ice-crystal-dragon-ultimate-assets-v3"
+PIPELINE_VERSION = "ice-crystal-dragon-ultimate-assets-v4-phase2-main-body"
 TRANSPARENT_PAD = 16
 ALL_SOURCE_SHEETS = (
     "冰法阵 冰龙细节 冰龙主体.png",
@@ -197,7 +197,9 @@ FRAMES = (
             (504, 12, 171, 118), (625, 8, 256, 160),
             (815, 19, 291, 163), (1049, 11, 339, 223),
         ),
-        "meteor", (420, 300), preserve_islands=True, erode_pixels=0,
+        # The source row contains neighbouring-sheet islands.  Keep only the
+        # meteor body; detached fragments are emitted independently at runtime.
+        "meteor", (420, 300), preserve_islands=False, erode_pixels=0,
     ),
     *frame_group(
         "impact_bloom", "冰陨石 砸地爆炸 冰晶效果.png",

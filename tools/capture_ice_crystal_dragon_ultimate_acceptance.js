@@ -28,9 +28,12 @@ const SCENES = [
   { id: 'breath-mid', frames: [0, 5, 10, 15, 20], slowCheck: true },
   { id: 'breath-late', frames: [0, 8, 16], slowCheck: true },
   { id: 'telegraph', frames: [0, 8, 18] },
-  { id: 'meteor', frames: [0, 4, 10, 18] },
-  { id: 'impact', frames: [0, 2, 6, 14, 26] },
-  { id: 'aftermath', frames: [0, 12, 28] },
+  { id: 'meteor-launch', frames: [0, 2, 5, 9] },
+  { id: 'meteor', frames: [0, 3, 6, 10, 15, 20] },
+  { id: 'meteor-contact', frames: [0, 2, 4, 6] },
+  { id: 'impact-contact', frames: [0, 1, 3, 6, 10] },
+  { id: 'impact', frames: [0, 2, 4, 7, 11, 18, 28] },
+  { id: 'aftermath', frames: [0, 6, 15, 27, 40, 52] },
 ];
 
 function chromePath() {
@@ -207,6 +210,29 @@ async function run() {
         if (scene.id === 'breath-grow' && !(sceneCaptures.at(-1)?.snapshot.breath?.growth > 0.30)) {
           report.failures.push(`${viewport.id}/${scene.id}: frost field did not visibly enter growth phase`);
         }
+        if (scene.id === 'meteor-launch' && sceneCaptures.some(capture => capture.snapshot.phase !== 'meteor-fall')) {
+          report.failures.push(`${viewport.id}/${scene.id}: launch frames escaped meteor-fall phase`);
+        }
+        if (scene.id === 'meteor-contact') {
+          if (sceneCaptures.at(0)?.snapshot.phase !== 'meteor-fall') {
+            report.failures.push(`${viewport.id}/${scene.id}: contact approach did not begin in meteor-fall`);
+          }
+          if (!(sceneCaptures.at(-1)?.snapshot.meteor?.damageDone
+            && sceneCaptures.at(-1)?.snapshot.phase === 'impact')) {
+            report.failures.push(`${viewport.id}/${scene.id}: meteor contact did not transition into damaging impact`);
+          }
+        }
+        if (scene.id === 'impact-contact') {
+          if (sceneCaptures.some(capture => capture.snapshot.phase !== 'impact')) {
+            report.failures.push(`${viewport.id}/${scene.id}: contact frames escaped impact phase`);
+          }
+          if (sceneCaptures.some(capture => !capture.snapshot.meteor?.damageDone)) {
+            report.failures.push(`${viewport.id}/${scene.id}: impact contact captured before meteor damage`);
+          }
+        }
+        if (scene.id === 'aftermath' && sceneCaptures.some(capture => capture.snapshot.phase !== 'aftermath')) {
+          report.failures.push(`${viewport.id}/${scene.id}: aftermath persistence ended before the final capture`);
+        }
         if (scene.slowCheck) {
           const finalBullets = new Map((snapshot.captureBullets || []).map(bullet => [bullet.id, bullet]));
           const initialInside = initialBullets.get('inside');
@@ -253,7 +279,10 @@ async function run() {
   ];
   for (const viewport of VIEWPORTS) {
     lines.push(`### ${viewport.id}`, '');
-    for (const scene of ['summon', 'charge', 'breath-launch', 'breath-contact', 'breath-grow', 'breath-mid', 'meteor', 'impact', 'aftermath']) {
+    for (const scene of [
+      'summon', 'charge', 'breath-launch', 'breath-contact', 'breath-grow', 'breath-mid',
+      'meteor-launch', 'meteor', 'meteor-contact', 'impact-contact', 'impact', 'aftermath',
+    ]) {
       const item = report.captures.find(capture => capture.viewport === viewport.id && capture.scene === scene && capture.frame === SCENES.find(entry => entry.id === scene).frames.at(-1));
       if (item) lines.push(`![${viewport.id} ${scene}](${item.file})`, '');
     }

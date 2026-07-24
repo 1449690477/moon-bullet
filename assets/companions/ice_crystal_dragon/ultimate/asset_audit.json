@@ -1,5 +1,5 @@
 {
-  "pipeline": "ice-crystal-dragon-ultimate-assets-v3",
+  "pipeline": "ice-crystal-dragon-ultimate-assets-v4-phase2-main-body",
   "source_folder": "龙僚机大招开发",
   "source_available": true,
   "source_inventory": [
@@ -4119,18 +4119,18 @@
         ],
         "sheet_sha256": "b210515cc9a19c2bd573bdc9a5864a8cfc3a6efb7af8141330d8f9770e5ee054",
         "crop_content_box_before_padding": [
-          0,
           1,
-          171,
+          1,
+          169,
           117
         ],
         "fixed_canvas_placement": [
           18,
           91,
-          171,
+          169,
           117
         ],
-        "preserve_islands": true,
+        "preserve_islands": false,
         "alpha_erosion_pixels": 0,
         "visible_pixels": 9939,
         "green_residue_pixels": 1083,
@@ -4148,16 +4148,16 @@
         "transparent_margins": {
           "left": 18,
           "top": 91,
-          "right": 231,
+          "right": 233,
           "bottom": 92
         },
-        "sha256": "23ef6c1545f0a767c6b63b26bdb207091b88ccbe8ca3e8323781e3430f2eba85",
-        "visible_pixels": 8358,
+        "sha256": "39d4041140da9d274fe1d0348bcaa6d8ae8ff57e18674d5c3d588c60213b9881",
+        "visible_pixels": 7430,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 951,
+        "edge_visible_pixels": 747,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       },
@@ -4167,17 +4167,17 @@
         "height": 300,
         "transparent_margins": {
           "left": 17,
-          "top": 91,
-          "right": 230,
-          "bottom": 91
+          "top": 90,
+          "right": 233,
+          "bottom": 92
         },
-        "sha256": "bb3589fbc00d1f51e292c264fbfeed308ad2dec5ba4feda64b6fecb77a8bdb5d",
-        "visible_pixels": 8616,
+        "sha256": "642ebe32a9a1ca5e30283e3f1bb489074154809a30092ef4e6bf6ed44a93857f",
+        "visible_pixels": 7609,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 937,
+        "edge_visible_pixels": 736,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       }
@@ -4202,18 +4202,18 @@
         ],
         "sheet_sha256": "b210515cc9a19c2bd573bdc9a5864a8cfc3a6efb7af8141330d8f9770e5ee054",
         "crop_content_box_before_padding": [
-          0,
           1,
-          256,
-          159
+          1,
+          254,
+          157
         ],
         "fixed_canvas_placement": [
           18,
-          70,
-          256,
-          159
+          71,
+          254,
+          157
         ],
-        "preserve_islands": true,
+        "preserve_islands": false,
         "alpha_erosion_pixels": 0,
         "visible_pixels": 20316,
         "green_residue_pixels": 2177,
@@ -4230,17 +4230,17 @@
         "height": 300,
         "transparent_margins": {
           "left": 18,
-          "top": 70,
-          "right": 146,
-          "bottom": 71
+          "top": 71,
+          "right": 148,
+          "bottom": 72
         },
-        "sha256": "0f19a55aeda6adbf8c8e76afe30b56d7aca256eb5b08f779415beb18040d6b7b",
-        "visible_pixels": 17133,
+        "sha256": "ab9e158b6f0a1f67d59c20047ae4edb9c90b0255252a61080a692a49b5373023",
+        "visible_pixels": 12822,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 1721,
+        "edge_visible_pixels": 1136,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       },
@@ -4250,17 +4250,17 @@
         "height": 300,
         "transparent_margins": {
           "left": 17,
-          "top": 70,
-          "right": 145,
-          "bottom": 70
+          "top": 71,
+          "right": 148,
+          "bottom": 71
         },
-        "sha256": "600411305c8e1900a176cdedb35cdffbbaba4925222733351f7cc7b9d9f2665a",
-        "visible_pixels": 17540,
+        "sha256": "6630f8f12866e409d4e4dbe317e4628e76304db787b912403e521f101116f1e9",
+        "visible_pixels": 13017,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 1671,
+        "edge_visible_pixels": 1096,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       }
@@ -4286,17 +4286,17 @@
         "sheet_sha256": "b210515cc9a19c2bd573bdc9a5864a8cfc3a6efb7af8141330d8f9770e5ee054",
         "crop_content_box_before_padding": [
           0,
-          0,
-          291,
-          163
+          1,
+          274,
+          162
         ],
         "fixed_canvas_placement": [
           18,
-          68,
-          291,
-          163
+          69,
+          274,
+          162
         ],
-        "preserve_islands": true,
+        "preserve_islands": false,
         "alpha_erosion_pixels": 0,
         "visible_pixels": 26677,
         "green_residue_pixels": 2386,
@@ -4313,17 +4313,17 @@
         "height": 300,
         "transparent_margins": {
           "left": 18,
-          "top": 68,
-          "right": 111,
+          "top": 69,
+          "right": 128,
           "bottom": 69
         },
-        "sha256": "4d01bfeda109643edee16bb0a271f9552b2d8ef8f8a2707e60b162abbb8a354a",
-        "visible_pixels": 23162,
+        "sha256": "25680a6a4fa16c86b8c65868fa0fae009cae049f111bd6dca4fca6d322e342f6",
+        "visible_pixels": 19405,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 1946,
+        "edge_visible_pixels": 1404,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       },
@@ -4332,18 +4332,18 @@
         "width": 420,
         "height": 300,
         "transparent_margins": {
-          "left": 17,
-          "top": 67,
-          "right": 110,
+          "left": 18,
+          "top": 68,
+          "right": 127,
           "bottom": 68
         },
-        "sha256": "e20f9f6293c678ea3aab6a8fea3ae65e2048964bb6e17d907e89876391923075",
-        "visible_pixels": 23546,
+        "sha256": "5391ab450c77df4d241de83dd01c779944a735e5722e6c57e27c1c77e1d7df2f",
+        "visible_pixels": 19629,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 1915,
+        "edge_visible_pixels": 1365,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       }
@@ -4370,16 +4370,16 @@
         "crop_content_box_before_padding": [
           0,
           3,
-          339,
+          338,
           220
         ],
         "fixed_canvas_placement": [
           18,
           40,
-          339,
+          338,
           220
         ],
-        "preserve_islands": true,
+        "preserve_islands": false,
         "alpha_erosion_pixels": 0,
         "visible_pixels": 45741,
         "green_residue_pixels": 5618,
@@ -4397,16 +4397,16 @@
         "transparent_margins": {
           "left": 18,
           "top": 40,
-          "right": 63,
+          "right": 64,
           "bottom": 40
         },
-        "sha256": "ccfc38fcad0efabba0fbfadf91341e27f1823eb4eb2a36b53bd001d645af1bf7",
-        "visible_pixels": 37524,
+        "sha256": "6517b04892cbb529a89788fa3e2cd6492565cad7ee483e00dc7a27a0f049ca0b",
+        "visible_pixels": 33987,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 3338,
+        "edge_visible_pixels": 2101,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       },
@@ -4415,18 +4415,18 @@
         "width": 420,
         "height": 300,
         "transparent_margins": {
-          "left": 17,
+          "left": 18,
           "top": 39,
-          "right": 62,
-          "bottom": 39
+          "right": 64,
+          "bottom": 40
         },
-        "sha256": "4e2405f3bc919a571dcc8564b004dd3266fc1dc3e408f1cc931cea75c4c1cabd",
-        "visible_pixels": 37332,
+        "sha256": "8053b6e60fb950826eaba4f5249dd3efef6d5f3ea152c104c33be465cb17d418",
+        "visible_pixels": 33543,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 3929,
+        "edge_visible_pixels": 2691,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       }
@@ -5274,16 +5274,16 @@
         "transparent_margins": {
           "left": 13,
           "top": 22,
-          "right": 28,
+          "right": 29,
           "bottom": 60
         },
-        "sha256": "b52624bf6ec1aeed41b446c93ce24476eafc1536f7f3f501237df12e69eab768",
-        "visible_pixels": 10553,
+        "sha256": "9dc195f5201fe3dd53954fb67c5809957002229c1b5ae8b8c78619067e880794",
+        "visible_pixels": 10201,
         "green_residue_pixels": 0,
         "green_residue_ratio": 0.0,
         "green_excess_pixels": 0,
         "green_excess_ratio": 0.0,
-        "edge_visible_pixels": 1602,
+        "edge_visible_pixels": 1351,
         "edge_green_residue_pixels": 0,
         "edge_green_residue_ratio": 0.0
       }
