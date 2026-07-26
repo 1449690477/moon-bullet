@@ -163,10 +163,12 @@ describe('ice crystal dragon ultimate', () => {
     expect(spec.vfx.wholeFrameJawBlend).toBe(false);
     expect(spec.vfx.summon).toEqual(expect.arrayContaining([
       'procedural perspective entry rift',
-      'segmented rotating ice rings',
       'three-face perimeter prisms',
       'orbiting code-drawn snow crystals',
       'no dominant summon-circle sprite',
+      'no target-lock aiming decal',
+      'materializing frost field establishes the cast area',
+      'secondary entry gate only during ingress',
     ]));
     expect(spec.vfx.dragon).toEqual(expect.arrayContaining([
       'full-body alpha-masked volume',
@@ -221,13 +223,39 @@ describe('ice crystal dragon ultimate', () => {
       'layered volumetric ice trail',
       'cross-faded impact materials',
       'three-face impact spires',
-      'dual full-screen freeze waves',
+      'single broken frost-crescent wave',
       'persistent refractive crater',
       'staggered debris ejection',
       'hand-painted crystal debris',
       'textured snowflake plume',
       'weighted bouncing ice chunks',
       'edge frost vignette',
+      'soft tapered comet ribbon tail',
+      'curved cryo-plasma filaments',
+      'dense code-drawn trail snow crystals',
+      'short forward pressure streaks',
+      'frame-alpha-masked meteor material',
+      'masked full-body refraction',
+      'natural frost-crack meteor telegraph',
+      'no meteor aiming texture',
+      'radial wavefront crystal teeth',
+      'persistent irregular frozen plate field',
+      'curled ground blizzard streamers',
+      'front-and-back snow powder column',
+      'contact blizzard body',
+      'reduced ice needle ejection',
     ]));
+    expect(spec.vfx.parameters).toMatchObject({
+      castAimingDecalVisible: false,
+      meteorAimingTextureVisible: false,
+      meteorTrailParticleRate: [184, 144, 96, 64],
+      meteorGranuleCount: [96, 78, 52, 34],
+      meteorMaterialMask: 'frame-alpha',
+      impactWaveStyle: 'broken-frost-crescents',
+      impactWaveBandWidth: 36,
+      impactWaveCrestAlpha: 0.32,
+      impactFrozenPlateLinger: 1.16,
+      impactPlumeFrontDepth: 0.58,
+    });
   });
 });
